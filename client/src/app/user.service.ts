@@ -873,10 +873,13 @@ export class UserService {
 
   /////candidate edit profile
 
-  edit_candidate_profile(user_id: string, detail: any,  edu :any , history:any )
+  edit_candidate_profile(user_id : any,queryBody: any, admin:boolean)
   {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/' +user_id+ '/candidates?admin='+ true;
+    else urlString = URL+'v2/users/' +user_id+ '/candidates';
 
-    return this.http.put(URL+'users/update_profile' , { detail: detail, education: edu  , work : history} , {
+    return this.http.patch( urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1451,37 +1454,6 @@ export class UserService {
 
       }));
   }
-
-  approve_candidate(user_id:string , status :string, reason: string)
-  {
-    return this.http.put(URL+'users/change_candidate_status/' + user_id, {status : status,reason:reason}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
-
   uploadCandImage(detail: any) {
     return this.http.post(URL + 'users/image', detail, {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -1539,6 +1511,58 @@ export class UserService {
   {
     return this.http.get(URL+'users/statistics');
 
+  }
+
+  candidate_status_history(user_id: string,queryInput:any , admin:boolean)
+  {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/'+ user_id +'/candidates/history?admin='+ true;
+    else urlString = URL+'v2/users/'+ user_id +'/candidates/history';
+
+    return this.http.post(urlString , queryInput, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
+
+  add_to_subscribe_list(first_name:string, last_name:string, email:string){
+    return this.http.post(URL+'v2/subscribers', {first_name:first_name,last_name:last_name,email:email}).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(error);
+      }
+
+    }));
   }
 
 }

@@ -1,32 +1,5 @@
-const crypto = require('crypto');
 const enumerations = require('../../model/enumerations');
-
-function randomString(length = 10) {
-    return crypto.randomBytes(Math.ceil(length / 2))
-        .toString('hex')
-        .slice(0, length);
-};
-
-function randomEmail() {
-    return randomString() + '@example.com';
-}
-
-function randomBoolean() {
-    if (Math.random() > 0.5) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function randomInteger(min = 0, max = 10000) {
-    return Math.floor((max - min)*Math.random()) - min;
-}
-
-function randomEnum(enums) {
-    const keyNo = Math.floor(Math.random() * enums.length);
-    return enums[keyNo];
-}
+const random = require('./random');
 
 module.exports.messages = {
     job_offer: function(user_id) {
@@ -35,12 +8,12 @@ module.exports.messages = {
             msg_tag: 'job_offer',
             message: {
                 job_offer: {
-                    title: randomString(),
-                    salary: randomInteger(1),
-                    salary_currency: randomEnum(enumerations.currencies),
-                    type: randomEnum(enumerations.jobTypes),
+                    title: random.string(),
+                    salary: random.integer(1),
+                    salary_currency: random.enum(enumerations.currencies),
+                    type: random.enum(enumerations.jobTypes),
                     location : "PWD Islamabad",
-                    description: randomString(100)
+                    description: random.string(100)
                 }
             }
         }
@@ -97,12 +70,12 @@ module.exports.messages = {
             msg_tag: 'employment_offer',
             message: {
                 employment_offer: {
-                    title: randomString(),
-                    salary: randomInteger(1),
-                    salary_currency: randomEnum(enumerations.currencies),
-                    type: randomEnum(enumerations.jobTypes),
+                    title: random.string(),
+                    salary: random.integer(1),
+                    salary_currency: random.enum(enumerations.currencies),
+                    type: random.enum(enumerations.jobTypes),
                     start_date: Date.now(),
-                    description: randomString(100)
+                    description: random.string(100)
                 }
             }
         }
@@ -113,8 +86,8 @@ module.exports.messages = {
             msg_tag: 'employment_offer_accepted',
             message: {
                 employment_offer_accepted: {
-                    employment_offer_message_id: randomString(),
-                    message: randomString(100)
+                    employment_offer_message_id: random.string(),
+                    message: random.string(100)
                 }
             }
         }
@@ -125,8 +98,8 @@ module.exports.messages = {
             msg_tag: 'employment_offer_rejected',
             message: {
                 employment_offer_rejected: {
-                    employment_offer_message_id: randomString(),
-                    message: randomString(100)
+                    employment_offer_message_id: random.string(),
+                    message: random.string(100)
                 }
             }
         }
@@ -151,7 +124,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
@@ -190,14 +163,110 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
             ],
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : '$ USD',
-            current_salary : 2000,
+            current_currency : random.enum(enumerations.currencies),
+            current_salary : random.integer(1),
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             availability_day : '1 month' ,
             residence_country : ['Pakistan']
         }]
 
+    }
+}
+
+
+module.exports.candidate = function candidate() {
+    return {
+        first_name: "Tayyab",
+        last_name: "Hussain",
+        email: random.email(),
+        password: "Password1",
+        type: "candidate",
+        social_type : ""
+    };
+};
+
+module.exports.candidateProfile = function candidateProfile(){
+    return {
+        contact_number: '+92654654654',
+        exchange_account: 'sadia_exchange.com',
+        github_account: 'fb.com',
+        linkedin_account : 'http://linkedin.com/in/sadia_abbas',
+        medium_account : 'http://medium.com/sadia_abbas',
+        nationality: random.enum(enumerations.nationalities),
+        base_country : random.enum(enumerations.countries),
+        base_city : 'Islamabad',
+        expected_salary: random.integer(10, 100000),
+        expected_salary_currency: random.enum(enumerations.currencies),
+        current_salary: random.integer(10000, 100000),
+        current_currency: random.enum(enumerations.currencies),
+        availability_day: random.enum(enumerations.workAvailability),
+        why_work: random.string(10),
+        description: random.string(10),
+        locations: [
+            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+        ],
+        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
+
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
+        commercial_platforms : [
+            {
+                name : "Bitcoin",
+                exp_year : "4-6"
+            },
+            {
+                name : "Hyperledger Fabric",
+                exp_year : "1-2"
+            }
+        ],
+        programming_languages: [
+            {
+                language: 'Java', exp_year: '1-2'
+            },
+            {
+                language: 'C#', exp_year: '0-1'
+            }
+        ],
+
+        commercial_skills : [
+            {
+                skill: 'Formal verification',
+                exp_year: '0-1'
+            },
+            {
+                skill: 'Distributed computing and networks',
+                exp_year: '2-4'
+            }
+        ],
+        description_commercial_platforms : "Some test description of commercial of platforms by admin latest",
+        description_commercial_skills : "Some test description commercial skills by admin abi abi..",
+        description_experimented_platforms : "Some test description experimented platforms by admin abi..3",
+        education_history : [{
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        }],
+        work_history:[{
+            companyname: 'MWAN',
+            positionname: 'Team Lead',
+            locationname: 'Tokyo Japan',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }]
+    }
+}
+
+module.exports.changeCandidateStatus = function changeCandidateStatus(){
+    return {
+        note : 'Note for this profile',
+        email_html : '<p>Hi, i have just approved your profile</p>',
+        email_subject : 'Welcome to workonblockchain.com!',
+        status : 'approved'
     }
 }
 

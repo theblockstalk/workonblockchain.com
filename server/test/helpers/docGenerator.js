@@ -1,10 +1,11 @@
-
+const random = require('./random');
+const enumerations = require('../../model/enumerations');
 
 module.exports.candidate = function candidate() {
     return {
         first_name: "Tayyab",
         last_name: "Hussain",
-        email: "tayyab@mail.com",
+        email: random.email(),
         password: "Password1",
         type: "candidate",
         social_type : ""
@@ -15,7 +16,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
@@ -35,8 +36,8 @@ module.exports.initialJobOffer = function initialJobOffer() {
         message: "",
         description: "this is for test case",
         job_title: "job title for test case",
-        salary: 1500,
-        currency: "€ EUR",
+        salary: random.integer(1),
+        currency: random.enum(enumerations.currencies),
         date_of_joining: "",
         job_type: "Part Time",
         is_company_reply: 0,
@@ -78,8 +79,8 @@ module.exports.employmentOffer = function employmentOffer() {
         message: "You have been send an employment offer!",
         description: "this is a test description",
         job_title: "Test job title",
-        salary: 2000,
-        currency: "€ EUR",
+        salary: random.integer(1),
+        currency: random.enum(enumerations.currencies),
         date_of_joining: "10-25-2018",
         job_type: "Full Time",
         msg_tag: "employment_offer"
@@ -179,17 +180,17 @@ module.exports.experience = function experience(){
 
 module.exports.job = function job(){
     return {
-        expected_salary: 50000,
-        base_currency: '€ EUR',
-        current_salary: 20000,
-        current_currency: '£ GBP',
-        availability_day: '1 month',
+        expected_salary: random.integer(1),
+        base_currency: random.enum(enumerations.currencies),
+        current_salary: random.integer(1),
+        current_currency: random.enum(enumerations.currencies),
+        availability_day: random.enum(enumerations.workAvailability),
         country: [
             {country: 'Afghanistan' , visa_needed : false} , {remote:true , visa_needed: false},
             {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
         ],
         roles: [
-            'Backend Developer', 'Fullstack Developer'
+            random.enum(enumerations.workRoles), random.enum(enumerations.workRoles)
         ],
         interest_areas: [
             "I don't know" , 'Enterprise blockchain', 'Smart contract development'
@@ -261,10 +262,10 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             nationality: 'Pakistani',
             base_country : 'Pakistan',
             city : 'Islamabad',
-            expected_salary: 1400,
-            base_currency: '$ USD ',
-            salary: 23000,
-            current_currency: '£ GBP',
+            expected_salary: random.integer(1),
+            base_currency: random.enum(enumerations.currencies),
+            salary: random.integer(1),
+            current_currency: random.enum(enumerations.currencies),
             availability_day: '1 month',
             why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
             intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
@@ -405,8 +406,8 @@ module.exports.companySavedSearches = function companySavedSearches() {
             location: [{'remote':true}],
             job_type : ['Part time'],
             position : ['Backend Developer', 'Fullstack Developer'],
-            current_currency : '$ USD',
-            current_salary : 1000,
+            current_currency : random.enum(enumerations.currencies),
+            current_salary : random.integer(1),
             blockchain : ['Ethereum' , 'Stellar'],
             skills : ['Java'],
             availability_day : '1 month' ,
@@ -415,3 +416,10 @@ module.exports.companySavedSearches = function companySavedSearches() {
     }
 }
 
+module.exports.subscribe = function subscribe() {
+    return {
+        first_name: "Tayyab",
+        last_name: "Hussain",
+        email: "tayyab@email.com"
+    }
+}

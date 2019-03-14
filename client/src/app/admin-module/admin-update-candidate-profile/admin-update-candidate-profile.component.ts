@@ -24,7 +24,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   info: any = {}; log;
   selectedValue = [];
   selectedcountry = [];
-  expYear=[];
   jobselected=[];
   salary;
   expected_salaryyy;
@@ -40,11 +39,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   commercial_expYear=[];
   db_valye=[];
   db_lang;
-  platforms_designed=[];
   platforms=[];
-  plat_db_valye=[];
-  platformreferringData;
-  designed_expYear_db=[];
   EducationForm: FormGroup;
   ExperienceForm: FormGroup;
   language=[];
@@ -102,7 +97,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   contact_name_log;
   nationality_log;
   error_msg;
-  expected_validation;
   start_date_year_log;
   end_date_year_log;
   startmonthIndex;
@@ -112,11 +106,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   educationjson;
   education_json_array=[];
   commercial_log;
-  platform_log;
   base_country_log;
   city_log;
   commercial_skill_log;
-  formal_skills_log;
   current_sal_log;
   count;
   submit;
@@ -137,6 +129,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       {name:'I currently work here', value:'current', checked:false}
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -174,26 +169,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       {name:'Smart contract audits', value:'Smart contract audits', checked:false},
       {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
     ]
-  otherFormalSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-
 
   skillDbArray=[];
   skillDb;
   skill_expYear_db=[];
-  formalDbArray=[];
-  formalSkillDb;
-  formal_expYear_db=[];
   admin_log;
   ngOnInit()
   {
@@ -234,11 +213,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       })
 
       this.commercially.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-      this.designed.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
@@ -337,46 +311,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                   }
                 }
 
-                if(data['candidate'].blockchain.formal_skills )
+                if(data['candidate'].blockchain.description_commercial_skills)
                 {
-                  this.formal_skills = data['candidate'].blockchain.formal_skills;
-                  for (let key of data['candidate'].blockchain.formal_skills)
-                  {
-                    for(var i in key)
-                    {
-
-                      for(let option of this.otherFormalSkills)
-                      {
-
-                        if(option.value === key[i])
-                        {
-                          option.checked=true;
-                          this.formalDbArray.push(key[i]);
-                          this.formalSkillDb= ({value: key[i]});
-                          this.formal_skills_exp.push(this.formalSkillDb);
-
-                        }
-                        else
-                        {
-
-                        }
-
-                      }
-
-                      for(let option of this.exp_year)
-                      {
-
-                        if(option.value === key[i])
-                        {
-                          option.checked=true;
-                          this.formal_expYear_db.push(key[i]);
-
-                        }
-
-                      }
-
-                    }
-                  }
+                  this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
                 }
 
                 if(data['candidate'].blockchain.commercial_platforms)
@@ -423,50 +360,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
                 }
 
-                if(data['candidate'].blockchain.smart_contract_platforms)
+                if(data['candidate'].blockchain.description_commercial_platforms)
                 {
-                  this.platforms = data['candidate'].blockchain.smart_contract_platforms;
-                  for (let key of data['candidate'].blockchain.smart_contract_platforms)
-                  {
-                    for(var i in key)
-                    {
-
-
-                      for(let option of this.designed)
-                      {
-
-                        if(option.value == key[i])
-                        {
-                          option.checked=true;
-                          this.plat_db_valye.push(key[i]);
-                          this.db_lang= ({value: key[i]});
-                          this.platforms_designed.push(this.db_lang);
-
-                        }
-                        else
-                        {
-
-                        }
-
-                      }
-
-                      for(let option of this.exp_year)
-                      {
-
-                        if(option.value == key[i])
-                        {
-                          option.checked=true;
-
-
-                          this.designed_expYear_db.push(key[i]);
-
-
-                        }
-
-                      }
-
-                    }
-                  }
+                  this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
                 }
 
                 if(data['candidate'].blockchain.experimented_platforms)
@@ -487,6 +383,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                     }
 
                   }
+                }
+
+                if(data['candidate'].blockchain.description_experimented_platforms)
+                {
+                  this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
                 }
               }
 
@@ -800,24 +701,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     ]
 
-  designed=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-    ]
-
   experimented=
     [
       {name:'Bitcoin', value:'Bitcoin', checked:false},
@@ -897,34 +780,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   }
 
-  onPlatformOptions(obj)
-  {
-
-    let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
-    let index = this.platforms_designed.indexOf(updateItem);
-    if(index > -1)
-    {
-      this.platforms_designed.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.platforms, 'name', obj.value);
-      let index2 = this.platforms.indexOf(updateItem2);
-
-      if(index2 > -1)
-      {
-
-        this.platforms.splice(index2, 1);
-      }
-    }
-    else
-    {
-      obj.checked =true;
-      this.platforms_designed.push(obj);
-    }
-
-
-  }
-
-
-
   onComExpYearOptions(e, value)
   {
 
@@ -954,36 +809,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       if(a.name > b.name) { return 1; }
       return 0;
     });
-  }
-
-
-  onPlatformYearOptions(e, value)
-  {
-
-    let updateItem = this.findObjectByKey(this.platforms, 'name', value);
-    let index = this.platforms.indexOf(updateItem);
-
-    if(index > -1)
-    {
-
-      this.platforms.splice(index, 1);
-      this.value=value;
-      this.platformreferringData = { name:this.value, exp_year: e.target.value};
-      this.platforms.push(this.platformreferringData);
-
-    }
-    else
-    {
-      this.value=value;
-      this.platformreferringData = { name:this.value, exp_year: e.target.value};
-      this.platforms.push(this.platformreferringData);
-    }
-    this.platforms.sort(function(a, b){
-      if(a.name < b.name) { return -1; }
-      if(a.name > b.name) { return 1; }
-      return 0;
-    })
-
   }
 
   findObjectByKey(array, key, value) {
@@ -1399,11 +1224,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     {
       this.commercial_log = "Please fill year of experience";
     }
-    if(this.platforms_designed.length !== this.platforms.length)
-    {
-      this.platform_log = "Please fill year of experience";
-    }
-
 
     if(this.LangexpYear.length !==  this.language.length)
     {
@@ -1420,12 +1240,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     {
       this.commercial_skill_log = "Please fill year of experience";
     }
-
-    if(this.formal_skills_exp.length !== this.formal_skills.length)
-    {
-      this.formal_skills_log = "Please fill year of experience";
-    }
-
 
     if(this.EducationForm.value.itemRows.length >= 1)
     {
@@ -1581,9 +1395,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedLocations && this.selectedLocations.length > 0
       && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
-      this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
+      this.why_work && this.commercially_worked.length === this.commercial_expYear.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
-      && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
       this.verify = true;
@@ -1644,24 +1458,30 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       profileForm.commercial_platforms = this.commercial_expYear;
     }
 
-
-    if(this.platforms_designed.length === 0) {
-      profileForm.smart_contract_platforms = [];
-    }
-    else {
-      profileForm.smart_contract_platforms = this.platforms;
-    }
     if(this.commercialSkills.length === 0) {
       profileForm.commercial_skills = [];
     }
     else {
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
     }
-    if(this.formal_skills_exp.length === 0) {
-      profileForm.formal_skills = [];
+
+    console.log(this.description_commercial_platforms);
+    console.log(this.description_experimented_platforms);
+    console.log(this.description_commercial_skills);
+
+    profileForm.description_commercial_platforms = '';
+    if(this.description_commercial_platforms){
+      profileForm.description_commercial_platforms = this.description_commercial_platforms;
     }
-    else {
-      profileForm.formal_skills = this.formal_skills;
+
+    profileForm.description_experimented_platforms = '';
+    if(this.description_experimented_platforms){
+      profileForm.description_experimented_platforms = this.description_experimented_platforms;
+    }
+
+    profileForm.description_commercial_skills = '';
+    if(this.description_commercial_skills){
+      profileForm.description_commercial_skills = this.description_commercial_skills;
     }
 
     if(this.language.length === 0) {
@@ -1679,13 +1499,45 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       profileForm.interest_area = this.selectedValue;
     }
 
-    this.authenticationService.update_candidate_profile(this.user_id, profileForm , this.education_json_array , this.experiencearray)
+    let inputQuery:any ={};
+
+    if(this.info.first_name) inputQuery.first_name = this.info.first_name;
+    if(this.info.last_name) inputQuery.last_name = this.info.last_name;
+    if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+    if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+    if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+    if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+    if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+    if(this.info.nationality) inputQuery.nationality = this.info.nationality;
+    if(this.info.Intro) inputQuery.description = this.info.Intro;
+    if(this.info.base_country) inputQuery.base_country = this.info.base_country;
+    if(this.info.city) inputQuery.base_city = this.info.city;
+    if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
+    if(this.jobselected) inputQuery.roles = this.jobselected;
+    if(this.expected_salaryyy) inputQuery.expected_salary = this.expected_salaryyy;
+    if(this.base_currency) inputQuery.expected_salary_currency = this.base_currency;
+    if(this.current_currency) inputQuery.current_currency = this.current_currency;
+    if(this.salary) inputQuery.current_salary = this.salary;
+    if(this.selectedValue) inputQuery.interest_areas = this.selectedValue;
+    if(this.availability_day) inputQuery.availability_day = this.availability_day;
+    if(this.why_work) inputQuery.why_work = this.why_work;
+    if(profileForm.commercial_platforms) inputQuery.commercial_platforms = profileForm.commercial_platforms;
+    if(profileForm.description_commercial_platforms) inputQuery.description_commercial_platforms = profileForm.description_commercial_platforms;
+    if(this.experimented_platform) inputQuery.experimented_platforms = this.experimented_platform;
+    if(profileForm.description_experimented_platforms) inputQuery.description_experimented_platforms = profileForm.description_experimented_platforms;
+    if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
+    if(profileForm.description_commercial_skills) inputQuery.description_commercial_skills = profileForm.description_commercial_skills;
+    if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
+    if(this.education_json_array) inputQuery.education_history = this.education_json_array;
+    if(this.experiencearray) inputQuery.work_history = this.experiencearray;
+
+    this.authenticationService.edit_candidate_profile(this.user_id, inputQuery , true)
       .subscribe(
         data => {
-          if(data['success'] && this.currentUser)
+          if(data && this.currentUser)
           {
-
             this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
+
           }
 
         },
@@ -1704,6 +1556,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           }
 
         });
+
 
   }
 
@@ -1764,60 +1617,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     })
   }
 
-  formal_skills_exp=[];
-  formal_skills=[];
-  onFormalOptions(obj)
-  {
-
-    let updateItem = this.formal_skills_exp.find(this.findIndexToUpdate_funct, obj.value);
-    let index = this.formal_skills_exp.indexOf(updateItem);
-    if(index > -1)
-    {
-      this.formal_skills_exp.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.formal_skills, 'skill',  obj.value);
-      let index2 = this.formal_skills.indexOf(updateItem2);
-
-      if(index2 > -1)
-      {
-
-        this.formal_skills.splice(index2, 1);
-      }
-    }
-    else
-    {
-      obj.checked =true;
-      this.formal_skills_exp.push(obj);
-    }
-
-  }
-
-  onFormalExpYearOptions(e, value)
-  {
-    let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
-    let index = this.formal_skills.indexOf(updateItem);
-
-    if(index > -1)
-    {
-
-      this.formal_skills.splice(index, 1);
-      this.value = value;
-      this.referringData = { skill : this.value, exp_year: e.target.value};
-      this.formal_skills.push(this.referringData);
-
-    }
-    else
-    {
-      this.value=value;
-      this.referringData = { skill : this.value, exp_year: e.target.value};
-      this.formal_skills.push(this.referringData);
-
-    }
-    this.formal_skills.sort(function(a, b){
-      if(a.skill < b.skill) { return -1; }
-      if(a.skill > b.skill) { return 1; }
-      return 0;
-    })
-  }
   verify;
   dateValidation;
   checkDateVerification(month,year) {

@@ -34,7 +34,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             let res = await messagesHelpers.post({not_a_field: "my id", msg_tag: 'job_offer'}, companyUserDoc.jwt_token);
@@ -59,7 +60,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -78,7 +80,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
@@ -97,7 +100,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOfferRejected = docGeneratorV2.messages.job_offer_rejected(companyUserDoc._id);
@@ -116,7 +120,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -141,7 +146,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -166,7 +172,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -192,7 +199,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -222,7 +230,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
@@ -252,7 +261,8 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);

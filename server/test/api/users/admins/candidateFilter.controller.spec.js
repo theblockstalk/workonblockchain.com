@@ -14,6 +14,7 @@ const userHelper = require('../../users/usersHelpers');
 const docGeneratorV2 = require('../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../test/api-v2/helpers');
 const companiesHelperV2 = require('../../../api-v2/users/companyHelpers')
+const candidateHelperV2 = require('../../../api-v2/users/candidates/candidateHelpers')
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -42,13 +43,12 @@ describe('admin search candidate by filter', function () {
         await userHelper.makeAdmin(company.email);
         const companyUserDoc = await Users.findOneByEmail(company.email);
 
-        const profileData = docGenerator.profileData();
-        const job = docGenerator.job();
-        const resume = docGenerator.resume();
-        const experience = docGenerator.experience();
+        const profileData = docGeneratorV2.candidateProfile();
         const candidate = docGenerator.candidate();
-        const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+
+        const candidateRes = await candidateHelperV2.candidateProfile(candidate,profileData);
         await userHelper.makeAdmin(candidate.email);
+        await userHelper.approveCandidate(candidate.email);
         const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 
         const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
@@ -57,12 +57,12 @@ describe('admin search candidate by filter', function () {
         const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
         const data = {
             msg_tags : [messageDoc.msg_tag],
-            is_approve : candidateUserDoc.candidate.status[0].status,
+            is_approve : candidateUserDoc.candidate.history[0].status.status,
             word : candidate.first_name
         }
         const candidateFilterRes = await adminHelper.candidateFilter(data , candidateUserDoc.jwt_token);
         candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
-        candidateUserDoc.candidate.status[0].status.should.equal('approved');
+        candidateUserDoc.candidate.history[0].status.status.should.equal('approved');
         messageDoc.msg_tag.should.valueOf(data.msg_tags);
 
     })

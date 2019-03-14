@@ -14,16 +14,20 @@ if (settings.isLiveApplication()) {
 }
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
+    const defaultFrom = {
+        name: settings.SENDGRID.FROM_NAME,
+        email: settings.SENDGRID.FROM_ADDRESS
+    }
+
     const msg = {
         personalizations: sendGridOptions.personalizations,
-        from: {
-            email: settings.SENDGRID.FROM_ADDRESS,
-            name: settings.SENDGRID.FROM_NAME
-        },
+        from: sendGridOptions.from ? sendGridOptions.from : defaultFrom,
         subject: sendGridOptions.subject,
         templateId: sendGridOptions.templateId,
         dynamic_template_data: sendGridOptions.templateData
     };
+
+    logger.debug("Send email msg object: ", msg);
 
     try {
         await sgMail.send(msg);
@@ -38,8 +42,7 @@ async function apiRequest(request) {
     logger.debug('Sendgrid API request', request);
 
     if (settings.isLiveApplication()) {
-        [response, body] = await
-        sgClient.request(request);
+        [response, body] = await sgClient.request(request);
 
         if (response.statusCode < 200 || response.statusCode >= 300) {
             logger.error("Sendgrid API request failed", response);
@@ -72,7 +75,17 @@ module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
     return name + "@" + domain;
 };
 
-module.exports.getAllLists = async function getAllLists() {
+module.exports.getList = async function getList(listName) {
+    let lists = await getAllLists();
+
+    for (const list of lists.lists) {
+        if (list.name === listName) {
+            return list;
+        }
+    }
+}
+
+async function getAllLists(){
     const request = {
         method: 'GET',
         url: '/v3/contactdb/lists'

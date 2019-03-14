@@ -13,7 +13,7 @@ import { CompaniesLandingPageComponent } from './companies-landing-page/companie
 
 const routes: Routes = [
   {path : 'about_comp' , component: AboutCompanyComponent, canActivate : [VerifyEmailMiddleware]},
-  { path: 'company_wizard', component: TermsWizardComponent, canActivate : [VerifyEmailMiddleware]},
+  {path: 'company_wizard', component: TermsWizardComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'candidate-search' , component: CompanySearchComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'company_profile' , component: CompanyProfileComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'edit_company_profile' , component: EditCompanyProfileComponent, canActivate : [VerifyEmailMiddleware]},
@@ -21,7 +21,6 @@ const routes: Routes = [
   {path : 'preferences' , component: PreferencesComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'company-verify-email', component: CompanyVerifyEmailComponent},
   {path : 'companies', component: CompaniesLandingPageComponent}
-
 ];
 
 @NgModule({

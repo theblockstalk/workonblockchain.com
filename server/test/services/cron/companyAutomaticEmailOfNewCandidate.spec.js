@@ -18,6 +18,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('cron', function () {
+    this.timeout(5000);
 
     afterEach(async function () {
         console.log('dropping database');
@@ -29,12 +30,7 @@ describe('cron', function () {
         it('should send one candidate', async function () {
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-
+            const profileData = docGeneratorV2.candidateProfile();
 
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
@@ -42,32 +38,35 @@ describe('cron', function () {
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             updatedData.saved_searches = [{
                 location: [
-                    job.country[0]
+                    profileData.locations[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    job.roles[0]
+                    profileData.roles[0]
                 ],
-                current_currency: job.base_currency,
-                current_salary: job.expected_salary,
+                current_currency: profileData.expected_salary_currency,
+                current_salary: profileData.expected_salary,
                 skills: [
-                    experience.language_exp[0].language
+                    profileData.programming_languages[0].language
                 ],
-                availability_day: job.availability_day,
+                availability_day: profileData.availability_day,
             }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
+            await userHelper.approveCandidate(candidate.email);
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
             const userCandidateDoc = await users.findOneByEmail(candidate.email);
+            console.log(userCandidateDoc);
             companyDoc.candidates_sent_by_email.length.should.equal(1);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
@@ -75,11 +74,7 @@ describe('cron', function () {
         it('should not send a candidate if they have already been sent', async function () {
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const profileData = docGeneratorV2.candidateProfile();
 
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
@@ -88,25 +83,27 @@ describe('cron', function () {
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             updatedData.saved_searches = [{
                 location: [
-                    job.country[0]
+                    profileData.locations[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    job.roles[0]
+                    profileData.roles[0]
                 ],
-                current_currency: job.base_currency,
-                current_salary: job.expected_salary,
+                current_currency: profileData.expected_salary_currency,
+                current_salary: profileData.expected_salary,
                 skills: [
-                    experience.language_exp[0].language
+                    profileData.programming_languages[0].language
                 ],
-                availability_day: job.availability_day,
+                availability_day: profileData.availability_day,
             }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
 
             await companyEmail();
 
@@ -123,6 +120,75 @@ describe('cron', function () {
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(1);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
+        })
+
+        it('should not only send to candidates after saved search update', async function () {
+
+            let candidate = [], profileData= [];
+            for (let i = 0; i < 5; i++) {
+                candidate.push(docGenerator.candidate());
+                profileData.push(docGeneratorV2.candidateProfile());
+            }
+
+            const company = docGeneratorV2.company();
+            await companiesHelperV2.signupCompany(company);
+            let companyDoc = await users.findOneByEmail(company.email);
+
+            const updatedData = await docGeneratorV2.companyUpdateProfile();
+            updatedData.saved_searches = [{
+                location: [
+                    profileData[0].locations[0]
+                ],
+                job_type: [
+                    "Part time"
+                ],
+                position: [
+                    profileData[0].roles[0]
+                ],
+                current_currency: profileData[0].expected_salary_currency,
+                current_salary: profileData[0].expected_salary,
+                skills: [
+                    profileData[0].programming_languages[0].language
+                ],
+                availability_day: profileData[0].availability_day,
+            }];
+
+            const jwtToken = companyDoc.jwt_token;
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
+            await userHelper.verifyEmail(updateRes.body._creator.email);
+            await userHelper.approve(updateRes.body._creator.email);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[0]);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[0]);
+
+            await companyEmail();
+
+            let userCompanyDoc = await users.findOneByEmail(company.email);
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(2);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[0]);
+
+            await companyEmail();
+
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(3);
+
+            let newSavedSearch = companyDoc.saved_searches;
+            newSavedSearch[0].position = [
+                profileData[1].roles[0]
+            ];
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[1]);
+            await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[1]);
+            await companyEmail();
+
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(4);
+
         })
     })
 });
