@@ -69,7 +69,6 @@ module.exports.endpoint = async function (req, res) {
             errors.throwError('Something went wrong. Please try again.' , 400)
         }
         else {
-            console.log(userData);
             email = userData.email;
             newUserDoc.email = userData.email;
             newUserDoc.google_id = userData.google_id;
@@ -110,6 +109,35 @@ module.exports.endpoint = async function (req, res) {
     }
 
     const candidateUserCreated = await users.insert(newUserDoc);
-    console.log(candidateUserCreated);
+
+    let updateCandidate = {};
+    let signOptions = {
+        expiresIn:  "1h",
+    };
+    let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
+    let verifyEmailToken = jwtToken.createJwtToken(candidateUserCreated, signOptions);
+    updateCandidate['jwt_token'] = jwtUserToken;
+    updateCandidate['verify_email_key'] = verifyEmailToken;
+
+    await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate});
+
+
+    if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
+        let data = {fname : candidateUserCreated.first_name , email : candidateUserCreated.email};
+        welcomeEmail.sendEmail(data, candidateUserCreated.disable_account);
+    }
+    else {
+        verify_send_email(candidateUserCreated.email, verifyEmailToken);
+    }
+
+    res.send
+    ({
+        _id: candidateUserCreated._id,
+        _creator : candidateUserCreated._id,
+        type:candidateUserCreated.type,
+        email: candidateUserCreated.email,
+        jwt_token: jwtUserToken
+    });
+
 
 }

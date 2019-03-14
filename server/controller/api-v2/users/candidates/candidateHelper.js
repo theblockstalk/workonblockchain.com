@@ -22,8 +22,7 @@ async function getGoogleAccountFromCode(googleCode, oauth, plus) {
         oauth.setCredentials(tokens);
 
 
-        const response = await
-        plus.people.get({userId: 'me', auth: oauth});
+        const response = await plus.people.get({userId: 'me', auth: oauth});
         const emailAddress = response.data.emails[0].value;
         return {
             email: emailAddress,
