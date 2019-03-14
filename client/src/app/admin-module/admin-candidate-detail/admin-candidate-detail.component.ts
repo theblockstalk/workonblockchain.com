@@ -101,7 +101,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 600);
     window.scrollTo(0, 0);
 
   }
@@ -109,6 +109,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
