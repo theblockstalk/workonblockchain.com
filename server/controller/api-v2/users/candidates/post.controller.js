@@ -61,12 +61,14 @@ module.exports.inputValidation = {
 module.exports.endpoint = async function (req, res) {
     console.log(req.body);
     let queryBody = req.body;
-    let email = queryBody.email;
+    let email;
     let timestamp = new Date();
     let newUserDoc = {};
     newUserDoc.type = 'candidate';
+
+    if(queryBody.email) email = queryBody.email;
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
-    /*if(queryBody.google_code) {
+    if(queryBody.google_code) {
         const googleData = await candidateHelper.googleAuth(queryBody.google_code);
         if(googleData.error) {
             errors.throwError('Something went wrong. Please try again.' , 400)
@@ -81,8 +83,8 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.social_type = 'GOOGLE';
         }
     }
-    else */if(queryBody.google_code) {
-        const linkedinData = await candidateHelper.linkedinAuth(queryBody.google_code)
+    else if(queryBody.linkedin_code) {
+        const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code)
 
     }
     else {

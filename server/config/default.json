@@ -35,7 +35,7 @@
   "linkedinConfig" : {
     "clientId": "78lfupn2m88e4u",
     "clientSecret": "itlhigfRmkepemfp",
-    "redirectUrl": "http://localhost:4200/auth"
+    "redirectUrl": "http://localhost:4200/linkedin-auth"
   }
 }
 

@@ -15,6 +15,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 import {LoginResolver} from '../is-loggedin.resolver';
 import { SocialAuthComponent } from './social-auth/social-auth.component';
+import { LinkedinAuthComponent } from './linkedin-auth/linkedin-auth.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { SocialAuthComponent } from './social-auth/social-auth.component';
     ChangePasswordComponent,
     VerifyEmailComponent,
     NotFoundComponent,
-    SocialAuthComponent
+    SocialAuthComponent,
+    LinkedinAuthComponent
   ],
   providers:
     [
