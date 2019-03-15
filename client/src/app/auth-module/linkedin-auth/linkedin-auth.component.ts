@@ -15,7 +15,6 @@ export class LinkedinAuthComponent implements OnInit {
   previousUrl;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
     this.linkedinUser = (localStorage.getItem('linkedinLogin'));
-    console.log(this.linkedinUser);
 
     this.route.queryParams.subscribe(params => {
       this.code =  params['code'];
@@ -36,7 +35,6 @@ export class LinkedinAuthComponent implements OnInit {
 
   }
   login(code) {
-    console.log("login");
     localStorage.removeItem('linkedinLogin');
 
     this.authenticationService.candidate_login({linkedin_code : code})

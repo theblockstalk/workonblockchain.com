@@ -11,12 +11,18 @@ export class SocialAuthComponent implements OnInit {
 
   code;
   log;
-
+  googleUser;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
+    this.googleUser = (localStorage.getItem('googleLogin'));
+
     this.route.queryParams.subscribe(params => {
       this.code =  params['code'];
     });
-    if(this.code) {
+    if(this.code && this.googleUser === 'true') {
+      console.log(this.code);
+      this.login(this.code);
+    }
+    else if(this.code && !this.googleUser) {
       console.log(this.code);
       this.passCodeToBE(this.code);
     }
@@ -28,6 +34,34 @@ export class SocialAuthComponent implements OnInit {
   ngOnInit() {
 
   }
+
+  login(code) {
+    localStorage.removeItem('googleLogin');
+
+    this.authenticationService.candidate_login({google_code : code})
+      .subscribe(
+        user => {
+
+          if(user) {
+            window.location.href = '/candidate_profile';
+          }
+
+        },
+        error => {
+          this.log = 'error';
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+          }
+          else {
+            this.log = 'Something getting wrong';
+          }
+
+        });
+  }
+
 
   passCodeToBE(googleCode) {
     this.authenticationService.createCandidate({google_code : googleCode})

@@ -67,12 +67,12 @@ module.exports.endpoint = async function (req, res) {
     {
         const googleData = await candidateHelper.googleAuth(queryBody.google_code);
         if (googleData) {
-            userDoc = await users.findOne({google_id: googleData.google_id});
+            userDoc = await users.findOneByEmail(googleData.email);
             if (userDoc && !userDoc.google_id) {
                 set.google_id =  googleData.google_id;
 
             }
-            else if (googleData.email !== userDoc.email) {
+            else if (userDoc && googleData.email !== userDoc.email) {
                 errors.throwError("Incorrect email address", 400)
             }
             else {}
@@ -87,7 +87,7 @@ module.exports.endpoint = async function (req, res) {
         const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code);
         console.log(linkedinData);
         if (linkedinData) {
-            userDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
+            userDoc = await users.findOneByEmail(linkedinData.email);
             if (userDoc && !userDoc.linkedin_id) {
                 set.linkedin_id =  linkedinData.linkedin_id;
 

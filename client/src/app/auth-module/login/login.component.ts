@@ -43,10 +43,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   linkedin_url;
   ngOnInit()
   {
-    let google_id = environment.google_client_id;
-    let google_redirect_url = environment.google_redirect_url;
-
-    this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+google_id+'&redirect_uri='+google_redirect_url;
 
     this.response = "empty";
     this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
@@ -143,7 +139,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   signInWithGoogle()
   {
-
+    localStorage.setItem('googleLogin', 'true');
+    let google_id = environment.google_client_id;
+    let google_redirect_url = environment.google_redirect_url;
+    this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+google_id+'&redirect_uri='+google_redirect_url;
+    window.location.href = this.google_url;
   }
 
   loginWithLinkedin() {
