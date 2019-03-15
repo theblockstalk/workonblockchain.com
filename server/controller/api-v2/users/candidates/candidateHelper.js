@@ -36,59 +36,62 @@ async function getGoogleAccountFromCode(googleCode, oauth, plus) {
         }
     }
     catch (error) {
-        return {error: error};
+        return error;
     }
 }
 
 const linkedinAuth = module.exports.linkedinAuth = async function linkedinAuth(linkedinCode) {
 
-    const form = {
-        client_id: linkedinOAuth.clientId,
-        client_secret: linkedinOAuth.clientSecret,
-        redirect_uri: linkedinOAuth.redirectUrl,
-        grant_type: 'authorization_code',
-        code: linkedinCode
-    };
-    const token = await getLinkedinAccessToken(form);
-    console.log(token);
-    const data = await getLinkedinAccountFromCode(token);
-    console.log(data);
+    const response = await getLinkedinAccessToken(linkedinCode);
+    const responseData = JSON.parse(response);
+    const data = await getLinkedinAccountFromCode(responseData.access_token);
     return data;
 
 }
 
-async function getLinkedinAccessToken(inputData) {
+const getLinkedinAccessToken = module.exports.getLinkedinAccessToken = function getLinkedinAccessToken(linkedinCode) {
+    return new Promise((resolve, reject) => {
+        const form = {
+            client_id: linkedinOAuth.clientId,
+            client_secret: linkedinOAuth.clientSecret,
+            redirect_uri: linkedinOAuth.redirectUrl,
+            grant_type: 'authorization_code',
+            code: linkedinCode
+        };
 
-    const formData = querystring.stringify(inputData);
-    const contentLength = formData.length;
-    await request({
-        headers: {
-            'Content-Length': contentLength,
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        uri: 'https://www.linkedin.com/uas/oauth2/accessToken',
-        body: formData,
-        method: 'POST'
-    }, function (error, res, body) {
-        if (error) return {error : error};
-        else {
-            const responseData = JSON.parse(body);
-            console.log(responseData.access_token);
-            return responseData.access_token;
-        }
+        const formData = querystring.stringify(form);
+        const contentLength = formData.length;
+
+        const options = {
+            headers: {
+                'Content-Length': contentLength,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            uri: 'https://www.linkedin.com/uas/oauth2/accessToken',
+            body: formData,
+            method: 'POST'
+        };
+        request.post(options, function(error, res, body) {
+        if(error) reject(error);
+        resolve(body);
+        });
     });
 }
 
+
+
 async function getLinkedinAccountFromCode(code) {
     const linkedin = Linkedin.init(code);
-    linkedin.people.me(['id', 'first-name', 'last-name','email-address'], function(err, $in) {
-        const userData = $in;
-        console.log(userData);
-        return {
-            email: userData.emailAddress,
-            google_id: userData.id,
-            first_name: userData.firstName,
-            last_name: userData.lastName
-        }
+    return new Promise((resolve, reject) => {
+        linkedin.people.me(['id', 'first-name', 'last-name','email-address'], function(error, res) {
+            if(error) reject(error);
+            const userData = res;
+            resolve({
+                email: userData.emailAddress,
+                linkedin_id: userData.id,
+                first_name: userData.firstName,
+                last_name: userData.lastName
+            });
+        });
     });
 }

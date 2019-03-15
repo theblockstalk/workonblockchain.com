@@ -24,7 +24,7 @@ const routes: Routes = [
   { path : 'change-password' , component: ChangePasswordComponent, canActivate: [VerifyEmailMiddleware]},
   { path : 'verify_email', component: VerifyEmailComponent },
   { path : 'not_found' , component: NotFoundComponent},
-  { path : 'auth' , component: SocialAuthComponent},
+  { path : 'google-auth' , component: SocialAuthComponent},
   { path : 'linkedin-auth' , component: LinkedinAuthComponent},
 
 ];

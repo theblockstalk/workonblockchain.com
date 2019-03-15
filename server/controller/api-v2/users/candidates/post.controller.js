@@ -70,10 +70,7 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
     if(queryBody.google_code) {
         const googleData = await candidateHelper.googleAuth(queryBody.google_code);
-        if(googleData.error) {
-            errors.throwError('Something went wrong. Please try again.' , 400)
-        }
-        else {
+        if(googleData) {
             email = googleData.email;
             newUserDoc.email = googleData.email;
             newUserDoc.google_id = googleData.google_id;
@@ -82,10 +79,24 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.is_verify = 1;
             newUserDoc.social_type = 'GOOGLE';
         }
+        else {
+            errors.throwError('Something went wrong. Please try again.' , 400);
+        }
     }
     else if(queryBody.linkedin_code) {
         const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code);
-        console.log(linkedinData);
+        if(linkedinData) {
+            email = linkedinData.email;
+            newUserDoc.email = linkedinData.email;
+            newUserDoc.linkedin_id = linkedinData.linkedin_id;
+            newUserDoc.first_name = linkedinData.first_name;
+            newUserDoc.last_name = linkedinData.last_name;
+            newUserDoc.is_verify = 1;
+            newUserDoc.social_type = 'LINKEDIN';
+        }
+        else {
+            errors.throwError('Something went wrong. Please try again.' , 400)
+        }
     }
     else {
         let salt = crypto.randomBytes(16).toString('base64');
