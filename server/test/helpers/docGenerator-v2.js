@@ -311,9 +311,9 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
                 exp_year: '2-4'
             }
         ],
-        description_commercial_platforms : "upadatd Some test description of commercial of platforms",
-        description_commercial_skills : "upadatd Some test description commercial skills",
-        description_experimented_platforms : "upadatd Some test description experimented platforms",
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
         education_history : [{
             uniname: 'CUST',
             degreename: 'BSCS',

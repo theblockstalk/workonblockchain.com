@@ -13,7 +13,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('update candidate profile', function () {
+describe('create new candidate', function () {
 
     afterEach(async () => {
         console.log('dropping database');
