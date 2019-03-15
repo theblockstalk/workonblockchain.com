@@ -137,15 +137,6 @@ const bodySchema = new Schema({
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
-    },
-    marketing_emails: {
-        type: Boolean,
-    },
-    privacy_id: {
-        type : String
-    },
-    terms_id: {
-        type : String
     }
 });
 

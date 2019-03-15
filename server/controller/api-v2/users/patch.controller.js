@@ -1,7 +1,7 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const multer = require('../../../controller/middleware/multer');
-const Pages = require('../../../model/mongoose/pages');
+const pages = require('../../../model/mongoose/pages');
 const companies = require('../../../model/mongoose/company');
 const errors = require('../../services/errors');
 const filterReturnData = require('../../api/users/filterReturnData');
@@ -30,14 +30,15 @@ const bodySchema = new Schema({
     }
 });
 
+const querySchema = new Schema({
+    verify_email_key: String
+})
+
 module.exports.inputValidation = {
     params: paramSchema,
-    body: bodySchema
+    body: bodySchema,
+    query: querySchema
 };
-
-module.exports.files = async function(req) {
-    await multer.uploadOneFile(req, "company_logo");
-}
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
@@ -53,13 +54,13 @@ module.exports.endpoint = async function (req, res) {
 
         if(employerDoc){
             if(queryBody.privacy_id) {
-                const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
+                const pagesDoc =  await pages.findByDescDate({page_name: 'Privacy Notice'});
                 if(pagesDoc._id.toString() === queryBody.privacy_id) employerUpdate.privacy_id = pagesDoc._id;
                 else errors.throwError("Privacy notice document not found", 404);
             }
 
             if(queryBody.terms_id) {
-                const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for company'});
+                const pagesDoc =  await pages.findByDescDate({page_name: 'Terms and Condition for company'});
                 if(pagesDoc._id.toString() === queryBody.terms_id) employerUpdate.terms_id = pagesDoc._id;
                 else errors.throwError("Terms and Condition document for company not found", 404);
             }
@@ -84,13 +85,13 @@ module.exports.endpoint = async function (req, res) {
         let updateCandidateUser = {};
         let userDoc = req.auth.user;
         if(queryBody.privacy_id) {
-            const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
+            const pagesDoc =  await pages.findByDescDate({page_name: 'Privacy Notice'});
             if(pagesDoc._id.toString() === queryBody.privacy_id) updateCandidateUser['candidate.privacy_id'] = pagesDoc._id;
             else errors.throwError("Privacy notice document not found", 404);
         }
 
         if(queryBody.terms_id) {
-            const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for candidate'});
+            const pagesDoc =  await pages.findByDescDate({page_name: 'Terms and Condition for candidate'});
             if(pagesDoc._id.toString() === queryBody.terms_id) updateCandidateUser['candidate.terms_id'] = pagesDoc._id;
             else errors.throwError("Terms and Condition document for candidate not found", 404);
         }
@@ -102,5 +103,28 @@ module.exports.endpoint = async function (req, res) {
         });
 
         res.send();
+    }
+
+    if (req.query.verify_email_key) {
+        const verifyEmailHash = req.query.verify_email_key;
+        const userDoc = await users.findOne({ verify_email_key: verifyEmailHash });
+
+        if(userDoc) {
+            const payloaddata = jwtToken.verifyJwtToken(verifyEmailHash);
+            if((payloaddata.exp - payloaddata.iat) === 3600){
+                await users.update({ _id: userDoc._id },{ $set: {is_verify: 1 } });
+                res.send({
+                    success : true,
+                    msg : "Email Verified"
+                })
+
+            }
+            else{
+                errors.throwError("The verification link has expired or is invalid.", 400);
+            }
+        }
+        else {
+            errors.throwError("The verification link has expired or is invalid.", 400);
+        }
     }
 }

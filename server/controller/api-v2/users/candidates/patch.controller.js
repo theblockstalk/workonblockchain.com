@@ -34,9 +34,6 @@ const bodySchema = new Schema({
     },
     candidate: {
         type: {
-            marketing_emails: Boolean,
-            privacy_id: String,
-            terms_id: String,
             base_city: String,
             base_country: {
                 type: String,
