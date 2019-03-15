@@ -279,6 +279,7 @@ module.exports.endpoint = async function (req, res) {
     if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
     if(queryBody.description_experimented_platforms && queryBody.experimented_platforms.length >0) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
+    if(queryBody.description_commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
 
     let timestamp = new Date();
     let history = {
