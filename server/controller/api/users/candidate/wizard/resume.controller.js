@@ -18,17 +18,18 @@ module.exports = async function (req, res) {
         if (userParam.commercial_platforms && userParam.commercial_platforms.length > 0 ) candidateUpdate['candidate.blockchain.commercial_platforms'] = userParam.commercial_platforms;
         else unset['candidate.blockchain.commercial_platforms'] = 1;
 
+        if (userParam.description_commercial_platforms && userParam.commercial_platforms.length > 0 ) candidateUpdate['candidate.blockchain.description_commercial_platforms'] = userParam.description_commercial_platforms;
+        else unset['candidate.blockchain.description_commercial_platforms'] = 1;
+
         if (userParam.experimented_platforms && userParam.experimented_platforms.length > 0) candidateUpdate['candidate.blockchain.experimented_platforms'] = userParam.experimented_platforms;
         else unset['candidate.blockchain.experimented_platforms'] = 1;
-
-        if (userParam.smart_contract_platforms && userParam.smart_contract_platforms.length > 0) candidateUpdate['candidate.blockchain.smart_contract_platforms'] = userParam.smart_contract_platforms;
-        else unset['candidate.blockchain.smart_contract_platforms'] = 1;
+        if (userParam.description_experimented_platforms && userParam.experimented_platforms.length > 0) candidateUpdate['candidate.blockchain.description_experimented_platforms'] = userParam.description_experimented_platforms;
+        else unset['candidate.blockchain.description_experimented_platforms'] = 1;
 
         if(userParam.commercial_skills && userParam.commercial_skills.length > 0) candidateUpdate['candidate.blockchain.commercial_skills'] = userParam.commercial_skills;
         else unset['candidate.blockchain.commercial_skills'] = 1;
-
-        if(userParam.formal_skills && userParam.formal_skills.length > 0) candidateUpdate['candidate.blockchain.formal_skills'] = userParam.formal_skills;
-        else unset['candidate.blockchain.formal_skills'] = 1;
+        if(userParam.description_commercial_skills && userParam.commercial_skills.length > 0) candidateUpdate['candidate.blockchain.description_commercial_skills'] = userParam.description_commercial_skills;
+        else unset['candidate.blockchain.description_commercial_skills'] = 1;
 
         let updateObj;
         if (!filterReturnData.isEmptyObject(candidateUpdate) && !filterReturnData.isEmptyObject(unset)) {
