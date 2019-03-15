@@ -314,7 +314,7 @@ export class UserService {
 
   candidate_login(queryInput : any)
   {
-    return this.http.post(URL+'users/authenticate', queryInput)
+    return this.http.post(URL+'v2/users/auth', queryInput)
       .pipe(map(user => {
         if (user)
         {

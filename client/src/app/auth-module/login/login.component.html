@@ -59,7 +59,7 @@
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="subscribeToLogin()" >
+                  <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="loginWithLinkedin()" >
                     <i class="fab fa-linkedin" aria-hidden="true"></i>
                     Log in with LinkedIn
                   </a>
@@ -69,7 +69,7 @@
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <a  class = "btn btn-block btn-social btn-google text-center" (click)="signInWithGoogle()">
+                  <a  class = "btn btn-block btn-social btn-google text-center" href="{{google_url}}">
                     <i class="fab fa-google" aria-hidden="true"></i>
                     Log in with Google
                   </a>

@@ -39,8 +39,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   password_message;
   response;
+  google_url;
+  linkedin_url;
   ngOnInit()
   {
+    let google_id = environment.google_client_id;
+    let google_redirect_url = environment.google_redirect_url;
+
+    this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+google_id+'&redirect_uri='+google_redirect_url;
+
     this.response = "empty";
     this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
     this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
@@ -77,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if(this.credentials.email && this.credentials.password)
     {
-      this.authenticationService.candidate_login(this.credentials)
+      this.authenticationService.candidate_login({email : this.credentials.email, password : this.credentials.password})
         .subscribe(
           user => {
 
@@ -134,16 +141,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
-  dataa;
   signInWithGoogle()
   {
 
-
   }
 
-  public subscribeToLogin()
-  {
-
+  loginWithLinkedin() {
+    localStorage.setItem('linkedinLogin', 'true');
+    let linkedin_id = environment.linkedin_id;
+    let linkedin_redirect_url = environment.linkedin_redirect_url;
+    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
+    window.location.href = this.linkedin_url;
   }
 
 

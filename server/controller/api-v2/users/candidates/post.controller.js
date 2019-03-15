@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
-const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
 const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 const verifyEmail = require('../../../services/email/emails/verifyEmail');
 const users = require('../../../../model/mongoose/users');
-const filterReturnData = require('../../../api/users/filterReturnData');
-const objects = require('../../../services/objects');
 const errors = require('../../../services/errors');
 const candidateHelper = require('./candidateHelper');
 

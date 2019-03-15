@@ -23,7 +23,6 @@ module.exports = async function (req, res) {
             }
             else if(userDoc.linkedin_id !== queryBody.linkedin_id) {
                 errors.throwError("User not found" , 404)
-
             }
             else { }
 
