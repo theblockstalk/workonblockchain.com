@@ -17,7 +17,7 @@ describe('update candidate profile', function () {
 
     afterEach(async () => {
     console.log('dropping database');
-    //await mongo.drop();
+    await mongo.drop();
 })
 
     describe('Patch /users/user_id/candidates', () => {
