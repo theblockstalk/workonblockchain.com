@@ -92,18 +92,19 @@ export class AccountSettingsComponent implements OnInit {
   status;
   account_setting(statusName , statusValue)
   {
-
+    let inputQuery : any = {};
     this.inform = '';
     if(statusName === 'marketingEmail') {
-      this.status = {statusName : statusName , statusValue : this.info.marketing};
+      inputQuery.marketing_emails = this.info.marketing;
     }
     if(statusName === 'disabledAccount') {
-      this.status = {statusName : statusName , statusValue : this.info.disable_account};
+      inputQuery.disable_account = this.info.disable_account;
     }
+    console.log(inputQuery);
 
     if(this.currentUser)
     {
-      this.authenticationService.account_settings(this.currentUser._creator, this.status)
+      this.authenticationService.update_terms_and_privacy(inputQuery)
         .subscribe(
           data =>
           {

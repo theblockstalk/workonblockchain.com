@@ -17,13 +17,16 @@ const paramSchema = new Schema({
 
 const bodySchema = new Schema({
     marketing_emails: {
-        type: Boolean,
+        type: Boolean
     },
     privacy_id: {
         type : String
     },
     terms_id: {
         type : String
+    },
+    disable_account: {
+        type: Boolean
     }
 });
 
@@ -49,20 +52,25 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
 
         if(employerDoc){
-            if(queryBody.privacy_id)
-            {
+            if(queryBody.privacy_id) {
                 const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
                 if(pagesDoc._id.toString() === queryBody.privacy_id) employerUpdate.privacy_id = pagesDoc._id;
                 else errors.throwError("Privacy notice document not found", 404);
             }
 
-            if(queryBody.terms_id)
-            {
+            if(queryBody.terms_id) {
                 const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for company'});
                 if(pagesDoc._id.toString() === queryBody.terms_id) employerUpdate.terms_id = pagesDoc._id;
                 else errors.throwError("Terms and Condition document for company not found", 404);
             }
-            if(queryBody.marketing_emails) employerUpdate.marketing_emails = queryBody.marketing_emails;
+            if(queryBody.marketing_emails || queryBody.marketing_emails === false) employerUpdate.marketing_emails = queryBody.marketing_emails;
+            if(queryBody.disable_account || queryBody.disable_account === false) {
+                await users.update({_id: userId}, {
+                    $set : {
+                        disable_account: queryBody.disable_account
+                    }
+                });
+            }
 
             await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
@@ -75,20 +83,19 @@ module.exports.endpoint = async function (req, res) {
     else if(req.auth.user.type === 'candidate'){
         let updateCandidateUser = {};
         let userDoc = req.auth.user;
-        if(queryBody.privacy_id)
-        {
+        if(queryBody.privacy_id) {
             const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
             if(pagesDoc._id.toString() === queryBody.privacy_id) updateCandidateUser['candidate.privacy_id'] = pagesDoc._id;
             else errors.throwError("Privacy notice document not found", 404);
         }
 
-        if(queryBody.terms_id)
-        {
+        if(queryBody.terms_id) {
             const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for candidate'});
             if(pagesDoc._id.toString() === queryBody.terms_id) updateCandidateUser['candidate.terms_id'] = pagesDoc._id;
             else errors.throwError("Terms and Condition document for candidate not found", 404);
         }
-        if(queryBody.marketing_emails) updateCandidateUser.marketing_emails = queryBody.marketing_emails;
+        if(queryBody.marketing_emails || queryBody.marketing_emails === false) updateCandidateUser.marketing_emails = queryBody.marketing_emails;
+        if(queryBody.disable_account || queryBody.disable_account === false) updateCandidateUser.disable_account = queryBody.disable_account;
 
         await users.update({_id: userId}, {
             $set : updateCandidateUser
