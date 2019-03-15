@@ -8,7 +8,6 @@ const docGenerator = require('../../../../helpers/docGenerator-v2');
 const candidateHelper = require('../candidateHelpers');
 const userHelper = require('../../../../api/users/usersHelpers');
 const companyHelper = require('../../companyHelpers');
-const sanitizer = require('sanitizer');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -49,7 +48,6 @@ describe('admin changes status of a candidate', function () {
         candidateUserDoc.candidate.history[0].email_html.should.equal(inputQuery.email_html);
         candidateUserDoc.candidate.history[0].email_subject.should.equal(inputQuery.email_subject);
         candidateUserDoc.candidate.latest_status.status.should.equal(inputQuery.status);
-        assert.equal('<a href="http://www.example.com/">hi</a>', sanitizer.sanitize('<a href="http://www.example.com/">hi</a>'));
 
     })
 })
