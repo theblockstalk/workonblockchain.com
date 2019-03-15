@@ -29,7 +29,6 @@ const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent
 const candidateImage = require('./controller/api/users/candidate/image.controller');
 const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
-const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
@@ -88,7 +87,6 @@ router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWiz
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
-router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWizardResume));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
