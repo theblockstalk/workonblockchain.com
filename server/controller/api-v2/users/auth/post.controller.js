@@ -6,7 +6,8 @@ const jwtToken = require('../../../services/jwtToken');
 const users = require('../../../../model/mongoose/users');
 const companies = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
-const candidateHelper = require('../candidates/candidateHelper');
+const google = require('../../../services/google');
+const linkedin = require('../../../services/linkedin');
 
 
 module.exports.request = {
@@ -63,47 +64,48 @@ module.exports.endpoint = async function (req, res) {
     }
     else if(queryBody.google_code)
     {
-        const googleData = await candidateHelper.googleAuth(queryBody.google_code);
+        const googleData = await google.googleAuth(queryBody.google_code);
         if (googleData) {
             userDoc = await users.findOneByEmail(googleData.email);
-            if (userDoc && !userDoc.google_id) {
-                set.google_id =  googleData.google_id;
 
+            if (googleData.email !== userDoc.email) {
+                throw new Error("Incorrect email address");
             }
-            else if (userDoc && googleData.email !== userDoc.email) {
-                errors.throwError("Incorrect email address", 400)
+            if (userDoc.google_id && userDoc.google_id !== googleData.google_id) {
+                throw new Error("Incorrect google id");
             }
-            else {}
+            if (!userDoc.google_id) {
+                set.google_id =  googleData.google_id;
+            }
 
         }
         else {
-            errors.throwError('Something went wrong. Please try again.', 400);
+            errors.throwError('There was a problem with your google identity', 400);
         }
 
     }
     else if(queryBody.linkedin_code) {
-        const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code);
+        const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         console.log(linkedinData);
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
-            if (userDoc && !userDoc.linkedin_id) {
+            if (linkedinData.email !== userDoc.email) {
+                throw new Error("Incorrect email address");
+            }
+            if (userDoc.linkedin_id && userDoc.linkedin_id !== linkedinData.linkedin_id) {
+                throw new Error("Incorrect google id");
+            }
+            if (!userDoc.linkedin_id) {
                 set.linkedin_id =  linkedinData.linkedin_id;
+            }
 
-            }
-            else if (linkedinData.email !== userDoc.email) {
-                errors.throwError("Incorrect email address", 400)
-            }
-            else {}
-
-            }
+        }
         else {
-            errors.throwError('Something went wrong. Please try again.', 400);
+            errors.throwError('There was a problem with your linkedin identity', 400);
         }
 
     }
-    else {
-        errors.throwError('Invalid input body', 400);
-    }
+    else {}
 
     if(userDoc){
         let response = {
@@ -119,7 +121,6 @@ module.exports.endpoint = async function (req, res) {
         response.jwt_token = jwtUserToken;
         if(companyDoc) {
             response._id = companyDoc._id;
-            response.created_date = userDoc.created_date;
         }
         res.send(response);
 

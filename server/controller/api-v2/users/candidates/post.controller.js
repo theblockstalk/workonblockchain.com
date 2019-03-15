@@ -7,7 +7,8 @@ const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 const verifyEmail = require('../../../services/email/emails/verifyEmail');
 const users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
-const candidateHelper = require('./candidateHelper');
+const google = require('../../../services/google');
+const linkedin = require('../../../services/linkedin');
 
 
 module.exports.request = {
@@ -41,10 +42,6 @@ const bodySchema = new Schema({
         type:String,
         enum: ['candidate', 'company'],
     },
-    social_type: {
-        type:String,
-        enum: ['GOOGLE', 'LINKEDIN', '']
-    },
     referred_email : {
         type:String
     },
@@ -66,7 +63,7 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.email) email = queryBody.email;
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
     if(queryBody.google_code) {
-        const googleData = await candidateHelper.googleAuth(queryBody.google_code);
+        const googleData = await google.googleAuth(queryBody.google_code);
         if(googleData) {
             email = googleData.email;
             newUserDoc.email = googleData.email;
@@ -74,14 +71,13 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.first_name = googleData.first_name;
             newUserDoc.last_name = googleData.last_name;
             newUserDoc.is_verify = 1;
-            newUserDoc.social_type = 'GOOGLE';
         }
         else {
-            errors.throwError('Something went wrong. Please try again.' , 400);
+            errors.throwError('There was a problem with your google identity' , 404);
         }
     }
     else if(queryBody.linkedin_code) {
-        const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code);
+        const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         if(linkedinData) {
             email = linkedinData.email;
             newUserDoc.email = linkedinData.email;
@@ -89,10 +85,9 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.first_name = linkedinData.first_name;
             newUserDoc.last_name = linkedinData.last_name;
             newUserDoc.is_verify = 1;
-            newUserDoc.social_type = 'LINKEDIN';
         }
         else {
-            errors.throwError('Something went wrong. Please try again.' , 400)
+            errors.throwError('There was a problem with your linkedin identity' , 404)
         }
     }
     else {
