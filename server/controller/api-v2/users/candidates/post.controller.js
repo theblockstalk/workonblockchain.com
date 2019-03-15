@@ -84,8 +84,8 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else if(queryBody.linkedin_code) {
-        const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code)
-
+        const linkedinData = await candidateHelper.linkedinAuth(queryBody.linkedin_code);
+        console.log(linkedinData);
     }
     else {
         let salt = crypto.randomBytes(16).toString('base64');

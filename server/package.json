@@ -41,6 +41,7 @@
     "nyc": "^13.0.1",
     "q": "^1.5.1",
     "qs": "^6.6.0",
+    "querystring": "^0.2.0",
     "rootpath": "^0.1.2",
     "s3-streamlogger": "^1.4.0",
     "sanitize-html": "^1.18.5",
