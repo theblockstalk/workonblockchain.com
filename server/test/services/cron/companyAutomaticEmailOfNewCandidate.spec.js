@@ -31,11 +31,15 @@ describe('cron', function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
+            console.log(profileData);
 
             const company = docGeneratorV2.company();
+            console.log(company);
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
+            console.log(companyDoc);
             const updatedData = await docGeneratorV2.companyUpdateProfile();
+            console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
                     profileData.locations[0]
@@ -63,6 +67,7 @@ describe('cron', function () {
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
+            console.log(userCompanyDoc);
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
             const userCandidateDoc = await users.findOneByEmail(candidate.email);
@@ -75,12 +80,15 @@ describe('cron', function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
+            console.log(profileData);
 
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
+            console.log(companyDoc);
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
+            console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
                     profileData.locations[0]
@@ -108,10 +116,12 @@ describe('cron', function () {
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
+            console.log(userCompanyDoc);
             await companies.update({_creator: userCompanyDoc._id}, {$unset: {last_email_sent: 1}})
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
             let userCandidateDoc = await users.findOneByEmail(candidate.email);
+            console.log(userCandidateDoc);
             companyDoc.candidates_sent_by_email.length.should.equal(1);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
 
@@ -131,10 +141,13 @@ describe('cron', function () {
             }
 
             const company = docGeneratorV2.company();
+            console.log(company);
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
+            console.log(companyDoc);
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
+            console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
                     profileData[0].locations[0]
@@ -165,6 +178,7 @@ describe('cron', function () {
             await companyEmail();
 
             let userCompanyDoc = await users.findOneByEmail(company.email);
+            console.log(userCompanyDoc);
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(2);
 
