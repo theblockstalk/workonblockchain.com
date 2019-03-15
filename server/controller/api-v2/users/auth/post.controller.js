@@ -3,9 +3,8 @@ const Schema = require('mongoose').Schema;
 const regexes = require('../../../../model/regexes');
 const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
-const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
-const verifyEmail = require('../../../services/email/emails/verifyEmail');
 const users = require('../../../../model/mongoose/users');
+const companies = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
 const candidateHelper = require('../candidates/candidateHelper');
 
@@ -44,6 +43,7 @@ module.exports.endpoint = async function (req, res) {
     console.log(queryBody);
     let set = {};
     let userDoc;
+    let companyDoc;
     if(queryBody.email){
         userDoc = await users.findOneByEmail(queryBody.email);
         let hash = crypto.createHmac('sha512', userDoc.salt);
@@ -53,9 +53,7 @@ module.exports.endpoint = async function (req, res) {
         if (hashedPasswordAndSalt === userDoc.password_hash)
         {
             if(userDoc.type === 'company') {
-                const companyDoc = await companies.findOne({ _creator:  userDoc._id });
-                response._id = companyDoc._id;
-                response.created_date = userDoc.created_date;
+                companyDoc = await companies.findOne({ _creator:  userDoc._id });
             }
         }
         else
@@ -112,13 +110,17 @@ module.exports.endpoint = async function (req, res) {
             _id:userDoc._id,
             _creator: userDoc._id,
             email: userDoc.email,
-            type:userDoc.type,
+            type:userDoc.type
         }
 
         const jwtUserToken = jwtToken.createJwtToken(userDoc);
         set.jwt_token = jwtUserToken;
         await users.update({_id: userDoc._id}, {$set: set});
         response.jwt_token = jwtUserToken;
+        if(companyDoc) {
+            response._id = companyDoc._id;
+            response.created_date = userDoc.created_date;
+        }
         res.send(response);
 
     }
