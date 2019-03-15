@@ -18,7 +18,7 @@ chai.use(chaiHttp);
 describe('admin get metrics', function () {
 
     afterEach(async () => {
-        console.log('dropping database');
+    console.log('dropping database');
     await mongo.drop();
 })
 

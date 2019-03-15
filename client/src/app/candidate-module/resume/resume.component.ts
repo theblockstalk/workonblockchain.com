@@ -589,7 +589,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
 
-      this.authenticationService.resume(this.currentUser._creator , expForm.value)
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator , expForm.value,false)
         .subscribe(
           data => {
             if(data && this.currentUser)

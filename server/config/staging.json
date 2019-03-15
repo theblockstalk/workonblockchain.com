@@ -26,8 +26,8 @@
     "fromAddress": "staging.contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain",
     "throttleTime" : 600,
-    "accountFromAddress" : "antonio@workonblockchain.com",
-    "accountFromName" : "Antonio Sabado"
+    "accountFromAddress" : "staging.antonio@workonblockchain.com",
+    "accountFromName" : "STAGING - Antonio Sabado"
   },
   "currencyRatesUSD": {
     "GBP": 1.28,
