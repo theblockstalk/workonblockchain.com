@@ -55,8 +55,8 @@ export class SocialAuthComponent implements OnInit {
           else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.log = error['error']['message'];
           }
-          else {
-            this.log = 'Something getting wrong';
+          else{
+            this.log = 'There was a problem with your google identity';
           }
 
         });
@@ -80,11 +80,10 @@ export class SocialAuthComponent implements OnInit {
           else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.log = error['error']['message'];
           }
-          else if(error['status'] === 400){
-            console.log(error);
-            this.log = 'Something getting wrong';
+          else {
+            this.log = 'There was a problem with your google identity';
           }
-          else {}
+
 
         });
   }

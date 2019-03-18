@@ -54,8 +54,8 @@ export class LinkedinAuthComponent implements OnInit {
           else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.log = error['error']['message'];
           }
-          else {
-            this.log = 'Something getting wrong';
+          else{
+            this.log = 'There was a problem with your linkedin identity';
           }
 
         });
@@ -78,8 +78,9 @@ export class LinkedinAuthComponent implements OnInit {
           else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.log = error['error']['message'];
           }
+
           else {
-            this.log = 'Something getting wrong';
+            this.log = 'There was a problem with your linkedin identity';
           }
 
         });
