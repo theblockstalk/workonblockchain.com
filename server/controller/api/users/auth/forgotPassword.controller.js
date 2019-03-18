@@ -18,9 +18,8 @@ module.exports = async function (req,res) {
         let forgotPasswordToken = jwtToken.createJwtToken(userDoc , signOptions);
         await users.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
         if(userDoc.type === 'candidate') {
-            const candidateDoc = await users.findOneById( userDoc._id);
-            if(candidateDoc && candidateDoc.first_name) {
-                name = candidateDoc.first_name;
+            if(userDoc && userDoc.first_name) {
+                name = userDoc.first_name;
             }
         }
         if(userDoc.type === 'company') {

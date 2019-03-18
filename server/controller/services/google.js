@@ -31,6 +31,6 @@ async function getGoogleAccountFromCode(googleCode, oauth, plus) {
         }
     }
     catch (error) {
-        return error;
+        throw new Error(error)
     }
 }

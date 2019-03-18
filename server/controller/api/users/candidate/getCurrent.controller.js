@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 module.exports = async function (req, res) {
     const myUserDoc = req.auth.user;
-    if(String(myUserDoc._id) === req.params._id || myUserDoc.is_admin === 1) {
+    if(myUserDoc._id.toString() === req.params._id || myUserDoc.is_admin === 1) {
         const userDoc = await users.findByIdAndPopulate(req.params._id);
         if(userDoc) {
             let password = true;

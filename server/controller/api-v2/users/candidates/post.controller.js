@@ -39,12 +39,10 @@ const bodySchema = new Schema({
         type:String,
         validate: regexes.password
     },
-    type: {
-        type:String,
-        enum: ['candidate', 'company'],
-    },
     referred_email : {
-        type:String
+        type:String,
+        validate: regexes.email,
+        lowercase: true,
     },
 });
 
@@ -58,8 +56,9 @@ module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
     let email;
     let timestamp = new Date();
-    let newUserDoc = {};
-    newUserDoc.type = 'candidate';
+    let newUserDoc = {
+        type : 'candidate'
+    };
 
     if(queryBody.email) email = queryBody.email;
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
@@ -146,7 +145,6 @@ module.exports.endpoint = async function (req, res) {
 
     res.send({
         _id: candidateUserCreated._id,
-        _creator : candidateUserCreated._id,
         type:candidateUserCreated.type,
         email: candidateUserCreated.email,
         jwt_token: jwtUserToken

@@ -14,7 +14,7 @@ module.exports.linkedinAuth = async function (linkedinCode) {
 
 }
 
-function getLinkedinAccessToken(linkedinCode) {
+async function getLinkedinAccessToken(linkedinCode) {
     return new Promise((resolve, reject) => {
         const form = {
             client_id: linkedinOAuth.clientId,
@@ -48,15 +48,21 @@ function getLinkedinAccessToken(linkedinCode) {
 function getLinkedinAccountFromCode(code) {
     const linkedin = Linkedin.init(code);
     return new Promise((resolve, reject) => {
-        linkedin.people.me(['id', 'first-name', 'last-name','email-address'], function(error, res) {
-        if(error) reject(error);
-        const userData = res;
-        resolve({
-            email: userData.emailAddress,
-            linkedin_id: userData.id,
-            first_name: userData.firstName,
-            last_name: userData.lastName
-        });
+        try {
+            linkedin.people.me(['id', 'first-name', 'last-name','email-address'], function(error, res) {
+                if(error) reject(error);
+                const userData = res;
+                resolve({
+                    email: userData.emailAddress,
+                    linkedin_id: userData.id,
+                    first_name: userData.firstName,
+                    last_name: userData.lastName
+                });
+            });
+        }
+        catch (error) {
+            throw new Error(error);
+        }
+
     });
-});
 }
