@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AdminDashboardComponent implements OnInit {
 
-    currentUser: User;
+    currentUser: any;
     is_admin;
     user_type;
   constructor(private router: Router,private authenticationService: UserService) { }
@@ -65,7 +65,7 @@ export class AdminDashboardComponent implements OnInit {
          }
          else if(this.user_type === 'company'  )
          {
-              this.authenticationService.getCurrentCompany(this.currentUser._creator)
+              this.authenticationService.getCurrentCompany(this.currentUser.company_id)
             .subscribe(
                 data =>
                 {

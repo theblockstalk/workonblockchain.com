@@ -21,7 +21,8 @@ const URL = environment.backend_url;
 })
 export class AboutCompanyComponent implements OnInit,AfterViewInit {
   info : any;
-  currentUser: User;log;
+  currentUser: any;
+  log;
   founded_log;employee_log;funded_log;des_log;image_src;
   company_founded;no_of_employees;company_funded;company_description;terms_active_class;about_active_class;image;
   img_data;
@@ -56,7 +57,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type=='company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
         .subscribe(
           data =>
           {
@@ -169,7 +170,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
       companyForm.value.company_founded = parseInt(companyForm.value.company_founded);
-      this.authenticationService.about_company(this.currentUser._creator,companyForm.value)
+      this.authenticationService.about_company(this.currentUser.company_id,companyForm.value)
         .subscribe(
           data => {
             if (data) {

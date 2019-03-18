@@ -12,7 +12,7 @@ declare var $:any;
 })
 export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
-  currentUser: User;
+  currentUser: any;
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
   imgPath;
@@ -126,7 +126,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     if(this.currentUser && this.currentUser.type === 'company')
     {
 
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
         .subscribe(
           data =>
           {
