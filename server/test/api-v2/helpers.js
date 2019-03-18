@@ -75,11 +75,7 @@ module.exports.getmessages = async function (receiver_id,jwtToken) {
     return res;
 }
 
-module.exports.termsAndPrivacy = async function (terms_id,privacy_id,marketing_emails,user_id,jwtToken) {
-    let inputQuery = {};
-    inputQuery.terms_id = terms_id;
-    inputQuery.privacy_id = privacy_id;
-    inputQuery.marketing_emails = marketing_emails;
+module.exports.termsAndPrivacy = async function (inputQuery,user_id,jwtToken) {
     const res = await chai.request(server)
         .patch('/v2/users/'+user_id)
         .set('Authorization', jwtToken)

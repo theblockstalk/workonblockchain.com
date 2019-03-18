@@ -51,7 +51,11 @@ describe('POST /messages', function () {
 
             let userDoc = await Users.findOne({email: candidate.email});
             const candTerms = docGeneratorV2.termsAndConditions();
-            const res = await termsHelpers.termsAndPrivacy(cmsDoc._id,privacyDoc._id,candTerms.marketing_emails,userDoc._id,userDoc.jwt_token);
+            let inputQuery = {};
+            inputQuery.terms_id = cmsDoc._id;
+            inputQuery.privacy_id = privacyDoc._id;
+            inputQuery.marketing_emails = candTerms.marketing_emails;
+            const res = await termsHelpers.termsAndPrivacy(inputQuery,userDoc._id,userDoc.jwt_token);
             userDoc = await Users.findOne({email: candidate.email});
 
             userDoc.marketing_emails.should.equal(candTerms.marketing_emails);
@@ -82,7 +86,11 @@ describe('POST /messages', function () {
             const privacyDoc = await Pages.findOne({page_name: privacyInfo.page_name});
 
             const companyTnCWizard = docGeneratorV2.companyTnCWizard();
-            const SummaryTnC = await termsHelpers.termsAndPrivacy(cmsDoc._id,privacyDoc._id,companyTnCWizard.marketing_emails,companyDoc._id,companyDoc.jwt_token);
+            let inputQuery = {};
+            inputQuery.terms_id = cmsDoc._id;
+            inputQuery.privacy_id = privacyDoc._id;
+            inputQuery.marketing_emails = companyTnCWizard.marketing_emails;
+            const SummaryTnC = await termsHelpers.termsAndPrivacy(inputQuery,companyDoc._id,companyDoc.jwt_token);
 
             const newCompanyDoc = await Companies.findOne({_creator: companyDoc._id});
             const cmsID = newCompanyDoc.terms_id.toString();
@@ -90,6 +98,25 @@ describe('POST /messages', function () {
             const privacyID = newCompanyDoc.privacy_id.toString();
             privacyID.should.equal(privacyDoc._id.toString());
             newCompanyDoc.marketing_emails.should.equal(companyTnCWizard.marketing_emails);
+        })
+    });
+
+    describe('user account setting' , () => {
+
+        it('it should enable or disbale the account setting' , async() => {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupCompany(company);
+
+            let userDoc = await Users.findOne({email: company.email});
+            userDoc.disable_account.should.equal(false);
+
+            let inputQuery = {};
+            inputQuery.disable_account = true;
+            const accountSetting = await termsHelpers.termsAndPrivacy(inputQuery,userDoc._id,userDoc.jwt_token);
+
+            userDoc = await Users.findOne({email: company.email});
+            userDoc.disable_account.should.equal(true);
         })
     });
 });

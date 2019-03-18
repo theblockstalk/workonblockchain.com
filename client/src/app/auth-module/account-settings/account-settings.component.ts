@@ -100,7 +100,6 @@ export class AccountSettingsComponent implements OnInit {
     if(statusName === 'disabledAccount') {
       inputQuery.disable_account = this.info.disable_account;
     }
-    console.log(inputQuery);
 
     if(this.currentUser)
     {
