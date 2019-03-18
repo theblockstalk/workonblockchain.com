@@ -60,7 +60,7 @@ module.exports.endpoint = async function (req, res) {
             errors.throwError("Incorrect Password" , 400)
         }
     }
-    else if(queryBody.google_code)
+    if(queryBody.google_code)
     {
         const googleData = await google.googleAuth(queryBody.google_code);
         if (googleData) {
@@ -79,7 +79,7 @@ module.exports.endpoint = async function (req, res) {
         }
 
     }
-    else if(queryBody.linkedin_code) {
+    if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
