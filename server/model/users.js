@@ -37,6 +37,7 @@ const UserSchema = new Schema({
     },
     password_hash: {
         type:String,
+        validate: regexes.password
     },
     salt: {
         type: String,
