@@ -475,7 +475,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       else {
         this.saveApproveData(approveForm.value);
         approveForm.resetForm();
-        this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
       }
     }
 
@@ -509,6 +508,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             }
           }
           this.reset();
+          this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
