@@ -1,10 +1,8 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const multer = require('../../../controller/middleware/multer');
 const pages = require('../../../model/mongoose/pages');
 const companies = require('../../../model/mongoose/company');
 const errors = require('../../services/errors');
-const filterReturnData = require('../../api/users/filterReturnData');
 const users = require('../../../model/mongoose/users');
 
 module.exports.request = {
@@ -30,14 +28,9 @@ const bodySchema = new Schema({
     }
 });
 
-const querySchema = new Schema({
-    verify_email_key: String
-})
-
 module.exports.inputValidation = {
     params: paramSchema,
-    body: bodySchema,
-    query: querySchema
+    body: bodySchema
 };
 
 module.exports.auth = async function (req) {
@@ -103,28 +96,5 @@ module.exports.endpoint = async function (req, res) {
         });
 
         res.send();
-    }
-
-    if (req.query.verify_email_key) {
-        const verifyEmailHash = req.query.verify_email_key;
-        const userDoc = await users.findOne({ verify_email_key: verifyEmailHash });
-
-        if(userDoc) {
-            const payloaddata = jwtToken.verifyJwtToken(verifyEmailHash);
-            if((payloaddata.exp - payloaddata.iat) === 3600){
-                await users.update({ _id: userDoc._id },{ $set: {is_verify: 1 } });
-                res.send({
-                    success : true,
-                    msg : "Email Verified"
-                })
-
-            }
-            else{
-                errors.throwError("The verification link has expired or is invalid.", 400);
-            }
-        }
-        else {
-            errors.throwError("The verification link has expired or is invalid.", 400);
-        }
     }
 }

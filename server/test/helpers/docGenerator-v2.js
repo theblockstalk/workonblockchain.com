@@ -280,4 +280,14 @@ module.exports.changeCandidateStatus = function changeCandidateStatus(){
     }
 }
 
+module.exports.termsAndConditions = function termsAndConditions(){
+    return {
+        marketing_emails: true
+    }
+}
 
+module.exports.companyTnCWizard = function companyTnCWizard(){
+    return {
+        marketing_emails: true
+    }
+}
