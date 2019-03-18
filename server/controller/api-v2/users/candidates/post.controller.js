@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 const regexes = require('../../../../model/regexes');
-const crypto = require('crypto');
+const crypto = require('../../../services/crypto');
 const jwtToken = require('../../../services/jwtToken');
 const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 const verifyEmail = require('../../../services/email/emails/verifyEmail');
@@ -92,10 +92,9 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt);
-        hash.update(queryBody.password);
-        let hashedPasswordAndSalt = hash.digest('hex');
+        const salt = crypto.getRandomString(128);
+        const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
+
         newUserDoc.email = queryBody.email;
         newUserDoc.first_name = queryBody.first_name;
         newUserDoc.last_name = queryBody.last_name;

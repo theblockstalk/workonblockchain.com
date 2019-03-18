@@ -1,9 +1,9 @@
 const settings = require('../../../../settings');
 const jwt = require('jsonwebtoken');
 const Users = require('../../../../model/mongoose/users');
-const crypto = require('crypto');
+const crypto = require('../../../services/crypto');
 const companies = require('../../../../model/mongoose/company');
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
+
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
@@ -23,10 +23,8 @@ module.exports = async function (req, res) {
         errors.throwError(responseMsg, 400)
     }
     else{
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt);
-        hash.update(queryBody.password);
-        let hashedPasswordAndSalt = hash.digest('hex');
+        const salt = crypto.getRandomString(128);
+        const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
 
         let random = crypto.randomBytes(16).toString('base64');
         let newCompanyDoc = {
