@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 const regexes = require('../../../../model/regexes');
-const crypto = require('crypto');
+const crypto = require('../../../services/crypto');
 const jwtToken = require('../../../services/jwtToken');
 const users = require('../../../../model/mongoose/users');
 const companies = require('../../../../model/mongoose/company');
@@ -47,9 +47,7 @@ module.exports.endpoint = async function (req, res) {
     let companyDoc;
     if(queryBody.email){
         userDoc = await users.findOneByEmail(queryBody.email);
-        let hash = crypto.createHmac('sha512', userDoc.salt);
-        hash.update(queryBody.password);
-        let hashedPasswordAndSalt = hash.digest('hex');
+        let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, userDoc.salt)
 
         if (hashedPasswordAndSalt === userDoc.password_hash)
         {
