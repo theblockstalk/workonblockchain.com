@@ -51,7 +51,7 @@ const UserSchema = new Schema({
         enum: [0, 1],
         default:0
     },
-    social_type: {
+    social_type: { //DELETE ME
         type:String,
         enum: ['GOOGLE', 'LINKEDIN', '']
     },

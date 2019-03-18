@@ -37,6 +37,7 @@ const bodySchema = new Schema({
     },
     password: {
         type:String,
+        validate: regexes.password
     },
     type: {
         type:String,
@@ -103,8 +104,7 @@ module.exports.endpoint = async function (req, res) {
     }
 
     const userDoc = await users.findOneByEmail(email);
-    if (userDoc )
-    {
+    if (userDoc ) {
         let errorMsg = 'Email "' + email + '" is already taken';
         errors.throwError(errorMsg , 400)
     }
@@ -144,8 +144,7 @@ module.exports.endpoint = async function (req, res) {
         verifyEmail.sendEmail(candidateUserCreated.email, candidateUserCreated.first_name, verifyEmailToken);
     }
 
-    res.send
-    ({
+    res.send({
         _id: candidateUserCreated._id,
         _creator : candidateUserCreated._id,
         type:candidateUserCreated.type,
