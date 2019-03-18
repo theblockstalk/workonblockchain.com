@@ -28,13 +28,13 @@
     "accountFromName" : "Antonio Sabado"
   },
   "googleConfig": {
-    "clientId": "135955856742-6v8g64ojni6qah7ej8osp0ugsu8buop8.apps.googleusercontent.com",
-    "clientSecret": "qUEv45cH2RedzyIdC63-eB41",
+    "clientId": "699068166900-r52plq8abcks3d2sanfisp6a4i8hoem2.apps.googleusercontent.com",
+    "clientSecret": "H623HO3h6nsZVcriG7_gFeTt",
     "redirectUrl": "http://localhost:4200/google-auth"
   },
   "linkedinConfig" : {
-    "clientId": "78lfupn2m88e4u",
-    "clientSecret": "itlhigfRmkepemfp",
+    "clientId": "860wydxdy7qqd2",
+    "clientSecret": "8Gb0q3rRMu65IuhY",
     "redirectUrl": "http://localhost:4200/linkedin-auth"
   }
 }

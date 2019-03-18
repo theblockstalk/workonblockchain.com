@@ -23,6 +23,9 @@ const isLiveApplication = settings.isLiveApplication = function isLiveApplicatio
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
     config.mongo.password = process.env.MONGO_DATABASE_PASSWORD;
+    config.googleConfig.clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    config.linkedinConfig.clientSecret = process.env.LINKEDIN_CLIENT_SECRET ;
+
     config.expressJwt = {
         secret: process.env.EXPRESS_JWT_SECRET
     };
