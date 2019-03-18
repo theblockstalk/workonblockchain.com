@@ -77,6 +77,10 @@ export class JobComponent implements OnInit,AfterViewInit {
   contractor_hourly_log;
   agency_website_log;
   contractor_type_log;
+  contract_location_log;
+  volunteer_location_log;
+  volunteer_roles_log;
+  objective_log;
 
   ngAfterViewInit(): void
   {
@@ -316,6 +320,10 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(this.contractor.roles) this.jobselected = this.contractor.roles;
 
     }
+    if(type === 'volunteer') {
+      if(this.volunteer.roles) this.jobselected = this.volunteer.roles;
+
+    }
     if(e.target.checked) {
       this.jobselected.push(e.target.value);
     }
@@ -330,6 +338,10 @@ export class JobComponent implements OnInit,AfterViewInit {
     if(type === 'contractor') {
       this.contractor.roles=  this.jobselected;
     }
+    if(type === 'volunteer') {
+      this.volunteer.roles=  this.jobselected;
+    }
+
   }
 
   findIndexToUpdate(type) {
@@ -362,16 +374,22 @@ export class JobComponent implements OnInit,AfterViewInit {
     this.contractor.contractor_type = this.contract_type;
   }
 
-  contract_location_log;
+  checkContractValue(array) {
+    if(array && array.indexOf('agency') === 0) return true;
+    else return false;
+  }
+
   onSubmit(f: NgForm) {
     console.log(this.employee);
     console.log(this.contractor);
+    console.log(this.volunteer);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
 
     let employeeCount = 0;
     let contractorCount = 0;
+    let volunteerCount = 0;
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
     }
@@ -478,11 +496,48 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.contractor_type_log = "Please select minimum one contractor type";
         contractorCount = 1;
       }
-      if(this.contractor.contractor_type === 'agency' && !this.contractor.agency_website) {
+      if(this.checkContractValue(this.contractor.contractor_type) && !this.contractor.agency_website) {
         this.agency_website_log = "Please enter agency website";
         contractorCount = 1;
       }
     }
+
+    if(this.volunteerCheck) {
+
+      if(!this.volunteer.selectedLocation || (this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) ) {
+        this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        volunteerCount = 1;
+      }
+      if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
+        if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
+          volunteerCount = 1;
+          this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        }
+        this.validatedLocation=[];
+        for(let location of this.contractor.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+
+        }
+        this.volunteer.locations = this.validatedLocation;
+      }
+     if(!this.volunteer.roles || (this.volunteer.roles && this.volunteer.roles.length<=0)) {
+        this.volunteer_roles_log = "Please select minimum one role";
+       volunteerCount=1;
+     }
+     if(!this.volunteer.learning_objectives) {
+        this.objective_log = "Please enter learning objectives";
+       volunteerCount=1;
+     }
+    }
+
 
     if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
@@ -503,7 +558,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
     if( this.count === 0 && (this.employeeCheck || this.contractorCheck === false || this.volunteerCheck === false)
-    && employeeCount === 0 && contractorCount === 0)
+    && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
       if(typeof(f.value.expected_salary) === 'string' )
         f.value.expected_salary = parseInt(f.value.expected_salary);
@@ -545,97 +600,72 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
-  suggestedOptions(inputData) {
-    console.log("option function");
-    this.cities=[];
-    let inputValue;
-    if(this.employementLoc !== '') inputValue = this.employementLoc;
-    if(this.contractorLoc !== '') inputValue = this.contractorLoc;
-    console.log(inputValue);
-    if(inputValue) {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(inputValue , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
-                  if(cities['country'] ) {
-                    let countryString = cities['country']  + " (country)";
-                    if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-                      citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
-                  }
+  suggestedOptions(inputParam) {
+    if(inputParam !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(inputParam , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
-
-                this.employee.location = this.cities;
-                this.contractor.location = this.cities;
-
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
+                if(cities['country'] ) {
+                  let countryString = cities['country']  + " (country)";
+                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
+                }
               }
+               this.cities = this.filter_array(citiesOptions);
 
-            },
-            error=>
+            }
+
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
+          });
     }
+    return this.cities;
   }
 
-  employementLoc;
-  contractorLoc;
-  selectedValueFunction(e , type) {
-
-    this.selectedValueArray=[];
-    if(type === 'employee') {
-      this.employementLoc = e;
-      this.employee.country = '';
-      this.cities = this.employee['location'];
-      if(this.employee['selectedLocation']) this.selectedValueArray = this.employee['selectedLocation'];
-    }
-    if(type === 'contractor') {
-      this.contractorLoc = e;
-      this.contractor.country = '';
-      this.cities = this.contractor['location'];
-      if(this.contractor['selectedLocation']) this.selectedValueArray = this.contractor['selectedLocation'];
-    }
-    //console.log(this.selectedValueArray);
+  selectedValueFunction(e, inputValue, arrayValue) {
     if(this.cities) {
-      //console.log(this.cities);
-      if(this.cities.find(x => x.name === e)) {
+      console.log("iff");
+      console.log(this.cities);
+      console.log(e);
+        console.log("ifffffffffffffffffffff")
         var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
-        console.log("cities if");
-        this.cities = [];
-        if(this.selectedValueArray.length > 9) {
+        if(arrayValue && arrayValue.length > 9) {
           this.error = 'You can select maximum 10 locations';
           setInterval(() => {
             this.error = "" ;
           }, 5000);
         }
         else {
-          if(this.selectedValueArray.find(x => x.name === e)) {
+          if(arrayValue.find(x => x.name === e)) {
             this.error = 'This location has already been selected';
             setInterval(() => {
               this.error = "" ;
@@ -643,49 +673,43 @@ export class JobComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
-            else this.selectedValueArray.push({ name: e, visa_needed:false});
+            console.log("else");
+            if(value2send) arrayValue.push({_id:value2send ,  name: e, visa_needed:false});
+            else arrayValue.push({ name: e, visa_needed:false});
+
           }
+
         }
 
       }
-      if(this.selectedValueArray.length > 0) {
-        this.selectedValueArray.sort(function(a, b){
+      if(arrayValue && arrayValue.length > 0) {
+        arrayValue.sort(function(a, b){
           if(a.name < b.name) { return -1; }
           if(a.name > b.name) { return 1; }
           return 0;
         })
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-          this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+        if(arrayValue.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = arrayValue.find((obj => obj.name === 'Remote'));
+          arrayValue.splice(0, 0, remoteValue);
+          arrayValue = this.filter_array(arrayValue);
 
         }
 
-        if(type === 'employee') {
-          this.employee['location'] = [];
-          this.employee.selectedLocation = this.selectedValueArray;
-        }
-        if(type === 'contractor') {
-          this.contractor['location'] = [];
-          this.contractor.selectedLocation = this.selectedValueArray;
-          console.log(this.contractor.selectedLocation);
-        }
-        this.selectedLocations = this.selectedValueArray;
-      }
+      
     }
+    console.log(arrayValue);
+    return arrayValue;
+  }
+
+  updateCitiesOptions(input, check,array) {
+    let objIndex = array.findIndex((obj => obj.name === input));
+    array[objIndex].visa_needed = check;
+    return array;
 
   }
 
-  updateCitiesOptions(e) {
-    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
-    this.selectedLocations = this.selectedValueArray;
-
-  }
-
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  deleteLocationRow(array, index){
+    array.splice(index, 1);
   }
 
   filter_array(arr) {
@@ -723,5 +747,27 @@ export class JobComponent implements OnInit,AfterViewInit {
     else this.volunteerCheck = false;
   }
 
+  employeeSuggestedOptions(input) {
+    this.employee.cities = this.suggestedOptions(this.employee.country);
+  }
+
+  employeeSelectedValueFunction(event, input ) {
+    let array;
+    if(!this.employee.selectedLocation) array = [];
+    else array = this.employee.selectedLocation;
+    console.log(event);
+    let data = this.selectedValueFunction(event, this.employee.country, array);
+    this.employee.selectedLocation = data;
+    //this.employee.cities=[];
+    //this.employee.country = '';
+  }
+
+  employeeUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.employee.selectedLocation );
+
+  }
+  employeeDeleteLocationRow(index){
+    this.deleteLocationRow(this.employee.selectedLocation, index);
+  }
 }
 

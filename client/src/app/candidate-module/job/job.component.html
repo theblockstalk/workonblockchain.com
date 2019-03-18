@@ -145,12 +145,12 @@
                 <div>
                   <datalist id="countryList">
                     <select class="form-control">
-                      <option *ngFor = "let country of employee.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
+                      <option *ngFor = "let country of employee.cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="selectedValueFunction($event , 'employee')">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="employeeSuggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event , employee.country)">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
@@ -166,12 +166,12 @@
                             <label >{{value.name}}</label>
                           </div>
                           <div class = "col-4 text-right">
-                            <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            <a (click)="employeeDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
                               <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
 
@@ -380,10 +380,8 @@
                     <input class="form-check-input" type="checkbox" [value]="type.value" (change)="contractor_type($event)" >
                     <label class="form-check-label" >
                       {{type.name}}
-
                     </label>
                   </div>
-
                 </div>
 
                 <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contractor_type || (contractor.contractor_type && contractor.contractor_type.length<=0)">
@@ -392,11 +390,11 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="contractor.contractor_type && checkContractValue(contractor.contractor_type)">
               <div class="form-group">
                 <label>Agency website:</label>
                 <input type="text" class="form-control" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">
-                <div class = "invalid-feedback d-inline"  *ngIf="contractor.contractor_type === 'agency' && !contractor.agency_website  ">
+                <div class = "invalid-feedback d-inline"  *ngIf="checkContractValue(contractor.contractor_type) && !contractor.agency_website  ">
                   {{agency_website_log}}
                 </div>
               </div>
@@ -429,23 +427,22 @@
 
                   <datalist id="countryList">
                     <select class="form-control">
-
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
+                      <option *ngFor = "let country of volunteer.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{volunteer.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="selectedValueFunction($event , 'volunteer')">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
-                    {{country_input_log}}
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) || volunteer_location_log">
+                    {{volunteer_location_log}}
                   </div>
 
-                  <div *ngIf="selectedValueArray.length > 0">
+                  <div *ngIf="volunteer.selectedLocation && volunteer.selectedLocation.length > 0">
                     <div class="row">
-                      <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                      <div  *ngFor="let value of volunteer.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
                         <div class="border px-1 py-3 ml-2 row">
                           <div class = "col-8">
                             <label >{{value.name}}</label>
@@ -465,9 +462,8 @@
 
                       </div>
                     </div>
-                    <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
-                    <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
-                      {{country_log}}
+                    <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
+                      {{volunteer_location_log}}
                     </div>
                   </div>
 
@@ -484,14 +480,14 @@
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'volunteer')" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
                   </div>
                 </div>
-                <div class = "invalid-feedback d-inline"  *ngIf="jobselected.length<=0">
-                  {{roles_log}}
+                <div class = "invalid-feedback d-inline"  *ngIf=" !volunteer.roles || (volunteer.roles && volunteer.roles.length<=0)">
+                  {{volunteer_roles_log}}
                 </div>
               </div>
             </div>
@@ -499,16 +495,21 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Maximum hour per week:</label>
-                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder="" [(ngModel)]="salary">
+                <input type="text" #hours_error="ngModel" pattern="^[0-9]*$" class="form-control" required name="volunteer_max_hour" placeholder="" [(ngModel)]="volunteer.max_hours_per_week">
               </div>
-
+              <div class = "invalid-feedback d-inline"  *ngIf="hours_error.errors && volunteer.max_hours_per_week">
+                Maximum hour per week should be a number
+              </div>
             </div>
 
 
             <div class="col-md-12">
               <div class="form-group">
                 <label>Learning objectives:</label>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required  ></textarea>
+                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
+                <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.learning_objectives">
+                  {{objective_log}}
+                </div>
               </div>
 
             </div>
