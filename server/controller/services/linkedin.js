@@ -45,7 +45,7 @@ async function getLinkedinAccessToken(linkedinCode) {
 
 
 
-function getLinkedinAccountFromCode(code) {
+async function getLinkedinAccountFromCode(code) {
     const linkedin = Linkedin.init(code);
     return new Promise((resolve, reject) => {
         try {
