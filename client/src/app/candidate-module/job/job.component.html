@@ -84,37 +84,34 @@
               <div class="form-group">
                 <label>Work type:</label>
                 <div class="row mt-4">
-                  <div class="col-md-3 text-center">
-                    <i class="fas fa-user-secret fa-4x"></i>
-                  </div>
-                  <div class="col-md-1"></div>
-                  <div class="col-md-2 text-center">
-                    <i class="fas fa-address-card fa-4x"></i>
-                  </div>
-                  <div class="col-md-2"></div>
-                  <div class="col-md-2 text-center">
-                    <i class="fas fa-user-check fa-4x"></i>
-                  </div>
-                  <div class="col-md-2"></div>
-                  <div class="col-md-4">
-                  </div>
-                  <div class="col-md-3">
-                  </div>
-                  <div class="col-md-5">
-                      <small class="ml-4">This can be a great way to get commercial experience</small>
-                  </div>
-                </div>
-                <div class="checkbox ">
-                  <div class="row m-0">
-                    <div class="col-md-4" *ngFor="let workType of work_type">
-                    <div class="form-check" >
-                      <input class="form-check-input mt-2" type="checkbox" value="{{workType.value}}"  [checked]="workType.checked" (change)="workTypeChange($event)">
-                      <label class="form-check-label">
-                        {{workType.name}}
-                      </label>
+                  <div class="col-md-4 text-center">
+                    <i class="fas fa-user-secret fa-4x"></i><br/>
+                    <div class="form-check mt-4">
+                    <input class="form-check-input mt-2" type="checkbox" value="employee" (change)="workTypeChange($event)">
+                    <label class="form-check-label">
+                      empolyee (full/part time)
+                    </label>
                     </div>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <i class="fas fa-address-card fa-4x"></i><br/>
+                    <div class="form-check mt-4">
+                    <input class="form-check-input mt-2" type="checkbox" value="contractor" (change)="workTypeChange($event)">
+                    <label class="form-check-label">
+                      contractor/freelancer
+                    </label>
                     </div>
-
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <i class="fas fa-user-check fa-4x"></i><br/>
+                    <small class="ml-4">This can be a great way to get commercial experience</small>
+                    <br/>
+                    <div class="form-check">
+                    <input class="form-check-input mt-2" type="checkbox" value="volunteer" (change)="workTypeChange($event)">
+                    <label class="form-check-label">
+                      temporary volunteer
+                    </label>
+                    </div>
                   </div>
                 </div>
 
