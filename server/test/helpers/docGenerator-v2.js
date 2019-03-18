@@ -180,7 +180,7 @@ module.exports.candidate = function candidate() {
         first_name: random.string(5),
         last_name: random.string(5),
         email: random.email(),
-        password: random.string(10)
+        password: 'Sadia1234'
     };
 };
 

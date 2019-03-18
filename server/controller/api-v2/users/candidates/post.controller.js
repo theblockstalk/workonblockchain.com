@@ -136,7 +136,7 @@ module.exports.endpoint = async function (req, res) {
     await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate});
 
 
-    if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
+    if(candidateUserCreated.google_id || candidateUserCreated.linkedin_id) {
         let data = {fname : candidateUserCreated.first_name , email : candidateUserCreated.email};
         welcomeEmail.sendEmail(data, candidateUserCreated.disable_account);
     }
