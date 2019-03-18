@@ -72,7 +72,7 @@
                   <option value="-1" >Currency</option>
                   <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline" *ngIf="current_currency_log ">
+                <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) || (current_salary && current_currency === '-1')  ">
                   {{current_currency_log}}
                 </div>
               </div>
@@ -114,7 +114,9 @@
                     </div>
                   </div>
                 </div>
-
+                <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
+                  {{work_type_log}}
+                </div>
               </div>
             </div>
 
@@ -131,6 +133,9 @@
                 <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
                   <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
                 </select>
+                <div class = "invalid-feedback d-inline" *ngIf="!employee.employment_type">
+                  {{employment_type_log}}
+                </div>
               </div>
             </div>
 
@@ -149,8 +154,8 @@
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="employee.selectedLocation && employee.selectedLocation.length <= 0">
-                    {{country_input_log}}
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) || employment_location_log">
+                    {{employment_location_log}}
                   </div>
 
                   <div *ngIf="employee.selectedLocation && employee.selectedLocation.length > 0">
@@ -175,7 +180,9 @@
 
                       </div>
                     </div>
-
+                    <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
+                      {{employment_location_log}}
+                    </div>
                   </div>
 
                 </div>
@@ -194,6 +201,9 @@
                         <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
                         {{position_option.name}}
                       </label>
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="!employee.roles">
+                      {{employee_roles_log}}
                     </div>
                   </div>
                 </div>
@@ -244,7 +254,7 @@
 
           </div>
 
-          <div class="row mt-2" *ngIf="contractor" >
+          <div class="row mt-2" *ngIf="contractorCheck" >
             <div class="col-md-12">
               <h4>Contractor</h4>
             </div>
@@ -258,23 +268,22 @@
 
                   <datalist id="countryList">
                     <select class="form-control">
-
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
+                      <option *ngFor = "let country of contractor.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{contractor.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="selectedValueFunction($event , 'contractor')">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
-                    {{country_input_log}}
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!contractor.selectedLocation || (contractor.selectedLocation && contractor.selectedLocation.length <= 0) || contract_location_log">
+                    {{contract_location_log}}
                   </div>
 
-                  <div *ngIf="selectedValueArray.length > 0">
+                  <div *ngIf="contractor.selectedLocation && contractor.selectedLocation.length > 0">
                     <div class="row">
-                      <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                      <div  *ngFor="let value of contractor.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
                         <div class="border px-1 py-3 ml-2 row">
                           <div class = "col-8">
                             <label >{{value.name}}</label>
@@ -294,9 +303,8 @@
 
                       </div>
                     </div>
-                    <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
-                    <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
-                      {{country_log}}
+                    <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
+                      {{contract_location_log}}
                     </div>
                   </div>
 
@@ -313,15 +321,14 @@
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'contractor')" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
                   </div>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
-                <div class = "invalid-feedback d-inline"  *ngIf="jobselected.length<=0">
-                  {{roles_log}}
+                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.roles || contractor.roles && contractor.roles.length<=0">
+                  {{contractor_roles_log}}
                 </div>
               </div>
             </div>
@@ -329,12 +336,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Hourly rate:</label>
-                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder="" [(ngModel)]="salary">
-                <div class = "invalid-feedback d-inline"  *ngIf="!salary; else expected_validation">
-                  {{salary_log}}
+                <input type="text" #hourly_rate="ngModel" pattern="^[0-9]*$" class="form-control" required name="hourly_rate" placeholder="" [(ngModel)]="contractor.hourly_rate">
+                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate; else expected_validation">
+                  {{contractor_hourly_log}}
                 </div>
-                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="expect_salary.errors && salary">
-                  Yearly expected base salary should be a number.
+                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="hourly_rate.errors && contractor.hourly_rate">
+                  Hourly rate should be a number.
                 </div>
               </div>
 
@@ -343,11 +350,11 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Currency</label>
-                <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
+                <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
                   <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!base_currency">
-                  {{currency_log}}
+                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                  {{contractor_currency_log}}
                 </div>
               </div>
 
@@ -357,12 +364,10 @@
               <div class="form-group">
                 <label>Maximum hours per week (optional):</label>
 
-                <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
+                <select title="(select one)" [(ngModel)]="max_hour_per_week" class="selectpicker" id="month" required name="max_hour_per_week " >
                   <option class='option' *ngFor='let month of availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!availability_day">
-                  {{avail_log}}
-                </div>
+
               </div>
             </div>
 
@@ -371,18 +376,18 @@
                 <label>Contractor type:</label>
 
                 <div class="checkbox">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" >
+                  <div class="form-check" *ngFor = "let type of contractor_types">
+                    <input class="form-check-input" type="checkbox" [value]="type.value" (change)="contractor_type($event)" >
                     <label class="form-check-label" >
-                      I work by myself as a freelancer
+                      {{type.name}}
+
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" >
-                    <label class="form-check-label">
-                      I worked through a development agency with a team
-                    </label>
-                  </div>
+
+                </div>
+
+                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contractor_type || (contractor.contractor_type && contractor.contractor_type.length<=0)">
+                  {{contractor_type_log}}
                 </div>
               </div>
             </div>
@@ -390,15 +395,19 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Agency website:</label>
-                <input type="text" class="form-control" required name="agency_website" placeholder="" [(ngModel)]="agency_website">
+                <input type="text" class="form-control" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">
+                <div class = "invalid-feedback d-inline"  *ngIf="contractor.contractor_type === 'agency' && !contractor.agency_website  ">
+                  {{agency_website_log}}
+                </div>
               </div>
+
 
             </div>
 
             <div class="col-md-12">
               <div class="form-group">
                 <label>Service description (optional):</label>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required  ></textarea>
+                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required [(ngModel)]="contractor.service_description" name="service_description" ></textarea>
               </div>
 
             </div>
@@ -406,7 +415,7 @@
 
           </div>
 
-          <div class="row mt-2" *ngIf="volunteer" >
+          <div class="row mt-2" *ngIf="volunteerCheck" >
             <div class="col-md-12">
               <h4>Volunteer</h4>
             </div>
@@ -481,7 +490,6 @@
                     </div>
                   </div>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
                 <div class = "invalid-feedback d-inline"  *ngIf="jobselected.length<=0">
                   {{roles_log}}
                 </div>
