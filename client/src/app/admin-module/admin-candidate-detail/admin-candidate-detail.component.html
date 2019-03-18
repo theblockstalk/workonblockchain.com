@@ -533,9 +533,9 @@
               </div>
             </div>
 
-            <div class="col-md-12 mb-3" *ngIf="commercial && commercial.length > 0 ">
+            <div class="col-md-12" *ngIf="commercial && commercial.length > 0 ">
               <h4>Technologies</h4>
-              <div class="form-group mt-4">
+              <div class="form-group mt-3">
                 <label>Commercial experience: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
@@ -547,7 +547,7 @@
               <pre *ngIf = "description_commercial_platforms">{{description_commercial_platforms}}</pre>
             </div>
 
-            <div class="col-md-12 mb-3" *ngIf="experimented && experimented.length>0">
+            <div class="col-md-12" *ngIf="experimented && experimented.length>0">
               <div class="form-group">
                 <label>Experimented with: </label>
                 <div>
@@ -560,7 +560,7 @@
               <pre *ngIf = "description_experimented_platforms">{{description_experimented_platforms}}</pre>
             </div>
 
-            <div class="col-md-12 mb-3" *ngIf="commercial_skills && commercial_skills.length > 0">
+            <div class="col-md-12" *ngIf="commercial_skills && commercial_skills.length > 0">
               <div class="form-group">
                 <label>Skills: </label>
                 <div>
