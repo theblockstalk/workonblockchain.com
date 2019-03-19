@@ -44,11 +44,11 @@
     "channel": "#1_server_bugs_prod"
   },
   "googleConfig": {
-    "clientId": "699068166900-r52plq8abcks3d2sanfisp6a4i8hoem2.apps.googleusercontent.com",
+    "clientId": "699068166900-296254o3gj8i3vcvfojp4pbqselaav9k.apps.googleusercontent.com",
     "redirectUrl": "https://workonblockchain.com/google-auth"
   },
   "linkedinConfig" : {
-    "clientId": "860wydxdy7qqd2",
+    "clientId": "861pkvi3iz4wp2",
     "redirectUrl": "https://workonblockchain.com/linkedin-auth"
   }
 }
