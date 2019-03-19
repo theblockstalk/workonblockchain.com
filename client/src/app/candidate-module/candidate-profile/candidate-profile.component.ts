@@ -1,15 +1,12 @@
 import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
-import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
-import {NgForm} from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
-import {environment} from '../../../environments/environment';
-import { Location } from '@angular/common';
 declare var $: any;
+import {constants} from "../../../constants/constants";
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -283,8 +280,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 this.interest_area =data['candidate'].interest_areas;
                 this.interest_area.sort();
+                let new_roles = constants.dropdown_options;
+                let filtered_array = [];
+
                 this.roles  = data['candidate'].roles;
+                for(let i=0;i<this.roles.length;i++){
+                  const filteredArray = getNameFromValue(new_roles,this.roles[i]);
+                  filtered_array.push(filteredArray.name);
+                }
+                this.roles = filtered_array;
                 this.roles.sort();
+
                 if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
                 else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
                 else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
