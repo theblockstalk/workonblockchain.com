@@ -166,5 +166,10 @@ export const constants = {
     {name:'Database Administrator', value:'Database Administrator', checked:false},
     {name:'Security Engineer', value:'Security Engineer', checked:false},
     {name:'Frontend Developer', value:'Frontend Developer', checked:false},
+  ],
+  job_types: ['Full time' , 'Part time' , 'Freelance' ],
+  job_type: ["Part time", "Full time"],
+  month: [
+    "Now","1 month","2 months","3 months","Longer than 3 months"
   ]
 };

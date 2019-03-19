@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 declare var $:any;
+import {constants} from "../../../constants/constants";
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-detail',
@@ -232,7 +234,15 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
+              let new_roles = constants.dropdown_options;
+              let filtered_array = [];
+
               this.roles  = dataa['candidate'].roles;
+              for(let i=0;i<this.roles.length;i++){
+                const filteredArray = getNameFromValue(new_roles,this.roles[i]);
+                filtered_array.push(filteredArray.name);
+              }
+              this.roles = filtered_array;
               this.roles.sort();
 
 

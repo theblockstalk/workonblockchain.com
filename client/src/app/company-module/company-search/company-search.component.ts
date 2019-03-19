@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
 import {PagerService} from '../../pager.service';
+import {constants} from '../../../constants/constants';
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-company-search',
@@ -37,10 +39,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   company_founded;
   company_funded;
   no_of_employees;
-  imgPath;
   display_name;
   interview_location = '';
-  interview_time = '';
   select_value='';
   selecteddd='';
   disabled;
@@ -60,7 +60,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error;
   cities;
   emptyInput;
-  errorMsg;
   urlParameters : any = {};
   no_value = false;
   saveSearchName;
@@ -107,117 +106,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-
-  commercially=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Stellar', value:'Stellar', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-
-    ]
-
-  currency=
-    [
-      "Currency", "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  month=
-    [
-      "Now","1 month","2 months","3 months","Longer than 3 months"
-    ]
-
-  job_type = ["Part time", "Full time"];
-
-  skillsData=
-    [
-      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
-      {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
-      {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
-      {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
-      {name:'Delphi/Object Pascal', value:'Delphi/Object Pascal', checked:false},{name:'Swift', value:'Swift', checked:false},
-      {name:'Perl', value:'Perl', checked:false},{name:'Ruby', value:'Ruby', checked:false},
-      {name:'Assembly language', value:'Assembly language', checked:false},{name:'R', value:'R', checked:false},
-      {name:'Visual Basic', value:'Visual Basic', checked:false},{name:'Objective-C', value:'Objective-C', checked:false},
-      {name:'Go', value:'Go', checked:false},{name:'MATLAB', value:'MATLAB', checked:false},
-      {name:'PL/SQL', value:'PL/SQL', checked:false},{name:'Scratch', value:'Scratch', checked:false},
-      {name:'Solidity', value:'Solidity', checked:false},{name:'Serpent', value:'Serpent', checked:false},
-      {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
-      {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
-      {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-
-
-    ]
-  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-  job_types = ['Full time' , 'Part time' , 'Freelance' ];
-
-  rolesData =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ];
-
-  blockchainData =
-    [
-      {value:'Bitcoin', name:'Bitcoin', checked:false},
-      {value:'Ethereum', name:'Ethereum', checked:false},
-      {value:'Ripple', name:'Ripple', checked:false},
-      {value:'Stellar', name:'Stellar', checked:false},
-      {value:'Hyperledger Fabric', name:'Hyperledger Fabric', checked:false},
-      {value:'Hyperledger Sawtooth', name:'Hyperledger Sawtooth', checked:false},
-      {value:'Quorum', name:'Quorum', checked:false},
-      {value:'Corda', name:'Corda', checked:false},
-      {value:'EOS', name:'EOS', checked:false},
-      {value:'NEO', name:'NEO', checked:false},
-      {value:'Waves', name:'Waves', checked:false},
-      {value:'Steemit', name:'Steemit', checked:false},
-      {value:'Lisk', name:'Lisk', checked:false},
-      {value:'Quantum', name:'Quantum', checked:false},
-      {value:'Tezos', name:'Tezos', checked:false},
-      {value:'Cardano', name:'Cardano', checked:false},
-      {value:'Litecoin', name:'Litecoin', checked:false},
-      {value:'Monero', name:'Monero', checked:false},
-      {value:'ZCash', name:'ZCash', checked:false},
-      {value:'IOTA', name:'IOTA', checked:false},
-      {value:'NEM', name:'NEM', checked:false},
-      {value:'NXT', name:'NXT', checked:false},
-      {value:'Dash', name:'Dash', checked:false},
-      {value:'Doge', name:'Doge', checked:false},
-    ]
+  currency = constants.currency;
+  month = constants.month;
+  job_type = constants.job_type;
+  skillsData = constants.language_opt;
+  residenceCountries = constants.countries;
+  job_types = constants.job_types;
+  rolesData = constants.dropdown_options;
+  blockchainData = constants.commercially;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -571,6 +467,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data =>
           {
             this.candidate_data = data;
+            let new_roles = constants.dropdown_options;
+
+            for(let i=0;i<this.candidate_data.length;i++){
+              let filtered_array = [];
+              for(let j=0;j<this.candidate_data[i].candidate.roles.length;j++){
+                const filteredArray = getNameFromValue(new_roles,this.candidate_data[i].candidate.roles[j]);
+                filtered_array.push(filteredArray.name);
+              }
+              filtered_array.sort();
+              this.candidate_data[i].candidate.roles = filtered_array;
+            }
+
             this.setPage(1);
             if(this.candidate_data.length > 0) {
               this.not_found='';
@@ -900,6 +808,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          let new_roles = constants.dropdown_options;
+
+          for(let i=0;i<this.candidate_data.length;i++){
+            let filtered_array = [];
+            for(let j=0;j<this.candidate_data[i].candidate.roles.length;j++){
+              const filteredArray = getNameFromValue(new_roles,this.candidate_data[i].candidate.roles[j]);
+              filtered_array.push(filteredArray.name);
+            }
+            filtered_array.sort();
+            this.candidate_data[i].candidate.roles = filtered_array;
+          }
+
           this.setPage(1);
           if(this.candidate_data.length > 0) {
             this.not_found='';
