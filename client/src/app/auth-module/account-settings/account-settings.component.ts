@@ -51,7 +51,7 @@ export class AccountSettingsComponent implements OnInit {
 
     else if(this.currentUser && this.currentUser.type === 'company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -107,7 +107,7 @@ export class AccountSettingsComponent implements OnInit {
 
     if(this.currentUser)
     {
-      this.authenticationService.account_settings(this.currentUser._creator, this.status)
+      this.authenticationService.account_settings(this.currentUser._id, this.status)
         .subscribe(
           data =>
           {

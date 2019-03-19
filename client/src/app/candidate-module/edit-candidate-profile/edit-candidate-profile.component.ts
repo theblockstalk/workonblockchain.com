@@ -1520,7 +1520,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       if(inputEl.files.item(0).size < this.file_size)
       {
         formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.currentUser._creator , formData, false)
+        this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
           .subscribe(
             data => {
               if (data) {
@@ -1653,7 +1653,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
 
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery, false)
+    this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
       .subscribe(
         data => {
           if(data && this.currentUser)

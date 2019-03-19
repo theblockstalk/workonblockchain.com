@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit {
       else if(this.user_type === 'company')
       {
 
-        this.authenticationService.getCurrentCompany(this.currentUser['_creator'])
+        this.authenticationService.getCurrentCompany(this.currentUser._id)
           .subscribe(
             data =>
             {
