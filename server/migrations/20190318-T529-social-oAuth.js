@@ -5,24 +5,30 @@ const crypto = require('../controller/services/crypto');
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 
 module.exports.up = async function() {
-    totalDocsToProcess = await users.count({'type' : 'candidate'});
+
+    totalDocsToProcess = await users.count({});
     logger.debug(totalDocsToProcess);
 
-    await users.findAndIterate({'type' : 'candidate'}, async function(userDoc) {
+    await users.findAndIterate({}, async function(userDoc) {
         totalProcessed++;
-        logger.debug("user doc id: " , userDoc._id);
-        let unset = {};
-        unset.social_type = 1;
-        let hashedPasswordAndSalt = crypto.createPasswordHash('', userDoc.salt);
+        logger.debug('user doc id: ' + userDoc._id);
+        let unset = {
+            jwt_token: 1
+        };
 
-        if (hashedPasswordAndSalt === userDoc.password_hash) {
-            unset.password_hash = 1;
-            unset.salt = 1;
+        if (userDoc.type === 'candidate') {
+            let hashedPasswordAndSalt = crypto.createPasswordHash('', userDoc.salt);
+
+            if (hashedPasswordAndSalt === userDoc.password_hash) {
+                unset.password_hash = 1;
+                unset.salt = 1;
+            }
+
+            unset.social_type = 1
         }
 
-        unset.jwt_token = 1;
         logger.debug('unset object: ', unset);
-        await users.update({_id : userDoc._id},{$unset: unset});
+        await users.update({_id : userDoc._id}, {$unset: unset});
         totalModified++;
 
     });
