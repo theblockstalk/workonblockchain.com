@@ -82,6 +82,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   volunteer_roles_log;
   objective_log;
   max_hours=[];
+  validateUrl;
 
   ngAfterViewInit(): void
   {
