@@ -154,7 +154,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 200);
               /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
@@ -394,6 +396,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               }
 
             });
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 200);
       }
       else
       {
@@ -468,7 +473,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       else {
         this.saveApproveData(approveForm.value);
         approveForm.resetForm();
-        this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
       }
     }
 
@@ -502,6 +506,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             }
           }
           this.reset();
+          this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";

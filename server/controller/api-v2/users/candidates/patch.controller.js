@@ -306,7 +306,9 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+        let wizardStatus = candidateHistory.filter(
+            (history) => history.status && history.status.status === 'wizard completed'
+        );
         if (wizardStatus.length === 0 && queryBody.description) {
             history.status = { status: 'wizard completed' };
         }

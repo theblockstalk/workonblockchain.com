@@ -211,11 +211,11 @@ module.exports.candidateProfile = function candidateProfile(){
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
         commercial_platforms : [
             {
-                name : "Bitcoin",
+                name : random.enum(enumerations.blockchainPlatforms),
                 exp_year : "4-6"
             },
             {
-                name : "Hyperledger Fabric",
+                name : random.enum(enumerations.blockchainPlatforms),
                 exp_year : "1-2"
             }
         ],
@@ -230,11 +230,11 @@ module.exports.candidateProfile = function candidateProfile(){
 
         commercial_skills : [
             {
-                skill: 'Formal verification',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '0-1'
             },
             {
-                skill: 'Distributed computing and networks',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '2-4'
             }
         ],
@@ -284,30 +284,32 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
         commercial_platforms : [
             {
-                name : "Bitcoin",
+                name : random.enum(enumerations.blockchainPlatforms),
                 exp_year : "4-6"
             },
             {
-                name : "Hyperledger Fabric",
+                name : random.enum(enumerations.blockchainPlatforms),
                 exp_year : "1-2"
             }
         ],
         programming_languages: [
             {
-                language: 'Java', exp_year: '1-2'
+                language: 'Java',
+                exp_year: '1-2'
             },
             {
-                language: 'C#', exp_year: '0-1'
+                language: 'C#',
+                exp_year: '0-1'
             }
         ],
 
         commercial_skills : [
             {
-                skill: 'Formal verification',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '0-1'
             },
             {
-                skill: 'Distributed computing and networks',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '2-4'
             }
         ],

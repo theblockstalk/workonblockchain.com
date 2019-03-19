@@ -1504,7 +1504,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   file_size=1048576;
   image_log;
   dateValidation;
-  dateCount;
   submit;
   updateProfileData(profileForm)
   {
@@ -1524,7 +1523,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           .subscribe(
             data => {
               if (data) {
-                console.log(data);
+                //console.log(data);
                 //this.router.navigate(['/candidate_profile']);
               }
             },
@@ -1586,10 +1585,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else {
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
     }
-
-    console.log(this.description_commercial_platforms);
-    console.log(this.description_experimented_platforms);
-    console.log(this.description_commercial_skills);
 
     profileForm.description_commercial_platforms = '';
     if(this.description_commercial_platforms){

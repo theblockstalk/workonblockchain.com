@@ -1466,10 +1466,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
     }
 
-    console.log(this.description_commercial_platforms);
-    console.log(this.description_experimented_platforms);
-    console.log(this.description_commercial_skills);
-
     profileForm.description_commercial_platforms = '';
     if(this.description_commercial_platforms){
       profileForm.description_commercial_platforms = this.description_commercial_platforms;

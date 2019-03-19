@@ -42,6 +42,8 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
 
     await users.findAndIterate({type:'candidate',"candidate.blockchain": {$exists: true}}, async function(candDoc) {
+        logger.debug("processing user doc: ", {userId: candDoc._id});
+
         let technologies = [], skills = [];
         if (candDoc.candidate.blockchain.commercial_platforms) {
             aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms, "name");
@@ -55,8 +57,7 @@ module.exports.up = async function() {
         if (candDoc.candidate.blockchain.formal_skills) {
             aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
         }
-        console.log(technologies);
-        console.log(skills);
+
         set = {
             "candidate.blockchain.commercial_platforms": technologies,
             "candidate.blockchain.description_commercial_platforms": '',
