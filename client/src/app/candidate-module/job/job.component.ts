@@ -594,6 +594,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           service_description : this.contractor.service_description
         }
         if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
+        if(this.contractor.max_hour_per_week) inputQuery.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
 
       if(this.volunteerCheck) {
@@ -605,42 +606,33 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
       }
 
+      if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
+      if(this.current_currency) inputQuery.current_currency = this.current_currency;
+
       console.log(inputQuery);
 
-      if(typeof(f.value.expected_salary) === 'string' )
-        f.value.expected_salary = parseInt(f.value.expected_salary);
-      if(f.value.current_salary && typeof (f.value.current_salary) === 'string') {
-        f.value.current_salary = parseInt(f.value.current_salary);
-
-      }
-      if(f.value.current_salary === '') {
-        f.value.current_salary = 0;
-      }
-      f.value.current_salary = parseInt(f.value.current_salary);
-      f.value.expected_salary = parseInt(f.value.expected_salary);
-      f.value.country = this.validatedLocation;
-     /* this.authenticationService.job(this.currentUser._creator, f.value)
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
         .subscribe(
           data => {
-            if(data && this.currentUser)
-            {
-              this.router.navigate(['/resume']);
+            if (data) {
+              console.log(data);
+              this.router.navigate(['/candidate_profile']);
             }
-
-            if(data['error'] )
-            {
-              this.log= data['error'];
-            }
-
           },
           error => {
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.router.navigate(['/not_found']);
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
+          }
+        );
 
 
-          });
-    */
     }
     else{
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
