@@ -362,8 +362,8 @@
               <div class="form-group">
                 <label>Maximum hours per week (optional):</label>
 
-                <select title="(select one)" [(ngModel)]="max_hour_per_week" class="selectpicker" id="month" required name="max_hour_per_week " >
-                  <option class='option' *ngFor='let month of availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
+                <select title="(select one)" [(ngModel)]="max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                  <option class='option' *ngFor='let hours of max_hours' [attr.selected]  [value]="hours" selected>{{hours}}</option>
                 </select>
 
               </div>

@@ -81,6 +81,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   volunteer_location_log;
   volunteer_roles_log;
   objective_log;
+  max_hours=[];
 
   ngAfterViewInit(): void
   {
@@ -91,9 +92,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
-    /*this.resume_disable = "disabled";
+    this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    for(let i =5; i<=60; i=i+5) {
+      this.max_hours.push(i);
+    }
 
     if(!this.currentUser)
     {
@@ -101,150 +105,20 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
 
-      this.dropdown_options.sort(function(a, b){
+      this.roles.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
       })
 
-      this.area_interested.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+
       this.class="btn disabled";
       this.exp_class="btn disabled";
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            if(data['contact_number']  && data['nationality'])
-            {
-              this.about_active_class = 'fa fa-check-circle text-success';
-            }
-            if(data['candidate'].terms_id)
-            {
-              this.term_active_class='fa fa-check-circle text-success';
-              this.term_link = '/terms-and-condition';
-            }
-
-            if(data['candidate'].locations || data['candidate'].roles || data['candidate'].interest_areas ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
-            {
-              if(data['candidate'].locations)
-              {
-                for (let country1 of data['candidate'].locations)
-                {
-                  if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
-
-                  }
-
-                  if (country1['country']) {
-                    let country = country1['country'] + ' (country)'
-                    this.selectedValueArray.push({name:  country , visa_needed : country1.visa_needed});
-                  }
-                  if (country1['city']) {
-                    let city = country1['city'].city + ", " + country1['city'].country + " (city)";
-                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
-                  }
-                }
-
-                this.selectedValueArray.sort();
-                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                  let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                  this.selectedValueArray.splice(0, 0, remoteValue);
-                  this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                }
-                this.selectedLocations = this.selectedValueArray;
-              }
-
-
-              if(data['candidate'].interest_areas)
-              {
-                for (let interest of data['candidate'].interest_areas)
-                {
-
-                  for(let option of this.area_interested)
-                  {
-
-                    if(option.value === interest)
-                    {
-                      option.checked=true;
-                      this.selectedValue.push(interest);
-
-                    }
-
-                  }
-
-                }
-              }
-              if(data['candidate'].roles)
-              {
-                for (let area of data['candidate'].roles)
-                {
-
-                  for(let option of this.dropdown_options)
-                  {
-                    if(option.value === area)
-                    {
-                      option.checked=true;
-                      this.jobselected.push(area);
-
-                    }
-
-                  }
-
-                }
-              }
-
-              this.salary = data['candidate'].expected_salary;
-              this.availability_day = data['candidate'].availability_day;
-              if(data['candidate'].expected_salary_currency)
-                this.base_currency = data['candidate'].expected_salary_currency;
-              if(data['candidate'].current_currency && data['candidate'].current_salary)
-                this.current_currency =data['candidate'].current_currency;
-              this.current_salary = data['candidate'].current_salary;
-
-
-              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
-              {
-                this.active_class = 'fa fa-check-circle text-success';
-                this.class = "btn";
-                this.job_active_class = 'fa fa-check-circle text-success';
-                this.resume_disable ='';
-                this.resume_class="/resume";
-
-              }
-
-              if(data['candidate'].why_work)
-              {
-                this.exp_disable ='';
-                this.resume_active_class='fa fa-check-circle text-success';
-                this.exp_class = "/experience";
-              }
-
-
-
-              if(data['candidate'].description )
-              {
-                this.exp_class = "/experience";
-                this.exp_active_class = 'fa fa-check-circle text-success';
-              }
-
-            }
-
-
-
+              console.log(data);
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
@@ -270,7 +144,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/not_found']);
     }
 
-*/
+
   }
 
   currency= [
