@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -20,18 +21,14 @@ export class JobComponent implements OnInit,AfterViewInit {
   roles='';
   interest_area='';
   expected_salary='';
-  checked_country='';
   selectedValue = [];
-  selectedcountry = [];
   expYear=[];
-  interest='';
-  optionSelected: any;
   jobselected=[];
   position='';
   experience_year='';
   currentUser: User;exp_class;
-  log; salary; available;link;class;
-  availability_day;availability_year;
+  log; salary;link;class;
+  availability_day;
   active_class;
   job_active_class;
   exp_active_class;resume_active_class;resume_class;base_currency;
@@ -250,107 +247,13 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  currency=
-    [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  experience=
-    [
-
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  countries =
-    [
-      {id:'000' , value:''},
-      {id:'001' , value:'France'},
-      {id:'002' , value:'United Kingdom'},
-      {id:'003' , value:'Ireland'},
-      {id:'004' , value:'Netherlands'},
-      {id:'005' , value:'Germany'},
-      {id:'006' , value:'Israel'},
-      {id:'007' , value:'Spain'},
-
-    ]
-
-
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ]
-
-  area_interested=
-    [
-      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
-      {name:'Public blockchain', value:'Public blockchain', checked:false},
-      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
-      {name:'Smart contract development', value:'Smart contract development', checked:false},
-      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-      {name:"I don't know", value:"I don't know", checked:false},
-    ]
-
-
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991"
-    ]
-  availability = [
-    {name: "Now" , value: "Now" },
-    {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 months" },
-    {name: "3 months notice period", value: "3 months" },
-    {name: "3+ months notice period", value: "Longer than 3 months" }
-  ]
+  currency = constants.currency;
+  experience = constants.exp_year;
+  options = constants.options;
+  dropdown_options = constants.dropdown_options;
+  area_interested = constants.area_interested;
+  year = constants.year;
+  availability = constants.availability;
 
   onAreaSelected(e)
   {

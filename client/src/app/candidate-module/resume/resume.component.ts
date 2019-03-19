@@ -4,8 +4,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
-//declare var synapseThrow: any;
-//import { synapseThrow } from '../wob';
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-resume',
@@ -31,9 +30,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   skill_expYear_db=[];
   skillDbArray=[];
   skillDb;
-  formalDbArray=[];
-  formal_expYear_db=[];
-  formalSkillDb;
   about_active_class;
   description_commercial_platforms;
   description_experimented_platforms;
@@ -64,11 +60,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.designed.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+
       this.experimented.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -80,11 +72,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         return 0;
       })
 
-      this.otherFormalSkills.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
       this.exp_class="";
       this.active_class="fa fa-check-circle text-success";
       this.authenticationService.getById(this.currentUser._id)
@@ -279,117 +266,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {
       this.router.navigate(['/not_found']);
     }
-
-
   }
 
-
-
-  commercially=
-  [
-    {name:'Bitcoin', value:'Bitcoin', checked:false},
-    {name:'Ethereum', value:'Ethereum', checked:false},
-    {name:'Ripple', value:'Ripple', checked:false},
-    {name:'Stellar', value:'Stellar', checked:false},
-    {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-    {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-    {name:'Quorum', value:'Quorum', checked:false},
-    {name:'Corda', value:'Corda', checked:false},
-    {name:'EOS', value:'EOS', checked:false},
-    {name:'NEO', value:'NEO', checked:false},
-    {name:'Waves', value:'Waves', checked:false},
-    {name:'Steemit', value:'Steemit', checked:false},
-    {name:'Lisk', value:'Lisk', checked:false},
-    {name:'Quantum', value:'Quantum', checked:false},
-    {name:'Tezos', value:'Tezos', checked:false},
-    {name:'Cardano', value:'Cardano', checked:false},
-    {name:'Litecoin', value:'Litecoin', checked:false},
-    {name:'Monero', value:'Monero', checked:false},
-    {name:'ZCash', value:'ZCash', checked:false},
-    {name:'IOTA', value:'IOTA', checked:false},
-    {name:'NEM', value:'NEM', checked:false},
-    {name:'NXT', value:'NXT', checked:false},
-
-  ]
-
-  otherSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-  otherFormalSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-
-  designed=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-    ]
-
-  experimented=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-      {name:'Dash', value:'Dash', checked:false},
-      {name:'Doge', value:'Doge', checked:false},
-    ]
-
-
-  exp_year=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-
+  commercially = constants.commercially;
+  otherSkills = constants.otherSkills;
+  experimented = constants.experimented;
+  exp_year = constants.exp_year;
 
   onExpOptions(e)
   {

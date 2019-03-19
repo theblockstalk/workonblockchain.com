@@ -8,9 +8,8 @@ import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../../data.service";
 import {environment} from '../../../environments/environment';
-const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
-import { map } from 'rxjs/operators';
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
@@ -120,16 +119,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   selectedLocations;
   cities;
   emptyInput;
-  expected_validation;
 
-  nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
-
+  nationality = constants.nationality;
   current_work_check=[];
-  current_work=
-    [
-      {name:'I currently work here', value:'current', checked:false}
-    ]
-  countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  current_work = constants.current_work;
+  countries = constants.countries;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
@@ -158,19 +152,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
 
-  otherSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-
+  otherSkills = constants.otherSkills;
   skillDbArray=[];
   skillDb;
   skill_expYear_db=[];
@@ -581,159 +563,17 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }, 900);
   }
 
-
-  currency=
-    [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  experience=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher ', value:'Researcher ', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ]
-
-  area_interested=
-    [
-      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
-      {name:'Public blockchain', value:'Public blockchain', checked:false},
-      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
-      {name:'Smart contract development', value:'Smart contract development', checked:false},
-      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-      {name:"I don't know", value:"I don't know", checked:false},
-    ]
-
-
-
-  graduation_year=
-    [
-      2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994
-    ]
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
-    ]
-
-  availability = [
-    {name: "Now" , value: "Now" },
-    {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 months" },
-    {name: "3 months notice period", value: "3 months" },
-    {name: "3+ months notice period", value: "Longer than 3 months" }
-  ]
-
-  commercially=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Stellar', value:'Stellar', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-
-    ]
-
-  experimented=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-      {name:'Dash', value:'Dash', checked:false},
-      {name:'Doge', value:'Doge', checked:false},
-    ]
-
-  exp_year=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
+  currency = constants.currency;
+  experience = constants.exp_year;
+  options = constants.options;
+  dropdown_options = constants.dropdown_options;
+  area_interested = constants.area_interested;
+  graduation_year = constants.year;
+  year = constants.year;
+  availability = constants.availability;
+  commercially = constants.commercially;
+  experimented = constants.experimented;
+  exp_year = constants.exp_year;
 
   onExpOptions(e)
   {
@@ -822,40 +662,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     return null;
   }
 
-  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
-
-
-  language_opt=
-    [
-      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
-      {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
-      {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
-      {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
-      {name:'Delphi/Object Pascal', value:'Delphi/Object Pascal', checked:false},{name:'Swift', value:'Swift', checked:false},
-      {name:'Perl', value:'Perl', checked:false},{name:'Ruby', value:'Ruby', checked:false},
-      {name:'Assembly language', value:'Assembly language', checked:false},{name:'R', value:'R', checked:false},
-      {name:'Visual Basic', value:'Visual Basic', checked:false},{name:'Objective-C', value:'Objective-C', checked:false},
-      {name:'Go', value:'Go', checked:false},{name:'MATLAB', value:'MATLAB', checked:false},
-      {name:'PL/SQL', value:'PL/SQL', checked:false},{name:'Scratch', value:'Scratch', checked:false},
-      {name:'Solidity', value:'Solidity', checked:false},{name:'Serpent', value:'Serpent', checked:false},
-      {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
-      {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
-      {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-
-    ]
-
-
-  roles_opt =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'BI Engineer', value:'BI Engineer', checked:false},
-      {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Lead Developer', value:'Lead Developer', checked:false},
-      {name:'Database Administrator', value:'Database Administrator', checked:false},
-      {name:'Security Engineer', value:'Security Engineer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-    ]
+  calen_month = constants.calen_month;
+  language_opt = constants.language_opt;
+  roles_opt = constants.roles_opt;
 
   onLangExpOptions(obj)
   {
