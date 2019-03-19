@@ -45,10 +45,10 @@
   },
   "googleConfig": {
     "clientId": "699068166900-r52plq8abcks3d2sanfisp6a4i8hoem2.apps.googleusercontent.com",
-    "redirectUrl": "https://workonblockchain.com//google-auth"
+    "redirectUrl": "https://workonblockchain.com/google-auth"
   },
   "linkedinConfig" : {
     "clientId": "860wydxdy7qqd2",
-    "redirectUrl": "https://workonblockchain.com//linkedin-auth"
+    "redirectUrl": "https://workonblockchain.com/linkedin-auth"
   }
 }

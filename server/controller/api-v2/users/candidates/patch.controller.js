@@ -319,7 +319,7 @@ module.exports.endpoint = async function (req, res) {
     latestStatus.timestamp = timestamp;
     updateCandidateUser['candidate.latest_status'] = latestStatus;
 
-
+    console.log(unset);
     await users.update({_id: userId}, {
         $push: {
             'candidate.history': {
@@ -327,7 +327,8 @@ module.exports.endpoint = async function (req, res) {
                 $position: 0
             }
         },
-        $set : updateCandidateUser
+        $set : updateCandidateUser,
+        $unset:  unset
     });
 
 

@@ -180,9 +180,15 @@ describe('cron', function () {
                 profileData[1].roles[0]
             ];
 
+            console.log("candidate 3");
+            console.log(candidate[3]);
+            console.log(profileData[1]);
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[1]);
             await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
 
+            console.log("candidate 4");
+            console.log(candidate[4]);
+            console.log(profileData[1]);
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[1]);
             await companyEmail();
 
