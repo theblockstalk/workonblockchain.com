@@ -87,7 +87,7 @@
                   <div class="col-md-4 text-center">
                     <i class="fas fa-user-secret fa-4x"></i><br/>
                     <div class="form-check mt-4">
-                    <input class="form-check-input mt-2" type="checkbox" value="employee" (change)="workTypeChange($event)">
+                    <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
                     <label class="form-check-label">
                       empolyee (full/part time)
                     </label>
@@ -96,7 +96,7 @@
                   <div class="col-md-4 text-center">
                     <i class="fas fa-address-card fa-4x"></i><br/>
                     <div class="form-check mt-4">
-                    <input class="form-check-input mt-2" type="checkbox" value="contractor" (change)="workTypeChange($event)">
+                    <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
                     <label class="form-check-label">
                       contractor/freelancer
                     </label>
@@ -107,7 +107,7 @@
                     <small class="ml-4">This can be a great way to get commercial experience</small>
                     <br/>
                     <div class="form-check">
-                    <input class="form-check-input mt-2" type="checkbox" value="volunteer" (change)="workTypeChange($event)">
+                    <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
                     <label class="form-check-label">
                       temporary volunteer
                     </label>
@@ -196,9 +196,9 @@
                 <label>Role:</label>
                 <div class="checkbox">
                   <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of employee.employee_roles">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
+                        <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, employee.roles) === true" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
@@ -228,8 +228,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Expected annual salary currency</label>
-                <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
-                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
+                <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
+                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
                   {{currency_log}}
@@ -253,14 +253,14 @@
 
 
           </div>
-
+          <hr *ngIf = "contractorCheck" />
           <div class="row mt-2" *ngIf="contractorCheck" >
             <div class="col-md-12">
               <h4>Contractor</h4>
             </div>
 
 
-            <div class="col-md-12">
+            <div class="col-md-12 mt-4">
               <div class="form-group">
                 <label>Locations:</label>
                 <div>
@@ -319,7 +319,7 @@
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'contractor')" required="" />
+                        <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, contractor.roles) === true" value="{{position_option.value}}" (change)="onJobSelected($event, 'contractor')" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
@@ -348,8 +348,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Currency</label>
-                <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
-                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
+                <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="contractor_currency" >
+                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === contractor.currency ? true : null" >{{baseCurrency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
                   {{contractor_currency_log}}
@@ -362,8 +362,8 @@
               <div class="form-group">
                 <label>Maximum hours per week (optional):</label>
 
-                <select title="(select one)" [(ngModel)]="max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
-                  <option class='option' *ngFor='let hours of max_hours' [attr.selected]  [value]="hours" selected>{{hours}}</option>
+                <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                  <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
                 </select>
 
               </div>
@@ -375,7 +375,7 @@
 
                 <div class="checkbox">
                   <div class="form-check" *ngFor = "let type of contractor_types">
-                    <input class="form-check-input" type="checkbox" [value]="type.value" (change)="contractor_type($event)" >
+                    <input class="form-check-input" type="checkbox" [value]="type.value" [checked]="type.checked" (change)="contractor_type($event)" >
                     <label class="form-check-label" >
                       {{type.name}}
                     </label>
@@ -413,6 +413,7 @@
 
 
           </div>
+          <hr *ngIf="volunteerCheck" />
 
           <div class="row mt-2" *ngIf="volunteerCheck" >
             <div class="col-md-12">
@@ -420,7 +421,7 @@
             </div>
 
 
-            <div class="col-md-12">
+            <div class="col-md-12 mt-4">
               <div class="form-group">
                 <label>Locations:</label>
                 <div>
@@ -477,9 +478,9 @@
                 <label>Role:</label>
                 <div class="checkbox">
                   <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of volunteer.volunteer_roles">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'volunteer')" required="" />
+                        <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, volunteer.roles)" value="{{position_option.value}}" (change)="onJobSelected($event, 'volunteer')" required="" />
                         {{position_option.name}}
                       </label>
                     </div>

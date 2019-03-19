@@ -95,6 +95,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
+    this.employee.employee_roles = this.roles;
+    this.volunteer.volunteer_roles = this.roles;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
       this.max_hours.push(i);
@@ -119,6 +121,71 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
+              if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
+              if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+              if(data['candidate'].employee) {
+                console.log("employee");
+                this.employeeCheck = true;
+                this.selected_work_type.push('employee');
+                let employee = data['candidate'].employee;
+                this.employee.employment_type = employee.employment_type;
+                this.employee.selectedLocation = employee.location;
+                this.selectedValueArray = employee.location;
+                this.employee.roles = employee.roles;
+                this.employee.expected_annual_salary = employee.expected_annual_salary;
+                this.employee.currency = employee.currency;
+                this.employee.employment_availability = employee.employment_availability;
+
+              }
+              if(data['candidate'].contractor) {
+                this.contractorCheck = true;
+                this.selected_work_type.push('contractor');
+                let contractor = data['candidate'].contractor;
+                this.contractor.selectedLocation = contractor.location;
+                this.contractorArray = contractor.location;
+                this.contractor.roles = contractor.roles;
+                this.contractor.hourly_rate = contractor.expected_hourly_rate;
+                this.contractor.currency = contractor.currency;
+                if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
+                this.contractor.contractor_type = contractor.contractor_type;
+                for(let type of contractor.contractor_type)
+                {
+
+                  for(let option of this.contractor_types)
+                  {
+
+                    if(option.value === type)
+                    {
+                      option.checked = true;
+
+                    }
+
+                  }
+
+                }
+
+                if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
+                if(contractor.service_description) this.contractor.service_description = contractor.service_description;
+
+              }
+              if(data['candidate'].volunteer) {
+                console.log("volunteer");
+                this.volunteerCheck = true;
+                this.selected_work_type.push('volunteer');
+                let volunteer = data['candidate'].volunteer;
+                console.log(volunteer.location);
+                this.volunteer.selectedLocation = volunteer.location;
+                this.volunteerArray = volunteer.location;
+
+                this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
+                this.volunteer.learning_objectives = volunteer.learning_objectives;
+                this.volunteer.roles = volunteer.roles;
+                console.log("volunteer");
+
+                console.log(this.volunteer['volunteer_roles']);
+              }
+
+
               console.log(data);
           },
           error => {
@@ -469,7 +536,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           service_description : this.contractor.service_description
         }
         if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
-        if(this.contractor.max_hour_per_week) inputQuery.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
+        if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
 
       if(this.volunteerCheck) {
@@ -732,6 +799,8 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   volunteerArray = [];
   volunteerSelectedValueFunction(e) {
+    console.log("volunteerArray");
+    console.log(this.volunteerArray);
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
         var value2send=document.querySelector("#countryList option[value='"+this.volunteer.country+"']")['dataset'].value;
@@ -785,6 +854,11 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   volunteerDeleteLocationRow(index){
     this.deleteLocationRow(this.volunteer.selectedLocation, index);
+  }
+
+  populateRoles(value, array) {
+    if(array && array.find((obj => obj === value))) return true;
+    else false
   }
 }
 
