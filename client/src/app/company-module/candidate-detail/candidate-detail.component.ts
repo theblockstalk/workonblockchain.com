@@ -55,7 +55,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       this.user_id = params['user'];
     });
   }
-  company_reply; currentUser: User;
+  company_reply; currentUser: any;
   credentials: any = {};
   job_type = ["Part time", "Full time"];
   company_name;
@@ -310,7 +310,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
 
           });
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data => {
             this.company_name = data['company_name'];

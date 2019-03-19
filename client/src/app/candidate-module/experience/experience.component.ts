@@ -713,7 +713,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     inputQuery.status = 'wizard completed';
 
-      this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery, false)
+      this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {
             if(data)

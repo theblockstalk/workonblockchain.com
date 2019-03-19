@@ -16,7 +16,7 @@ export class ProfileResolver  {
     {
       if(this.currentUser.type === 'candidate')
       {
-        this.http.get(URL + 'users/current/' + this.currentUser._creator ,  {
+        this.http.get(URL + 'users/current/' + this.currentUser._id ,  {
           headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
         }).pipe(map(
           (res) => {
