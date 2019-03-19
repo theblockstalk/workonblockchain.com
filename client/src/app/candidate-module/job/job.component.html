@@ -145,16 +145,16 @@
                 <div>
                   <datalist id="countryList">
                     <select class="form-control">
-                      <option *ngFor = "let country of employee.cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="employeeSuggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event , employee.country)">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) || employment_location_log">
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) ">
                     {{employment_location_log}}
                   </div>
 
@@ -261,23 +261,21 @@
 
 
             <div class="col-md-12">
-              <div class="form-group mt-4">
+              <div class="form-group">
                 <label>Locations:</label>
-
                 <div>
-
                   <datalist id="countryList">
                     <select class="form-control">
-                      <option *ngFor = "let country of contractor.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{contractor.country}}" >{{country.name}}
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{contractor.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="selectedValueFunction($event , 'contractor')">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!contractor.selectedLocation || (contractor.selectedLocation && contractor.selectedLocation.length <= 0) || contract_location_log">
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!contractor.selectedLocation || (contractor.selectedLocation && contractor.selectedLocation.length <= 0) ">
                     {{contract_location_log}}
                   </div>
 
@@ -289,12 +287,12 @@
                             <label >{{value.name}}</label>
                           </div>
                           <div class = "col-4 text-right">
-                            <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            <a (click)="contractorDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
                               <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="contractorUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
 
@@ -420,23 +418,21 @@
 
 
             <div class="col-md-12">
-              <div class="form-group mt-4">
+              <div class="form-group">
                 <label>Locations:</label>
-
                 <div>
-
                   <datalist id="countryList">
                     <select class="form-control">
-                      <option *ngFor = "let country of volunteer.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{volunteer.country}}" >{{country.name}}
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{volunteer.country}}" >{{country.name}}
                       </option>
                     </select>
                   </datalist>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="selectedValueFunction($event , 'volunteer')">
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
-                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) || volunteer_location_log">
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) ">
                     {{volunteer_location_log}}
                   </div>
 
@@ -448,12 +444,12 @@
                             <label >{{value.name}}</label>
                           </div>
                           <div class = "col-4 text-right">
-                            <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            <a (click)="volunteerDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
                               <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
 
