@@ -119,7 +119,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     });
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(this.currentUser);
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);
@@ -131,7 +130,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
         .subscribe(
           data =>
           {
-            console.log(data);
             if(!data['terms_id'])
             {
               this.router.navigate(['/company_wizard']);

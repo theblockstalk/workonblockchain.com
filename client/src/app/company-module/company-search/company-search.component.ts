@@ -137,7 +137,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   currency=
     [
-      "Currency", "£ GBP" ,"€ EUR" , "$ USD"
+      "£ GBP" ,"€ EUR" , "$ USD"
     ]
 
   month=
@@ -274,8 +274,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.msg='';
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(this.currentUser);
-    console.log(this.currentUser.company_id);
 
     if(!this.currentUser)
     {
@@ -312,8 +310,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
           data =>
           {
-            console.log(data);
-
             if(data['terms'] === false)
             {
               this.router.navigate(['/company_wizard']);
