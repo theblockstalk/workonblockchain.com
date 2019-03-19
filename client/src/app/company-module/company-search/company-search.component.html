@@ -18,7 +18,7 @@
               <input type="text" [(ngModel)]="other_technologies" name="other_technologies"  class="form-control d-none">
 
               <div class = "form-group mt-3">
-                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="1: Saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name" [attr.selected]="name === saveSearchName?true:null">{{name}}</option>
                 </select>
               </div>
