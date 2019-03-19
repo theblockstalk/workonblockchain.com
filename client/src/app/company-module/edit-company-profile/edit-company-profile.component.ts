@@ -329,7 +329,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {

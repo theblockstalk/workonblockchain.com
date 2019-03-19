@@ -26,13 +26,11 @@ module.exports = async function (req, res) {
         const salt = crypto.getRandomString(128);
         const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
 
-        let random = crypto.randomBytes(16).toString('base64');
         let newCompanyDoc = {
             email: queryBody.email,
             password_hash: hashedPasswordAndSalt,
             salt : salt,
             type: queryBody.type,
-            jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: new Date(),
             referred_email : queryBody.referred_email
 

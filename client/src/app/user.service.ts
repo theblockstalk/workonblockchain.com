@@ -882,7 +882,7 @@ export class UserService {
 
   edit_company_profile(queryBody :any   )
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._creator +'/companies', queryBody , {
+    return this.http.patch(URL+'v2/users/'+ this.currentUser._id +'/companies', queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

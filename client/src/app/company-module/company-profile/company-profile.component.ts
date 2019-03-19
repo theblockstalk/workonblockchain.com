@@ -119,6 +119,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     });
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(this.currentUser);
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);
@@ -126,10 +127,11 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     if(this.currentUser && this.currentUser.type === 'company')
     {
 
-      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
+            console.log(data);
             if(!data['terms_id'])
             {
               this.router.navigate(['/company_wizard']);

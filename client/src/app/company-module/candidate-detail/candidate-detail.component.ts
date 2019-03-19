@@ -310,7 +310,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
 
           });
-      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data => {
             this.company_name = data['company_name'];

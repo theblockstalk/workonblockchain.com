@@ -274,6 +274,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.msg='';
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(this.currentUser);
+    console.log(this.currentUser.company_id);
 
     if(!this.currentUser)
     {
@@ -305,11 +307,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
 
-      this.authenticationService.getCurrentCompany(this.currentUser.company_id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
 
           data =>
           {
+            console.log(data);
 
             if(data['terms'] === false)
             {
@@ -896,7 +899,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg='';
     this.not_found='';
 
-    this.authenticationService.getVerrifiedCandidate(this.currentUser.company_id)
+    this.authenticationService.getVerrifiedCandidate(this.currentUser._id)
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
@@ -923,7 +926,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         });
 
 
-    this.authenticationService.getCurrentCompany(this.currentUser.company_id)
+    this.authenticationService.getCurrentCompany(this.currentUser._id)
       .subscribe(
         data => {
           this.company_name = data['company_name'];
