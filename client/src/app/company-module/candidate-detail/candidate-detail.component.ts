@@ -42,6 +42,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   visaRequiredArray= [];
   noVisaArray = [];
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -106,13 +109,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             setTimeout(() => {
               $('.selectpicker').selectpicker('refresh');
             }, 900);
-            let job_offer = data['message'].job_offer;
-            this.credentials.job_title = job_offer.title;
-            this.credentials.salary = job_offer.salary;
-            this.credentials.currency = job_offer.salary_currency;
-            this.credentials.location = job_offer.location;
-            this.credentials.job_type = job_offer.type;
-            this.credentials.job_desc = job_offer.description;
+            if(data && data['message']) {
+              let job_offer = data['message'].job_offer;
+              this.credentials.job_title = job_offer.title;
+              this.credentials.salary = job_offer.salary;
+              this.credentials.currency = job_offer.salary_currency;
+              this.credentials.location = job_offer.location;
+              this.credentials.job_type = job_offer.type;
+              this.credentials.job_desc = job_offer.description;
+            }
+
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
@@ -202,9 +208,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                       if(a.name > b.name) { return 1; }
                       return 0;
                     });
-
                   }
-
                 }
 
                 this.countries = citiesArray.concat(countriesArray);
@@ -255,19 +259,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   })
                 }
 
-                if (dataa['candidate'].blockchain.formal_skills) {
-                  this.formal_skills = dataa['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function (a, b) {
-                    if (a.skill < b.skill) {
-                      return -1;
-                    }
-                    if (a.skill > b.skill) {
-                      return 1;
-                    }
-                    return 0;
-                  });
-                }
-
                 if (dataa['candidate'].blockchain.commercial_platforms) {
                   this.commercial = dataa['candidate'].blockchain.commercial_platforms;
                   if (this.commercial && this.commercial.length > 0) {
@@ -298,22 +289,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   }
                 }
 
-                if (dataa['candidate'].blockchain.smart_contract_platforms) {
-                  this.platforms = dataa['candidate'].blockchain.smart_contract_platforms;
-                  if (this.platforms && this.platforms.length > 0) {
-                    this.platforms.sort(function (a, b) {
-                      if (a.platform_name < b.platform_name) {
-                        return -1;
-                      }
-                      if (a.platform_name > b.platform_name) {
-                        return 1;
-                      }
-                      return 0;
-                    })
+                if(dataa['candidate'].blockchain.description_commercial_platforms) {
+                  this.description_commercial_platforms = dataa['candidate'].blockchain.description_commercial_platforms;
+                }
 
+                if(dataa['candidate'].blockchain.description_experimented_platforms) {
+                  this.description_experimented_platforms = dataa['candidate'].blockchain.description_experimented_platforms;
+                }
 
-                  }
-
+                if(dataa['candidate'].blockchain.description_commercial_skills) {
+                  this.description_commercial_skills = dataa['candidate'].blockchain.description_commercial_skills;
                 }
               }
 

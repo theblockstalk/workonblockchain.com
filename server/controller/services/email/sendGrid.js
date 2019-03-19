@@ -14,16 +14,21 @@ if (settings.isLiveApplication()) {
 }
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
+    const defaultFrom = {
+        name: settings.SENDGRID.FROM_NAME,
+        email: settings.SENDGRID.FROM_ADDRESS
+    }
+
+    sendGridOptions.templateData.subject = sendGridOptions.subject;
+
     const msg = {
         personalizations: sendGridOptions.personalizations,
-        from: {
-            email: settings.SENDGRID.FROM_ADDRESS,
-            name: settings.SENDGRID.FROM_NAME
-        },
+        from: sendGridOptions.from ? sendGridOptions.from : defaultFrom,
         subject: sendGridOptions.subject,
         templateId: sendGridOptions.templateId,
         dynamic_template_data: sendGridOptions.templateData
     };
+    logger.debug("Send email msg object: ", msg);
 
     try {
         await sgMail.send(msg);

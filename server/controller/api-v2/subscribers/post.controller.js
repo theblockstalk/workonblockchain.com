@@ -4,7 +4,7 @@ const settings = require('../../../settings');
 
 module.exports.request = {
     type: 'post',
-    path: '/subscribe'
+    path: '/subscribers'
 };
 
 const bodySchema = new Schema({

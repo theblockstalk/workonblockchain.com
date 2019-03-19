@@ -18,8 +18,8 @@
               <input type="text" [(ngModel)]="other_technologies" name="other_technologies"  class="form-control d-none">
 
               <div class = "form-group mt-3">
-                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
-                  <option *ngFor = "let name of searchName" [value]="name">{{name}}</option>
+                <select title="1: Saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                  <option *ngFor = "let name of searchName" [value]="name" [attr.selected]="name === saveSearchName?true:null">{{name}}</option>
                 </select>
               </div>
             </div>
@@ -247,10 +247,8 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h5 class="modal-title mx-auto" id="exampleModalLabel">Job description</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
         <div class="modal-body">
           <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
@@ -436,7 +434,7 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
-                    <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" >{{blockchain.name}}</option>
+                    <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" selected>{{blockchain.name}}</option>
                   </select>
                   <small class="text-secondary" >Only select this if essential for the job</small>
 
@@ -458,13 +456,13 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language">
-                    <option class='option' *ngFor='let language of skillsData' [value]="language.value" >{{language.name}}</option>
+                    <option class='option' *ngFor='let language of skillsData' [value]="language.value" selected>{{language.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select class="multiple form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
@@ -479,7 +477,7 @@
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
 
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
-                    <option  *ngFor='let base_currency of currency' >{{base_currency}}</option>
+                    <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.current_currency?true:null">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
                     {{current_currency_log}}

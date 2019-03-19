@@ -31,15 +31,22 @@ module.exports.setStatus = async function setStatus(status, jwtToken) {
 
 module.exports.approveCandidate = async function approveCandidate(email) {
     let newStatus = {
-        status: 'approved',
-        status_updated: new Date(),
-        timestamp: new Date()
+        status: 'approved'
     };
-    await
-    Users.update({email: email}, {
+    let history = {};
+    history['status'] = newStatus;
+    history['timestamp'] = new Date();
+
+    let latestStatus = {};
+    latestStatus.status = newStatus.status;
+    latestStatus.timestamp = new Date();
+
+
+    await Users.update({email: email}, {
+        $set : {'candidate.latest_status' : latestStatus},
         $push: {
-            'candidate.status': {
-                $each: [newStatus],
+            'candidate.history': {
+                $each: [history],
                 $position: 0
             }
         },

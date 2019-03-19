@@ -27,11 +27,8 @@ const candidateRegister = require('./controller/api/users/candidate/register.con
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateUpdate = require('./controller/api/users/candidate/updateProfile.controller');
 const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
-const candidateWizardExperience = require('./controller/api/users/candidate/wizard/experience.controller');
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
-const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
@@ -57,9 +54,7 @@ const adminApproveUser = require('./controller/api/users/admins/approveUser.cont
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
-const adminEditCandidateProfile = require('./controller/api/users/admins/updateCandidateProfile.controller');
 const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
-const adminChangeCandidateStatus = require('./controller/api/users/admins/changeCandidateStatus.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -92,10 +87,7 @@ router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWiz
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
-router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWizardResume));
-router.put('/users/welcome/exp', auth.isLoggedIn, asyncMiddleware(candidateWizardExperience));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
-router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
@@ -119,9 +111,7 @@ router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(admi
 router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
 router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
-router.post('/users/update_candidate_profile', auth.isAdmin , asyncMiddleware(adminEditCandidateProfile));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
-router.put('/users/change_candidate_status/:_id', auth.isAdmin  , asyncMiddleware(adminChangeCandidateStatus));
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));

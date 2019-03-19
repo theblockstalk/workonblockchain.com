@@ -112,25 +112,25 @@ async function synchDatabasetoList(listId) {
         }
 
         if (userDoc.type === "candidate") {
-                const recipientUpdate = {
-                    email: userDoc.email,
-                    user_type: "candidate",
-                    user: "true",
-                    first_name: userDoc.first_name,
-                    last_name: userDoc.last_name,
-                    user_referral_key: referralDoc.url_token,
-                    user_account_disabled: userDoc.disable_account.toString(),
-                    user_status: userDoc.candidate.status[0].status,
-                    user_email_verified: userDoc.is_verify,
-                    user_terms_id: userDoc.candidate.terms_id,
-                    user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
-                    user_id: userDoc._id.toString()
-                };
-                if (userDoc.marketing_emails) {
-                    recipientUpdate.user_marketing_emails = userDoc.marketing_emails.toString();
-                }
+            const recipientUpdate = {
+                email: userDoc.email,
+                user_type: "candidate",
+                user: "true",
+                first_name: userDoc.first_name,
+                last_name: userDoc.last_name,
+                user_referral_key: referralDoc.url_token,
+                user_account_disabled: userDoc.disable_account.toString(),
+                user_status: userDoc.candidate.latest_status.status,
+                user_email_verified: userDoc.is_verify,
+                user_terms_id: userDoc.candidate.terms_id,
+                user_created_date: userDoc.candidate.history[userDoc.candidate.history.length-1].timestamp,
+                user_id: userDoc._id.toString()
+            };
+            if (userDoc.marketing_emails) {
+                recipientUpdate.user_marketing_emails = userDoc.marketing_emails.toString();
+            }
 
-                await updateSendGridRecipient(listId, recipientUpdate);
+            await updateSendGridRecipient(listId, recipientUpdate);
 
         } else {
             let companyDoc = await mongooseCompany.findOneByUserId(userDoc._id);
