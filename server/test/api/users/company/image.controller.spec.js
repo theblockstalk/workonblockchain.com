@@ -37,6 +37,7 @@ describe('upload company profile image', function () {
             await companyHepler.image(file, signupRes.body.jwt_token);
 
             const companyDoc = await Companies.findOne({_id: signupRes.body.company_id}).lean();
+
             assert(companyDoc.company_logo.includes(file.name));
         })
     })

@@ -35,7 +35,6 @@ export class TermsWizardComponent implements OnInit {
     this.about_disable= "disabled";
     this.pref_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(this.currentUser);
 
     if(!this.currentUser)
     {
@@ -43,7 +42,6 @@ export class TermsWizardComponent implements OnInit {
     }
     else if(this.currentUser && this.currentUser.type=='company')
     {
-      console.log("else if");
       this.authenticationService.get_page_content('Terms and Condition for company')
       .subscribe(
         data => {
