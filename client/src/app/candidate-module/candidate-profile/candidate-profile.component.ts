@@ -52,6 +52,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  infoo;
+  base_country;
+  base_city;
+  commercial_skills;
+  formal_skills;
+  selectedValueArray;
+  visaRequiredArray = [];
+  noVisaArray = [];
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -105,15 +116,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     return 0;
   };
 
-  infoo;
-  base_country;
-  base_city;
-  commercial_skills;
-  formal_skills;
-  selectedValueArray;
-  visaRequiredArray = [];
-  noVisaArray = [];
-  employee: any = {};
+
   ngOnInit()
   {
     this.infoo='';
@@ -210,6 +213,16 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 if(data['candidate'].employee) {
                   this.employee.value = data['candidate'].employee;
                   this.changeLocationDisplayFormat(this.employee.value.location, 'employee');
+                }
+
+                if(data['candidate'].contractor) {
+                  this.contractor.value = data['candidate'].contractor;
+                  this.changeLocationDisplayFormat(this.contractor.value.location, 'contractor');
+                }
+
+                if(data['candidate'].volunteer) {
+                  this.volunteer.value = data['candidate'].volunteer;
+                  this.changeLocationDisplayFormat(this.volunteer.value.location, 'volunteer');
                 }
 
                 /*this.countries = data['candidate'].locations;
@@ -454,7 +467,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       }
 
       if(this.countries && this.countries.length > 0) {
-
+        this.visaRequiredArray = [];
+        this.noVisaArray = [];
         for(let loc of this.countries) {
           if(loc.visa_needed === true)
             this.visaRequiredArray.push(loc);
@@ -469,6 +483,16 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     if(data === 'employee') {
       this.employee.noVisaArray = this.noVisaArray;
       this.employee.visaRequiredArray = this.visaRequiredArray;
+    }
+
+    if(data === 'contractor') {
+      this.contractor.noVisaArray = this.noVisaArray;
+      this.contractor.visaRequiredArray = this.visaRequiredArray;
+    }
+
+    if(data === 'volunteer') {
+      this.volunteer.noVisaArray = this.noVisaArray;
+      this.volunteer.visaRequiredArray = this.visaRequiredArray;
     }
 
     console.log(this.employee)
