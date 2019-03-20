@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $: any;
 import {constants} from "../../../constants/constants";
-import {getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -209,17 +209,25 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 if(data['candidate'].employee) {
                   this.employee.value = data['candidate'].employee;
-                  this.changeLocationDisplayFormat(this.employee.value.location, 'employee');
+                  const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                  this.employee.noVisaArray = locationArray.noVisaArray;
+                  this.employee.visaRequiredArray = locationArray.visaRequiredArray;
                 }
 
                 if(data['candidate'].contractor) {
                   this.contractor.value = data['candidate'].contractor;
                   this.changeLocationDisplayFormat(this.contractor.value.location, 'contractor');
+                  const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                  this.contractor.noVisaArray = locationArray.noVisaArray;
+                  this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
                 }
 
                 if(data['candidate'].volunteer) {
                   this.volunteer.value = data['candidate'].volunteer;
                   this.changeLocationDisplayFormat(this.volunteer.value.location, 'volunteer');
+                  const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                  this.volunteer.noVisaArray = locationArray.noVisaArray;
+                  this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
                 }
 
                 /*this.countries = data['candidate'].locations;

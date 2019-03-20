@@ -127,9 +127,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   objective_log;
   max_hours=[];
   validateUrl;
-  skillDbArray=[];
-  skillDb;
-  skill_expYear_db=[];
   contract_type= [];
   volunteerArray=[];
   current_salary;
@@ -161,6 +158,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
   otherSkills = constants.otherSkills;
+  contractor_types = constants.contractorTypes;
 
   skillDbArray=[];
   skillDb;
@@ -573,7 +571,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   currency = constants.currency;
   experience = constants.exp_year;
   options = constants.options;
-  dropdown_options = constants.dropdown_options;
+  roles = constants.dropdown_options;
   area_interested = constants.area_interested;
   graduation_year = constants.year;
   year = constants.year;

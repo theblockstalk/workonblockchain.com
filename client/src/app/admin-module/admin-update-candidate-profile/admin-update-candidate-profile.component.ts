@@ -147,13 +147,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   volunteerArray=[];
   current_salary;
   contractorArray = [];
-  skillDbArray=[];
-  skillDb;
-  skill_expYear_db=[];
-  admin_log;
-
-
-
   nationality = constants.nationality;
   current_work_check=[];
   current_work = constants.current_work;
@@ -161,6 +154,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  roles = constants.dropdown_options;
+  contractor_types = constants.contractorTypes;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {

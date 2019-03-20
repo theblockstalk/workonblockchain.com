@@ -298,6 +298,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   otherSkills = constants.otherSkills;
   experimented = constants.experimented;
   exp_year = constants.exp_year;
+  area_interested = constants.area_interested;
 
   onExpOptions(e)
   {

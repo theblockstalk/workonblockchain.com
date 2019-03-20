@@ -27,7 +27,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   experience_year='';
   currentUser: User;exp_class;
   log; salary; available;link;class;
-
   availability_day;
   active_class;
   job_active_class;
@@ -237,15 +236,11 @@ export class JobComponent implements OnInit,AfterViewInit {
   currency = constants.currency;
   experience = constants.exp_year;
   options = constants.options;
-  dropdown_options = constants.dropdown_options;
+  roles = constants.dropdown_options;
   area_interested = constants.area_interested;
   year = constants.year;
   availability = constants.availability;
-
-  contractor_types = [
-    {name: "I work by myself as a freelancer", value: "freelance",checked:false},
-    {name: "I worked through a development agency with a team", value: "agency", checked:false}
-  ]
+  contractor_types = constants.contractorTypes;
 
   changeLocationDisplayFormat(array,value) {
     let locationArray = [];

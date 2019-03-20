@@ -220,5 +220,9 @@ export const constants = {
     {value:'job found', name:'Job Found'},
     {value:'not responded', name:'Not Responded'},
     {value:'other', name:'Other'}
+  ],
+  contractorTypes : [
+    {name: "I work by myself as a freelancer", value: "freelance",checked:false},
+    {name: "I worked through a development agency with a team", value: "agency", checked:false}
   ]
 };
