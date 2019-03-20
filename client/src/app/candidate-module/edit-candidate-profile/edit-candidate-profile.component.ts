@@ -1922,7 +1922,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.selected_work_type.push(event.target.value);
     }
     else{
-     // if(this.selected_work_type.find(x => x === event.target.value))
       let updateItem = this.selected_work_type.find(x => x === event.target.value);
       let index = this.selected_work_type.indexOf(updateItem);
       this.selected_work_type.splice(index, 1);
