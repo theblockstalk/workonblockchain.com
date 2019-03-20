@@ -200,6 +200,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    for(let i =5; i<=60; i=i+5) {
+      this.max_hours.push(i);
+    }
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -209,18 +212,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
     if(this.currentUser && this.currentUser.type=='candidate')
     {
-
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
-
-      this.dropdown_options.sort(function(a, b){
+      this.roles.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
@@ -621,55 +613,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       {name:'2-4', value:'2-4', checked:false},
       {name:'4-6', value:'4-6', checked:false},
       {name:'6+', value:'6+', checked:false}
-    ]
-
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
     ]
 
   area_interested=
@@ -1985,17 +1928,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
   }
-
   employeeUpdateCitiesOptions(event) {
     this.updateCitiesOptions(event.target.value ,event.target.checked, this.employee.selectedLocation );
 
   }
-
   employeeDeleteLocationRow(index){
     this.deleteLocationRow(this.employee.selectedLocation, index);
   }
-
-
 
   contractorSelectedValueFunction(e) {
     if(this.cities) {
