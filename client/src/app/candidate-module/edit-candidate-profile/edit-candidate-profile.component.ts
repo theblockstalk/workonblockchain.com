@@ -1572,15 +1572,19 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.education_json_array.push(this.educationjson) ;
     }
 
+    profileForm.unset_commercial_platforms = false;
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_platforms = [];
+      profileForm.unset_commercial_platforms = true;
     }
     else {
       profileForm.commercial_platforms = this.commercial_expYear;
     }
 
+    profileForm.unset_commercial_skills = false;
     if(this.commercialSkills.length === 0) {
       profileForm.commercial_skills = [];
+      profileForm.unset_commercial_skills = true;
     }
     else {
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
@@ -1601,8 +1605,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.description_commercial_skills = this.description_commercial_skills;
     }
 
+    profileForm.unset_language = false;
     if(this.language.length === 0) {
       profileForm.language = [];
+      profileForm.unset_language = true;
     }
     else {
       profileForm.language_experience_year = this.LangexpYear;
@@ -1621,10 +1627,31 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
     if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
-    if(this.info.github_account) inputQuery.github_account = this.info.github_account;
-    if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
-    if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
-    if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+
+    inputQuery.unset_github_account = true;
+    if(this.info.github_account) {
+      inputQuery.unset_github_account = false;
+      inputQuery.github_account = this.info.github_account;
+    }
+
+    inputQuery.unset_exchange_account = true;
+    if(this.info.exchange_account) {
+      inputQuery.unset_exchange_account = false;
+      inputQuery.exchange_account = this.info.exchange_account;
+    }
+
+    inputQuery.unset_linkedin_account = true;
+    if(this.info.linkedin_account) {
+      inputQuery.unset_linkedin_account = false;
+      inputQuery.linkedin_account = this.info.linkedin_account;
+    }
+
+    inputQuery.unset_medium_account = true;
+    if(this.info.medium_account) {
+      inputQuery.unset_medium_account = false;
+      inputQuery.medium_account = this.info.medium_account;
+    }
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.info.Intro) inputQuery.description = this.info.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
@@ -1645,8 +1672,27 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
     if(profileForm.description_commercial_skills) inputQuery.description_commercial_skills = profileForm.description_commercial_skills;
     if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
-    if(this.education_json_array) inputQuery.education_history = this.education_json_array;
-    if(this.experiencearray) inputQuery.work_history = this.experiencearray;
+
+    inputQuery.unset_commercial_platforms = profileForm.unset_commercial_platforms;
+    inputQuery.unset_commercial_skills = profileForm.unset_commercial_skills;
+
+    inputQuery.unset_experimented_platforms = false;
+    if(this.experimented_platform.length == 0) {
+      inputQuery.unset_experimented_platforms = true;
+    }
+    inputQuery.unset_language = profileForm.unset_language;
+
+    inputQuery.unset_education_history = true;
+    if(this.education_json_array && this.education_json_array.length>0){
+      inputQuery.unset_education_history = false;
+      inputQuery.education_history = this.education_json_array;
+    }
+
+    inputQuery.unset_work_history = true;
+    if(this.experiencearray && this.experiencearray.length>0) {
+      inputQuery.unset_work_history = false;
+      inputQuery.work_history = this.experiencearray;
+    }
 
     this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
       .subscribe(

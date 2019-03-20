@@ -248,9 +248,9 @@
               </div>
             </div>
 
-            <div class="col-md-12" *ngIf="commercial && commercial.length > 0 ">
+            <div class="col-md-12" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length>0) || (commercial_skills && commercial_skills.length > 0)">
               <h4>Technologies</h4>
-              <div class="form-group mt-3">
+              <div class="form-group mt-3" *ngIf="commercial && commercial.length > 0">
                 <label>Commercial experience: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>

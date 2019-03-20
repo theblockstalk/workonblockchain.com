@@ -126,10 +126,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
               this.active_class='fa fa-check-circle text-success';
 
             }
+
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
-
-              if(data['candidate'].work_history.length>0)
+              if(data['candidate'].work_history && data['candidate'].work_history.length>0)
               {
                 this.jobData = data['candidate'].work_history;
 
@@ -146,7 +146,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   )
                 });
               }
-              if(data['candidate'].education_history.length>0)
+              if(data['candidate'].education_history && data['candidate'].education_history.length>0)
               {
 
                 this.eduData = data['candidate'].education_history;
@@ -158,7 +158,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               }
 
-              if(data['candidate'].programming_languages)
+              if(data['candidate'].programming_languages && data['candidate'].programming_languages.length>0)
               {
                 this.expYear = data['candidate'].programming_languages;
                 for (let key of data['candidate'].programming_languages)
@@ -198,11 +198,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   }
                 }
               }
-
-
-              this.Intro =data['candidate'].description;
-
             }
+            this.Intro =data['candidate'].description;
 
 
             if(!data['candidate'].why_work)
@@ -620,14 +617,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     }
 
-
-    console.log("language length " + this.language.length);
-    console.log("experience year length " + this.expYear.length);
-    console.log("education count " + this.edu_count);
-    console.log("education form count " + this.EducationForm.value.itemRows.length);
-    console.log("work history count " + this.exp_count);
-    console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
-
     if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
       this.verify = true;
     }
@@ -698,6 +687,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         this.education_json_array.push(this.educationjson) ;
       }
     }
+
     if(this.language.length === 0) {
       searchForm.value.language = [];
     }
@@ -706,9 +696,25 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
 
     let inputQuery : any = {};
-    if(this.expYear) inputQuery.programming_languages = this.expYear;
-    if(this.education_json_array) inputQuery.education_history =  this.education_json_array;
-    if(this.experiencearray) inputQuery.work_history =  this.experiencearray;
+
+    inputQuery.unset_language = true;
+    if(this.expYear && this.expYear.length>0) {
+      inputQuery.unset_language = false;
+      inputQuery.programming_languages = this.expYear;
+    }
+
+    inputQuery.unset_education_history = true;
+    if(this.education_json_array && this.education_json_array.length>0) {
+      inputQuery.unset_education_history = false;
+      inputQuery.education_history =  this.education_json_array;
+    }
+
+    inputQuery.unset_work_history = true;
+    if(this.experiencearray && this.experiencearray.length) {
+      inputQuery.unset_work_history = false;
+      inputQuery.work_history =  this.experiencearray;
+    }
+
     if(this.Intro) inputQuery.description =  this.Intro;
 
     inputQuery.status = 'wizard completed';
