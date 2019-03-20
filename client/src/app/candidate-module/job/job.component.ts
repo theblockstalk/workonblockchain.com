@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -19,12 +20,14 @@ export class JobComponent implements OnInit,AfterViewInit {
   country ='';
   interest_area='';
   expected_salary='';
+  selectedValue = [];
   expYear=[];
   jobselected=[];
   position='';
   experience_year='';
   currentUser: User;exp_class;
   log; salary; available;link;class;
+
   availability_day;
   active_class;
   job_active_class;
@@ -230,38 +233,14 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  currency= [
-    "£ GBP" ,"€ EUR" , "$ USD"
-  ]
 
-  roles = [
-    {name:'Backend Developer', value:'Backend Developer', checked:false},
-    {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-    {name:'UI Developer', value:'UI Developer', checked:false},
-    {name:'UX Designer', value:'UX Designer', checked:false},
-    {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-    {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-    {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-    {name:'Architect', value:'Architect', checked:false},
-    {name:'DevOps', value:'DevOps', checked:false},
-    {name:'Software Tester', value:'Software Tester', checked:false},
-    {name:'CTO', value:'CTO', checked:false},
-    {name:'Technical Lead', value:'Technical Lead', checked:false},
-    {name:'Product Manager', value:'Product Manager', checked:false},
-    {name:'Intern Developer', value:'Intern Developer', checked:false},
-    {name:'Researcher', value:'Researcher', checked:false},
-    {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-    {name:'Data scientist', value:'Data scientist', checked:false},
-    {name:'Security specialist ', value:'Security specialist', checked:false},
-  ]
-
-  employement_availability = [
-    {name: "Now" , value: "Now" },
-    {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 months" },
-    {name: "3 months notice period", value: "3 months" },
-    {name: "3+ months notice period", value: "Longer than 3 months" }
-  ]
+  currency = constants.currency;
+  experience = constants.exp_year;
+  options = constants.options;
+  dropdown_options = constants.dropdown_options;
+  area_interested = constants.area_interested;
+  year = constants.year;
+  availability = constants.availability;
 
   contractor_types = [
     {name: "I work by myself as a freelancer", value: "freelance",checked:false},

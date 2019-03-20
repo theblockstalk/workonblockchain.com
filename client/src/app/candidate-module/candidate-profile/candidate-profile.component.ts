@@ -1,15 +1,12 @@
 import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
-import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
-import {NgForm} from '@angular/forms';
-import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
-import {environment} from '../../../environments/environment';
-import { Location } from '@angular/common';
 declare var $: any;
+import {constants} from "../../../constants/constants";
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -302,6 +299,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                // else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
                // else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
                // else this.availability_day =data['candidate'].availability_day;
+
 
                 this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {

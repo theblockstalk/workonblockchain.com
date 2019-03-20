@@ -1,12 +1,12 @@
 import { Component, OnInit , AfterViewInit} from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
-import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
-
+import {constants} from '../../../constants/constants';
+import {getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -28,25 +28,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = [
-    {value:'created', name:'Created'},
-    {value:'wizard completed', name:'Wizard Completed'},
-    {value:'approved', name:'Approved'},
-    {value:'reviewed', name:'Reviewed'},
-    {value: 'updated', name: 'Updated'},
-    {value : 'updated by admin' , name: 'Updated by admin'},
-    {value:'rejected', name:'Rejected'},
-    {value:'deferred', name:'Deferred'},
-    {value:'other', name:'Other'}
-  ];
-  admin_checks_email_verify = [
-    {value:1, name:'Verified'},
-    {value:0, name:'Not Verified'}
-  ];
-  admin_checks_candidate_account = [
-    {value:false, name:'Enabled'},
-    {value:true, name:'Disabled'}
-  ];
+  admin_check = constants.admin_check;
+  admin_checks_email_verify = constants.admin_checks_email_verify;
+  admin_checks_candidate_account = constants.admin_checks_candidate_account;
   information;
   admin_log;
   response;
@@ -54,17 +38,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   candidate_status_account;
   pager: any = {};
   pagedItems: any[];
-  msgTagsOptions =
-    [
-      {value:'normal', name:'Normal' , checked:false},
-      {value:'job_offer', name:'Job offer sent' , checked:false},
-      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
-      {value:'interview_offer', name:'Interview offer sent' , checked:false},
-      {value:'employment_offer', name:'Employment offer sent' , checked:false},
-      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
-      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
-    ];
+  msgTagsOptions = constants.msgTagsOptions;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -305,5 +279,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
+
+    let new_roles = constants.dropdown_options;
+
+    for(let i=0;i<this.pagedItems.length;i++){
+      this.pagedItems[i].candidate.roles = getFilteredNames(this.pagedItems[i],new_roles);
+    }
   }
 }

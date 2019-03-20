@@ -3,7 +3,7 @@ module.exports.blockchainPlatforms = ['Bitcoin', 'Ethereum', 'Ripple','Stellar',
 
 module.exports.currencies = ['€ EUR', '$ USD', '£ GBP'];
 
-module.exports.programmingLanguages = ['Java','C', 'C++','C#', 'Python','Visual Basic .NET',  'PHP','JavaScript',  'Delphi/Object Pascal','Swift', 'Perl','Ruby', 'Assembly language','R', 'Visual Basic','Objective-C', 'Go','MATLAB', 'PL/SQL','Scratch', 'Solidity','Serpent', 'LLL','Nodejs', 'Scala','Rust', 'Kotlin','Haskell'];
+module.exports.programmingLanguages = ['Java','C', 'C++','C#', 'Python','Visual Basic .NET',  'PHP','JavaScript',  'Delphi/Object Pascal','Swift', 'Perl','Ruby', 'Assembly language','R', 'Visual Basic','Objective-C', 'Go','MATLAB', 'PL/SQL','Scratch', 'Solidity','Serpent', 'LLL','Nodejs', 'Scala','Rust', 'Kotlin','Haskell','Erlang'];
 
 module.exports.experienceYears = ['0-1', '1-2','2-4','4-6','6+'];
 
@@ -13,7 +13,7 @@ module.exports.countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Ang
 
 module.exports.workLocations = ['remote', 'Paris', 'London', 'Dublin', 'Amsterdam','Berlin','Barcelona', 'Munich','San Francisco', 'New York', 'Los Angeles','Boston', 'Chicago','Austin','Zug','Zurich','Edinburgh','Copenhagen','Stockholm','Madrid', 'Toronto', 'Sydney']
 
-module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Developer', 'UX Designer', 'Fullstack Developer','Blockchain Developer' , 'Smart Contract Developer' , 'Architect', 'DevOps' , 'Software Tester' , 'CTO' , 'Technical Lead', 'Product Manager', 'Intern Developer', 'Researcher' , 'Mobile app developer' , 'Data scientist' , 'Security specialist'];
+module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Developer', 'UX Designer', 'Fullstack Developer','Blockchain Developer' , 'Smart Contract Developer' , 'Architect', 'DevOps' , 'Software Tester' , 'CTO' , 'Technical Lead', 'Product Manager', 'Intern Developer', 'Researcher' , 'Mobile app developer' , 'Data scientist' , 'Security specialist', 'Technical business analyst', 'Technical project manager', 'Machine learning engineer'];
 
 module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)',"I don't know"];
 

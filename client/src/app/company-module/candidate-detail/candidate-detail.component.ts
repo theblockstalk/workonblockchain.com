@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 declare var $:any;
+import {constants} from "../../../constants/constants";
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-detail',
@@ -30,7 +32,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   current_currency;
   current_salary;
   image_src;
-  imgPath;
   nationality;
   contact_number;
   platforms;
@@ -41,7 +42,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   email;
   visaRequiredArray= [];
   noVisaArray = [];
-  currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  currency = constants.currency;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
@@ -57,10 +58,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   }
   company_reply; currentUser: any;
   credentials: any = {};
-  job_type = ["Part time", "Full time"];
+  job_type = constants.job_type;
   company_name;
   interview_location = '';
-  interview_time = '';
   invalidMsg;
 
   date_sort_desc = function (date1, date2)
@@ -232,7 +232,15 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
+              let new_roles = constants.dropdown_options;
+              let filtered_array = [];
+
               this.roles  = dataa['candidate'].roles;
+              for(let i=0;i<this.roles.length;i++){
+                const filteredArray = getNameFromValue(new_roles,this.roles[i]);
+                filtered_array.push(filteredArray.name);
+              }
+              this.roles = filtered_array;
               this.roles.sort();
 
 
