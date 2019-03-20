@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $: any;
 import {constants} from "../../../constants/constants";
-import {changeLocationDisplayFormat} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -36,7 +36,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   stack;
   linkedin_account;
   medium_account;
-  roles;
   expected_currency;
   expected_salary;
   email;
@@ -113,6 +112,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     return 0;
   };
 
+  roles = constants.dropdown_options;
 
   ngOnInit()
   {
@@ -212,6 +212,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   const locationArray = changeLocationDisplayFormat(this.employee.value.location);
                   this.employee.noVisaArray = locationArray.noVisaArray;
                   this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  for(let role of this.employee.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    rolesValue.push(filteredArray.name);
+                  }
+                  this.employee.value.roles = rolesValue;
                 }
 
                 if(data['candidate'].contractor) {
@@ -220,6 +226,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
                   this.contractor.noVisaArray = locationArray.noVisaArray;
                   this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  for(let role of this.contractor.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    rolesValue.push(filteredArray.name);
+                  }
+                  this.contractor.value.roles = rolesValue;
                 }
 
                 if(data['candidate'].volunteer) {
@@ -228,6 +240,15 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
                   this.volunteer.noVisaArray = locationArray.noVisaArray;
                   this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  console.log("volunteer roles");
+                  console.log(this.volunteer.value.roles);
+                  for(let role of this.volunteer.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    console.log(filteredArray);
+                    rolesValue.push(filteredArray.name);
+                  }
+                  this.volunteer.value.roles = rolesValue;
                 }
 
                 /*this.countries = data['candidate'].locations;
