@@ -306,7 +306,9 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+        let wizardStatus = candidateHistory.filter(
+            (history) => history.status && history.status.status === 'wizard completed'
+        );
         if (wizardStatus.length === 0 && queryBody.description) {
             history.status = { status: 'wizard completed' };
         }
@@ -319,16 +321,28 @@ module.exports.endpoint = async function (req, res) {
     latestStatus.timestamp = timestamp;
     updateCandidateUser['candidate.latest_status'] = latestStatus;
 
+    let updateObj;
+    let pushObj = {
+        'candidate.history': {
+            $each: [history],
+            $position: 0
+        }
+    };
+    if(!objects.isEmpty(unset)){
+        updateObj = {
+            $push: pushObj,
+            $set: updateCandidateUser,
+            $unset: unset
+        };
+    }
+    else{
+        updateObj = {
+            $push: pushObj,
+            $set: updateCandidateUser
+        };
+    }
 
-    await users.update({_id: userId}, {
-        $push: {
-            'candidate.history': {
-                $each: [history],
-                $position: 0
-            }
-        },
-        $set : updateCandidateUser
-    });
+    await users.update({_id: userId}, updateObj);
 
 
     const filterData = filterReturnData.removeSensativeData(userDoc);
