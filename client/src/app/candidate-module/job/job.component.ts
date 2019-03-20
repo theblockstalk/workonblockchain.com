@@ -19,21 +19,16 @@ export class JobComponent implements OnInit,AfterViewInit {
   country ='';
   interest_area='';
   expected_salary='';
-  checked_country='';
-  selectedValue = [];
-  selectedcountry = [];
   expYear=[];
-  interest='';
-  optionSelected: any;
   jobselected=[];
   position='';
   experience_year='';
   currentUser: User;exp_class;
   log; salary; available;link;class;
-  availability_day;availability_year;
+  availability_day;
   active_class;
   job_active_class;
-  exp_active_class;resume_active_class;resume_class;base_currency;
+  exp_active_class;resume_active_class;resume_class;
   about_active_class;
   term_active_class;
   term_link;
@@ -44,22 +39,17 @@ export class JobComponent implements OnInit,AfterViewInit {
   error_msg;
   expected_validation;
   selectedValueArray=[];
-  countriesModel;
   error;
-  selectedLocations;
   cities;
   country_log;
-  roles_log;
   currency_log;
   salary_log;
-  interest_log;
   avail_log;
   current_sal_log;
   current_currency_log;
   count;
   emptyInput;
   validatedLocation=[];
-  country_input_log;
   position_type = ['Full time', 'Part time'];
   employment_type_log;
   employment_location_log;
@@ -364,20 +354,16 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
     if(this.employeeCheck) {
       if(!this.employee.employment_type) {
-        console.log("1");
         this.employment_type_log = "Please choose position type";
         employeeCount = 1;
       }
 
       if(!this.employee.selectedLocation || (this.employee.selectedLocation && this.employee.selectedLocation.length <= 0) ) {
-
-        console.log("2");
         this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
         employeeCount = 1;
       }
       if(this.employee.selectedLocation && this.employee.selectedLocation.length > 0) {
         if(this.employee.selectedLocation.filter(i => i.visa_needed === true).length === this.employee.selectedLocation.length) {
-          console.log("3");
           this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
           employeeCount = 1;
         }
@@ -397,29 +383,24 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
 
       if(this.employee.selectedLocation && this.employee.selectedLocation.length > 10) {
-        console.log("4")
         this.employment_location_log = "Please select maximum 10 locations";
         employeeCount = 1;
       }
 
       if(!this.employee.roles) {
-        console.log("5")
         this.employee_roles_log = "Please select minimum one role";
         employeeCount = 1;
       }
 
       if(!this.employee.expected_annual_salary) {
-        console.log("6")
         this.salary_log = "Please enter expected yearly salary";
         employeeCount = 1;
       }
       if(!this.employee.currency) {
-        console.log("7")
         this.currency_log = "Please choose currency";
         employeeCount = 1;
       }
       if(!this.employee.employment_availability) {
-        console.log("8")
         this.avail_log = "Please select employment availability";
         employeeCount = 1;
       }
@@ -533,14 +514,11 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
+
     if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
       this.count = 0;
     }
-    console.log((this.employeeCheck || this.contractorCheck || this.volunteerCheck));
-    console.log(this.count);
-    console.log(employeeCount);
-    console.log(contractorCount);
-    console.log(volunteerCount);
+
     if( this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
@@ -664,7 +642,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     return this.cities;
   }
 
-
   updateCitiesOptions(input, check,array) {
     let objIndex = array.findIndex((obj => obj.name === input));
     array[objIndex].visa_needed = check;
@@ -687,7 +664,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     });
   }
 
-
   workTypeChange(event) {
 
     setTimeout(() => {
@@ -698,7 +674,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.selected_work_type.push(event.target.value);
     }
     else{
-      let updateItem = this.selected_work_type.find(this.findIndexToUpdate, event.target.value);
+      let updateItem = this.selected_work_type.find(x => x === event.target.value);
       let index = this.selected_work_type.indexOf(updateItem);
       this.selected_work_type.splice(index, 1);
     }
@@ -710,7 +686,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteerCheck = true;
     else this.volunteerCheck = false;
   }
-
 
   employeeSelectedValueFunction(e) {
     if(this.cities) {
@@ -761,11 +736,11 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-
   employeeUpdateCitiesOptions(event) {
     this.updateCitiesOptions(event.target.value ,event.target.checked, this.employee.selectedLocation );
 
   }
+
   employeeDeleteLocationRow(index){
     this.deleteLocationRow(this.employee.selectedLocation, index);
   }
