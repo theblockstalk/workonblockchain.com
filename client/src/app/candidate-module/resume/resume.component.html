@@ -83,7 +83,7 @@
                   </div>
                 </div>
                 <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
-                <div class = "invalid-feedback d-inline"  *ngIf="selectedValue.length <=0">
+                <div class = "invalid-feedback d-inline"  *ngIf="selectedValue && selectedValue.length <=0">
                   {{interest_log}}
                 </div>
               </div>
