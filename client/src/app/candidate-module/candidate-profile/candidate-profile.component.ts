@@ -159,8 +159,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
                 if(data['first_name'] && data['last_name'] && data['contact_number'] && data['nationality'] &&
-                  data['candidate'].locations  && data['candidate'].roles && data['candidate'].interest_areas &&
-                  data['candidate'].expected_salary && data['candidate'].why_work && data['candidate'].description
+                   data['candidate'].interest_areas && data['candidate'].why_work && data['candidate'].description
                   && !data['candidate'].base_country && !data['candidate'].base_city){
                   $("#popModal_b").modal({
                     show: true
@@ -185,8 +184,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
 
 
-                this.expected_currency = data['candidate'].expected_salary_currency;
-                this.expected_salary = data['candidate'].expected_salary;
+                //this.expected_currency = data['candidate'].expected_salary_currency;
+                //this.expected_salary = data['candidate'].expected_salary;
                 this.first_name=data['first_name'];
                 this.last_name =data['last_name'];
                 this.nationality = data['nationality'];
@@ -219,7 +218,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.countries = this.filter_array(this.countries);
                 }*/
 
-                if(data['candidate'].locations)
+                /*(if(data['candidate'].locations)
                 {
                   let citiesArray = [];
                   let countriesArray = [];
@@ -279,17 +278,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                   }
 
-                }
+                }*/
 
                 this.interest_area =data['candidate'].interest_areas;
                 this.interest_area.sort();
-                this.roles  = data['candidate'].roles;
-                this.roles.sort();
-                if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-                else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-                else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-                else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-                else this.availability_day =data['candidate'].availability_day;
+                //this.roles  = data['candidate'].roles;
+                //this.roles.sort();
+               // if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
+               // else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
+               // else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
+               // else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
+               // else this.availability_day =data['candidate'].availability_day;
 
                 this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {

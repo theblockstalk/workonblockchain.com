@@ -356,13 +356,13 @@ module.exports.endpoint = async function (req, res) {
         else unset['candidate.current_salary'] = 1;
 
         if(queryBody.employee) updateCandidateUser['candidate.employee'] = queryBody.employee;
-        else unset['candidate.employee'] = 1;
+        //else unset['candidate.employee'] = 1;
 
         if(queryBody.contractor) updateCandidateUser['candidate.contractor'] = queryBody.contractor;
-        else unset['candidate.contractor'] = 1;
+        //else unset['candidate.contractor'] = 1;
 
         if(queryBody.volunteer) updateCandidateUser['candidate.volunteer'] = queryBody.volunteer;
-        else unset['candidate.volunteer'] = 1;
+        //else unset['candidate.volunteer'] = 1;
 
         if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
         if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;

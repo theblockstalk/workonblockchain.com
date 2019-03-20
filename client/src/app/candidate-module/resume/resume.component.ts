@@ -100,9 +100,46 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
 
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
+            {
+              this.job_active_class = 'fa fa-check-circle text-success';
+            }
+
+            if(data['candidate'].why_work && data['candidate'].interest_areas )
+            {
+              this.exp_class = "/experience";
+              this.exp_disable = "";
+              this.resume_active_class='fa fa-check-circle text-success';
+            }
+
+            if( data['candidate'].description)
+            {
+
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+
             if(data['candidate'].why_work){
 
               this.why_work=data['candidate'].why_work;
+            }
+            if(data['candidate'].interest_areas)
+            {
+              for (let interest of data['candidate'].interest_areas)
+              {
+
+                for(let option of this.area_interested)
+                {
+
+                  if(option.value === interest)
+                  {
+                    option.checked=true;
+                    this.selectedValue.push(interest);
+
+                  }
+
+                }
+
+              }
             }
             if(data['candidate'].blockchain)
             {
@@ -149,6 +186,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
                 }
               }
+
+              if(data['candidate'].blockchain.description_commercial_skills)
+              {
+                this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+              }
+
 
               if(data['candidate'].blockchain.description_commercial_platforms)
               {
@@ -226,31 +269,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data['candidate'].blockchain.description_commercial_skills)
-            {
-              this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
-            }
 
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day )
-            {
-              this.job_active_class = 'fa fa-check-circle text-success';
-
-            }
-
-            if(data['candidate'].why_work )
-            {
-              this.exp_class = "/experience";
-              this.exp_disable = "";
-              this.resume_active_class='fa fa-check-circle text-success';
-              // this.router.navigate(['/resume']);
-            }
-
-            if( data['candidate'].description)
-            {
-
-              this.exp_active_class = 'fa fa-check-circle text-success';
-              //this.router.navigate(['/experience']);
-            }
 
 
 
@@ -388,7 +407,15 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {name:'4-6', value:'4-6', checked:false},
       {name:'6+', value:'6+', checked:false}
     ]
-
+  area_interested=
+    [
+      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
+      {name:'Public blockchain', value:'Public blockchain', checked:false},
+      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
+      {name:'Smart contract development', value:'Smart contract development', checked:false},
+      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
+      {name:"I don't know", value:"I don't know", checked:false},
+    ]
 
 
   onExpOptions(e)
@@ -408,6 +435,21 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
+  onAreaSelected(e)
+  {
+    if(e.target.checked)
+    {
+      this.selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
+      let index = this.selectedValue.indexOf(updateItem);
+      this.selectedValue.splice(index, 1);
+    }
+
+  }
+
+
   findIndexToUpdateExperimented(type) {
     return type == this;
   }
@@ -420,6 +462,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   why_work_log;commercial_log;
   formal_skills=[];
   commercial_skill_log;
+  interest_log;
   blockchain_exp(expForm: NgForm)
   {
     this.error_msg="";
@@ -433,11 +476,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
+    if(this.selectedValue.length<=0)
+    {
+      this.interest_log = "Please select at least one area of interest";
+    }
+
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length
+    if(this.why_work && this.selectedValue.length > 0 && this.commercially_worked.length === this.commercial_expYear.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length)
     {
       if(this.commercially_worked.length === 0) {
@@ -544,7 +592,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
-  selectedValue;langValue;
+  selectedValue=[];langValue;
   onComExpYearOptions(e, value)
   {
     this.langValue = value;

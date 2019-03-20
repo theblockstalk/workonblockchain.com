@@ -121,72 +121,101 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-              if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
-              if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
-              if(data['candidate'].employee) {
-                console.log("employee");
-                this.employeeCheck = true;
-                this.selected_work_type.push('employee');
-                let employee = data['candidate'].employee;
-                this.employee.employment_type = employee.employment_type;
-                this.employee.selectedLocation = employee.location;
-                this.selectedValueArray = employee.location;
-                this.employee.roles = employee.roles;
-                this.employee.expected_annual_salary = employee.expected_annual_salary;
-                this.employee.currency = employee.currency;
-                this.employee.employment_availability = employee.employment_availability;
+            if(data['contact_number']  && data['nationality'])
+            {
+              this.about_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data['candidate'].terms_id)
+            {
+              this.term_active_class='fa fa-check-circle text-success';
+              this.term_link = '/terms-and-condition';
+            }
+            if(data['candidate'].why_work && data['candidate'].interest_areas)
+            {
+              this.exp_disable ='';
+              this.resume_active_class='fa fa-check-circle text-success';
+              this.exp_class = "/experience";
+            }
 
-              }
-              if(data['candidate'].contractor) {
-                this.contractorCheck = true;
-                this.selected_work_type.push('contractor');
-                let contractor = data['candidate'].contractor;
-                this.contractor.selectedLocation = contractor.location;
-                this.contractorArray = contractor.location;
-                this.contractor.roles = contractor.roles;
-                this.contractor.hourly_rate = contractor.expected_hourly_rate;
-                this.contractor.currency = contractor.currency;
-                if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
-                this.contractor.contractor_type = contractor.contractor_type;
-                for(let type of contractor.contractor_type)
+            if(data['candidate'].description )
+            {
+              this.exp_class = "/experience";
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer) {
+              this.active_class = 'fa fa-check-circle text-success';
+              this.class = "btn";
+              this.job_active_class = 'fa fa-check-circle text-success';
+              this.resume_disable ='';
+              this.resume_class="/resume";
+            }
+            if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
+            if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+            if(data['candidate'].employee) {
+              console.log("employee");
+              this.employeeCheck = true;
+              this.selected_work_type.push('employee');
+              let employee = data['candidate'].employee;
+              this.employee.employment_type = employee.employment_type;
+              this.employee.selectedLocation = employee.location;
+              this.selectedValueArray = employee.location;
+              this.employee.roles = employee.roles;
+              this.employee.expected_annual_salary = employee.expected_annual_salary;
+              this.employee.currency = employee.currency;
+              this.employee.employment_availability = employee.employment_availability;
+
+            }
+            if(data['candidate'].contractor) {
+              this.contractorCheck = true;
+              this.selected_work_type.push('contractor');
+              let contractor = data['candidate'].contractor;
+              this.contractor.selectedLocation = contractor.location;
+              this.contractorArray = contractor.location;
+              this.contractor.roles = contractor.roles;
+              this.contractor.hourly_rate = contractor.expected_hourly_rate;
+              this.contractor.currency = contractor.currency;
+              if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
+              this.contractor.contractor_type = contractor.contractor_type;
+              this.contract_type = contractor.contractor_type;
+              for(let type of contractor.contractor_type)
+              {
+
+                for(let option of this.contractor_types)
                 {
 
-                  for(let option of this.contractor_types)
+                  if(option.value === type)
                   {
-
-                    if(option.value === type)
-                    {
-                      option.checked = true;
-
-                    }
+                    option.checked = true;
 
                   }
 
                 }
 
-                if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
-                if(contractor.service_description) this.contractor.service_description = contractor.service_description;
-
-              }
-              if(data['candidate'].volunteer) {
-                console.log("volunteer");
-                this.volunteerCheck = true;
-                this.selected_work_type.push('volunteer');
-                let volunteer = data['candidate'].volunteer;
-                console.log(volunteer.location);
-                this.volunteer.selectedLocation = volunteer.location;
-                this.volunteerArray = volunteer.location;
-
-                this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
-                this.volunteer.learning_objectives = volunteer.learning_objectives;
-                this.volunteer.roles = volunteer.roles;
-                console.log("volunteer");
-
-                console.log(this.volunteer['volunteer_roles']);
               }
 
+              if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
+              if(contractor.service_description) this.contractor.service_description = contractor.service_description;
 
-              console.log(data);
+            }
+            if(data['candidate'].volunteer) {
+              console.log("volunteer");
+              this.volunteerCheck = true;
+              this.selected_work_type.push('volunteer');
+              let volunteer = data['candidate'].volunteer;
+              console.log(volunteer.location);
+              this.volunteer.selectedLocation = volunteer.location;
+              this.volunteerArray = volunteer.location;
+
+              this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
+              this.volunteer.learning_objectives = volunteer.learning_objectives;
+              this.volunteer.roles = volunteer.roles;
+              console.log("volunteer");
+
+              console.log(this.volunteer['volunteer_roles']);
+            }
+
+
+            console.log(data);
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
@@ -216,29 +245,29 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   currency= [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
+    "£ GBP" ,"€ EUR" , "$ USD"
+  ]
 
   roles = [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ]
+    {name:'Backend Developer', value:'Backend Developer', checked:false},
+    {name:'Frontend Developer', value:'Frontend Developer', checked:false},
+    {name:'UI Developer', value:'UI Developer', checked:false},
+    {name:'UX Designer', value:'UX Designer', checked:false},
+    {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
+    {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
+    {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
+    {name:'Architect', value:'Architect', checked:false},
+    {name:'DevOps', value:'DevOps', checked:false},
+    {name:'Software Tester', value:'Software Tester', checked:false},
+    {name:'CTO', value:'CTO', checked:false},
+    {name:'Technical Lead', value:'Technical Lead', checked:false},
+    {name:'Product Manager', value:'Product Manager', checked:false},
+    {name:'Intern Developer', value:'Intern Developer', checked:false},
+    {name:'Researcher', value:'Researcher', checked:false},
+    {name:'Mobile app developer', value:'Mobile app developer', checked:false},
+    {name:'Data scientist', value:'Data scientist', checked:false},
+    {name:'Security specialist ', value:'Security specialist', checked:false},
+  ]
 
   employement_availability = [
     {name: "Now" , value: "Now" },
@@ -255,6 +284,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   onJobSelected(e, type) {
     console.log(type);
+    this.jobselected = [];
     if(type === 'employee') {
       if(this.employee.roles) this.jobselected = this.employee.roles;
     }
@@ -296,13 +326,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   checkValidation(value) {
-      if(value.filter(i => i.visa_needed === true).length === value.length) return true;
-      else return false;
+    if(value.filter(i => i.visa_needed === true).length === value.length) return true;
+    else return false;
   }
 
   contract_type= [];
   contractor_type(inputParam) {
-    console.log(inputParam);
     if(inputParam.target.checked) {
       this.contract_type.push(inputParam.target.value);
     }
@@ -312,6 +341,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.contract_type.splice(index, 1);
     }
     this.contractor.contractor_type = this.contract_type;
+    this.checkContractValue(this.contractor.contractor_type);
   }
 
   checkContractValue(array) {
@@ -376,13 +406,13 @@ export class JobComponent implements OnInit,AfterViewInit {
         console.log("5")
         this.employee_roles_log = "Please select minimum one role";
         employeeCount = 1;
-       }
+      }
 
-       if(!this.employee.expected_annual_salary) {
-         console.log("6")
-         this.salary_log = "Please enter expected yearly salary";
-         employeeCount = 1;
-       }
+      if(!this.employee.expected_annual_salary) {
+        console.log("6")
+        this.salary_log = "Please enter expected yearly salary";
+        employeeCount = 1;
+      }
       if(!this.employee.currency) {
         console.log("7")
         this.currency_log = "Please choose currency";
@@ -478,14 +508,14 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
         this.volunteer.locations = this.validatedLocation;
       }
-     if(!this.volunteer.roles || (this.volunteer.roles && this.volunteer.roles.length<=0)) {
+      if(!this.volunteer.roles || (this.volunteer.roles && this.volunteer.roles.length<=0)) {
         this.volunteer_roles_log = "Please select minimum one role";
-       volunteerCount=1;
-     }
-     if(!this.volunteer.learning_objectives) {
+        volunteerCount=1;
+      }
+      if(!this.volunteer.learning_objectives) {
         this.objective_log = "Please enter learning objectives";
-       volunteerCount=1;
-     }
+        volunteerCount=1;
+      }
     }
 
 
@@ -512,7 +542,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     console.log(contractorCount);
     console.log(volunteerCount);
     if( this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
-    && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
+      && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
       if(this.employeeCheck) {
         inputQuery.employee = {
@@ -558,7 +588,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           data => {
             if (data) {
               console.log(data);
-              this.router.navigate(['/candidate_profile']);
+              this.router.navigate(['/resume']);
             }
           },
           error => {
@@ -605,7 +635,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                     citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
                 }
               }
-               this.cities = this.filter_array(citiesOptions);
+              this.cities = this.filter_array(citiesOptions);
 
             }
 

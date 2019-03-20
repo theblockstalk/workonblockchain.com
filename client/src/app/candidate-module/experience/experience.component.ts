@@ -121,11 +121,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
             {
               this.active_class='fa fa-check-circle text-success';
 
             }
+
+            if(data['candidate'].description) this.Intro = data['candidate'].description;
+
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
 
@@ -199,13 +202,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 }
               }
 
-
-              this.Intro =data['candidate'].description;
-
             }
 
 
-            if(!data['candidate'].why_work)
+            if(!data['candidate'].why_work && data['candidate'].interest_areas)
             {
               this.router.navigate(['/resume']);
             }
@@ -375,8 +375,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       fieldname:[this.fieldname],
       eduyear:[]
     });
-
-
   }
 
 
@@ -570,9 +568,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.end_date_year_log = "Please fill end date year ";
         }
-
-
-
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
