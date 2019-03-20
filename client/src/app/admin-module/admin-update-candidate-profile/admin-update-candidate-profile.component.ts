@@ -296,10 +296,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.selected_work_type.push('employee');
                 let employee = data['candidate'].employee;
                 this.employee.employment_type = employee.employment_type;
-                this.employee.selectedLocation = employee.location;
-                console.log(employee);
-                console.log(this.employee.selectedLocation);
-                this.selectedValueArray = employee.location;
+                this.changeLocationDisplayFormat(employee.location, 'employee');
                 this.employee.roles = employee.roles;
                 this.employee.expected_annual_salary = employee.expected_annual_salary;
                 this.employee.currency = employee.currency;
@@ -310,8 +307,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.contractorCheck = true;
                 this.selected_work_type.push('contractor');
                 let contractor = data['candidate'].contractor;
-                this.contractor.selectedLocation = contractor.location;
-                this.contractorArray = contractor.location;
+                this.changeLocationDisplayFormat(contractor.location, 'contractor');
                 this.contractor.roles = contractor.roles;
                 this.contractor.hourly_rate = contractor.expected_hourly_rate;
                 this.contractor.currency = contractor.currency;
@@ -344,9 +340,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.selected_work_type.push('volunteer');
                 let volunteer = data['candidate'].volunteer;
                 console.log(volunteer.location);
-                this.volunteer.selectedLocation = volunteer.location;
-                this.volunteerArray = volunteer.location;
-
+                this.changeLocationDisplayFormat(volunteer.location, 'volunteer');
                 this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
                 this.volunteer.learning_objectives = volunteer.learning_objectives;
                 this.volunteer.roles = volunteer.roles;
@@ -1539,7 +1533,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         employment_type : this.employee.employment_type,
         expected_annual_salary: parseInt(this.employee.expected_annual_salary),
         currency: this.employee.currency,
-        location: this.employee.selectedLocation,
+        location: this.employee.locations,
         roles: this.employee.roles,
         employment_availability: this.employee.employment_availability
       }
@@ -1549,7 +1543,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       inputQuery.contractor = {
         expected_hourly_rate : parseInt(this.contractor.hourly_rate),
         currency: this.contractor.currency,
-        location: this.contractor.selectedLocation,
+        location: this.contractor.locations,
         roles: this.contractor.roles,
         contractor_type: this.contractor.contractor_type,
         service_description : this.contractor.service_description
@@ -1560,7 +1554,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.volunteerCheck) {
       inputQuery.volunteer = {
-        location: this.volunteer.selectedLocation,
+        location: this.volunteer.locations,
         roles: this.volunteer.roles,
         max_hours_per_week: parseInt(this.volunteer.max_hours_per_week),
         learning_objectives : this.volunteer.learning_objectives
@@ -1701,6 +1695,52 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   endDateYear() {
     this.dateValidation = "";
+  }
+
+  changeLocationDisplayFormat(array,value) {
+    let locationArray = [];
+    if(array)
+    {
+      for (let country1 of array)
+      {
+        if (country1['remote'] === true) {
+          locationArray.push({name: 'Remote' , visa_needed : country1['visa_needed']});
+
+        }
+
+        if (country1['country']) {
+          let country = country1['country'] + ' (country)'
+          locationArray.push({name:  country , visa_needed : country1['visa_needed']});
+        }
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country + " (city)";
+          locationArray.push({_id:country1['city']._id ,name: city , visa_needed : country1['visa_needed']});
+        }
+      }
+
+      locationArray.sort();
+      if(locationArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = locationArray.find((obj => obj.name === 'Remote'));
+        locationArray.splice(0, 0, remoteValue);
+        locationArray = this.filter_array(locationArray);
+
+      }
+      if(value === 'employee')  {
+        this.employee.selectedLocation = locationArray;
+        this.selectedValueArray= locationArray;
+      }
+      if(value === 'contractor')  {
+        this.contractor.selectedLocation = locationArray;
+        this.contractorArray = locationArray;
+
+      }
+      if(value === 'volunteer')  {
+        this.volunteer.selectedLocation = locationArray;
+        this.volunteerArray = locationArray;
+      }
+
+    }
+
   }
 
   checkValidation(value) {

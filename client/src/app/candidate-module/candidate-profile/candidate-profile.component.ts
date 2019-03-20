@@ -113,6 +113,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray;
   visaRequiredArray = [];
   noVisaArray = [];
+  employee: any = {};
   ngOnInit()
   {
     this.infoo='';
@@ -180,9 +181,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.base_city = data['candidate'].base_city;
                 }
 
-
-                //this.expected_currency = data['candidate'].expected_salary_currency;
-                //this.expected_salary = data['candidate'].expected_salary;
                 this.first_name=data['first_name'];
                 this.last_name =data['last_name'];
                 this.nationality = data['nationality'];
@@ -207,6 +205,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   {
                     this.degreename = edu.degreename;
                   }
+                }
+
+                if(data['candidate'].employee) {
+                  this.employee.value = data['candidate'].employee;
+                  this.changeLocationDisplayFormat(this.employee.value.location, 'employee');
                 }
 
                 /*this.countries = data['candidate'].locations;
@@ -395,6 +398,80 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
     }
 
+
+  }
+
+  changeLocationDisplayFormat(array, data) {
+    this.selectedValueArray = [];
+    console.log(array);
+    if(array && array.length > 0)
+    {
+      let citiesArray = [];
+      let countriesArray = [];
+      for (let country1 of array)
+      {
+        let locObject : any = {}
+        if (country1['remote'] === true) {
+          this.selectedValueArray.push({name: 'Remote' , visa_needed : false});
+        }
+
+        if (country1['country']) {
+          locObject.name = country1['country'];
+          locObject.type = 'country';
+          if(country1['visa_needed'] === true) locObject.visa_needed = true;
+          else locObject.visa_needed = false;
+          countriesArray.push(locObject);
+          countriesArray.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          });
+        }
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country;
+          locObject.name = city;
+          locObject.type = 'city';
+          if(country1['visa_needed'] === true) locObject.visa_needed = true;
+          else locObject.visa_needed = false;
+          citiesArray.push(locObject);
+          citiesArray.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          });
+
+        }
+
+      }
+
+      this.countries = citiesArray.concat(countriesArray);
+      this.countries = this.countries.concat(this.selectedValueArray);
+      if(this.countries.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+        this.countries.splice(0, 0, remoteValue);
+        this.countries = this.filter_array(this.countries);
+
+      }
+
+      if(this.countries && this.countries.length > 0) {
+
+        for(let loc of this.countries) {
+          if(loc.visa_needed === true)
+            this.visaRequiredArray.push(loc);
+          if(loc.visa_needed === false)
+            this.noVisaArray.push(loc);
+        }
+
+      }
+
+    }
+    console.log(data);
+    if(data === 'employee') {
+      this.employee.noVisaArray = this.noVisaArray;
+      this.employee.visaRequiredArray = this.visaRequiredArray;
+    }
+
+    console.log(this.employee)
 
   }
 

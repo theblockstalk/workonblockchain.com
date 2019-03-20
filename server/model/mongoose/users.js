@@ -24,14 +24,37 @@ module.exports.findOneById = async function findOneById(id) {
 module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
    let userDoc = await User.findById(id).lean();
    if(userDoc) {
-        if(userDoc.candidate && userDoc.candidate.locations) {
-            for(let loc of userDoc.candidate.locations) {
-                if(loc.city) {
-                    const index = userDoc.candidate.locations.findIndex((obj => obj.city === loc.city));
-                    const citiesDoc = await cities.findOneById(loc.city);
-                    userDoc.candidate.locations[index].city = citiesDoc;
+        if(userDoc.candidate ) {
+            if(userDoc.candidate.employee) {
+                for(let loc of userDoc.candidate.employee.location) {
+                    if(loc.city) {
+                        const index = userDoc.candidate.employee.location.findIndex((obj => obj.city === loc.city));
+                        const citiesDoc = await cities.findOneById(loc.city);
+                        userDoc.candidate.employee.location[index].city = citiesDoc;
+                    }
                 }
             }
+
+            if(userDoc.candidate.contractor) {
+                for(let loc of userDoc.candidate.contractor.location) {
+                    if(loc.city) {
+                        const index = userDoc.candidate.contractor.location.findIndex((obj => obj.city === loc.city));
+                        const citiesDoc = await cities.findOneById(loc.city);
+                        userDoc.candidate.contractor.location[index].city = citiesDoc;
+                    }
+                }
+            }
+
+            if(userDoc.candidate.volunteer) {
+                for(let loc of userDoc.candidate.volunteer.location) {
+                    if(loc.city) {
+                        const index = userDoc.candidate.volunteer.location.findIndex((obj => obj.city === loc.city));
+                        const citiesDoc = await cities.findOneById(loc.city);
+                        userDoc.candidate.volunteer.location[index].city = citiesDoc;
+                    }
+                }
+            }
+
         }
    }
 
