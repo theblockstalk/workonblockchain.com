@@ -59,6 +59,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type=='candidate')
     {
+      this.area_interested.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
       this.commercially.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -442,10 +448,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.selectedValue.push(e.target.value);
     }
     else{
-      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.selectedValue.find(x => x === e.target.value);
       let index = this.selectedValue.indexOf(updateItem);
       this.selectedValue.splice(index, 1);
     }
+
 
   }
 

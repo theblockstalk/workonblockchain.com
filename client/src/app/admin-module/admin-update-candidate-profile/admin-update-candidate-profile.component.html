@@ -664,7 +664,7 @@
             <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Why do you want to work on blockchain?</label>
+                  <label>Why work on blockchain?</label>
                   <ul>
                     <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
                     <li> This is the first field that a company sees! </li>
@@ -676,6 +676,29 @@
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Interests</label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+                          {{position_option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
+                  <div class = "invalid-feedback d-inline"  *ngIf="selectedValue && selectedValue.length <=0">
+                    {{interest_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="row">
               <div class="col-md-12">

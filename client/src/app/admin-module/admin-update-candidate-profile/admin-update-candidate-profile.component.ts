@@ -354,6 +354,26 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
                 console.log(this.volunteer['volunteer_roles']);
               }
+              if(data['candidate'].interest_areas)
+              {
+                for (let interest of data['candidate'].interest_areas)
+                {
+
+                  for(let option of this.area_interested)
+                  {
+
+                    if(option.value === interest)
+                    {
+                      option.checked=true;
+                      this.selectedValue.push(interest);
+
+                    }
+
+                  }
+
+                }
+              }
+
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
 
@@ -1191,6 +1211,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.count = 0;
     }
 
+    if(this.selectedValue.length<=0)
+    {
+      this.interest_log = "Please select at least one area of interest";
+    }
+
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -1385,7 +1410,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
-      this.info.city && this.info.base_country &&
+      this.info.city && this.info.base_country && this.selectedValue.length > 0 &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1543,6 +1568,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
     if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
     if(this.current_currency) inputQuery.current_currency = this.current_currency;
+    if(this.selectedValue.length > 0) inputQuery.interest_areas = this.selectedValue;
+
     this.authenticationService.edit_candidate_profile(this.user_id, inputQuery , true)
       .subscribe(
         data => {
@@ -2007,4 +2034,18 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     this.checkContractValue(this.contractor.contractor_type);
   }
 
+  onAreaSelected(e)
+  {
+    if(e.target.checked)
+    {
+      this.selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.selectedValue.find(x => x === e.target.value);
+      let index = this.selectedValue.indexOf(updateItem);
+      this.selectedValue.splice(index, 1);
+    }
+
+
+  }
 }
