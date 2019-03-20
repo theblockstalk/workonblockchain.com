@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
-import {getNameFromValue} from "../../../services/object";
+import {getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-company-search',
@@ -467,17 +467,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data =>
           {
             this.candidate_data = data;
-            let new_roles = constants.dropdown_options;
 
-            for(let i=0;i<this.candidate_data.length;i++){
-              let filtered_array = [];
-              for(let j=0;j<this.candidate_data[i].candidate.roles.length;j++){
-                const filteredArray = getNameFromValue(new_roles,this.candidate_data[i].candidate.roles[j]);
-                filtered_array.push(filteredArray.name);
-              }
-              filtered_array.sort();
-              this.candidate_data[i].candidate.roles = filtered_array;
-            }
+            this.filterAndSort();
 
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -808,17 +799,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-          let new_roles = constants.dropdown_options;
 
-          for(let i=0;i<this.candidate_data.length;i++){
-            let filtered_array = [];
-            for(let j=0;j<this.candidate_data[i].candidate.roles.length;j++){
-              const filteredArray = getNameFromValue(new_roles,this.candidate_data[i].candidate.roles[j]);
-              filtered_array.push(filteredArray.name);
-            }
-            filtered_array.sort();
-            this.candidate_data[i].candidate.roles = filtered_array;
-          }
+          this.filterAndSort();
 
           this.setPage(1);
           if(this.candidate_data.length > 0) {
@@ -1205,12 +1187,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       else {
       }
     }
-
-
   }
 
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
 
+  filterAndSort(){
+    let new_roles = constants.dropdown_options;
+    for(let i=0;i<this.candidate_data.length;i++){
+      this.candidate_data[i].candidate.roles = getFilteredNames(this.candidate_data[i],new_roles);
+    }
+  }
 }

@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
+import {constants} from '../../../constants/constants';
+import {getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -27,28 +29,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   set_status;
   status_reason_rejected;
   status_reason_deferred;
-  set_candidate_status = [
-    {value:'approved', name:'Approved'},
-    {value:'reviewed', name: 'Reviewed'},
-    {value:'rejected', name:'Rejected'},
-    {value:'deferred', name:'Deferred'},
-    {value:'other', name:'Other'}
-  ];
-
-  set_candidate_status_rejected = [
-    {value:'garbage', name:'Garbage'},
-    {value:'recruiter', name:'Recruiter'},
-    {value:'not technical', name:'Not Technical'},
-    {value:'other', name:'Other'}
-  ];
-
-  set_candidate_status_deferred = [
-    {value:'profile incomplete', name:'Profile Incomplete'},
-    {value:'not looking for job', name:'Not Looking for Job'},
-    {value:'job found', name:'Job Found'},
-    {value:'not responded', name:'Not Responded'},
-    {value:'other', name:'Other'}
-  ];
+  set_candidate_status = constants.set_candidate_status;
+  set_candidate_status_rejected = constants.set_candidate_status_rejected;
+  set_candidate_status_deferred = constants.set_candidate_status_deferred;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   description_commercial_platforms;
@@ -131,8 +114,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
-      // removePlugins :'elementspath,save,image,flash,iframe,link,smiley,tabletools,find,pagebreak,templates,about,maximize,showblocks,newpage,language',
-      // removeButtons : 'Subscript,Superscript,Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField',
     };
 
     this.credentials.user_id = this.user_id;
@@ -157,19 +138,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
               }, 200);
-              /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
-              }
-              else{
-                this.set_status = this.candidate_status.status;
-              }
-              if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
-                this.status_reason_rejected = this.candidate_status.reason;
-                $("#sel1-reason-rejected").css("display", "block");
-              }
-              if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
-                this.status_reason_deferred = this.candidate_status.reason;
-                $("#status_reason_deferred").css("display", "block");
-              }*/
+
               this.info.push(data);
               this.verify =data['is_verify'];
               if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
@@ -252,7 +221,16 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
               this.roles  = data['candidate'].roles;
-              if(this.roles) this.roles.sort();
+              if(this.roles) {
+                let new_roles = constants.dropdown_options;
+                let filtered_array = [];
+                for(let i=0;i<this.roles.length;i++){
+                  const filteredArray = getNameFromValue(new_roles,this.roles[i]);
+                  filtered_array.push(filteredArray.name);
+                }
+                this.roles = filtered_array;
+                this.roles.sort();
+              }
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){

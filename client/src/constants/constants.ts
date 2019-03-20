@@ -171,5 +171,54 @@ export const constants = {
   job_type: ["Part time", "Full time"],
   month: [
     "Now","1 month","2 months","3 months","Longer than 3 months"
+  ],
+  admin_check: [
+    {value:'created', name:'Created'},
+    {value:'wizard completed', name:'Wizard Completed'},
+    {value:'approved', name:'Approved'},
+    {value:'reviewed', name:'Reviewed'},
+    {value: 'updated', name: 'Updated'},
+    {value : 'updated by admin' , name: 'Updated by admin'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
+  ],
+  admin_checks_email_verify: [
+    {value:1, name:'Verified'},
+    {value:0, name:'Not Verified'}
+  ],
+  admin_checks_candidate_account: [
+    {value:false, name:'Enabled'},
+    {value:true, name:'Disabled'}
+  ],
+  msgTagsOptions: [
+    {value:'normal', name:'Normal' , checked:false},
+    {value:'job_offer', name:'Job offer sent' , checked:false},
+    {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
+    {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
+    {value:'interview_offer', name:'Interview offer sent' , checked:false},
+    {value:'employment_offer', name:'Employment offer sent' , checked:false},
+    {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
+    {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
+  ],
+  set_candidate_status: [
+    {value:'approved', name:'Approved'},
+    {value:'reviewed', name: 'Reviewed'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
+  ],
+  set_candidate_status_rejected: [
+    {value:'garbage', name:'Garbage'},
+    {value:'recruiter', name:'Recruiter'},
+    {value:'not technical', name:'Not Technical'},
+    {value:'other', name:'Other'}
+  ],
+  set_candidate_status_deferred: [
+    {value:'profile incomplete', name:'Profile Incomplete'},
+    {value:'not looking for job', name:'Not Looking for Job'},
+    {value:'job found', name:'Job Found'},
+    {value:'not responded', name:'Not Responded'},
+    {value:'other', name:'Other'}
   ]
 };

@@ -32,7 +32,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   current_currency;
   current_salary;
   image_src;
-  imgPath;
   nationality;
   contact_number;
   platforms;
@@ -43,7 +42,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   email;
   visaRequiredArray= [];
   noVisaArray = [];
-  currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  currency = constants.currency;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
@@ -59,10 +58,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   }
   company_reply; currentUser: User;
   credentials: any = {};
-  job_type = ["Part time", "Full time"];
+  job_type = constants.job_type;
   company_name;
   interview_location = '';
-  interview_time = '';
   invalidMsg;
 
   date_sort_desc = function (date1, date2)
