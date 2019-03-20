@@ -29,6 +29,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status_reason_deferred;
   set_candidate_status = [
     {value:'approved', name:'Approved'},
+    {value:'reviewed', name: 'Reviewed'},
     {value:'rejected', name:'Rejected'},
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
@@ -48,7 +49,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {value:'not responded', name:'Not Responded'},
     {value:'other', name:'Other'}
   ];
-  email_subject;
+  email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   description_commercial_platforms;
   description_experimented_platforms;
@@ -96,6 +97,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   noVisaArray = [];
   candidateHistory;
   _id;
+  send_email;
 
   ngAfterViewInit(): void
   {
@@ -105,7 +107,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 600);
     window.scrollTo(0, 0);
 
   }
@@ -113,6 +115,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
@@ -145,7 +154,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 200);
               /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
@@ -385,6 +396,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               }
 
             });
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 200);
       }
       else
       {
@@ -424,7 +438,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.success = '';
     console.log(this.email_text);
     console.log(approveForm.value);
-    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text && !approveForm.value.email_subject) {
+    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
 
@@ -447,12 +461,12 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
-      else if(approveForm.value.email_text && !approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && approveForm.value.email_text && !approveForm.value.email_subject) {
         this.error = 'Please enter email subject too.';
 
       }
 
-      else if(!approveForm.value.email_text && approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && !approveForm.value.email_text && approveForm.value.email_subject) {
         this.error = 'Please enter email body too.';
 
       }
@@ -468,6 +482,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
+    console.log(approveForm);
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -490,7 +505,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               statusCount = 1;
             }
           }
-
+          this.reset();
+          this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
@@ -510,6 +526,15 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = "Something getting wrong";
           }
         });
+  }
+
+  reset() {
+    this.set_status = '';
+    this.status_reason_rejected = '';
+    this.status_reason_deferred = '';
+    this.note = '';
+    this.email_text = '';
+    this.send_email = false;
   }
 
   filter_array(arr) {

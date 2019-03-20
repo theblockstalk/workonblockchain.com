@@ -331,7 +331,6 @@ module.exports.endpoint = async function (req, res) {
         $set : updateCandidateUser,
     }
 
-
     if(!objects.isEmpty(unset)){
         updateObj.$unset=  unset
     }

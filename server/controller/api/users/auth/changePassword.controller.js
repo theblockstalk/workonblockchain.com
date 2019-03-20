@@ -1,6 +1,6 @@
 const users = require('../../../../model/mongoose/users');
-const crypto = require('crypto');
 const errors = require('../../../services/errors');
+const crypto = require('../../../services/crypto');
 
 module.exports = async function (req,res)
 {
@@ -8,16 +8,14 @@ module.exports = async function (req,res)
     const userDoc = await users.findOneById( userId );
     if(userDoc) {
         let queryBody = req.body;
-        let hash = crypto.createHmac('sha512', userDoc.salt);
-        hash.update(queryBody.current_password);
-        let hashedPasswordAndSalt = hash.digest('hex');
+
+        let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.current_password, userDoc.salt)
 
         if (hashedPasswordAndSalt === userDoc.password_hash)
         {
-            let salt = crypto.randomBytes(16).toString('base64');
-            let hash = crypto.createHmac('sha512', salt);
-            hash.update(queryBody.password);
-            let hashedPasswordAndSalt = hash.digest('hex');
+            const salt = crypto.getRandomString(128);
+            const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
+
             await users.update({ _id: userId },{ $set: {'password_hash': hashedPasswordAndSalt, 'salt' : salt } });
             res.send({
                 success : true

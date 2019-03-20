@@ -86,6 +86,9 @@
               <label *ngIf="candidate_status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
                 {{candidate_status.status}}
               </label>
+              <label *ngIf="candidate_status.status === 'reviewed'" class="border border-info p-2 text-info rounded font-weight-normal">
+                {{candidate_status.status}}
+              </label>
               <label *ngIf="candidate_status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">
                 {{candidate_status.status}}: {{candidate_status.reason}}
               </label>
@@ -206,7 +209,17 @@
             </div>
           </div>
 
-            <div class="row">
+            <div class="row m-0">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="send_email" [(ngModel)]="send_email"> Send email
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf = "send_email === true">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Email subject:</label>
@@ -214,9 +227,7 @@
 
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Send email:</label>
@@ -224,13 +235,15 @@
                   </ckeditor>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-7">
                 <p>Make sure the email text is complete and checked before you press Send</p>
               </div>
-              <div class="col-md-5">
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
                 <div class = "form-group">
                   <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
                   <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
@@ -238,7 +251,6 @@
                 </div>
 
               </div>
-
               <div class="col-md-12">
                 <div class="text-success float-right mt-2" *ngIf = "success">
                   {{success}}
@@ -279,6 +291,9 @@
                   {{history.status.status}}
                 </label>
                 <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'reviewed'" class="border border-info p-2 text-info rounded font-weight-normal">
                   {{history.status.status}}
                 </label>
                 <label *ngIf="history.status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">

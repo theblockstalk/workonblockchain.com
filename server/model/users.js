@@ -32,13 +32,14 @@ const UserSchema = new Schema({
     linkedin_id : {
         type: String
     },
+    google_id : {
+        type: String
+    },
     password_hash: {
         type:String,
-        required:true
     },
     salt: {
         type: String,
-        required: true
     },
     type: {
         type:String,
@@ -50,7 +51,7 @@ const UserSchema = new Schema({
         enum: [0, 1],
         default:0
     },
-    social_type: {
+    social_type: { //DELETE ME
         type:String,
         enum: ['GOOGLE', 'LINKEDIN', '']
     },

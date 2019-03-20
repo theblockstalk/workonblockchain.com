@@ -27,7 +27,7 @@ try {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.use(sanitizer.middleware);
+    app.use("/users",sanitizer.middleware);
 
     app.use(routes);
     app.use(routesV2);

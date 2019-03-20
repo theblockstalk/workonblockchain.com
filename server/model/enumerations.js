@@ -25,7 +25,7 @@ module.exports.email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
 module.exports.jobTypes = ['Full time' , 'Part time' , 'Freelance', 'Contract'];
 
-module.exports.candidateStatus = ['created','wizard completed','updated', 'updated by admin', 'approved','rejected','deferred', 'other'];
+module.exports.candidateStatus = ['created','wizard completed','updated', 'updated by admin', 'approved','rejected','deferred', 'other', 'reviewed'];
 
 module.exports.statusReasons = ['garbage','recruiter','not technical','other','profile incomplete','not looking for job', 'job found','not responded'];
 
