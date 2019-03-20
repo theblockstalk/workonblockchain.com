@@ -230,9 +230,17 @@ export class UserService {
   }
 
 
+  createCandidate(inputBody: any)
+  {
+    return this.http.post(URL+'v2/users/candidates', inputBody) .pipe(map(user => {
+      return user
+    }));
+
+  }
+
   create(user: User)
   {
-    return this.http.post(URL+'users/register', user) .pipe(map(user => {
+    return this.http.post(URL+'users/candidates', user) .pipe(map(user => {
       return user
     }));
 
@@ -303,9 +311,9 @@ export class UserService {
     return this.http.delete(URL+'users/' + _id);
   }
 
-  candidate_login(username: string, password: string, linkedin_id : any)
+  candidate_login(queryInput : any)
   {
-    return this.http.post(URL+'users/authenticate', { email: username, password: password , linkedin_id  : linkedin_id })
+    return this.http.post(URL+'v2/users/auth', queryInput)
       .pipe(map(user => {
         if (user)
         {
@@ -873,7 +881,7 @@ export class UserService {
 
   edit_company_profile(queryBody :any   )
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._creator +'/companies', queryBody , {
+    return this.http.patch(URL+'v2/users/'+ this.currentUser._id +'/companies', queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

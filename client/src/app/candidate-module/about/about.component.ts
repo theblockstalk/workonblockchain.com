@@ -234,7 +234,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
     }
     if ( this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
-      this.authenticationService.about(this.currentUser._creator, this.info)
+      this.authenticationService.about(this.currentUser._id, this.info)
         .subscribe(
           data => {
             if (data['success']) {

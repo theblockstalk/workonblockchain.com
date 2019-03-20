@@ -21,7 +21,7 @@ const URL = environment.backend_url;
 export class EditCompanyProfileComponent implements OnInit , AfterViewInit, AfterViewChecked  {
 
   info : any;
-  currentUser: User;
+  currentUser: any;
   log;
   founded_log;
   employee_log;
@@ -329,7 +329,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {

@@ -584,6 +584,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       console.log(inputQuery);
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
+
         .subscribe(
           data => {
             if (data) {

@@ -130,7 +130,6 @@ export class LinkedinImportComponent implements OnInit {
   public fileselected(e) {
 
     const backendService = this.authenticationService;
-    const currentUser = this.currentUser._creator;
     let education_json_array = [];
     let experiencearray = [];
     const filedrag = document.getElementById('filedrag');

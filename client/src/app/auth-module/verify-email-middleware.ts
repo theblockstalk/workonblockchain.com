@@ -37,7 +37,7 @@ export class VerifyEmailMiddleware implements CanActivate {
             });
       }
       else if(this.currentUser.type === 'company') {
-        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        this.authenticationService.getCurrentCompany(this.currentUser._id)
           .subscribe(
             data =>
             {

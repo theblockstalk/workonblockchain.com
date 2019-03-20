@@ -42,5 +42,13 @@
   "slack": {
     "username": "STAGING bug reporter",
     "channel": "#1_server_bugs_staging"
+  },
+  "googleConfig": {
+    "clientId": "699068166900-h9dp76b47mh4biq33e8c31ju8tvfgvqj.apps.googleusercontent.com",
+    "redirectUrl": "https://staging.workonblockchain.com/google-auth"
+  },
+  "linkedinConfig" : {
+    "clientId": "86q3xso6dxvymx",
+    "redirectUrl": "https://staging.workonblockchain.com/linkedin-auth"
   }
 }

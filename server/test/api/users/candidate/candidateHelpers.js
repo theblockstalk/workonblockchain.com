@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 const signupCandidate = module.exports.signupCandidate = async function signupCandidate(candidate) {
     const res = await chai.request(server)
-        .post('/users/register')
+        .post('/v2/users/candidates')
         .send(candidate);
     res.should.have.status(200);
     return res;

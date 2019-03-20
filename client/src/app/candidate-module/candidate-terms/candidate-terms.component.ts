@@ -168,7 +168,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       }
       else
       {
-        this.authenticationService.terms(this.currentUser._creator,termsForm.value)
+        this.authenticationService.terms(this.currentUser._id,termsForm.value)
         .subscribe(
           data =>
           {

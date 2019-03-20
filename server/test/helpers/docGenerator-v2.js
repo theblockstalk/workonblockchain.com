@@ -177,12 +177,10 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
 module.exports.candidate = function candidate() {
     return {
-        first_name: "Tayyab",
-        last_name: "Hussain",
+        first_name: random.string(5),
+        last_name: random.string(5),
         email: random.email(),
-        password: "Password1",
-        type: "candidate",
-        social_type : ""
+        password: 'Sadia1234'
     };
 };
 
@@ -240,9 +238,9 @@ module.exports.candidateProfile = function candidateProfile(){
                 exp_year: '2-4'
             }
         ],
-        description_commercial_platforms : "Some test description of commercial of platforms by admin latest",
-        description_commercial_skills : "Some test description commercial skills by admin abi abi..",
-        description_experimented_platforms : "Some test description experimented platforms by admin abi..3",
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
         education_history : [{
             uniname: 'CUST',
             degreename: 'BSCS',
@@ -315,9 +313,9 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
                 exp_year: '2-4'
             }
         ],
-        description_commercial_platforms : "upadatd Some test description of commercial of platforms",
-        description_commercial_skills : "upadatd Some test description commercial skills",
-        description_experimented_platforms : "upadatd Some test description experimented platforms",
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
         education_history : [{
             uniname: 'CUST',
             degreename: 'BSCS',

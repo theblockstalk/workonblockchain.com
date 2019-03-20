@@ -387,7 +387,7 @@ module.exports.endpoint = async function (req, res) {
         else unset['candidate.blockchain.description_experimented_platforms'] = 1;
 
         if (queryBody.commercial_skills && queryBody.commercial_skills.length > 0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-        else unset['candidate.blockchain.description_experimented_platforms'] = 1;
+        else unset['candidate.blockchain.commercial_skills'] = 1;
 
         if (queryBody.description_commercial_skills && queryBody.commercial_skills.length > 0) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
         else unset['candidate.blockchain.description_commercial_skills'] = 1;
@@ -418,8 +418,7 @@ module.exports.endpoint = async function (req, res) {
     latestStatus.timestamp = timestamp;
     updateCandidateUser['candidate.latest_status'] = latestStatus;
 
-
-    await users.update({_id: userId}, {
+    let updateObj = {
         $push: {
             'candidate.history': {
                 $each: [history],
@@ -427,9 +426,13 @@ module.exports.endpoint = async function (req, res) {
             }
         },
         $set : updateCandidateUser,
-        $unset: unset
-    });
+    }
 
+    if(!objects.isEmpty(unset)){
+        updateObj.$unset=  unset
+    }
+
+    await users.update({_id: userId}, updateObj);
 
     const filterData = filterReturnData.removeSensativeData(userDoc);
     res.send(filterData);

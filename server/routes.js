@@ -7,7 +7,6 @@ const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
 const healthCheck = require('./controller/api/healthCheck.controller');
 
 // User authorization
-const authAthenticate = require('./controller/api/users/auth/authenticate.controller');
 const authVerifyEmail = require('./controller/api/users/auth/verifyEmail.controller');
 const authForgotPassword = require('./controller/api/users/auth/forgotPassword.controller');
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
@@ -23,7 +22,6 @@ const getReferralCodeForUsers = require('./controller/api/users/referrals/getRef
 const getReferralDetailForAdmin  = require('./controller/api/users/referrals/getReferralDetailForAdmin.controller');
 
 // Candidates
-const candidateRegister = require('./controller/api/users/candidate/register.controller');
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
@@ -63,7 +61,6 @@ const getStatistics = require('./controller/api/users/statistics.controller');
 router.get('/', healthCheck);
 
 // User authorization
-router.post('/users/authenticate', asyncMiddleware(authAthenticate));
 router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword));
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword));
@@ -80,7 +77,6 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 
 // Candidates
-router.post('/users/register', asyncMiddleware(candidateRegister));
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
 router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
