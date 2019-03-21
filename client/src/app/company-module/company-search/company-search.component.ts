@@ -468,7 +468,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             this.candidate_data = data;
 
-            this.filterAndSort();
+           // this.filterAndSort();
 
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -800,7 +800,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         dataa => {
           this.candidate_data = dataa;
 
-          this.filterAndSort();
+          //this.filterAndSort();
 
           this.setPage(1);
           if(this.candidate_data.length > 0) {

@@ -6,7 +6,7 @@ import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 declare var $:any;
 import {constants} from "../../../constants/constants";
-import {getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-detail',
@@ -37,7 +37,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   platforms;
   github;
   stack;
-  roles;
   expected_salary;
   email;
   visaRequiredArray= [];
@@ -46,6 +45,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.dropdown_options;
+  contractorTypes = constants.contractorTypes;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -166,6 +170,54 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.education.sort(this.education_sort_desc);
               }
 
+              if(dataa['candidate'].employee) {
+                this.employee.value = dataa['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(dataa['candidate'].contractor) {
+                this.contractor.value = dataa['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue.sort();
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType;
+              }
+
+              if(dataa['candidate'].volunteer) {
+                this.volunteer.value = dataa['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
+
+
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
               if(dataa['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
@@ -234,15 +286,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               this.interest_area.sort();
               let new_roles = constants.dropdown_options;
               let filtered_array = [];
-
-              this.roles  = dataa['candidate'].roles;
-              for(let i=0;i<this.roles.length;i++){
-                const filteredArray = getNameFromValue(new_roles,this.roles[i]);
-                filtered_array.push(filteredArray.name);
-              }
-              this.roles = filtered_array;
-              this.roles.sort();
-
 
               this.languages= dataa['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){

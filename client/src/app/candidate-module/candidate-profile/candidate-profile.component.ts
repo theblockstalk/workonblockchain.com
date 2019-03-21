@@ -218,9 +218,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     const filteredArray = getNameFromValue(this.roles,role);
                     rolesValue.push(filteredArray.name);
                   }
-                  this.employee.value.roles = rolesValue;
-
-                }
+                  this.employee.value.roles = rolesValue.sort();
+                  let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                  this.employee.value.employment_availability = availability.name;                }
 
                 if(data['candidate'].contractor) {
                   this.contractor.value = data['candidate'].contractor;
@@ -232,7 +232,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     const filteredArray = getNameFromValue(this.roles,role);
                     rolesValue.push(filteredArray.name);
                   }
-                  this.contractor.value.roles = rolesValue;
+                  this.contractor.value.roles = rolesValue.sort();
                   let contractorType = [];
                   for(let type of this.contractor.value.contractor_type) {
                     const filteredArray = getNameFromValue(this.contractorTypes , type);
@@ -251,7 +251,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     const filteredArray = getNameFromValue(this.roles,role);
                     rolesValue.push(filteredArray.name);
                   }
-                  this.volunteer.value.roles = rolesValue;
+                  this.volunteer.value.roles = rolesValue.sort();
                 }
 
 

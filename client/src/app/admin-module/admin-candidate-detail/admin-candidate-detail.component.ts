@@ -147,8 +147,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                   const filteredArray = getNameFromValue(this.roles,role);
                   rolesValue.push(filteredArray.name);
                 }
-                this.employee.value.roles = rolesValue;
-
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
               }
 
               if(data['candidate'].contractor) {
@@ -167,7 +168,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                   const filteredArray = getNameFromValue(this.contractorTypes , type);
                   contractorType.push(filteredArray.name);
                 }
-                this.contractor.value.contractor_type = contractorType;
+                this.contractor.value.contractor_type = contractorType.sort();
               }
 
               if(data['candidate'].volunteer) {
@@ -180,7 +181,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                   const filteredArray = getNameFromValue(this.roles,role);
                   rolesValue.push(filteredArray.name);
                 }
-                this.volunteer.value.roles = rolesValue;
+                this.volunteer.value.roles = rolesValue.sort();
               }
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
