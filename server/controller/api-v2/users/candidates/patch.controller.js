@@ -204,7 +204,18 @@ const bodySchema = new Schema({
                 }
             }
         }
-    }
+    },
+    unset_commercial_platforms: Boolean,
+    unset_experimented_platforms: Boolean,
+    unset_commercial_skills: Boolean,
+    unset_language: Boolean,
+    unset_language: Boolean,
+    unset_education_history: Boolean,
+    unset_work_history: Boolean,
+    unset_github_account: Boolean,
+    unset_exchange_account: Boolean,
+    unset_linkedin_account: Boolean,
+    unset_medium_account: Boolean,
 });
 
 module.exports.inputValidation = {
