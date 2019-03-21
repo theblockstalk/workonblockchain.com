@@ -70,6 +70,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.urlParameters = JSON.parse(params['queryBody']);
         if(this.urlParameters) {
           this.no_value = true;
+          if(this.urlParameters.work_type) {
+            this.selectedWorkType = this.urlParameters.work_type;
+            console.log(this.selectedWorkType);
+          }
           if(this.urlParameters.searchName){
             this.saveSearchName = this.urlParameters.searchName;
           }
@@ -1142,6 +1146,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   deleteLocationRow(index){
     this.selectedValueArray.splice(index, 1);
+    this.newSearchLocation.splice(index, 1);
     this.searchdata('locations' , this.selectedValueArray);
   }
 
