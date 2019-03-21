@@ -703,7 +703,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     if(this.education_json_array && this.education_json_array.length>0) inputQuery.education_history =  this.education_json_array;
     else inputQuery.unset_education_history = true;
 
-    if(this.experiencearray && this.experiencearray.length) inputQuery.work_history =  this.experiencearray;
+    if(this.experiencearray && this.experiencearray.length>0) inputQuery.work_history =  this.experiencearray;
     else inputQuery.unset_work_history = true;
 
     if(this.Intro) inputQuery.description =  this.Intro;
