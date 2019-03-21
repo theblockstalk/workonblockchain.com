@@ -59,13 +59,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     setInterval(() => {
       //this.log='';
     }, 30000);
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
     localStorage.removeItem('password_change_msg');
 
-
-    //this.error = localStorage.getItem('jwt_not_found');
     localStorage.removeItem('jwt_not_found');
 
   }
