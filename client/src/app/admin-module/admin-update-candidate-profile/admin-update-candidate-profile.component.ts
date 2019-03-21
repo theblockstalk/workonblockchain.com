@@ -1568,7 +1568,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         },
         error => {
           this.dataservice.changeMessage(error);
-          this.log = 'Something getting wrong';
+          this.log = 'Something went wrong';
           if(error.message === 500)
           {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');

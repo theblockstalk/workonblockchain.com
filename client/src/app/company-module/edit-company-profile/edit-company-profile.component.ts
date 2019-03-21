@@ -537,7 +537,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.dataservice.changeMessage(error['error']['message']);
                 }
                 else {
-                  this.dataservice.changeMessage("Something getting wrong");
+                  this.dataservice.changeMessage("Something went wrong");
                 }
 
               });
@@ -616,7 +616,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.dataservice.changeMessage(error['error']['message']);
             }
             else {
-              this.dataservice.changeMessage("Something getting wrong");
+              this.dataservice.changeMessage("Something went wrong");
             }
 
           });

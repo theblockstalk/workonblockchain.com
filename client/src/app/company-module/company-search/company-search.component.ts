@@ -588,7 +588,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.not_found = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
 
           });
@@ -916,7 +916,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.not_found = error['error']['message'];
           }
           else {
-            this.log = 'Something getting wrong';
+            this.log = 'Something went wrong';
           }
 
         });

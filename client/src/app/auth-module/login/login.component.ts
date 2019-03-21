@@ -59,13 +59,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     setInterval(() => {
       //this.log='';
     }, 30000);
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
     localStorage.removeItem('password_change_msg');
 
-
-    this.error = localStorage.getItem('jwt_not_found');
     localStorage.removeItem('jwt_not_found');
 
   }
@@ -119,7 +116,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
 
           });
@@ -180,7 +177,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
 
           });

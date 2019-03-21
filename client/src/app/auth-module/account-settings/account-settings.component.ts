@@ -124,7 +124,7 @@ export class AccountSettingsComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
 
           }
