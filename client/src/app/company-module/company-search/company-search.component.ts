@@ -106,14 +106,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  currency = constants.currency;
-  month = constants.month;
+  currency = constants.currencies;
   job_type = constants.job_type;
-  skillsData = constants.language_opt;
+  skillsData = constants.programmingLanguages;
   residenceCountries = constants.countries;
-  job_types = constants.job_types;
-  rolesData = constants.dropdown_options;
-  blockchainData = constants.commercially;
+  job_types = constants.jobTypes;
+  rolesData = constants.workRoles;
+  blockchainData = constants.blockchainPlatforms;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -1194,7 +1193,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   filterAndSort(){
-    let new_roles = constants.dropdown_options;
+    let new_roles = constants.workRoles;
     for(let i=0;i<this.candidate_data.length;i++){
       this.candidate_data[i].candidate.roles = getFilteredNames(this.candidate_data[i],new_roles);
     }

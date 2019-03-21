@@ -268,10 +268,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
   }
 
-  commercially = constants.commercially;
+  commercially = constants.blockchainPlatforms;
   otherSkills = constants.otherSkills;
   experimented = constants.experimented;
-  exp_year = constants.exp_year;
+  exp_year = constants.experienceYears;
 
   onExpOptions(e)
   {

@@ -291,7 +291,6 @@
                 <div class="form-group">
                   <label for="validationCustom02" class="invisible">Currency</label>
                   <select title="Currency" name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
-                    <option value="-1" disabled selected hidden>Currency</option>
                     <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">

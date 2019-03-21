@@ -1,8 +1,7 @@
 //This file contains all the roles, languages used in app
 
 export const constants = {
-  testing: 'see me',
-  commercially: [
+  blockchainPlatforms: [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
     {name:'Ethereum', value:'Ethereum', checked:false},
     {name:'Ripple', value:'Ripple', checked:false},
@@ -59,14 +58,14 @@ export const constants = {
     {name:'Dash', value:'Dash', checked:false},
     {name:'Doge', value:'Doge', checked:false},
   ],
-  exp_year: [
+  experienceYears: [
     {name:'0-1', value:'0-1', checked:false},
     {name:'1-2', value:'1-2', checked:false},
     {name:'2-4', value:'2-4', checked:false},
     {name:'4-6', value:'4-6', checked:false},
     {name:'6+', value:'6+', checked:false}
   ],
-  availability: [
+  workAvailability: [
     {name: "Now" , value: "Now" },
     {name: "1 month notice period" , value: "1 month" },
     {name: "2 months notice period", value: "2 months" },
@@ -76,7 +75,7 @@ export const constants = {
   year: [
     "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
   ],
-  area_interested: [
+  workBlockchainInterests: [
     {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
     {name:'Public blockchain', value:'Public blockchain', checked:false},
     {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
@@ -84,7 +83,7 @@ export const constants = {
     {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
     {name:"I don't know", value:"I don't know", checked:false},
   ],
-  dropdown_options: [
+  workRoles: [
     {name:'Backend developer', value:'Backend Developer', checked:false},
     {name:'Frontend developer', value:'Frontend Developer', checked:false},
     {name:'UI developer', value:'UI Developer', checked:false},
@@ -107,40 +106,16 @@ export const constants = {
     {name:'Technical project manager', value:'Technical project manager', checked:false},
     {name:'Machine learning engineer', value:'Machine learning engineer', checked:false},
   ],
-  options: [
-    {country_code:'000' , name:'Remote', value:'remote', checked:false},
-    {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-    {country_code:'001' ,name:'London', value:'London', checked:false},
-    {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-    {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-    {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-    {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-    {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-    {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-    {country_code: '002' ,name:'New York', value:'New York', checked:false},
-    {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-    {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-    {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-    {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-    {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-    {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-    {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-    {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-    {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-    {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-    {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-    {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-  ],
-  currency: [
+  currencies: [
     "£ GBP" ,"€ EUR" , "$ USD"
   ],
-  nationality: ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'],
+  nationalities: ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'],
   current_work: [
     {name:'I currently work here', value:'current', checked:false}
   ],
   countries: ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'],
   calen_month: ["January","February","March","April","May","June","July","August","September","October","November","December"],
-  language_opt: [
+  programmingLanguages: [
     {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
     {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
     {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
@@ -157,22 +132,9 @@ export const constants = {
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
     {name:'Erlang', value:'Erlang', checked:false},
   ],
-  roles_opt: [
-    {name:'Backend Developer', value:'Backend Developer', checked:false},
-    {name:'BI Engineer', value:'BI Engineer', checked:false},
-    {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-    {name:'CTO', value:'CTO', checked:false},
-    {name:'Lead Developer', value:'Lead Developer', checked:false},
-    {name:'Database Administrator', value:'Database Administrator', checked:false},
-    {name:'Security Engineer', value:'Security Engineer', checked:false},
-    {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-  ],
-  job_types: ['Full time' , 'Part time' , 'Freelance' ],
+  jobTypes: ['Full time' , 'Part time' , 'Freelance'],
   job_type: ["Part time", "Full time"],
-  month: [
-    "Now","1 month","2 months","3 months","Longer than 3 months"
-  ],
-  admin_check: [
+  candidateStatus: [
     {value:'created', name:'Created'},
     {value:'wizard completed', name:'Wizard Completed'},
     {value:'approved', name:'Approved'},
@@ -191,7 +153,7 @@ export const constants = {
     {value:false, name:'Enabled'},
     {value:true, name:'Disabled'}
   ],
-  msgTagsOptions: [
+  chatMsgTypes: [
     {value:'normal', name:'Normal' , checked:false},
     {value:'job_offer', name:'Job offer sent' , checked:false},
     {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
@@ -208,17 +170,44 @@ export const constants = {
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
   ],
-  set_candidate_status_rejected: [
+  statusReasons_rejected: [
     {value:'garbage', name:'Garbage'},
     {value:'recruiter', name:'Recruiter'},
     {value:'not technical', name:'Not Technical'},
     {value:'other', name:'Other'}
   ],
-  set_candidate_status_deferred: [
+  statusReasons_deferred: [
     {value:'profile incomplete', name:'Profile Incomplete'},
     {value:'not looking for job', name:'Not Looking for Job'},
     {value:'job found', name:'Job Found'},
     {value:'not responded', name:'Not Responded'},
     {value:'other', name:'Other'}
+  ],
+  email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly'],
+  blockchainPlatforms_for_companies: [
+    {name:'Bitcoin', value:'Bitcoin', checked:false},
+    {name:'Ethereum', value:'Ethereum', checked:false},
+    {name:'Ripple', value:'Ripple', checked:false},
+    {name:'Stellar', value:'Stellar', checked:false},
+    {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
+    {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
+    {name:'Quorum', value:'Quorum', checked:false},
+    {name:'Corda', value:'Corda', checked:false},
+    {name:'EOS', value:'EOS', checked:false},
+    {name:'NEO', value:'NEO', checked:false},
+    {name:'Waves', value:'Waves', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
+    {name:'Lisk', value:'Lisk', checked:false},
+    {name:'Quantum', value:'Quantum', checked:false},
+    {name:'Tezos', value:'Tezos', checked:false},
+    {name:'Cardano', value:'Cardano', checked:false},
+    {name:'Litecoin', value:'Litecoin', checked:false},
+    {name:'Monero', value:'Monero', checked:false},
+    {name:'ZCash', value:'ZCash', checked:false},
+    {name:'IOTA', value:'IOTA', checked:false},
+    {name:'NEM', value:'NEM', checked:false},
+    {name:'NXT', value:'NXT', checked:false},
+    {name:'Dash', value:'Dash', checked:false},
+    {name:'Doge', value:'Doge', checked:false},
   ]
 };

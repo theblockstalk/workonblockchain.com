@@ -30,8 +30,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status_reason_rejected;
   status_reason_deferred;
   set_candidate_status = constants.set_candidate_status;
-  set_candidate_status_rejected = constants.set_candidate_status_rejected;
-  set_candidate_status_deferred = constants.set_candidate_status_deferred;
+  set_candidate_status_rejected = constants.statusReasons_rejected;
+  set_candidate_status_deferred = constants.statusReasons_deferred;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   description_commercial_platforms;
@@ -222,7 +222,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               if(this.interest_area) this.interest_area.sort();
               this.roles  = data['candidate'].roles;
               if(this.roles) {
-                let new_roles = constants.dropdown_options;
+                let new_roles = constants.workRoles;
                 let filtered_array = [];
                 for(let i=0;i<this.roles.length;i++){
                   const filteredArray = getNameFromValue(new_roles,this.roles[i]);
@@ -414,7 +414,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    console.log(this.email_text);
     console.log(approveForm.value);
     if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';

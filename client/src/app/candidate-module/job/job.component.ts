@@ -75,16 +75,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
-
       this.dropdown_options.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -247,13 +237,12 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  currency = constants.currency;
-  experience = constants.exp_year;
-  options = constants.options;
-  dropdown_options = constants.dropdown_options;
-  area_interested = constants.area_interested;
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  dropdown_options = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
   year = constants.year;
-  availability = constants.availability;
+  availability = constants.workAvailability;
 
   onAreaSelected(e)
   {

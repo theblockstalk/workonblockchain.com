@@ -94,24 +94,8 @@
                   {{country_log}}
                 </div>
               </div>
-
             </div>
-            <!--<div class="checkbox">
-              <div class="row m-0">
-                <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                  <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
-                    {{option.name}}
-                  </label>
-                </div>
-              </div>
-            </div>
-            <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
-            <div class = "invalid-feedback d-inline"  *ngIf="selectedcountry.length<=0">
-              {{country_log}}
-            </div>-->
           </div>
-
 
           <div class="row">
             <div class="col-md-12">
@@ -183,9 +167,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Current annual salary currency</label>
-
                 <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
-                  <option value="-1" >Currency</option>
                   <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline" *ngIf="current_currency_log ">

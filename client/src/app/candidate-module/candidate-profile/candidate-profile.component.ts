@@ -280,7 +280,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 this.interest_area =data['candidate'].interest_areas;
                 this.interest_area.sort();
-                let new_roles = constants.dropdown_options;
+                let new_roles = constants.workRoles;
                 let filtered_array = [];
 
                 this.roles  = data['candidate'].roles;

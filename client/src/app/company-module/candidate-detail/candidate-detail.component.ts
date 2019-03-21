@@ -42,7 +42,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   email;
   visaRequiredArray= [];
   noVisaArray = [];
-  currency = constants.currency;
+  currency = constants.currencies;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
@@ -232,7 +232,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
-              let new_roles = constants.dropdown_options;
+              let new_roles = constants.workRoles;
               let filtered_array = [];
 
               this.roles  = dataa['candidate'].roles;

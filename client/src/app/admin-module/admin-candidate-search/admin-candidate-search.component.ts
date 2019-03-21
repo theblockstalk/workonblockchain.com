@@ -28,7 +28,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = constants.admin_check;
+  admin_check = constants.candidateStatus;
   admin_checks_email_verify = constants.admin_checks_email_verify;
   admin_checks_candidate_account = constants.admin_checks_candidate_account;
   information;
@@ -38,7 +38,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   candidate_status_account;
   pager: any = {};
   pagedItems: any[];
-  msgTagsOptions = constants.msgTagsOptions;
+  msgTagsOptions = constants.chatMsgTypes;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -280,7 +280,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
-    let new_roles = constants.dropdown_options;
+    let new_roles = constants.workRoles;
 
     for(let i=0;i<this.pagedItems.length;i++){
       this.pagedItems[i].candidate.roles = getFilteredNames(this.pagedItems[i],new_roles);

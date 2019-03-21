@@ -106,7 +106,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   description_experimented_platforms;
   description_commercial_skills;
 
-  nationality = constants.nationality;
+  nationality = constants.nationalities;
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
@@ -148,17 +148,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
     if(this.currentUser && this.currentUser.type=='candidate')
     {
-
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
-
       this.dropdown_options.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -542,17 +531,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }, 900);
   }
 
-  currency = constants.currency;
-  experience = constants.exp_year;
-  options = constants.options;
-  dropdown_options = constants.dropdown_options;
-  area_interested = constants.area_interested;
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  dropdown_options = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
   graduation_year = constants.year;
   year = constants.year;
-  availability = constants.availability;
-  commercially = constants.commercially;
+  availability = constants.workAvailability;
+  commercially = constants.blockchainPlatforms;
   experimented = constants.experimented;
-  exp_year = constants.exp_year;
+  exp_year = constants.experienceYears;
 
   onExpOptions(e)
   {
@@ -644,9 +632,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   calen_month = constants.calen_month;
-  language_opt = constants.language_opt;
-  roles_opt = constants.roles_opt;
-
+  language_opt = constants.programmingLanguages;
 
   onLangExpOptions(obj)
   {

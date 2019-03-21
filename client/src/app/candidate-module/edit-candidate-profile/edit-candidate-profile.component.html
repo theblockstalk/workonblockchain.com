@@ -228,26 +228,9 @@
                         {{country_log}}
                       </div>
                     </div>
-
                   </div>
-                  <!--<div class="checkbox">
-                    <div class="row m-0">
-                      <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" value="{{option.value}}" [checked]="option.checked" (change)="updateCheckedOptions($event)" />
-                          {{option.name}}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control d-none" [(ngModel)]='selectedcountry' name="country" >
-                  <div class = "invalid-feedback d-inline" *ngIf="selectedcountry.length<=0">
-                    {{country_log}}
-                  </div>-->
                 </div>
               </div>
-
-
             </div>
 
             <div class="row">
@@ -308,7 +291,6 @@
                     This information is never shown to companies. It is used by us to help us help you set your expected salary.
                   </small>
                   <div class = "invalid-feedback d-inline" *ngIf="(!salary && current_currency) ">
-
                     {{current_sal_log}}
                   </div>
                 </div>
@@ -317,7 +299,6 @@
                 <div class="form-group">
                   <label class="invisible">Current annual salary currency</label>
                   <select [(ngModel)]="current_currency" title="Currency" class="form-control selectpicker" name="current_currency" >
-                    <option value="-1">Currency</option>
                     <option *ngFor='let currentCurrency of currency'  [value]="currentCurrency" [attr.selected]="current_currency === currentCurrency ? true : null">{{currentCurrency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="(salary && !current_currency) || (salary && current_currency === '-1') ">
