@@ -47,16 +47,15 @@ module.exports.endpoint = async function (req, res) {
     let companyDoc;
     if(queryBody.email){
         userDoc = await users.findOneByEmail(queryBody.email);
-        let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, userDoc.salt)
-
-        if (hashedPasswordAndSalt === userDoc.password_hash)
-        {
-            if(userDoc.type === 'company') {
-                companyDoc = await companies.findOne({ _creator:  userDoc._id });
+        if(userDoc.password_hash) {
+            let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, userDoc.salt)
+            if (hashedPasswordAndSalt === userDoc.password_hash) {
+                if(userDoc.type === 'company') {
+                    companyDoc = await companies.findOne({ _creator:  userDoc._id });
+                }
             }
         }
-        else
-        {
+        else {
             errors.throwError("Incorrect Password" , 400)
         }
     }

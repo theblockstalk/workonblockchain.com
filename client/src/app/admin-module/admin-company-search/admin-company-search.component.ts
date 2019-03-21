@@ -138,7 +138,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
             this.response = "data";
           }
           else {
-            this.log = "Something getting wrong";
+            this.log = "Something went wrong";
           }
         });
   }
@@ -256,7 +256,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
     }

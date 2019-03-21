@@ -136,7 +136,7 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.error = error['error']['message'];
             }
             else {
-              this.error = "Something getting wrong";
+              this.error = "Something went wrong";
             }
           });
     }
@@ -206,7 +206,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             this.error = error['error']['message'];
           }
           else {
-              this.error = "Something getting wrong";
+              this.error = "Something went wrong";
           }
             // this.router.navigate(['/not_found']);
 

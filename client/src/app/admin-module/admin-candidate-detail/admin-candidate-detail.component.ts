@@ -523,7 +523,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = error['error']['message'];
           }
           else {
-            this.error = "Something getting wrong";
+            this.error = "Something went wrong";
           }
         });
   }

@@ -510,7 +510,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               this.router.navigate(['/not_found']);
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           })
     }

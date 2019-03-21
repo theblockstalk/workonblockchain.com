@@ -271,7 +271,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
 
