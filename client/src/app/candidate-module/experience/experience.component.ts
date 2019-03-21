@@ -697,23 +697,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     let inputQuery : any = {};
 
-    inputQuery.unset_language = true;
-    if(this.expYear && this.expYear.length>0) {
-      inputQuery.unset_language = false;
-      inputQuery.programming_languages = this.expYear;
-    }
+    if(this.expYear && this.expYear.length>0) inputQuery.programming_languages = this.expYear;
+    else inputQuery.unset_language = true;
 
-    inputQuery.unset_education_history = true;
-    if(this.education_json_array && this.education_json_array.length>0) {
-      inputQuery.unset_education_history = false;
-      inputQuery.education_history =  this.education_json_array;
-    }
+    if(this.education_json_array && this.education_json_array.length>0) inputQuery.education_history =  this.education_json_array;
+    else inputQuery.unset_education_history = true;
 
-    inputQuery.unset_work_history = true;
-    if(this.experiencearray && this.experiencearray.length) {
-      inputQuery.unset_work_history = false;
-      inputQuery.work_history =  this.experiencearray;
-    }
+    if(this.experiencearray && this.experiencearray.length) inputQuery.work_history =  this.experiencearray;
+    else inputQuery.unset_work_history = true;
 
     if(this.Intro) inputQuery.description =  this.Intro;
 
