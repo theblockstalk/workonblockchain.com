@@ -44,6 +44,20 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
 
     if (search) {
+        let locationQuery;
+        let roleQuery;
+        if(search.work_type === 'employee') {
+            locationQuery= "candidate.employee.location";
+            roleQuery = "candidate.employee.roles";
+        }
+        if(search.work_type === 'contractor') {
+            locationQuery= "candidate.contractor.location";
+            roleQuery = "candidate.contractor.roles";
+        }
+        if(search.work_type === 'volunteer') {
+            locationQuery= "candidate.volunteer.location";
+            roleQuery = "candidate.volunteer.roles";
+        }
         if(search.name) {
             const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
                 {last_name : {'$regex' : search.name, $options: 'i'}}] };
@@ -70,7 +84,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 if (search.visa_needed) {
                     for (let city of citiesArray) {
                         const cityQuery = {
-                            "candidate.locations": {
+                            [locationQuery]: {
                                 $elemMatch: {
                                     city: city,
                                     visa_needed: true
@@ -82,7 +96,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
                     for (let country of countriesArray) {
                         const countryQuery = {
-                            "candidate.locations": {
+                            [locationQuery]: {
                                 $elemMatch: {
                                     country: country,
                                     visa_needed: true
@@ -93,27 +107,32 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                     }
                 }
                 else {
+
                     for (let city of citiesArray) {
                         const cityQuery = {
-                            "candidate.locations": {
+                            [locationQuery]: {
                                 $elemMatch: {
                                     city: city,
                                     visa_needed: false
                                 }
                             }
                         }
+                        console.log(cityQuery);
+
                         locationsQuery.push(cityQuery)
                     }
 
                     for (let country of countriesArray) {
                         const countryQuery = {
-                            "candidate.locations": {
+                            [locationQuery]: {
                                 $elemMatch: {
                                     country: country,
                                     visa_needed: false
                                 }
                             }
                         }
+                        console.log(countryQuery);
+
                         locationsQuery.push(countryQuery)
                     }
 
@@ -121,7 +140,12 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
             }
             if(search.locations.find(x => x.remote === true)) {
-                const locationRemoteFilter = {"candidate.locations.remote" : true};
+                let locationRemote;
+                if(search.work_type === 'employee') locationRemote = {"candidate.employee.location.remote" : true};
+                if(search.work_type === 'contractor') locationRemote = {"candidate.contractor.location.remote" : true};
+                if(search.work_type === 'volunteer') locationRemote = {"candidate.volunteer.location.remote" : true};
+                const locationRemoteFilter = locationRemote;
+                console.log(locationRemoteFilter);
                 locationsQuery.push(locationRemoteFilter);
             }
             if(locationsQuery && locationsQuery.length > 0) {
@@ -133,7 +157,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            const rolesFilter = {"candidate.roles": {$in: search.positions}};
+            const rolesFilter = {[roleQuery]: {$in: search.positions}};
             userQuery.push(rolesFilter);
         }
         if (search.blockchains && search.blockchains.length > 0 ) {
@@ -156,6 +180,17 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
             userQuery.push(currencyFiler);
+        }
+
+        if (search.rate && search.rate.expected_hourly_rate && search.rate.currency) {
+            const hourlyRate = {
+                    $or: [
+                        {"candidate.contractor.expected_hourly_rate": search.rate.expected_hourly_rate},
+                        {"candidate.contractor.currency": search.rate.currency}
+                    ]
+                };
+            userQuery.push(hourlyRate);
+
         }
 
         if (search.skills && search.skills.length > 0) {
@@ -182,6 +217,8 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
+
+    console.log(userQuery);
 
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);

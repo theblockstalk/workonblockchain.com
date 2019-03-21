@@ -11,39 +11,44 @@
         <div class = "row">
           <div class = "col-md-3 ">
             <div class="wob-bg-primary2 p-2 border">
-              <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
+              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
               <input type="text" [(ngModel)]="_id" name="_id"  class="form-control d-none">
               <input type="text" [(ngModel)]="timestamp"  name = "timestamp"  class="form-control d-none">
               <input type="text" [(ngModel)]="pref_job_type" name="pref_job_type"  class="form-control d-none">
               <input type="text" [(ngModel)]="other_technologies" name="other_technologies"  class="form-control d-none">
 
               <div class = "form-group mt-3">
-                <select title="1: Saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="1: Saved search" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name" [attr.selected]="name === saveSearchName?true:null">{{name}}</option>
                 </select>
               </div>
             </div>
 
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
+
+              <div class="form-group px-1">
+                <div class="form-check" *ngFor="let types of workTypes">
+                  <input class="form-check-input" type="radio" name="types" id="{{types.value}}" [(ngModel)]="selectedWorkType" value="{{types.value}}" (change)="changeWorkTypes($event)">
+                  <label class="form-check-label simple-radio-button" for="{{types.value}}">
+                    {{types.name}}
+                  </label>
+                </div>
+
+              </div>
 
               <div class="form-group">
-                <select title="Skills" [disabled]="msg !== '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+                <select title="Skills" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                   <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
                 </select>
               </div>
               <hr/>
 
-              <!--<div class = "form-group">
-                <select title="Desired location" [disabled]="msg !== '' ? true : false" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
-                  <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
-                </select>
-              </div>-->
               <div class="form-group">
                 <datalist id="countryList">
                   <option *ngFor = "let country of cities" [attr.data-value]="country.city" value="{{country.name}}">
                 </datalist>
-                <input type="text" list="countryList" autocomplete="off" [disabled]="msg !== '' ? true : false" placeholder="Location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                <input type="text" list="countryList" autocomplete="off" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" placeholder="Location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                   {{error}}
                 </div>
@@ -56,7 +61,7 @@
 
               <div class = "form-group">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" [disabled]="msg !== '' ? true : false" [(ngModel)]="visa_check" id="check"  name="visa_needed" (ngModelChange)="searchdata('visa', $event)">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="visa_check" id="check"  name="visa_needed" (ngModelChange)="searchdata('visa', $event)">
                   <label class="form-check-label" for="defaultCheck1">
                     Only show candidates that require a work visa
                   </label>
@@ -64,13 +69,13 @@
               </div>
               <hr/>
               <div class = "form-group">
-                <select title="Role" [disabled]="msg !== '' ? true : false" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <select title="Role" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
                 </select>
               </div>
               <hr/>
               <div class = "form-group">
-                <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <select title="Commercial blockchain experience" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
                 <small class="ml-3 text-secondary" >Only select this if essential for the job</small>
@@ -79,7 +84,7 @@
               <hr/>
 
               <div class="form-group">
-                <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                <select class="form-control selectpicker" title="Residence country" [disabled]="msg !== '' || selectedWorkType === '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
                   <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                 </select>
                 <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
@@ -88,12 +93,23 @@
 
               </div>
 
-              <div class = "form-group">
+              <div class = "form-group" *ngIf="selectedWorkType === 'employee'">
 
-                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Salary">
+                <input type="number" [disabled]="msg !== '' || selectedWorkType === '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Annual salary">
 
-                <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
+                <select title="Currency" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
+                  <option value="-1" >Currency</option>
                   <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
+                </select>
+
+              </div>
+
+              <div class = "form-group" *ngIf="selectedWorkType === 'contractor'">
+
+                <input type="number" [disabled]="msg !== '' || selectedWorkType === '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="hourly_rate" name="hourly_rate" (ngModelChange)="searchdata('hourly_rate' , $event)" placeholder="Hourly rate">
+
+                <select title="Currency" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="contractorCurrency" name="contractorCurrency" (ngModelChange)="searchdata('contractorCurrency' , $event)">
+                  <option *ngFor='let current_currency of currency' [attr.selected] = "contractorCurrency === current_currency ? true : null" >{{current_currency}}</option>
                 </select>
 
               </div>
@@ -101,10 +117,10 @@
             </div>
 
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Job preferences</h4>
+              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Talent preferences</h4>
               <small class="text-center ml-1" >This will determine the order of the candidates but not filter any candidates</small>
               <div class = "form-group mt-3">
-                <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <select title="Commercial blockchain experience" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
               </div>
@@ -115,7 +131,7 @@
                 <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
               </div>
               <div class="col-md-4">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Reset</button>
+                <button (click)="reset()" type="button" [disabled]="msg !== '' || selectedWorkType === '' ? true : false" class="btn btn-secondary w-100">Reset</button>
               </div>
               <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
                 {{success_msg}}

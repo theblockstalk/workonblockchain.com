@@ -136,6 +136,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   savedSearches;
   ngOnInit()
   {
+    this.selectedWorkType= '';
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
       name: new FormControl(),
@@ -405,6 +406,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
   residence_country;
   residence_log;
+  workTypes= constants.workTypes;
   searchdata(key , value)
   {
     this.success_msg = '';
@@ -440,6 +442,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else {
       this.not_found = '';
       let queryBody : any = {};
+      if(this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
       if(this.searchWord) queryBody.word = this.searchWord;
       if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
       if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
@@ -451,6 +454,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
+      }
+
+      if(this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
+        queryBody.expected_hourly_rate  = this.hourly_rate;
+        queryBody.currency = this.contractorCurrency;
       }
       let newQueryBody : any = {};
       newQueryBody = queryBody;
@@ -494,7 +502,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
   }
-
+  hourly_rate;
+  contractorCurrency;
   reset()
   {
     this.salary = '';
@@ -510,6 +519,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.residence_country = [];
     this.blockchain_order = [];
     this.saveSearchName = '';
+    this.selectedWorkType= '';
+    this.hourly_rate = '';
+    this.contractorCurrency = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});
@@ -799,6 +811,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          console.log(dataa);
 
           //this.filterAndSort();
 
@@ -1193,10 +1206,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  filterAndSort(){
-    let new_roles = constants.dropdown_options;
-    for(let i=0;i<this.candidate_data.length;i++){
-      this.candidate_data[i].candidate.roles = getFilteredNames(this.candidate_data[i],new_roles);
-    }
+  selectedWorkType;
+  changeWorkTypes(event) {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 60);
   }
 }
