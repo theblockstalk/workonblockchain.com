@@ -24,37 +24,29 @@ export const changeLocationDisplayFormat = function(locationArray) {
   {
     let citiesArray = [];
     let countriesArray = [];
-    for (let country1 of locationArray)
+    for (let loc of locationArray)
     {
       let locObject : any = {}
-      if (country1['remote'] === true) {
+      if (loc['remote'] === true) {
         selectedValueArray.push({name: 'Remote' , visa_needed : false});
       }
 
-      if (country1['country']) {
-        locObject.name = country1['country'];
+      if (loc['country']) {
+        locObject.name = loc['country'];
         locObject.type = 'country';
-        if(country1['visa_needed'] === true) locObject.visa_needed = true;
+        if(loc['visa_needed'] === true) locObject.visa_needed = true;
         else locObject.visa_needed = false;
         countriesArray.push(locObject);
-        countriesArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        });
+        countriesArray= sorting(countriesArray);
       }
-      if (country1['city']) {
-        let city = country1['city'].city + ", " + country1['city'].country;
+      if (loc['city']) {
+        let city = loc['city'].city + ", " + loc['city'].country;
         locObject.name = city;
         locObject.type = 'city';
-        if(country1['visa_needed'] === true) locObject.visa_needed = true;
+        if(loc['visa_needed'] === true) locObject.visa_needed = true;
         else locObject.visa_needed = false;
         citiesArray.push(locObject);
-        citiesArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        });
+        citiesArray = sorting(citiesArray);
 
       }
 
@@ -65,23 +57,94 @@ export const changeLocationDisplayFormat = function(locationArray) {
     if(countries.find((obj => obj.name === 'Remote'))) {
       let remoteValue = countries.find((obj => obj.name === 'Remote'));
       countries.splice(0, 0, remoteValue);
-      countries = this.filter_array(countries);
-
+      countries = removeDuplication(countries);
     }
 
     if(countries && countries.length > 0) {
-
       for(let loc of countries) {
         if(loc.visa_needed === true)
           visaRequiredArray.push(loc);
         if(loc.visa_needed === false)
           noVisaArray.push(loc);
       }
+    }
+  }
+  return {visaRequiredArray: visaRequiredArray , noVisaArray: noVisaArray };
+}
+
+export const changeLocationFormatToBE = function(locationArray) {
+  let selectedValueArray = [];
+  let countries;
+  let visaRequiredArray = [];
+  let noVisaArray = [];
+  console.log(locationArray);
+  if(locationArray && locationArray.length > 0)
+  {
+    let citiesArray = [];
+    let countriesArray = [];
+    for (let loc of locationArray)
+    {
+      let locObject : any = {}
+      if (loc['remote'] === true) {
+        selectedValueArray.push({name: 'Remote' , visa_needed : false});
+      }
+
+      if (loc['country']) {
+        locObject.name = loc['country'];
+        locObject.type = 'country';
+        if(loc['visa_needed'] === true) locObject.visa_needed = true;
+        else locObject.visa_needed = false;
+        countriesArray.push(locObject);
+        countriesArray= sorting(countriesArray);
+      }
+      if (loc['city']) {
+        let city = loc['city'].city + ", " + loc['city'].country;
+        locObject.name = city;
+        locObject.type = 'city';
+        if(loc['visa_needed'] === true) locObject.visa_needed = true;
+        else locObject.visa_needed = false;
+        citiesArray.push(locObject);
+        citiesArray = sorting(citiesArray);
+
+      }
 
     }
 
+    countries = citiesArray.concat(countriesArray);
+    countries = countries.concat(selectedValueArray);
+    if(countries.find((obj => obj.name === 'Remote'))) {
+      let remoteValue = countries.find((obj => obj.name === 'Remote'));
+      countries.splice(0, 0, remoteValue);
+      countries = removeDuplication(countries);
+    }
+
+    if(countries && countries.length > 0) {
+      for(let loc of countries) {
+        if(loc.visa_needed === true)
+          visaRequiredArray.push(loc);
+        if(loc.visa_needed === false)
+          noVisaArray.push(loc);
+      }
+    }
   }
-
   return {visaRequiredArray: visaRequiredArray , noVisaArray: noVisaArray };
+}
 
+export const sorting = function (array) {
+  return array.sort(function(a, b){
+    if(a.name < b.name) { return -1; }
+    if(a.name > b.name) { return 1; }
+    return 0;
+  });
+}
+
+export const removeDuplication = function (array) {
+  let hashTable = {};
+
+  return array.filter(function (el) {
+    const key = JSON.stringify(el);
+    const match = Boolean(hashTable[key]);
+
+    return (match ? false : hashTable[key] = true);
+  });
 }

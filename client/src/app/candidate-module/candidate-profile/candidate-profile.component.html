@@ -177,7 +177,7 @@
               </div>
             </div>
 
-            <div class="row" *ngIf="employee.value">
+            <div class="row mt-2" *ngIf="employee.value">
               <div class="col-md-6">
                 <h4><i class="fas fa-user-secret"></i> Employee</h4>
               </div>
@@ -193,7 +193,7 @@
 
               <div class = "col-md-12" >
                 <div class="form-group" *ngIf="employee.noVisaArray && employee.noVisaArray.length > 0">
-                  <label>Desired location:</label>
+                  <label>Locations:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.noVisaArray'>
                       <div *ngIf="country.name === 'Remote'">
@@ -211,7 +211,7 @@
                 </div>
 
                 <div class="form-group" *ngIf="employee.visaRequiredArray && employee.visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
+                  <label>Locations (work visa required):</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.visaRequiredArray'>
                       <div *ngIf="country.type === 'country'" >
@@ -260,7 +260,7 @@
 
               <div class = "col-md-12 mt-4" >
                 <div class="form-group" *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
-                  <label>Desired location:</label>
+                  <label>Locations:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.noVisaArray'>
                       <div *ngIf="country.name === 'Remote'">
@@ -278,7 +278,7 @@
                 </div>
 
                 <div class="form-group" *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
+                  <label>Locations (work visa required):</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.visaRequiredArray'>
                       <div *ngIf="country.type === 'country'" >
@@ -312,7 +312,7 @@
 
               <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
               <div class="form-group">
-                <label>Maximum hours per week: </label>
+                <label>Maximum hours per week (optional): </label>
                 <p>{{contractor.value.max_hour_per_week}}</p>
               </div>
             </div>
@@ -326,7 +326,7 @@
 
               <div class="col-md-12" *ngIf="contractor.value.agency_website">
                 <div class="form-group">
-                  <label>Contractor type: </label>
+                  <label>Agency website: </label>
                   <p >{{contractor.value.agency_website}}</p>
                 </div>
               </div>
@@ -348,7 +348,7 @@
 
               <div class = "col-md-12 mt-4" >
                 <div class="form-group" *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
-                  <label>Desired location:</label>
+                  <label>Locations:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.noVisaArray'>
                       <div *ngIf="country.name === 'Remote'">
@@ -366,7 +366,7 @@
                 </div>
 
                 <div class="form-group" *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
+                  <label>Locations (work visa required):</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.visaRequiredArray'>
                       <div *ngIf="country.type === 'country'" >
@@ -392,17 +392,17 @@
               </div>
 
 
-              <div class="col-md-12" *ngIf="contractor.value.max_hours_per_week">
+              <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
                 <div class="form-group">
                   <label>Maximum hours per week: </label>
-                  <p >{{contractor.value.max_hours_per_week}}</p>
+                  <p >{{volunteer.value.max_hours_per_week}}</p>
                 </div>
               </div>
 
-              <div class="col-md-12" *ngIf="contractor.value.learning_objectives">
+              <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
                 <div class="form-group">
                   <label>Learning objectives: </label>
-                  <pre >{{contractor.value.learning_objectives}}</pre>
+                  <pre >{{volunteer.value.learning_objectives}}</pre>
                 </div>
               </div>
 

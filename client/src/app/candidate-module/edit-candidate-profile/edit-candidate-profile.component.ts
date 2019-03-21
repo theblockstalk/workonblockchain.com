@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import {removeDuplication} from "../../../services/object";
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -1443,7 +1444,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
     if(this.current_currency) inputQuery.current_currency = this.current_currency;
     if(this.selectedValue.length > 0) inputQuery.interest_areas = this.selectedValue;
-    console.log(inputQuery.interest_areas);
     this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
       .subscribe(
         data => {
@@ -1599,7 +1599,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       if(locationArray.find((obj => obj.name === 'Remote'))) {
         let remoteValue = locationArray.find((obj => obj.name === 'Remote'));
         locationArray.splice(0, 0, remoteValue);
-        locationArray = this.filter_array(locationArray);
+        locationArray = removeDuplication(locationArray);
 
       }
       if(value === 'employee')  {
@@ -1655,7 +1655,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
                 }
               }
-              this.cities = this.filter_array(citiesOptions);
+              this.cities = removeDuplication(citiesOptions);
 
             }
 
@@ -1692,17 +1692,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   deleteLocationRow(array, index){
     array.splice(index, 1);
-  }
-
-  filter_array(arr) {
-    var hashTable = {};
-
-    return arr.filter(function (el) {
-      var key = JSON.stringify(el);
-      var match = Boolean(hashTable[key]);
-
-      return (match ? false : hashTable[key] = true);
-    });
   }
 
   workTypeChange(event) {
@@ -1770,7 +1759,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
           let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
           this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+          this.selectedValueArray = removeDuplication(this.selectedValueArray);
 
         }
         this.employee.selectedLocation = this.selectedValueArray;
@@ -1826,7 +1815,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(this.contractorArray.find((obj => obj.name === 'Remote'))) {
           let remoteValue = this.contractorArray.find((obj => obj.name === 'Remote'));
           this.contractorArray.splice(0, 0, remoteValue);
-          this.contractorArray = this.filter_array(this.contractorArray);
+          this.contractorArray = removeDuplication(this.contractorArray);
 
         }
         this.contractor.selectedLocation = this.contractorArray;
@@ -1884,7 +1873,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(this.volunteerArray.find((obj => obj.name === 'Remote'))) {
           let remoteValue = this.volunteerArray.find((obj => obj.name === 'Remote'));
           this.volunteerArray.splice(0, 0, remoteValue);
-          this.volunteerArray = this.filter_array(this.volunteerArray);
+          this.volunteerArray = removeDuplication(this.volunteerArray);
 
         }
         this.volunteer.selectedLocation = this.volunteerArray;
