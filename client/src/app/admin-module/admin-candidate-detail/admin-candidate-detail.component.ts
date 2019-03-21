@@ -436,8 +436,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    console.log(this.email_text);
-    console.log(approveForm.value);
     if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
@@ -482,7 +480,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
-    console.log(approveForm);
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;

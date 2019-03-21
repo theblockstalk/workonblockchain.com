@@ -1452,7 +1452,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
     if(this.commercially_worked.length === 0) {
+      profileForm.unset_commercial_platforms = true;
       profileForm.commercial_platforms = [];
     }
     else {
@@ -1460,6 +1462,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.commercialSkills.length === 0) {
+      profileForm.unset_commercial_skills = true;
       profileForm.commercial_skills = [];
     }
     else {
@@ -1482,6 +1485,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.language.length === 0) {
+      profileForm.unset_language = true;
       profileForm.language = [];
     }
     else {
@@ -1501,10 +1505,23 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
     if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+
+
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+    else inputQuery.unset_github_account = true;
+
+
     if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+    else inputQuery.unset_exchange_account = true;
+
+
     if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+    else inputQuery.unset_linkedin_account = true;
+
+
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+    else inputQuery.unset_medium_account = true;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.info.Intro) inputQuery.description = this.info.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
@@ -1527,6 +1544,17 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
+
+    inputQuery.unset_commercial_platforms = profileForm.unset_commercial_platforms;
+    inputQuery.unset_commercial_skills = profileForm.unset_commercial_skills;
+
+    if(this.experimented_platform.length == 0) inputQuery.unset_experimented_platforms = true;
+
+    inputQuery.unset_language = profileForm.unset_language;
+
+    if(this.education_json_array.length === 0) inputQuery.unset_education_history = true;
+
+    if(this.experiencearray.length === 0) inputQuery.unset_work_history = true;
 
     this.authenticationService.edit_candidate_profile(this.user_id, inputQuery , true)
       .subscribe(

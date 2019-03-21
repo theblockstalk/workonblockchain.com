@@ -441,6 +441,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length)
     {
       if(this.commercially_worked.length === 0) {
+        expForm.value.unset_commercial_platforms = true;
         expForm.value.commercial_platforms = [];
       }
       else {
@@ -448,7 +449,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
       if(this.commercialSkills.length === 0) {
-        expForm.value.commercial_skills = [];
+        expForm.value.unset_commercial_skills = true;
+        expForm.value.value.commercial_skills = [];
       }
       else {
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
@@ -468,6 +470,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       if(this.description_commercial_skills){
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
+
+      if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
         .subscribe(
