@@ -542,6 +542,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     this.history_data()
                   )
                 });
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                }, 300);
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
               }
 
               if(data['candidate'].education_history)
