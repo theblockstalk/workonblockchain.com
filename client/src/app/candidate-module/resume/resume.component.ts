@@ -441,9 +441,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
-    console.log(this.experimented_platform.length);
-    console.log(this.description_experimented_platforms);
-
     if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
       flag_commercial_desc = false;
       this.commercial_desc_log = 'Please enter description of commercial experience';
