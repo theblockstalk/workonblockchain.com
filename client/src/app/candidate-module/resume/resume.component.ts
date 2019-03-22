@@ -427,9 +427,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   blockchain_exp(expForm: NgForm)
   {
     this.error_msg="";
-    this.commercial_desc_log = '';
-    this.experimented_desc_log = '';
-    this.commercialSkills_desc_log = '';
     let flag_commercial_desc = true;
     let flag_experimented_desc = true;
     let flag_commercialSkills_desc = true;

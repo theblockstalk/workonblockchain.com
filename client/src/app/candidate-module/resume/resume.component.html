@@ -129,7 +129,7 @@
               </div>
             </div>
           </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && commercial_desc_log">
+          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && !description_commercial_platforms">
             {{commercial_desc_log}}
           </div>
 
@@ -165,7 +165,7 @@
               </div>
             </div>
           </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && experimented_desc_log">
+          <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && !description_experimented_platforms">
             {{experimented_desc_log}}
           </div>
 
@@ -227,7 +227,7 @@
               </div>
             </div>
           </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && commercialSkills_desc_log">
+          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && !description_commercial_skills">
             {{commercialSkills_desc_log}}
           </div>
 
