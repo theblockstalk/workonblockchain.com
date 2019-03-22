@@ -63,6 +63,64 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   urlParameters : any = {};
   no_value = false;
   saveSearchName;
+  currency = constants.currency;
+  month = constants.month;
+  job_type = constants.job_type;
+  skillsData = constants.language_opt;
+  residenceCountries = constants.countries;
+  job_types = constants.job_types;
+  rolesData = constants.dropdown_options;
+  blockchainData = constants.commercially;
+  skill;
+  searchName=[];
+  savedSearches;
+  model : any ={};
+  rolesItems;
+  expected_hourly_rate;
+  salary;currencyChange;
+  information;
+  not_found;
+  visa_check;
+  blockchain_order;
+  residence_country;
+  residence_log;
+  workTypes= constants.workTypes;
+  hourly_rate;
+  contractorCurrency;
+  success_msg;
+  error_msg;
+  _id;
+  timestamp;
+  pref_job_type;
+  other_technologies;
+  successful_msg;
+  new_error_msg;
+  residence_country_log;
+  expected_hourly_rate_log;
+  search_name_log;
+  response;
+  count;
+  candidate_data;
+  verify_msg;
+  responseMsg;
+  programming_languages;
+  user_id;
+  user_name;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_success;
+  job_offer_log_erorr;
+  newSearchLocation = [];
+  selectedWorkType;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
     this.route.queryParams.subscribe(params => {
@@ -120,16 +178,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-
-  currency = constants.currency;
-  month = constants.month;
-  job_type = constants.job_type;
-  skillsData = constants.language_opt;
-  residenceCountries = constants.countries;
-  job_types = constants.job_types;
-  rolesData = constants.dropdown_options;
-  blockchainData = constants.commercially;
-
   ngAfterViewInit() {
     window.scrollTo(0, 0);
     setTimeout(() => {
@@ -145,14 +193,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ngAfterViewChecked() {
 
   }
-  skill;
-  searchName=[];
-  savedSearches;
-  model : any ={}
-  ngOnInit()
-  {
+
+  ngOnInit() {
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
+      work_type: new FormControl(),
       name: new FormControl(),
       location: new FormControl(),
       visa_needed: new FormControl(),
@@ -160,6 +205,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       position: new FormControl(),
       current_currency: new FormControl(),
       current_salary: new FormControl(),
+      currency :  new FormControl(),
+      expected_hourly_rate: new FormControl(),
       blockchain: new FormControl(),
       skills: new FormControl(),
       other_technologies: new FormControl(),
@@ -195,7 +242,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {
       $('.selectpicker').selectpicker('refresh');
 
-     this.populatePopupFields();
+
 
       this.skillsData.sort(function(a, b){
         if(a.name < b.name) { return -1; }
@@ -304,17 +351,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  rolesItems;
-
   populatePopupFields(){
     this.preferncesForm = this._fb.group({
       name: [],
+      work_type: [this.preferncesForm.value.work_type],
       location: [],
       visa_needed: [this.visa_check],
       job_type: [],
       position: [this.role_value],
       current_currency: [this.currencyChange],
       current_salary: [this.salary],
+      expected_hourly_rate: [this.hourly_rate],
+      currency: [this.contractorCurrency],
       blockchain: [this.blockchain_value],
       skills: [this.skill_value],
       other_technologies: [],
@@ -322,42 +370,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       residence_country: [this.residence_country],
     });
   }
-
-  positionchanged(data)
-  {
-    this.not_found = '';
-    if(this.select_value  !== data.value)
-    {
-      this.select_value = data.value;
-      this.searchdata('roles' , this.select_value);
-    }
-
-  }
-
-  updateCitiesOptions(e) {
-  }
-
-  skillChanged(data)
-  {
-    this.not_found = '';
-    this.skill_value = data.value;
-    this.searchdata('skill' , this.skill_value);
-
-  }
-
-
-  blockchainchanged(data)
-  {
-    this.not_found = '';
-    this.searchdata('blockchain' , this.selecteddd);
-  }
-
-
-  salary;currencyChange;
-  information;
-  not_found;
-  visa_check;
-  blockchain_order;
 
   fillFields(searches, name) {
     this.selectedValueArray = [];
@@ -418,11 +430,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
     }
   }
-  residence_country;
-  residence_log;
-  workTypes= constants.workTypes;
-  searchdata(key , value)
-  {
+
+  searchdata(key , value) {
     this.success_msg = '';
     if(key === 'searchName') {
       this.error_msg = '';
@@ -436,11 +445,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 500);
-    if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
-    if(this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
 
 
-    this.populatePopupFields();
+    //this.populatePopupFields();
 
     $('.selectpicker').selectpicker('refresh');
 
@@ -490,7 +497,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             this.candidate_data = data;
 
-           // this.filterAndSort();
+            // this.filterAndSort();
 
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -516,10 +523,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
   }
-  hourly_rate;
-  contractorCurrency;
-  reset()
-  {
+
+  reset() {
     this.salary = '';
     this.info = [];
     this.searchWord = '';
@@ -542,13 +547,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.getVerrifiedCandidate();
   }
 
-
-  success_msg;
-  error_msg;
-  _id;
-  timestamp;
-  pref_job_type;
-  other_technologies;
   savedSearch() {
     let queryBody : any = {};
     let index = this.savedSearches.findIndex((obj => obj.name === this.saveSearchName));
@@ -592,27 +590,27 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     this.savedSearches[index] = queryBody;
     if(this.saveSearchName) {
-    for(let searches of this.savedSearches) {
-      if(searches['name'] !== this.saveSearchName) {
-        if(searches['location'] && searches['location'].length > 0 ) {
-          let cities = [];
-          let cityCheck= false;
-          for(let city of searches['location'])
-          {
-            if(city['city'] && city['city']._id ) {
-              cityCheck=true;
-              cities.push({_id:city['_id'] , city: city['city']._id});
-            }
-            if(city['remote'] === true) {
-              cityCheck=true;
-              cities.push(city);
-            }
+      for(let searches of this.savedSearches) {
+        if(searches['name'] !== this.saveSearchName) {
+          if(searches['location'] && searches['location'].length > 0 ) {
+            let cities = [];
+            let cityCheck= false;
+            for(let city of searches['location'])
+            {
+              if(city['city'] && city['city']._id ) {
+                cityCheck=true;
+                cities.push({_id:city['_id'] , city: city['city']._id});
+              }
+              if(city['remote'] === true) {
+                cityCheck=true;
+                cities.push(city);
+              }
 
+            }
+            if(cityCheck === true) searches['location'] = cities;
           }
-          if(cityCheck === true) searches['location'] = cities;
         }
       }
-    }
       this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
         .subscribe(
           data => {
@@ -678,9 +676,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  successful_msg;
-  new_error_msg;
-  residence_country_log;
   savedNewSearch(){
     let queryBody : any = {};
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
@@ -708,20 +703,44 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_salary  = this.preferncesForm.value.current_salary;
     }
 
-    let residenceCount = 0;
+    let errorCount = 0;
+    if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+      const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+      if(checkNumber === false) {
+        errorCount = 1;
+      }
+
+    }
+
+    if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+      this.expected_hourly_rate_log = "Please choose currency ";
+      errorCount = 1;
+    }
+
+    if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+      this.expected_hourly_rate_log = "Please enter expected hours ";
+      errorCount = 1;
+    }
+
+    if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+      const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
+      if(checkNumber === false) {
+        errorCount = 1;
+        this.expected_hourly_rate_log = "Hourly rate should be a number "
+      }
+    }
     if(!this.preferncesForm.value.name) {
-      this.new_error_msg = "Please enter saved search name";
-      residenceCount = 1;
-      setInterval(() => {
-        this.new_error_msg = "" ;
-      }, 5000);
+      this.search_name_log = "Please enter saved search name";
+      errorCount = 1;
     }
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
       this.residence_country_log = "Please select maximum 50 countries";
-      residenceCount = 1;
+      errorCount = 1;
     }
 
-    if(residenceCount === 0) {
+    console.log(this.preferncesForm);
+    console.log(errorCount);
+    if(errorCount === 0) {
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
       if(index < 0 && this.preferncesForm.value.name) {
@@ -766,20 +785,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                       this.timestamp = data['saved_searches'][i].timestamp;
                       this.pref_job_type = data['saved_searches'][i].job_type;
                       this.other_technologies = data['saved_searches'][i].other_technologies;
-
                       if(data['saved_searches'][i].location && data['saved_searches'][i].location.length > 0) {
                         this.prefillLocationFEFormat(data['saved_searches'][i].location);
                       }
-
                     }
-
                     setTimeout(() => {
                       $('.selectpicker').selectpicker('refresh');
                     }, 300);
-
                   }
 
                 }
+                this.preferncesForm.reset();
+                this.new_error_msg = '';
+                this.search_name_log = '';
               }
             },
             error => {
@@ -794,7 +812,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
 
     }
-
+    else {
+      this.new_error_msg = "One or more fields need to be completed. Please scroll up to see which ones";
+    }
   }
 
   checkNumber(salary) {
@@ -807,14 +827,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  response;
-  count;
-  candidate_data;
-  verify_msg;
-  responseMsg;
-  programming_languages;
-  getVerrifiedCandidate()
-  {
+  getVerrifiedCandidate() {
     this.log='';
     this.candidate_data='';
     this.verify_msg = "verified candidate";
@@ -874,7 +887,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  user_id;user_name;
   onSubmit(val) {
     this.user_id = val;
     this.user_name = val;
@@ -926,20 +938,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
       );
   }
-
-  date_of_joining;
-  msg_tag;
-  is_company_reply = 0;
-  msg_body;
-  description;
-  job_title_log;
-  location_log;
-  salary_log;
-  salary_currency_log;
-  employment_log;
-  job_desc_log;
-  job_offer_log_success;
-  job_offer_log_erorr;
 
   send_job_offer(msgForm : NgForm){
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -1030,18 +1028,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  reset_msgs(){
-    this.job_offer_log = '';
-    this.credentials.job_title = '';
-    this.credentials.salary = '';
-    this.credentials.currency = '';
-    this.credentials.location = '';
-    this.credentials.job_type = '';
-    this.credentials.job_desc = '';
-    this.job_offer_log_success = '';
-    this.job_offer_log_erorr = '';
-  }
-
   sorting(languages){
 
     return languages.sort(function(a, b){
@@ -1050,11 +1036,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       return 0;
     })
   }
+
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
-
 
   suggestedOptions() {
     if((this.countriesModel && this.countriesModel !== '') || (this.preferncesForm.value.location && this.preferncesForm.value.location !== '')) {
@@ -1103,7 +1089,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  newSearchLocation = [];
   selectedValueFunction(e) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
@@ -1160,8 +1145,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.searchdata('locations' , this.selectedValueArray);
   }
 
-  filter_array(arr)
-  {
+  filter_array(arr) {
     var hashTable = {};
 
     return arr.filter(function (el) {
@@ -1221,8 +1205,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  selectedWorkType;
-  changeWorkTypes(event) {
+  changeWorkTypes(event , name) {
+    if(name === 'newSearch') {
+      if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
+      if(this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
+
+      this.populatePopupFields();
+
+    }
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 60);
