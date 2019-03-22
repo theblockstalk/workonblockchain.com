@@ -446,6 +446,9 @@
                 </div>
               </div>
             </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && !description_commercial_platforms">
+              {{commercial_desc_log}}
+            </div>
 
             <div class="row">
               <div class="col-md-12">
@@ -478,6 +481,9 @@
                   <textarea rows="4" cols="100" name="description_experimented_platforms" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
+            </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && !description_experimented_platforms">
+              {{experimented_desc_log}}
             </div>
 
             <!-- commercial skills -->
@@ -536,6 +542,9 @@
                   <textarea rows="4" cols="100" name="description_commercial_skills" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
+            </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && !description_commercial_skills">
+              {{commercialSkills_desc_log}}
             </div>
           </section>
           <!--resume job form end here-->

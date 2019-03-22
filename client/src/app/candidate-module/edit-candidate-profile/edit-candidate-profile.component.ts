@@ -542,6 +542,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     this.history_data()
                   )
                 });
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                }, 300);
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
               }
 
               if(data['candidate'].education_history)
@@ -1196,12 +1204,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   count;
   validatedLocation=[];
   country_input_log;
+  commercial_desc_log;
+  experimented_desc_log;
+  commercialSkills_desc_log;
+
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
+    let flag_commercial_desc = true;
+    let flag_experimented_desc = true;
+    let flag_commercialSkills_desc = true;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1299,17 +1315,23 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.commercial_log = "Please fill year of experience";
     }
-    /*if(this.platforms_designed.length !== this.platforms.length)
-    {
-      this.platform_log = "Please fill year of experience";
-    }*/
 
+    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+      flag_commercial_desc = false;
+      this.commercial_desc_log = 'Please enter description of commercial experience';
+    }
+
+    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+      flag_experimented_desc = false;
+      this.experimented_desc_log = 'Please enter description of experimented with';
+    }
 
     if(this.LangexpYear.length !==  this.language.length)
     {
 
       this.exp_lang_log="Please fill year of experience";
     }
+
     if(!this.Intro)
     {
 
@@ -1319,6 +1341,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
     {
       this.commercial_skill_log = "Please fill year of experience";
+    }
+
+    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+      flag_commercialSkills_desc = false;
+      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
     }
 
     if(this.EducationForm.value.itemRows.length >= 1)
@@ -1478,6 +1505,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
     {
       this.verify = true;

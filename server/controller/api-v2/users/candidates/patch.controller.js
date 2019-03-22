@@ -288,7 +288,7 @@ module.exports.endpoint = async function (req, res) {
         } else {
             if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
-                updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
+                if(queryBody.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
             }
         }
 
@@ -296,9 +296,9 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.experimented_platforms'] = 1;
             unset['candidate.blockchain.description_experimented_platforms'] = 1;
         } else {
-            if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) {
+            if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
-                updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
+                if(queryBody.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
             }
         }
 
@@ -306,9 +306,9 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.commercial_skills'] = 1;
             unset['candidate.blockchain.description_commercial_skills'] = 1;
         } else {
-            if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) {
+            if (queryBody.commercial_skills && queryBody.commercial_skills.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-                updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
+                if(queryBody.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
             }
         }
 
