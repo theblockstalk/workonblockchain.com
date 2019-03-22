@@ -14,6 +14,7 @@ import { AdminCompanyDetailComponent } from './admin-company-detail/admin-compan
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
 import { StyleGuideComponent } from './style-guide/style-guide.component';
 import {PagerService} from '../pager.service';
+import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -22,7 +23,11 @@ import {PagerService} from '../pager.service';
     FormsModule,
     SharedModule,
     ReactiveFormsModule,
-    CKEditorModule
+    CKEditorModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule
+
   ],
   declarations: [
     AdminDashboardComponent,

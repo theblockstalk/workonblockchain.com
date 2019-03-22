@@ -36,7 +36,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
 
     };
     this.tweet = 'http://localhost:4200/refer?code=f4ca5a5443';
-
+    this.selectedValueArray= [];
   }
 
   ngAfterViewInit() {
@@ -56,16 +56,27 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   countriesModel;
   error;
   selectedValue(e) {
-    this.countriesModel= '';
-    this.countries = [];
-    if(this.selectedValueArray.find(x => x === e)) {
-      this.error = 'You selected this already';
-      setInterval(() => {
-        this.error = "" ;
-      }, 2500);
-    }
-    else {
-      this.selectedValueArray.push(e);
-    }
+    console.log("event");
+    console.log(e);
+   if(this.countries && this.countries.find(x=> x === e)) {
+     if(this.selectedValueArray.find(x => x === e)) {
+       this.error = 'You selected this already';
+       setInterval(() => {
+         this.error = "" ;
+       }, 2500);
+     }
+     else {
+       this.countriesModel= '';
+       this.countries = [];
+
+       return this.selectedValueArray.push(e);
+     }
+   }
+
+  }
+
+  displayFn(value) {
+    //this.countriesModel = value;
+    //return this.selectedValue(value);
   }
 }
