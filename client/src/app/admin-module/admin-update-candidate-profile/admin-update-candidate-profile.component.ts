@@ -1123,12 +1123,23 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     return this.start_monthh ?  this.start_monthh : 0;
   }
 
+  commercial_desc_log;
+  experimented_desc_log;
+  commercialSkills_desc_log;
+
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
+    this.commercial_desc_log = '';
+    this.experimented_desc_log = '';
+    this.commercialSkills_desc_log = '';
+    let flag_commercial_desc = true;
+    let flag_experimented_desc = true;
+    let flag_commercialSkills_desc = true;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1226,6 +1237,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.commercial_log = "Please fill year of experience";
     }
 
+    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+      flag_commercial_desc = false;
+      this.commercial_desc_log = 'Please enter description of commercial experience';
+    }
+
+    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+      flag_experimented_desc = false;
+      this.experimented_desc_log = 'Please enter description of experimented with';
+    }
+
     if(this.LangexpYear.length !==  this.language.length)
     {
 
@@ -1240,6 +1261,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
     {
       this.commercial_skill_log = "Please fill year of experience";
+    }
+
+    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+      flag_commercialSkills_desc = false;
+      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
     }
 
     if(this.EducationForm.value.itemRows.length >= 1)
@@ -1399,6 +1425,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
     {
       this.verify = true;
