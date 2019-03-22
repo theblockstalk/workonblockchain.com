@@ -54,6 +54,9 @@ module.exports.endpoint = async function (req, res) {
                     companyDoc = await companies.findOne({ _creator:  userDoc._id });
                 }
             }
+            else {
+                errors.throwError("Incorrect Password" , 400)
+            }
         }
         else {
             errors.throwError("Incorrect Password" , 400)
