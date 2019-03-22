@@ -71,8 +71,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.urlParameters) {
           this.no_value = true;
           if(this.urlParameters.work_type) {
-            this.selectedWorkType = this.urlParameters.work_type;
-            console.log(this.selectedWorkType);
+            for(let option of this.workTypes)
+            {
+              if(option.value === this.urlParameters.work_type)
+              {
+                option.checked=true;
+                this.selectedWorkType = option.value;
+              }
+            }
           }
           if(this.urlParameters.searchName){
             this.saveSearchName = this.urlParameters.searchName;
@@ -98,6 +104,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if(this.urlParameters.current_salary && this.urlParameters.current_currency){
             this.salary = this.urlParameters.current_salary;
             this.currencyChange = this.urlParameters.current_currency;
+          }
+          if(this.urlParameters.expected_hourly_rate && this.urlParameters.currency){
+            this.hourly_rate = this.urlParameters.expected_hourly_rate;
+            this.contractorCurrency = this.urlParameters.currency;
           }
           if(this.urlParameters.blockchainOrder){
             this.blockchain_order = this.urlParameters.blockchainOrder;
@@ -138,9 +148,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill;
   searchName=[];
   savedSearches;
+  model : any ={}
   ngOnInit()
   {
-    this.selectedWorkType= '';
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
       name: new FormControl(),

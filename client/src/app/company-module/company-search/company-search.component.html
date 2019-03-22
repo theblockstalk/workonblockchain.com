@@ -29,8 +29,8 @@
 
               <div class="form-group px-1">
                 <div class="form-check" *ngFor="let types of workTypes">
-                  <input class="form-check-input" type="radio" name="types" id="{{types.value}}" [(ngModel)]="selectedWorkType" value="{{types.value}}" (change)="changeWorkTypes($event)">
-                  <label class="form-check-label simple-radio-button" for="{{types.value}}">
+                  <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (change)="changeWorkTypes($event)">
+                  <label class="form-check-label simple-radio-button" >
                     {{types.name}}
                   </label>
                 </div>
