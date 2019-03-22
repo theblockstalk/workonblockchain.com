@@ -4,7 +4,7 @@ const logger = require('../controller/services/logger');
 function checkIfArrayIsUnique(myArray,propertyName) {
     for (var i = 0; i < myArray.length; i++) {
         for (var j = 0; j < myArray.length; j++) {
-            if (i != j) {
+            if (i !== j) {
                 if(propertyName){
                     if (myArray[i][propertyName] === myArray[j][propertyName]){
                         return true; // means there are duplicate values
