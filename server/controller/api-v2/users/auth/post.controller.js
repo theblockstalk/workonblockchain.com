@@ -8,6 +8,7 @@ const companies = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
 const google = require('../../../services/google');
 const linkedin = require('../../../services/linkedin');
+const objects = require('../../../services/objects');
 
 
 module.exports.request = {
@@ -47,7 +48,7 @@ module.exports.endpoint = async function (req, res) {
     let companyDoc;
     if(queryBody.email){
         userDoc = await users.findOneByEmail(queryBody.email);
-        if(userDoc.password_hash) {
+        if(userDoc && userDoc.password_hash) {
             let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, userDoc.salt)
             if (hashedPasswordAndSalt === userDoc.password_hash) {
                 if(userDoc.type === 'company') {
