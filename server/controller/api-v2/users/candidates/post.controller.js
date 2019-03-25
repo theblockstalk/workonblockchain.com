@@ -59,13 +59,16 @@ module.exports.endpoint = async function (req, res) {
     let newUserDoc = {
         type : 'candidate'
     };
+    let userDoc;
 
-    if(queryBody.email) email = queryBody.email;
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
     if(queryBody.google_code) {
+        userDoc = await users.findOne({google_id: queryBody.google_code});
+        if(userDoc) {
+            errors.throwError('Google account is already taken' , 400)
+        }
         const googleData = await google.googleAuth(queryBody.google_code);
         if(googleData) {
-            email = googleData.email;
             newUserDoc.email = googleData.email;
             newUserDoc.google_id = googleData.google_id;
             newUserDoc.first_name = googleData.first_name;
@@ -77,9 +80,12 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else if(queryBody.linkedin_code) {
+        userDoc = await users.findOne({linkedin_id: queryBody.linkedin_code});
+        if(userDoc) {
+            errors.throwError('Linkedin account is already taken' , 400)
+        }
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         if(linkedinData) {
-            email = linkedinData.email;
             newUserDoc.email = linkedinData.email;
             newUserDoc.linkedin_id = linkedinData.linkedin_id;
             newUserDoc.first_name = linkedinData.first_name;
@@ -91,6 +97,10 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
+        userDoc = await users.findOneByEmail(queryBody.email);
+        if(userDoc) {
+            errors.throwError('Email "' + email + '" is already taken' , 400)
+        }
         const salt = crypto.getRandomString(128);
         const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
 
@@ -101,11 +111,7 @@ module.exports.endpoint = async function (req, res) {
         newUserDoc.password_hash = hashedPasswordAndSalt;
     }
 
-    const userDoc = await users.findOneByEmail(email);
-    if (userDoc ) {
-        let errorMsg = 'Email "' + email + '" is already taken';
-        errors.throwError(errorMsg , 400)
-    }
+
 
     newUserDoc.candidate = {
         history: [{
