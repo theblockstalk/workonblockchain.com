@@ -132,7 +132,7 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
 
-        it('should not only send to candidates after saved search update', async function () {
+        it('should only sent new approved candidates taht are approved after the saved search is updated', async function () {
 
             let candidate = [], profileData= [];
             for (let i = 0; i < 5; i++) {
@@ -141,13 +141,13 @@ describe('cron', function () {
             }
 
             const company = docGeneratorV2.company();
-            console.log(company);
+
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
-            console.log(companyDoc);
+
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
-            console.log(updatedData);
+
             updatedData.saved_searches = [{
                 location: [
                     profileData[0].locations[0]
@@ -170,39 +170,63 @@ describe('cron', function () {
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
-
+            // signup and approve candidate that matches the current company saved search
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[0]);
-
+            // signup and approve second candidate that matches the current company saved search
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[0]);
 
             await companyEmail();
-
+            //check that candidate 1 and 2 are sent to the company
             let userCompanyDoc = await users.findOneByEmail(company.email);
-            console.log(userCompanyDoc);
+
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(2);
-
+            // signup and approve third candidate that matches the current company saved search
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[0]);
 
             await companyEmail();
-
+            //check that candidate 3 are also sent to the company
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(3);
 
-            let newSavedSearch = companyDoc.saved_searches;
-            newSavedSearch[0].position = [
-                profileData[1].roles[0]
-            ];
+            let newSavedSearch = [{
+                location: [
+                    profileData[1].locations[0]
+                ],
+                job_type: [
+                    "Part time"
+                ],
+                position: [
+                    profileData[1].roles[0]
+                ],
+                current_currency: profileData[1].expected_salary_currency,
+                current_salary: profileData[1].expected_salary,
+                skills: [
+                    profileData[1].programming_languages[0].language
+                ],
+                availability_day: profileData[1].availability_day,
+            }];
 
+            // signup and approve fourth candidate that is not matched the current company saved search
+            // but will match the new company saved search
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[1]);
+            // update the company saved search same preferences as candidate four
+            // (but should not match because saved search update after candidate approve)
             await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
 
+            // signup and approve fifth candidate that should matched the new company saved search
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[1]);
             await companyEmail();
-
+            //check that candidate 5 are also sent to the company but not candidate 4
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+
             companyDoc.candidates_sent_by_email.length.should.equal(4);
 
         })
     })
 });
+
+function fullLog(obj) {
+    console.log(JSON.stringify(obj, null, 2));
+
+}

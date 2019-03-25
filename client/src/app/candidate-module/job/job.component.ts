@@ -385,7 +385,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       f.value.current_salary = parseInt(f.value.current_salary);
       f.value.expected_salary = parseInt(f.value.expected_salary);
       f.value.country = this.validatedLocation;
-      this.authenticationService.job(this.currentUser._creator, f.value)
+      this.authenticationService.job(this.currentUser._id, f.value)
         .subscribe(
           data => {
             if(data && this.currentUser)

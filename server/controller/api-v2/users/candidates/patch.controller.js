@@ -204,7 +204,18 @@ const bodySchema = new Schema({
                 }
             }
         }
-    }
+    },
+    unset_commercial_platforms: Boolean,
+    unset_experimented_platforms: Boolean,
+    unset_commercial_skills: Boolean,
+    unset_language: Boolean,
+    unset_language: Boolean,
+    unset_education_history: Boolean,
+    unset_work_history: Boolean,
+    unset_github_account: Boolean,
+    unset_exchange_account: Boolean,
+    unset_linkedin_account: Boolean,
+    unset_medium_account: Boolean,
 });
 
 module.exports.inputValidation = {
@@ -252,10 +263,6 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
         if (queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
         if (queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
-        if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
-        if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
-        if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
-        if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
         if (queryBody.locations) {
             for (let loc of queryBody.locations) {
                 if (loc.city) {
@@ -272,29 +279,80 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.current_salary) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
         if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
         if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
-        if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
         if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
-        if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
-        if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
         if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
-        if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
-        else unset['candidate.blockchain.commercial_platforms'] = 1;
 
-        if (queryBody.description_commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
-        else unset['candidate.blockchain.description_commercial_platforms'] = 1;
+        if (queryBody.unset_commercial_platforms) {
+            unset['candidate.blockchain.commercial_platforms'] = 1;
+            unset['candidate.blockchain.description_commercial_platforms'] = 1;
+        } else {
+            if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) {
+                updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
+                if(queryBody.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
+            }
+        }
 
-        if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
-        else unset['candidate.blockchain.experimented_platforms'] = 1;
+        if (queryBody.unset_experimented_platforms) {
+            unset['candidate.blockchain.experimented_platforms'] = 1;
+            unset['candidate.blockchain.description_experimented_platforms'] = 1;
+        } else {
+            if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) {
+                updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
+                if(queryBody.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
+            }
+        }
 
-        if (queryBody.description_experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
-        else unset['candidate.blockchain.description_experimented_platforms'] = 1;
+        if (queryBody.unset_commercial_skills) {
+            unset['candidate.blockchain.commercial_skills'] = 1;
+            unset['candidate.blockchain.description_commercial_skills'] = 1;
+        } else {
+            if (queryBody.commercial_skills && queryBody.commercial_skills.length > 0) {
+                updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
+                if(queryBody.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
+            }
+        }
 
-        if (queryBody.commercial_skills && queryBody.commercial_skills.length > 0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-        else unset['candidate.blockchain.description_experimented_platforms'] = 1;
+        if (queryBody.unset_language) {
+            unset['candidate.programming_languages'] = 1;
+        } else {
+            if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
+        }
 
-        if (queryBody.description_commercial_skills && queryBody.commercial_skills.length > 0) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
-        else unset['candidate.blockchain.description_commercial_skills'] = 1;
+        if (queryBody.unset_education_history) {
+            unset['candidate.education_history'] = 1;
+        } else {
+            if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
+        }
 
+        if (queryBody.unset_work_history) {
+            unset['candidate.work_history'] = 1;
+        } else {
+            if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
+        }
+
+        if (queryBody.unset_github_account) {
+            unset['candidate.github_account'] = 1;
+        } else {
+            if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
+        }
+
+        if (queryBody.unset_exchange_account) {
+            unset['candidate.stackexchange_account'] = 1;
+        } else {
+            if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
+        }
+
+        if (queryBody.unset_linkedin_account) {
+            unset['candidate.linkedin_account'] = 1;
+        } else {
+            if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+        }
+
+        if (queryBody.unset_medium_account) {
+            unset['candidate.medium_account'] = 1;
+        } else {
+            if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+        }
     }
     
     let timestamp = new Date();
@@ -321,17 +379,21 @@ module.exports.endpoint = async function (req, res) {
     latestStatus.timestamp = timestamp;
     updateCandidateUser['candidate.latest_status'] = latestStatus;
 
-
-    await users.update({_id: userId}, {
+    let updateObj = {
         $push: {
             'candidate.history': {
                 $each: [history],
                 $position: 0
             }
         },
-        $set : updateCandidateUser
-    });
+        $set : updateCandidateUser,
+    }
 
+    if(!objects.isEmpty(unset)){
+        updateObj.$unset=  unset
+    }
+
+    await users.update({_id: userId}, updateObj);
 
     const filterData = filterReturnData.removeSensativeData(userDoc);
     res.send(filterData);

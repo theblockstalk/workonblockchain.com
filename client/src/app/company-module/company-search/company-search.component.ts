@@ -14,7 +14,7 @@ import {getFilteredNames} from "../../../services/object";
   styleUrls: ['./company-search.component.css']
 })
 export class CompanySearchComponent implements OnInit,AfterViewInit {
-  currentUser: User;
+  currentUser: any;
   preferncesForm : FormGroup;
   log;
   info=[];
@@ -200,12 +200,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
 
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
 
           data =>
           {
-
             if(data['terms'] === false)
             {
               this.router.navigate(['/company_wizard']);
@@ -487,7 +486,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.not_found = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
 
           });
@@ -794,7 +793,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg='';
     this.not_found='';
 
-    this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
+    this.authenticationService.getVerrifiedCandidate(this.currentUser._id)
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
@@ -818,13 +817,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.not_found = error['error']['message'];
           }
           else {
-            this.log = 'Something getting wrong';
+            this.log = 'Something went wrong';
           }
 
         });
 
 
-    this.authenticationService.getCurrentCompany(this.currentUser._creator)
+    this.authenticationService.getCurrentCompany(this.currentUser._id)
       .subscribe(
         data => {
           this.company_name = data['company_name'];

@@ -289,11 +289,11 @@
               </div>
             </div>
 
-            <div class="row" *ngIf = "commercial && commercial.length > 0">
+            <div class="row" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
               <div class="col-md-12 mb-2">
                 <h4>Technologies</h4>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12" *ngIf = "commercial && commercial.length > 0">
                 <div class="form-group">
                   <label>Commercial experience:</label>
                   <div>
@@ -307,8 +307,8 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-12" *ngIf = "experimented && experimented.length > 0 ">
+            <div class="row" *ngIf = "experimented && experimented.length > 0 ">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label>Experimented with:</label>
                   <div>

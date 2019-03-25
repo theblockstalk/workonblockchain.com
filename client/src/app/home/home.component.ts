@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.log_error = error['error']['message'];
           }
           else {
-            this.log_error = 'Something getting wrong';
+            this.log_error = 'Something went wrong';
           }
         }
       );

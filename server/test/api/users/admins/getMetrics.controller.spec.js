@@ -60,7 +60,7 @@ describe('admin get metrics', function () {
         aggregrated.programmingLanguages[profileData.programming_languages[1].language].aggregate[profileData.programming_languages[1].exp_year].should.equal(1);
         aggregrated.blockchain.experimented[profileData.experimented_platforms[0]].should.equal(1);
         aggregrated.blockchain.experimented[profileData.experimented_platforms[1]].should.equal(1);
-        should.not.exist(aggregrated.blockchain.experimented["EOS"]);
+        should.not.exist(aggregrated.blockchain.experimented["EOOS"]);
     })
 })
 });

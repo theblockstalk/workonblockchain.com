@@ -142,9 +142,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       {
         this.information.country = -1;
 
-        this.cand_id= this.currentUser._creator;
-
-
         this.authenticationService.getProfileById(this.currentUser._id)
           .subscribe(
             data => {
@@ -426,7 +423,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     }
     if(this.information.country !== -1 && this.information.city  )
     {
-      this.authenticationService.about(this.currentUser._creator,this.information)
+      this.authenticationService.about(this.currentUser._id,this.information)
         .subscribe(
           data =>
           {

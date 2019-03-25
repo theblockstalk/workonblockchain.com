@@ -25,7 +25,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   email_notification_log;
   error_msg;
   log;
-  currentUser: User;
+  currentUser: any;
   about_active_class;
   terms_active_class;
   companyMsgTitle;
@@ -134,7 +134,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         order_preferences: [],
         residence_country: [],
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -248,7 +248,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
             if(error['message'] === 403)
             {
-              // this.router.navigate(['/not_found']);
+               this.router.navigate(['/not_found']);
             }
           });
 
@@ -386,7 +386,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               this.router.navigate(['/not_found']);
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           })
     }

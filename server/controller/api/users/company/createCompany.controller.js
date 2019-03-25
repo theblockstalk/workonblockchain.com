@@ -1,9 +1,9 @@
 const settings = require('../../../../settings');
 const jwt = require('jsonwebtoken');
 const Users = require('../../../../model/mongoose/users');
-const crypto = require('crypto');
+const crypto = require('../../../services/crypto');
 const companies = require('../../../../model/mongoose/company');
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
+
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
@@ -23,18 +23,14 @@ module.exports = async function (req, res) {
         errors.throwError(responseMsg, 400)
     }
     else{
-        let salt = crypto.randomBytes(16).toString('base64');
-        let hash = crypto.createHmac('sha512', salt);
-        hash.update(queryBody.password);
-        let hashedPasswordAndSalt = hash.digest('hex');
+        const salt = crypto.getRandomString(128);
+        const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
 
-        let random = crypto.randomBytes(16).toString('base64');
         let newCompanyDoc = {
             email: queryBody.email,
             password_hash: hashedPasswordAndSalt,
             salt : salt,
             type: queryBody.type,
-            jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: new Date(),
             referred_email : queryBody.referred_email
 
@@ -118,11 +114,10 @@ module.exports = async function (req, res) {
             //end
             let userData = filterReturnData.removeSensativeData(companyUserCreated)
             res.send({
-                _id:employerDoc._id,
-                _creator: userData._id,
+                company_id:employerDoc._id,
+                _id: userData._id,
                 type:userData.type,
                 email: userData.email,
-                is_approved : userData.is_approved,
                 jwt_token: jwtUserToken
             });
         }

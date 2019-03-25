@@ -19,7 +19,7 @@ import {constants} from '../../../constants/constants';
 export class EditCompanyProfileComponent implements OnInit , AfterViewInit, AfterViewChecked  {
 
   info : any;
-  currentUser: User;
+  currentUser: any;
   log;
   founded_log;
   employee_log;
@@ -211,7 +211,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -419,7 +419,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.dataservice.changeMessage(error['error']['message']);
                 }
                 else {
-                  this.dataservice.changeMessage("Something getting wrong");
+                  this.dataservice.changeMessage("Something went wrong");
                 }
 
               });
@@ -498,7 +498,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.dataservice.changeMessage(error['error']['message']);
             }
             else {
-              this.dataservice.changeMessage("Something getting wrong");
+              this.dataservice.changeMessage("Something went wrong");
             }
 
           });

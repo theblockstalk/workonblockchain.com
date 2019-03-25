@@ -2,6 +2,7 @@
   <h1 class = "text-center">Web Application Style Guide</h1>
   <p class = "text-center">This part is inside a .container class.</p>
 </div>
+
 <div class = "container">
   <h1>Primary Colours</h1>
   <hr>
@@ -915,6 +916,40 @@
       </ul>
     </div>
   </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Angular material auto suggestion text box</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Angular material auto suggestion</label>
+        <div class="form-group">
+          <mat-form-field class="example-full-width ">
+            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
+          </mat-form-field>
+          <div class="invalid-feedback d-inline" *ngIf="error">
+            {{error}}
+          </div>
+
+          <div *ngIf="selectedValueArray.length > 0">
+            <div class="d-inline-block p-2 border rounded mr-1 mt-2" *ngFor="let value of selectedValueArray">{{value}}</div>
+          </div>
+          <mat-autocomplete #auto2="matAutocomplete">
+            <mat-option *ngFor="let country of countries" [value]="country">
+              <span>{{ country }}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for auto suggested valus only</li>
+      </ul>
+    </div>
+  </div>
+
   <div class = "row">
     <div class="col-md-2">
       <p>Input type upload</p>
@@ -1166,10 +1201,8 @@ Moreover, I think blockchain can solve many problems and my eager to work with c
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
               <h5 class="modal-title text-center" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body">
               <form action="/action_page.php">
