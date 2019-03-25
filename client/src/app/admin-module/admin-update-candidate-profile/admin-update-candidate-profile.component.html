@@ -99,7 +99,7 @@
                 <div class="form-group">
                   <label>Nationality</label>
                   <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options" [attr.selected]="options === info.nationality ? true : null ">{{options}}</option>
+                    <option *ngFor='let options of nationality' [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null ">{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
                     {{nationality_log}}
