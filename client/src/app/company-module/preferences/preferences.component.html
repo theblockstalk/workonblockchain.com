@@ -130,7 +130,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
-                    <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected]="country === preferncesForm.value.residence_country ? true : null" >{{country}}</option>
+                    <option *ngFor='let country of residenceCountries'  [value]="country.value" [attr.selected]="country.value === preferncesForm.value.residence_country ? true : null" >{{country.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}
