@@ -65,10 +65,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   residenceCountries = constants.countries;
-  job_types = constants.jobTypes;
+  job_types = constants.position_type;
   roles = constants.workRoles;
   currency = constants.currencies;
-  blockchain = constants.blockchainPlatforms_for_companies;
+  blockchain = constants.blockchainPlatforms;
   language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
 
