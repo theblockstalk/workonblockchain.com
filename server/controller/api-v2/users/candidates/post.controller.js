@@ -81,9 +81,7 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else if(queryBody.linkedin_code) {
-
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
-
         if(linkedinData) {
             userDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
             if(userDoc) {
