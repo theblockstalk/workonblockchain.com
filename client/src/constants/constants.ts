@@ -264,7 +264,7 @@ export const constants = {
     {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
     {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-    {name:'Erlang', value:'Erlang', checked:false},
+    {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false}
   ],
   jobTypes: ['Full time' , 'Part time' , 'Freelance'],
   job_type: ["Part time", "Full time"],
