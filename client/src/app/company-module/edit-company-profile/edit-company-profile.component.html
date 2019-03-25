@@ -437,6 +437,19 @@
                     </div>
 
 
+                    <div class="col-md-6 mt-4">
+                      <div class = "form-group w-auto">
+
+                        <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
+
+                        <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
+                          <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.prefItems[i].currency === base_currency ? true : null " >{{base_currency}}</option>
+                        </select>
+
+                      </div>
+                    </div>
+
+
                     <div class="col-md-6 my-2">
                       <div class="form-group">
                         <label>Other requirements: </label>

@@ -107,6 +107,16 @@ const CompanyProfileSchema = new Schema({
                 required : true,
                 min: 0
             },
+            expected_hourly_rate: {
+                type:Number,
+                required : true,
+                min: 0
+            },
+            currency: {
+                type: String,
+                required : true,
+                enum: enumerations.currencies
+            },
             blockchain: {
                 type: [{
                     type: String,

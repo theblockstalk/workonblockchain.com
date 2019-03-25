@@ -219,6 +219,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     return this._fb.group({
       _id :[],
+      work_type: [''],
+      expected_hourly_rate: [''],
+      currency : [''],
       location: [''],
       name: [''],
       visa_needed : [false],
@@ -238,7 +241,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ currency: i.currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -495,6 +498,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
           !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
+          !this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency &&
           !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
           this.search_log = 'Please fill atleast one field in job search';
           count = 1;
@@ -586,9 +590,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
           if(key['name']) searchQuery.name = key['name'];
 
-          if(key['current_currency'] !== 'Currency' && key['current_salary']) {
+          if(key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
+          }
+
+          if(key['currency'] && key['currency'] !== 'Currency' && key['expected_hourly_rate']) {
+            searchQuery.currency = key['currency'];
+            searchQuery.expected_hourly_rate = Number(key['expected_hourly_rate']);
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           saved_searches.push(searchQuery);

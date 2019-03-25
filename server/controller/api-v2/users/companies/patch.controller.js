@@ -103,6 +103,14 @@ const bodySchema = new Schema({
                 type:Number,
                 min: 0
             },
+            expected_hourly_rate: {
+                type:Number,
+                min: 0
+            },
+            currency: {
+                type: String,
+                enum: enumerations.currencies
+            },
             blockchain: {
                 type: [{
                     type: String,
@@ -177,7 +185,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
         if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
-
+console.log(queryBody.saved_searches);
         if (queryBody.saved_searches) {
             let patchSearches = queryBody.saved_searches;
             let currentSearches = employerDoc.saved_searches;

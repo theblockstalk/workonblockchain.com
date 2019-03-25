@@ -506,7 +506,7 @@
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.current_currency?true:null">{{base_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.current_currency && preferncesForm.value.current_salary)|| (preferncesForm.value.current_currency && !preferncesForm.value.current_salary)" >
                     {{current_currency_log}}
                   </div>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && checkNumber(preferncesForm.value.current_salary)  " >

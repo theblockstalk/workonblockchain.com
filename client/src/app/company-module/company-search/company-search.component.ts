@@ -372,8 +372,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   fillFields(searches, name) {
+    console.log("fill fields");
     this.selectedValueArray = [];
     for(let key of searches) {
+      console.log(key);
       if(key['name'] === name) {
         this.saveSearchName = name;
         setTimeout(() => {
@@ -420,6 +422,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(key['current_currency']) this.currencyChange = key['current_currency'];
         else this.currencyChange = [];
 
+        if(key['expected_hourly_rate']) this.hourly_rate = key['expected_hourly_rate'];
+        else this.hourly_rate = '';
+
+        if(key['currency']) this.contractorCurrency = key['currency'];
+        else this.contractorCurrency = '';
+
+
         if(key['order_preferences']) this.blockchain_order = key['order_preferences'];
         else this.blockchain_order = [];
 
@@ -433,7 +442,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   searchdata(key , value) {
     this.success_msg = '';
+    console.log(this.savedSearches);
     if(key === 'searchName') {
+      console.log(key);
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
@@ -472,12 +483,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
       if(this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
-      if(this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
+      if(this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
 
-      if(this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
+      if(this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
         queryBody.expected_hourly_rate  = this.hourly_rate;
         queryBody.currency = this.contractorCurrency;
       }
@@ -581,13 +592,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     if(this.saveSearchName) queryBody.name = this.saveSearchName;
 
-    if(this.salary && this.currencyChange) {
+    if(this.selectedWorkType === 'employee' && this.salary && this.currencyChange) {
       queryBody.current_currency = this.currencyChange;
       queryBody.current_salary  = this.salary;
+    }
+
+    if(this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency) {
+      queryBody.expected_hourly_rate = this.hourly_rate;
+      queryBody.currency  = this.contractorCurrency;
     }
     if(this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if(this.timestamp) queryBody.timestamp = this.timestamp;
 
+    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if(this.saveSearchName) {
       for(let searches of this.savedSearches) {
@@ -675,7 +692,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     }
   }
-
+  current_currency_log;
   savedNewSearch(){
     let queryBody : any = {};
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
@@ -698,42 +715,67 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if(this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if(this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
     if(this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
-    if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+
+    if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       queryBody.current_currency = this.preferncesForm.value.current_currency;
       queryBody.current_salary  = this.preferncesForm.value.current_salary;
     }
 
+    if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.name && this.preferncesForm.value.name) {
+      queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
+      queryBody.currency  = this.preferncesForm.value.currency;
+    }
+
     let errorCount = 0;
-    if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+    if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+      console.log(checkNumber);
       if(checkNumber === false) {
+        console.log("1");
         errorCount = 1;
+        this.current_currency_log = "Salary should be a number";
       }
 
     }
+    if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+      console.log("2");
+      this.current_currency_log = "Please choose currency ";
+      errorCount = 1;
+    }
 
-    if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+    if(this.preferncesForm.value.work_type === 'employee' && !this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+      console.log("3");
+      this.current_currency_log = "Please enter expected hours ";
+      errorCount = 1;
+    }
+
+    if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+      console.log("4")
       this.expected_hourly_rate_log = "Please choose currency ";
       errorCount = 1;
     }
 
-    if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+    if(this.preferncesForm.value.work_type === 'contractor' && !this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+      console.log("5")
       this.expected_hourly_rate_log = "Please enter expected hours ";
       errorCount = 1;
     }
 
-    if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+    if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
       if(checkNumber === false) {
+        console.log('6')
         errorCount = 1;
         this.expected_hourly_rate_log = "Hourly rate should be a number "
       }
     }
     if(!this.preferncesForm.value.name) {
+      console.log('7')
       this.search_name_log = "Please enter saved search name";
       errorCount = 1;
     }
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      console.log('8')
       this.residence_country_log = "Please select maximum 50 countries";
       errorCount = 1;
     }
@@ -796,6 +838,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 }
                 this.preferncesForm.reset();
+                this.newSearchLocation = [];
                 this.new_error_msg = '';
                 this.search_name_log = '';
               }
@@ -818,13 +861,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   checkNumber(salary) {
-    if(!Number(this.preferncesForm.value.current_salary)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
+    return /^[0-9]*$/.test(salary);
   }
 
   getVerrifiedCandidate() {
