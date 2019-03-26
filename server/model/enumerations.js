@@ -34,3 +34,5 @@ module.exports.chatMsgTypes = ['normal', 'job_offer', 'job_offer_accepted','job_
 module.exports.employmentTypes = ['Full time', 'Part time'];
 
 module.exports.contractorTypes = ['freelance', 'agency'];
+
+module.exports.workTypes = ['employee', 'contractor', 'volunteer'];

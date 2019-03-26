@@ -68,6 +68,10 @@ const CompanyProfileSchema = new Schema({
                 type: String,
                 required: true
             },
+            work_type : {
+                type: String,
+                enum: enumerations.workTypes
+            },
             location: {
                 type: [{
                     city: {
