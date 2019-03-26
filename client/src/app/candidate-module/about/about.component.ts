@@ -109,6 +109,8 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
+            if(data['first_name']) this.info.first_name = data['first_name'];
+            if(data['last_name']) this.info.last_name = data['last_name'];
             if(data['refered_id']) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data['refered_id'];
@@ -220,6 +222,9 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.info.referred_id = this.referred_id;
     }
 
+    if(!this.info.first_name) this.first_name_log = 'Please enter first name';
+    if(!this.info.last_name) this.last_name_log = 'Please enter last name';
+
     if (!this.info.contact_number) {
       this.contact_name_log = "Please enter contact number";
     }
@@ -233,7 +238,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if (!this.info.city) {
       this.city_log = "Please enter base city";
     }
-    if ( this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
+    if (this.info.contact_number && this.info.nationality && this.info.city && this.info.country && this.info.first_name && this.info.last_name) {
       this.authenticationService.about(this.currentUser._id, this.info)
         .subscribe(
           data => {
