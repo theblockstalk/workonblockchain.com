@@ -1177,7 +1177,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   selectedValueFunction(e) {
     console.log(e);
     if(this.cities) {
-      let citiesExist = this.cities.find(x => x.name === e.name);
+      let citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
         console.log(citiesExist)
         this.countriesModel = '';
@@ -1226,6 +1226,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   deleteLocationRow(index){
     this.selectedValueArray.splice(index, 1);
+    this.newSearchLocation.splice(index, 1);
     this.searchdata('locations' , this.selectedValueArray);
   }
 

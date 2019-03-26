@@ -42,7 +42,7 @@
               <div class="form-group">
 
                 <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let loc of cities" [value]="loc">
+                  <mat-option *ngFor="let loc of cities" [value]="loc.name">
                     <span>{{ loc.name }}</span>
                   </mat-option>
                 </mat-autocomplete>
