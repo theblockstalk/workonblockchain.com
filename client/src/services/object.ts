@@ -3,10 +3,10 @@ export const getNameFromValue = function (enumArray, value) {
   return filtered[0]
 }
 
-export const getFilteredNames = function (candidateData, new_roles) {
+export const getFilteredNames = function (enumeration,array) {
   let filtered_array = [];
-  for(let j=0;j<candidateData.candidate.roles.length;j++){
-    const filteredArray = getNameFromValue(new_roles,candidateData.candidate.roles[j]);
+  for(let j=0;j<array.length;j++){
+    const filteredArray = getNameFromValue(enumeration,array[j]);
     filtered_array.push(filteredArray.name);
   }
   filtered_array.sort();

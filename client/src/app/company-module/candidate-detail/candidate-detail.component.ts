@@ -41,14 +41,14 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   email;
   visaRequiredArray= [];
   noVisaArray = [];
-  currency = constants.currency;
+  currency = constants.currencies;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
   employee: any = {};
   contractor:any = {};
   volunteer: any = {};
-  roles = constants.dropdown_options;
+  roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
 
   ckeConfig: any;
@@ -181,7 +181,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   rolesValue.push(filteredArray.name);
                 }
                 this.employee.value.roles = rolesValue.sort();
-                let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
                 this.employee.value.employment_availability = availability.name;
               }
 
@@ -284,7 +284,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
-              let new_roles = constants.dropdown_options;
+              let new_roles = constants.workRoles;
               let filtered_array = [];
 
               this.languages= dataa['candidate'].programming_languages;

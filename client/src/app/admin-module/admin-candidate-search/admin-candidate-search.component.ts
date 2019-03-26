@@ -28,7 +28,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = constants.admin_check;
+  admin_check = constants.candidateStatus;
   admin_checks_email_verify = constants.admin_checks_email_verify;
   admin_checks_candidate_account = constants.admin_checks_candidate_account;
   information;
@@ -38,7 +38,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   candidate_status_account;
   pager: any = {};
   pagedItems: any[];
-  msgTagsOptions = constants.msgTagsOptions;
+  msgTagsOptions = constants.chatMsgTypes;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -244,7 +244,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
 

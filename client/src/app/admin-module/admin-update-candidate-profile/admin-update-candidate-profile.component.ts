@@ -147,14 +147,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   volunteerArray=[];
   current_salary;
   contractorArray = [];
-  nationality = constants.nationality;
+  nationality = constants.nationalities;
   current_work_check=[];
   current_work = constants.current_work;
   countries = constants.countries;
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
-  roles = constants.dropdown_options;
+  roles = constants.workRoles;
   contractor_types = constants.contractorTypes;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
@@ -591,17 +591,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }, 900);
   }
 
-  currency = constants.currency;
-  experience = constants.exp_year;
-  options = constants.options;
-  dropdown_options = constants.dropdown_options;
-  area_interested = constants.area_interested;
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  dropdown_options = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
   graduation_year = constants.year;
   year = constants.year;
-  availability = constants.availability;
-  commercially = constants.commercially;
+  availability = constants.workAvailability;
+  commercially = constants.blockchainPlatforms;
   experimented = constants.experimented;
-  exp_year = constants.exp_year;
+  exp_year = constants.experienceYears;
 
   onExpOptions(e)
   {
@@ -692,8 +691,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
 
   calen_month = constants.calen_month;
-  language_opt = constants.language_opt;
-  roles_opt = constants.roles_opt;
+  language_opt = constants.programmingLanguages;
 
   onLangExpOptions(obj)
   {
@@ -867,12 +865,20 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     return this.start_monthh ?  this.start_monthh : 0;
   }
 
+  commercial_desc_log;
+  experimented_desc_log;
+  commercialSkills_desc_log;
+
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
+    let flag_commercial_desc = true;
+    let flag_experimented_desc = true;
+    let flag_commercialSkills_desc = true;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     let employeeCount = 0;
     let contractorCount = 0;
@@ -1093,6 +1099,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.commercial_log = "Please fill year of experience";
     }
 
+    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+      flag_commercial_desc = false;
+      this.commercial_desc_log = 'Please enter description of commercial experience';
+    }
+
+    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+      flag_experimented_desc = false;
+      this.experimented_desc_log = 'Please enter description of experimented with';
+    }
+
     if(this.LangexpYear.length !==  this.language.length)
     {
 
@@ -1107,6 +1123,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
     {
       this.commercial_skill_log = "Please fill year of experience";
+    }
+
+    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+      flag_commercialSkills_desc = false;
+      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
     }
 
     if(this.EducationForm.value.itemRows.length >= 1)
@@ -1251,6 +1272,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
     {
       this.verify = true;
@@ -1304,7 +1326,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
     if(this.commercially_worked.length === 0) {
+      profileForm.unset_commercial_platforms = true;
       profileForm.commercial_platforms = [];
     }
     else {
@@ -1312,6 +1336,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.commercialSkills.length === 0) {
+      profileForm.unset_commercial_skills = true;
       profileForm.commercial_skills = [];
     }
     else {
@@ -1334,6 +1359,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.language.length === 0) {
+      profileForm.unset_language = true;
       profileForm.language = [];
     }
     else {
@@ -1353,10 +1379,23 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
     if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+
+
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+    else inputQuery.unset_github_account = true;
+
+
     if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+    else inputQuery.unset_exchange_account = true;
+
+
     if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+    else inputQuery.unset_linkedin_account = true;
+
+
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+    else inputQuery.unset_medium_account = true;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.info.Intro) inputQuery.description = this.info.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
@@ -1407,6 +1446,17 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.current_currency) inputQuery.current_currency = this.current_currency;
     if(this.selectedValue.length > 0) inputQuery.interest_areas = this.selectedValue;
 
+    inputQuery.unset_commercial_platforms = profileForm.unset_commercial_platforms;
+    inputQuery.unset_commercial_skills = profileForm.unset_commercial_skills;
+
+    if(this.experimented_platform.length == 0) inputQuery.unset_experimented_platforms = true;
+
+    inputQuery.unset_language = profileForm.unset_language;
+
+    if(this.education_json_array.length === 0) inputQuery.unset_education_history = true;
+
+    if(this.experiencearray.length === 0) inputQuery.unset_work_history = true;
+
     this.authenticationService.edit_candidate_profile(this.user_id, inputQuery , true)
       .subscribe(
         data => {
@@ -1419,7 +1469,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         },
         error => {
           this.dataservice.changeMessage(error);
-          this.log = 'Something getting wrong';
+          this.log = 'Something went wrong';
           if(error.message === 500)
           {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');

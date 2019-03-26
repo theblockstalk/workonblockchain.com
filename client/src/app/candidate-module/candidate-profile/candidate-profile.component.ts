@@ -112,7 +112,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     return 0;
   };
 
-  roles = constants.dropdown_options;
+  roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
 
   ngOnInit()
@@ -219,7 +219,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     rolesValue.push(filteredArray.name);
                   }
                   this.employee.value.roles = rolesValue.sort();
-                  let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                  let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
                   this.employee.value.employment_availability = availability.name;                }
 
                 if(data['candidate'].contractor) {

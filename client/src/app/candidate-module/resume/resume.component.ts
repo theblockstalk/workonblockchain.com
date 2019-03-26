@@ -293,12 +293,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
   }
 
-
-  commercially = constants.commercially;
+  commercially = constants.blockchainPlatforms;
   otherSkills = constants.otherSkills;
   experimented = constants.experimented;
-  exp_year = constants.exp_year;
-  area_interested = constants.area_interested;
+  exp_year = constants.experienceYears;
+  area_interested = constants.workBlockchainInterests;
+
 
   onExpOptions(e)
   {
@@ -346,9 +346,17 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   formal_skills=[];
   commercial_skill_log;
   interest_log;
+  commercial_desc_log;
+  experimented_desc_log;
+  commercialSkills_desc_log;
+
   blockchain_exp(expForm: NgForm)
   {
     this.error_msg="";
+    let flag_commercial_desc = true;
+    let flag_experimented_desc = true;
+    let flag_commercialSkills_desc = true;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.commercially_worked.length !== this.commercial_expYear.length )
     {
@@ -359,19 +367,36 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
-    if(this.selectedValue.length<=0)
-    {
+    if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
+    }
+    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+      flag_commercial_desc = false;
+      this.commercial_desc_log = 'Please enter description of commercial experience';
+    }
+
+    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+      flag_experimented_desc = false;
+      this.experimented_desc_log = 'Please enter description of experimented with';
+    }
+
+    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+      flag_commercialSkills_desc = false;
+      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
     }
 
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    if(this.why_work && this.selectedValue.length > 0 && this.commercially_worked.length === this.commercial_expYear.length
-      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length)
+
+    if(this.why_work && this.selectedValue.length > 0  && this.commercially_worked.length === this.commercial_expYear.length
+      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
+    )
     {
       if(this.commercially_worked.length === 0) {
+        expForm.value.unset_commercial_platforms = true;
         expForm.value.commercial_platforms = [];
       }
       else {
@@ -379,7 +404,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
       if(this.commercialSkills.length === 0) {
-        expForm.value.commercial_skills = [];
+        expForm.value.unset_commercial_skills = true;
+        expForm.value.value.commercial_skills = [];
       }
       else {
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
@@ -399,6 +425,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       if(this.description_commercial_skills){
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
+
+      if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
         .subscribe(

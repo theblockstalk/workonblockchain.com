@@ -75,7 +75,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           }
         );
@@ -202,68 +202,12 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
           });
 
 
     }
-
-  }
-
-
-  signInWithGoogle()
-  {
-    /*this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.authService.authState.subscribe((user) =>
-    {
-      this.user = user;
-      this.data = JSON.stringify(this.user);
-      this.result = JSON.parse(this.data);
-      localStorage.setItem('googleUser', JSON.stringify(this.result));
-      if(this.result)
-      {
-        this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-        this.credentials.email= this.googleUser.email;
-        this.credentials.password= '';
-        this.credentials.type="candidate";
-        this.credentials.social_type=this.googleUser.provider;
-        this.credentials.first_name = this.googleUser.firstName;
-        this.credentials.last_name = this.googleUser.lastName;
-        this.credentials.google_id = this.googleUser.id;
-        this.authenticationService.create(this.credentials)
-          .subscribe(
-            data => {
-              this.credentials.email= '';
-              localStorage.setItem('currentUser', JSON.stringify(data));
-              localStorage.removeItem('ref_code');
-              window.location.href = '/terms-and-condition';
-
-            },
-            error => {
-              this.loading = false;
-              if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.log = error['error']['message'];
-              }
-              else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.log = error['error']['message'];
-              }
-              else {
-                this.log = 'Something getting wrong';
-              }
-            });
-      }
-      else
-      {
-        this.router.navigate(['/signup']);
-      }
-
-    });
-    */
-  }
-
-  public subscribeToLogin()
-  {
 
   }
 
@@ -361,7 +305,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.company_log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
           });
     }

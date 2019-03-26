@@ -227,7 +227,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.router.navigate(['/not_found']);
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
     }

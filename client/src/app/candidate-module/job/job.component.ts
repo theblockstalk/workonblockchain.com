@@ -102,6 +102,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {
 
       this.roles.sort(function(a, b){
+
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
@@ -232,15 +233,14 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-
-  currency = constants.currency;
-  experience = constants.exp_year;
-  options = constants.options;
-  roles = constants.dropdown_options;
-  area_interested = constants.area_interested;
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  roles = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
   year = constants.year;
-  availability = constants.availability;
+  availability = constants.workAvailability;
   contractor_types = constants.contractorTypes;
+
 
   changeLocationDisplayFormat(array,value) {
     let locationArray = [];

@@ -18,7 +18,7 @@
               <input type="text" [(ngModel)]="other_technologies" name="other_technologies"  class="form-control d-none">
 
               <div class = "form-group mt-3">
-                <select title="1: Saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="Saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name" [attr.selected]="name === saveSearchName?true:null">{{name}}</option>
                 </select>
               </div>
@@ -307,7 +307,6 @@
                 <div class="form-group">
                   <label for="validationCustom02" class="invisible">Currency</label>
                   <select title="Currency" name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
-                    <option value="-1" disabled selected hidden>Currency</option>
                     <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
@@ -491,7 +490,7 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
-                    <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
+                    <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}

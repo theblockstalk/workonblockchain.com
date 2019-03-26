@@ -133,7 +133,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   current_salary;
   contractorArray = [];
 
-  nationality = constants.nationality;
+  nationality = constants.nationalities;
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
@@ -181,7 +181,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.currentUser && this.currentUser.type=='candidate')
     {
       this.roles.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
+      if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
       })
@@ -515,6 +515,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     this.history_data()
                   )
                 });
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                }, 300);
+
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
               }
 
               if(data['candidate'].education_history)
@@ -569,17 +577,17 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }, 900);
   }
 
-  currency = constants.currency;
-  experience = constants.exp_year;
-  options = constants.options;
-  roles = constants.dropdown_options;
-  area_interested = constants.area_interested;
+
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  roles = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
   graduation_year = constants.year;
   year = constants.year;
-  availability = constants.availability;
-  commercially = constants.commercially;
+  availability = constants.workAvailability;
+  commercially = constants.blockchainPlatforms;
   experimented = constants.experimented;
-  exp_year = constants.exp_year;
+  exp_year = constants.experienceYears;
 
   onExpOptions(e)
   {
@@ -672,9 +680,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
   calen_month = constants.calen_month;
-  language_opt = constants.language_opt;
-  roles_opt = constants.roles_opt;
-
+  language_opt = constants.programmingLanguages;
 
   onLangExpOptions(obj)
   {
@@ -867,12 +873,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   validatedLocation=[];
   country_input_log;
   interest_log;
+  commercial_desc_log;
+  experimented_desc_log;
+  commercialSkills_desc_log;
+
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
+    let flag_commercial_desc = true;
+    let flag_experimented_desc = true;
+    let flag_commercialSkills_desc = true;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     let employeeCount = 0;
     let contractorCount = 0;
@@ -1092,11 +1106,22 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercial_log = "Please fill year of experience";
     }
 
+    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+      flag_commercial_desc = false;
+      this.commercial_desc_log = 'Please enter description of commercial experience';
+    }
+
+    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+      flag_experimented_desc = false;
+      this.experimented_desc_log = 'Please enter description of experimented with';
+    }
+
     if(this.LangexpYear.length !==  this.language.length)
     {
 
       this.exp_lang_log="Please fill year of experience";
     }
+
     if(!this.Intro)
     {
 
@@ -1106,6 +1131,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
     {
       this.commercial_skill_log = "Please fill year of experience";
+    }
+
+    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+      flag_commercialSkills_desc = false;
+      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
     }
 
     if(this.EducationForm.value.itemRows.length >= 1)
@@ -1256,6 +1286,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
     {
       this.verify = true;
@@ -1352,6 +1383,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_platforms = [];
+      profileForm.unset_commercial_platforms = true;
     }
     else {
       profileForm.commercial_platforms = this.commercial_expYear;
@@ -1359,6 +1391,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.commercialSkills.length === 0) {
       profileForm.commercial_skills = [];
+      profileForm.unset_commercial_skills = true;
     }
     else {
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
@@ -1381,6 +1414,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.language.length === 0) {
       profileForm.language = [];
+      profileForm.unset_language = true;
     }
     else {
       profileForm.language_experience_year = this.LangexpYear;
@@ -1391,10 +1425,23 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
     if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+
+
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+    else inputQuery.unset_github_account = true;
+
+
     if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+    else inputQuery.unset_exchange_account = true;
+
+
     if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+    else inputQuery.unset_linkedin_account = true;
+
+
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+    else inputQuery.unset_medium_account = true;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.info.Intro) inputQuery.description = this.info.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
@@ -1407,8 +1454,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
     if(profileForm.description_commercial_skills) inputQuery.description_commercial_skills = profileForm.description_commercial_skills;
     if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
-    if(this.education_json_array) inputQuery.education_history = this.education_json_array;
-    if(this.experiencearray) inputQuery.work_history = this.experiencearray;
+
+    inputQuery.unset_commercial_platforms = profileForm.unset_commercial_platforms;
+    inputQuery.unset_commercial_skills = profileForm.unset_commercial_skills;
+
+    if(this.experimented_platform.length === 0) inputQuery.unset_experimented_platforms = true;
+
+    inputQuery.unset_language = profileForm.unset_language;
+
+    if(this.education_json_array && this.education_json_array.length>0) inputQuery.education_history = this.education_json_array;
+    else inputQuery.unset_education_history = true;
+
+    if(this.experiencearray && this.experiencearray.length>0) inputQuery.work_history = this.experiencearray;
+    else inputQuery.unset_work_history = true;
+
     if(this.employeeCheck) {
       inputQuery.employee = {
         employment_type : this.employee.employment_type,
@@ -1432,7 +1491,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
       if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
     }
-
     if(this.volunteerCheck) {
       inputQuery.volunteer = {
         location: this.volunteer.locations,
@@ -1456,7 +1514,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         },
         error => {
           this.dataservice.changeMessage(error);
-          this.log = 'Something getting wrong';
+          this.log = 'Something went wrong';
           if(error.message === 500)
           {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');

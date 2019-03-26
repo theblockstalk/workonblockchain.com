@@ -63,14 +63,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   urlParameters : any = {};
   no_value = false;
   saveSearchName;
-  currency = constants.currency;
-  month = constants.month;
-  job_type = constants.job_type;
-  skillsData = constants.language_opt;
-  residenceCountries = constants.countries;
-  job_types = constants.job_types;
-  rolesData = constants.dropdown_options;
-  blockchainData = constants.commercially;
   skill;
   searchName=[];
   savedSearches;
@@ -177,6 +169,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     });
 
   }
+
+  currency = constants.currencies;
+  job_type = constants.job_type;
+  skillsData = constants.programmingLanguages;
+  residenceCountries = constants.countries;
+  job_types = constants.position_type;
+  rolesData = constants.workRoles;
+  blockchainData = constants.blockchainPlatforms;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -537,7 +537,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.not_found = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
 
           });
@@ -912,7 +912,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.not_found = error['error']['message'];
           }
           else {
-            this.log = 'Something getting wrong';
+            this.log = 'Something went wrong';
           }
 
         });
@@ -1258,13 +1258,4 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  changeWorkTypes(event , name) {
-    if(name === 'newSearch') {
-
-
-    }
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 60);
-  }
 }

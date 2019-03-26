@@ -30,8 +30,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status_reason_rejected;
   status_reason_deferred;
   set_candidate_status = constants.set_candidate_status;
-  set_candidate_status_rejected = constants.set_candidate_status_rejected;
-  set_candidate_status_deferred = constants.set_candidate_status_deferred;
+  set_candidate_status_rejected = constants.statusReasons_rejected;
+  set_candidate_status_deferred = constants.statusReasons_deferred;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   description_commercial_platforms;
@@ -41,7 +41,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   employee: any = {};
   contractor:any = {};
   volunteer: any = {};
-  roles = constants.dropdown_options;
+  roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
@@ -148,7 +148,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                   rolesValue.push(filteredArray.name);
                 }
                 this.employee.value.roles = rolesValue.sort();
-                let availability = getNameFromValue(constants.availability,this.employee.value.employment_availability);
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
                 this.employee.value.employment_availability = availability.name;
               }
 
@@ -271,7 +271,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
-
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -455,8 +454,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    console.log(this.email_text);
-    console.log(approveForm.value);
     if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
@@ -501,7 +498,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
-    console.log(approveForm);
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -542,7 +538,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = error['error']['message'];
           }
           else {
-            this.error = "Something getting wrong";
+            this.error = "Something went wrong";
           }
         });
   }

@@ -99,7 +99,7 @@
                 <div class="form-group">
                   <label>Nationality</label>
                   <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options" [attr.selected]="options === info.nationality ? true : null ">{{options}}</option>
+                    <option *ngFor='let options of nationality' [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null ">{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
                     {{nationality_log}}
@@ -156,7 +156,7 @@
                 <div class="form-group">
                   <label>Country</label>
                   <select title="Please choose base country" class="form-control selectpicker" required name="base_country" [(ngModel)]="info.base_country">
-                    <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.base_country ? true : null ">{{options}}</option>
+                    <option *ngFor='let options of countries'  [value]="options.value" [attr.selected]="options.value === info.base_country ? true : null ">{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.base_country">
                     {{base_country_log}}
@@ -319,7 +319,6 @@
                         {{employment_location_log}}
                       </div>
                     </div>
-
                   </div>
 
                 </div>
@@ -383,10 +382,9 @@
                   <div class = "invalid-feedback d-inline"  *ngIf="!employee.employment_availability">
                     {{avail_log}}
                   </div>
+
                 </div>
               </div>
-
-
             </div>
             <hr *ngIf = "employeeCheck" />
             <div class="row mt-2" *ngIf="contractorCheck" >
@@ -529,6 +527,7 @@
                   <input type="text" class="form-control" #agencyUrl="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">
                   <div class = "invalid-feedback d-inline"  *ngIf="checkContractValue(contractor.contractor_type) && !contractor.agency_website ;else validateUrl  ">
                     {{agency_website_log}}
+
                   </div>
                   <div class = "invalid-feedback d-inline" #validateUrl *ngIf="contractor.agency_website && agencyUrl.errors">
                     Enter url in proper format
@@ -757,6 +756,9 @@
                 </div>
               </div>
             </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && !description_commercial_platforms">
+              {{commercial_desc_log}}
+            </div>
 
             <div class="row">
               <div class="col-md-12">
@@ -789,6 +791,9 @@
                   <textarea rows="4" cols="100" name="description_experimented_platforms" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
+            </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && !description_experimented_platforms">
+              {{experimented_desc_log}}
             </div>
 
             <!-- commercial skills -->
@@ -847,6 +852,9 @@
                   <textarea rows="4" cols="100" name="description_commercial_skills" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
+            </div>
+            <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && !description_commercial_skills">
+              {{commercialSkills_desc_log}}
             </div>
           </section>
           <!--resume job form end here-->
