@@ -23,6 +23,9 @@ const isLiveApplication = settings.isLiveApplication = function isLiveApplicatio
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
     config.mongo.password = process.env.MONGO_DATABASE_PASSWORD;
+    config.googleConfig.clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    config.linkedinConfig.clientSecret = process.env.LINKEDIN_CLIENT_SECRET ;
+
     config.expressJwt = {
         secret: process.env.EXPRESS_JWT_SECRET
     };
@@ -45,7 +48,9 @@ if (isLiveApplication()) {
     settings.SENDGRID = {
         FROM_ADDRESS: config.sendGrid.fromAddress,
         FROM_NAME: config.sendGrid.fromName,
-        API_KEY: config.sendGrid.apiKey
+        API_KEY: config.sendGrid.apiKey,
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
     };
 
     settings.throttleTime = config.sendGrid.throttleTime;
@@ -61,10 +66,17 @@ if (isLiveApplication()) {
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 } else {
+    if(settings.ENVIRONMENT === 'test') {
+        config.mongo.databaseName = config.mongo.databaseName + '-test';
+    }
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
+    settings.SENDGRID = {
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
+    };
 }
 
 settings.CRON = {
@@ -73,6 +85,9 @@ settings.CRON = {
     SYNC_SENDGRID: config.cron.syncSendgrid
 };
 
+settings.googleCredentials = config.googleConfig;
+
+settings.linkedinCredentials = config.linkedinConfig;
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 

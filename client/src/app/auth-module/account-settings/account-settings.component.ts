@@ -23,6 +23,7 @@ export class AccountSettingsComponent implements OnInit {
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService)
   { }
 
+  password = true;
   ngOnInit()
   {
     this.inform = '';
@@ -34,6 +35,9 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
+            if(data && data['password']=== false) {
+              this.password = false;
+            }
             if(data['is_unread_msgs_to_send']){
               this.info.unread_msgs_emails = data['is_unread_msgs_to_send'];
             }
@@ -47,7 +51,7 @@ export class AccountSettingsComponent implements OnInit {
 
     else if(this.currentUser && this.currentUser.type === 'company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -103,7 +107,7 @@ export class AccountSettingsComponent implements OnInit {
 
     if(this.currentUser)
     {
-      this.authenticationService.account_settings(this.currentUser._creator, this.status)
+      this.authenticationService.account_settings(this.currentUser._id, this.status)
         .subscribe(
           data =>
           {
@@ -120,7 +124,7 @@ export class AccountSettingsComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
 
           }

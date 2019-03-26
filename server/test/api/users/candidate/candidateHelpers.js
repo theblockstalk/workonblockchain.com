@@ -2,7 +2,8 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const userHelpers = require('../usersHelpers')
-const candidateWizardHelpers = require('./wizard/candidateWizardHelpers')
+const candidateWizardHelpers = require('./wizard/candidateWizardHelpers');
+const candidateHelperV2 = require('../../../api-v2/users/candidates/candidateHelpers');
 
 const should = chai.should();
 const fs = require('fs');
@@ -12,7 +13,7 @@ chai.use(chaiHttp);
 
 const signupCandidate = module.exports.signupCandidate = async function signupCandidate(candidate) {
     const res = await chai.request(server)
-        .post('/users/register')
+        .post('/v2/users/candidates')
         .send(candidate);
     res.should.have.status(200);
     return res;
@@ -34,13 +35,10 @@ module.exports.signupVerifiedApprovedCandidate = async function signupVerifiedAp
     await userHelpers.approveCandidate(candidate.email);
 }
 
-module.exports.signupCandidateAndCompleteProfile = async function signupCandidateAndCompleteProfile(candidate, about, job,resume,experience) {
+module.exports.signupCandidateAndCompleteProfile = async function signupCandidateAndCompleteProfile(candidate, profileData) {
     const res = await signupCandidate(candidate);
     await userHelpers.verifyEmail(candidate.email);
-    await candidateWizardHelpers.about(about, res.body.jwt_token);
-    await candidateWizardHelpers.job(job, res.body.jwt_token);
-    await candidateWizardHelpers.resume(resume, res.body.jwt_token);
-    await candidateWizardHelpers.experience(experience, res.body.jwt_token);
+    await candidateHelperV2.candidateProfilePatch(res.body._id, res.body.jwt_token, profileData);
     await userHelpers.approveCandidate(candidate.email);
 }
 

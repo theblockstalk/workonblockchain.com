@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class TermsWizardComponent implements OnInit {
   info : any;
-  currentUser: User;log;
+  currentUser: any;log;
   about_company;
   terms_active_class;about_active_class;
   termscondition;
@@ -51,7 +51,7 @@ export class TermsWizardComponent implements OnInit {
           }
         }
       );
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -119,7 +119,7 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      this.authenticationService.company_terms(this.currentUser._creator,termsForm.value)
+      this.authenticationService.company_terms(this.currentUser._id,termsForm.value)
         .subscribe(
           data => {
             if(data && this.currentUser)
@@ -137,7 +137,7 @@ export class TermsWizardComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
 
           });

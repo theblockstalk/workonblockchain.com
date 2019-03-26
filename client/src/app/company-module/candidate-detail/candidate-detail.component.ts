@@ -42,6 +42,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   visaRequiredArray= [];
   noVisaArray = [];
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -52,7 +55,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       this.user_id = params['user'];
     });
   }
-  company_reply; currentUser: User;
+  company_reply; currentUser: any;
   credentials: any = {};
   job_type = ["Part time", "Full time"];
   company_name;
@@ -205,9 +208,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                       if(a.name > b.name) { return 1; }
                       return 0;
                     });
-
                   }
-
                 }
 
                 this.countries = citiesArray.concat(countriesArray);
@@ -258,19 +259,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   })
                 }
 
-                if (dataa['candidate'].blockchain.formal_skills) {
-                  this.formal_skills = dataa['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function (a, b) {
-                    if (a.skill < b.skill) {
-                      return -1;
-                    }
-                    if (a.skill > b.skill) {
-                      return 1;
-                    }
-                    return 0;
-                  });
-                }
-
                 if (dataa['candidate'].blockchain.commercial_platforms) {
                   this.commercial = dataa['candidate'].blockchain.commercial_platforms;
                   if (this.commercial && this.commercial.length > 0) {
@@ -301,22 +289,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   }
                 }
 
-                if (dataa['candidate'].blockchain.smart_contract_platforms) {
-                  this.platforms = dataa['candidate'].blockchain.smart_contract_platforms;
-                  if (this.platforms && this.platforms.length > 0) {
-                    this.platforms.sort(function (a, b) {
-                      if (a.platform_name < b.platform_name) {
-                        return -1;
-                      }
-                      if (a.platform_name > b.platform_name) {
-                        return 1;
-                      }
-                      return 0;
-                    })
+                if(dataa['candidate'].blockchain.description_commercial_platforms) {
+                  this.description_commercial_platforms = dataa['candidate'].blockchain.description_commercial_platforms;
+                }
 
+                if(dataa['candidate'].blockchain.description_experimented_platforms) {
+                  this.description_experimented_platforms = dataa['candidate'].blockchain.description_experimented_platforms;
+                }
 
-                  }
-
+                if(dataa['candidate'].blockchain.description_commercial_skills) {
+                  this.description_commercial_skills = dataa['candidate'].blockchain.description_commercial_skills;
                 }
               }
 
@@ -328,7 +310,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
 
           });
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data => {
             this.company_name = data['company_name'];

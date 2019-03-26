@@ -32,13 +32,14 @@ const UserSchema = new Schema({
     linkedin_id : {
         type: String
     },
+    google_id : {
+        type: String
+    },
     password_hash: {
         type:String,
-        required:true
     },
     salt: {
         type: String,
-        required: true
     },
     type: {
         type:String,
@@ -50,7 +51,7 @@ const UserSchema = new Schema({
         enum: [0, 1],
         default:0
     },
-    social_type: {
+    social_type: { //DELETE ME
         type:String,
         enum: ['GOOGLE', 'LINKEDIN', '']
     },
@@ -240,48 +241,36 @@ const UserSchema = new Schema({
                             }
                         }]
                     },
+                    description_commercial_platforms:{
+                        type: String
+                    },
                     experimented_platforms: {
                         type: [{
                             type: String,
                             enum: enumerations.blockchainPlatforms
-                        }]
+                        }],
                     },
-                    smart_contract_platforms: {
+                    description_experimented_platforms:{
+                        type: String
+                    },
+                    commercial_skills : {
                         type: [{
-                            name: {
+                            skill: {
                                 type: String,
-                                enum: enumerations.blockchainPlatforms
+                                enum: enumerations.otherSkills
                             },
                             exp_year: {
                                 type: String,
-                                enum: enumerations.experienceYears
+                                enum: enumerations.exp_years
                             }
-                        }]
+                        }],
                     },
-                    commercial_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
-
-                    formal_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
+                    description_commercial_skills:{
+                        type: String
+                    },
                 }
             },
-            status:{
+            status:{ //DELETE ME
                 type:[{
                     status: {
                         type: String,
@@ -297,7 +286,50 @@ const UserSchema = new Schema({
                         required:true,
                     }
                 }]
+            },
+            history : {
+                type : [{
+                    status:{
+                        type:[{
+                            status: {
+                                type: String,
+                                enum: enumerations.candidateStatus,
+                                required:true,
+                            },
+                            reason: {
+                                type: String,
+                                enum: enumerations.statusReasons
+                            }
+                        }],
+                        required: false
+                    },
+                    note : String,
+                    email_html : String,
+                    email_subject : String,
+                    timestamp: {
+                        type: Date,
+                        required:true,
+                    }
+                }]
+
+            },
+            latest_status : {
+                status: {
+                    type: String,
+                    enum: enumerations.candidateStatus,
+                    required:true,
+                },
+                reason: {
+                    type: String,
+                    enum: enumerations.statusReasons
+                },
+                timestamp: {
+                    type: Date,
+                    required:true,
+                }
+
             }
+
         }
     },
     conversations: [new Schema({

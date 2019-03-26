@@ -173,3 +173,163 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
     }
 }
+
+
+module.exports.candidate = function candidate() {
+    return {
+        first_name: random.string(5),
+        last_name: random.string(5),
+        email: random.email(),
+        password: 'Sadia1234'
+    };
+};
+
+module.exports.candidateProfile = function candidateProfile(){
+    return {
+        contact_number: '+92654654654',
+        exchange_account: 'sadia_exchange.com',
+        github_account: 'fb.com',
+        linkedin_account : 'http://linkedin.com/in/sadia_abbas',
+        medium_account : 'http://medium.com/sadia_abbas',
+        nationality: random.enum(enumerations.nationalities),
+        base_country : random.enum(enumerations.countries),
+        base_city : 'Islamabad',
+        expected_salary: random.integer(10, 100000),
+        expected_salary_currency: random.enum(enumerations.currencies),
+        current_salary: random.integer(10000, 100000),
+        current_currency: random.enum(enumerations.currencies),
+        availability_day: random.enum(enumerations.workAvailability),
+        why_work: random.string(10),
+        description: random.string(10),
+        locations: [
+            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+        ],
+        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
+
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
+        commercial_platforms : [
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "4-6"
+            },
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "1-2"
+            }
+        ],
+        programming_languages: [
+            {
+                language: 'Java', exp_year: '1-2'
+            },
+            {
+                language: 'C#', exp_year: '0-1'
+            }
+        ],
+
+        commercial_skills : [
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '0-1'
+            },
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '2-4'
+            }
+        ],
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
+        education_history : [{
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        }],
+        work_history:[{
+            companyname: 'MWAN',
+            positionname: 'Team Lead',
+            locationname: 'Tokyo Japan',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }]
+    }
+}
+
+module.exports.changeCandidateStatus = function changeCandidateStatus(){
+    return {
+        note : 'Note for this profile',
+        email_html : '<p>Hi, i have just approved your profile</p>',
+        email_subject : 'Welcome to workonblockchain.com!',
+        status : 'approved'
+    }
+}
+
+module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
+    return {
+        contact_number: '+926246524',
+        exchange_account: 'sadia_exchange_1234.com',
+        github_account: 'fb12.com',
+        base_city : 'Islamabad',
+        locations: [
+            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+        ],
+        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
+
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
+        commercial_platforms : [
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "4-6"
+            },
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "1-2"
+            }
+        ],
+        programming_languages: [
+            {
+                language: 'Java',
+                exp_year: '1-2'
+            },
+            {
+                language: 'C#',
+                exp_year: '0-1'
+            }
+        ],
+
+        commercial_skills : [
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '0-1'
+            },
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '2-4'
+            }
+        ],
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
+        education_history : [{
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        }],
+        work_history:[{
+            companyname: 'MWAN',
+            positionname: 'Team Lead',
+            locationname: 'Tokyo Japan',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }]
+    }
+}
