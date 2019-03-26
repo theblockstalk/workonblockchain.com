@@ -4,11 +4,7 @@ declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import {environment} from '../../../environments/environment';
-const URL = environment.backend_url;
 declare var $:any;
-import { map } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-about',

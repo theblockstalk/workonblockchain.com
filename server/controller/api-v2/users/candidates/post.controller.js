@@ -50,7 +50,6 @@ module.exports.inputValidation = {
 
 
 module.exports.endpoint = async function (req, res) {
-    console.log(req.body);
     let queryBody = req.body;
     let email;
     let timestamp = new Date();
