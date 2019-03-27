@@ -136,7 +136,6 @@
                 </div>
               </div>
             </div>
-
           </section>
           <!--about us form End-->
 
@@ -278,14 +277,17 @@
                 <div class="form-group">
                   <label>Locations:</label>
                   <div>
-                    <datalist id="countryList">
-                      <select class="form-control">
-                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
-                        </option>
-                      </select>
-                    </datalist>
 
-                    <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                    </mat-form-field>
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -320,7 +322,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
 
               </div>
@@ -368,6 +369,7 @@
                   <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
                     {{currency_log}}
                   </div>
+
                 </div>
 
               </div>
@@ -397,14 +399,16 @@
                 <div class="form-group">
                   <label>Locations:</label>
                   <div>
-                    <datalist id="countryList">
-                      <select class="form-control">
-                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{contractor.country}}" >{{country.name}}
-                        </option>
-                      </select>
-                    </datalist>
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
 
-                    <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
+                    </mat-form-field>
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -553,14 +557,16 @@
                 <div class="form-group">
                   <label>Locations:</label>
                   <div>
-                    <datalist id="countryList">
-                      <select class="form-control">
-                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{volunteer.country}}" >{{country.name}}
-                        </option>
-                      </select>
-                    </datalist>
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
 
-                    <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
+                    </mat-form-field>
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -1135,24 +1141,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Bio</label>
-                  <ul>
-                    <li> 2-5 sentences </li>
-                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
-                  </ul>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
-                  <div class = "invalid-feedback d-inline" *ngIf="!Intro">
-                    {{intro_log}}
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </section>
 
           <div class = "form-group text-right">

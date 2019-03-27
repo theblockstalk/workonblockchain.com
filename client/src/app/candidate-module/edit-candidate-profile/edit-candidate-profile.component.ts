@@ -1445,7 +1445,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else inputQuery.unset_medium_account = true;
 
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
-    if(this.info.Intro) inputQuery.description = this.info.Intro;
+    if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
     if(this.why_work) inputQuery.why_work = this.why_work;
@@ -1781,10 +1781,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   employeeSelectedValueFunction(e) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.employee.country+"']")['dataset'].value;
-
-        this.employee.country = '';
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
+        this.countriesModel = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';
@@ -1801,7 +1800,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.selectedValueArray.push({ name: e, visa_needed:false});
           }
 
@@ -1837,8 +1836,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   contractorSelectedValueFunction(e) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.contractor.country+"']")['dataset'].value;
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
 
         this.contractor.country = '';
         this.cities = [];
@@ -1857,7 +1856,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.contractorArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.contractorArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.contractorArray.push({ name: e, visa_needed:false});
           }
 
@@ -1895,9 +1894,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     console.log("volunteerArray");
     console.log(this.volunteerArray);
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.volunteer.country+"']")['dataset'].value;
+      const citiesExist = this.cities.find(x => x.name === e);
 
+      if(citiesExist) {
         this.volunteer.country = '';
         this.cities = [];
         if(this.volunteerArray.length > 9) {
@@ -1915,7 +1914,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.volunteerArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.volunteerArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.volunteerArray.push({ name: e, visa_needed:false});
           }
 

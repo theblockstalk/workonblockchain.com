@@ -884,38 +884,6 @@
       </ul>
     </div>
   </div>
-  <div class = "row">
-    <div class="col-md-2">
-      <p>Auto suggestion text box</p>
-    </div>
-    <div class="col-md-7">
-      <div class="form-group">
-        <label>Text box with auto suggestion</label>
-        <div class="form-group">
-
-          <datalist id="countryList">
-            <select class="form-control">
-              <option *ngFor = "let country of countries" value="{{country}}">
-
-            </select>
-
-          </datalist>
-          <input type="text" list="countryList" autocomplete="off" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
-          <div class="invalid-feedback d-inline" *ngIf="error">
-            {{error}}
-          </div>
-          <div *ngIf="selectedValueArray.length > 0">
-            <div class="d-inline-block p-2 border rounded mr-1 mt-2" *ngFor="let value of selectedValueArray">{{value}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <ul>
-        <li>Use for auto suggested valus only</li>
-      </ul>
-    </div>
-  </div>
 
   <div class = "row">
     <div class="col-md-2">
@@ -925,8 +893,9 @@
       <div class="form-group">
         <label>Angular material auto suggestion</label>
         <div class="form-group">
-          <mat-form-field class="example-full-width ">
-            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
+          <mat-form-field class="example-full-width" floatLabel="always">
+            <mat-label></mat-label>
+            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)" placeholder="Location">
           </mat-form-field>
           <div class="invalid-feedback d-inline" *ngIf="error">
             {{error}}

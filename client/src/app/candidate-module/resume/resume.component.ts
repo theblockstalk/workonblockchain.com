@@ -217,54 +217,61 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
               }
 
-
-            }
-
-            if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length>0)
-            {
-              this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
-              for (let key of data['candidate'].blockchain.commercial_skills)
+              if(data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length>0)
               {
-                for(var i in key)
+                this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
+                for (let key of data['candidate'].blockchain.commercial_skills)
                 {
-
-                  for(let option of this.otherSkills)
+                  for(var i in key)
                   {
 
-                    if(option.value === key[i])
+                    for(let option of this.otherSkills)
                     {
-                      option.checked=true;
-                      this.skillDbArray.push(key[i]);
-                      this.skillDb= ({value: key[i]});
-                      this.commercialSkills.push(this.skillDb);
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skillDbArray.push(key[i]);
+                        this.skillDb= ({value: key[i]});
+                        this.commercialSkills.push(this.skillDb);
+
+                      }
+                      else
+                      {
+
+                      }
 
                     }
-                    else
+
+                    for(let option of this.exp_year)
                     {
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skill_expYear_db.push(key[i]);
+
+                      }
 
                     }
 
                   }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.skill_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
                 }
               }
+
+              if(data['candidate'].blockchain.description_commercial_skills)
+              {
+                this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+              }
+
             }
 
 
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
+              this.job_active_class = 'fa fa-check-circle text-success';
 
 
+            }
 
           },
           error => {
@@ -298,6 +305,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   experimented = constants.experimented;
   exp_year = constants.experienceYears;
   area_interested = constants.workBlockchainInterests;
+
 
 
   onExpOptions(e)
@@ -405,7 +413,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(this.commercialSkills.length === 0) {
         expForm.value.unset_commercial_skills = true;
-        expForm.value.value.commercial_skills = [];
+        expForm.value.commercial_skills = [];
       }
       else {
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;

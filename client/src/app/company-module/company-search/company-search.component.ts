@@ -849,6 +849,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 }
                 this.fillFields(data['saved_searches'], this.preferncesForm.value.name );
+                this.searchdata('new search', this.preferncesForm.value);
+
                 setTimeout(() => {
                   $('.selectpicker').selectpicker('refresh');
                 }, 300);
@@ -857,6 +859,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.newSearchLocation = [];
                 this.new_error_msg = '';
                 this.search_name_log = '';
+
               }
             },
             error => {
@@ -1144,9 +1147,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   selectedValueFunction(e) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
-
+      let citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
         this.countriesModel = '';
 
         if(this.preferncesForm) this.preferncesForm.get('location').setValue('');
@@ -1159,17 +1161,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }, 5000);
         }
         else {
-          if(this.selectedValueArray.find(x => x.name === e)) {
+          if(this.selectedValueArray.find(x => x.name === citiesExist.name)) {
             this.error = 'This location has already been selected';
             setInterval(() => {
               this.error = "" ;
             }, 4000);
           }
-          //else if(this.selectedValueArray.find(x => x.name === 'Remote' && !x.id)){}
-
           else {
-            if(value2send) this.selectedValueArray.push({ city:value2send , name: e});
-            else this.selectedValueArray.push({name: e});
+            if(citiesExist.city) this.selectedValueArray.push({ city:citiesExist.city , name: citiesExist.name});
+            else this.selectedValueArray.push({name: e.name});
           }
           this.selectedValueArray.sort(function(a, b){
             if(a.name < b.name) { return -1; }

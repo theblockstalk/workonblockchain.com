@@ -117,6 +117,7 @@
                 <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
                   {{work_type_log}}
                 </div>
+
               </div>
             </div>
 
@@ -143,14 +144,16 @@
               <div class="form-group">
                 <label>Locations:</label>
                 <div>
-                  <datalist id="countryList">
-                    <select class="form-control">
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
-                      </option>
-                    </select>
-                  </datalist>
+                  <mat-autocomplete #employeeAuto="matAutocomplete">
+                    <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                      <span>{{ loc.name }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                  <mat-form-field floatLabel="always">
+                    <mat-label></mat-label>
+                    <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                  </mat-form-field>
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
@@ -251,7 +254,6 @@
               </div>
             </div>
 
-
           </div>
           <hr *ngIf = "contractorCheck" />
           <div class="row mt-2" *ngIf="contractorCheck" >
@@ -264,14 +266,17 @@
               <div class="form-group">
                 <label>Locations:</label>
                 <div>
-                  <datalist id="countryList">
-                    <select class="form-control">
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{contractor.country}}" >{{country.name}}
-                      </option>
-                    </select>
-                  </datalist>
+                  <mat-autocomplete #contractorAuto="matAutocomplete">
+                    <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                      <span>{{ loc.name }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
+                  <mat-form-field floatLabel="always">
+                    <mat-label></mat-label>
+                    <input matInput [matAutocomplete]="contractorAuto" placeholder="Remote, Canada, London..." [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
+                  </mat-form-field>
+
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>
@@ -425,14 +430,16 @@
               <div class="form-group">
                 <label>Locations:</label>
                 <div>
-                  <datalist id="countryList">
-                    <select class="form-control">
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{volunteer.country}}" >{{country.name}}
-                      </option>
-                    </select>
-                  </datalist>
+                  <mat-autocomplete #volunteerAuto="matAutocomplete">
+                    <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                      <span>{{ loc.name }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
 
-                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
+                  <mat-form-field floatLabel="always">
+                    <mat-label></mat-label>
+                    <input matInput [matAutocomplete]="volunteerAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
+                  </mat-form-field>
                   <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                     {{error}}
                   </div>

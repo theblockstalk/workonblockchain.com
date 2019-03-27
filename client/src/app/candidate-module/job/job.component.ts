@@ -706,9 +706,8 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   employeeSelectedValueFunction(e) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.employee.country+"']")['dataset'].value;
-
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
         this.employee.country = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
@@ -726,7 +725,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.selectedValueArray.push({ name: e, visa_needed:false});
           }
 
@@ -765,9 +764,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   contractorArray = [];
   contractorSelectedValueFunction(e) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.contractor.country+"']")['dataset'].value;
-
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
         this.contractor.country = '';
         this.cities = [];
         if(this.contractorArray.length > 9) {
@@ -785,7 +783,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.contractorArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.contractorArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.contractorArray.push({ name: e, visa_needed:false});
           }
 
@@ -825,8 +823,9 @@ export class JobComponent implements OnInit,AfterViewInit {
     console.log("volunteerArray");
     console.log(this.volunteerArray);
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.volunteer.country+"']")['dataset'].value;
+      const citiesExist = this.cities.find(x => x.name === e);
+
+      if(citiesExist) {
 
         this.volunteer.country = '';
         this.cities = [];
@@ -845,7 +844,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.volunteerArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.volunteerArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.volunteerArray.push({ name: e, visa_needed:false});
           }
 
