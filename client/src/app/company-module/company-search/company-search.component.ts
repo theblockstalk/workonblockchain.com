@@ -626,7 +626,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   savedSearch() {
     let queryBody : any = {};
     let index = this.savedSearches.findIndex((obj => obj.name === this.saveSearchName));
-    if(this.saveSearchName) queryBody.name = this.saveSearchName;
     if(this.visa_check) queryBody.visa_needed = this.visa_check;
     else queryBody.visa_needed = false;
     if(this.pref_job_type) queryBody.job_type = this.pref_job_type;
@@ -825,8 +824,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               {
                 this.savedSearches= [];
                 this.saveSearchName = this.preferncesForm.value.name;
-                this.searchdata('name' , this.saveSearchName);
-                this.saveSearchName = this.preferncesForm.value.name;
                 this.searchdata('searchName' , this.saveSearchName);
                 $('#saveNewSearch').modal('hide');
 
@@ -854,6 +851,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }
 
                 }
+                let newQueryBody : any = {};
+                newQueryBody = queryBody;
+                if(this.saveSearchName) {
+                  newQueryBody.searchName = this.saveSearchName;
+                }
+
+                this.router.navigate(['candidate-search'], {
+                  queryParams: {queryBody: JSON.stringify(newQueryBody)}
+                });
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
+
               }
             },
             error => {
