@@ -309,6 +309,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   search_log;
   search_name_log;
   residence_log;
+  expected_hourly_rate_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -377,9 +378,36 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(!this.preferncesForm.value.prefItems[i].name) {
           this.search_name_log = 'Please enter search name';
           count = 1;
+        }
+        if(this.preferncesForm.value.prefItems[i].work_type === 'employee'){
+          if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
+            console.log("2");
+            this.current_currency_log = "Please choose currency ";
+            count = 1;
+          }
+          if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
+            console.log("3");
+            this.current_currency_log = "Please enter expected hours ";
+            count = 1;
+          }
+        }
+
+        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor') {
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
+            console.log("4")
+            this.expected_hourly_rate_log = "Please choose currency ";
+            count = 1;
+          }
+          if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
+            console.log("5")
+            this.expected_hourly_rate_log = "Please enter expected hours ";
+            count = 1;
+          }
 
         }
-        else if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
+
+
+        if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
           !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
           !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
@@ -388,12 +416,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           this.search_log = 'Please fill atleast one field in job search';
           count = 1;
         }
-        else if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
+        if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
           this.residence_log = "Please select maximum 50 countries";
+          count = 1;
         }
-        else {
 
-        }
       }
     }
 
