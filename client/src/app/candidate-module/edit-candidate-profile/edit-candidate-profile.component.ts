@@ -137,6 +137,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
+  employement_availability= constants.workAvailability;
+
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
   }
