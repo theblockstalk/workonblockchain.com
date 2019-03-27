@@ -893,9 +893,9 @@
       <div class="form-group">
         <label>Angular material auto suggestion</label>
         <div class="form-group">
-
-          <mat-form-field >
-            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
+          <mat-form-field class="example-full-width" floatLabel="always">
+            <mat-label></mat-label>
+            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)" placeholder="Location">
           </mat-form-field>
           <div class="invalid-feedback d-inline" *ngIf="error">
             {{error}}
