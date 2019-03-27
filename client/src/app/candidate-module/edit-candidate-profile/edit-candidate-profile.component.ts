@@ -1670,7 +1670,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else inputQuery.unset_medium_account = true;
 
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
-    if(this.info.Intro) inputQuery.description = this.info.Intro;
+    if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
     if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
