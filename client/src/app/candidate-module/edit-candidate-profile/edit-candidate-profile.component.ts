@@ -161,8 +161,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
   otherSkills = constants.otherSkills;
-  contractor_types = constants.contractorTypes;
-
+  contractor_types= constants.contractorTypes;
   skillDbArray=[];
   skillDb;
   skill_expYear_db=[];
@@ -243,17 +242,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
                 this.contractor.contractor_type = contractor.contractor_type;
                 this.contract_type = contractor.contractor_type;
-                for(let type of contractor.contractor_type)
-                {
-
+                for(let type of contractor.contractor_type) {
                   for(let option of this.contractor_types)
                   {
-
-                    if(option.value === type)
-                    {
-                      option.checked = true;
-
-                    }
+                    if(option.value === type) option.checked = true;
 
                   }
 
@@ -996,7 +988,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         this.contractor_currency_log = "Please choose currency";
         contractorCount = 1;
       }
-      if(!this.contractor.contractor_type) {
+      if(!this.contractor.contractor_type || (this.contractor.contractor_type && this.contractor.contractor_type.length <=0)) {
         this.contractor_type_log = "Please select minimum one contractor type";
         contractorCount = 1;
       }
@@ -1490,7 +1482,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         contractor_type: this.contractor.contractor_type,
         service_description : this.contractor.service_description
       }
-      if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
+      if(this.checkContractValue(this.contractor.contractor_type) && this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
       if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
     }
     if(this.volunteerCheck) {
@@ -1687,7 +1679,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   checkContractValue(array) {
-    if(array && array.indexOf('agency') === 0) return true;
+    //console.log(array);
+    if(array && array.indexOf('agency') > -1) return true;
     else return false;
   }
 
@@ -1992,11 +1985,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contract_type.push(inputParam.target.value);
     }
     else {
-      let updateItem = this.contract_type.find(this.findIndexToUpdate, inputParam.target.value);
+      let updateItem = this.contract_type.find(x => x === inputParam.target.value);
       let index = this.contract_type.indexOf(updateItem);
       this.contract_type.splice(index, 1);
     }
     this.contractor.contractor_type = this.contract_type;
+    console.log(this.contractor.contractor_type)
     this.checkContractValue(this.contractor.contractor_type);
   }
 

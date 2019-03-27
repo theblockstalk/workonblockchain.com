@@ -263,17 +263,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
                 this.contractor.contractor_type = contractor.contractor_type;
                 this.contract_type = contractor.contractor_type;
-                for(let type of contractor.contractor_type)
-                {
-
+                for(let type of contractor.contractor_type) {
                   for(let option of this.contractor_types)
                   {
-
-                    if(option.value === type)
-                    {
-                      option.checked = true;
-
-                    }
+                    if(option.value === type) option.checked = true;
 
                   }
 
@@ -1642,7 +1635,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   checkContractValue(array) {
-    if(array && array.indexOf('agency') === 0) return true;
+    if(array && array.indexOf('agency') > -1) return true;
     else return false;
   }
 
@@ -1956,7 +1949,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.contract_type.push(inputParam.target.value);
     }
     else {
-      let updateItem = this.contract_type.find(this.findIndexToUpdate, inputParam.target.value);
+      let updateItem = this.contract_type.find(x => x === inputParam.target.value);
       let index = this.contract_type.indexOf(updateItem);
       this.contract_type.splice(index, 1);
     }

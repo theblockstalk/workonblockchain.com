@@ -343,7 +343,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.contract_type.push(inputParam.target.value);
     }
     else {
-      let updateItem = this.contract_type.find(this.findIndexToUpdate, inputParam.target.value);
+      let updateItem = this.contract_type.find(x => x === inputParam.target.value);
       let index = this.contract_type.indexOf(updateItem);
       this.contract_type.splice(index, 1);
     }
@@ -352,7 +352,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   checkContractValue(array) {
-    if(array && array.indexOf('agency') === 0) return true;
+    console.log(array)
+    if(array && array.indexOf('agency') > -1) return true;
     else return false;
   }
 
