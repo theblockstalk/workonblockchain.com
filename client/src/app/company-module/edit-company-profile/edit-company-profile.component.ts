@@ -675,7 +675,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   selectedValueFunction(locValue, index) {
     if(this.cities) {
-      console.log(locValue);
       let citiesExist = this.cities.find(x => x.name === locValue);
       if(citiesExist) {
         ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');

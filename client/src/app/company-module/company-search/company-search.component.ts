@@ -1175,11 +1175,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   newSearchLocation = [];
   selectedValueFunction(e) {
-    console.log(e);
     if(this.cities) {
       let citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
-        console.log(citiesExist)
         this.countriesModel = '';
 
         if(this.preferncesForm) this.preferncesForm.get('location').setValue('');
@@ -1213,7 +1211,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
 
           this.newSearchLocation  = this.selectedValueArray;
-          console.log(this.selectedValueArray);
           this.searchdata('locations' , this.selectedValueArray);
         }
       }
