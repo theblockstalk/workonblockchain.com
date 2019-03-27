@@ -1257,5 +1257,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
-
+  changeWorkTypes(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
+  }
 }
