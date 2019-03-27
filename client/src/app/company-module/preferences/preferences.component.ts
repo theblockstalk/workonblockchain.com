@@ -294,34 +294,46 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     this.saved_searches = [];
     this.error_msg = "";
     this.validatedLocation = [];
+    let count = 0;
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      console.log("selectedValueArray")
       this.country_input_log = "Please select at least one location";
+      count=1;
     }
     if(!this.selectedLocations) {
+      console.log("selectedLocations")
       this.country_log = "Please select at least one location";
+      count=1;
     }
     if(this.selectedLocations && this.selectedLocations.length > 0) {
+      console.log("selectedLocations >0")
+      console.log(this.selectedLocations);
       for(let location of this.selectedLocations) {
         if(location.name.includes(', ')) {
-          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          this.validatedLocation.push({city: location._id });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          this.validatedLocation.push({remote: true });
         }
-
       }
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 10) {
+      console.log("selectedLocations >10")
       this.country_log = "Please select maximum 10 locations";
+      count=1;
     }
 
     if(!this.preferncesForm.value.name) {
+      console.log("name")
       this.name_log = "Please enter saved search name";
+      count=1;
     }
 
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
+      console.log("position")
       this.position_log = "Please select roles";
+      count=1;
     }
 
     /*if(this.preferncesForm.value !this.preferncesForm.value.current_currency) {
@@ -335,8 +347,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     }*/
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
+      count=1;
     }
-    let count = 0;
+
     if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
       console.log(checkNumber);
@@ -382,14 +395,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     }
 
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      console.log("residence");
       this.residence_country_log = "Please select maximum 50 countries";
       count=1;
-
     }
-    if(count === 0 &&this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
-      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
-      this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications ) {
+    if(count === 0) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
