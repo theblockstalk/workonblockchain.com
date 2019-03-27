@@ -1546,7 +1546,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
 
-    console.log(this.Intro);
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
