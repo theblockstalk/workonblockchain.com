@@ -70,14 +70,15 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <div>
-                    <datalist id="countryList">
-                      <select class="form-control">
-                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}}
-                        </option>
-                      </select>
-                    </datalist>
-
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="auto" placeholder="Location" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                    </mat-form-field>
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>

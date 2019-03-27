@@ -675,8 +675,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   selectedValueFunction(locValue, index) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === locValue)) {
-        var value2send=document.querySelector("#countryList option[value='"+ locValue +"']")['dataset'].value;
+      let citiesExist = this.cities.find(x => x.name === locValue);
+      if(citiesExist) {
         ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');
         this.cities = [];
         if(!this.locationArray[index]) this.locationArray[index] = [];
@@ -695,7 +695,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
 
           else {
-            if(value2send) this.locationArray[index].push({city:value2send ,  name: locValue, visa_needed:false});
+            if(citiesExist) this.locationArray[index].push({city:citiesExist.city ,  name: locValue, visa_needed:false});
             else this.locationArray[index].push({ name: locValue, visa_needed:false});
           }
         }

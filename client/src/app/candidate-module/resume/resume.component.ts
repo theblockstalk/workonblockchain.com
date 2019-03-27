@@ -181,55 +181,55 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
               }
 
-
-            }
-
-            if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length>0)
-            {
-              this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
-              for (let key of data['candidate'].blockchain.commercial_skills)
+              if(data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length>0)
               {
-                for(var i in key)
+                this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
+                for (let key of data['candidate'].blockchain.commercial_skills)
                 {
-
-                  for(let option of this.otherSkills)
+                  for(var i in key)
                   {
 
-                    if(option.value === key[i])
+                    for(let option of this.otherSkills)
                     {
-                      option.checked=true;
-                      this.skillDbArray.push(key[i]);
-                      this.skillDb= ({value: key[i]});
-                      this.commercialSkills.push(this.skillDb);
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skillDbArray.push(key[i]);
+                        this.skillDb= ({value: key[i]});
+                        this.commercialSkills.push(this.skillDb);
+
+                      }
+                      else
+                      {
+
+                      }
 
                     }
-                    else
+
+                    for(let option of this.exp_year)
                     {
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skill_expYear_db.push(key[i]);
+
+                      }
 
                     }
 
                   }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.skill_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
                 }
               }
+
+              if(data['candidate'].blockchain.description_commercial_skills)
+              {
+                this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+              }
+
             }
 
-            if(data['candidate'].blockchain.description_commercial_skills)
-            {
-              this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
-            }
 
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day )
             {
@@ -286,31 +286,31 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
 
   commercially=
-  [
-    {name:'Bitcoin', value:'Bitcoin', checked:false},
-    {name:'Ethereum', value:'Ethereum', checked:false},
-    {name:'Ripple', value:'Ripple', checked:false},
-    {name:'Stellar', value:'Stellar', checked:false},
-    {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-    {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-    {name:'Quorum', value:'Quorum', checked:false},
-    {name:'Corda', value:'Corda', checked:false},
-    {name:'EOS', value:'EOS', checked:false},
-    {name:'NEO', value:'NEO', checked:false},
-    {name:'Waves', value:'Waves', checked:false},
-    {name:'Steemit', value:'Steemit', checked:false},
-    {name:'Lisk', value:'Lisk', checked:false},
-    {name:'Quantum', value:'Quantum', checked:false},
-    {name:'Tezos', value:'Tezos', checked:false},
-    {name:'Cardano', value:'Cardano', checked:false},
-    {name:'Litecoin', value:'Litecoin', checked:false},
-    {name:'Monero', value:'Monero', checked:false},
-    {name:'ZCash', value:'ZCash', checked:false},
-    {name:'IOTA', value:'IOTA', checked:false},
-    {name:'NEM', value:'NEM', checked:false},
-    {name:'NXT', value:'NXT', checked:false},
+    [
+      {name:'Bitcoin', value:'Bitcoin', checked:false},
+      {name:'Ethereum', value:'Ethereum', checked:false},
+      {name:'Ripple', value:'Ripple', checked:false},
+      {name:'Stellar', value:'Stellar', checked:false},
+      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
+      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
+      {name:'Quorum', value:'Quorum', checked:false},
+      {name:'Corda', value:'Corda', checked:false},
+      {name:'EOS', value:'EOS', checked:false},
+      {name:'NEO', value:'NEO', checked:false},
+      {name:'Waves', value:'Waves', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
+      {name:'Lisk', value:'Lisk', checked:false},
+      {name:'Quantum', value:'Quantum', checked:false},
+      {name:'Tezos', value:'Tezos', checked:false},
+      {name:'Cardano', value:'Cardano', checked:false},
+      {name:'Litecoin', value:'Litecoin', checked:false},
+      {name:'Monero', value:'Monero', checked:false},
+      {name:'ZCash', value:'ZCash', checked:false},
+      {name:'IOTA', value:'IOTA', checked:false},
+      {name:'NEM', value:'NEM', checked:false},
+      {name:'NXT', value:'NXT', checked:false},
 
-  ]
+    ]
 
   otherSkills =
     [
@@ -475,7 +475,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(this.commercialSkills.length === 0) {
         expForm.value.unset_commercial_skills = true;
-        expForm.value.value.commercial_skills = [];
+        expForm.value.commercial_skills = [];
       }
       else {
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
