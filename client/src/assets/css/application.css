@@ -182,6 +182,18 @@ pre {
   background: #ffffff !important;
 }
 
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+.mat-form-field-appearance-legacy .mat-form-field-underline  {
+  display: none;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-infix{
+  border-top: none !important;
+}
+
+
 
 
 

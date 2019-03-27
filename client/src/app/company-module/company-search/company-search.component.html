@@ -46,8 +46,9 @@
                     <span>{{ loc.name }}</span>
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field>
-                  <input matInput [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                <mat-form-field floatLabel="always">
+                  <mat-label></mat-label>
+                  <input matInput placeholder="Location" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                   {{error}}

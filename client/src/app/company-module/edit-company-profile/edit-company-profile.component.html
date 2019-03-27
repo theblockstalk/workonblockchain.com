@@ -365,8 +365,9 @@
                               <span>{{ loc.name }}</span>
                             </mat-option>
                           </mat-autocomplete>
-                          <mat-form-field>
-                            <input matInput [matAutocomplete]="auto" formControlName = "location" (input)="suggestedOptions(i)" (ngModelChange)="selectedValueFunction($event, i)">
+                          <mat-form-field floatLabel="always">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="Location" [matAutocomplete]="auto" formControlName = "location" (input)="suggestedOptions(i)" (ngModelChange)="selectedValueFunction($event, i)">
                           </mat-form-field>
                           <div class="invalid-feedback d-inline" *ngIf="error">
                             {{error}}

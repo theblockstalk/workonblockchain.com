@@ -635,8 +635,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   selectedValueFunction(e) {
 
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
         this.preferncesForm.get('location').setValue('');
         this.cities = [];
         if(this.selectedValueArray.length > 4) {
@@ -654,8 +654,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
-            else this.selectedValueArray.push({ name: e, visa_needed:false});
+            if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: citiesExist.name, visa_needed:false});
+            else this.selectedValueArray.push({ name: citiesExist.name, visa_needed:false});
           }
         }
       }
