@@ -45,6 +45,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   error;
   selectedLocations;
   emptyInput;
+  workTypes = constants.workTypes;
+  expected_hourly_rate_log;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }
