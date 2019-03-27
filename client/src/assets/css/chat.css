@@ -219,7 +219,7 @@ input[type=file] {
 
 @media (max-width: 768px){
   .message {
-    max-height: 325px;
+    max-height: 510px;
     min-height: 325px;
   }
 
@@ -231,7 +231,7 @@ input[type=file] {
     height: 130vh;
   }
 
-  #cke_editor3, #cke_editor1{
+  #cke_editor1, #cke_editor3, #cke_editor7{
     width: 20rem !important;
   }
 
