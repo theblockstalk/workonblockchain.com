@@ -156,6 +156,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   description_commercial_skills;
   roles = constants.workRoles;
   contractor_types = constants.contractorTypes;
+  employement_availability= constants.workAvailability;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -250,7 +251,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.employee.expected_annual_salary = employee.expected_annual_salary;
                 this.employee.currency = employee.currency;
                 this.employee.employment_availability = employee.employment_availability;
-
               }
               if(data['candidate'].contractor) {
                 this.contractorCheck = true;

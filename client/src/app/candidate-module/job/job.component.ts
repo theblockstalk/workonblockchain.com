@@ -75,6 +75,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   objective_log;
   max_hours=[];
   validateUrl;
+  employement_availability = constants.workAvailability;
 
   ngAfterViewInit(): void
   {

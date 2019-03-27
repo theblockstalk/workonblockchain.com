@@ -6,7 +6,7 @@ import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
 import {constants} from '../../../constants/constants';
-import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue, getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -192,11 +192,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.info.push(data);
               this.verify =data['is_verify'];
-              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-              else this.availability_day =data['candidate'].availability_day;
 
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
