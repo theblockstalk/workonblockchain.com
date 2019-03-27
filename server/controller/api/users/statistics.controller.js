@@ -7,7 +7,8 @@ module.exports = async function (req, res) {
 
     const blockchainExperienceCount = await users.count({type: 'candidate', "candidate.latest_status.status" :'approved',
         disable_account : false, is_verify : 1 ,
-        $or: [{'candidate.blockchain.commercial_platforms': {$exists: true}, 'candidate.blockchain.commercial_platforms': {$exists: true}}]});
+        'candidate.blockchain.commercial_platforms': {$exists: true}
+    });
 
     res.send({
         approvedUsers :approvedUserCount,
