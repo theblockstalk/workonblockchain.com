@@ -85,7 +85,7 @@
 
               <div class="form-group">
                 <select class="form-control selectpicker" title="Residence country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
-                  <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
+                  <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                 </select>
                 <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
                   {{residence_log}}

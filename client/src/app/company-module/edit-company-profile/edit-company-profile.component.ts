@@ -87,6 +87,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
   residenceCountries = constants.countries;
+  workTypes = constants.workTypes;
   prefData;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
@@ -133,7 +134,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ currency: i.currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -269,6 +270,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
+
+              console.log(this.preferncesForm)
 
             }
           },
@@ -472,14 +475,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
           if(key['name']) searchQuery.name = key['name'];
 
-          if(key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
+          if(key['work_type']) searchQuery.work_type = key['work_type'];
+          if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
           }
 
-          if(key['currency'] && key['currency'] !== 'Currency' && key['expected_hourly_rate']) {
-            searchQuery.currency = key['currency'];
+          if(key['work_type']==='contractor' && key['currency'] && key['currency'] !== 'Currency' && key['expected_hourly_rate']) {
             searchQuery.expected_hourly_rate = Number(key['expected_hourly_rate']);
+            searchQuery.currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           saved_searches.push(searchQuery);
@@ -536,6 +540,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
               this.cities = this.filter_array(citiesOptions);
+              console.log(this.cities);
             }
 
           },
@@ -648,6 +653,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }, 100);
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
+  }
+
+  changeWorkTypes() {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
   }
 
 }

@@ -320,6 +320,7 @@
                     <div class="col-md-12">
                       <h4 class="pt-2 mb-3"> Job search {{i+1}}</h4>
                     </div>
+
                     <div class="col-md-6">
                       <div class="form-group">
                         <input type="text" formControlName="name"  [value] = "preferncesForm.value.prefItems[i].name"  class="form-control" placeholder="Saved search name">
@@ -336,6 +337,19 @@
                     </div>
                   </div>
                   <div class="row">
+
+                    <div class="col-md-12 mt-2">
+                      <div class="form-group">
+                        <div class="form-check" *ngFor="let types of workTypes">
+                          <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                          <label class="form-check-label simple-radio-button" >
+                            {{types.name}}
+                          </label>
+                        </div>
+
+                      </div>
+                    </div>
+
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
                         <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
@@ -424,30 +438,39 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4">
-                      <div class = "form-group w-auto">
 
-                        <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.prefItems[i].current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
+                      <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+                        <div class = "form-group w-auto">
+                          <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.prefItems[i].current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
+                          <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
+                            <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].current_currency?true:null">{{base_currency}}</option>
+                          </select>
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary)|| (preferncesForm.value.prefItems[i].current_currency && !preferncesForm.value.prefItems[i].current_salary)" >
+                            {{current_currency_log}}
+                          </div>
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary && checkNumber(preferncesForm.value.prefItems[i].current_salary)  " >
+                            {{current_currency_log}}
+                          </div>
 
-                        <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
-                          <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.prefItems[i].current_currency === base_currency ? true : null " >{{base_currency}}</option>
-                        </select>
-
+                        </div>
                       </div>
-                    </div>
 
+                      <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type &&preferncesForm.value.prefItems[i].work_type === 'contractor'">
+                        <div class = "form-group w-auto">
+                          <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
+                          <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
+                            <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].currency?true:null">{{base_currency}}</option>
+                          </select>
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].expected_hourly_rate && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
+                            {{expected_hourly_rate_log}}
+                          </div>
 
-                    <div class="col-md-6 mt-4">
-                      <div class = "form-group w-auto">
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].currency && preferncesForm.value.prefItems[i].expected_hourly_rate && checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
+                            {{expected_hourly_rate_log}}
+                          </div>
 
-                        <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
-
-                        <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
-                          <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.prefItems[i].currency === base_currency ? true : null " >{{base_currency}}</option>
-                        </select>
-
+                        </div>
                       </div>
-                    </div>
 
 
                     <div class="col-md-6 my-2">
