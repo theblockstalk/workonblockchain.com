@@ -306,6 +306,9 @@ const bodySchema = new Schema({
     unset_exchange_account: Boolean,
     unset_linkedin_account: Boolean,
     unset_medium_account: Boolean,
+    unset_employee: Boolean,
+    unset_contractor: Boolean,
+    unset_volunteer: Boolean
 });
 
 module.exports.inputValidation = {
@@ -366,39 +369,46 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.current_salary) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
         else unset['candidate.current_salary'] = 1;
 
-        if(queryBody.employee) {
-            for(let loc of queryBody.employee.location) {
-                if(loc.city) {
-                    const index = queryBody.employee.location.findIndex((obj => obj.city === loc.city));
-                    queryBody.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
+        if(queryBody.unset_employee) unset['candidate.employee'] = 1;
+        else {
+            if(queryBody.employee) {
+                for(let loc of queryBody.employee.location) {
+                    if(loc.city) {
+                        const index = queryBody.employee.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
 
+                    }
                 }
+                updateCandidateUser['candidate.employee'] = queryBody.employee;
             }
-            updateCandidateUser['candidate.employee'] = queryBody.employee;
         }
-        //else unset['candidate.employee'] = 1;
 
-        if(queryBody.contractor) {
-            for(let loc of queryBody.contractor.location) {
-                if(loc.city) {
-                    const index = queryBody.contractor.location.findIndex((obj => obj.city === loc.city));
-                    queryBody.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
+        if(queryBody.unset_contractor) unset['candidate.contractor'] = 1;
+        else {
+            if(queryBody.contractor) {
+                for(let loc of queryBody.contractor.location) {
+                    if(loc.city) {
+                        const index = queryBody.contractor.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
+                    }
                 }
+                updateCandidateUser['candidate.contractor'] = queryBody.contractor;
             }
-            updateCandidateUser['candidate.contractor'] = queryBody.contractor;
         }
-        //else unset['candidate.contractor'] = 1;
 
-        if(queryBody.volunteer) {
-            for(let loc of queryBody.volunteer.location) {
-                if(loc.city) {
-                    const index = queryBody.volunteer.location.findIndex((obj => obj.city === loc.city));
-                    queryBody.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
+        if(queryBody.unset_volunteer) unset['candidate.volunteer'] = 1;
+        else {
+            if(queryBody.volunteer) {
+                for(let loc of queryBody.volunteer.location) {
+                    if(loc.city) {
+                        const index = queryBody.volunteer.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
+                    }
                 }
+                updateCandidateUser['candidate.volunteer'] = queryBody.volunteer;
             }
-            updateCandidateUser['candidate.volunteer'] = queryBody.volunteer;
         }
-        //else unset['candidate.volunteer'] = 1;
+
 
         if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
         if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
