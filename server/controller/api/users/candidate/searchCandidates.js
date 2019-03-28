@@ -84,53 +84,86 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
                     for (let city of citiesArray) {
-                        const cityQuery = {
-                            [locationQuery]: {
-                                $elemMatch: {
-                                    city: city,
-                                    visa_needed: true
+                       const setCityLocationQuery = function (locationQuery){
+                            const cityQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        city: city,
+                                        visa_needed: true
+                                    }
                                 }
                             }
-                        }
-                        locationsQuery.push(cityQuery)
+                            locationsQuery.push(cityQuery)
+                        };
+                       if(locationQuery) setCityLocationQuery(locationQuery);
+                       else {
+                           setCityLocationQuery("candidate.employee.location");
+                           setCityLocationQuery("candidate.contractor.location");
+                           setCityLocationQuery("candidate.volunteer.location");
+                       }
                     }
 
                     for (let country of countriesArray) {
-                        const countryQuery = {
-                            [locationQuery]: {
-                                $elemMatch: {
-                                    country: country,
-                                    visa_needed: true
+                        const setCountryLocationQuery = function (locationQuery){
+                            const countryQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        country: country,
+                                        visa_needed: true
+                                    }
                                 }
                             }
+                            locationsQuery.push(countryQuery)
+                        };
+                        if(locationQuery) setCountryLocationQuery(locationQuery);
+                        else {
+                            setCountryLocationQuery("candidate.employee.location");
+                            setCountryLocationQuery("candidate.contractor.location");
+                            setCountryLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(countryQuery)
+
                     }
                 }
                 else {
-
                     for (let city of citiesArray) {
-                        const cityQuery = {
-                            [locationQuery]: {
-                                $elemMatch: {
-                                    city: city,
-                                    visa_needed: false
+                        const setCityLocationQuery = function (locationQuery){
+                            const cityQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        city: city,
+                                        visa_needed: false
+                                    }
                                 }
                             }
+                            locationsQuery.push(cityQuery)
+                        };
+                        if(locationQuery) setCityLocationQuery(locationQuery);
+                        else {
+                            setCityLocationQuery("candidate.employee.location");
+                            setCityLocationQuery("candidate.contractor.location");
+                            setCityLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(cityQuery)
                     }
 
                     for (let country of countriesArray) {
-                        const countryQuery = {
-                            [locationQuery]: {
-                                $elemMatch: {
-                                    country: country,
-                                    visa_needed: false
+                        const setCountryLocationQuery = function (locationQuery){
+                            const countryQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        country: country,
+                                        visa_needed: false
+                                    }
                                 }
                             }
+                            locationsQuery.push(countryQuery)
+                        };
+                        if(locationQuery) setCountryLocationQuery(locationQuery);
+                        else {
+                            setCountryLocationQuery("candidate.employee.location");
+                            setCountryLocationQuery("candidate.contractor.location");
+                            setCountryLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(countryQuery)
+
                     }
 
                 }
@@ -139,8 +172,17 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             if(search.locations.find(x => x.remote === true)) {
                 let locationRemote;
                 if(search.work_type === 'employee') locationRemote = {"candidate.employee.location.remote" : true};
-                if(search.work_type === 'contractor') locationRemote = {"candidate.contractor.location.remote" : true};
-                if(search.work_type === 'volunteer') locationRemote = {"candidate.volunteer.location.remote" : true};
+                else if(search.work_type === 'contractor') locationRemote = {"candidate.contractor.location.remote" : true};
+                else if(search.work_type === 'volunteer') locationRemote = {"candidate.volunteer.location.remote" : true};
+                else {
+                    locationRemote = {
+                        $or: [
+                            {"candidate.employee.location.remote" : true},
+                            {"candidate.contractor.location.remote" : true},
+                            {"candidate.volunteer.location.remote" : true}
+                        ]
+                    };
+                }
                 const locationRemoteFilter = locationRemote;
                 locationsQuery.push(locationRemoteFilter);
             }
@@ -153,8 +195,16 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            const rolesFilter = {[roleQuery]: {$in: search.positions}};
-            userQuery.push(rolesFilter);
+            const setRoleQuery = function (roleQuery){
+                const rolesFilter = {[roleQuery]: {$in: search.positions}};
+                userQuery.push(rolesFilter);
+            };
+            if(roleQuery) setRoleQuery(roleQuery);
+            else {
+                setRoleQuery("candidate.employee.roles");
+                setRoleQuery("candidate.contractor.roles");
+            }
+
         }
         if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
@@ -269,3 +319,4 @@ function removeDups(names) {
     });
     return Object.keys(unique);
 }
+
