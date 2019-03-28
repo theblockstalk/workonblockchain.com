@@ -178,11 +178,11 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(currencyFiler);
         }
 
-        if (search.rate && search.rate.expected_hourly_rate && search.rate.currency) {
+        if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.currency) {
             const hourlyRate = {
                     $or: [
-                        {"candidate.contractor.expected_hourly_rate": search.rate.expected_hourly_rate},
-                        {"candidate.contractor.currency": search.rate.currency}
+                        {"candidate.contractor.expected_hourly_rate": search.hourly_rate.expected_hourly_rate},
+                        {"candidate.contractor.currency": search.hourly_rate.currency}
                     ]
                 };
             userQuery.push(hourlyRate);
