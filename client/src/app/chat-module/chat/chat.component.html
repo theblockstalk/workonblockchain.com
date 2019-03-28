@@ -68,23 +68,15 @@
                 <div class = "border-bottom" style = "overflow:hidden;">
                   <div class = "p-1 p-md-3 w-sm-100 w-75 float-left">
                     <ul class="cand_info-ul">
-                      <ng-container *ngIf="currentUser.type == 'company';else cand">
-                        <ng-container *ngIf="job_desc;else no_job_desc">
-                          <li>Job type: {{job_desc.type}}</li>
-                          <li>Job title: {{job_desc.title}}</li>
-                          <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
-                        </ng-container>
-                        <ng-template #no_job_desc>
-                          <li>Job type: N/A</li>
-                          <li>Job title: N/A</li>
-                          <li>Salary: N/A</li>
-                        </ng-template>
+                      <ng-container *ngIf="job_desc.employee;">
+                        <li>Job title: {{job_desc.employee.job_title}}</li>
+                        <li>Job type: {{job_desc.employee.employment_type}}</li>
+                        <li>Salary: {{job_desc.employee.currency}} {{job_desc.annual_salary}}</li>
                       </ng-container>
-                      <ng-template #cand>
-                        <li>Job title: {{job_desc.title}}</li>
-                        <li>Job type : {{job_desc.type}}</li>
-                        <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
-                      </ng-template>
+                      <ng-container *ngIf="job_desc.contractor;">
+                        <li>Job type: Contractor</li>
+                        <li>Hourly rate: {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</li>
+                      </ng-container>
                     </ul>
                   </div>
                   <div class = "p-2 w-25 float-left d-none d-md-block">
@@ -104,9 +96,9 @@
                       <ng-container *ngIf="msg.sender_id === currentUser._id;else second">
                         <li class="sent mb-3 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
-                            <span *ngIf="msg.message.job_offer">
+                            <span *ngIf="msg.message.approach.employee">
                               <b>Job title:</b>
-                              {{msg.message.job_offer.title}}
+                              {{msg.message.approach.employee.job_title}}
                               <br/>
                             </span>
                             <span *ngIf="msg.message.employment_offer">
