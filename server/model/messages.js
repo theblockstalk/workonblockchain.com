@@ -181,7 +181,7 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
-        
+
         interview_offer: {
             type: new Schema({
                 location: {

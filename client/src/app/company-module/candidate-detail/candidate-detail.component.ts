@@ -50,6 +50,27 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   volunteer: any = {};
   roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  job_offer_msg;
+  job_offer_msg_success;
+  full_name;
+  job_description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_erorr;
+  approach_work_type;
+  volunteer_desc_log;
+  hourly_rate_log;
+  hourly_currency_log;
+  contract_desc_log;
+  workTypes = constants.workTypes;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -107,20 +128,41 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
+
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
-            setTimeout(() => {
-              $('.selectpicker').selectpicker('refresh');
-            }, 900);
-            if(data && data['message']) {
-              let job_offer = data['message'].job_offer;
-              this.credentials.job_title = job_offer.title;
-              this.credentials.salary = job_offer.salary;
-              this.credentials.currency = job_offer.salary_currency;
-              this.credentials.location = job_offer.location;
-              this.credentials.job_type = job_offer.type;
-              this.credentials.job_desc = job_offer.description;
+            console.log(data);
+            if(data && data['message'].approach) {
+              let approach = data['message'].approach;
+              console.log(approach);
+
+              if(approach.employee) {
+                this.approach_work_type = 'employee';
+                let employeeOffer = approach.employee;
+                this.employee.job_title = employeeOffer.job_title;
+                this.employee.salary = employeeOffer.annual_salary;
+                this.employee.currency = employeeOffer.currency;
+                this.employee.location = employeeOffer.location;
+                this.employee.job_type = employeeOffer.employment_type;
+                this.employee.job_desc = employeeOffer.employment_description;
+              }
+              if(approach.contractor) {
+                this.approach_work_type = 'contractor';
+                let contractorOffer = approach.contractor;
+                this.contractor.hourly_rate = contractorOffer.hourly_rate ;
+                this.contractor.currency = contractorOffer.currency;
+                this.contractor.contract_description = contractorOffer.contract_description;
+              }
+
+              if(approach.volunteer) {
+                this.approach_work_type = 'volunteer';
+                let volunteerOffer = approach.volunteer;
+                this.volunteer.opportunity_description = volunteerOffer.opportunity_description ;
+              }
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 300);
             }
 
           },
@@ -140,7 +182,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
           }
         );
-
       this.ckeConfig = {
         allowedContent: false,
         extraPlugins: 'divarea',
@@ -387,74 +428,113 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
   }
 
-  date_of_joining;
-  msg_tag;
-  is_company_reply = 0;
-  msg_body;
-  job_offer_msg;
-  job_offer_msg_success;
-  full_name;
-  job_description;
-  job_title_log;
-  location_log;
-  salary_log;
-  salary_currency_log;
-  employment_log;
-  job_desc_log;
-  job_offer_log_erorr;
 
-  send_job_offer(msgForm : NgForm) {
-    this.job_title_log = '';
-    this.location_log = '';
-    this.salary_log = '';
-    this.salary_currency_log = '';
-    this.employment_log = '';
-    this.job_desc_log = '';
-    this.job_offer_log_erorr = '';
+  send_job_offer(msgForm: NgForm) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(!this.credentials.job_title){
-      this.job_title_log = 'Please enter job title';
-    }
-    if(!this.credentials.location){
-      this.location_log = 'Please enter location';
-    }
-    if(!this.credentials.salary){
-      this.salary_log = 'Please enter salary';
-    }
-    if(!this.credentials.currency){
-      this.salary_currency_log = 'Please select currency';
-    }
-    if(!this.credentials.job_type){
-      this.employment_log = 'Please select employment type';
-    }
-    if(!this.credentials.job_desc){
-      this.job_desc_log = 'Please enter job description';
+    let errorCount = 0;
+    if (this.approach_work_type === 'employee') {
+      if (!this.employee.job_title) {
+        this.job_title_log = 'Please enter job title';
+        errorCount = 1;
+      }
+      if (!this.employee.location) {
+        this.location_log = 'Please enter location';
+        errorCount = 1;
+      }
+      if (!this.employee.salary) {
+        this.salary_log = 'Please enter salary';
+        errorCount = 1;
+      }
+      if(this.employee.salary && !this.checkNumber(this.employee.salary)) {
+        this.salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if (!this.employee.currency) {
+        this.salary_currency_log = 'Please select currency';
+        errorCount = 1;
+      }
+      if (!this.employee.job_type) {
+        this.employment_log = 'Please select employment type';
+        errorCount = 1;
+      }
+      if (!this.employee.job_desc) {
+        this.job_desc_log = 'Please enter job description';
+        errorCount = 1;
+      }
     }
 
-    this.full_name = this.first_name;
-    if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
-      if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let job_offer : any = {};
-        job_offer.title = this.credentials.job_title;
-        job_offer.salary = this.credentials.salary;
-        job_offer.salary_currency = this.credentials.currency;
-        job_offer.type = this.credentials.job_type;
-        job_offer.location = this.credentials.location;
-        job_offer.description = this.credentials.job_desc;
-        let new_offer : any = {};
-        new_offer.job_offer = job_offer;
-        this.authenticationService.send_message(this.credentials.user_id, 'job_offer',new_offer)
+    if (this.approach_work_type === 'contractor') {
+      if (!this.contractor.hourly_rate) {
+        this.hourly_rate_log = 'Please enter hourly rate';
+        errorCount = 1;
+      }
+      console.log(this.checkNumber(this.contractor.hourly_rate));
+      console.log(this.contractor.hourly_rate)
+      if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
+        this.hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if (!this.contractor.currency) {
+        this.hourly_currency_log = 'Please enter currency';
+        errorCount = 1;
+      }
+      if (!this.contractor.contract_description) {
+        this.contract_desc_log = 'Please enter contract description';
+        errorCount = 1;
+      }
+    }
+
+    if (this.approach_work_type === 'volunteer') {
+      if (!this.volunteer.opportunity_description) {
+        this.volunteer_desc_log = 'Please enter opportunity description';
+        errorCount = 1;
+      }
+    }
+
+    if (errorCount === 0) {
+      let job_offer: any = {};
+      let new_offer: any = {};
+      if(this.approach_work_type === 'employee') {
+        job_offer.job_title = this.employee.job_title;
+        job_offer.annual_salary = this.employee.salary;
+        job_offer.currency = this.employee.currency;
+        job_offer.employment_type = this.employee.job_type;
+        job_offer.location = this.employee.location;
+        job_offer.employment_description = this.employee.job_desc;
+        new_offer.approach  = {
+          employee : job_offer
+        }
+      }
+      if(this.approach_work_type === 'contractor') {
+        job_offer.hourly_rate = this.contractor.hourly_rate;
+        job_offer.currency = this.contractor.currency;
+        job_offer.contract_description = this.contractor.contract_description;
+        new_offer.approach  = {
+          contractor : job_offer
+        }
+      }
+
+      if(this.approach_work_type === 'volunteer') {
+        job_offer.opportunity_description = this.volunteer.opportunity_description;
+        new_offer.approach  = {
+          volunteer : job_offer
+        }
+      }
+      console.log(new_offer);
+      this.authenticationService.send_message(this.credentials.user_id, 'approach', new_offer)
         .subscribe(
           data => {
-            this.job_offer_msg_success = 'Message has been successfully sent';
-            this.router.navigate(['/chat']);
+            this.job_offer_msg_success = 'Message successfully sent';
+            this.employee = {};
+            $("#jobDescriptionModal").modal("hide");
+            //this.router.navigate(['/chat']);
           },
           error => {
             if (error['status'] === 400) {
               this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
             }
-            if(error['status'] === 500 || error['status'] === 401){
+            if (error['status'] === 500 || error['status'] === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -463,7 +543,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
             }
-            if(error['status'] === 404){
+            if (error['status'] === 404) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -474,17 +554,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
           }
         );
-      }
-      else {
-        //this.job_offer_msg = 'Salary should be a number';
-        this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
-      }
     }
-    else {
-      this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
+    else{
+      this.job_offer_log_erorr = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
-
   filter_array(arr)
   {
     var hashTable = {};
@@ -495,5 +569,15 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
+  }
+
+  changeWorkTypes(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
   }
 }
