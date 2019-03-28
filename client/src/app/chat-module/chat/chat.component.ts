@@ -253,16 +253,16 @@ export class ChatComponent implements OnInit {
       this.display_list = 1;
       this.display_list = 1;
       this.loading = true;
-      this.get_messages_for_company();
-      setInterval(() => {
+      //this.get_messages_for_company();
+      //setInterval(() => {
         this.get_messages_for_company();
-      },7000);
+      //},7000);
     }
     else{
-      this.get_messages_for_candidate();
-      setInterval(() => {
+      //this.get_messages_for_candidate();
+      //setInterval(() => {
         this.get_messages_for_candidate();
-      },7000);
+      //},7000);
     }
   }
 
@@ -766,7 +766,8 @@ export class ChatComponent implements OnInit {
       .subscribe(
         data => {
           this.new_msgss = data['messages'];
-          this.job_desc = data['messages'][0].message.job_offer;
+          console.log(this.new_msgss);
+          this.job_desc = data['messages'][0].message.approach;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(
               data => {
