@@ -30,7 +30,7 @@ module.exports = async  function (req,res)
     }
 
     if (queryBody.expected_hourly_rate && queryBody.currency) {
-        search.rate = {
+        search.hourly_rate = {
             expected_hourly_rate: queryBody.expected_hourly_rate,
             currency: queryBody.currency
         }
