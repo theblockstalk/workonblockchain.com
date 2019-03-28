@@ -95,20 +95,45 @@
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id === currentUser._id;else second">
                         <li class="sent mb-3 col-md-12">
+                          <br><br>
                           <p class = "p-2 send_p job-description rounded d-inline-block">
+                            <!-- msg.message.approach.employee starts-->
                             <span *ngIf="msg.message.approach.employee">
                               <b>Job title:</b>
                               {{msg.message.approach.employee.job_title}}
                               <br/>
                             </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Job type:</b>
+                              {{msg.message.approach.employee.employment_type}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Salary:</b>
+                              {{msg.message.approach.employee.annual_salary}} {{msg.message.approach.employee.currency}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Location:</b>
+                              {{msg.message.approach.employee.location}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee" [innerHTML]="msg.message.approach.employee.employment_description | safeHtml">
+                              {{msg.message.approach.employee.employment_description}}
+                              <br/>
+                            </span>
+                            <!--appraoch.contractor ends-->
+
+                            <!--appraoch.contractor-->
+                            <!---->
+
+                            <!--employment_offer stars-->
                             <span *ngIf="msg.message.employment_offer">
                               <b>Job title:</b>
                               {{msg.message.employment_offer.title}}
-                              <br/>
-                            </span>
-                            <span *ngIf="msg.message.job_offer">
-                              <b>Salary:</b>
-                              {{msg.message.job_offer.salary}} {{msg.message.job_offer.salary_currency}}
                               <br/>
                             </span>
                             <span *ngIf="msg.message.employment_offer">
@@ -116,16 +141,28 @@
                               {{msg.message.employment_offer.salary}} {{msg.message.employment_offer.salary_currency}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.job_offer">
-                              <b>Job type:</b>
-                              {{msg.message.job_offer.type}}
-                              <br/>
-                            </span>
                             <span *ngIf="msg.message.employment_offer">
                               <b>Start date:</b>
                               {{msg.message.employment_offer.start_date | date : 'dd'}} {{msg.message.employment_offer.start_date | date : 'MMM'}} {{msg.message.employment_offer.start_date | date : 'yyyy'}} {{msg.message.employment_offer.start_date | date : 'HH:mm'}}
                               <br/>
                             </span>
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer | safeHtml">
+                              {{msg.message.employment_offer}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.employment_offer">
+                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
+                              </ng-container>
+                              <ng-template #employ_file_url>
+                                <b>Employment contract: </b>
+                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </ng-template>
+                            </span>
+                            <!--employment_offer ends-->
+
                             <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
                               {{msg.message.interview_offer.date_time | date : 'dd'}} {{msg.message.interview_offer.date_time | date : 'MMM'}} {{msg.message.interview_offer.date_time | date : 'yyyy'}} {{msg.message.interview_offer.date_time | date : 'HH:mm'}}
@@ -136,21 +173,8 @@
                               {{msg.message.interview_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.job_offer">
-                              <b>Location:</b>
-                              {{msg.message.job_offer.location}}
-                              <br/>
-                            </span>
                             <span *ngIf="msg.message.job_offer || msg.message.employment_offer || msg.message.interview_offer">
                               <b>Description:</b><br>
-                            </span>
-                            <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
-                              {{msg.message.job_offer.description}}
-                              <br/>
-                            </span>
-                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer.description | safeHtml">
-                              {{msg.message.employment_offer.description}}
-                              <br/>
                             </span>
                             <ng-container *ngIf="msg.msg_tag === 'interview_offer';else no_interview_desc">
                               <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
@@ -162,14 +186,6 @@
                                 </span>
                               </ng-template>
                             </ng-container>
-                            <span *ngIf="msg.message.employment_offer">
-                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
-                              </ng-container>
-                              <ng-template #employ_file_url>
-                                <b>Employment contract: </b>
-                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                              </ng-template>
-                            </span>
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
@@ -197,6 +213,7 @@
                       </ng-container>
                       <ng-template #second>
                         <li class="replies mb-3 col-md-12">
+                          <br><br>
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
                             <span *ngIf="msg.message.job_offer">
