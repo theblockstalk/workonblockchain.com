@@ -58,6 +58,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             locationQuery= "candidate.volunteer.location";
             roleQuery = "candidate.volunteer.roles";
         }
+
         if(search.name) {
             const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
                 {last_name : {'$regex' : search.name, $options: 'i'}}] };
@@ -117,8 +118,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                                 }
                             }
                         }
-                        console.log(cityQuery);
-
                         locationsQuery.push(cityQuery)
                     }
 
@@ -131,8 +130,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                                 }
                             }
                         }
-                        console.log(countryQuery);
-
                         locationsQuery.push(countryQuery)
                     }
 
@@ -145,7 +142,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 if(search.work_type === 'contractor') locationRemote = {"candidate.contractor.location.remote" : true};
                 if(search.work_type === 'volunteer') locationRemote = {"candidate.volunteer.location.remote" : true};
                 const locationRemoteFilter = locationRemote;
-                console.log(locationRemoteFilter);
                 locationsQuery.push(locationRemoteFilter);
             }
             if(locationsQuery && locationsQuery.length > 0) {
@@ -217,9 +213,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
-
-    console.log(userQuery);
-
+    
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
