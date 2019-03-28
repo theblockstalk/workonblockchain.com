@@ -33,7 +33,6 @@ const bodySchema = new Schema({
     },
     password: {
         type:String,
-        validate: regexes.password
     },
 });
 
