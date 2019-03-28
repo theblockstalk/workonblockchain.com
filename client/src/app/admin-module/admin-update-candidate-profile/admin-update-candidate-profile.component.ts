@@ -1423,7 +1423,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         contractor_type: this.contractor.contractor_type,
         service_description : this.contractor.service_description
       }
-      if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
+      if(this.checkContractValue(this.contractor.contractor_type) && this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
       if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
     }
 
