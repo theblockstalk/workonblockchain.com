@@ -221,8 +221,8 @@
                     <div class="col-md-4 text-center">
                       <i class="fas fa-user-secret fa-4x"></i><br/>
                       <div class="form-check mt-4">
-                        <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
                         <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
                           empolyee (full/part time)
                         </label>
                       </div>
@@ -230,8 +230,8 @@
                     <div class="col-md-4 text-center">
                       <i class="fas fa-address-card fa-4x"></i><br/>
                       <div class="form-check mt-4">
-                        <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
                         <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
                           contractor/freelancer
                         </label>
                       </div>
@@ -241,8 +241,8 @@
                       <small>This can be a great way to get commercial experience</small>
                       <br/>
                       <div class="form-check">
-                        <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
                         <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
                           temporary volunteer
                         </label>
                       </div>
@@ -253,7 +253,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div class="row mt-2" *ngIf="employeeCheck" >

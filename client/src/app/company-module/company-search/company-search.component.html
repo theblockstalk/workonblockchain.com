@@ -283,12 +283,11 @@
               <div class="col-md-4" *ngFor="let types of workTypes">
                 <div class="form-group">
                   <div class="form-check" >
-                    <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
                     <label class="form-check-label simple-radio-button" >
+                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
                       {{types.name}}
                     </label>
                   </div>
-
                 </div>
               </div>
             </div>
