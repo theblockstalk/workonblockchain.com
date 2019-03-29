@@ -2,8 +2,8 @@
 
 <section class = "wob-bg-primary2 py-5 mt-5">
   <div class="container pt-2">
-    <div class="row">
-      <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+    <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+      <div class="row">
         <div class="col-md-12">
           <!--about us form-->
           <section class="border rounded bg-white py-3 px-5" id="about_you">
@@ -428,11 +428,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_commercial_platforms" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -464,11 +460,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experimentation</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_experimented_platforms" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -525,11 +517,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of commercial experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_commercial_skills" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -849,9 +837,8 @@
               {{error_msg}}
             </div>
           </div>
-
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </section>
