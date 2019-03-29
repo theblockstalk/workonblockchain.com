@@ -550,6 +550,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           employment_availability: this.employee.employment_availability
         }
       }
+      else inputQuery.unset_employee = true;
 
 
       if(this.contractorCheck) {
@@ -564,6 +565,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
         if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
+      else inputQuery.unset_contractor = true;
 
       if(this.volunteerCheck) {
         inputQuery.volunteer = {
@@ -573,6 +575,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           learning_objectives : this.volunteer.learning_objectives
         }
       }
+      else inputQuery.unset_volunteer = true;
 
       if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) inputQuery.current_currency = this.current_currency;

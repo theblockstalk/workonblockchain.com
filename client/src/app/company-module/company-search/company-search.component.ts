@@ -1224,7 +1224,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
           else {
             if(citiesExist.city) this.selectedValueArray.push({ city:citiesExist.city , name: citiesExist.name});
-            else this.selectedValueArray.push({name: e.name});
+            else this.selectedValueArray.push({name: citiesExist.name});
           }
           this.selectedValueArray.sort(function(a, b){
             if(a.name < b.name) { return -1; }

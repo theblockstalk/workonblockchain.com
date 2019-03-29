@@ -9,7 +9,7 @@ module.exports = async function (req, res) {
     totalCandidates = await users.count({type : 'candidate'});
     let aggregatedData = {
         nationality: {},
-        availabilityDay: {},
+        employmentAvailability: {},
         baseCountry: {},
         expectedSalaryUSD: {},
         locations: {},
@@ -29,7 +29,9 @@ module.exports = async function (req, res) {
     let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
     let blockchainCommercialCount = {}, blockchainCommercialAggregate = {};
     let blockchainSmartCount = {}, blockchainSmartAggregate = {} ;
-    let locationsCount = {} , locationAggregate = {};
+    let employeeLocationsCount = {} , employeeLocationAggregate = {};
+    let contractorLocationsCount = {} , contractorLocationAggregate = {};
+    let volunteerLocationsCount = {} , volunteerLocationAggregate = {};
 
     let candidate;
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
@@ -39,14 +41,31 @@ module.exports = async function (req, res) {
 
         if (userDoc.candidate.latest_status.status === 'approved' && !userDoc.disable_account) {
             approved++;
-            if (candidate.expected_salary && candidate.expected_salary_currency) salaryList(salaryArray, candidate.expected_salary, candidate.expected_salary_currency)
+            if(candidate.employee) {
+                salaryList(salaryArray, candidate.employee.expected_annual_salary, candidate.employee.currency)
+                aggregateArray(aggregatedData.roles, candidate.employee.roles, enumerations.workRoles);
+                aggregateObjArray(employeeLocationsCount, candidate.employee.locations, enumerations.countries, "country");
+                aggregateObjArrayAggregate(employeeLocationAggregate, candidate.employee.locations, enumerations.countries, "country", "visa_needed");
+                aggregateField(aggregatedData.employmentAvailability, candidate.employee.employment_availability, enumerations.workAvailability);
+
+            }
+            if(candidate.contractor) {
+                salaryList(salaryArray, candidate.contractor.expected_hourly_rate, candidate.contractor.currency)
+                aggregateArray(aggregatedData.roles, candidate.contractor.roles, enumerations.workRoles);
+                aggregateObjArray(contractorLocationsCount, candidate.contractor.locations, enumerations.countries, "country");
+                aggregateObjArrayAggregate(contractorLocationAggregate, candidate.contractor.locations, enumerations.countries, "country", "visa_needed");
+
+
+            }
+
+            if(candidate.volunteer) {
+                aggregateArray(aggregatedData.roles, candidate.volunteer.roles, enumerations.workRoles);
+                aggregateObjArray(volunteerLocationsCount, candidate.volunteer.locations, enumerations.countries, "country");
+                aggregateObjArrayAggregate(volunteerLocationAggregate, candidate.volunteer.locations, enumerations.countries, "country", "visa_needed");
+
+            }
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
-            aggregateField(aggregatedData.availabilityDay, candidate.availability_day, enumerations.workAvailability);
             aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
-            aggregateObjArray(locationsCount, candidate.locations, enumerations.countries, "country");
-            aggregateObjArrayAggregate(locationAggregate, candidate.locations, enumerations.countries, "country", "visa_needed");
-            //aggregateArray(aggregatedData.locations, candidate.locations, locationList);
-            if(candidate.roles) aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
             if(candidate.interest_areas)aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
             if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
                 aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
@@ -68,7 +87,10 @@ module.exports = async function (req, res) {
 
     });
 
-    countAndAggregate(aggregatedData.locations, locationsCount, locationAggregate);
+    countAndAggregate(aggregatedData.employee.locations, employeeLocationsCount, employeeLocationAggregate);
+    countAndAggregate(aggregatedData.contractor.locations, contractorLocationsCount, contractorLocationAggregate);
+    countAndAggregate(aggregatedData.volunteer.locations, volunteerLocationsCount, volunteerLocationAggregate);
+
     countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
     countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
     countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);

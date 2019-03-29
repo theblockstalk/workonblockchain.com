@@ -1413,6 +1413,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         employment_availability: this.employee.employment_availability
       }
     }
+    else inputQuery.unset_employee = true;
 
     if(this.contractorCheck) {
       inputQuery.contractor = {
@@ -1426,6 +1427,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       if(this.checkContractValue(this.contractor.contractor_type) && this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
       if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
     }
+    else inputQuery.unset_contractor = true;
 
     if(this.volunteerCheck) {
       inputQuery.volunteer = {
@@ -1435,6 +1437,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         learning_objectives : this.volunteer.learning_objectives
       }
     }
+    else inputQuery.unset_volunteer = true;
+
     if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
     if(this.current_currency) inputQuery.current_currency = this.current_currency;
     if(this.selectedValue.length > 0) inputQuery.interest_areas = this.selectedValue;
@@ -1640,7 +1644,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   suggestedOptions(inputParam) {
-    console.log(inputParam);
     if(inputParam !== '') {
       this.error='';
       this.authenticationService.autoSuggestOptions(inputParam , true)

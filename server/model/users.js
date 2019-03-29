@@ -121,6 +121,38 @@ const UserSchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
+            locations: { //DELETE ME
+                type: [{
+                    city: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Cities'
+                    },
+                    country: enumerations.countries,
+                    remote: Boolean,
+                    visa_needed: {
+                        type: Boolean,
+                        required: true,
+                    }
+                }]
+            },
+            roles: { //DELETE ME
+                type: [{
+                    type: String,
+                    enum: enumerations.workRoles
+                }]
+            },
+            expected_salary_currency: { //DELETE ME
+                type: String,
+                enum: enumerations.currencies
+            },
+            expected_salary: { //DELETE ME
+                type:Number,
+                min: 0
+            },
+            availability_day: { //DELETE ME
+                type:String,
+                enum: enumerations.workAvailability
+            },
             employee: {
                 type: {
                     employment_type :  {
