@@ -50,16 +50,17 @@
             <label>Where would you like to work? (select up to 10)</label>
 
             <div>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                  <span>{{ loc.name }}</span>
+                </mat-option>
+              </mat-autocomplete>
 
-              <datalist id="countryList">
-                <select class="form-control">
+              <mat-form-field floatLabel="always">
+                <mat-label></mat-label>
+                <input matInput [matAutocomplete]="auto" placeholder="Remote, Canada, London..." [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+              </mat-form-field>
 
-                  <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
-                  </option>
-                </select>
-              </datalist>
-
-              <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
               <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                 {{error}}
               </div>
@@ -96,20 +97,7 @@
               </div>
 
             </div>
-            <!--<div class="checkbox">
-              <div class="row m-0">
-                <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                  <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
-                    {{option.name}}
-                  </label>
-                </div>
-              </div>
-            </div>
-            <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
-            <div class = "invalid-feedback d-inline"  *ngIf="selectedcountry.length<=0">
-              {{country_log}}
-            </div>-->
+
           </div>
 
 

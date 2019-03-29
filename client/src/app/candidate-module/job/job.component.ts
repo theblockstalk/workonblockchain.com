@@ -574,8 +574,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   selectedValueFunction(e) {
 
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
 
         this.countriesModel = '';
         this.cities = [];
@@ -594,7 +594,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.selectedValueArray.push({ name: e, visa_needed:false});
           }
 
