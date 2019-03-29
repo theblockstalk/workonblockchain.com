@@ -253,16 +253,16 @@ export class ChatComponent implements OnInit {
       this.display_list = 1;
       this.display_list = 1;
       this.loading = true;
-      this.get_messages_for_company();
-      setInterval(() => {
+      //this.get_messages_for_company();
+      //setInterval(() => {
         this.get_messages_for_company();
-      },7000);
+      //},7000);
     }
     else{
-      this.get_messages_for_candidate();
-      setInterval(() => {
+      //this.get_messages_for_candidate();
+      //setInterval(() => {
         this.get_messages_for_candidate();
-      },7000);
+      //},7000);
     }
   }
 
@@ -446,12 +446,12 @@ export class ChatComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.is_company_reply = 1;
     this.show_accpet_reject = 4;
-    this.msg_tag = 'job_offer_accepted';
+    this.msg_tag = 'approach_accepted';
     this.credentials.msg_body = 'I am interested, lets chat!';
-    let job_offer_accepted : any = {};
-    job_offer_accepted.message = this.credentials.msg_body;
+    let approach_accepted : any = {};
+    approach_accepted.message = this.credentials.msg_body;
     let new_offer : any = {};
-    new_offer.job_offer_accepted = job_offer_accepted;
+    new_offer.approach_accepted = approach_accepted;
     this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
       .subscribe(
         data => {
@@ -794,12 +794,11 @@ export class ChatComponent implements OnInit {
               }
             }
           }
-          if(data['jobOffer'] && data['jobOffer'] === "accepted"){
-            this.company_reply = 1;
-          }
+
+          if(data['messages'][1] && data['messages'][1]['msg_tag'] === 'approach_accepted') this.company_reply = 1;
           else{
             this.company_reply = 0;
-            if (this.currentUser.type == 'candidate') {
+            if (this.currentUser.type === 'candidate') {
               this.cand_offer = 1;
               this.credentials.msg_body = '';
             }
@@ -810,7 +809,7 @@ export class ChatComponent implements OnInit {
           if (data['messages'].length >= 1) {
             this.first_message = 0;
             this.show_msg_area = 1;
-            if (this.currentUser.type == 'candidate' && this.cand_offer == 1) {}
+            if (this.currentUser.type === 'candidate' && this.cand_offer === 1) {}
             else {}
           }
           else {

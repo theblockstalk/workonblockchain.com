@@ -125,10 +125,32 @@
                               {{msg.message.approach.employee.employment_description}}
                               <br/>
                             </span>
+                            <!-- msg.message.approach.employee ends-->
+
+                            <!--appraoch.contractor starts-->
+                            <span *ngIf="msg.message.approach.contractor">
+                              <b>Hourly rate:</b>
+                              {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.contractor">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.contractor" [innerHTML]="msg.message.approach.contractor.contract_description | safeHtml">
+                              {{msg.message.approach.contractor.contract_description}}
+                              <br/>
+                            </span>
                             <!--appraoch.contractor ends-->
 
-                            <!--appraoch.contractor-->
-                            <!---->
+                            <!--appraoch.volunteer starts-->
+                            <span *ngIf="msg.message.approach.volunteer">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.volunteer" [innerHTML]="msg.message.approach.volunteer.opportunity_description | safeHtml">
+                              {{msg.message.approach.volunteer.opportunity_description}}
+                              <br/>
+                            </span>
+                            <!--appraoch.volunteer starts-->
 
                             <!--employment_offer stars-->
                             <span *ngIf="msg.message.employment_offer">
@@ -189,11 +211,11 @@
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
-                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
-                              {{msg.message.job_offer_accepted.message}}
+                            <span *ngIf="msg.message.approach_accepted" [innerHTML]="msg.message.approach_accepted.message | safeHtml">
+                              {{msg.message.approach_accepted.message}}
                             </span>
-                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
-                              {{msg.message.job_offer_rejected.message}}
+                            <span *ngIf="msg.message.approach_rejected" [innerHTML]="msg.message.approach_rejected.message | safeHtml">
+                              {{msg.message.approach_rejected.message}}
                             </span>
                             <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
                               {{msg.message.employment_offer_accepted.message}}
@@ -216,6 +238,61 @@
                           <br><br>
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
+                            <!--appraoch.volunteer starts-->
+                            <span *ngIf="msg.message.approach.volunteer">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.volunteer" [innerHTML]="msg.message.approach.volunteer.opportunity_description | safeHtml">
+                              {{msg.message.approach.volunteer.opportunity_description}}
+                              <br/>
+                            </span>
+                            <!--appraoch.volunteer starts-->
+
+                            <!-- msg.message.approach.employee starts-->
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Job title:</b>
+                              {{msg.message.approach.employee.job_title}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Job type:</b>
+                              {{msg.message.approach.employee.employment_type}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Salary:</b>
+                              {{msg.message.approach.employee.annual_salary}} {{msg.message.approach.employee.currency}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Location:</b>
+                              {{msg.message.approach.employee.location}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.employee" [innerHTML]="msg.message.approach.employee.employment_description | safeHtml">
+                              {{msg.message.approach.employee.employment_description}}
+                              <br/>
+                            </span>
+                            <!-- msg.message.approach.employee ends-->
+
+                            <!--appraoch.contractor starts-->
+                            <span *ngIf="msg.message.approach.contractor">
+                              <b>Hourly rate:</b>
+                              {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.approach.contractor">
+                              <b>Description:</b><br>
+                            </span>
+                            <span *ngIf="msg.message.approach.contractor" [innerHTML]="msg.message.approach.contractor.contract_description | safeHtml">
+                              {{msg.message.approach.contractor.contract_description}}
+                              <br/>
+                            </span>
+                            <!--appraoch.contractor ends-->
+
                             <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
                               {{msg.message.job_offer.title}}
@@ -298,11 +375,11 @@
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
-                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
-                              {{msg.message.job_offer_accepted.message}}
+                            <span *ngIf="msg.message.approach_accepted" [innerHTML]="msg.message.approach_accepted.message | safeHtml">
+                              {{msg.message.approach_accepted.message}}
                             </span>
-                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
-                              {{msg.message.job_offer_rejected.message}}
+                            <span *ngIf="msg.message.approach_rejected" [innerHTML]="msg.message.approach_rejected.message | safeHtml">
+                              {{msg.message.approach_rejected.message}}
                             </span>
                             <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
                               {{msg.message.employment_offer_accepted.message}}
