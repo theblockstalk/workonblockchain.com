@@ -1111,7 +1111,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           },
           error => {
             if (error['status'] === 400) {
-              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+              this.job_offer_log_erorr = 'You have already approached this candidate';
             }
             if (error['status'] === 500 || error['status'] === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');

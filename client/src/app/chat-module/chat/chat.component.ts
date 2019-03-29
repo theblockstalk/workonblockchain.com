@@ -253,16 +253,16 @@ export class ChatComponent implements OnInit {
       this.display_list = 1;
       this.display_list = 1;
       this.loading = true;
-      //this.get_messages_for_company();
-      //setInterval(() => {
+      this.get_messages_for_company();
+      setInterval(() => {
         this.get_messages_for_company();
-      //},7000);
+      },7000);
     }
     else{
-      //this.get_messages_for_candidate();
-      //setInterval(() => {
+      this.get_messages_for_candidate();
+      setInterval(() => {
         this.get_messages_for_candidate();
-      //},7000);
+      },7000);
     }
   }
 
@@ -403,6 +403,7 @@ export class ChatComponent implements OnInit {
 
   reject_offer(msgForm : NgForm){
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.cand_offer = 0;
     this.credentials.msg_body = 'I am not interested';
     this.is_company_reply = 0;
     this.show_accpet_reject = 3;
@@ -437,6 +438,7 @@ export class ChatComponent implements OnInit {
 
   accept_offer(msgForm : NgForm){
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.cand_offer = 0;
     this.is_company_reply = 1;
     this.show_accpet_reject = 4;
     this.msg_tag = 'approach_accepted';
@@ -759,7 +761,6 @@ export class ChatComponent implements OnInit {
       .subscribe(
         data => {
           this.new_msgss = data['messages'];
-          console.log(this.new_msgss);
           this.job_desc = data['messages'][0].message.approach;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(
@@ -788,7 +789,11 @@ export class ChatComponent implements OnInit {
             }
           }
 
-          if(data['messages'][1] && data['messages'][1]['msg_tag'] === 'approach_accepted') this.company_reply = 1;
+          if (data['messages'].length > 1) {
+            this.company_reply = 0;
+            if(data['messages'][1]['msg_tag'] === 'approach_accepted') this.company_reply = 1;
+            this.cand_offer = 0;
+          }
           else{
             this.company_reply = 0;
             if (this.currentUser.type === 'candidate') {
@@ -814,11 +819,11 @@ export class ChatComponent implements OnInit {
           }
         },
         error => {
-          if (error.message == 500 || error.message == 401) {
+          if (error.message === 500 || error.message === 401) {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');
             window.location.href = '/login';
           }
-          if (error.message == 403) {}
+          if (error.message === 403) {}
         }
       );
     this.candidate = email;

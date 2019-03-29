@@ -76,6 +76,11 @@
                       <ng-container *ngIf="job_desc.contractor;">
                         <li>Job type: Contractor</li>
                         <li>Hourly rate: {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</li>
+                        <br>
+                      </ng-container>
+                      <ng-container *ngIf="job_desc.volunteer;">
+                        <li>Job type: Volunteer</li>
+                        <br>
                       </ng-container>
                     </ul>
                   </div>
@@ -243,6 +248,14 @@
                             </ng-container>
                             <!--msg.message.employment_offer_rejected ends-->
 
+                            <!--file starts-->
+                            <ng-container *ngIf="msg.message.file">
+                              <span>
+                                <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </span>
+                            </ng-container>
+                            <!--file ends-->
+
                             <!--normal message starts-->
                             <ng-container *ngIf="msg.message.normal">
                               <span [innerHTML]="msg.message.normal.message | safeHtml">
@@ -408,6 +421,14 @@
                             </ng-container>
                             <!--msg.message.employment_offer_rejected ends-->
 
+                            <!--file starts-->
+                            <ng-container *ngIf="msg.message.file">
+                              <span>
+                                <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </span>
+                            </ng-container>
+                            <!--file ends-->
+
                             <!--normal message starts-->
                             <ng-container *ngIf="msg.message.normal">
                               <span [innerHTML]="msg.message.normal.message | safeHtml">
@@ -426,7 +447,7 @@
                   </ul>
                 </div>
                 </ng-template>
-                <ng-container *ngIf="cand_offer == 1;else no_offer">
+                <ng-container *ngIf="cand_offer === 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
                     <div class="message-input">
                       <div class = "offers">
