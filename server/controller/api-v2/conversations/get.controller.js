@@ -59,7 +59,7 @@ module.exports.endpoint = async function (req, res) {
                     const acceptedJobOffer = await messages.findOne({
                         sender_id: conversations[i].user_id,
                         receiver_id: userId,
-                        msg_tag: 'job_offer_accepted'
+                        msg_tag: 'approach_accepted'
                     });
                     if (acceptedJobOffer) {
                         conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;

@@ -179,7 +179,7 @@ const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) 
         messageDoc = await messages.findOne({
             sender_id: receiver_id,
             receiver_id: sender_id,
-            msg_tag: 'approach_rejected'
+            msg_tag: 'approach_accepted'
         });
     }
     if (!messageDoc) errors.throwError("Approach offer has not been accepted", 400);

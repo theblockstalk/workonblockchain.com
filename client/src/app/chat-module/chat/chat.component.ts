@@ -368,13 +368,6 @@ export class ChatComponent implements OnInit {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.msg_tag = 'normal';
       this.is_company_reply = 1;
-      if(this.first_message == 1){
-        this.job_title = 'Team Lead';
-        this.salary = '60000';
-        this.date_of_joining = '10-07-2018';
-        this.msg_tag = 'job_offer';
-        this.is_company_reply = 0;
-      }
       let message : any = {};
       message.message = this.credentials.msg_body;
       let new_offer : any = {};
@@ -413,12 +406,12 @@ export class ChatComponent implements OnInit {
     this.credentials.msg_body = 'I am not interested';
     this.is_company_reply = 0;
     this.show_accpet_reject = 3;
-    this.msg_tag = 'job_offer_rejected';
+    this.msg_tag = 'approach_rejected';
     this.credentials.msg_body = 'I am not interested';
-    let job_offer_rejected : any = {};
-    job_offer_rejected.message = this.credentials.msg_body;
+    let approach_rejected : any = {};
+    approach_rejected.message = this.credentials.msg_body;
     let new_offer : any = {};
-    new_offer.job_offer_rejected = job_offer_rejected;
+    new_offer.approach_rejected = approach_rejected;
     this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
       .subscribe(
         data => {
