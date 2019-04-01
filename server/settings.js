@@ -66,7 +66,7 @@ if (isLiveApplication()) {
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 } else {
-    if(settings.ENVIRONMENT === 'test') {
+    if(settings.ENVIRONMENT === 'default') {
         config.mongo.databaseName = config.mongo.databaseName + '-test';
     }
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"

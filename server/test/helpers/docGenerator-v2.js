@@ -2,39 +2,41 @@ const enumerations = require('../../model/enumerations');
 const random = require('./random');
 
 module.exports.messages = {
-    job_offer: function(user_id) {
+    approach: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer',
+            msg_tag: 'approach',
             message: {
-                job_offer: {
-                    title: random.string(),
-                    salary: random.integer(1),
-                    salary_currency: random.enum(enumerations.currencies),
-                    type: random.enum(enumerations.jobTypes),
-                    location : "PWD Islamabad",
-                    description: random.string(100)
+                approach: {
+                    employee: {
+                        job_title: random.string(),
+                        annual_salary: random.integer(1),
+                        currency: random.enum(enumerations.currencies),
+                        employment_type: random.enum(enumerations.jobTypes),
+                        location : "PWD Islamabad",
+                        employment_description: random.string(100)
+                    }
                 }
             }
         }
     },
-    job_offer_accepted: function(user_id) {
+    approach_accepted: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer_accepted',
+            msg_tag: 'approach_accepted',
             message: {
-                job_offer_accepted: {
+                approach_accepted: {
                     message: 'I am interested, lets chat!'
                 }
             }
         }
     },
-    job_offer_rejected: function(user_id) {
+    approach_rejected: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer_rejected',
+            msg_tag: 'approach_rejected',
             message: {
-                job_offer_rejected: {
+                approach_rejected: {
                     message: 'I am not interested'
                 }
             }
@@ -194,18 +196,21 @@ module.exports.candidateProfile = function candidateProfile(){
         nationality: random.enum(enumerations.nationalities),
         base_country : random.enum(enumerations.countries),
         base_city : 'Islamabad',
-        expected_salary: random.integer(10, 100000),
-        expected_salary_currency: random.enum(enumerations.currencies),
+
         current_salary: random.integer(10000, 100000),
         current_currency: random.enum(enumerations.currencies),
-        availability_day: random.enum(enumerations.workAvailability),
         why_work: random.string(10),
         description: random.string(10),
-        locations: [
-            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
-            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
-        ],
-        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        employee: {
+            location: [
+                {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+                {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+            ],
+            roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+            expected_annual_salary: random.integer(10, 100000),
+            currency: random.enum(enumerations.currencies),
+            employment_availability: random.enum(enumerations.workAvailability),
+        },
         interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
@@ -274,11 +279,14 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
         exchange_account: 'sadia_exchange_1234.com',
         github_account: 'fb12.com',
         base_city : 'Islamabad',
-        locations: [
-            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
-            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
-        ],
-        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+
+        employee: {
+            location: [
+                {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+                {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+            ],
+            roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        },
         interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],

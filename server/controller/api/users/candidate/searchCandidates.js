@@ -14,6 +14,9 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         filters: filters,
         search: search
     });
+    console.log("search")
+    console.log(search);
+    console.log(filters);
 
     let userQuery = [];
     userQuery.push({"type" : 'candidate'});
@@ -46,17 +49,25 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     if (search) {
         let locationQuery;
         let roleQuery;
+        let salaryQuery;
+        let currencyQuery;
         if(search.work_type === 'employee') {
             locationQuery= "candidate.employee.location";
             roleQuery = "candidate.employee.roles";
+            salaryQuery = "candidate.employee.currency";
+            currencyQuery = "candidate.employee.expected_annual_salary";
         }
         if(search.work_type === 'contractor') {
             locationQuery= "candidate.contractor.location";
             roleQuery = "candidate.contractor.roles";
+            salaryQuery = "candidate.contractor.currency";
+            currencyQuery = "candidate.contractor.expected_annual_salary";
         }
         if(search.work_type === 'volunteer') {
             locationQuery= "candidate.volunteer.location";
             roleQuery = "candidate.volunteer.roles";
+            salaryQuery = "candidate.volunteer.currency";
+            currencyQuery = "candidate.volunteer.expected_annual_salary";
         }
 
         if(search.name) {
@@ -203,6 +214,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             else {
                 setRoleQuery("candidate.employee.roles");
                 setRoleQuery("candidate.contractor.roles");
+                setRoleQuery("candidate.volunteer.roles");
             }
 
         }
@@ -219,13 +231,27 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
             const salary = search.salary.current_salary;
-            const usd = [{'candidate.expected_salary_currency': "$ USD"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
-            const gbp = [{'candidate.expected_salary_currency': "£ GBP"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
-            const eur = [{'candidate.expected_salary_currency': "€ EUR"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
-            const currencyFiler = {
-                $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
+            const setSalaryQuery = function (salaryQuery, currencyQuery){
+                const usd = [{[currencyQuery]: "$ USD"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+                const gbp = [{[currencyQuery]: "£ GBP"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+                const eur = [{[currencyQuery]: "€ EUR"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+                console.log(usd);
+                console.log(gbp);
+                console.log(eur)
+                const currencyFiler = {
+                    $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
+                };
+                console.log(currencyFiler)
+                userQuery.push(currencyFiler);
+
             };
-            userQuery.push(currencyFiler);
+            if(salaryQuery && currencyQuery) setSalaryQuery(salaryQuery, currencyQuery);
+            else {
+                setSalaryQuery("candidate.employee.expected_annual_salary","candidate.employee.currency");
+                setSalaryQuery("candidate.contractor.expected_annual_salary","candidate.contractor.currency");
+                setSalaryQuery("candidate.volunteer.expected_annual_salary","candidate.volunteer.currency");
+            }
+
         }
 
         if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.currency) {
@@ -263,7 +289,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
-    
+    console.log(userQuery);
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {

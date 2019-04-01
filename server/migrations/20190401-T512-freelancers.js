@@ -6,7 +6,7 @@ let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 
 module.exports.up = async function() {
 
-    //////// user 
+    //////// user
     totalDocsToProcess = await users.count({type: 'candidate'});
     logger.debug(totalDocsToProcess);
     await users.findAndIterate({type: 'candidate'}, async function(userDoc) {

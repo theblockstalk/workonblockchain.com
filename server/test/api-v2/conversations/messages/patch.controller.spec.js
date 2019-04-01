@@ -27,8 +27,8 @@ describe('PATCH /conversations/:sender_id/messages/', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            const approachOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
+            await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
             const res = await messagesHelpers.patch(companyUserDoc._id, candidateuserDoc.jwt_token);
             res.body.should.equal(true);
