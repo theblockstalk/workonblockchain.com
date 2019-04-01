@@ -97,7 +97,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
                     for (let city of citiesArray) {
-                       const setCityLocationQuery = function (locationQuery){
+                        const setCityLocationQuery = function (locationQuery){
                             const cityQuery = {
                                 [locationQuery]: {
                                     $elemMatch: {
@@ -108,12 +108,12 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                             }
                             locationsQuery.push(cityQuery)
                         };
-                       if(locationQuery) setCityLocationQuery(locationQuery);
-                       else {
-                           setCityLocationQuery("candidate.employee.location");
-                           setCityLocationQuery("candidate.contractor.location");
-                           setCityLocationQuery("candidate.volunteer.location");
-                       }
+                        if(locationQuery) setCityLocationQuery(locationQuery);
+                        else {
+                            setCityLocationQuery("candidate.employee.location");
+                            setCityLocationQuery("candidate.contractor.location");
+                            setCityLocationQuery("candidate.volunteer.location");
+                        }
                     }
 
                     for (let country of countriesArray) {
@@ -240,41 +240,29 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
             const salary = search.salary.current_salary;
-            let currentSalaryQuery= [];
-            const setSalaryQuery = function (salaryQuery, currencyQuery){
-                const usd = [{[currencyQuery]: "$ USD"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
-                const gbp = [{[currencyQuery]: "£ GBP"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
-                const eur = [{[currencyQuery]: "€ EUR"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+            const usd = [{'candidate.employee.currency' : "$ USD"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+            const gbp = [{'candidate.employee.currency': "£ GBP"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+            const eur = [{'candidate.employee.currency': "€ EUR"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
 
-                const currencyFiler = {
-                    $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
-                };
-                currentSalaryQuery.push(currencyFiler);
-
+            const currencyFiler = {
+                $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
-            if(salaryQuery && currencyQuery) setSalaryQuery(salaryQuery, currencyQuery);
-            else {
-                setSalaryQuery("candidate.employee.expected_annual_salary","candidate.employee.currency");
-                setSalaryQuery("candidate.contractor.expected_annual_salary","candidate.contractor.currency");
-                setSalaryQuery("candidate.volunteer.expected_annual_salary","candidate.volunteer.currency");
-            }
+            userQuery.push(currencyFiler);
 
-            if(currentSalaryQuery && currentSalaryQuery.length > 0) {
-                userQuery.push({
-                    $or: currentSalaryQuery
-                })
-            }
 
         }
 
         if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.currency) {
-            const hourlyRate = {
-                    $or: [
-                        {"candidate.contractor.expected_hourly_rate": search.hourly_rate.expected_hourly_rate},
-                        {"candidate.contractor.currency": search.hourly_rate.currency}
-                    ]
-                };
-            userQuery.push(hourlyRate);
+            const curr = search.hourly_rate.currency;
+            const hourly_rate = search.hourly_rate.expected_hourly_rate;
+            const usd = [{'candidate.contractor.currency' : "$ USD"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "$ USD", hourly_rate)}}];
+            const gbp = [{'candidate.contractor.currency': "£ GBP"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "£ GBP", hourly_rate)}}];
+            const eur = [{'candidate.contractor.currency': "€ EUR"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "€ EUR", hourly_rate)}}];
+
+            const hourlyRateFilter = {
+                $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
+            };
+            userQuery.push(hourlyRateFilter);
 
         }
 
