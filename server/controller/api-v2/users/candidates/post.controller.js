@@ -10,12 +10,10 @@ const errors = require('../../../services/errors');
 const google = require('../../../services/google');
 const linkedin = require('../../../services/linkedin');
 
-
 module.exports.request = {
     type: 'post',
     path: '/users/candidates'
 };
-
 
 const bodySchema = new Schema({
     email: {
@@ -52,24 +50,27 @@ module.exports.inputValidation = {
 
 
 module.exports.endpoint = async function (req, res) {
-    console.log(req.body);
     let queryBody = req.body;
     let email;
     let timestamp = new Date();
     let newUserDoc = {
         type : 'candidate'
     };
+    let userDoc;
 
-    if(queryBody.email) email = queryBody.email;
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
     if(queryBody.google_code) {
         const googleData = await google.googleAuth(queryBody.google_code);
         if(googleData) {
+            userDoc = await users.findOne({google_id: googleData.google_id});
+            if(userDoc) {
+                errors.throwError('Google account is already taken' , 400)
+            }
             email = googleData.email;
             newUserDoc.email = googleData.email;
             newUserDoc.google_id = googleData.google_id;
-            newUserDoc.first_name = googleData.first_name;
-            newUserDoc.last_name = googleData.last_name;
+            if(googleData.first_name && googleData.first_name !== '') newUserDoc.first_name = googleData.first_name;
+            if(googleData.last_name && googleData.last_name !== '') newUserDoc.last_name = googleData.last_name;
             newUserDoc.is_verify = 1;
         }
         else {
@@ -79,11 +80,15 @@ module.exports.endpoint = async function (req, res) {
     else if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         if(linkedinData) {
+            userDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
+            if(userDoc) {
+                errors.throwError('Linkedin account is already taken' , 400)
+            }
             email = linkedinData.email;
             newUserDoc.email = linkedinData.email;
             newUserDoc.linkedin_id = linkedinData.linkedin_id;
-            newUserDoc.first_name = linkedinData.first_name;
-            newUserDoc.last_name = linkedinData.last_name;
+            if(linkedinData.first_name && linkedinData.first_name !== '')  newUserDoc.first_name = linkedinData.first_name;
+            if(linkedinData.last_name && linkedinData.last_name !== '')  newUserDoc.last_name = linkedinData.last_name;
             newUserDoc.is_verify = 1;
         }
         else {
@@ -93,7 +98,7 @@ module.exports.endpoint = async function (req, res) {
     else {
         const salt = crypto.getRandomString(128);
         const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
-
+        email = queryBody.email;
         newUserDoc.email = queryBody.email;
         newUserDoc.first_name = queryBody.first_name;
         newUserDoc.last_name = queryBody.last_name;
@@ -101,10 +106,9 @@ module.exports.endpoint = async function (req, res) {
         newUserDoc.password_hash = hashedPasswordAndSalt;
     }
 
-    const userDoc = await users.findOneByEmail(email);
-    if (userDoc ) {
-        let errorMsg = 'Email "' + email + '" is already taken';
-        errors.throwError(errorMsg , 400)
+    userDoc = await users.findOneByEmail(email);
+    if(userDoc) {
+        errors.throwError('Email "' + email + '" is already taken' , 400)
     }
 
     newUserDoc.candidate = {

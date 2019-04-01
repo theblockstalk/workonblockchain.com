@@ -1343,7 +1343,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     else inputQuery.unset_medium_account = true;
 
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
-    if(this.info.Intro) inputQuery.description = this.info.Intro;
+    if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
     if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
@@ -1568,9 +1568,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   selectedValueFunction(e) {
 
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
-
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
         this.countriesModel = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
@@ -1588,7 +1587,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
+            if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
             else this.selectedValueArray.push({ name: e, visa_needed:false});
           }
 

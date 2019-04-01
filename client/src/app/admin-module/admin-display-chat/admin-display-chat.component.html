@@ -78,6 +78,7 @@
                 <div *ngFor="let msg of new_msgss">
 									<ng-container *ngIf="msg.sender_id === user_id;else second">
                     <li class="sent mb-5 col-md-12">
+                      <br><br>
                       <p class = "p-2 send_p job-description rounded d-inline-block">
 												<!--<span class="text-capitalize">{{msg.sender_name}}:</span>-->
                         <span *ngIf="msg.message.job_offer">
@@ -180,6 +181,7 @@
 									</ng-container>
 									<ng-template #second>
                     <li class="replies mb-5 col-md-12">
+                      <br><br>
                       <div class="arrow-up"></div>
                       <p class = "p-2 rec_p wob-bg-primary1 rounded text-light d-inline-block">
                         <!--<span class="text-capitalize">{{msg.sender_name}}:</span>-->

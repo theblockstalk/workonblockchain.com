@@ -9,6 +9,7 @@ const errors = require('../../../services/errors');
 const google = require('../../../services/google');
 const linkedin = require('../../../services/linkedin');
 const objects = require('../../../services/objects');
+const logger = require('../../../services/logger');
 
 
 module.exports.request = {
@@ -32,7 +33,6 @@ const bodySchema = new Schema({
     },
     password: {
         type:String,
-        validate: regexes.password
     },
 });
 
@@ -73,6 +73,11 @@ module.exports.endpoint = async function (req, res) {
                 throw new Error("Incorrect google id");
             }
             if (!userDoc.google_id) {
+                const userGoogleDoc = await users.findOne({google_id: googleData.google_id});
+                if(userGoogleDoc) {
+                    logger.error('A user with email has try to signin with duplicate google account', googleData);
+                    errors.throwError('This Google account is already linked to another user. Please contact us to resolve.' , 400)
+                }
                 set.google_id =  googleData.google_id;
             }
 
@@ -91,6 +96,11 @@ module.exports.endpoint = async function (req, res) {
                 throw new Error("Incorrect google id");
             }
             if (!userDoc.linkedin_id) {
+                const userLinkedinDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
+                if(userLinkedinDoc) {
+                    logger.error('A user with email has try to signin with duplicate linkedin account', linkedinData);
+                    errors.throwError('This Linkedin account is already linked to another user. Please contact us to resolve.' , 400)
+                }
                 set.linkedin_id =  linkedinData.linkedin_id;
             }
 
