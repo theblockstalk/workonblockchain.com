@@ -4,6 +4,7 @@ const errors = require('../../services/errors');
 const cronSyncSendgrid = require('../../services/cron/synchronizeSendGrid');
 const cronCompanyAutoEmail = require('../../services/cron/companyAutomaticEmailOfNewCandidate');
 const cronUnreadChat = require('../../services/cron/unreadChatMessagesReminder');
+const croNewMessages = require('../../services/cron/newMessagesReminderEmail');
 
 module.exports.request = {
     type: 'get',
@@ -31,7 +32,6 @@ module.exports.auth = async function (req) {
     await auth.isAdmin(req);
 }
 
-
 module.exports.endpoint = async function (req, res) {
     const cronName = req.params.cron_name;
 
@@ -50,6 +50,9 @@ module.exports.endpoint = async function (req, res) {
             break;
         case "uread_chat":
             result = await cronUnreadChat();
+            break;
+        case "new_messages_email":
+            result = await croNewMessages();
             break;
         default:
             errors.throwError("Cron name not found", 400)
