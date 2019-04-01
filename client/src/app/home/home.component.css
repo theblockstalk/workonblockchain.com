@@ -183,7 +183,6 @@
 
 
 @media (min-width: 768px){
-
   #security .content {
     padding: 65px 40px 60px 0;
   }
@@ -287,6 +286,9 @@
     height: 200px;
   }
 
+  .row-main{
+    padding: 80px 0px !important;
+  }
 }
 
 
