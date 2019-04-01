@@ -13,7 +13,7 @@ module.exports.request = {
 const paramSchema = new Schema({
     cron_name: {
         type: String,
-        enum: ['sync_sendgrid', 'company_auto_email', 'uread_chat']
+        enum: ['sync_sendgrid', 'company_auto_email', 'uread_chat', 'new_messages_email']
     }
 });
 
