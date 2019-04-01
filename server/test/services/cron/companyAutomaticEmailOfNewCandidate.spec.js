@@ -34,15 +34,14 @@ describe('cron', function () {
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
-            console.log("company doc")
-            console.log(companyDoc)
-            console.log("id")
-            console.log(companyDoc._id);
-            console.log(companyDoc._creator);
+
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             updatedData.saved_searches = [{
                 location: [
                     profileData.employee.location[0]
+                ],
+                job_type: [
+                    "Part time"
                 ],
                 position: [
                     profileData.employee.roles[0]
@@ -72,7 +71,7 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
 
-        /*it('should not send a candidate if they have already been sent', async function () {
+        it('should not send a candidate if they have already been sent', async function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
@@ -93,17 +92,17 @@ describe('cron', function () {
                     "Part time"
                 ],
                 position: [
-                    profileData.roles[0]
+                    profileData.employee.roles[0]
                 ],
                 current_currency: profileData.employee.currency,
-                current_salary: profileData.employee.employment_availability,
+                current_salary: profileData.employee.expected_annual_salary,
                 skills: [
                     profileData.programming_languages[0].language
                 ],
                 availability_day: profileData.employee.employment_availability,
             }];
 
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
@@ -163,7 +162,7 @@ describe('cron', function () {
             }];
 
             const jwtToken = companyDoc.jwt_token;
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
             // signup and approve candidate that matches the current company saved search
@@ -218,7 +217,7 @@ describe('cron', function () {
 
             companyDoc.candidates_sent_by_email.length.should.equal(4);
 
-        })*/
+        })
     })
 });
 

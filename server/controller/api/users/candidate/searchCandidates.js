@@ -81,6 +81,8 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(wordSearch);
         }
         if (search.locations && search.locations.length > 0 ) {
+            console.log("locations");
+            logger.debug("locations: " ,search.locations);
             let locationsQuery = [];
             let citiesArray=[];
             let countriesArray = [];
@@ -235,13 +237,10 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 const usd = [{[currencyQuery]: "$ USD"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
                 const gbp = [{[currencyQuery]: "£ GBP"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
                 const eur = [{[currencyQuery]: "€ EUR"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
-                console.log(usd);
-                console.log(gbp);
-                console.log(eur)
+
                 const currencyFiler = {
                     $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
                 };
-                console.log(currencyFiler)
                 userQuery.push(currencyFiler);
 
             };
@@ -289,7 +288,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
-    console.log(userQuery);
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
