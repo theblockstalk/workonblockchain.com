@@ -7,23 +7,24 @@ const logger = require('../logger');
 module.exports = async function () {
     logger.debug('Running new messages cron');
 
-    var currentTime = new Date();
+    let currentTime = new Date();
     console.log(currentTime);
-    currentTime.setSeconds(currentTime.getSeconds() + 20);
-    console.log(currentTime); //+20 secs
-    currentTime.setHours(currentTime.getHours() + 1);
-    console.log(currentTime); //+1 hour
-    process.exit();
+    currentTime.setSeconds(currentTime.getSeconds() + 20); //+20 Secs
+    console.log(currentTime);
+    //let currentTime1Hour = currentTime.setTime(this.getTime() + (1*60*60*1000));
+    //console.log(currentTime.setTime(currentTime.getTime()));
+    //process.exit();
 
-    /*let userDoc = await users.find({
+    let userDoc = await users.find({
         "conversations": {
-            "$elemMatch":{
-                "unread_count":{$gte:0},
-                "last_message": {$gte: ISODate("2019-04-01T10:36:43.626Z")}, //+20 secs
-                "last_message": {$lt: ISODate("2019-04-01T10:36:43.626Z")}, // +1 hour and 20 secs
-                "last_message_reminder_email": {$gte: ISODate("2019-04-01T10:36:43.626Z")} // +1 hour and 20 secs
+            $elemMatch: {
+                "unread_count": {$gt: 0},
+                "last_message": {$gte: currentTime},
+                "last_message": {$lt: currentTime}
             },
-        }, is_unread_msgs_to_send: true
+        },
+        is_unread_msgs_to_send: true,
+        last_message_reminder_email: {$gte: currentTime}
     });
 
     for(let i=0; i < userDoc.length; i++){
@@ -36,7 +37,7 @@ module.exports = async function () {
             if(companyDoc){
                 chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, companyDoc.first_name);
             }
-        }
-    }*/
+        }*/
+    }
     logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});
 }
