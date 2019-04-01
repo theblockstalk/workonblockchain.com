@@ -289,9 +289,9 @@ export const constants = {
   ],
   chatMsgTypes: [
     {value:'normal', name:'Normal' , checked:false},
-    {value:'job_offer', name:'Job offer sent' , checked:false},
-    {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-    {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
+    {value:'approach', name:'Approach sent' , checked:false},
+    {value:'approach_accepted', name:'Approach offer accepted' , checked:false},
+    {value:'approach_rejected', name:'Approach offer rejected' , checked:false},
     {value:'interview_offer', name:'Interview offer sent' , checked:false},
     {value:'employment_offer', name:'Employment offer sent' , checked:false},
     {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
