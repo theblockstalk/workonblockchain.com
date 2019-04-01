@@ -12,8 +12,18 @@ module.exports = async function (req, res) {
         employmentAvailability: {},
         baseCountry: {},
         expectedSalaryUSD: {},
-        locations: {},
-        roles: {},
+        employee: {
+            location:{},
+            roles:{}
+        },
+        contractor: {
+            location: {},
+            roles: {}
+        },
+        volunteer: {
+            location:{},
+            roles: {}
+        },
         interestAreas: {},
         blockchain: {
             commercial: {},
@@ -43,25 +53,24 @@ module.exports = async function (req, res) {
             approved++;
             if(candidate.employee) {
                 salaryList(salaryArray, candidate.employee.expected_annual_salary, candidate.employee.currency)
-                aggregateArray(aggregatedData.roles, candidate.employee.roles, enumerations.workRoles);
+                aggregateArray(aggregatedData.employee.roles, candidate.employee.roles, enumerations.workRoles);
                 aggregateObjArray(employeeLocationsCount, candidate.employee.location, enumerations.countries, "country");
-                aggregateObjArrayAggregate(employeeLocationAggregate, candidate.employee.locations, enumerations.countries, "country", "visa_needed");
+                aggregateObjArrayAggregate(employeeLocationAggregate, candidate.employee.location, enumerations.countries, "country", "visa_needed");
                 aggregateField(aggregatedData.employmentAvailability, candidate.employee.employment_availability, enumerations.workAvailability);
-
             }
             if(candidate.contractor) {
                 salaryList(salaryArray, candidate.contractor.expected_hourly_rate, candidate.contractor.currency)
-                aggregateArray(aggregatedData.roles, candidate.contractor.roles, enumerations.workRoles);
+                aggregateArray(aggregatedData.contractor.roles, candidate.contractor.roles, enumerations.workRoles);
                 aggregateObjArray(contractorLocationsCount, candidate.contractor.location, enumerations.countries, "country");
-                aggregateObjArrayAggregate(contractorLocationAggregate, candidate.contractor.locations, enumerations.countries, "country", "visa_needed");
+                aggregateObjArrayAggregate(contractorLocationAggregate, candidate.contractor.location, enumerations.countries, "country", "visa_needed");
 
 
             }
 
             if(candidate.volunteer) {
-                aggregateArray(aggregatedData.roles, candidate.volunteer.roles, enumerations.workRoles);
+                aggregateArray(aggregatedData.volunteer.roles, candidate.volunteer.roles, enumerations.workRoles);
                 aggregateObjArray(volunteerLocationsCount, candidate.volunteer.location, enumerations.countries, "country");
-                aggregateObjArrayAggregate(volunteerLocationAggregate, candidate.volunteer.locations, enumerations.countries, "country", "visa_needed");
+                aggregateObjArrayAggregate(volunteerLocationAggregate, candidate.volunteer.location, enumerations.countries, "country", "visa_needed");
 
             }
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
@@ -87,9 +96,11 @@ module.exports = async function (req, res) {
 
     });
 
-   // if(aggregatedData.employee.location) countAndAggregate(aggregatedData.employee.location, employeeLocationsCount, employeeLocationAggregate);
-   // if(aggregatedData.contractor.location) countAndAggregate(aggregatedData.contractor.location, contractorLocationsCount, contractorLocationAggregate);
-   // if(aggregatedData.volunteer.location) countAndAggregate(aggregatedData.volunteer.location, volunteerLocationsCount, volunteerLocationAggregate);
+    console.log("aggregatedData");
+    console.log(aggregatedData)
+    if(employeeLocationsCount) countAndAggregate(aggregatedData.employee.location, employeeLocationsCount, employeeLocationAggregate);
+    if(contractorLocationsCount) countAndAggregate(aggregatedData.contractor.location, contractorLocationsCount, contractorLocationAggregate);
+    if(volunteerLocationsCount) countAndAggregate(aggregatedData.volunteer.location, volunteerLocationsCount, volunteerLocationAggregate);
 
     countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
     countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
