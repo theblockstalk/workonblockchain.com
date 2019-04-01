@@ -208,15 +208,22 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
+            let rolesQuery =[]
             const setRoleQuery = function (roleQuery){
                 const rolesFilter = {[roleQuery]: {$in: search.positions}};
-                userQuery.push(rolesFilter);
+                rolesQuery.push(rolesFilter);
             };
             if(roleQuery) setRoleQuery(roleQuery);
             else {
                 setRoleQuery("candidate.employee.roles");
                 setRoleQuery("candidate.contractor.roles");
                 setRoleQuery("candidate.volunteer.roles");
+            }
+
+            if(rolesQuery && rolesQuery.length > 0) {
+                userQuery.push({
+                    $or: rolesQuery
+                });
             }
 
         }
@@ -233,6 +240,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
             const salary = search.salary.current_salary;
+            let currentSalaryQuery= [];
             const setSalaryQuery = function (salaryQuery, currencyQuery){
                 const usd = [{[currencyQuery]: "$ USD"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
                 const gbp = [{[currencyQuery]: "£ GBP"}, {[salaryQuery]: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
@@ -241,7 +249,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 const currencyFiler = {
                     $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
                 };
-                userQuery.push(currencyFiler);
+                currentSalaryQuery.push(currencyFiler);
 
             };
             if(salaryQuery && currencyQuery) setSalaryQuery(salaryQuery, currencyQuery);
@@ -249,6 +257,12 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 setSalaryQuery("candidate.employee.expected_annual_salary","candidate.employee.currency");
                 setSalaryQuery("candidate.contractor.expected_annual_salary","candidate.contractor.currency");
                 setSalaryQuery("candidate.volunteer.expected_annual_salary","candidate.volunteer.currency");
+            }
+
+            if(currentSalaryQuery && currentSalaryQuery.length > 0) {
+                userQuery.push({
+                    $or: currentSalaryQuery
+                })
             }
 
         }

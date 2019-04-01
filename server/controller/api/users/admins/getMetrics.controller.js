@@ -44,7 +44,7 @@ module.exports = async function (req, res) {
             if(candidate.employee) {
                 salaryList(salaryArray, candidate.employee.expected_annual_salary, candidate.employee.currency)
                 aggregateArray(aggregatedData.roles, candidate.employee.roles, enumerations.workRoles);
-                aggregateObjArray(employeeLocationsCount, candidate.employee.locations, enumerations.countries, "country");
+                aggregateObjArray(employeeLocationsCount, candidate.employee.location, enumerations.countries, "country");
                 aggregateObjArrayAggregate(employeeLocationAggregate, candidate.employee.locations, enumerations.countries, "country", "visa_needed");
                 aggregateField(aggregatedData.employmentAvailability, candidate.employee.employment_availability, enumerations.workAvailability);
 
@@ -52,7 +52,7 @@ module.exports = async function (req, res) {
             if(candidate.contractor) {
                 salaryList(salaryArray, candidate.contractor.expected_hourly_rate, candidate.contractor.currency)
                 aggregateArray(aggregatedData.roles, candidate.contractor.roles, enumerations.workRoles);
-                aggregateObjArray(contractorLocationsCount, candidate.contractor.locations, enumerations.countries, "country");
+                aggregateObjArray(contractorLocationsCount, candidate.contractor.location, enumerations.countries, "country");
                 aggregateObjArrayAggregate(contractorLocationAggregate, candidate.contractor.locations, enumerations.countries, "country", "visa_needed");
 
 
@@ -60,7 +60,7 @@ module.exports = async function (req, res) {
 
             if(candidate.volunteer) {
                 aggregateArray(aggregatedData.roles, candidate.volunteer.roles, enumerations.workRoles);
-                aggregateObjArray(volunteerLocationsCount, candidate.volunteer.locations, enumerations.countries, "country");
+                aggregateObjArray(volunteerLocationsCount, candidate.volunteer.location, enumerations.countries, "country");
                 aggregateObjArrayAggregate(volunteerLocationAggregate, candidate.volunteer.locations, enumerations.countries, "country", "visa_needed");
 
             }
@@ -87,9 +87,9 @@ module.exports = async function (req, res) {
 
     });
 
-    countAndAggregate(aggregatedData.employee.locations, employeeLocationsCount, employeeLocationAggregate);
-    countAndAggregate(aggregatedData.contractor.locations, contractorLocationsCount, contractorLocationAggregate);
-    countAndAggregate(aggregatedData.volunteer.locations, volunteerLocationsCount, volunteerLocationAggregate);
+   // if(aggregatedData.employee.location) countAndAggregate(aggregatedData.employee.location, employeeLocationsCount, employeeLocationAggregate);
+   // if(aggregatedData.contractor.location) countAndAggregate(aggregatedData.contractor.location, contractorLocationsCount, contractorLocationAggregate);
+   // if(aggregatedData.volunteer.location) countAndAggregate(aggregatedData.volunteer.location, volunteerLocationsCount, volunteerLocationAggregate);
 
     countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
     countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
