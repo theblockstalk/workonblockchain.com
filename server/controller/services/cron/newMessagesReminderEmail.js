@@ -37,7 +37,7 @@ module.exports = async function () {
                 chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
             }
             else {
-                logger.error("compnay account not found", userDoc._id);
+                logger.error("company account not found", userDoc._id);
             }
         }
     });
