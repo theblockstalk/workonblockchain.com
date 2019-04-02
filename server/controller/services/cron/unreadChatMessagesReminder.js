@@ -6,8 +6,10 @@ const logger = require('../logger');
 
 module.exports = async function () {
     logger.debug('Running unread chat messages cron');
+    let timeMinus1hr = new Date();
+    timeMinus1hr.setSeconds(timeMinus1hr.getSeconds() - 3620); //-1 hour 20 Secs
 
-    let userDoc = await users.find({ "conversations": {"$elemMatch":{"unread_count":{$gte:1}}}, is_unread_msgs_to_send: true});
+    let userDoc = await users.find({ "conversations": {"$elemMatch":{"unread_count":{$gte:1}}}, is_unread_msgs_to_send: true, last_message_reminder_email: {$lt: timeMinus1hr}});
 
     for(let i=0; i < userDoc.length; i++){
         if(userDoc[i].type === 'candidate'){
