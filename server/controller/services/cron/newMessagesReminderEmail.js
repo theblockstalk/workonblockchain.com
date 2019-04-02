@@ -1,44 +1,41 @@
 const users = require('../../../model/mongoose/users');
 const companies = require('../../../model/mongoose/company');
-
 const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
 
 module.exports = async function () {
     logger.debug('Running new messages cron');
 
-    let currentTime = new Date();
-    console.log(currentTime);
-    currentTime.setSeconds(currentTime.getSeconds() + 20); //+20 Secs
-    console.log(currentTime);
-    let plusOneHour = currentTime;
-    plusOneHour.setSeconds(plusOneHour.getSeconds() + 3600); //+1 hour Secs
-    console.log(plusOneHour);
-    //process.exit();
+    let timeMinus20s = new Date();
+    console.log(timeMinus20s);
+    timeMinus20s.setSeconds(timeMinus20s.getSeconds() - 20); //-20 Secs
+    console.log(timeMinus20s);
+    let timeMinus1hr = timeMinus20s;
+    timeMinus1hr.setSeconds(timeMinus1hr.getSeconds() - 3600); //-1 hour Secs
+    console.log(timeMinus1hr);
 
-    let userDoc = await users.find({
+    await users.findAndIterate({
         "conversations": {
             $elemMatch: {
                 "unread_count": {$gt: 0},
-                "last_message": {$gte: currentTime}, //+20 secs
-                "last_message": {$lt: plusOneHour} //+1 hour and 20secs
+                "last_message": {$gte: timeMinus20s}
             },
         },
         is_unread_msgs_to_send: true,
-        last_message_reminder_email: {$gte: plusOneHour} //+1 hour and 20secs
-    });
-
-    for(let i=0; i < userDoc.length; i++){
-        console.log(userDoc[i].email);
-        /*if(userDoc[i].type === 'candidate'){
-            chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, userDoc[i].first_name);
+        last_message_reminder_email: {$lt: timeMinus1hr}
+    },async function(userDoc) {
+        console.log(userDoc.email);
+        console.log(userDoc._id);
+        console.log(userDoc.type);
+        if(userDoc.type === 'candidate'){
+            chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
         }
         else{
-            let companyDoc = await companies.findOne({ _creator: userDoc[i]._id},{"first_name":1});
+            let companyDoc = await companies.findOne({ _creator: userDoc._id},{"first_name":1});
             if(companyDoc){
-                chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, companyDoc.first_name);
+                chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
             }
-        }*/
-    }
+        }
+    });
     logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});
 }
