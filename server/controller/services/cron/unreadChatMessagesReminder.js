@@ -14,11 +14,13 @@ module.exports = async function () {
     for(let i=0; i < userDoc.length; i++){
         if(userDoc[i].type === 'candidate'){
             chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, userDoc[i].first_name);
+            await users.update({ _id: userDoc[i]._id},{ $set: {'last_message_reminder_email': Date.now()} });
         }
         else{
             let companyDoc = await companies.findOne({ _creator: userDoc[i]._id},{"first_name":1});
             if(companyDoc){
                 chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, companyDoc.first_name);
+                await users.update({ _id: userDoc[i]._id},{ $set: {'last_message_reminder_email': Date.now()} });
             }
         }
     }
