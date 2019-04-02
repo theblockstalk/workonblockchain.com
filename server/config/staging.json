@@ -36,8 +36,8 @@
   "cron": {
     "unreadMessagesTick": "00 12 * * 1-7",
     "autoNotification" : "00 9 * * 1-7",
-    "syncSendgrid": "00 7 * * 1-7"
-
+    "syncSendgrid": "00 7 * * 1-7",
+    "newMessagesEmail": "* * * * 1-7"
   },
   "slack": {
     "username": "STAGING bug reporter",
