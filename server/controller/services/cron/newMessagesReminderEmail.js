@@ -11,20 +11,21 @@ module.exports = async function () {
     console.log(currentTime);
     currentTime.setSeconds(currentTime.getSeconds() + 20); //+20 Secs
     console.log(currentTime);
-    //let currentTime1Hour = currentTime.setTime(this.getTime() + (1*60*60*1000));
-    //console.log(currentTime.setTime(currentTime.getTime()));
+    let plusOneHour = currentTime;
+    plusOneHour.setSeconds(plusOneHour.getSeconds() + 3600); //+1 hour Secs
+    console.log(plusOneHour);
     //process.exit();
 
     let userDoc = await users.find({
         "conversations": {
             $elemMatch: {
                 "unread_count": {$gt: 0},
-                "last_message": {$gte: currentTime},
-                "last_message": {$lt: currentTime}
+                "last_message": {$gte: currentTime}, //+20 secs
+                "last_message": {$lt: plusOneHour} //+1 hour and 20secs
             },
         },
         is_unread_msgs_to_send: true,
-        last_message_reminder_email: {$gte: currentTime}
+        last_message_reminder_email: {$gte: plusOneHour} //+1 hour and 20secs
     });
 
     for(let i=0; i < userDoc.length; i++){
