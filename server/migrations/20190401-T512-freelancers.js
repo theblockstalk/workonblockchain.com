@@ -1,6 +1,8 @@
 const users = require('../model/mongoose/users');
 const logger = require('../controller/services/logger');
 const crypto = require('../controller/services/crypto');
+const objects = require('../controller/services/objects');
+
 const messages = require('../model/mongoose/messages');
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 
@@ -12,36 +14,44 @@ module.exports.up = async function() {
     await users.findAndIterate({type: 'candidate'}, async function(userDoc) {
         totalProcessed++;
         logger.debug('user doc id: ' + userDoc._id);
-        let set = {
-            'candidate.employee.employment_type' : 'Full time',
-        }
+        let set = { }
         let unset={};
         if(userDoc.candidate.expected_salary) {
             set['candidate.employee.expected_annual_salary'] =  userDoc.candidate.expected_salary;
-            unset['userDoc.candidate.expected_salary'] = 1;
+            unset['candidate.expected_salary'] = 1;
         }
         if(userDoc.candidate.expected_salary_currency) {
             set['candidate.employee.currency'] = userDoc.candidate.expected_salary_currency;
-            unset['userDoc.candidate.expected_salary_currency'] = 1;
+            unset['candidate.expected_salary_currency'] = 1;
         }
         if(userDoc.candidate.location) {
             set['candidate.employee.location'] = userDoc.candidate.location;
-            unset['userDoc.candidate.location'] = 1;
+            unset['candidate.location'] = 1;
         }
         if( userDoc.candidate.roles) {
             set['candidate.employee.roles'] = userDoc.candidate.roles;
-            unset['userDoc.candidate.roles'] = 1;
+            unset['candidate.roles'] = 1;
         }
         if(userDoc.candidate.availability_day) {
             set['candidate.employee.employment_availability'] = userDoc.candidate.availability_day;
-            unset['userDoc.candidate.availability_day'] = 1;
+            unset['candidate.availability_day'] = 1;
         }
 
-        logger.debug('set object: ', set);
-        logger.debug('unset object: ', unset);
-        await users.update({_id : userDoc._id}, {$set : set, $unset: unset});
-        totalModified++;
+        if(!objects.isEmpty(set)) set['candidate.employee.employment_type'] = 'Full time'
 
+        let updateObj;
+        if(!objects.isEmpty(set) || !objects.isEmpty(unset)) {
+            updateObj = {
+                $set: set,
+                $unset: unset
+            }
+        }
+
+        logger.debug('update object: ', updateObj);
+        if(!objects.isEmpty(updateObj)) {
+            await users.update({_id : userDoc._id}, updateObj );
+            totalModified++;
+        }
     });
 
     console.log('Total user document to process: ' + totalDocsToProcess);
@@ -76,7 +86,8 @@ module.exports.up = async function() {
                 'message.approach.employee.currency' : messageDoc.message.job_offer.salary_currency,
                 'message.approach.employee.employment_type' : messageDoc.message.job_offer.type,
                 'message.approach.employee.location' : messageDoc.message.job_offer.location,
-                'message.approach.employee.employment_description' : messageDoc.message.job_offer.description
+                'message.approach.employee.employment_description' : messageDoc.message.job_offer.description,
+                "msg_tag": 'approach'
             }
             unset = {
                 'message.job_offer': 1,
@@ -87,6 +98,7 @@ module.exports.up = async function() {
         if(messageDoc.message.job_offer_accepted) {
             set = {
                 'message.approach_accepted.message' : messageDoc.message.job_offer_accepted.message,
+                'msg_tag': 'approach_accepted'
             }
             unset = {
                 'message.job_offer_accepted': 1,
@@ -95,6 +107,7 @@ module.exports.up = async function() {
         if(messageDoc.message.job_offer_rejected) {
             set = {
                 'message.approach_rejected.message' : messageDoc.message.job_offer_rejected.message,
+                'msg_tag': 'approach_rejected'
             }
             unset = {
                 'message.job_offer_rejected': 1,
@@ -151,8 +164,8 @@ module.exports.down = async function() {
     totalDocsToProcess = await messages.count({
         $or: [
             {"message.approach": {$exists: true}},
-            {"message.job_offer_accepted": {$exists: true}},
-            {"message.job_offer_rejected": {$exists: true}}
+            {"message.approach_accepted": {$exists: true}},
+            {"message.approach_rejected": {$exists: true}}
         ]
     });
     logger.debug(totalDocsToProcess);
@@ -175,27 +188,30 @@ module.exports.down = async function() {
                 'message.job_offer.type': messageDoc.message.approach.employee.employment_type,
                 'message.job_offer.location': messageDoc.message.approach.employee.location ,
                 'message.job_offer.description': messageDoc.message.approach.employee.employment_description,
+                 'msg_tag': 'job_offer'
 
             }
              unset = {
-                'messageDoc.message.approach': 1,
+                'message.approach': 1
             };
         }
 
         if(messageDoc.message.approach_accepted) {
             set = {
                 'message.job_offer_accepted.message' : messageDoc.message.approach_accepted.message,
+                'msg_tag': 'job_offer_accepted'
             }
             unset = {
-                'message.approach_accepted': 1,
+                'message.approach_accepted': 1
             };
         }
         if(messageDoc.message.approach_rejected) {
             set = {
                 'message.job_offer_rejected.message' : messageDoc.message.approach_rejected.message,
+                'msg_tag': 'job_offer_rejected'
             }
             unset = {
-                'message.approach_rejected': 1,
+                'message.approach_rejected': 1
             };
         }
 
