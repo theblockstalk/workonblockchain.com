@@ -12,7 +12,6 @@ module.exports.up = async function() {
     await users.findAndIterate({type: 'candidate'}, async function(userDoc) {
         totalProcessed++;
         logger.debug('user doc id: ' + userDoc._id);
-        logger.debug('user document: ' , userDoc);
         let set = {
             'candidate.employee.employment_type' : 'Full time',
         }
