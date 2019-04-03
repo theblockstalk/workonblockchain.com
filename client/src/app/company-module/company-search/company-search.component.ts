@@ -60,6 +60,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error;
   cities;
   emptyInput;
+  errorMsg;
   urlParameters : any = {};
   no_value = false;
   saveSearchName;
