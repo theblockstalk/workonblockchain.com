@@ -1,11 +1,18 @@
 const users = require('../../../model/mongoose/users');
 const companies = require('../../../model/mongoose/company');
-const chatReminderEmail = require('../email/emails/chatReminder');
+const newMessagesReminderEmail = require('../email/emails/newMessagesReminder');
 const logger = require('../logger');
 
 module.exports = async function () {
+    let startTime = new Date().getTime();
     await newMessagesReminder();
-    setInterval(newMessagesReminder, 20000);
+    let interval = setInterval(async function(){
+        if(new Date().getTime() - startTime > 60000){
+            clearInterval(interval);
+            return;
+        }
+        await newMessagesReminder();
+    }, 20000);
 }
 
 const newMessagesReminder = async function () {
@@ -31,13 +38,13 @@ const newMessagesReminder = async function () {
         }]
     },async function(userDoc) {
         if(userDoc.type === 'candidate'){
-            chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
+            newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name, userDoc.first_name);
             await users.update({ _id: userDoc._id},{ $set: {'last_message_reminder_email': Date.now()} });
         }
         else{
             let companyDoc = await companies.findOne({ _creator: userDoc._id},{"first_name":1});
             if(companyDoc){
-                chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
+                newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name, companyDoc.company_name);
                 await users.update({ _id: userDoc._id},{ $set: {'last_message_reminder_email': Date.now()} });
             }
             else {
