@@ -46,12 +46,11 @@ describe('cron', function () {
             await newMessagesEmail();
 
             const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
-            const resNew = await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
-            resNew.status.should.equal(200);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             await newMessagesEmail();
-            const candidateDoc = await users.findOneByEmail(company.email);
-            console.log(candidateDoc);
+            const companyDoc = await users.findOneByEmail(company.email);
+            should.exist(companyDoc.last_message_reminder_email);
         })
     })
 });
