@@ -710,7 +710,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     if (this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
-    if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
+    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
+    else queryBody.job_type = [];
     if (this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
     if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if (this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
@@ -746,30 +747,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.currency = this.preferncesForm.value.currency;
       }
     }
-    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
-      console.log("2");
-      this.current_currency_log = "Please choose currency ";
-      errorCount = 1;
-    }
-
-    if (this.preferncesForm.value.work_type === 'employee' && !this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-      console.log("3");
-      this.current_currency_log = "Please enter expected hours ";
-      errorCount = 1;
-    }
-
-    if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
-      console.log("4")
-      this.expected_hourly_rate_log = "Please choose currency ";
-      errorCount = 1;
-    }
-
-    if (this.preferncesForm.value.work_type === 'contractor' && !this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-      console.log("5")
-      this.expected_hourly_rate_log = "Please enter expected hours ";
-      errorCount = 1;
-    }
-
 
     if (!this.preferncesForm.value.name) {
       console.log('7')

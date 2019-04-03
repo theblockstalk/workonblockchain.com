@@ -477,6 +477,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
           else searchQuery.visa_needed = false;
           if(key['work_type'] === 'employee' && key['job_type']) searchQuery.job_type = key['job_type'];
+          else searchQuery.job_type = [];
           if(key['position']) searchQuery.position = key['position'];
           if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
           if(key['skills']) searchQuery.skills = key['skills'];
