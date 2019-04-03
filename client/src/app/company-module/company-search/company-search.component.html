@@ -411,7 +411,7 @@
                 <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
                   {{job_offer_log_erorr}}
                 </div>
-                <div class = "alert alert-danger" *ngIf="job_offer_log_success">
+                <div class = "alert alert-success" *ngIf="job_offer_log_success">
                   {{job_offer_log_success}}
                 </div>
               </div>
@@ -475,7 +475,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'employee'">
+              <div class="col-md-6 mt-2" >
                 <div class="form-group">
                   <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_type'  [value]="job_type" selected>{{job_type}}</option>

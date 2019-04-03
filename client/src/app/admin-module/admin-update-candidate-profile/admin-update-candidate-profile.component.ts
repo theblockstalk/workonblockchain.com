@@ -1745,7 +1745,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
-        this.countriesModel = '';
+        this.employee.country = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';

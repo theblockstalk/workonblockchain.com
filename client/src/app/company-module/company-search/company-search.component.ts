@@ -710,8 +710,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     if (this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
-    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
-    else queryBody.job_type = [];
+    if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
     if (this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
     if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if (this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
@@ -1083,7 +1082,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.job_offer_log_success = 'Message successfully sent';
             this.employee = {};
             $("#jobDescriptionModal").modal("hide");
-            //this.router.navigate(['/chat']);
+            this.router.navigate(['/chat']);
           },
           error => {
             if (error['status'] === 400) {
