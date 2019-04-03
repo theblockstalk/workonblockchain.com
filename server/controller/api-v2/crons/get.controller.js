@@ -4,7 +4,7 @@ const errors = require('../../services/errors');
 const cronSyncSendgrid = require('../../services/cron/synchronizeSendGrid');
 const cronCompanyAutoEmail = require('../../services/cron/companyAutomaticEmailOfNewCandidate');
 const cronUnreadChat = require('../../services/cron/unreadChatMessagesReminder');
-const croNewMessages = require('../../services/cron/newMessagesReminderEmail');
+const cronNewMessages = require('../../services/cron/newMessagesReminderEmail');
 
 module.exports.request = {
     type: 'get',
@@ -52,7 +52,7 @@ module.exports.endpoint = async function (req, res) {
             result = await cronUnreadChat();
             break;
         case "new_messages_email":
-            result = await croNewMessages();
+            result = await cronNewMessages();
             break;
         default:
             errors.throwError("Cron name not found", 400)
