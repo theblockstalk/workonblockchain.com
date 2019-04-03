@@ -79,21 +79,24 @@ module.exports.endpoint = async function (req, res) {
     }
     else if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
-        if(linkedinData) {
-            userDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
-            if(userDoc) {
-                errors.throwError('Linkedin account is already taken' , 400)
+        try {
+            if(linkedinData) {
+                userDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
+                if(userDoc) {
+                    errors.throwError('Linkedin account is already taken' , 400)
+                }
+                email = linkedinData.email;
+                newUserDoc.email = linkedinData.email;
+                newUserDoc.linkedin_id = linkedinData.linkedin_id;
+                if(linkedinData.first_name && linkedinData.first_name !== '')  newUserDoc.first_name = linkedinData.first_name;
+                if(linkedinData.last_name && linkedinData.last_name !== '')  newUserDoc.last_name = linkedinData.last_name;
+                newUserDoc.is_verify = 1;
             }
-            email = linkedinData.email;
-            newUserDoc.email = linkedinData.email;
-            newUserDoc.linkedin_id = linkedinData.linkedin_id;
-            if(linkedinData.first_name && linkedinData.first_name !== '')  newUserDoc.first_name = linkedinData.first_name;
-            if(linkedinData.last_name && linkedinData.last_name !== '')  newUserDoc.last_name = linkedinData.last_name;
-            newUserDoc.is_verify = 1;
         }
-        else {
-            errors.throwError('There was a problem with your linkedin identity' , 404)
+        catch(error) {
+            errors.throwError('There was a problem with your linkedin identity' , 400)
         }
+
     }
     else {
         const salt = crypto.getRandomString(128);

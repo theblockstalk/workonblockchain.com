@@ -89,23 +89,25 @@ module.exports.endpoint = async function (req, res) {
     }
     if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
-        if (linkedinData) {
-            userDoc = await users.findOneByEmail(linkedinData.email);
+        try {
+            if (linkedinData) {
+                userDoc = await users.findOneByEmail(linkedinData.email);
 
-            if (userDoc.linkedin_id && userDoc.linkedin_id !== linkedinData.linkedin_id) {
-                throw new Error("Incorrect google id");
-            }
-            if (!userDoc.linkedin_id) {
-                const userLinkedinDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
-                if(userLinkedinDoc) {
-                    logger.error('A user with email has try to signin with duplicate linkedin account', linkedinData);
-                    errors.throwError('This Linkedin account is already linked to another user. Please contact us to resolve.' , 400)
+                if (userDoc.linkedin_id && userDoc.linkedin_id !== linkedinData.linkedin_id) {
+                    throw new Error("Incorrect google id");
                 }
-                set.linkedin_id =  linkedinData.linkedin_id;
-            }
+                if (!userDoc.linkedin_id) {
+                    const userLinkedinDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
+                    if(userLinkedinDoc) {
+                        logger.error('A user with email has try to signin with duplicate linkedin account', linkedinData);
+                        errors.throwError('This Linkedin account is already linked to another user. Please contact us to resolve.' , 400)
+                    }
+                    set.linkedin_id =  linkedinData.linkedin_id;
+                }
 
+            }
         }
-        else {
+        catch(error) {
             errors.throwError('There was a problem with your linkedin identity', 400);
         }
 

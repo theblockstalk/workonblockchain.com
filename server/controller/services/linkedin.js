@@ -1,6 +1,7 @@
 const request = require('request');
 const querystring = require('querystring');
 const settings = require('../../settings');
+const errors = require('./errors');
 
 const linkedinOAuth = settings.linkedinCredentials;
 const Linkedin = require('node-linkedin')(linkedinOAuth.clientId, linkedinOAuth.clientSecret, linkedinOAuth.redirectUrl);
@@ -61,7 +62,10 @@ async function getLinkedinAccountFromCode(code) {
             });
         }
         catch (error) {
-            throw new Error(error);
+            if(error.message === "Cannot read property 'version' of undefined") {
+                errors.throwError("This authorization code has already been used, please log in or sign up again.", 400);
+            }
+            else throw new Error(error);
         }
 
     });
