@@ -250,15 +250,15 @@ module.exports.endpoint = async function (req, res) {
         });
         if (messageDoc) errors.throwError("Approach already sent", 400);
         if(body.message.approach.employee && body.message.approach.employee.employment_description) {
-            body.message.approach.employee.employment_description = sanitize.sanitizeHtml(body.message.approach.employee.employment_description);
+            body.message.approach.employee.employment_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.employee.employment_description);
         }
 
         if(body.message.approach.contractor && body.message.approach.contractor.contract_description) {
-            body.message.approach.contractor.contract_description = sanitize.sanitizeHtml(body.message.approach.contractor.contract_description);
+            body.message.approach.contractor.contract_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.contractor.contract_description);
         }
 
         if(body.message.approach.volunteer && body.message.approach.volunteer.opportunity_description) {
-            body.message.approach.volunteer.opportunity_description = sanitize.sanitizeHtml(body.message.approach.volunteer.opportunity_description);
+            body.message.approach.volunteer.opportunity_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.volunteer.opportunity_description);
         }
         newMessage.message.approach = body.message.approach;
     }
