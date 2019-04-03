@@ -14,9 +14,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         filters: filters,
         search: search
     });
-    console.log("search")
-    console.log(search);
-    console.log(filters);
 
     let userQuery = [];
     userQuery.push({"type" : 'candidate'});
@@ -76,7 +73,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(wordSearch);
         }
         if (search.locations && search.locations.length > 0 ) {
-            console.log("locations");
             logger.debug("locations: " ,search.locations);
             let locationsQuery = [];
             let citiesArray=[];
