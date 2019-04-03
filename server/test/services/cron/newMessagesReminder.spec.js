@@ -31,18 +31,26 @@ describe('cron', function () {
         it('should send email to user', async function () {
             const company = docGenerator.company();
             await companyHelper.signupVerifiedApprovedCompany(company);
+            await users.update({email: company.email}, {$set: {is_admin: 1}});
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
+            await users.update({email: candidate.email}, {$set: {is_admin: 1}});
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
             const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
             await newMessagesEmail();
-            const candidateDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const resNew = await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+            resNew.status.should.equal(200);
+
+            await newMessagesEmail();
+            const candidateDoc = await users.findOneByEmail(company.email);
             console.log(candidateDoc);
         })
     })
