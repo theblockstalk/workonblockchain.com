@@ -270,11 +270,11 @@
               </div>
             </div>
 
-            <div class="col-md-12 mb-3" *ngIf="searches.currency && searches.expected_hourly_rate">
+            <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
               <div class="form-group">
                 <label>Hourly rate:</label>
                 <p>
-                  {{searches.currency}} {{searches.expected_hourly_rate}}
+                  {{searches.current_currency}} {{searches.expected_hourly_rate}}
                 <p>
               </div>
             </div>

@@ -116,6 +116,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   job_offer_log_erorr;
   newSearchLocation = [];
   selectedWorkType;
+  searchData;
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
@@ -371,8 +372,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     console.log("fill fields");
     this.selectedValueArray = [];
     for (let key of searches) {
-      console.log(key);
-      console.log(name);
       if (key['name'] === name) {
         this.saveSearchName = name;
         setTimeout(() => {
@@ -415,13 +414,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['current_salary']) this.salary = key['current_salary'];
         else this.salary = '';
 
-        if (key['current_currency']) this.currencyChange = key['current_currency'];
+        if (key['current_salary'] && key['current_currency']) this.currencyChange = key['current_currency'];
         else this.currencyChange = [];
 
         if (key['expected_hourly_rate']) this.hourly_rate = key['expected_hourly_rate'];
         else this.hourly_rate = '';
 
-        if (key['currency']) this.contractorCurrency = key['currency'];
+        if (key['expected_hourly_rate'] && key['current_currency']) this.contractorCurrency = key['current_currency'];
         else this.contractorCurrency = '';
 
 
@@ -440,11 +439,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   searchdata(key, value) {
+    this.searchData = false;
     this.newSearchLocation = [];
     this.success_msg = '';
-    console.log(this.savedSearches);
     if (key === 'searchName') {
-      console.log(key);
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
@@ -466,11 +464,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     $('.selectpicker').selectpicker('refresh');
 
-    if (!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value && !this.salary && !this.skill_value && !this.selectedValueArray && !this.currencyChange) {
-      this.getVerrifiedCandidate();
-    }
-
-    else if (this.residence_country && this.residence_country.length > 50) {
+    if (this.residence_country && this.residence_country.length > 50) {
       this.residence_log = "Please select maximum 50 countries";
     }
 
@@ -493,7 +487,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
       if (this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
         queryBody.expected_hourly_rate = this.hourly_rate;
-        queryBody.currency = this.contractorCurrency;
+        queryBody.current_currency = this.contractorCurrency;
       }
       let newQueryBody: any = {};
       newQueryBody = queryBody;
@@ -509,6 +503,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             this.candidate_data = data;
+            this.searchData = true;
 
             // this.filterAndSort();
 
@@ -599,13 +594,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if (this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency) {
       queryBody.expected_hourly_rate = this.hourly_rate;
-      queryBody.currency = this.contractorCurrency;
+      queryBody.current_currency = this.contractorCurrency;
     }
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if (this.timestamp) queryBody.timestamp = this.timestamp;
     if (!queryBody.location) queryBody.location = [];
 
-    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -721,7 +715,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     let errorCount = 0;
     if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
-      console.log(checkNumber);
       if (checkNumber === false) {
         console.log("1");
         errorCount = 1;
@@ -743,7 +736,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       else {
         queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-        queryBody.currency = this.preferncesForm.value.currency;
+        queryBody.current_currency = this.preferncesForm.value.currency;
       }
     }
 
@@ -758,8 +751,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       errorCount = 1;
     }
 
-    console.log(queryBody);
-    console.log(errorCount);
     if (errorCount === 0) {
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
@@ -786,7 +777,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           .subscribe(
             data => {
               if (data && this.currentUser) {
-                console.log(data['saved_searches']);
                 this.savedSearches = [];
                 this.saveSearchName = this.preferncesForm.value.name;
 
@@ -853,12 +843,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.verify_msg = "verified candidate";
     this.responseMsg = '';
     this.not_found = '';
-
     this.authenticationService.getVerrifiedCandidate(this.currentUser._id)
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-          console.log(dataa);
 
           //this.filterAndSort();
 
@@ -926,10 +914,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getLastJobDesc()
       .subscribe(
         data => {
-          console.log(data);
           if(data && data['message'].approach) {
             let approach = data['message'].approach;
-            console.log(approach);
 
             if(approach.employee) {
               this.approach_work_type = 'employee';
@@ -1023,8 +1009,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.hourly_rate_log = 'Please enter hourly rate';
         errorCount = 1;
       }
-      console.log(this.checkNumber(this.contractor.hourly_rate));
-      console.log(this.contractor.hourly_rate)
+
       if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
         this.hourly_rate_log = 'Salary should be a number';
         errorCount = 1;
@@ -1075,7 +1060,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           volunteer : job_offer
         }
       }
-      console.log(new_offer);
       this.authenticationService.send_message(this.user_id.id, 'approach', new_offer)
         .subscribe(
           data => {
@@ -1291,6 +1275,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
+    //this.populatePopupFields();
+    //this.searchdata("work_type", this.workTypes);
+
   }
 
 }

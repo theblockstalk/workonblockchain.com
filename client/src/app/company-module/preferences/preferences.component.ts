@@ -171,7 +171,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 order_preferences: [data['saved_searches'][0].order_preferences],
                 residence_country: [data['saved_searches'][0].residence_country],
                 expected_hourly_rate: [data['saved_searches'][0].expected_hourly_rate],
-                currency: [data['saved_searches'][0].currency],
+                currency: [data['saved_searches'][0].current_currency],
                 work_type: [data['saved_searches'][0].work_type]
               });
 
@@ -430,7 +430,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
       if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
           searchInput.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-          searchInput.currency  = this.preferncesForm.value.currency;
+          searchInput.current_currency  = this.preferncesForm.value.currency;
       }
 
       this.saved_searches.push(searchInput);
