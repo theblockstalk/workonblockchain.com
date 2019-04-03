@@ -29,10 +29,10 @@ module.exports = async  function (req,res)
         }
     }
 
-    if (queryBody.expected_hourly_rate && queryBody.currency) {
+    if (queryBody.expected_hourly_rate && queryBody.current_currency) {
         search.hourly_rate = {
             expected_hourly_rate: queryBody.expected_hourly_rate,
-            currency: queryBody.currency
+            current_currency: queryBody.current_currency
         }
     }
     if(queryBody.residence_country) search.residence_country = queryBody.residence_country;

@@ -239,11 +239,9 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
             userQuery.push(currencyFiler);
-
-
         }
 
-        if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.currency) {
+        if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.current_currency) {
             const curr = search.hourly_rate.currency;
             const hourly_rate = search.hourly_rate.expected_hourly_rate;
             const usd = [{'candidate.contractor.currency' : "$ USD"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "$ USD", hourly_rate)}}];

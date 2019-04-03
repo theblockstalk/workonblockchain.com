@@ -111,10 +111,6 @@ const bodySchema = new Schema({
                 type:Number,
                 min: 0
             },
-            currency: {
-                type: String,
-                enum: enumerations.currencies
-            },
             blockchain: {
                 type: [{
                     type: String,

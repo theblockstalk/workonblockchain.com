@@ -66,7 +66,7 @@ module.exports = async function (companyId) {
                             work_type : savedSearch.work_type,
                             hourly_rate : {
                                 expected_hourly_rate: savedSearch.expected_hourly_rate,
-                                currency: savedSearch.currency
+                                current_currency: savedSearch.current_currency
                             }
                         }, {
                             blockchainOrder: savedSearch.order_preferences

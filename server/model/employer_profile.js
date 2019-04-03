@@ -101,11 +101,6 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.workRoles
                 }]
             },
-            current_currency: {
-                type: String,
-                required : true,
-                enum: enumerations.currencies
-            },
             current_salary: {
                 type:Number,
                 required : true,
@@ -116,7 +111,7 @@ const CompanyProfileSchema = new Schema({
                 required : true,
                 min: 0
             },
-            currency: {
+            current_currency: {
                 type: String,
                 required : true,
                 enum: enumerations.currencies
