@@ -266,7 +266,6 @@ export const constants = {
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
     {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false}
   ],
-  position_type: ['Full time' , 'Part time' , 'Freelance'],
   job_type: ["Part time", "Full time"],
   candidateStatus: [
     {value:'created', name:'Created'},

@@ -80,7 +80,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   yearVerification;
 
   countries = constants.countries;
-  job_types = constants.position_type;
+  job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
   blockchain = constants.blockchainPlatforms;
@@ -476,7 +476,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
           else searchQuery.visa_needed = false;
-          if(key['job_type']) searchQuery.job_type = key['job_type'];
+          if(key['work_type'] === 'employee' && key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
           if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
           if(key['skills']) searchQuery.skills = key['skills'];

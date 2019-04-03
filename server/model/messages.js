@@ -49,6 +49,7 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
+        //DELETE ME
         job_offer: {
             type: new Schema({
                 title: {
@@ -66,7 +67,7 @@ const MessageSchema = new Schema({
                 },
                 type: {
                     type: String,
-                    enum: enumerations.jobTypes,
+                    enum: enumerations.employmentTypes,
                     required: true
                 },
                 location: {
@@ -79,7 +80,8 @@ const MessageSchema = new Schema({
                 }
             }),
             required: false
-        }, //DELETE ME
+        },
+        //DELETE ME
         job_offer_accepted: {
             type: new Schema({
                 message: {
@@ -88,7 +90,8 @@ const MessageSchema = new Schema({
                 }
             }),
             required: false
-        }, //DELETE ME
+        },
+        //DELETE ME
         job_offer_rejected: {
             type: new Schema({
                 message: {
@@ -97,7 +100,7 @@ const MessageSchema = new Schema({
                 }
             }),
             required: false
-        }, //DELETE ME
+        },
         approach: {
             type: new Schema({
                 employee: {
@@ -117,7 +120,7 @@ const MessageSchema = new Schema({
                         },
                         employment_type: {
                             type: String,
-                            enum: enumerations.jobTypes,
+                            enum: enumerations.employmentTypes,
                             required: true
                         },
                         location: {

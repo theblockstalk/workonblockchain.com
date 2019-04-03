@@ -12,7 +12,7 @@ module.exports.messages = {
                         job_title: random.string(),
                         annual_salary: random.integer(1),
                         currency: random.enum(enumerations.currencies),
-                        employment_type: random.enum(enumerations.jobTypes),
+                        employment_type: random.enum(enumerations.employmentTypes),
                         location : "PWD Islamabad",
                         employment_description: random.string(100)
                     }
@@ -75,7 +75,7 @@ module.exports.messages = {
                     title: random.string(),
                     salary: random.integer(1),
                     salary_currency: random.enum(enumerations.currencies),
-                    type: random.enum(enumerations.jobTypes),
+                    type: random.enum(enumerations.employmentTypes),
                     start_date: Date.now(),
                     description: random.string(100)
                 }

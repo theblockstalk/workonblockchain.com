@@ -90,7 +90,7 @@ const CompanyProfileSchema = new Schema({
                 type: [{
                     type: String,
                     required : true,
-                    enum: enumerations.jobTypes
+                    enum: enumerations.employmentTypes
                 }]
 
             },

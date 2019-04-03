@@ -89,7 +89,7 @@ const bodySchema = new Schema({
             job_type: {
                 type: [{
                     type: String,
-                    enum: enumerations.jobTypes
+                    enum: enumerations.employmentTypes
                 }]
 
             },

@@ -105,7 +105,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
-  position_type = ['Full time', 'Part time'];
+  position_type = constants.job_type;
   employment_type_log;
   employment_location_log;
   employee_roles_log;

@@ -67,7 +67,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   residenceCountries = constants.countries;
-  job_types = constants.position_type;
+  job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
   blockchain = constants.blockchainPlatforms;
@@ -415,7 +415,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location
       if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name
       if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed
-      if(this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
+      if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
       if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position
       if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain
       if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills

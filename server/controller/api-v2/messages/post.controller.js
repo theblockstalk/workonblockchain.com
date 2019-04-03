@@ -54,7 +54,7 @@ const bodySchema = new Schema({
                         },
                         employment_type: {
                             type: String,
-                            enum: enumerations.jobTypes,
+                            enum: enumerations.employmentTypes,
                         },
                         location: {
                             type: String,
@@ -182,7 +182,7 @@ const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) 
             msg_tag: 'approach_accepted'
         });
     }
-    if (!messageDoc) errors.throwError("Approach offer has not been accepted", 400);
+    if (!messageDoc) errors.throwError("Approach has not been accepted", 400);
 }
 
 const checkMessageSenderType = function (userType, expectedType) {
@@ -248,7 +248,7 @@ module.exports.endpoint = async function (req, res) {
             receiver_id: receiver_id,
             msg_tag: 'approach'
         });
-        if (messageDoc) errors.throwError("Approach offer already sent", 400);
+        if (messageDoc) errors.throwError("Approach already sent", 400);
         if(body.message.approach.employee && body.message.approach.employee.employment_description) {
             body.message.approach.employee.employment_description = sanitize.sanitizeHtml(body.message.approach.employee.employment_description);
         }
@@ -270,7 +270,7 @@ module.exports.endpoint = async function (req, res) {
             receiver_id: receiver_id,
             msg_tag: 'approach_accepted'
         });
-        if (messageDoc) errors.throwError("Approach offer already accepted", 400);
+        if (messageDoc) errors.throwError("Approach already accepted", 400);
 
         newMessage.message.approach_accepted = body.message.approach_accepted;
     }
@@ -288,7 +288,7 @@ module.exports.endpoint = async function (req, res) {
                 msg_tag: 'approach_rejected'
             }]
         });
-        if (messageDoc) errors.throwError("Approach offer already accepted or rejected", 400);
+        if (messageDoc) errors.throwError("Approach already accepted or rejected", 400);
 
         newMessage.message.approach_rejected = body.message.approach_rejected;
     }

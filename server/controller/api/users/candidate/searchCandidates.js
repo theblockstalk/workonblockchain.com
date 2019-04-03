@@ -49,25 +49,20 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     if (search) {
         let locationQuery;
         let roleQuery;
-        let salaryQuery;
-        let currencyQuery;
+
         if(search.work_type === 'employee') {
             locationQuery= "candidate.employee.location";
             roleQuery = "candidate.employee.roles";
-            salaryQuery = "candidate.employee.currency";
-            currencyQuery = "candidate.employee.expected_annual_salary";
         }
         if(search.work_type === 'contractor') {
             locationQuery= "candidate.contractor.location";
             roleQuery = "candidate.contractor.roles";
-            salaryQuery = "candidate.contractor.currency";
-            currencyQuery = "candidate.contractor.expected_annual_salary";
+
         }
         if(search.work_type === 'volunteer') {
             locationQuery= "candidate.volunteer.location";
             roleQuery = "candidate.volunteer.roles";
-            salaryQuery = "candidate.volunteer.currency";
-            currencyQuery = "candidate.volunteer.expected_annual_salary";
+
         }
 
         if(search.name) {

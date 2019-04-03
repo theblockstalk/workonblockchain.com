@@ -52,7 +52,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   count;
   emptyInput;
   validatedLocation=[];
-  position_type = ['Full time', 'Part time'];
+  position_type = constants.job_type;
   employment_type_log;
   employment_location_log;
   employee_roles_log;

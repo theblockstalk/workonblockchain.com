@@ -36,7 +36,6 @@ module.exports = async function (req, res) {
 
         };
         const companyUserCreated  =  await Users.insert(newCompanyDoc);
-        console.log(companyUserCreated);
         if(companyUserCreated)
         {
             let jwtUserToken = jwtToken.createJwtToken(companyUserCreated);
@@ -116,7 +115,7 @@ module.exports = async function (req, res) {
             let userData = filterReturnData.removeSensativeData(companyUserCreated)
             res.send({
                 company_id:employerDoc._id,
-                _id: companyUserCreated._id,
+                _id: userData._id,
                 type:userData.type,
                 email: userData.email,
                 jwt_token: jwtUserToken

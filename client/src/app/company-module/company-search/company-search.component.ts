@@ -175,7 +175,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   job_type = constants.job_type;
   skillsData = constants.programmingLanguages;
   residenceCountries = constants.countries;
-  job_types = constants.position_type;
   rolesData = constants.workRoles;
   blockchainData = constants.blockchainPlatforms;
 
