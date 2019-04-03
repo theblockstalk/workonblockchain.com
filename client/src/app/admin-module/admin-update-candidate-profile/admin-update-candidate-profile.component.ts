@@ -119,6 +119,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   selectedLocations;
   cities;
   emptyInput;
+  expected_validation;
 
   nationality = constants.nationalities;
   current_work_check=[];

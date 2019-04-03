@@ -298,6 +298,7 @@
                 <div class="form-group">
                   <label class="invisible">Current annual salary currency</label>
                   <select [(ngModel)]="current_currency" title="Currency" class="form-control selectpicker" name="current_currency" >
+                    <option value="-1" >Currency</option>
                     <option *ngFor='let currentCurrency of currency'  [value]="currentCurrency" [attr.selected]="current_currency === currentCurrency ? true : null">{{currentCurrency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="(salary && !current_currency) || (salary && current_currency === '-1') ">

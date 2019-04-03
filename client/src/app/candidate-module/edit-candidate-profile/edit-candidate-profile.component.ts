@@ -94,6 +94,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contact_name_log;
   nationality_log;
   error_msg;
+  expected_validation;
   start_date_year_log;
   end_date_year_log;
   selectedValueArray=[];
