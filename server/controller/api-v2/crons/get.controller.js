@@ -14,7 +14,7 @@ module.exports.request = {
 const paramSchema = new Schema({
     cron_name: {
         type: String,
-        enum: ['sync_sendgrid', 'company_auto_email', 'uread_chat', 'new_messages_email']
+        enum: ['sync_sendgrid', 'company_auto_email', 'unread_chat', 'new_messages_email']
     }
 });
 
@@ -48,7 +48,7 @@ module.exports.endpoint = async function (req, res) {
                 result = await cronCompanyAutoEmail();
             }
             break;
-        case "uread_chat":
+        case "unread_chat":
             result = await cronUnreadChat();
             break;
         case "new_messages_email":
