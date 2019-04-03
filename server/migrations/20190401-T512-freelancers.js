@@ -91,8 +91,6 @@ module.exports.up = async function() {
             }
             unset = {
                 'message.job_offer': 1,
-                'message.job_offer_accepted': 1,
-                'message.job_offer_rejected': 1
             };
         }
         if(messageDoc.message.job_offer_accepted) {
