@@ -28,7 +28,7 @@ describe('cron', function () {
 
     describe('send email to user on new message', function () {
 
-        it('should send email to user', async function () {
+        it('should send email to the user right after they have been sent', async function () {
             const company = docGenerator.company();
             await companyHelper.signupVerifiedApprovedCompany(company);
             await users.update({email: company.email}, {$set: {is_admin: 1}});
@@ -38,19 +38,56 @@ describe('cron', function () {
             const profileData = docGeneratorV2.candidateProfile();
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             await users.update({email: candidate.email}, {$set: {is_admin: 1}});
-            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+            let candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
+            let startTime = new Date();
             await newMessagesEmail();
+            candidateuserDoc = await users.findOneById(candidateuserDoc._id);
+            expect(candidateuserDoc.last_message_reminder_email).to.be.within(startTime, new Date());
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            let startTime = new Date();
+            await newMessagesEmail();
+            const companyDoc = await users.findOneByEmail(company.email);
+            expect(companyDoc.last_message_reminder_email).to.be.within(startTime, new Date());
+        })
+
+        it('should send only send one email if two messages are sent', async function () {
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            await users.update({email: company.email}, {$set: {is_admin: 1}});
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
+            await users.update({email: candidate.email}, {$set: {is_admin: 1}});
+            let candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
 
             const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             await newMessagesEmail();
-            const companyDoc = await users.findOneByEmail(company.email);
-            should.exist(companyDoc.last_message_reminder_email);
+            candidateuserDoc = await users.findOneById(candidateuserDoc._id);
+            const firstEmailDate = candidateuserDoc.last_message_reminder_email;
+
+            let normalMessage = docGeneratorV2.messages.normal(candidateuserDoc._id);
+            await messagesHelpers.post(normalMessage, companyUserDoc.jwt_token);
+
+            // no new email sent within 20s
+            await newMessagesEmail();
+            candidateuserDoc = await users.findOneById(candidateuserDoc._id);
+            expect(candidateuserDoc.last_message_reminder_email).to.be.exactly(firstEmailDate);
+
         })
     })
 });
