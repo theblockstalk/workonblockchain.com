@@ -83,6 +83,9 @@ const UserSchema = new Schema({
         type:Boolean,
         default:true
     },
+    last_message_reminder_email: {
+        type:Date
+    },
     disable_account: {
         type:Boolean,
         default:false
