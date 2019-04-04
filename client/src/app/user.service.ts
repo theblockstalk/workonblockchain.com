@@ -727,38 +727,50 @@ export class UserService {
 
   getCurrentCompany(_id: string)
   {
-    return this.http.get(URL+'users/current_company/' +_id, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
+    if(!_id) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('googleUser');
+      localStorage.removeItem('close_notify');
+      localStorage.removeItem('linkedinUser');
+      localStorage.removeItem('admin_log');
+      window.location.href = '/login';
 
-      if (res)
+    }
+    else {
+      return this.http.get(URL+'users/current_company/' +_id, {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }).pipe(map((res: Response) =>
       {
-        return res  ;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
+
+        if (res)
+        {
+          return res  ;
+        }
+      }), catchError((error: any) =>
       {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        if (error)
         {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          this.router.navigate(['/not_found']);
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.router.navigate(['/not_found']);
+          }
+
+          else return throwError(new Error(error));
         }
 
-        else return throwError(new Error(error));
-      }
+      }));
+    }
 
-    }));
   }
 
   get_user_messages_comp(receiver_id: string)
