@@ -38,13 +38,13 @@ const newMessagesReminder = async function () {
         }]
     },async function(userDoc) {
         if(userDoc.type === 'candidate'){
-            newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name, userDoc.first_name);
+            newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
             await users.update({ _id: userDoc._id},{ $set: {'last_message_reminder_email': Date.now()} });
         }
         else{
             let companyDoc = await companies.findOne({ _creator: userDoc._id},{"first_name":1});
             if(companyDoc){
-                newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name, companyDoc.company_name);
+                newMessagesReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
                 await users.update({ _id: userDoc._id},{ $set: {'last_message_reminder_email': Date.now()} });
             }
             else {

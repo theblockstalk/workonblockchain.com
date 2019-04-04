@@ -1,6 +1,6 @@
 const emails = require('../emails');
 
-module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_name, name) {
+module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_name) {
     const sendTo = {
         email: email
     };
@@ -18,8 +18,7 @@ module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_nam
             }
         }],
         templateData: {
-            firstName: first_name,
-            recipientName: name
+            firstName: first_name
         }
     };
 
