@@ -282,6 +282,11 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
         if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
 
+        if(queryBody.current_currency === "-1"){
+            unset['candidate.current_currency'] = 1;
+            unset['candidate.current_salary'] = 1;
+        }
+
         if (queryBody.unset_commercial_platforms) {
             unset['candidate.blockchain.commercial_platforms'] = 1;
             unset['candidate.blockchain.description_commercial_platforms'] = 1;
