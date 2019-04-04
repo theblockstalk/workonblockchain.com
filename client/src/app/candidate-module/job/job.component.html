@@ -95,11 +95,8 @@
                   {{country_log}}
                 </div>
               </div>
-
             </div>
-
           </div>
-
 
           <div class="row">
             <div class="col-md-12">
@@ -171,7 +168,6 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Current annual salary currency</label>
-
                 <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
                   <option value="-1" >Currency</option>
                   <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
