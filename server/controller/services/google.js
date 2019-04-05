@@ -1,6 +1,7 @@
 const settings = require('../../settings');
 const {google} = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
+const errors = require('./errors');
 
 module.exports.googleAuth = async function (googleCode) {
     const googleConfig = settings.googleCredentials;
@@ -31,6 +32,11 @@ async function getGoogleAccountFromCode(googleCode, oauth, plus) {
         }
     }
     catch (error) {
-        throw new Error(error)
+        console.log("error message");
+        console.log(error.message);
+        if(error.message === 'invalid_grant') {
+            errors.throwError("This authorization code has already been used, please log in or sign up again.", 400);
+        }
+        else throw new Error(error)
     }
 }
