@@ -297,7 +297,7 @@
                     <div class="form-group">
                       <label>Graduation</label>
                       <select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
-                        <option class='option' *ngFor='let graduationYear of graduation_year'  [value]="graduationYear" selected>{{graduationYear}}</option>
+                        <option class='option' *ngFor='let graduationYear of year'  [value]="graduationYear" selected>{{graduationYear}}</option>
                       </select>
                       <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                         {{eduYear_log}}
