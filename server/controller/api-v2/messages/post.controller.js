@@ -364,7 +364,7 @@ module.exports.endpoint = async function (req, res) {
 
     let receiverConv, receiverSelect, receiverUpdate;
     const receiverUserDoc = await users.findOneById(receiver_id);
-    if (receiverUserDoc.conversations) {
+    if (receiverUserDoc.conversations && receiverUserDoc.conversations.length>0) {
         const conversations = receiverUserDoc.conversations;
         receiverConv = conversations.filter(item => String(item.user_id) === String(sender_id));
 

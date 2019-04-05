@@ -51,7 +51,7 @@ describe('cron', function () {
             const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
-            let startTime = new Date();
+            startTime = new Date();
             await newMessagesEmail();
             const companyDoc = await users.findOneByEmail(company.email);
             expect(companyDoc.last_message_reminder_email).to.be.within(startTime, new Date());
@@ -77,17 +77,16 @@ describe('cron', function () {
             await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             await newMessagesEmail();
-            candidateuserDoc = await users.findOneById(candidateuserDoc._id);
-            const firstEmailDate = candidateuserDoc.last_message_reminder_email;
+            let companyDoc = await users.findOneByEmail(company.email);
+            const firstEmailDate = companyDoc.last_message_reminder_email;
 
-            let normalMessage = docGeneratorV2.messages.normal(candidateuserDoc._id);
-            await messagesHelpers.post(normalMessage, companyUserDoc.jwt_token);
+            let normalMessage = docGeneratorV2.messages.normal(companyUserDoc._id);
+            await messagesHelpers.post(normalMessage, candidateuserDoc.jwt_token);
 
             // no new email sent within 20s
             await newMessagesEmail();
-            candidateuserDoc = await users.findOneById(candidateuserDoc._id);
-            expect(candidateuserDoc.last_message_reminder_email).to.be.exactly(firstEmailDate);
-
+            companyDoc = await users.findOneById(companyUserDoc._id);
+            expect(companyDoc.last_message_reminder_email).to.be.within(firstEmailDate,new Date());
         })
     })
 });
