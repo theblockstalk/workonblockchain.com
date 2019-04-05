@@ -1252,6 +1252,40 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     profileForm.selectedlocations = this.validatedLocation;
     this.experiencearray=[];
     this.education_json_array=[];
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+    let fileCount: number = inputEl.files.length;
+    let formData = new FormData();
+    if (fileCount > 0 )
+    {
+
+      if(inputEl.files.item(0).size < this.file_size)
+      {
+        formData.append('image', inputEl.files.item(0));
+        this.authenticationService.edit_candidate_profile(this.user_id , formData, true)
+          .subscribe(
+            data => {
+              if (data) {
+
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
+      }
+      else
+      {
+        this.image_log = "Image size should be less than 1MB";
+      }
+    }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
