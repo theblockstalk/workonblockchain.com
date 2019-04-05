@@ -258,7 +258,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   current_work = constants.current_work;
   language_opt = constants.programmingLanguages;
   exp_year = constants.experienceYears;
-  graduation_year = constants.year;
   year = constants.year;
   month = constants.calen_month;
 
