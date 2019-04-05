@@ -7,10 +7,10 @@ let totalDocsToProcess, totalModified = 0;
 // This function will perform the migration
 module.exports.up = async function() {
     let set = {};
-    totalDocsToProcess = await users.count({type:'candidate',"candidate.blockchain": {$exists: true}});
+    totalDocsToProcess = await users.count({type:'candidate'});
     logger.debug(totalDocsToProcess);
 
-    await users.findAndIterate({type:'candidate',"candidate.blockchain": {$exists: true}}, async function(candDoc) {
+    await users.findAndIterate({type:'candidate'}, async function(candDoc) {
         if(candDoc.nationality === 'Dutchman' || candDoc.nationality === 'Dutchwoman' ||
             candDoc.nationality === 'Netherlander'){
             logger.debug("processing user doc: ", {userId: candDoc._id});
