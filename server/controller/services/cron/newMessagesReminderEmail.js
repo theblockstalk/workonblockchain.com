@@ -3,24 +3,27 @@ const companies = require('../../../model/mongoose/company');
 const newMessagesReminderEmail = require('../email/emails/newMessagesReminder');
 const logger = require('../logger');
 
+const intervalSeconds = 20;
+const cronIntervalSeconds = 60;
+
 module.exports = async function () {
-    let startTime = new Date().getTime();
+    const startTime = new Date().getTime();
     await newMessagesReminder();
     let interval = setInterval(async function(){
-        if(new Date().getTime() - startTime > 60000){
+        if(new Date().getTime() - startTime > cronIntervalSeconds*1000){
             clearInterval(interval);
-            return;
+        } else {
+            await newMessagesReminder();
         }
-        await newMessagesReminder();
-    }, 20000);
+    }, intervalSeconds*1000);
 }
 
 const newMessagesReminder = async function () {
     logger.debug('Running new messages cron');
 
     let timeMinus20s = new Date();
-    timeMinus20s.setSeconds(timeMinus20s.getSeconds() - 20); //-20 Secs
-    let timeMinus1hr = timeMinus20s;
+    timeMinus20s.setSeconds(timeMinus20s.getSeconds() - intervalSeconds*1.1); //-20 Secs
+    let timeMinus1hr = new Date(timeMinus20s);
     timeMinus1hr.setSeconds(timeMinus1hr.getSeconds() - 3600); //-1 hour 20 Secs
 
     await users.findAndIterate({
