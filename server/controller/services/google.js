@@ -32,8 +32,6 @@ async function getGoogleAccountFromCode(googleCode, oauth, plus) {
         }
     }
     catch (error) {
-        console.log("error message");
-        console.log(error.message);
         if(error.message === 'invalid_grant') {
             errors.throwError("This authorization code has already been used, please log in or sign up again.", 400);
         }

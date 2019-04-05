@@ -89,7 +89,6 @@ module.exports.endpoint = async function (req, res) {
     }
     if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
-
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
 
@@ -106,9 +105,9 @@ module.exports.endpoint = async function (req, res) {
             }
 
         }
-        else
+        else {
             errors.throwError('There was a problem with your linkedin identity', 400);
-
+        }
     }
 
 
