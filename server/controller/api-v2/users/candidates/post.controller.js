@@ -92,7 +92,7 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.is_verify = 1;
         }
         else {
-            errors.throwError('There was a problem with your linkedin identity' , 404)
+            errors.throwError('There was a problem with your linkedin identity' , 400)
         }
     }
     else {
