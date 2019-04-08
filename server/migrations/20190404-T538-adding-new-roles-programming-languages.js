@@ -26,12 +26,12 @@ module.exports.up = async function() {
                     logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Congo";
                 }
-                else if (userDoc.candidate.base_country === 'Ireland {Republic}') {
+                if (userDoc.candidate.base_country === 'Ireland {Republic}') {
                     console.log(userDoc.candidate.base_country);
                     logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Ireland";
                 }
-                else if (userDoc.candidate.base_country === 'Myanmar, {Burma}') {
+                if (userDoc.candidate.base_country === 'Myanmar, {Burma}') {
                     console.log(userDoc.candidate.base_country);
                     logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Myanmar (Burma)";
@@ -52,12 +52,12 @@ module.exports.up = async function() {
                 logger.debug("processing company doc: ", {userId: companyDoc._id});
                 updateObj['company_country'] = "Congo";
             }
-            else if(companyDoc.company_country === 'Ireland {Republic}'){
+            if(companyDoc.company_country === 'Ireland {Republic}'){
                 console.log(companyDoc.company_country);
                 logger.debug("processing company doc: ", {userId: companyDoc._id});
                 updateObj['company_country'] = "Ireland";
             }
-            else if(companyDoc.company_country === 'Myanmar, {Burma}'){
+            if(companyDoc.company_country === 'Myanmar, {Burma}'){
                 console.log(companyDoc.company_country);
                 logger.debug("processing company doc: ", {userId: companyDoc._id});
                 updateObj['company_country'] = "Myanmar (Burma)";
