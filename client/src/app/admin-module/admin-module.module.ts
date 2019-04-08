@@ -36,7 +36,7 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
-    StyleGuideComponent
+    StyleGuideComponent,
   ],
   providers : [PagerService]
 
