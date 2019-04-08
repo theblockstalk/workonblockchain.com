@@ -13,24 +13,24 @@ module.exports.up = async function() {
     await users.findAndIterate({}, async function(userDoc) {
         if(userDoc.type === 'candidate'){
             let updateObj = {};
-            if(userDoc.nationality === 'Dutchman' || userDoc.nationality === 'Dutchwoman' ||
-                userDoc.nationality === 'Netherlander'){
+            if(userDoc.nationality && (userDoc.nationality === 'Dutchman' || userDoc.nationality === 'Dutchwoman' ||
+                userDoc.nationality === 'Netherlander')){
                 console.log(userDoc.nationality);
                 logger.debug("processing user doc: ", {userId: userDoc._id});
                 updateObj['nationality'] = "Dutch";
             }
 
-            if(userDoc.candidate.base_country === 'Congo {Democratic Rep}'){
+            if(userDoc.candidate.base_country && userDoc.candidate.base_country === 'Congo {Democratic Rep}'){
                 console.log(userDoc.candidate.base_country);
                 logger.debug("processing user doc: ", {userId: userDoc._id});
                 updateObj['candidate.base_country'] = "Congo";
             }
-            else if(userDoc.candidate.base_country === 'Ireland {Republic}'){
+            else if(userDoc.candidate.base_country && userDoc.candidate.base_country === 'Ireland {Republic}'){
                 console.log(userDoc.candidate.base_country);
                 logger.debug("processing user doc: ", {userId: userDoc._id});
                 updateObj['candidate.base_country'] = "Ireland";
             }
-            else if(userDoc.candidate.base_country === 'Myanmar, {Burma}'){
+            else if(userDoc.candidate.base_country && userDoc.candidate.base_country === 'Myanmar, {Burma}'){
                 console.log(userDoc.candidate.base_country);
                 logger.debug("processing user doc: ", {userId: userDoc._id});
                 updateObj['candidate.base_country'] = "Myanmar (Burma)";
