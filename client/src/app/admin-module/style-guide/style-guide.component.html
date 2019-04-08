@@ -725,14 +725,7 @@
       <p>Dropdown Options single select</p>
     </div>
     <div class="col-md-7">
-      <div class="form-group">
-        <label >Type</label>
-        <select class="selectpicker form-control" title="(select one)">
-          <option>Full time</option>
-          <option>Part time</option>
-          <option>Freelance</option>
-        </select>
-      </div>
+      <L0-dropdown-single label="Types" [dropdownList]="job_types"></L0-dropdown-single>
     </div>
     <div class="col-md-3">
       <ul>
