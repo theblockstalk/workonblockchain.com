@@ -8,7 +8,7 @@ let totalDocsToProcess, totalModified = 0;
 
 // This function will perform the migration
 module.exports.up = async function() {
-    /*totalDocsToProcess = await cities.count();
+    totalDocsToProcess = await cities.count();
     logger.debug(totalDocsToProcess);
 
     await cities.findAndIterate({}, async function(cityDoc) {
@@ -33,7 +33,7 @@ module.exports.up = async function() {
             await cities.update({_id: cityDoc._id}, {$set : updateObj});
             totalModified++;
         }
-    });*/
+    });
 
     totalDocsToProcess=0;
     totalModified = 0;
@@ -46,12 +46,26 @@ module.exports.up = async function() {
             if(userDoc.candidate.locations){
                 for (let loc of userDoc.candidate.locations) {
                     if (loc.country) {
-                        const index = userDoc.candidate.locations.findIndex((
+                        let index = userDoc.candidate.locations.findIndex((
                             obj => obj.country === 'Congo {Democratic Rep}'
                         ));
-                        console.log("index: " + index);
-                        console.log(userDoc.candidate.locations[index]);
-                        userDoc.candidate.locations[index].country = 'Congo';
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Congo';
+                        }
+
+                        index = userDoc.candidate.locations.findIndex((
+                            obj => obj.country === 'Ireland {Republic}'
+                        ));
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Ireland';
+                        }
+
+                        index = userDoc.candidate.locations.findIndex((
+                            obj => obj.country === 'Myanmar, {Burma}'
+                        ));
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Myanmar (Burma)';
+                        }
                     }
                 }
                 updateObj['candidate.locations'] = userDoc.candidate.locations;
