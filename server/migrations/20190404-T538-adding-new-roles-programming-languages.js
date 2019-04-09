@@ -13,23 +13,17 @@ module.exports.up = async function() {
 
     await cities.findAndIterate({}, async function(cityDoc) {
         let updateObj = {};
+        logger.debug("processing city doc: ", {Id: cityDoc._id});
         if (cityDoc.country === 'Congo {Democratic Rep}') {
-            console.log(cityDoc.country);
-            logger.debug("processing city doc: ", {Id: cityDoc._id});
             updateObj['country'] = "Congo";
         }
         if (cityDoc.country === 'Ireland {Republic}') {
-            console.log(cityDoc.country);
-            logger.debug("processing user doc: ", {Id: cityDoc._id});
             updateObj['country'] = "Ireland";
         }
         if (cityDoc.country === 'Myanmar, {Burma}') {
-            console.log(cityDoc.country);
-            logger.debug("processing user doc: ", {Id: cityDoc._id});
             updateObj['country'] = "Myanmar (Burma)";
         }
         if (!objects.isEmpty(updateObj)) {
-            logger.debug("migrate city doc", updateObj);
             await cities.update({_id: cityDoc._id}, {$set : updateObj});
             totalModified++;
         }
@@ -41,6 +35,7 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
 
     await users.findAndIterate({}, async function(userDoc) {
+        logger.debug("processing user doc: ", {userId: userDoc._id});
         if(userDoc.type === 'candidate'){
             let updateObj = {};
             if(userDoc.candidate.locations){
@@ -73,25 +68,17 @@ module.exports.up = async function() {
 
             if(userDoc.nationality && (userDoc.nationality === 'Dutchman' || userDoc.nationality === 'Dutchwoman' ||
                 userDoc.nationality === 'Netherlander')){
-                console.log(userDoc.nationality);
-                logger.debug("processing user doc: ", {userId: userDoc._id});
                 updateObj['nationality'] = "Dutch";
             }
 
             if(userDoc.candidate && userDoc.candidate.base_country) {
                 if (userDoc.candidate.base_country === 'Congo {Democratic Rep}') {
-                    console.log(userDoc.candidate.base_country);
-                    logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Congo";
                 }
                 if (userDoc.candidate.base_country === 'Ireland {Republic}') {
-                    console.log(userDoc.candidate.base_country);
-                    logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Ireland";
                 }
                 if (userDoc.candidate.base_country === 'Myanmar, {Burma}') {
-                    console.log(userDoc.candidate.base_country);
-                    logger.debug("processing user doc: ", {userId: userDoc._id});
                     updateObj['candidate.base_country'] = "Myanmar (Burma)";
                 }
             }
@@ -106,29 +93,22 @@ module.exports.up = async function() {
             let updateObj = {};
             const companyDoc = await companies.findOne({ _creator: userDoc._id });
             if(companyDoc) {
+                logger.debug("processing company doc: ", {userId: companyDoc._id});
                 if (companyDoc.company_country === 'Congo {Democratic Rep}') {
-                    console.log(companyDoc.company_country);
-                    logger.debug("processing company doc: ", {userId: companyDoc._id});
                     updateObj['company_country'] = "Congo";
                 }
                 if (companyDoc.company_country === 'Ireland {Republic}') {
-                    console.log(companyDoc.company_country);
-                    logger.debug("processing company doc: ", {userId: companyDoc._id});
                     updateObj['company_country'] = "Ireland";
                 }
                 if (companyDoc.company_country === 'Myanmar, {Burma}') {
-                    console.log(companyDoc.company_country);
-                    logger.debug("processing company doc: ", {userId: companyDoc._id});
                     updateObj['company_country'] = "Myanmar (Burma)";
                 }
                 if (!objects.isEmpty(updateObj)) {
-                    logger.debug("migrate company doc", updateObj);
                     await companies.update({_id: companyDoc._id}, {$set: updateObj});
                     totalModified++;
                 }
             }
         }
-
     });
     logger.debug("total user doc processed", {total: totalModified});
 }
