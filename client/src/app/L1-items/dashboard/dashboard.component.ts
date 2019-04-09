@@ -14,8 +14,6 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.routeLink);
-    console.log(typeof  this.routeLink)
   }
 
 }
