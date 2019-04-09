@@ -16,6 +16,14 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   when_receive_email_notitfications;
   tweet;
   job_types = constants.job_type;
+  wizardMenuArray = [
+    {linkText: 'Terms & Conditions', routeLink:'/terms-and-condition', activeClass: true },
+    {linkText: 'Prefill Profile', routeLink:'/prefill-profile', activeClass: true },
+    {linkText: 'About', routeLink:'/about', activeClass: true },
+    {linkText: 'Job', routeLink:'/job', activeClass: true },
+    {linkText: 'Blockchain', routeLink:'/resume', disableClass: true },
+    {linkText: 'Experience', routeLink:'/experience', disableClass: true }
+  ];
   constructor() { }
 
   ngOnInit() {

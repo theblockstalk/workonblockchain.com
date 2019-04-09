@@ -505,14 +505,7 @@
 
   <div class = "row">
     <div class = "col-md-12">
-      <ul class="nav justify-content-center wizard">
-        <app-wizards routeLink="/terms-and-condition" activeClass="fa fa-check-circle text-success" linkText="Terms & Conditions"></app-wizards>
-        <app-wizards routeLink="/prefill-profile" activeClass="fa fa-check-circle text-success" linkText="Prefill Profile"></app-wizards>
-        <app-wizards routeLink="/about" activeClass="fa fa-check-circle text-success" linkText="About"></app-wizards>
-        <app-wizards routeLink="/Job"  disableClass="btn disabled" linkText="Job"></app-wizards>
-        <app-wizards routeLink="/resume"  disableClass="btn disabled" linkText="Blockchain"></app-wizards>
-        <app-wizards routeLink="/resume"  disableClass="btn disabled" linkText="Experience"></app-wizards>
-      </ul>
+        <app-wizards [wizardMenu]="wizardMenuArray" ></app-wizards>
     </div>
   </div>
 

@@ -1,6 +1,8 @@
-<li class="nav-item">
-  <a [routerLink]="routeLink" class="nav-link {{disableClass}}">
-    <i class="{{activeClass}}"></i>
-    {{linkText}}
+<ul class="nav justify-content-center wizard">
+<li class="nav-item" *ngFor="let wizard of wizardMenu">
+  <a [routerLink]="wizard.routeLink" class="nav-link btn" [ngClass]="wizard.disableClass === true? 'disabled': ''">
+    <i  [ngClass]="wizard.activeClass===true? 'fa fa-check-circle text-success' : '' "></i>
+    {{wizard.linkText}}
   </a>
 </li>
+</ul>

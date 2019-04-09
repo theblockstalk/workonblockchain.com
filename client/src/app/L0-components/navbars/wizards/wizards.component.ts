@@ -6,10 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./wizards.component.css']
 })
 export class WizardsComponent implements OnInit {
-  @Input() routeLink;
-  @Input() activeClass;
-  @Input() linkText;
-  @Input() disableClass;
+  @Input() wizardMenu = [];
   constructor() { }
 
   ngOnInit() {
