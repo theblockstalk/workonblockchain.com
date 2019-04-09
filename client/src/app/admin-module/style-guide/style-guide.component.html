@@ -506,42 +506,12 @@
   <div class = "row">
     <div class = "col-md-12">
       <ul class="nav justify-content-center wizard">
-        <li class="nav-item">
-          <a routerLink="/terms-and-condition" class="nav-link">
-            <i class="fa fa-check-circle text-success"></i>
-            Terms & Conditions
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/prefill-profile" class="nav-link">
-            <i class="fa fa-check-circle text-success"></i>
-            Prefill Profile
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/about" class="nav-link">
-            <i class="fa fa-check-circle text-success"></i>
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/job" class="nav-link">
-            <i class="fa fa-check-circle text-success"></i>
-            Jobs
-          </a>
-        </li>
-        <li class="nav-item px-2">
-          <a routerLink="/resume" class="nav-link">
-            <i class="fa fa-check-circle text-success"></i>
-            Blockchain
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/experience" class="nav-link btn disabled">
-            <i class=""></i>
-            Experience
-          </a>
-        </li>
+        <app-wizards routeLink="/terms-and-condition" activeClass="fa fa-check-circle text-success" linkText="Terms & Conditions"></app-wizards>
+        <app-wizards routeLink="/prefill-profile" activeClass="fa fa-check-circle text-success" linkText="Prefill Profile"></app-wizards>
+        <app-wizards routeLink="/about" activeClass="fa fa-check-circle text-success" linkText="About"></app-wizards>
+        <app-wizards routeLink="/Job"  disableClass="btn disabled" linkText="Job"></app-wizards>
+        <app-wizards routeLink="/resume"  disableClass="btn disabled" linkText="Blockchain"></app-wizards>
+        <app-wizards routeLink="/resume"  disableClass="btn disabled" linkText="Experience"></app-wizards>
       </ul>
     </div>
   </div>
