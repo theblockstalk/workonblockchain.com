@@ -725,7 +725,7 @@
       <p>Dropdown Options single select</p>
     </div>
     <div class="col-md-7">
-      <L0-dropdown-single label="Types" [dropdownList]="job_types"></L0-dropdown-single>
+      <L0-dropdown-single label="Types" [dropdownList]="job_types" (selectedValue)="getOutput($event)"></L0-dropdown-single>
     </div>
     <div class="col-md-3">
       <ul>

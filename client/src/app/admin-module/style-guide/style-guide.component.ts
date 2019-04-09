@@ -77,8 +77,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
 
   }
 
-  displayFn(value) {
-    //this.countriesModel = value;
-    //return this.selectedValue(value);
+  getOutput(data) {
+    console.log(data);
   }
 }
