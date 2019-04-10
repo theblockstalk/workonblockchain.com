@@ -16,15 +16,16 @@ import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-are
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
 import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
 import { OthersComponent } from './L0-components/buttons/others/others.component';
+import { AlertsComponent } from './L0-components/alerts/alerts/alerts.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
-                  OthersComponent],
+                  OthersComponent, AlertsComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
-                  OthersComponent]
+                  OthersComponent, AlertsComponent]
 })
 export class SharedModule { }
