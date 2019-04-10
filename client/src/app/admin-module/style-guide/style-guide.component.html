@@ -298,7 +298,7 @@
       <p>Positive button</p>
     </div>
     <div class="col-md-7">
-      <button type="button" class="btn btn-primary">Subscribe</button>
+      <L0-buttons-others buttonClass="btn-primary" label="Subscribe"></L0-buttons-others>
     </div>
     <div class="col-md-3">
       <ul>
@@ -311,7 +311,7 @@
       <p>Neutral button</p>
     </div>
     <div class="col-md-7">
-      <button type="button" class="btn btn-secondary">What happens next?</button>
+      <L0-buttons-others buttonClass="btn-secondary" label="What happens next?"></L0-buttons-others>
     </div>
     <div class="col-md-3">
       <ul>
@@ -324,7 +324,7 @@
       <p>Negative button</p>
     </div>
     <div class="col-md-7">
-      <button type="button" class="btn btn-danger">Not interested</button>
+      <L0-buttons-others buttonClass="btn-danger" label="Not interested"></L0-buttons-others>
     </div>
     <div class="col-md-3">
       <ul>
@@ -337,7 +337,7 @@
       <p>Other button</p>
     </div>
     <div class="col-md-7">
-      <button type="button" class="btn btn-warning mb-1 text-light">Other buttons</button>
+      <L0-buttons-others buttonClass="btn-warning mb-1 text-light" label="Other buttons"></L0-buttons-others>
     </div>
     <div class="col-md-3">
       <ul>
@@ -350,9 +350,8 @@
       <p>Google button</p>
     </div>
     <div class="col-md-7">
-      <a class="btn btn-block btn-social btn-google">
-        <span class="fab fa-google"></span> Sign in with Google
-      </a>
+      <app-social-login [urlLink]="google_url" label="Sign up with Google" buttonClass="btn-google"></app-social-login>
+
     </div>
     <div class="col-md-3">
       <ul>
@@ -365,10 +364,8 @@
       <p>Linkedin button</p>
     </div>
     <div class="col-md-7">
-      <a class="btn btn-block btn-social btn-linkedin">
-        <span class="fab fa-linkedin-in"></span>  Sign in with LinkedIn
+      <app-social-login [urlLink]="linkedin_url" label="Sign up with LinkedIn" buttonClass="btn-linkedin"></app-social-login>
 
-      </a>
     </div>
     <div class="col-md-3">
       <ul>

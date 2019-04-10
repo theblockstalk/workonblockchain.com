@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SafeHtmlPipe } from './pipe.safehtml';
+import { RouterModule } from '@angular/router';
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
@@ -14,14 +15,16 @@ import { ValidationTextComponent } from './L0-components/forms-view/validation-t
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
 import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
-import { RouterModule } from '@angular/router';
+import { OthersComponent } from './L0-components/buttons/others/others.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
-                  DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent],
+                  DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
+                  OthersComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
-                  AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent ]
+                  AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
+                  OthersComponent]
 })
 export class SharedModule { }
