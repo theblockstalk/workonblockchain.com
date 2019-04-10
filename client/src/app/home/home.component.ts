@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor( private route: ActivatedRoute,
                private router: Router,
                private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
-    this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');
+    this.titleService.setTitle('Work on blockchain today! Learning, freelance and jobs for developers and blockchain enthusiasts.');
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
       if(ref_code) {
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngOnInit()
   {
-    this.newMeta.updateTag({ name: 'description', content: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.' });
+    this.newMeta.updateTag({ name: 'description', content: 'Work for full-time, part-time, freelance, volunteers and agencies in the best blockchain projects! Opportunities and jobs for developers, designers and other technical professionals on public and enterprise blockchain technology.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
     $('#text').html($('.active > .carousel-caption').html());
     $('.slide').on('slid.bs.carousel', function () {

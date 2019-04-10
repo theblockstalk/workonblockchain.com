@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
+import { Title, Meta } from '@angular/platform-browser';
 
 declare var $: any;
 
@@ -14,7 +15,10 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
   approvedUsers;
   blockchainExperienceUsers;
 
-  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService) {
+  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
+    this.titleService.setTitle('Hire and contract developers and blockchain enthusiasts to work on your blockchain project now!');
+    this.newMeta.updateTag({ name: 'description', content: 'Hire and contract developers, designers and other technical professionals to work on blockchain projects! Search through talent that are passionate about blockchain technology for free and approach them at your leisure.' });
+
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
       if(ref_code) {
