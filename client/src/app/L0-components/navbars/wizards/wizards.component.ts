@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-wizards',
+  selector: 'L0-navbars-wizards',
   templateUrl: './wizards.component.html',
   styleUrls: ['./wizards.component.css']
 })

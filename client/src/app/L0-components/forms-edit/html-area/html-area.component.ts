@@ -1,7 +1,7 @@
 import { Component, OnInit, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-html-area',
+  selector: 'L0-html-area',
   templateUrl: './html-area.component.html',
   styleUrls: ['./html-area.component.css']
 })
