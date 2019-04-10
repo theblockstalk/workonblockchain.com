@@ -849,7 +849,6 @@
       <div class="form-group">
         <label>Angular material auto suggestion</label>
 
-        <div class="form-group">
           <h4>Candidate</h4>
           <L0-autosuggest placeholder="Location" userType="candidate" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
           <L0-autosugguest-value userType="candidate" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
@@ -874,7 +873,6 @@
               <span>{{ country }}</span>
             </mat-option>
           </mat-autocomplete>-->
-        </div>
       </div>
     </div>
     <div class="col-md-3">
@@ -933,13 +931,7 @@
     </div>
 
     <div class="col-md-7">
-      <div class="form-group">
-        <label>Enter  your text detail here</label>
-
-        <ckeditor   #myckeditor  [config]="ckeEditorConfig" debounce="500" >
-        </ckeditor>
-      </div>
-
+      <app-html-area label="Enter  your text detail here" [ckeEditorConfig]="ckeEditorConfig"></app-html-area>
     </div>
 
     <div class="col-md-3">
@@ -955,13 +947,7 @@
     </div>
 
     <div class="col-md-7">
-      <div class="form-group">
-        <label>Enter  your text detail here</label>
-
-        <ckeditor class="ckeditor_tab"  #myckeditor [config]="ckeConfig" debounce="500" >
-        </ckeditor>
-      </div>
-
+      <app-html-area label="Enter  your text detail here" formattingClass="ckeditor_tab" [ckeEditorConfig]="ckeEditorConfig"></app-html-area>
     </div>
 
     <div class="col-md-3">

@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
 import { SharedModule } from '../app-shared.module';
-import { CKEditorModule } from 'ng2-ckeditor';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component';
@@ -20,10 +18,7 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
   imports: [
     CommonModule,
     AdminModuleRoutingModule,
-    FormsModule,
     SharedModule,
-    ReactiveFormsModule,
-    CKEditorModule,
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule
