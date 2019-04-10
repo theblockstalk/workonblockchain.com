@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../app-shared.module';
 
 import {AuthModuleRoutingModule} from './auth-module-routing.module';
 
@@ -21,8 +21,7 @@ import { LinkedinAuthComponent } from './linkedin-auth/linkedin-auth.component';
   imports: [
     CommonModule,
     AuthModuleRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
     CandidateFormComponent,

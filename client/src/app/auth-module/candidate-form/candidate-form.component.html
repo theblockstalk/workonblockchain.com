@@ -61,19 +61,10 @@
             <div class = "form-group">
               <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
             </div>
-            <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-linkedin text-center" href="{{linkedin_url}}">
-                <i class="fab fa-linkedin" aria-hidden="true"></i>
-                Sign up with LinkedIn
-              </a>
-            </div>
 
-            <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-google text-center"  href="{{google_url}}">
-                <i class="fab fa-google" aria-hidden="true"></i>
-                Sign up with Google
-              </a>
-            </div>
+            <app-social-login [urlLink]="linkedin_url" label="Sign up with LinkedIn" buttonClass="btn-linkedin"></app-social-login>
+
+            <app-social-login [urlLink]="google_url" label="Sign up with Google" buttonClass="btn-google"></app-social-login>
           </form>
         </div>
         <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="nav-profile-tab">

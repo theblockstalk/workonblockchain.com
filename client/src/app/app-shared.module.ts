@@ -13,14 +13,15 @@ import { AutosugguestValueComponent } from './L0-components/forms-view/autosuggu
 import { ValidationTextComponent } from './L0-components/forms-view/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
+import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
-                  DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent],
+                  DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
-                  AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent ]
+                  AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent ]
 })
 export class SharedModule { }
