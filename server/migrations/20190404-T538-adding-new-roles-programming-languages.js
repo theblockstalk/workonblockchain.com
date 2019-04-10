@@ -1,27 +1,112 @@
 const logger = require('../controller/services/logger');
 const users = require('../model/mongoose/users');
-const object = require('../controller/services/objects');
+const companies = require('../model/mongoose/company');
+const cities = require('../model/mongoose/cities');
+const objects = require('../controller/services/objects');
 
 let totalDocsToProcess, totalModified = 0;
 
 // This function will perform the migration
 module.exports.up = async function() {
-    let set = {};
-    totalDocsToProcess = await users.count({type:'candidate'});
+    totalDocsToProcess = await cities.count();
     logger.debug(totalDocsToProcess);
 
-    await users.findAndIterate({type:'candidate'}, async function(candDoc) {
-        if(candDoc.nationality === 'Dutchman' || candDoc.nationality === 'Dutchwoman' ||
-            candDoc.nationality === 'Netherlander'){
-            logger.debug("processing user doc: ", {userId: candDoc._id});
-            set = {
-                nationality: "Dutch"
-            };
-            let updateObj = {$set: set};
-            if (updateObj) {
-                logger.debug("migrate user doc", set);
-                await users.update({_id: candDoc._id}, updateObj);
+    await cities.findAndIterate({}, async function(cityDoc) {
+        let updateObj = {};
+        logger.debug("processing city doc: ", {Id: cityDoc._id});
+        if (cityDoc.country === 'Congo {Democratic Rep}') {
+            updateObj['country'] = "Congo";
+        }
+        if (cityDoc.country === 'Ireland {Republic}') {
+            updateObj['country'] = "Ireland";
+        }
+        if (cityDoc.country === 'Myanmar, {Burma}') {
+            updateObj['country'] = "Myanmar (Burma)";
+        }
+        if (!objects.isEmpty(updateObj)) {
+            await cities.update({_id: cityDoc._id}, {$set : updateObj});
+            totalModified++;
+        }
+    });
+
+    totalDocsToProcess=0;
+    totalModified = 0;
+    totalDocsToProcess = await users.count();
+    logger.debug(totalDocsToProcess);
+
+    await users.findAndIterate({}, async function(userDoc) {
+        logger.debug("processing user doc: ", {userId: userDoc._id});
+        if(userDoc.type === 'candidate'){
+            let updateObj = {};
+            if(userDoc.candidate.locations){
+                for (let loc of userDoc.candidate.locations) {
+                    if (loc.country) {
+                        let index = userDoc.candidate.locations.findIndex((
+                            obj => obj.country === 'Congo {Democratic Rep}'
+                        ));
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Congo';
+                        }
+
+                        index = userDoc.candidate.locations.findIndex((
+                            obj => obj.country === 'Ireland {Republic}'
+                        ));
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Ireland';
+                        }
+
+                        index = userDoc.candidate.locations.findIndex((
+                            obj => obj.country === 'Myanmar, {Burma}'
+                        ));
+                        if(index >= 0) {
+                            userDoc.candidate.locations[index].country = 'Myanmar (Burma)';
+                        }
+                    }
+                }
+                updateObj['candidate.locations'] = userDoc.candidate.locations;
+            }
+
+            if(userDoc.nationality && (userDoc.nationality === 'Dutchman' || userDoc.nationality === 'Dutchwoman' ||
+                userDoc.nationality === 'Netherlander')){
+                updateObj['nationality'] = "Dutch";
+            }
+
+            if(userDoc.candidate && userDoc.candidate.base_country) {
+                if (userDoc.candidate.base_country === 'Congo {Democratic Rep}') {
+                    updateObj['candidate.base_country'] = "Congo";
+                }
+                if (userDoc.candidate.base_country === 'Ireland {Republic}') {
+                    updateObj['candidate.base_country'] = "Ireland";
+                }
+                if (userDoc.candidate.base_country === 'Myanmar, {Burma}') {
+                    updateObj['candidate.base_country'] = "Myanmar (Burma)";
+                }
+            }
+
+            if (!objects.isEmpty(updateObj)) {
+                logger.debug("migrate user doc", updateObj);
+                await users.update({_id: userDoc._id}, {$set : updateObj});
                 totalModified++;
+            }
+        }
+        else{
+            let updateObj = {};
+            const companyDoc = await companies.findOne({ _creator: userDoc._id });
+            if(companyDoc) {
+                logger.debug("processing company doc: ", {userId: companyDoc._id});
+                if (companyDoc.company_country === 'Congo {Democratic Rep}') {
+                    updateObj['company_country'] = "Congo";
+                }
+                if (companyDoc.company_country === 'Ireland {Republic}') {
+                    updateObj['company_country'] = "Ireland";
+                }
+                if (companyDoc.company_country === 'Myanmar, {Burma}') {
+                    updateObj['company_country'] = "Myanmar (Burma)";
+                }
+                if (!objects.isEmpty(updateObj)) {
+                    await companies.update({_id: companyDoc._id}, {$set: updateObj});
+                    totalModified++;
+                }
             }
         }
     });
