@@ -31,12 +31,8 @@
               <button type="submit" class = "btn btn-primary float-right" >Save</button>
             </div>
             <div class="col-md-12 mt-3">
-              <div class="alert alert-success" role="alert" *ngIf = "success">
-                {{success}}
-              </div>
-              <div class="alert alert-danger" role="alert" *ngIf = "error">
-                {{error}}
-              </div>
+              <L0-alerts alertClass="alert-success" [alertMsg]="success" alertClass="alert-success" ></L0-alerts>
+              <L0-alerts alertClass="alert-danger" [alertMsg]="error" alertClass="alert-error" ></L0-alerts>
             </div>
           </div>
         </form>

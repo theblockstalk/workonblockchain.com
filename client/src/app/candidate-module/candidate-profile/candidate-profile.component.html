@@ -9,7 +9,7 @@
 
 <ng-template #profile_section >
   <section class = "wob-bg-primary2 py-5 mt-5">
-     <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
+    <L0-alerts *ngIf="message" alertClass="alert-info" [alertMsg]="message" ></L0-alerts>
 
     <div class="container pt-2">
       <div class="row">

@@ -431,12 +431,9 @@
                 {{job_desc_log}}
               </div>
             </div>
-            <div class="alert alert-success" role="alert" *ngIf="job_offer_msg_success">
-              {{job_offer_msg_success}}
-            </div>
-            <div class="alert alert-danger" role="alert" *ngIf="job_offer_log_erorr">
-              {{job_offer_log_erorr}}
-            </div>
+            <L0-alerts alertClass="alert-success" *ngIf="job_offer_msg_success" [alertMsg]="job_offer_msg_success" ></L0-alerts>
+            <L0-alerts alertClass="alert-danger" *ngIf="job_offer_log_erorr" [alertMsg]="job_offer_log_erorr" ></L0-alerts>
+
             <div class = "form-group text-center">
               <button type="submit" class="btn btn-primary">Send</button>
             </div>

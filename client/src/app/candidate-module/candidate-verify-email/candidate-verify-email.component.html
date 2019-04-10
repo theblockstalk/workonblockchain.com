@@ -9,18 +9,15 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="alert alert-success mt-3" role="alert" >
-          You have been sent a verification code to your email. Please click the link in the email.
-        </div>
+        <L0-alerts alertClass="alert-success" alertMsg="You have been sent a verification code to your email. Please click the link in the email." ></L0-alerts>
+
         <p>
           Check your spam folder. If you can't find the email please click <a (click)="verify_client()" class="text-primary"><u>here</u></a> to resend. Your email code will expire in 30 minutes.
         </p>
-        <div class="alert alert-success mt-3" role="alert" *ngIf="success_msg" >
-          {{success_msg}}
-        </div>
-        <div class="alert alert-error mt-3" role="alert" *ngIf="error_msg" >
-          {{error_msg}}
-        </div>
+
+        <L0-alerts alertClass="alert-success" *ngIf="success_msg" [alertMsg]="success_msg" ></L0-alerts>
+        <L0-alerts alertClass="alert-error" *ngIf="error_msg" [alertMsg]="error_msg" ></L0-alerts>
+
       </div>
     </div>
   </div>

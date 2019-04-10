@@ -843,7 +843,7 @@
         <label>Angular material auto suggestion</label>
 
           <h4>Candidate</h4>
-          <L0-autosuggest placeholder="Location" userType="candidate" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
+          <L0-autosuggest placeholder="Location" [controllerOptions]="controllerOptions" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
           <L0-autosugguest-value userType="candidate" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
 
           <h4>Company</h4>

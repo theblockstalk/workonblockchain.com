@@ -19,11 +19,12 @@
           </div>
           <div class = "row">
             <div class="col-md-12">
-              <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
-              <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
-              <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
-              <div class="alert alert-danger" role="alert" *ngIf="error && !message ">{{error}}</div>
-              <h5 class="alert alert-danger" role="alert" *ngIf = "log">{{log}}</h5>
+              <L0-alerts *ngIf="error && !message" alertClass="alert-danger" [alertMsg]="error" ></L0-alerts>
+              <L0-alerts *ngIf="log" alertClass="alert-danger" [alertMsg]="log" ></L0-alerts>
+              <L0-alerts *ngIf="forgetMessage" alertClass="alert-success" [alertMsg]="forgetMessage" ></L0-alerts>
+              <L0-alerts *ngIf="message && !error" alertClass="alert-success" [alertMsg]="message" ></L0-alerts>
+              <L0-alerts *ngIf="password_message && !message " alertClass="alert-success" [alertMsg]="password_message" ></L0-alerts>
+              <!-- need to discuss -->
               <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
             </div>
           </div>

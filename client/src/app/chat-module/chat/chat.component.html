@@ -10,9 +10,7 @@
           </div>
           <div class = "d-flex my-4">
             <div *ngIf="msg!==''" class = "col-md-12 py-5 my-3">
-              <div class="alert alert-danger">
-                {{msg}}
-              </div>
+              <L0-alerts alertClass="alert-danger" [alertMsg]="msg" ></L0-alerts>
             </div>
             <div class = "row" *ngIf="users && msg === ''" id = "frame">
               <div class = "col-3 col-sm-4 float-left h-100 position-relative p-0">
@@ -419,9 +417,7 @@
         </div>
       </div>
       <div *ngIf="file_msg!=''" class = "col-md-12">
-        <h4 class="alert alert-danger">
-          {{file_msg}}
-        </h4>
+        <L0-alerts alertClass="alert-danger" [alertMsg]="file_msg" ></L0-alerts>
       </div>
     </div>
 </section>
@@ -622,12 +618,8 @@
 
           <div class="row">
             <div class="col-md-12">
-              <div *ngIf="job_offer_log_error" class="mt-3 alert alert-danger">
-                {{job_offer_log_error}}
-              </div>
-              <div *ngIf="job_offer_log_success" class="mt-3 alert alert-danger">
-                {{job_offer_log_success}}
-              </div>
+              <L0-alerts alertClass="alert-danger" aligmentClass="mt-3" *ngIf="job_offer_log_error" [alertMsg]="job_offer_log_error" ></L0-alerts>
+              <L0-alerts alertClass="alert-success" aligmentClass="mt-3" *ngIf="job_offer_log_success" [alertMsg]="job_offer_log_success" ></L0-alerts>
               <div class="form-group text-right">
                 <button type="submit" class="btn btn-primary model-btn submit">Send</button>
                 <div class = "invalid-feedback d-inline-block mt-2 mb-2">

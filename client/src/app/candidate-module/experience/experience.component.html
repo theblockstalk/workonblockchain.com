@@ -321,7 +321,8 @@
           </div>
 
           <div class="row mt-4">
-            <div class="alert alert-danger" *ngIf="message">{{message}}</div>
+            <L0-alerts alertClass="alert-success" *ngIf="message" [alertMsg]="message" ></L0-alerts>
+
             <div class="col-md-12">
               <div class="form-group">
                 <label>Bio</label>
@@ -345,7 +346,8 @@
           <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
             {{error_msg}}
           </div>
-          <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+          <L0-alerts alertClass="alert-danger" *ngIf="log" [alertMsg]="log" ></L0-alerts>
+
         </form>
       </div>
     </div>

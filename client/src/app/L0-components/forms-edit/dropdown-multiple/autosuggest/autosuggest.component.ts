@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AutosuggestComponent implements OnInit {
   @Input() placeholder;
-  @Input() userType;
+  @Input() controllerOptions;
   @Output() selectedLocations : EventEmitter<any> = new EventEmitter<any>();
   countries;
   selectedValueArray = [];
@@ -26,7 +26,7 @@ export class AutosuggestComponent implements OnInit {
   suggestedOptions() {
     if(this.countriesModel !== '') {
       this.error='';
-      this.authenticationService.autoSuggestOptions(this.countriesModel , true)
+      this.authenticationService.autoSuggestOptions(this.countriesModel , this.controllerOptions)
         .subscribe(
           data => {
             if(data) {
@@ -40,7 +40,7 @@ export class AutosuggestComponent implements OnInit {
                   let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
                   citiesOptions.push({_id : cities['city']._id , name : cityString});
                 }
-                if(this.userType === 'candidate' && cities['country'] ) {
+                if(this.controllerOptions.userType === 'candidate' && cities['country'] ) {
                   let countryString = cities['country']  + " (country)";
                   if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
                     citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
@@ -77,13 +77,13 @@ export class AutosuggestComponent implements OnInit {
       if(citiesExist) {
         this.countriesModel = '';
         this.cities = [];
-        if(this.userType === 'candidate' && this.selectedValueArray.length > 9) {
+        if(this.controllerOptions.userType === 'candidate' && this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';
           setInterval(() => {
             this.error = "" ;
           }, 5000);
         }
-        else if(this.userType === 'company' && this.selectedValueArray.length > 4) {
+        else if(this.controllerOptions.userType === 'company' && this.selectedValueArray.length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
             this.error = "" ;
@@ -97,7 +97,7 @@ export class AutosuggestComponent implements OnInit {
             }, 4000);
           }
           else {
-            if(this.userType === 'candidate'){
+            if(this.controllerOptions.userType === 'candidate'){
               if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: inputValue, visa_needed:false});
               else this.selectedValueArray.push({ name: inputValue, visa_needed:false});
             }

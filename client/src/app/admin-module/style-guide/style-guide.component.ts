@@ -16,6 +16,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   when_receive_email_notitfications;
   tweet;
   job_types = constants.job_type;
+  controllerOptions = {countries: true};
   wizardMenuArray = [
     {linkText: 'Terms & Conditions', routeLink:'/terms-and-condition', activeClass: true },
     {linkText: 'Prefill Profile', routeLink:'/prefill-profile', activeClass: true },

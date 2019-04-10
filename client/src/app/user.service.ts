@@ -1463,7 +1463,7 @@ export class UserService {
   }
 
   autoSuggestOptions(queryInput:any, country : boolean) {
-    let input = {'autosuggest' :queryInput , 'countries' : country };
+    let input = {'autosuggest' :queryInput , 'options' : country };
     return this.http.post(URL+'users/auto_suggest/'+{}, input ,{
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>

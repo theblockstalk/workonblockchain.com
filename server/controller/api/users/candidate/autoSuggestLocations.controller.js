@@ -17,14 +17,14 @@ module.exports = async function (req, res) {
             outputOptions.push({city : cityLoc});
         }
 
-        if(queryInput.countries === true) {
+        if(queryInput.options && queryInput.options.countries === true) {
             for(let countryLoc of citiesDoc) {
                 outputOptions.push({country : countryLoc.country});
             }
         }
 
     }
-    if(queryInput.countries === true) {
+    if(queryInput.options && queryInput.options.countries === true) {
         const countriesEnum = enumerations.countries;
         let count = 0;
         for(let countryEnum of countriesEnum) {

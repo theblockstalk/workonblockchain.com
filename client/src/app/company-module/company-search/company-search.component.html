@@ -148,15 +148,14 @@
           <ng-template  #candidateInfo>
 
             <div class="col-md-9">
-              <p *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</p>
+              <L0-alerts alertClass="alert-danger" *ngIf="msg !== ''" [alertMsg]="msg" ></L0-alerts>
 
               <div  *ngIf="msg === '' && verify_msg === ''">
-                <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
-                  <span>{{candidate_data.length}}</span> candidates match your search
-                </div>
-                <div *ngIf="not_found !== '' " class="alert alert-danger mt-1" role="alert">
-                  <span>{{not_found}}</span>
-                </div>
+
+                <L0-alerts alertClass="alert-info" aligmentClass="mt-1" *ngIf="candidate_data && candidate_data.length > 0" [alertMsg]="candidate_data.length + ' candidates match your search'" ></L0-alerts>
+
+                <L0-alerts alertClass="alert-danger" aligmentClass="mt-1" *ngIf="not_found !== ''" [alertMsg]="not_found" ></L0-alerts>
+
               </div>
               <div *ngIf="candidate_data && candidate_data.length > 0 ">
                 <div class="panel-group" *ngFor= "let data of pagedItems ">
@@ -337,12 +336,9 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
-                  {{job_offer_log_erorr}}
-                </div>
-                <div class = "alert alert-danger" *ngIf="job_offer_log_success">
-                  {{job_offer_log_success}}
-                </div>
+                <L0-alerts alertClass="alert-danger" *ngIf="job_offer_log_erorr" [alertMsg]="job_offer_log_erorr" ></L0-alerts>
+                <L0-alerts alertClass="alert-success" *ngIf="job_offer_log_success" [alertMsg]="job_offer_log_success" ></L0-alerts>
+
               </div>
             </div>
             <div class="modal-footer">

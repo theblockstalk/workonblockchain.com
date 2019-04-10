@@ -6,12 +6,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./twitter-share.component.css']
 })
 export class TwitterShareComponent implements OnInit {
-  @Input() twitterLink;
-  @Input() label;
   @Input() text;
+  twitterLink;
+
   constructor() { }
 
   ngOnInit() {
+    this.twitterLink = 'https://twitter.com/intent/tweet?text=' + this.text;
   }
 
 }

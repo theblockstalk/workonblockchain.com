@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CKEditorModule } from 'ng2-ckeditor';
-import { FormsModule } from '@angular/forms';
 import {ScriptService} from '../scripts/script.service';
+import { SharedModule } from '../app-shared.module';
 
 import { AdminEditorModuleRoutingModule } from './admin-editor-module-routing.module';
 
@@ -16,8 +15,7 @@ import { AdminTermsConditionEditorComponent } from './admin-terms-condition-edit
   imports: [
     CommonModule,
     AdminEditorModuleRoutingModule,
-    CKEditorModule,
-    FormsModule
+    SharedModule
   ],
   declarations: [
     WelcomePopupEditorComponent,

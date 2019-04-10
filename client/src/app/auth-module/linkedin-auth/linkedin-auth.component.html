@@ -7,9 +7,7 @@
       </div>
 
       <div class="col-md-12 bg-white p-5"  *ngIf = "log">
-        <div class="alert alert-danger mb-0" role="alert">
-          {{log}}
-        </div>
+        <L0-alerts *ngIf="log" alertClass="alert-danger" aligmentClass="mb-0" [alertMsg]="log" ></L0-alerts>
       </div>
     </div>
 

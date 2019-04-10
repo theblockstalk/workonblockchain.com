@@ -7,10 +7,13 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class AlertsComponent implements OnInit {
   @Input() alertMsg;
-  @Input() alertClass;
+  @Input() alertClass = '';
+  @Input() aligmentClass = '';
+  class;
   constructor() { }
 
   ngOnInit() {
+    this.class = this.alertClass + ' ' + this.aligmentClass;
   }
 
 }

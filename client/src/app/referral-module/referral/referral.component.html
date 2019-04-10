@@ -35,7 +35,8 @@
               </span>
                 <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
               </div>
-              <L0-twitter-share twitterLink="https://twitter.com/intent/tweet?text={{text}}" [text]="text" label="Tweet"></L0-twitter-share>
+              <h1>{{text}}</h1>
+              <L0-twitter-share [text]="text"></L0-twitter-share>
             </div>
           </div>
 
@@ -58,8 +59,8 @@
                 <label>Body</label>
                 <textarea class="form-control" placeholder="your message here" rows="14" name="mail_body" id="comment" [(ngModel)]="mail_body">{{mail_body}}</textarea>
               </div>
-              <div *ngIf="log_success" class="alert alert-success">{{log_success}}</div>
-              <div *ngIf="log" class="alert alert-danger">{{log}}</div>
+              <L0-alerts alertClass="alert-success" *ngIf="log_success" [alertMsg]="log_success" ></L0-alerts>
+              <L0-alerts alertClass="alert-danger" *ngIf="log" [alertMsg]="log" ></L0-alerts>
               <div class="form-group">
                 <button type="submit" class = "btn btn-primary">Send</button>
               </div>

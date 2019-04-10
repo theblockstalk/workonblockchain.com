@@ -66,13 +66,8 @@
 
           <div class="col-md-9">
 
-            <div class = "alert alert-info mt-1" *ngIf="length > 0">
-              <span>{{length}}</span> candidates match your search
-            </div>
-
-            <div class = "alert alert-info mt-1" *ngIf="log !== ''">
-              <span>{{log}}</span>
-            </div>
+            <L0-alerts *ngIf="length > 0" alertClass="alert-info" aligmentClass="mt-1" [alertMsg]="length + ' candidates match your search'" ></L0-alerts>
+            <L0-alerts *ngIf="log !== ''" alertClass="alert-info" aligmentClass="mt-1" [alertMsg]="log" ></L0-alerts>
 
 
             <div *ngIf="info && info.length > 0 ">

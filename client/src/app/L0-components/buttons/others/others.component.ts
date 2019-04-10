@@ -8,11 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OthersComponent implements OnInit {
   @Input() label;
   @Input() buttonClass;
+  @Input() buttonType;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.label);
-
   }
 
 }
