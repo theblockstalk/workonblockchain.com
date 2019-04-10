@@ -12,3 +12,12 @@ export const getFilteredNames = function (candidateData, new_roles) {
   filtered_array.sort();
   return filtered_array;
 }
+
+export const filter_array = function (arr) {
+  var hashTable = {};
+  return arr.filter(function (el) {
+    var key = JSON.stringify(el);
+    var match = Boolean(hashTable[key]);
+    return (match ? false : hashTable[key] = true);
+  });
+}

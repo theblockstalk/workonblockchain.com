@@ -413,7 +413,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
-
   suggestedOptions() {
     if(this.countriesModel !== '') {
         this.error='';

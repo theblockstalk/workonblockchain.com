@@ -848,8 +848,17 @@
     <div class="col-md-7">
       <div class="form-group">
         <label>Angular material auto suggestion</label>
+
         <div class="form-group">
-          <mat-form-field class="example-full-width" floatLabel="always">
+          <h4>Candidate</h4>
+          <L0-autosuggest placeholder="Location" userType="candidate" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
+          <L0-autosugguest-value userType="candidate" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
+
+          <h4>Company</h4>
+          <L0-autosuggest placeholder="Location" userType="company" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
+          <L0-autosugguest-value userType="company" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
+
+          <!--<mat-form-field class="example-full-width" floatLabel="always">
             <mat-label></mat-label>
             <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)" placeholder="Location">
           </mat-form-field>
@@ -864,7 +873,7 @@
             <mat-option *ngFor="let country of countries" [value]="country">
               <span>{{ country }}</span>
             </mat-option>
-          </mat-autocomplete>
+          </mat-autocomplete>-->
         </div>
       </div>
     </div>

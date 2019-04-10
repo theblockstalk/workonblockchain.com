@@ -1,0 +1,24 @@
+<!-- text box -->
+<mat-form-field floatLabel="always">
+  <mat-label></mat-label>
+  <input matInput [matAutocomplete]="auto" placeholder="{{placeholder}}" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+</mat-form-field>
+
+<!-- dropdown options --->
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let loc of cities" [value]="loc.name">
+    <span>{{ loc.name }}</span>
+  </mat-option>
+</mat-autocomplete>
+
+<!-- display error msg -->
+<ng-container *ngIf="error;else emptyInput">
+  <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+    {{error}}
+  </div>
+</ng-container>
+<ng-template #emptyInput>
+  <div class="invalid-feedback d-inline">
+    {{country_input_log}}
+  </div>
+</ng-template>

@@ -1,17 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { SafeHtmlPipe } from './pipe.safehtml';
+import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextValueComponent } from './L0-components/forms-view/text-value/text-value.component';
 import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
+import { AutosuggestComponent } from './L0-components/forms-edit/dropdown-multiple/autosuggest/autosuggest.component';
+import { AutosugguestValueComponent } from './L0-components/forms-view/autosugguest-value/autosugguest-value.component'
+
 
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports:      [ CommonModule, RouterModule ],
-  declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent],
-  exports:      [ SafeHtmlPipe, CommonModule, FormsModule, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent ]
+  imports:      [ CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
+  declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent,
+                  DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent],
+  exports:      [ SafeHtmlPipe, FormsModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
+                  TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent ]
 })
 export class SharedModule { }
