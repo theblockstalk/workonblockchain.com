@@ -8,16 +8,17 @@ import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
 import { AutosuggestComponent } from './L0-components/forms-edit/dropdown-multiple/autosuggest/autosuggest.component';
-import { AutosugguestValueComponent } from './L0-components/forms-view/autosugguest-value/autosugguest-value.component'
-
+import { AutosugguestValueComponent } from './L0-components/forms-view/autosugguest-value/autosugguest-value.component';
+import { ValidationTextComponent } from './L0-components/forms-view/validation-text/validation-text.component';
 
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
-  declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent,
+  declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent,
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent],
   exports:      [ SafeHtmlPipe, FormsModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
-                  TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent ]
+                  TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
+                  AutosugguestValueComponent, ValidationTextComponent ]
 })
 export class SharedModule { }
