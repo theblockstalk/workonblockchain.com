@@ -245,7 +245,8 @@ const UserSchema = new Schema({
                         }]
                     },
                     description_commercial_platforms:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                     experimented_platforms: {
                         type: [{
@@ -254,7 +255,8 @@ const UserSchema = new Schema({
                         }],
                     },
                     description_experimented_platforms:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                     commercial_skills : {
                         type: [{
@@ -269,7 +271,8 @@ const UserSchema = new Schema({
                         }],
                     },
                     description_commercial_skills:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                 }
             },
