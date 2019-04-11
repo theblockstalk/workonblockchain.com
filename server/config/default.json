@@ -21,7 +21,8 @@
   "cron": {
     "unreadMessagesTick": "0-59 * * * *",
     "syncSendgrid": "0-59 * * * *",
-    "autoNotification" : "0-59 * * * *"
+    "autoNotification" : "0-59 * * * *",
+    "newMessagesEmail": "* * * * 1-7"
   },
   "sendGrid": {
     "accountFromAddress" : "antonio@workonblockchain.com",

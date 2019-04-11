@@ -108,7 +108,6 @@ module.exports.endpoint = async function (req, res) {
         else {
             errors.throwError('There was a problem with your linkedin identity', 400);
         }
-
     }
 
 

@@ -99,7 +99,7 @@
                 <div class="form-group">
                   <label>Nationality</label>
                   <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options" [attr.selected]="options === info.nationality ? true : null ">{{options}}</option>
+                    <option *ngFor='let options of nationality' [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null ">{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
                     {{nationality_log}}
@@ -110,7 +110,7 @@
               <div class="col-md-6">
                 <div class="form-group" >
                   <label>Profile picture</label>
-                  <input type="file" disabled class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
+                  <input type="file" class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
                   <label>
                     <span *ngIf="img_src" >{{img_src}}</span>
                   </label>
@@ -129,7 +129,7 @@
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
                   </ul>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                  <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                     {{intro_log}}
                   </div>
@@ -155,7 +155,7 @@
                 <div class="form-group">
                   <label>Country</label>
                   <select title="Please choose base country" class="form-control selectpicker" required name="base_country" [(ngModel)]="info.base_country">
-                    <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.base_country ? true : null ">{{options}}</option>
+                    <option *ngFor='let options of countries'  [value]="options.value" [attr.selected]="options.value === info.base_country ? true : null ">{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.base_country">
                     {{base_country_log}}
@@ -230,13 +230,9 @@
                         {{country_log}}
                       </div>
                     </div>
-
                   </div>
-
                 </div>
               </div>
-
-
             </div>
 
 
@@ -307,7 +303,7 @@
                 <div class="form-group">
                   <label class="invisible">Current annual salary currency</label>
                   <select [(ngModel)]="current_currency" title="Currency" class="form-control selectpicker" name="current_currency" >
-                    <option value="-1">Currency</option>
+                    <option value="-1" >Currency</option>
                     <option *ngFor='let currentCurrency of currency'  [value]="currentCurrency" [attr.selected]="current_currency === currentCurrency ? true : null">{{currentCurrency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="(salary && !current_currency) || (salary && current_currency === '-1') ">
@@ -427,7 +423,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experience</label>
-                  <textarea rows="4" cols="100" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -459,7 +455,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experimentation</label>
-                  <textarea rows="4" cols="100" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -516,7 +512,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of commercial experience</label>
-                  <textarea rows="4" cols="100" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -717,7 +713,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Job description (optional)</label>
-                        <textarea rows="5" id="comment13" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+                        <textarea rows="5" id="comment13" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                       </div>
                     </div>
 

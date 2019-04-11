@@ -82,7 +82,8 @@ if (isLiveApplication()) {
 settings.CRON = {
     UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
     AUTO_NOTIFICATION: config.cron.autoNotification,
-    SYNC_SENDGRID: config.cron.syncSendgrid
+    SYNC_SENDGRID: config.cron.syncSendgrid,
+    NEW_MESSAGES_EMAIL: config.cron.newMessagesEmail
 };
 
 settings.googleCredentials = config.googleConfig;

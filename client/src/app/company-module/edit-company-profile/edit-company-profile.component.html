@@ -56,7 +56,7 @@
                   <div class="form-group w-100">
                     <label>Country name</label>
                     <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
-                      <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                      <option class='option' *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
                     </select>
                     <div class="invalid-feedback d-inline" *ngIf="!company_country">
                       {{company_country_log}}
@@ -198,7 +198,7 @@
                   <div class="form-group w-100">
                     <label>Company description</label>
                     <div class="form-group">
-                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                      <textarea name="company_description" maxlength="3000" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
                       <div class="invalid-feedback d-inline" *ngIf="!company_description">
                         {{des_log}}
                       </div>
@@ -416,7 +416,7 @@
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
                         <select multiple class="form-control selectpicker" title="Residence country"  formControlName="residence_country">
-                          <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
+                          <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                         </select>
                         <div class = "invalid-feedback d-inline" *ngIf="preferncesForm.value.prefItems[i].residence_country && preferncesForm.value.prefItems[i].residence_country.length > 50" >
                           {{residence_log}}
