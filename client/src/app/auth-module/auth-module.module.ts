@@ -16,6 +16,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import {LoginResolver} from '../is-loggedin.resolver';
 import { SocialAuthComponent } from './social-auth/social-auth.component';
 import { LinkedinAuthComponent } from './linkedin-auth/linkedin-auth.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { LinkedinAuthComponent } from './linkedin-auth/linkedin-auth.component';
     VerifyEmailComponent,
     NotFoundComponent,
     SocialAuthComponent,
-    LinkedinAuthComponent
+    LinkedinAuthComponent,
+    PageNotFoundComponent
   ],
   providers:
     [
