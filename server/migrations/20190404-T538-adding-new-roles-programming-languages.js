@@ -13,7 +13,6 @@ module.exports.up = async function() {
 
     await cities.findAndIterate({}, async function(cityDoc) {
         let updateObj = {};
-        logger.debug("processing city doc: ", {Id: cityDoc._id});
         if (cityDoc.country === 'Congo {Democratic Rep}') {
             updateObj['country'] = "Congo";
         }
@@ -24,6 +23,7 @@ module.exports.up = async function() {
             updateObj['country'] = "Myanmar (Burma)";
         }
         if (!objects.isEmpty(updateObj)) {
+            logger.debug("migrating city doc: ", {cityId: cityDoc._id, $set : updateObj});
             await cities.update({_id: cityDoc._id}, {$set : updateObj});
             totalModified++;
         }
@@ -35,7 +35,6 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
 
     await users.findAndIterate({}, async function(userDoc) {
-        logger.debug("processing user doc: ", {userId: userDoc._id});
         if(userDoc.type === 'candidate'){
             let updateObj = {};
             if(userDoc.candidate.locations){
@@ -84,7 +83,7 @@ module.exports.up = async function() {
             }
 
             if (!objects.isEmpty(updateObj)) {
-                logger.debug("migrate user doc", updateObj);
+                logger.debug("migrating user doc: ", {userId: userDoc._id, {$set : updateObj}});
                 await users.update({_id: userDoc._id}, {$set : updateObj});
                 totalModified++;
             }
@@ -112,7 +111,6 @@ module.exports.up = async function() {
                     }
                 }
 
-                logger.debug("processing company doc: ", {userId: companyDoc._id});
                 if (companyDoc.company_country === 'Congo {Democratic Rep}') {
                     updateObj['company_country'] = "Congo";
                 }
@@ -132,6 +130,7 @@ module.exports.up = async function() {
                 }
                 else{
                     if (!objects.isEmpty(updateObj)) {
+                        logger.debug("migrating company doc: ", {userId: companyDoc._id, $set: updateObj});
                         await companies.update({_id: companyDoc._id}, {$set: updateObj});
                         totalModified++;
                     }
