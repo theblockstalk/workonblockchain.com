@@ -29,7 +29,7 @@ export class AutosuggestComponent implements OnInit {
   autoSuggest() {
     if(this.textValue !== '') {
       this.error = '';
-      this.authenticationService.autoSuggestOptions(this.textValue, this.controllerOptions)
+      this.autoSuggestController(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
               this.optionValues = this.resultItemDisplay(data);
