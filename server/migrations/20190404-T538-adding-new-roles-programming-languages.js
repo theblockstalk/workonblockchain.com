@@ -119,6 +119,7 @@ module.exports.up = async function() {
                 }
 
                 if (!objects.isEmpty(updateObj)) {
+                    logger.debug("migrating comp doc: ", {compId: companyDoc._id});
                     await companies.update({_id: companyDoc._id}, {$set: updateObj});
                     totalModified++;
                 }
