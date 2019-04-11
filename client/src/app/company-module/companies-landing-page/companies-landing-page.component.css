@@ -1,6 +1,6 @@
 .lead-bnr{
   background-image: url('/assets/images/companies/lead-banner-bg.png');
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
