@@ -843,12 +843,9 @@
         <label>Angular material auto suggestion</label>
 
           <h4>Candidate</h4>
-          <L0-autosuggest placeholder="Location" [controllerOptions]="controllerOptions" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
-          <L0-autosugguest-value userType="candidate" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
+        <app-auto-suggest-cities countriesVal="true" (selectedItems) = "itemSelected($event)" ></app-auto-suggest-cities>
+        <L0-autosugguest-value userType="candidate" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
 
-          <h4>Company</h4>
-          <L0-autosuggest placeholder="Location" userType="company" (selectedLocations)="getSelectedLocations($event)" ></L0-autosuggest>
-          <L0-autosugguest-value userType="company" [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
 
           <!--<mat-form-field class="example-full-width" floatLabel="always">
             <mat-label></mat-label>

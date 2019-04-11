@@ -19,13 +19,14 @@
           </div>
           <div class = "row">
             <div class="col-md-12">
-              <L0-alerts *ngIf="error && !message" alertClass="alert-danger" [alertMsg]="error" ></L0-alerts>
-              <L0-alerts *ngIf="log" alertClass="alert-danger" [alertMsg]="log" ></L0-alerts>
+              <L0-alerts *ngIf="error && !message" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
+              <L0-alerts *ngIf="log" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
               <L0-alerts *ngIf="forgetMessage" alertClass="alert-success" [alertMsg]="forgetMessage" ></L0-alerts>
               <L0-alerts *ngIf="message && !error" alertClass="alert-success" [alertMsg]="message" ></L0-alerts>
-              <L0-alerts *ngIf="password_message && !message " alertClass="alert-success" [alertMsg]="password_message" ></L0-alerts>
+              <L0-alerts *ngIf="password_message && !message " alertClass="alert-success" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
               <!-- need to discuss -->
-              <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
+              <L0-alerts *ngIf = "reset" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
+
             </div>
           </div>
           <form (submit)="login(loginForm)" #loginForm = ngForm>

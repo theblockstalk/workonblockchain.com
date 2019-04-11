@@ -12,6 +12,7 @@ export class DropdownSingleComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
   valueChanged(event) {

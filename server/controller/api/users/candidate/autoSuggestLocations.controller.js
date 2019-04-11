@@ -3,6 +3,7 @@ const enumerations = require('../../../../model/enumerations');
 
 module.exports = async function (req, res) {
     let queryInput = req.body;
+    console.log(queryInput)
     const filteredExp = queryInput.autosuggest.replace(/[#^*~?{}|&;$%',.-_@"<>()+]/g, "");
     let regex = new RegExp(filteredExp, 'i');
     let outputOptions = [];
@@ -17,14 +18,14 @@ module.exports = async function (req, res) {
             outputOptions.push({city : cityLoc});
         }
 
-        if(queryInput.options && queryInput.options.countries === true) {
+        if(queryInput.options && queryInput.options.countries === 'true') {
             for(let countryLoc of citiesDoc) {
                 outputOptions.push({country : countryLoc.country});
             }
         }
 
     }
-    if(queryInput.options && queryInput.options.countries === true) {
+    if(queryInput.options && queryInput.options.countries === 'true') {
         const countriesEnum = enumerations.countries;
         let count = 0;
         for(let countryEnum of countriesEnum) {

@@ -11,46 +11,31 @@ import { Router } from '@angular/router';
 export class AutosuggestComponent implements OnInit {
   @Input() placeholder;
   @Input() controllerOptions;
-  @Output() selectedLocations : EventEmitter<any> = new EventEmitter<any>();
-  countries;
+  @Input() autoSuggestController;
+  @Input() resultItemDisplay;
+  @Input() selectedValue;
+  @Output() selectedItems : EventEmitter<any> = new EventEmitter<any>();
   selectedValueArray = [];
   error;
-  countriesModel;
-  cities = [];
+  textValue;
+  optionValues = [];
 
   constructor(private authenticationService: UserService, private router: Router) { }
 
   ngOnInit() {
+    console.log(this.autoSuggestController);
   }
 
-  suggestedOptions() {
-    if(this.countriesModel !== '') {
-      this.error='';
-      this.authenticationService.autoSuggestOptions(this.countriesModel , this.controllerOptions)
-        .subscribe(
-          data => {
-            if(data) {
-              let citiesInput = data;
-              let citiesOptions=[];
-              for(let cities of citiesInput['locations']) {
-                if(cities['remote'] === true) {
-                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
-                }
-                if(cities['city']) {
-                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-                  citiesOptions.push({_id : cities['city']._id , name : cityString});
-                }
-                if(this.controllerOptions.userType === 'candidate' && cities['country'] ) {
-                  let countryString = cities['country']  + " (country)";
-                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
-                }
-              }
-              this.cities = filter_array(citiesOptions);
+  autoSuggest() {
+    if(this.textValue !== '') {
+      this.error = '';
+      this.authenticationService.autoSuggestOptions(this.textValue, this.controllerOptions)
+        .subscribe(data => {
+            if (data) {
+              this.optionValues = this.resultItemDisplay(data);
             }
-
           },
-          error=>
+          error =>
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
@@ -71,57 +56,9 @@ export class AutosuggestComponent implements OnInit {
     }
   }
 
-  selectedValueFunction(inputValue) {
-    if(this.cities) {
-      const citiesExist = this.cities.find(x => x.name === inputValue);
-      if(citiesExist) {
-        this.countriesModel = '';
-        this.cities = [];
-        if(this.controllerOptions.userType === 'candidate' && this.selectedValueArray.length > 9) {
-          this.error = 'You can select maximum 10 locations';
-          setInterval(() => {
-            this.error = "" ;
-          }, 5000);
-        }
-        else if(this.controllerOptions.userType === 'company' && this.selectedValueArray.length > 4) {
-          this.error = 'You can select maximum 5 locations';
-          setInterval(() => {
-            this.error = "" ;
-          }, 5000);
-        }
-        else {
-          if(this.selectedValueArray.find(x => x.name === inputValue)) {
-            this.error = 'This location has already been selected';
-            setInterval(() => {
-              this.error = "" ;
-            }, 4000);
-          }
-          else {
-            if(this.controllerOptions.userType === 'candidate'){
-              if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: inputValue, visa_needed:false});
-              else this.selectedValueArray.push({ name: inputValue, visa_needed:false});
-            }
-            else {
-              if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: inputValue});
-              else this.selectedValueArray.push({ name: inputValue});
-            }
-          }
-        }
-      }
-      if(this.selectedValueArray.length > 0) {
-        this.selectedValueArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        })
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-          this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = filter_array(this.selectedValueArray);
-        }
-        this.selectedLocations.emit(this.selectedValueArray);
-      }
-    }
+  selectedValueAndData(inputValue) {
+    const data = this.selectedValue(inputValue, this.optionValues);
+    this.selectedItems.emit(data);
   }
 
 }

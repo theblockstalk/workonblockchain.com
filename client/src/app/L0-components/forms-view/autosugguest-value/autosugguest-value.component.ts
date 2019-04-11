@@ -20,7 +20,7 @@ export class AutosugguestValueComponent implements OnInit {
     this.updatedSelectedLocations.emit(this.selectedLocations);
   }
 
-  deleteLocationRow(i){
+  deleteLocationRow(i) {
     this.selectedLocations.splice(i, 1);
     this.updatedSelectedLocations.emit(this.selectedLocations);
   }

@@ -2,21 +2,19 @@
 <div class="form-group">
 <mat-form-field floatLabel="always">
   <mat-label></mat-label>
-  <input matInput [matAutocomplete]="auto" placeholder="{{placeholder}}" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+  <input matInput [matAutocomplete]="auto" placeholder="{{placeholder}}" [(ngModel)]="textValue" (input)="autoSuggest()" (ngModelChange)="selectedValueAndData($event)">
 </mat-form-field>
 
 <!-- dropdown options --->
 <mat-autocomplete #auto="matAutocomplete">
-  <mat-option *ngFor="let loc of cities" [value]="loc.name">
-    <span>{{ loc.name }}</span>
+  <mat-option *ngFor="let option of optionValues" [value]="option.name">
+    <span>{{ option.name }}</span>
   </mat-option>
 </mat-autocomplete>
 
 <!-- display error msg -->
-<ng-container *ngIf="error;else emptyInput">
+<ng-container *ngIf="error">
   <L0-validation-text [errorMsg]="error"></L0-validation-text>
 </ng-container>
-<ng-template #emptyInput>
-  <L0-validation-text [errorMsg]="country_input_log"></L0-validation-text>
-</ng-template>
+
 </div>
