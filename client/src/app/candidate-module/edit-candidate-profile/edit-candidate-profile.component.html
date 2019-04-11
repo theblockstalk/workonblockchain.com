@@ -2,8 +2,8 @@
 
 <section class = "wob-bg-primary2 py-5 mt-5">
   <div class="container pt-2">
-    <div class="row">
-      <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+    <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+      <div class="row">
         <div class="col-md-12">
           <!--about us form-->
           <section class="border rounded bg-white py-3 px-5" id="about_you">
@@ -128,7 +128,7 @@
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
                   </ul>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                  <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                     {{intro_log}}
                   </div>
@@ -500,6 +500,7 @@
 
                   <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
                     <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
+
                   </select>
 
                 </div>
@@ -756,11 +757,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_commercial_platforms" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -792,11 +789,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experimentation</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_experimented_platforms" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -853,11 +846,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of commercial experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <textarea rows="4" cols="100" name="description_commercial_skills" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
+                  <textarea rows="4" maxlength="3000" cols="100" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -1055,7 +1044,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Job description (optional)</label>
-                        <textarea rows="5" id="comment13" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+                        <textarea rows="5" id="comment13" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                       </div>
                     </div>
 
@@ -1158,7 +1147,7 @@
           </div>
 
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </section>

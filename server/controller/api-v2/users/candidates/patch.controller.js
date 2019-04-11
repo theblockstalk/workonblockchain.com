@@ -309,6 +309,7 @@ const bodySchema = new Schema({
     unset_employee: Boolean,
     unset_contractor: Boolean,
     unset_volunteer: Boolean
+    unset_curret_currency: Boolean
 });
 
 module.exports.inputValidation = {
@@ -409,7 +410,10 @@ module.exports.endpoint = async function (req, res) {
             }
         }
 
-
+        if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
+        if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
+        if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
+        if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
         if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
         if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
         if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
@@ -418,6 +422,17 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
         else unset['candidate.work_history'] = 1;
         if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
+
+        if (queryBody.unset_curret_currency) {
+            unset['candidate.current_currency'] = 1;
+            unset['candidate.current_salary'] = 1;
+        }
+        else{
+            if (queryBody.current_currency && queryBody.current_salary) {
+                updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+                updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+            }
+        }
 
         if (queryBody.unset_commercial_platforms) {
             unset['candidate.blockchain.commercial_platforms'] = 1;

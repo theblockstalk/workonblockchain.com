@@ -7,7 +7,6 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../../data.service";
-import {environment} from '../../../environments/environment';
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
 
@@ -1298,6 +1297,40 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     profileForm.selectedlocations = this.validatedLocation;
     this.experiencearray=[];
     this.education_json_array=[];
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+    let fileCount: number = inputEl.files.length;
+    let formData = new FormData();
+    if (fileCount > 0 )
+    {
+
+      if(inputEl.files.item(0).size < this.file_size)
+      {
+        formData.append('image', inputEl.files.item(0));
+        this.authenticationService.edit_candidate_profile(this.user_id , formData, true)
+          .subscribe(
+            data => {
+              if (data) {
+
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
+      }
+      else
+      {
+        this.image_log = "Image size should be less than 1MB";
+      }
+    }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1389,10 +1422,20 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
 
+    if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
+    else inputQuery.unset_curret_currency = true;
+    if(this.salary) inputQuery.current_salary = this.salary;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
+    if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
+    if(this.jobselected) inputQuery.roles = this.jobselected;
+    if(this.expected_salaryyy) inputQuery.expected_salary = this.expected_salaryyy;
+    if(this.base_currency) inputQuery.expected_salary_currency = this.base_currency;
+    if(this.selectedValue) inputQuery.interest_areas = this.selectedValue;
+    if(this.availability_day) inputQuery.availability_day = this.availability_day;
     if(this.why_work) inputQuery.why_work = this.why_work;
     if(profileForm.commercial_platforms) inputQuery.commercial_platforms = profileForm.commercial_platforms;
     if(profileForm.description_commercial_platforms) inputQuery.description_commercial_platforms = profileForm.description_commercial_platforms;

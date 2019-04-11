@@ -62,7 +62,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error;
   cities;
   emptyInput;
-  urlParameters: any = {};
+  errorMsg;
+  urlParameters : any = {};
   no_value = false;
   saveSearchName;
   skill;

@@ -198,7 +198,7 @@
                   <div class="form-group w-100">
                     <label>Company description</label>
                     <div class="form-group">
-                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                      <textarea name="company_description" maxlength="3000" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
                       <div class="invalid-feedback d-inline" *ngIf="!company_description">
                         {{des_log}}
                       </div>

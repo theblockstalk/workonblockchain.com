@@ -94,6 +94,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contact_name_log;
   nationality_log;
   error_msg;
+  expected_validation;
   start_date_year_log;
   end_date_year_log;
   selectedValueArray=[];
@@ -1436,10 +1437,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
 
+    if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
+    else inputQuery.unset_curret_currency = true;
+    if(this.salary) inputQuery.current_salary = this.salary;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
+
+    if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
+    if(this.jobselected) inputQuery.roles = this.jobselected;
+    if(this.expected_salaryyy) inputQuery.expected_salary = this.expected_salaryyy;
+    if(this.base_currency) inputQuery.expected_salary_currency = this.base_currency;
+    if(this.selectedValue) inputQuery.interest_areas = this.selectedValue;
+    if(this.availability_day) inputQuery.availability_day = this.availability_day;
     if(this.why_work) inputQuery.why_work = this.why_work;
     if(profileForm.commercial_platforms) inputQuery.commercial_platforms = profileForm.commercial_platforms;
     if(profileForm.description_commercial_platforms) inputQuery.description_commercial_platforms = profileForm.description_commercial_platforms;

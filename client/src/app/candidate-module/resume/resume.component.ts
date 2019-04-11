@@ -307,7 +307,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   area_interested = constants.workBlockchainInterests;
 
 
-
   onExpOptions(e)
   {
 
