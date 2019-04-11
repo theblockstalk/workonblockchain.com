@@ -7,7 +7,6 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../../data.service";
-import {environment} from '../../../environments/environment';
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
 
