@@ -83,7 +83,7 @@ module.exports.up = async function() {
             }
 
             if (!objects.isEmpty(updateObj)) {
-                logger.debug("migrating user doc: ", {userId: userDoc._id, {$set : updateObj}});
+                logger.debug("migrating user doc: ", {userId: userDoc._id});
                 await users.update({_id: userDoc._id}, {$set : updateObj});
                 totalModified++;
             }
@@ -98,10 +98,10 @@ module.exports.up = async function() {
                             let index = savedSearch.residence_country.findIndex((obj => obj === 'Congo {Democratic Rep}'));
                             if(index >= 0) savedSearch.residence_country[index] = 'Congo';
 
-                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Ireland {Republic}'));
+                            index = savedSearch.residence_country.findIndex((obj => obj === 'Ireland {Republic}'));
                             if(index >= 0) savedSearch.residence_country[index] = 'Ireland';
 
-                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Myanmar, {Burma}'));
+                            index = savedSearch.residence_country.findIndex((obj => obj === 'Myanmar, {Burma}'));
                             if(index >= 0) savedSearch.residence_country[index] = 'Myanmar (Burma)';
                         }
                     }
@@ -119,7 +119,6 @@ module.exports.up = async function() {
                 }
 
                 if (!objects.isEmpty(updateObj)) {
-                    logger.debug("migrating company doc: ", {userId: companyDoc._id, $set: updateObj});
                     await companies.update({_id: companyDoc._id}, {$set: updateObj});
                     totalModified++;
                 }
