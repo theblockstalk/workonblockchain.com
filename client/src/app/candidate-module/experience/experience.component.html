@@ -232,7 +232,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Job description (optional)</label>
-                      <textarea rows="5" id="comment" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+                      <textarea rows="5" id="comment" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                     </div>
                   </div>
                 </div>
@@ -329,7 +329,7 @@
                   <li> 2-5 sentences </li>
                   <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
                 </ul>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                <textarea class="form-control" rows="5" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                 <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                   {{intro_log}}
                 </div>
