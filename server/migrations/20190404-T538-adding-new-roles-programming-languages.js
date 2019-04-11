@@ -91,8 +91,27 @@ module.exports.up = async function() {
         }
         else{
             let updateObj = {};
+            let updateSavedSearchesObj = {};
+            let selected;
             const companyDoc = await companies.findOne({ _creator: userDoc._id });
             if(companyDoc) {
+                if (companyDoc.saved_searches.length > 0) {
+                    for (let i=0;i< companyDoc.saved_searches.length;i++) {
+                        let index = companyDoc.saved_searches[i].residence_country.findIndex((
+                            obj => obj === 'Ireland {Republic}'
+                        ));
+                        if(index >= 0) {
+                            companyDoc.saved_searches[i].residence_country[index] = 'Ireland';
+                            selected = {_id: companyDoc._id, 'saved_searches._id': companyDoc.saved_searches[i]._id};
+                            updateSavedSearchesObj = {
+                                $push: {
+                                    saved_searches: companyDoc.saved_searches[i]
+                                }
+                            };
+                        }
+                    }
+                }
+
                 logger.debug("processing company doc: ", {userId: companyDoc._id});
                 if (companyDoc.company_country === 'Congo {Democratic Rep}') {
                     updateObj['company_country'] = "Congo";
@@ -103,9 +122,19 @@ module.exports.up = async function() {
                 if (companyDoc.company_country === 'Myanmar, {Burma}') {
                     updateObj['company_country'] = "Myanmar (Burma)";
                 }
-                if (!objects.isEmpty(updateObj)) {
-                    await companies.update({_id: companyDoc._id}, {$set: updateObj});
+
+                if (!objects.isEmpty(updateSavedSearchesObj)) {
+                    if (!objects.isEmpty(updateObj)) {
+                        updateSavedSearchesObj.$set = updateObj;
+                    }
+                    await companies.update(selected, updateSavedSearchesObj);
                     totalModified++;
+                }
+                else{
+                    if (!objects.isEmpty(updateObj)) {
+                        await companies.update({_id: companyDoc._id}, {$set: updateObj});
+                        totalModified++;
+                    }
                 }
             }
         }
