@@ -20,7 +20,9 @@ export class AutoSuggestCitiesComponent implements OnInit {
 
   ngOnInit() {
     this.controllerOptions = {countries : this.countriesVal};
-    this.autoSuggestController = this.authenticationService.autoSuggestOptions;
+    this.autoSuggestController = function (textValue, controllerOptions) {
+      return this.authenticationService.autoSuggestOptions(textValue, controllerOptions);
+    }
     this.resultItemDisplay = function (data) {
       const citiesInput = data;
       let citiesOptions = [];

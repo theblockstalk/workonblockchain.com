@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {UserService} from '../../../../user.service';
 import {filter_array} from '../../../../../services/object'
 import { Router } from '@angular/router';
+import { HttpClient  } from '@angular/common/http';
 
 @Component({
   selector: 'L0-autosuggest',
@@ -20,18 +21,19 @@ export class AutosuggestComponent implements OnInit {
   textValue;
   optionValues = [];
 
-  constructor(private authenticationService: UserService, private router: Router) { }
+  constructor(private authenticationService: UserService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
-    console.log(this.autoSuggestController);
   }
 
   autoSuggest() {
     if(this.textValue !== '') {
       this.error = '';
+      console.log(this.autoSuggestController);
       this.autoSuggestController(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
+              console.log(data);
               this.optionValues = this.resultItemDisplay(data);
             }
           },
