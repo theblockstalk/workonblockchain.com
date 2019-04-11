@@ -95,24 +95,22 @@ module.exports.up = async function() {
             let selected;
             const companyDoc = await companies.findOne({ _creator: userDoc._id });
             if(companyDoc) {
-                if (companyDoc.saved_searches.length > 0) {
-                    for (let i=0;i< companyDoc.saved_searches.length;i++) {
-                        let index = companyDoc.saved_searches[i].residence_country.findIndex((
-                            obj => obj === 'Ireland {Republic}'
-                        ));
-                        if(index >= 0) {
-                            companyDoc.saved_searches[i].residence_country[index] = 'Ireland';
-                            selected = {_id: companyDoc._id, 'saved_searches._id': companyDoc.saved_searches[i]._id};
-                            updateSavedSearchesObj = {
-                                $push: {
-                                    saved_searches: companyDoc.saved_searches[i]
-                                }
-                            };
+                if (companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
+                    for (let savedSearch of companyDoc.saved_searches) {
+                        if (savedSearch.residence_country ) {
+                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Congo {Democratic Rep}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Congo';
+
+                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Ireland {Republic}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Ireland';
+
+                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Myanmar, {Burma}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Myanmar (Burma)';
                         }
                     }
+                    updateObj['saved_searches'] = companyDoc.saved_searches;
                 }
 
-                logger.debug("processing company doc: ", {userId: companyDoc._id});
                 if (companyDoc.company_country === 'Congo {Democratic Rep}') {
                     updateObj['company_country'] = "Congo";
                 }
@@ -123,18 +121,9 @@ module.exports.up = async function() {
                     updateObj['company_country'] = "Myanmar (Burma)";
                 }
 
-                if (!objects.isEmpty(updateSavedSearchesObj)) {
-                    if (!objects.isEmpty(updateObj)) {
-                        updateSavedSearchesObj.$set = updateObj;
-                    }
-                    await companies.update(selected, updateSavedSearchesObj);
+                if (!objects.isEmpty(updateObj)) {
+                    await companies.update({_id: companyDoc._id}, {$set: updateObj});
                     totalModified++;
-                }
-                else{
-                    if (!objects.isEmpty(updateObj)) {
-                        await companies.update({_id: companyDoc._id}, {$set: updateObj});
-                        totalModified++;
-                    }
                 }
             }
         }
