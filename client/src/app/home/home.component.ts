@@ -39,11 +39,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   {
     this.newMeta.updateTag({ name: 'description', content: 'Work for full-time, part-time, freelance, volunteers and agencies in the best blockchain projects! Opportunities and jobs for developers, designers and other technical professionals on public and enterprise blockchain technology.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
+    this.newMeta.updateTag({ name: 'title', content: 'Work on blockchain today! Learning, freelance and jobs for developers and blockchain enthusiasts.' });
     $('#text').html($('.active > .carousel-caption').html());
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
     });
-
   }
 
   internalRoute(page,dst){
