@@ -90,8 +90,6 @@ module.exports.up = async function() {
         }
         else{
             let updateObj = {};
-            let updateSavedSearchesObj = {};
-            let selected;
             const companyDoc = await companies.findOne({ _creator: userDoc._id });
             if(companyDoc) {
                 if (companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
