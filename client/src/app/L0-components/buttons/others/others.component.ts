@@ -7,9 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class OthersComponent implements OnInit {
   @Input() label;
-  @Input() buttonClass;
-  @Input() alignmentClass;
+  @Input() buttonClass = '';
+  @Input() alignmentClass = '';
   @Input() buttonType;
+  @Input() disabled;
   class;
   constructor() { }
 

@@ -10,7 +10,7 @@ import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
 import { AutosuggestComponent } from './L0-components/forms-edit/dropdown-multiple/autosuggest/autosuggest.component';
-import { AutosugguestValueComponent } from './L0-components/forms-view/autosugguest-value/autosugguest-value.component';
+import { AutosugguestValueComponent } from './L0-components/forms-edit/autosugguest-value/autosugguest-value.component';
 import { ValidationTextComponent } from './L0-components/forms-view/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';

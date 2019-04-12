@@ -14,7 +14,7 @@
     <div class="container pt-2">
       <div class="row">
         <div class="col-md-12">
-          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right text-white">What happens next?</button>
+          <L0-buttons-others buttonClass="btn-secondary" data-toggle="modal" data-target="#popModal" alignmentClass="float-right text-white" buttonType="button" label="What happens next?"></L0-buttons-others>
         </div>
       </div>
       <div class="row">
@@ -437,7 +437,7 @@
             <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
         </div>
         <div class="modal-footer">
-          <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
+          <L0-buttons-others buttonClass="btn-primary" data-dismiss="modal" buttonType="reset" label="Got it"></L0-buttons-others>
         </div>
       </div>
     </div>
@@ -482,7 +482,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+                <L0-buttons-others buttonClass="btn-primary" alignmentClass="form-control" buttonType="submit" label="Update your profile"></L0-buttons-others>
               </div>
             </form>
         </div>

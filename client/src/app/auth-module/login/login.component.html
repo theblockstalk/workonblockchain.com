@@ -54,27 +54,21 @@
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <input type="submit" class="form-control btn btn-secondary" value = "Log in" [disabled]="!loginForm.valid ">
+                  <L0-buttons-others [disabled]="!loginForm.valid? true: false " buttonClass="btn-secondary" alignmentClass="form-control" buttonType="submit" label="Login"></L0-buttons-others>
                 </div>
               </div>
             </div>
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="loginWithLinkedin()" >
-                    <i class="fab fa-linkedin" aria-hidden="true"></i>
-                    Log in with LinkedIn
-                  </a>
+                  <app-social-login label="Log in with LinkedIn" socialType="linkedin"></app-social-login>
                 </div>
               </div>
             </div>
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <a  class = "btn btn-block btn-social btn-google text-center" (click)="signInWithGoogle()">
-                    <i class="fab fa-google" aria-hidden="true"></i>
-                    Log in with Google
-                  </a>
+                  <app-social-login label="Log in with Google" socialType="google"></app-social-login>
                 </div>
               </div>
             </div>

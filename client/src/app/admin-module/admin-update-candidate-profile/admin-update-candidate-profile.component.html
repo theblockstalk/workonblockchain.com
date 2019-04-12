@@ -808,7 +808,8 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save</button>
+            <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Save"></L0-buttons-others>
+
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}

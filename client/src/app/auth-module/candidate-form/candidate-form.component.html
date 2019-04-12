@@ -59,12 +59,11 @@
               <div *ngIf="password_log" class="invalid-feedback d-inline">{{password_log}}</div>
             </div>
             <div class = "form-group">
-              <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
+              <L0-buttons-others buttonClass="btn-secondary" buttonType="submit" alignmentClass="form-control" label="Sign up"></L0-buttons-others>
             </div>
 
-            <app-social-login label="Sign up with LinkedIn" socialType="Linkedin"></app-social-login>
-
-            <app-social-login label="Sign up with Google" socialType="linkedin"></app-social-login>
+            <app-social-login label="Sign up with LinkedIn" socialType="linkedin"></app-social-login>
+            <app-social-login label="Sign up with Google" socialType="google"></app-social-login>
           </form>
         </div>
         <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -183,7 +182,7 @@
             </div>
 
             <div class = "form-group">
-              <input type="submit" class="form-control btn btn-secondary" value = "Sign up">
+              <L0-buttons-others buttonClass="btn-secondary" alignmentClass="form-control" buttonType="submit" label="Sign up"></L0-buttons-others>
             </div>
           </form>
         </div>

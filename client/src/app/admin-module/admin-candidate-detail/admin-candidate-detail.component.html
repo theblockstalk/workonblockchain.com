@@ -8,7 +8,6 @@
         <div class="row">
           <div class="col-md-12">
             <button [disabled]="data.is_verify === 0 ? true : false" [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._id }" class = "btn btn-primary float-right">Edit Profile</button>
-
           </div>
         </div>
 
@@ -148,7 +147,7 @@
             </div>
           </div>
 
-          <form #approve_form="ngForm" >
+          <form #approve_form="ngForm" (submit) = "approveClick(approve_form)" >
 
           <div class="row">
             <div class="col-md-12">
@@ -245,9 +244,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div class = "form-group">
-                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
-                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
-
+                  <L0-buttons-others *ngIf="!email_text" buttonClass="btn-primary" alignmentClass="float-right" buttonType="submit" label="Done"></L0-buttons-others>
+                  <L0-buttons-others *ngIf="email_text" buttonClass="btn-primary" alignmentClass="float-right" buttonType="submit" label="Send"></L0-buttons-others>
                 </div>
 
               </div>

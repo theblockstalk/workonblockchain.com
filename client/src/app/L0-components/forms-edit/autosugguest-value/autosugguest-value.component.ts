@@ -11,8 +11,7 @@ export class AutosugguestValueComponent implements OnInit {
   @Output() updatedSelectedLocations: EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   updateCitiesOptions(e) {
     let objIndex = this.selectedLocations.findIndex((obj => obj.name === e.target.value));
