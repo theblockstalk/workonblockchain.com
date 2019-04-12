@@ -1,5 +1,4 @@
-<!-- candidate autosuggest options view -->
-<div *ngIf="userType === 'candidate' && selectedLocations && selectedLocations.length > 0">
+<div *ngIf="selectedLocations && selectedLocations.length > 0">
   <div class="row">
     <div  *ngFor="let value of selectedLocations; let i = index" class="col-md-6 p-2 mt-2">
       <div class="border px-1 py-3 ml-2 row">
@@ -21,7 +20,3 @@
   </div>
 </div>
 
-<!-- company autosuggest options view -->
-<div *ngIf="userType === 'company' && selectedLocations && selectedLocations.length > 0">
-  <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedLocations; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
-</div>

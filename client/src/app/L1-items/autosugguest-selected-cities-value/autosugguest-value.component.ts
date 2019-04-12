@@ -7,7 +7,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AutosugguestValueComponent implements OnInit {
   @Input() selectedLocations;
-  @Input() userType;
   @Output() updatedSelectedLocations: EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 
