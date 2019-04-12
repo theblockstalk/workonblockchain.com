@@ -308,7 +308,7 @@ const bodySchema = new Schema({
     unset_medium_account: Boolean,
     unset_employee: Boolean,
     unset_contractor: Boolean,
-    unset_volunteer: Boolean
+    unset_volunteer: Boolean,
     unset_curret_currency: Boolean
 });
 
