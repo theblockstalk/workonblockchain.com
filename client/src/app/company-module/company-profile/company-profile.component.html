@@ -2,7 +2,7 @@
   <div class="container pt-2">
     <div class="row">
       <div class="col-md-12">
-        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn btn-secondary float-right" >What happens next?</button>
+        <L0-buttons-others data-toggle="modal" data-target="#whatHappensNextModal" buttonClass="btn-secondary" alignmentClass="float-right" buttonType="button" label="What happens next?" ></L0-buttons-others>
       </div>
     </div>
 
@@ -311,7 +311,7 @@
           <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-mo btn-primary" data-dismiss="modal">Got it</button>
+          <L0-buttons-others data-dismiss="modal" buttonClass="btn-primary" alignmentClass="btn-mo" buttonType="button" label="Got it" ></L0-buttons-others>
         </div>
       </div>
     </div>

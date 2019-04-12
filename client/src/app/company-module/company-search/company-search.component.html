@@ -118,10 +118,14 @@
 
             <div class="row my-3">
               <div class="col-md-8">
-                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
+                <form (click)="savedSearch()">
+                  <L0-buttons-others buttonClass="btn-primary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Save search" ></L0-buttons-others>
+                </form>
               </div>
               <div class="col-md-4">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Reset</button>
+                <form (click)="reset()">
+                  <L0-buttons-others buttonClass="btn-secondary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Reset" ></L0-buttons-others>
+                </form>
               </div>
               <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
                 {{success_msg}}
@@ -133,7 +137,7 @@
 
             <div class="row my-3">
               <div class="col-md-12">
-                <button  type="button" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
+                <L0-buttons-others buttonClass="btn-primary" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Save new search" ></L0-buttons-others>
               </div>
             </div>
 
@@ -186,7 +190,7 @@
                           <input type="hidden" name="id" [ngModel]="data._id">
                           <input type="hidden" name="name" [ngModel]="data.initials">
                           <div class="float-right">
-                            <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
+                            <L0-buttons-others buttonClass="btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" buttonType="submit" label="Send job description" ></L0-buttons-others>
                           </div>
                         </form>
                       </div>
@@ -342,8 +346,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="reset" class="btn btn-secondary">Reset</button>
-              <button type="submit" class="btn btn-primary">Send</button>
+              <L0-buttons-others buttonClass="btn-secondary" buttonType="reset" label="Reset" ></L0-buttons-others>
+              <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Send" ></L0-buttons-others>
             </div>
             <div class = "invalid-feedback d-inline-block text-right">
               {{job_offer_log}}
@@ -513,7 +517,7 @@
           </div>
           <div class="modal-footer row">
             <div class="col-md-12">
-              <button type="submit" class="btn btn-mo btn-primary float-right" >Save</button>
+              <L0-buttons-others buttonClass="btn-primary" alignmentClass="btn-mo float-right" buttonType="submit" label="Save" ></L0-buttons-others>
             </div>
             <div class="col-md-12 invalid-feedback d-inline mt-1 text-right" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
               {{new_error_msg}}

@@ -469,7 +469,9 @@
                   <div class="row mt-3" *ngIf="i>0">
                     <div class="col-md-12">
                       <div class = "form-group text-right">
-                        <a (click)="deletePrefRow(i)" class = "btn btn-danger text-white" >Remove</a>
+                        <form (click)="deletePrefRow(i)">
+                          <L0-buttons-others buttonClass="btn-danger" alignmentClass="text-white" label="Remove" ></L0-buttons-others>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -489,7 +491,11 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class = "form-group">
-                    <a (click)="addNewSearch()" class = "btn btn-primary text-white" ><i class="fa fa-plus" ></i> Add search</a>
+                    <form (click)="addNewSearch()">
+                      <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" label="Add search" ></L0-buttons-others>
+                    </form>
+
+                    <!--<a  class = "btn btn-primary text-white" ><i class="fa fa-plus" ></i> Add search</a>-->
                   </div>
                 </div>
               </div>
@@ -501,7 +507,7 @@
           <div class="row mt-3">
             <div class = "col-md-12 float-right text-right">
               <a routerLink="/company_profile" class = "btn btn-secondary text-white mr-2">Cancel</a>
-              <button type="submit" class = "btn btn-primary " [disabled]="website.errors && company_website" >Save</button>
+              <L0-buttons-others buttonClass="btn-primary" buttonType="submit" [disabled]="website.errors && company_website" label="Save" ></L0-buttons-others>
             </div>
 
           </div>
