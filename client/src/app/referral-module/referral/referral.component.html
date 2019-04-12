@@ -33,7 +33,9 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
+                <form (click)="copyInputMessage(userinput)">
+                  <L0-buttons-others buttonType="submit" buttonClass="btn-default" alignmentClass="float-right mt-3 mr-3" label="Copy" ></L0-buttons-others>
+                </form>
               </div>
               <h1>{{text}}</h1>
               <L0-twitter-share [text]="text"></L0-twitter-share>
@@ -62,7 +64,7 @@
               <L0-alerts alertClass="alert-success" *ngIf="log_success" [alertMsg]="log_success" ></L0-alerts>
               <L0-alerts alertClass="alert-danger" *ngIf="log" [alertMsg]="log" ></L0-alerts>
               <div class="form-group">
-                <button type="submit" class = "btn btn-primary">Send</button>
+                <L0-buttons-others buttonType="submit" buttonClass="btn-primary" label="Send" ></L0-buttons-others>
               </div>
             </form>
           </div>
@@ -120,7 +122,7 @@
                   <span class = "error">{{terms_log}}</span>
                 </div>
                 <div class="form-group text-center">
-                  <button type="submit" class = "form-control btn btn-primary" id = "sub_bttn">Submit</button>
+                  <L0-buttons-others buttonType="submit" buttonClass="btn-primary" alignmentClass="form-control" label="Submit" ></L0-buttons-others>
                 </div>
               </form>
             </div>
@@ -133,7 +135,9 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
               </span>
-                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy</button>
+                  <form (click)="copyInputMessage(newRefLink)">
+                    <L0-buttons-others buttonClass="btn-default" alignmentClass="float-right mt-3 mr-3" label="Copy" ></L0-buttons-others>
+                  </form>
                 </div>
 
               </div>

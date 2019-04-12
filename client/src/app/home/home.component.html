@@ -363,7 +363,7 @@
             </label>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" [disabled]="!subForm.valid">Subscribe</button>
+            <L0-buttons-others buttonClass="btn-primary" [disabled]="!subForm.valid" buttonType="submit" label="Subscribe" ></L0-buttons-others>
           </div>
           <div class="form-group">
             <L0-alerts alertClass="alert-success" *ngIf="log_success" [alertMsg]="log_success" ></L0-alerts>
