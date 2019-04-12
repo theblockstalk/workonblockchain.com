@@ -85,7 +85,7 @@
                     </ul>
                   </div>
                   <div class = "p-2 w-25 float-left d-none d-md-block">
-                    <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View job description</button>
+                    <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View approach</button>
                     <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
                   </div>
                 </div>
@@ -736,7 +736,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Job description:</label>
+                <label>Approach:</label>
                 <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
                 </ckeditor>
                 <div class = "invalid-feedback d-inline"  *ngIf="job_desc_log">
@@ -797,7 +797,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title text-center">Job description</h4>
+        <h4 class="modal-title text-center">Approach</h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="job_desc;else no_job_desc_popup">
