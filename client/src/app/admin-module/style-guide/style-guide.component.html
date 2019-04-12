@@ -814,9 +814,8 @@
 
           <h4>Candidate</h4>
         <app-auto-suggest-cities countriesVal="true" (selectedItems) = "itemSelected($event)" ></app-auto-suggest-cities>
-        <L0-autosugguest-value [selectedLocations]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)" ></L0-autosugguest-value>
+        <app-autosuggest-badges *ngIf="selectedLocations && selectedLocations.length > 0" [selectedItems]="selectedLocations" (updatedSelectedItems)="getSelectedLocations($event)" ></app-autosuggest-badges>
 
-        <L0-autosuggest-selected-value [selectedItems]="selectedLocations" (updatedSelectedLocations)="getSelectedLocations($event)"></L0-autosuggest-selected-value>
           <!--<mat-form-field class="example-full-width" floatLabel="always">
             <mat-label></mat-label>
             <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)" placeholder="Location">

@@ -19,15 +19,16 @@ import { OthersComponent } from './L0-components/buttons/others/others.component
 import { AlertsComponent } from './L0-components/alerts/alerts/alerts.component';
 import { AutoSuggestCitiesComponent } from './L1-items/auto-suggest-cities/auto-suggest-cities.component';
 import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/autosuggest-selected-value/autosuggest-selected-value.component';
+import { AutosuggestBadgesComponent } from './L2-groups/autosuggest-badges/autosuggest-badges.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
-                  OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent],
+                  OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
-                  OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent]
+                  OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent]
 })
 export class SharedModule { }

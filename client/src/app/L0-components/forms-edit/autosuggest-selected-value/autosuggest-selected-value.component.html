@@ -1,3 +1,1 @@
-<div *ngIf="selectedItems && selectedItems.length > 0">
-  <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedItems; let i = index">{{value.name}} <a (click)="deleteItem(i)"><i class="fas fa-times text-white"></i></a></span>
-</div>
+<span class="badge badge-pill badge-primary mr-1">{{badgeText}} <a (click)="deleteBadgeItem()"><i class="fas fa-times text-white"></i></a></span>
