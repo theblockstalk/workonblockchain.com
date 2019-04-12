@@ -5,7 +5,7 @@
         <div class = "col-md-12">
           <div class="row mt-2">
             <div *ngIf="msg ===''" class = "col-md-11 ml-4 float-right mt-5">
-              <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right mb-1 text-light">What happens next?</button>
+              <L0-buttons-others data-toggle="modal" data-target="#popModal" buttonClass="btn-secondary" alignmentClass="float-right mb-1 text-light" buttonType="button" label="What happens next?" ></L0-buttons-others>
             </div>
           </div>
           <div class = "d-flex my-4">
@@ -86,7 +86,9 @@
                     </ul>
                   </div>
                   <div class = "p-2 w-25 float-left d-none d-md-block">
-                    <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View job description</button>
+                    <L0-buttons-others data-toggle="modal" data-target="#myModalNew" buttonClass="btn-warning" alignmentClass="float-right mb-1 text-light" buttonType="button" label="View job description" ></L0-buttons-others>
+
+                   <!-- <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View job description</button>-->
                     <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
                   </div>
                 </div>
@@ -325,7 +327,7 @@
                           <input type="hidden" name="id" [(ngModel)]="credentials.id"/>
                           <input type="hidden" placeholder="Write your message..." name="msg_body" [(ngModel)]="credentials.msg_body"/>
                           <span class = "offers_btn">
-                            <button type="submit" class = "btn btn-warning mb-1 text-light">Accept offer</button>
+                            <L0-buttons-others buttonClass="btn-warning" alignmentClass="mb-1 text-light" buttonType="submit" label="Accept offer" ></L0-buttons-others>
                           </span>
                         </form>
                         <form (submit)="reject_offer(msgForm)" #msgForm = ngForm style="display:inline;">
@@ -333,7 +335,8 @@
                           <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
                           <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
                           <span class = "offers_btn">
-                            <button type="submit" class = "btn btn-warning mb-1 ml-1 text-light">Reject offer</button>
+                            <L0-buttons-others buttonClass="btn-warning" alignmentClass="mb-1 ml-1 text-light" buttonType="submit" label="Reject offer" ></L0-buttons-others>
+                            <!--<button type="submit" class = "btn btn-warning mb-1 ml-1 text-light">Reject offer</button>-->
                           </span>
                         </form>
                       </div>
@@ -349,8 +352,10 @@
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
-                          <button type="button" data-toggle="modal" data-target="#myModal" (click)="reset_msgs()" class="btn btn-warning mb-1 text-light">Offer to interview</button>
-                          <button type="button" data-toggle="modal" data-target="#Modal" (click)="reset_msgs()" class="btn btn-warning mb-1 ml-1 text-light">Offer to employ</button>
+                          <form (click)="reset_msgs()">
+                            <L0-buttons-others data-toggle="modal" data-target="#myModal" buttonClass="btn-warning" alignmentClass="mb-1 text-light" buttonType="button" label="Offer to interview" ></L0-buttons-others>
+                            <L0-buttons-others data-toggle="modal" data-target="#Modal" buttonClass="btn-warning" alignmentClass="mb-1 ml-1 text-light" buttonType="button" label="Offer to employ" ></L0-buttons-others>
+                          </form>
                         </span>
                       </div>
                     </ng-container>
@@ -364,7 +369,7 @@
                           <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
                           <input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
                           <span class = "">
-                            <button type="submit" class = "btn btn-warning mb-1 text-light">Accept employment offer</button>
+                            <L0-buttons-others buttonClass="btn-warning" alignmentClass="mb-1 text-light" buttonType="submit" label="Accept employment offer" ></L0-buttons-others>
                           </span>
                         </form>
                         <form (submit)="reject_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
@@ -373,7 +378,7 @@
                           <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
                           <input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
                           <span class = "">
-                            <button type="submit" class = "btn btn-warning mb-1 ml-1 text-light">Reject employment offer</button>
+                            <L0-buttons-others buttonClass="btn-warning" alignmentClass="mb-1 ml-1 text-light" buttonType="submit" label="Reject employment offer" ></L0-buttons-others>
                           </span>
                         </form>
                       </div>
@@ -491,7 +496,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group text-right">
-                <button type="submit" class="btn btn-primary model-btn submit">Send</button>
+                <L0-buttons-others buttonClass="btn-primary" alignmentClass="model-btn submit" buttonType="submit" label="Send" ></L0-buttons-others>
                 <div class = "invalid-feedback d-inline-block mt-2 mb-2">
                   {{interview_log}}
                 </div>
@@ -621,7 +626,7 @@
               <L0-alerts alertClass="alert-danger" aligmentClass="mt-3" *ngIf="job_offer_log_error" [alertMsg]="job_offer_log_error" ></L0-alerts>
               <L0-alerts alertClass="alert-success" aligmentClass="mt-3" *ngIf="job_offer_log_success" [alertMsg]="job_offer_log_success" ></L0-alerts>
               <div class="form-group text-right">
-                <button type="submit" class="btn btn-primary model-btn submit">Send</button>
+                <L0-buttons-others buttonClass="btn-primary" alignmentClass="model-btn submit" buttonType="submit" label="Send" ></L0-buttons-others>
                 <div class = "invalid-feedback d-inline-block mt-2 mb-2">
                   {{job_offer_log}}
                 </div>
@@ -701,7 +706,7 @@
         <ng-template #no_job_desc_popup>
         </ng-template>
         <div class="modal-footer">
-          <button type="button" data-dismiss="modal" class="btn btn-primary model-btn submit">Close</button>
+          <L0-buttons-others data-dismiss="modal" buttonClass="btn-primary" alignmentClass="model-btn submit" buttonType="button" label="Close" ></L0-buttons-others>
         </div>
       </div>
     </div>
@@ -733,7 +738,9 @@
         </div>
       </div>
       <div class="modal-footer mo_footer">
-        <button type="reset" (click)="update_status()" class="btn btn-primary model-btn" data-dismiss="modal">Got it</button>
+        <form (click)="update_status()">
+          <L0-buttons-others data-dismiss="modal" buttonClass="btn-primary" alignmentClass="model-btn" buttonType="reset" label="Got it" ></L0-buttons-others>
+        </form>
       </div>
     </div>
 
