@@ -379,6 +379,15 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
                   <label>Contract description</label>
                   <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
@@ -391,6 +400,16 @@
             </div>
 
             <div class="row" *ngIf="approach_work_type === 'volunteer'">
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.location">
+                    {{volunteer_location_log}}
+                  </div>
+                </div>
+              </div>
 
               <div class="col-md-12">
                 <div class="form-group">

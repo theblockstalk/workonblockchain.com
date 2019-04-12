@@ -137,6 +137,11 @@
                             <!-- msg.message.approach.volunteer starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.volunteer">
                               <span>
+                                <b>Location: </b>
+                                {{msg.message.approach.volunteer.location}}
+                                <br/>
+                              </span>
+                              <span>
                                 <b>Description:</b><br>
                               </span>
                               <span [innerHTML]="msg.message.approach.volunteer.opportunity_description | safeHtml">
@@ -149,10 +154,16 @@
                             <!-- msg.message.approach.contractor starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.contractor">
                               <span>
+                                <b>Location: </b>
+                                {{msg.message.approach.contractor.location}}
+                                <br/>
+                              </span>
+                              <span>
                                 <b>Hourly rate: </b>
                                 {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
                                 <br/>
                               </span>
+
                               <span>
                                 <b>Description:</b><br>
                               </span>
@@ -321,6 +332,11 @@
 
                             <!-- msg.message.approach.contractor starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.contractor">
+                              <span>
+                                <b>Location: </b>
+                                {{msg.message.approach.contractor.location}}
+                                <br/>
+                              </span>
                               <span>
                                 <b>Hourly rate: </b>
                                 {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
@@ -843,6 +859,12 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label>Location:</label>
+                  <p>{{job_desc.contractor.location}} </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Hourly rate:</label>
                   <p>{{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</p>
                 </div>
@@ -853,6 +875,7 @@
                   <p>Contractor</p>
                 </div>
               </div>
+
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -870,6 +893,12 @@
           <!--popup for volunteer starts-->
           <ng-container *ngIf="job_desc.volunteer;">
             <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Location:</label>
+                  <p>{{job_desc.volunteer.location}} </p>
+                </div>
+              </div>
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Opportunity description:</label>

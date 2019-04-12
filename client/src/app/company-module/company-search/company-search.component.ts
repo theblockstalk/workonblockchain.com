@@ -934,16 +934,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.contractor.hourly_rate = contractorOffer.hourly_rate ;
               this.contractor.currency = contractorOffer.currency;
               this.contractor.contract_description = contractorOffer.contract_description;
+              this.contractor.location = contractorOffer.location;
             }
 
             if(approach.volunteer) {
               this.approach_work_type = 'volunteer';
               let volunteerOffer = approach.volunteer;
               this.volunteer.opportunity_description = volunteerOffer.opportunity_description ;
+              this.volunteer.location = volunteerOffer.location;
             }
             setTimeout(() => {
               $('.selectpicker').selectpicker('refresh');
-            }, 300);
+            }, 500);
           }
 
         },
@@ -967,6 +969,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   approach_work_type;
   volunteer_desc_log;
+  contractor_location_log;
+  volunteer_location_log;
   hourly_rate_log;
   hourly_currency_log;
   contract_desc_log;
@@ -1023,11 +1027,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.contract_desc_log = 'Please enter contract description';
         errorCount = 1;
       }
+      if (!this.contractor.location) {
+        this.contractor_location_log = 'Please enter opportunity description';
+        errorCount = 1;
+      }
     }
 
     if (this.approach_work_type === 'volunteer') {
       if (!this.volunteer.opportunity_description) {
         this.volunteer_desc_log = 'Please enter opportunity description';
+        errorCount = 1;
+      }
+      if (!this.volunteer.location) {
+        this.volunteer_location_log = 'Please enter opportunity description';
         errorCount = 1;
       }
     }
@@ -1050,6 +1062,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         job_offer.hourly_rate = this.contractor.hourly_rate;
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
+        job_offer.location = this.contractor.location;
         new_offer.approach  = {
           contractor : job_offer
         }
@@ -1057,6 +1070,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
       if(this.approach_work_type === 'volunteer') {
         job_offer.opportunity_description = this.volunteer.opportunity_description;
+        job_offer.location = this.volunteer.location;
         new_offer.approach  = {
           volunteer : job_offer
         }

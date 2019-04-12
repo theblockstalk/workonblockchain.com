@@ -62,6 +62,9 @@ const bodySchema = new Schema({
                         employment_description: {
                             type: String,
                             maxlength: 3000,
+                        },
+                        location: {
+                            type: String
                         }
                     }
                 },
@@ -77,6 +80,9 @@ const bodySchema = new Schema({
                         contract_description: {
                             type: String,
                             maxlength: 3000,
+                        },
+                        location: {
+                            type: String
                         }
                     }
                 },
@@ -85,6 +91,9 @@ const bodySchema = new Schema({
                         opportunity_description: {
                             type: String,
                             maxlength: 3000,
+                        },
+                        location: {
+                            type: String
                         }
                     }
                 }

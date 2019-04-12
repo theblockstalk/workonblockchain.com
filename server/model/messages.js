@@ -149,6 +149,10 @@ const MessageSchema = new Schema({
                             type: String,
                             maxlength: 3000,
                             required: false
+                        },
+                        location: {
+                            type: String,
+                            required: false
                         }
                     }
                 },
@@ -157,6 +161,10 @@ const MessageSchema = new Schema({
                         opportunity_description: {
                             type: String,
                             maxlength: 3000,
+                            required: false
+                        },
+                        location: {
+                            type: String,
                             required: false
                         }
                     }
