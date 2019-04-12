@@ -239,14 +239,19 @@
                 <div class="row">
                   <div class="col-md-12 ">
                     <div class = "form-group text-right">
-                      <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white">Remove</a>
+                      <form (click)="deleteExpRow(i)">
+                        <L0-buttons-others buttonClass="btn-danger" alignmentClass="text-white" buttonType="submit" label="Remove"></L0-buttons-others>
+                      </form>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-md-12 p-0">
                 <div class = "form-group">
-                  <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+                  <form (click)="addNewExpRow()">
+                    <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" buttonType="submit" label="Add Position"></L0-buttons-others>
+                  </form>
+                  <!--<a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>-->
                 </div>
               </div>
             </div>
@@ -308,13 +313,18 @@
                 </div>
                 <div class = "col-md-12 p-0">
                   <div class="form-group text-right">
-                    <a (click)="deleteRow(i)" class = "btn btn-danger text-white">Remove</a>
+                    <form (click)="deleteRow(i)">
+                      <L0-buttons-others buttonClass="btn-danger" alignmentClass="text-white" buttonType="submit" label="Remove"></L0-buttons-others>
+                    </form>
                   </div>
                 </div>
               </div>
               <div class = "col-md-12 p-0">
                 <div class="form-group">
-                  <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+                  <form (click)="addNewRow()">
+                    <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" buttonType="submit" label="Add Education"></L0-buttons-others>
+                  </form>
+                  <!--<a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>-->
                 </div>
               </div>
             </div>
@@ -339,8 +349,9 @@
           </div>
 
           <div class = "form-group text-right">
+            <!-- need to discuss -->
             <a routerLink="/resume" class = "btn btn-warning text-white">Back</a>
-            <button type="submit" class = "btn btn-primary ml-1">Done</button>
+            <L0-buttons-others buttonClass="btn-primary" alignmentClass="ml-1" buttonType="submit" label="Done"></L0-buttons-others>
           </div>
 
           <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
@@ -366,7 +377,9 @@
         <div class = "mo_content" id = "style-6" [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-primary text-white" data-dismiss="modal" (click) = redirectToCandidate()>Got it</a>
+        <form (click) = redirectToCandidate()>
+          <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" buttonType="submit" label="Got it"></L0-buttons-others>
+        </form>
       </div>
     </div>
 

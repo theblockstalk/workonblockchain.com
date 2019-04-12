@@ -210,7 +210,9 @@
                             <label >{{value.name}}</label>
                             </div>
                             <div class = "col-4 text-right">
-                              <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                              <form (click)="deleteLocationRow(i)" >
+                                <L0-buttons-others buttonClass="btn-secondary" alignmentClass="px-2 pb-1 text-white rounded p-0 font-weight-bold" buttonType="submit" label="x"></L0-buttons-others>
+                              </form>
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
@@ -717,14 +719,19 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class = "form-group text-right">
-                        <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white">Remove</a>
+                        <form (click)="deleteExpRow(i)">
+                          <L0-buttons-others buttonClass="btn-danger" alignmentClass="text-white" buttonType="submit" label="Remove"></L0-buttons-others>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+                    <form (click)="addNewExpRow()">
+                      <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" buttonType="submit" label="Add Position"></L0-buttons-others>
+                    </form>
+                    <!--<a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>-->
 
                   </div>
                 </div>
@@ -788,14 +795,19 @@
                     </div>
                     <div class="col-md-12">
                       <div class = "form-group text-right">
-                        <a  (click)="deleteRow(i)" class = "btn btn-danger text-white">Remove</a>
+                        <form (click)="deleteRow(i)">
+                          <L0-buttons-others buttonClass="btn-danger" alignmentClass="text-white" buttonType="submit" label="Remove"></L0-buttons-others>
+                        </form>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+                    <form (click)="addNewRow()">
+                      <L0-buttons-others buttonClass="btn-primary" alignmentClass="text-white" buttonType="submit" label="Add Education"></L0-buttons-others>
+                    </form>
+                    <!--<a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>-->
                   </div>
                 </div>
               </div>
@@ -804,7 +816,8 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/candidate_profile']"  class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save</button>
+            <!--<L0-buttons-others buttonClass="btn-secondary" alignmentClass="text-white mr-2" routerLink="['/candidate_profile']" buttonType="submit" label="Cancel"></L0-buttons-others>-->
+            <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Save"></L0-buttons-others>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}

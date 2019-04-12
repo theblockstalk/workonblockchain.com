@@ -76,7 +76,9 @@
                         <label >{{value.name}}</label>
                       </div>
                       <div class = "col-4 text-right">
-                        <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                        <form (click)="deleteLocationRow(i)">
+                          <L0-buttons-others buttonClass="btn-secondary" alignmentClass="px-2 pb-1 text-white rounded p-0 font-weight-bold" buttonType="submit" label="x"></L0-buttons-others>
+                        </form>
                       </div>
                       <div class="col-12">
                         <div class="form-check" *ngIf="value.name !== 'Remote'">
@@ -218,7 +220,7 @@
 
           <div class = "form-group text-right">
             <a routerLink="/about" class = "btn btn-warning text-white">Back</a>
-            <button type=submit class = "btn btn-primary ml-1" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next</button>
+            <L0-buttons-others buttonClass="btn-primary" alignmentClass="ml-1" buttonType="submit" label="Next" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)"></L0-buttons-others>
           </div>
           <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
             {{error_msg}}
