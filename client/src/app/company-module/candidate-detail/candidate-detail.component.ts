@@ -152,6 +152,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 let contractorOffer = approach.contractor;
                 this.contractor.hourly_rate = contractorOffer.hourly_rate ;
                 this.contractor.currency = contractorOffer.currency;
+                this.contractor.location = contractorOffer.location
+
                 this.contractor.contract_description = contractorOffer.contract_description;
               }
 
@@ -159,6 +161,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.approach_work_type = 'volunteer';
                 let volunteerOffer = approach.volunteer;
                 this.volunteer.opportunity_description = volunteerOffer.opportunity_description ;
+                this.volunteer.location = volunteerOffer.location ;
               }
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
@@ -428,7 +431,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
   }
 
-
+  volunteer_location_log;
+  contractor_location_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -469,6 +473,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         this.hourly_rate_log = 'Please enter hourly rate';
         errorCount = 1;
       }
+      if (!this.contractor.location) {
+        this.contractor_location_log = 'Please enter location';
+        errorCount = 1;
+      }
       console.log(this.checkNumber(this.contractor.hourly_rate));
       console.log(this.contractor.hourly_rate)
       if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
@@ -486,6 +494,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
 
     if (this.approach_work_type === 'volunteer') {
+      if (!this.volunteer.location) {
+        this.volunteer_location_log = 'Please enter location';
+        errorCount = 1;
+      }
       if (!this.volunteer.opportunity_description) {
         this.volunteer_desc_log = 'Please enter opportunity description';
         errorCount = 1;
@@ -507,6 +519,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         }
       }
       if(this.approach_work_type === 'contractor') {
+        job_offer.location = this.contractor.location;
         job_offer.hourly_rate = this.contractor.hourly_rate;
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
@@ -516,6 +529,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       }
 
       if(this.approach_work_type === 'volunteer') {
+        job_offer.location = this.volunteer.location;
         job_offer.opportunity_description = this.volunteer.opportunity_description;
         new_offer.approach  = {
           volunteer : job_offer
