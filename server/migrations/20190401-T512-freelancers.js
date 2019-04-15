@@ -24,8 +24,8 @@ module.exports.up = async function() {
             set['candidate.employee.currency'] = userDoc.candidate.expected_salary_currency;
             unset['candidate.expected_salary_currency'] = 1;
         }
-        if(userDoc.candidate.location) {
-            set['candidate.employee.location'] = userDoc.candidate.location;
+        if(userDoc.candidate.locations) {
+            set['candidate.employee.location'] = userDoc.candidate.locations;
             unset['candidate.location'] = 1;
         }
         if( userDoc.candidate.roles) {
@@ -137,7 +137,7 @@ module.exports.down = async function() {
         let set = {
             'candidate.expected_salary' : userDoc.candidate.employee.expected_annual_salary,
             'candidate.expected_salary_currency' : userDoc.candidate.employee.currency,
-            'candidate.location' : userDoc.candidate.employee.location,
+            'candidate.locations' : userDoc.candidate.employee.location,
             'candidate.roles': userDoc.candidate.employee.roles,
             'candidate.availability_day': userDoc.candidate.employee.employment_availability
 
