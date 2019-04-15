@@ -218,7 +218,7 @@ export class ChatComponent implements OnInit {
                 this.authenticationService.get_page_content('Company chat popup message')
                   .subscribe(
                     data => {
-                      if (data) {
+                      if (data && data[0]) {
                         this.companyMsgTitle = data[0]['page_title'];
                         this.companyMsgContent = data[0]['page_content'];
                       }
@@ -997,5 +997,7 @@ export class ChatComponent implements OnInit {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false){}
         }
       );
+    $("#popModal").modal("hide");
+
   }
 }

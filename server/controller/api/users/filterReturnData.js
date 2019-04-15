@@ -70,8 +70,8 @@ const createInitials = module.exports.createInitials = function createInitials(f
 
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
-    const acceptedJobOffer = await Messages.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
-    if (acceptedJobOffer && acceptedJobOffer.length>0)
+    const acceptedApproachOffer = await Messages.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'approach_accepted'})
+    if (acceptedApproachOffer && acceptedApproachOffer.length>0)
         return removeSensativeData(candidateDoc);
     else
         return anonymousSearchCandidateData(candidateDoc);
