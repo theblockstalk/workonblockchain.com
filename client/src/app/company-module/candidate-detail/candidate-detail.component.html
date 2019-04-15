@@ -39,7 +39,7 @@
                   <span><i class="fas fa-phone mr-2"></i></span>
                   <span >Phone: {{data.contact_number}}</span>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item" *ngIf="data.first_name">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                   <span >City : {{data.candidate.base_city}}</span>
                 </li>
