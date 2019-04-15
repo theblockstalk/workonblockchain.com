@@ -51,11 +51,11 @@ module.exports.endpoint = async function (req, res) {
     if (messageDocs.length === 0) {
         errors.throwError('No messages found', 404)
     }
-    if(messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_accepted') {
+    if(messageDocs.length >= 2 && messageDocs[1].msg_tag === 'approach_accepted') {
         jobOfferStatus = 'accepted';
-    } else if (messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_rejected') {
+    } else if (messageDocs.length >= 2 && messageDocs[1].msg_tag === 'approach_rejected') {
         jobOfferStatus = 'rejected';
-    } else if(messageDocs[0].msg_tag === 'job_offer') {
+    } else if(messageDocs[0].msg_tag === 'approach') {
         jobOfferStatus = 'sent';
     }
 
