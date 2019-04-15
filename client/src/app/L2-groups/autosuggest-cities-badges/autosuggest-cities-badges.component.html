@@ -1,0 +1,8 @@
+<div *ngIf="selectedItems && selectedItems.length > 0">
+  <div class="row">
+    <div  *ngFor="let value of selectedItems; let i = index" class="col-md-6 p-2 mt-2">
+      <app-autosuggest-cities-selected-value [citiesBadgeText]="value.name" [visaNeeded]="value.visa_needed" (deleteItem)="deleteSelectedItem(i)" (updateItem)="updateSelectedItem(value)" ></app-autosuggest-cities-selected-value>
+    </div>
+  </div>
+</div>
+
