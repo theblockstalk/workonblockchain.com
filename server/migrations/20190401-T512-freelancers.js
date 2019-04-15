@@ -37,7 +37,7 @@ module.exports.up = async function() {
             unset['candidate.availability_day'] = 1;
         }
 
-        if(!objects.isEmpty(set)) set['candidate.employee.employment_type'] = 'Full time'
+        if(!objects.isEmpty(set)) set['candidate.employee.employment_type'] = ['Full time'];
 
         let updateObj;
         if(!objects.isEmpty(set) || !objects.isEmpty(unset)) {

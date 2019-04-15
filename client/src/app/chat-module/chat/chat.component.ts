@@ -997,5 +997,7 @@ export class ChatComponent implements OnInit {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false){}
         }
       );
+    $("#popModal").modal("hide");
+
   }
 }
