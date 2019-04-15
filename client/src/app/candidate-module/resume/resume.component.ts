@@ -55,6 +55,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type=='candidate')
     {
+      this.area_interested.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
       this.commercially.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -87,9 +93,46 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
 
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
+            {
+              this.job_active_class = 'fa fa-check-circle text-success';
+            }
+
+            if(data['candidate'].why_work && data['candidate'].interest_areas )
+            {
+              this.exp_class = "/experience";
+              this.exp_disable = "";
+              this.resume_active_class='fa fa-check-circle text-success';
+            }
+
+            if( data['candidate'].description)
+            {
+
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+
             if(data['candidate'].why_work){
 
               this.why_work=data['candidate'].why_work;
+            }
+            if(data['candidate'].interest_areas)
+            {
+              for (let interest of data['candidate'].interest_areas)
+              {
+
+                for(let option of this.area_interested)
+                {
+
+                  if(option.value === interest)
+                  {
+                    option.checked=true;
+                    this.selectedValue.push(interest);
+
+                  }
+
+                }
+
+              }
             }
             if(data['candidate'].blockchain)
             {
@@ -136,6 +179,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
                 }
               }
+
+              if(data['candidate'].blockchain.description_commercial_skills)
+              {
+                this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+              }
+
 
               if(data['candidate'].blockchain.description_commercial_platforms)
               {
@@ -218,28 +267,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             }
 
 
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day )
-            {
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';
 
+
             }
-
-            if(data['candidate'].why_work )
-            {
-              this.exp_class = "/experience";
-              this.exp_disable = "";
-              this.resume_active_class='fa fa-check-circle text-success';
-              // this.router.navigate(['/resume']);
-            }
-
-            if( data['candidate'].description)
-            {
-
-              this.exp_active_class = 'fa fa-check-circle text-success';
-              //this.router.navigate(['/experience']);
-            }
-
-
 
           },
           error => {
@@ -272,6 +304,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   otherSkills = constants.otherSkills;
   experimented = constants.experimented;
   exp_year = constants.experienceYears;
+  area_interested = constants.workBlockchainInterests;
+
 
   onExpOptions(e)
   {
@@ -290,6 +324,22 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
+  onAreaSelected(e)
+  {
+    if(e.target.checked)
+    {
+      this.selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.selectedValue.find(x => x === e.target.value);
+      let index = this.selectedValue.indexOf(updateItem);
+      this.selectedValue.splice(index, 1);
+    }
+
+
+  }
+
+
   findIndexToUpdateExperimented(type) {
     return type == this;
   }
@@ -302,6 +352,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   why_work_log;commercial_log;
   formal_skills=[];
   commercial_skill_log;
+  interest_log;
   commercial_desc_log;
   experimented_desc_log;
   commercialSkills_desc_log;
@@ -323,6 +374,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
+    if(this.selectedValue.length<=0) {
+      this.interest_log = "Please select at least one area of interest";
+    }
     if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
       flag_commercial_desc = false;
       this.commercial_desc_log = 'Please enter description of commercial experience';
@@ -342,7 +396,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length
+
+    if(this.why_work && this.selectedValue.length > 0  && this.commercially_worked.length === this.commercial_expYear.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
       && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
@@ -455,7 +510,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
-  selectedValue;langValue;
+  selectedValue=[];langValue;
   onComExpYearOptions(e, value)
   {
     this.langValue = value;

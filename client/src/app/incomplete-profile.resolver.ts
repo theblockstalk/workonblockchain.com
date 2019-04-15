@@ -21,6 +21,8 @@ export class ProfileResolver  {
         }).pipe(map(
           (res) => {
             if (res) {
+              console.log("response");
+              console.log(res);
               if (!res['terms_id'] || res['terms_id'] === false) {
                 this.router.navigate(['/terms-and-condition']);
 
@@ -28,10 +30,10 @@ export class ProfileResolver  {
               else if (!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name']) {
                 this.router.navigate(['/about']);
               }
-              else if (res['locations'].length < 1 || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary']) {
+              else if(!res['candidate'].employee && !res['candidate'].contractor && !res['candidate'].volunteer) {
                 this.router.navigate(['/job']);
               }
-              else if (!res['why_work']) {
+              else if (!res['why_work'] && !res['candidate'].interest_areas) {
                 this.router.navigate(['/resume']);
               }
               else if (!res['description']) {

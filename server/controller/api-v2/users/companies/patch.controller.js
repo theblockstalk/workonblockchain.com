@@ -68,6 +68,10 @@ const bodySchema = new Schema({
     saved_searches: {
         type:[new Schema({
             search_name: String,
+            work_type : {
+                type: String,
+                enum: enumerations.workTypes
+            },
             location: {
                 type: [{
                     city: {
@@ -85,7 +89,7 @@ const bodySchema = new Schema({
             job_type: {
                 type: [{
                     type: String,
-                    enum: enumerations.jobTypes
+                    enum: enumerations.employmentTypes
                 }]
 
             },
@@ -100,6 +104,10 @@ const bodySchema = new Schema({
                 enum: enumerations.currencies
             },
             current_salary: {
+                type:Number,
+                min: 0
+            },
+            expected_hourly_rate: {
                 type:Number,
                 min: 0
             },
@@ -177,7 +185,6 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
         if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
-
         if (queryBody.saved_searches) {
             let patchSearches = queryBody.saved_searches;
             let currentSearches = employerDoc.saved_searches;

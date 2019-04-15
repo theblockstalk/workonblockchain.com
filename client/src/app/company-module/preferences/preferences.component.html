@@ -46,7 +46,19 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 mt-2">
+              <div class="col-md-12 mt-2">
+                <div class="form-group">
+                  <div class="form-check" *ngFor="let types of workTypes">
+                    <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                    <label class="form-check-label simple-radio-button" >
+                      {{types.name}}
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2" >
                 <div class="form-group">
                   <select multiple formControlName="job_type"  title="Position type (optional)" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
@@ -99,7 +111,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
                     <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
@@ -128,7 +140,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country.value" [attr.selected]="country.value === preferncesForm.value.residence_country ? true : null" >{{country.name}}</option>
@@ -139,7 +151,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-4">
+              <!--<div class="col-md-6 mt-4">
                 <div class = "form-group w-auto">
 
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
@@ -153,6 +165,42 @@
 
                   <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && checkNumber(preferncesForm.value.current_salary)  " >
                     {{current_currency_log}}
+                  </div>
+
+                </div>
+              </div>-->
+
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'employee'">
+                <div class = "form-group w-auto">
+
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
+                    <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.current_currency?true:null">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.current_currency && preferncesForm.value.current_salary)|| (preferncesForm.value.current_currency && !preferncesForm.value.current_salary)" >
+                    {{current_currency_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && checkNumber(preferncesForm.value.current_salary)  " >
+                    {{current_currency_log}}
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.work_type === 'contractor'">
+                <div class = "form-group w-auto">
+
+                  <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
+
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
+                    <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.currency?true:null">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.expected_hourly_rate && preferncesForm.value.currency) || (preferncesForm.value.expected_hourly_rate && !preferncesForm.value.currency)  " >
+                    {{expected_hourly_rate_log}}
+                  </div>
+
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.currency && preferncesForm.value.expected_hourly_rate && checkNumber(preferncesForm.value.expected_hourly_rate)  " >
+                    {{expected_hourly_rate_log}}
                   </div>
 
                 </div>

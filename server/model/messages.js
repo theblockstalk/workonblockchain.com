@@ -49,6 +49,7 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
+        //DELETE ME
         job_offer: {
             type: new Schema({
                 title: {
@@ -66,7 +67,7 @@ const MessageSchema = new Schema({
                 },
                 type: {
                     type: String,
-                    enum: enumerations.jobTypes,
+                    enum: enumerations.employmentTypes,
                     required: true
                 },
                 location: {
@@ -80,6 +81,7 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
+        //DELETE ME
         job_offer_accepted: {
             type: new Schema({
                 message: {
@@ -89,6 +91,7 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
+        //DELETE ME
         job_offer_rejected: {
             type: new Schema({
                 message: {
@@ -98,6 +101,98 @@ const MessageSchema = new Schema({
             }),
             required: false
         },
+        approach: {
+            type: new Schema({
+                employee: {
+                    type: {
+                        job_title: {
+                            type: String,
+                            required: true
+                        },
+                        annual_salary: {
+                            type: Number,
+                            required: true
+                        },
+                        currency: {
+                            type: String,
+                            enum: enumerations.currencies,
+                            required: true
+                        },
+                        employment_type: {
+                            type: String,
+                            enum: enumerations.employmentTypes,
+                            required: true
+                        },
+                        location: {
+                            type: String,
+                            required: false
+                        },
+                        employment_description: {
+                            type: String,
+                            maxlength: 3000,
+                            required: false
+                        }
+                    }
+                },
+                contractor: {
+                    type: {
+                        hourly_rate: {
+                            type: Number,
+                            required: true
+                        },
+                        currency: {
+                            type: String,
+                            enum: enumerations.currencies,
+                            required: true
+                        },
+                        contract_description: {
+                            type: String,
+                            maxlength: 3000,
+                            required: false
+                        },
+                        location: {
+                            type: String,
+                            required: false
+                        }
+                    }
+                },
+                volunteer: {
+                    type: {
+                        opportunity_description: {
+                            type: String,
+                            maxlength: 3000,
+                            required: false
+                        },
+                        location: {
+                            type: String,
+                            required: false
+                        }
+                    }
+                }
+            }),
+            required: false
+        },
+
+        approach_accepted: {
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
+        },
+
+        approach_rejected: {
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
+        },
+
         interview_offer: {
             type: new Schema({
                 location: {

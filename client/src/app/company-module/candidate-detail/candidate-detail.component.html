@@ -149,85 +149,243 @@
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-12">
-              <h2>
-                <i class="fas fa-briefcase"></i>
-                Desired job
-              </h2>
+            <div class="col-md-6">
+              <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
             </div>
+
           </div>
 
-          <div class="row mt-3">
+          <div class="row mt-2" *ngIf="employee.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-secret"></i> Employee</h4>
+            </div>
 
-              <div class = "col-md-12" >
-                <div class="form-group" *ngIf="noVisaArray && noVisaArray.length > 0">
-                  <label>Desired location:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of noVisaArray'>
-                      <div *ngIf="country.name === 'Remote'">
-                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'country' ">
-                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'city'">
-                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group" *ngIf="visaRequiredArray && visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of visaRequiredArray'>
-                      <div *ngIf="country.type === 'country'" >
-                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'city'">
-                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12 mt-4">
               <div class="form-group">
-                <label>Area of interest: </label>
+                <label>Position type: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'> {{interest_area}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let type of employee.value.employment_type;'> {{type}} </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-12 mb-3">
+            <div class = "col-md-12" >
+              <div class="form-group" *ngIf="employee.noVisaArray && employee.noVisaArray.length > 0">
+                <label>Locations:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.noVisaArray'>
+                    <div *ngIf="country.name === 'Remote'">
+                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'country' ">
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="employee.visaRequiredArray && employee.visaRequiredArray.length > 0" >
+                <label>Locations (work visa required):</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.visaRequiredArray'>
+                    <div *ngIf="country.type === 'country'" >
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Roles: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'> {{roles_data}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of employee.value.roles;'> {{role}} </div>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Expected annual salary: </label>
-                <p>{{data.candidate.expected_salary_currency}} {{data.candidate.expected_salary}}</p>
+                <p>{{employee.value.currency}} {{employee.value.expected_annual_salary}}</p>
               </div>
             </div>
-            <div class="col-md-12 mb-3">
+
+            <div class="col-md-12">
               <div class="form-group">
-                <label>Your availablity: </label>
-                <p>{{availability_day}}</p>
+                <label>Availability: </label>
+                <p>{{employee.value.employment_availability}}</p>
               </div>
             </div>
 
           </div>
+
+          <div class="row mt-2" *ngIf="contractor.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-address-card"></i> Contractor</h4>
+            </div>
+
+
+            <div class = "col-md-12 mt-4" >
+              <div class="form-group" *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
+                <label>Locations:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.noVisaArray'>
+                    <div *ngIf="country.name === 'Remote'">
+                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'country' ">
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0" >
+                <label>Locations (work visa required):</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.visaRequiredArray'>
+                    <div *ngIf="country.type === 'country'" >
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Roles: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of contractor.value.roles;'> {{role}} </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Hourly rate: </label>
+                <p>{{contractor.value.currency}} {{contractor.value.expected_hourly_rate}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
+              <div class="form-group">
+                <label>Maximum hours per week (optional): </label>
+                <p>{{contractor.value.max_hour_per_week}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.contractor_type">
+              <div class="form-group">
+                <label>Contractor type: </label>
+                <p *ngFor="let contractorType of contractor.value.contractor_type">{{contractorType}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.agency_website && data.first_name">
+              <div class="form-group">
+                <label>Agency website: </label>
+                <p >{{contractor.value.agency_website}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.service_description">
+              <div class="form-group">
+                <label>Service description: </label>
+                <pre >{{contractor.value.service_description}}</pre>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mt-2" *ngIf="volunteer.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-check"></i> Volunteer</h4>
+            </div>
+
+
+            <div class = "col-md-12 mt-4" >
+              <div class="form-group" *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
+                <label>Locations:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.noVisaArray'>
+                    <div *ngIf="country.name === 'Remote'">
+                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'country' ">
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0" >
+                <label>Locations (work visa required):</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.visaRequiredArray'>
+                    <div *ngIf="country.type === 'country'" >
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Roles: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of volunteer.value.roles;'> {{role}} </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
+              <div class="form-group">
+                <label>Maximum hours per week: </label>
+                <p >{{volunteer.value.max_hours_per_week}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
+              <div class="form-group">
+                <label>Learning objectives: </label>
+                <pre >{{volunteer.value.learning_objectives}}</pre>
+              </div>
+            </div>
+
+          </div>
+
 
         </section>
 
@@ -247,6 +405,16 @@
                 <p>{{data.candidate.why_work}}</p>
               </div>
             </div>
+
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label>Interests: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'> {{interest_area}} </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="col-md-12" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length>0) || (commercial_skills && commercial_skills.length > 0)">
               <h4>Technologies</h4>
@@ -370,67 +538,153 @@
           <div class="row">
             <div class="col-md-12 mb-2">
               <h5>
-                Send job description
+                Approach
               </h5>
             </div>
           </div>
           <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
-            <div class="form-group">
-              <label>Job title</label>
-              <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Full stack developer">
-              <input type="hidden" name="user_id" [(ngModel)]="credentials.user_id" class="form-control">
-              <input type="hidden" name="name" [(ngModel)]="credentials.name" class="form-control">
-              <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
-                {{job_title_log}}
+            <div class="row">
+              <div class="col-md-12" >
+                <div class="form-group">
+                  <div class="form-check" *ngFor="let types of workTypes" >
+                    <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                    <label class="form-check-label simple-radio-button" >
+                      {{types.name}}
+                    </label>
+                  </div>
+
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label>Annual salary</label>
-              <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
-              <div class = "invalid-feedback d-inline float-left" *ngIf="expect_salary.errors && credentials.salary">
-                Salary should be a number.
+            <div class="row" *ngIf="approach_work_type === 'employee'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom1">Job title</label>
+                  <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="employee.job_title" class="form-control" placeholder="Director">
+                  <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
+                    {{job_title_log}}
+                  </div>
+                </div>
               </div>
-              <div class = "invalid-feedback d-inline"  *ngIf="salary_log">
-                {{salary_log}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="employee.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.location">
+                    {{location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Annual salary</label>
+                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="employee.salary" class="form-control" placeholder="">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.salary || (employee.salary && !checkNumber(employee.salary))">
+                    {{salary_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <select title="Currency" name="currency" [(ngModel)]="employee.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === employee.currency? true: null">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
+                    {{salary_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Employment type</label>
+                  <div class="form-check" *ngFor="let options of job_type">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="employee.job_type" [value]="options">
+                    <label class="form-check-label simple-radio-button" for="{{options}}">
+                      {{options}}
+                    </label>
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_type">
+                    {{employment_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Employment description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc">
+                    {{job_desc_log}}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="form-group">
-              <select title="Currency" class="selectpicker form-control" name="currency" [(ngModel)]="credentials.currency">
-                <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === credentials.currency? true : null">{{base_currency}}</option>
-              </select>
-              <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
-                {{salary_currency_log}}
+            <div class="row" *ngIf="approach_work_type === 'contractor'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label>Location</label>
-              <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
-              <div class = "invalid-feedback d-inline"  *ngIf="location_log">
-                {{location_log}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Hourly rate</label>
+                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate" [(ngModel)]="contractor.hourly_rate" class="form-control" placeholder="">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate || (contractor.hourly_rate && !checkNumber(contractor.hourly_rate))">
+                    {{hourly_rate_log}}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label>Job type</label>
-              <div class="form-check" *ngFor="let options of job_type">
-                <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                <label class="form-check-label simple-radio-button" for="{{options}}">
-                  {{options}}
-                </label>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                    {{hourly_currency_log}}
+                  </div>
+                </div>
               </div>
-              <div class = "invalid-feedback d-inline"  *ngIf="employment_log">
-                {{employment_log}}
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contract description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
+                    {{contract_desc_log}}
+                  </div>
+                </div>
               </div>
+
             </div>
 
-            <div class="form-group">
-              <label>Job description</label>
-              <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-              </ckeditor>
-              <div class = "invalid-feedback d-inline"  *ngIf="job_desc_log">
-                {{job_desc_log}}
+            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.location">
+                    {{volunteer_location_log}}
+                  </div>
+                </div>
               </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Opportunity description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="volunteer.opportunity_description" #myckeditor name="opportunity_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description">
+                    {{volunteer_desc_log}}
+                  </div>
+                </div>
+              </div>
+
             </div>
+
             <div class="alert alert-success" role="alert" *ngIf="job_offer_msg_success">
               {{job_offer_msg_success}}
             </div>
