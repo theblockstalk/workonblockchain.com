@@ -968,6 +968,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   hourly_rate_log;
   hourly_currency_log;
   contract_desc_log;
+  contractor_role_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1006,6 +1007,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.approach_work_type === 'contractor') {
       if (!this.contractor.hourly_rate) {
         this.hourly_rate_log = 'Please enter hourly rate';
+        errorCount = 1;
+      }
+
+      if (!this.contractor.role) {
+        this.contractor_role_log = 'Please select role';
         errorCount = 1;
       }
 
