@@ -726,9 +726,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
       }
       if(!this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        errorCount = 1;
         this.current_currency_log = "Please enter salary";
       }
       if(this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+        errorCount = 1;
         this.current_currency_log = "Please enter currency";
       }
 
@@ -747,9 +749,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
       }
       if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        errorCount = 1;
         this.expected_hourly_rate_log = "Please enter hourly rate";
       }
       if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+        errorCount = 1;
         this.expected_hourly_rate_log = "Please enter currency";
       }
 
