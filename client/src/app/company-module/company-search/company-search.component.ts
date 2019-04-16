@@ -713,29 +713,46 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
     let errorCount = 0;
-    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
-      if (checkNumber === false) {
-        errorCount = 1;
-        this.current_currency_log = "Salary should be a number";
+    if (this.preferncesForm.value.work_type === 'employee' ) {
+      if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.current_currency_log = "Salary should be a number";
+        }
+        else {
+          queryBody.current_currency = this.preferncesForm.value.current_currency;
+          queryBody.current_salary = this.preferncesForm.value.current_salary;
+        }
       }
-      else {
-        queryBody.current_currency = this.preferncesForm.value.current_currency;
-        queryBody.current_salary = this.preferncesForm.value.current_salary;
+      if(!this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        this.current_currency_log = "Please enter salary";
+      }
+      if(this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+        this.current_currency_log = "Please enter currency";
       }
 
-    }
+      }
 
-    if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
-      if (checkNumber === false) {
-        errorCount = 1;
-        this.expected_hourly_rate_log = "Hourly rate should be a number "
+    if (this.preferncesForm.value.work_type === 'contractor' ) {
+      if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.expected_hourly_rate_log = "Hourly rate should be a number "
+        }
+        else {
+          queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
+          queryBody.current_currency = this.preferncesForm.value.currency;
+        }
       }
-      else {
-        queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-        queryBody.current_currency = this.preferncesForm.value.currency;
+      if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        this.expected_hourly_rate_log = "Please enter hourly rate";
       }
+      if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+        this.expected_hourly_rate_log = "Please enter currency";
+      }
+
     }
 
     if (!this.preferncesForm.value.name) {
