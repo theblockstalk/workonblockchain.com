@@ -260,6 +260,16 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(skillsFilter);
         }
 
+        if (search.years_exp_min) {
+            const yearsExpFilter = {
+                "candidate.programming_languages": {
+                    $elemMatch: {
+                        "exp_year": {$gte: search.years_exp_min}
+                    }
+                }};
+            userQuery.push(yearsExpFilter);
+        }
+
         if (search.residence_country && search.residence_country.length > 0) {
             const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
             userQuery.push(residenceCountryFilter);

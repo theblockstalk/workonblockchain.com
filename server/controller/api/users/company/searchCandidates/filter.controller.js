@@ -7,7 +7,6 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    console.log(queryBody.years_exp_min);
     let search = {}, order = {};
     if (queryBody.work_type) search.work_type = queryBody.work_type;
     if (queryBody.word) search.word = queryBody.word;
