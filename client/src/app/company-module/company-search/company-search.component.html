@@ -369,7 +369,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label >Role</label>
-                  <select multiple name="role" [(ngModel)]="contractor.role" class="form-control selectpicker">
+                  <select name="role" title="(select one)" [(ngModel)]="contractor.role" class="form-control selectpicker">
                     <option *ngFor='let role of rolesData' [value]="role.value" selected>{{role.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.role">

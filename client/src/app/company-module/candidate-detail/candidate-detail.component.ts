@@ -71,6 +71,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   hourly_currency_log;
   contract_desc_log;
   workTypes = constants.workTypes;
+  rolesData = constants.workRoles;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
