@@ -818,9 +818,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       else {
         this.new_error_msg = "Search name already exists.";
-        setInterval(() => {
-          this.new_error_msg = "";
-        }, 5000);
+
       }
 
     }
