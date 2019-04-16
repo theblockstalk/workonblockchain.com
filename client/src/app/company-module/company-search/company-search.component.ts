@@ -466,11 +466,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data =>
           {
             this.candidate_data = data;
-
-            this.filterAndSort();
-
             this.setPage(1);
-            if(this.candidate_data.length > 0) {
+            if(this.candidate_data && this.candidate_data.length > 0) {
               this.not_found='';
             }
             this.responseMsg = "response";
@@ -808,11 +805,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-
-          this.filterAndSort();
-
           this.setPage(1);
-          if(this.candidate_data.length > 0) {
+          if(this.candidate_data && this.candidate_data.length > 0) {
             this.not_found='';
           }
           this.responseMsg = "response";
@@ -1200,10 +1194,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  filterAndSort(){
-    let new_roles = constants.workRoles;
-    for(let i=0;i<this.candidate_data.length;i++){
-      this.candidate_data[i].candidate.roles = getFilteredNames(this.candidate_data[i],new_roles);
-    }
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 }
