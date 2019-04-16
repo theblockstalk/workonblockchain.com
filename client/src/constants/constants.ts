@@ -325,5 +325,12 @@ export const constants = {
     {name: 'contractor/freelancer', value:'contractor', checked:false},
     {name: 'volunteer', value:'volunteer', checked:false}
   ],
-  email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly']
+  email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly'],
+  years_exp_min: [
+    {value:1, name:'1+ years'},
+    {value:2, name:'2+ years'},
+    {value:3, name:'3+ years'},
+    {value:4, name:'4+ years'},
+    {value:6, name:'6+ years'}
+  ]
 };

@@ -73,6 +73,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   blockchain = constants.blockchainPlatforms;
   language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
+  years_exp = constants.years_exp_min;
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -121,7 +122,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         residence_country: new FormControl(),
         expected_hourly_rate: new FormControl(),
         currency: new FormControl(),
-        work_type: new FormControl()
+        work_type: new FormControl(),
+        years_exp_min: new FormControl()
       });
 
       this.preferncesForm = this._fb.group({
@@ -140,7 +142,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         residence_country: [],
         expected_hourly_rate:[''],
         currency: [''],
-        work_type: ['']
+        work_type: [''],
+        years_exp_min: []
       });
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
@@ -172,7 +175,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 residence_country: [data['saved_searches'][0].residence_country],
                 expected_hourly_rate: [data['saved_searches'][0].expected_hourly_rate],
                 currency: [data['saved_searches'][0].current_currency],
-                work_type: [data['saved_searches'][0].work_type]
+                work_type: [data['saved_searches'][0].work_type],
+                years_exp_min: [data['saved_searches'][0].years_exp_min],
               });
 
               if(data['saved_searches'][0].location)
@@ -358,7 +362,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         count = 1;
         this.current_currency_log = "Salary should be a number";
       }
-
     }
 
     if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
@@ -407,22 +410,24 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
       if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
       if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
+      if(!this.preferncesForm.value.years_exp_min) this.preferncesForm.value.years_exp_min = [];
 
       let inputQuery : any ={};
       inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
 
       let searchInput : any = {};
-      if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location
-      if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name
-      if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed
-      if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
-      if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position
-      if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain
-      if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills
-      if(this.preferncesForm.value.other_technologies) searchInput.other_technologies = this.preferncesForm.value.other_technologies
-      if(this.preferncesForm.value.order_preferences) searchInput.order_preferences = this.preferncesForm.value.order_preferences
-      if(this.preferncesForm.value.residence_country) searchInput.residence_country = this.preferncesForm.value.residence_country
+      if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location;
+      if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name;
+      if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed;
+      if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type;
+      if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position;
+      if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain;
+      if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills;
+      if(this.preferncesForm.value.other_technologies) searchInput.other_technologies = this.preferncesForm.value.other_technologies;
+      if(this.preferncesForm.value.order_preferences) searchInput.order_preferences = this.preferncesForm.value.order_preferences;
+      if(this.preferncesForm.value.residence_country) searchInput.residence_country = this.preferncesForm.value.residence_country;
       if(this.preferncesForm.value.work_type) searchInput.work_type = this.preferncesForm.value.work_type;
+      if(this.preferncesForm.value.years_exp_min) searchInput.years_exp_min = this.preferncesForm.value.years_exp_min;
       if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
           searchInput.current_currency = this.preferncesForm.value.current_currency;
           searchInput.current_salary  = this.preferncesForm.value.current_salary;

@@ -118,6 +118,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   newSearchLocation = [];
   selectedWorkType;
   searchData;
+  years_exp_value = '';
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
@@ -179,6 +180,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residenceCountries = constants.countries;
   rolesData = constants.workRoles;
   blockchainData = constants.blockchainPlatforms;
+  years_exp = constants.years_exp_min;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -389,6 +391,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['skills']) this.skill_value = key['skills'];
         else this.skill_value = '';
 
+        if (key['years_exp_min']) this.years_exp_value = key['years_exp_min'];
+        else this.years_exp_value = '';
+
         if (key['_id']) this._id = key['_id'];
         else this._id = '';
 
@@ -481,6 +486,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.visa_check) queryBody.visa_needed = this.visa_check;
       if (this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
       if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
+      if (this.years_exp_value) queryBody.years_exp_min = this.years_exp_value;
+
       if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary = this.salary;
         queryBody.current_currency = this.currencyChange;
@@ -495,6 +502,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.saveSearchName) {
         newQueryBody.searchName = this.saveSearchName;
       }
+      console.log(queryBody);
 
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
