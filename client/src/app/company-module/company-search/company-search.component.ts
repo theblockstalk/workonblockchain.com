@@ -370,7 +370,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   fillFields(searches, name) {
-    console.log("fill fields");
     this.selectedValueArray = [];
     for (let key of searches) {
       if (key['name'] === name) {
@@ -717,7 +716,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
       if (checkNumber === false) {
-        console.log("1");
         errorCount = 1;
         this.current_currency_log = "Salary should be a number";
       }
@@ -731,7 +729,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
       if (checkNumber === false) {
-        console.log('6')
         errorCount = 1;
         this.expected_hourly_rate_log = "Hourly rate should be a number "
       }
@@ -742,12 +739,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (!this.preferncesForm.value.name) {
-      console.log('7')
       this.search_name_log = "Please enter saved search name";
       errorCount = 1;
     }
     if (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
-      console.log('8')
       this.residence_country_log = "Please select maximum 50 countries";
       errorCount = 1;
     }
@@ -1080,7 +1075,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data => {
             this.job_offer_log_success = 'Message successfully sent';
             this.employee = {};
-            $("#jobDescriptionModal").modal("hide");
+            $("#approachModal").modal("hide");
             this.router.navigate(['/chat']);
           },
           error => {

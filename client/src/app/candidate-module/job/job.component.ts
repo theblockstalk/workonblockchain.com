@@ -82,7 +82,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 200);
+    }, 700);
   }
   ngOnInit()
   {
@@ -203,7 +203,9 @@ export class JobComponent implements OnInit,AfterViewInit {
 
               console.log(this.volunteer['volunteer_roles']);
             }
-
+            setTimeout(() => {
+              $('.selectpicker').selectpicker();
+            }, 500);
 
             console.log(data);
           },
