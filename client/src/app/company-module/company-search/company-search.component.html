@@ -359,6 +359,26 @@
             <div class="row" *ngIf="approach_work_type === 'contractor'">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Role</label>
+                  <select name="role" title="(select one)" [(ngModel)]="contractor.role" class="form-control selectpicker">
+                    <option *ngFor='let role of rolesData' [value]="role.value" selected>{{role.name}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.role">
+                    {{contractor_role_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
                   <label for="validationCustomSalary">Hourly rate</label>
                   <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate" [(ngModel)]="contractor.hourly_rate" class="form-control" placeholder="">
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate || (contractor.hourly_rate && !checkNumber(contractor.hourly_rate))">
@@ -374,15 +394,6 @@
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
                     {{hourly_currency_log}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="validationCustom02">Location</label>
-                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
-                    {{contractor_location_log}}
                   </div>
                 </div>
               </div>

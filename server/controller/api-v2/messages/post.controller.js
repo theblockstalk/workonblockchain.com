@@ -77,6 +77,10 @@ const bodySchema = new Schema({
                             type: String,
                             enum: enumerations.currencies,
                         },
+                        role: {
+                            type: String,
+                            enum: enumerations.workRoles
+                        },
                         contract_description: {
                             type: String,
                             maxlength: 3000,

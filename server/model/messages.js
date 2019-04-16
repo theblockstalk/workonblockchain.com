@@ -145,6 +145,10 @@ const MessageSchema = new Schema({
                             enum: enumerations.currencies,
                             required: true
                         },
+                        role: {
+                            type: String,
+                            enum: enumerations.workRoles
+                        },
                         contract_description: {
                             type: String,
                             maxlength: 3000,

@@ -713,29 +713,46 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
     let errorCount = 0;
-    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
-      if (checkNumber === false) {
-        errorCount = 1;
-        this.current_currency_log = "Salary should be a number";
+    if (this.preferncesForm.value.work_type === 'employee' ) {
+      if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.current_currency_log = "Salary should be a number";
+        }
+        else {
+          queryBody.current_currency = this.preferncesForm.value.current_currency;
+          queryBody.current_salary = this.preferncesForm.value.current_salary;
+        }
       }
-      else {
-        queryBody.current_currency = this.preferncesForm.value.current_currency;
-        queryBody.current_salary = this.preferncesForm.value.current_salary;
+      if(!this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        this.current_currency_log = "Please enter salary";
+      }
+      if(this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+        this.current_currency_log = "Please enter currency";
       }
 
-    }
+      }
 
-    if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
-      if (checkNumber === false) {
-        errorCount = 1;
-        this.expected_hourly_rate_log = "Hourly rate should be a number "
+    if (this.preferncesForm.value.work_type === 'contractor' ) {
+      if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.expected_hourly_rate_log = "Hourly rate should be a number "
+        }
+        else {
+          queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
+          queryBody.current_currency = this.preferncesForm.value.currency;
+        }
       }
-      else {
-        queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-        queryBody.current_currency = this.preferncesForm.value.currency;
+      if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        this.expected_hourly_rate_log = "Please enter hourly rate";
       }
+      if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+        this.expected_hourly_rate_log = "Please enter currency";
+      }
+
     }
 
     if (!this.preferncesForm.value.name) {
@@ -818,9 +835,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       else {
         this.new_error_msg = "Search name already exists.";
-        setInterval(() => {
-          this.new_error_msg = "";
-        }, 5000);
+
       }
 
     }
@@ -928,6 +943,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               let contractorOffer = approach.contractor;
               this.contractor.hourly_rate = contractorOffer.hourly_rate ;
               this.contractor.currency = contractorOffer.currency;
+              this.contractor.role = contractorOffer.role;
               this.contractor.contract_description = contractorOffer.contract_description;
               this.contractor.location = contractorOffer.location;
             }
@@ -969,6 +985,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   hourly_rate_log;
   hourly_currency_log;
   contract_desc_log;
+  contractor_role_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1007,6 +1024,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.approach_work_type === 'contractor') {
       if (!this.contractor.hourly_rate) {
         this.hourly_rate_log = 'Please enter hourly rate';
+        errorCount = 1;
+      }
+
+      if (!this.contractor.role) {
+        this.contractor_role_log = 'Please select role';
         errorCount = 1;
       }
 
@@ -1058,6 +1080,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
         job_offer.location = this.contractor.location;
+        job_offer.role = this.contractor.role;
         new_offer.approach  = {
           contractor : job_offer
         }
