@@ -249,7 +249,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     if(option.value === type) option.checked = true;
 
                   }
-
                 }
 
                 if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
@@ -270,6 +269,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                 console.log(this.volunteer['volunteer_roles']);
               }
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
+
               if(data['candidate'].interest_areas)
               {
                 for (let interest of data['candidate'].interest_areas)

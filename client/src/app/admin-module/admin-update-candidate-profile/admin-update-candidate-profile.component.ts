@@ -289,6 +289,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
                 console.log(this.volunteer['volunteer_roles']);
               }
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
               if(data['candidate'].interest_areas)
               {
                 for (let interest of data['candidate'].interest_areas)

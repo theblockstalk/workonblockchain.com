@@ -321,9 +321,9 @@ export const constants = {
     {name: "I worked through a development agency with a team", value: "agency", checked:false}
   ],
   workTypes : [
-    {name: 'employee (full/part time)', value:'employee', checked:false},
-    {name: 'contractor/freelancer', value:'contractor', checked:false},
-    {name: 'volunteer', value:'volunteer', checked:false}
+    {name: 'Employee (full/part time)', value:'employee', checked:false},
+    {name: 'Contractor/freelancer', value:'contractor', checked:false},
+    {name: 'Volunteer', value:'volunteer', checked:false}
   ],
   email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly']
 };
