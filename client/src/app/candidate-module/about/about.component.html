@@ -50,7 +50,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="first_name">First name</label>
-                <input type="text" class="form-control" required id="first_name" placeholder="John" name="first_name" [(ngModel)]="info.first_name">
+                <input type="text" class="form-control" id="first_name" placeholder="John" name="first_name" [(ngModel)]="info.first_name">
                 <div class = "invalid-feedback d-inline" *ngIf="!info.first_name">
                   {{first_name_log}}
                 </div>

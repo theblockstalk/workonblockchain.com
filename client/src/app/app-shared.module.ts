@@ -11,7 +11,7 @@ import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-sin
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
 import { AutosuggestComponent } from './L0-components/forms-edit/dropdown-multiple/autosuggest/autosuggest.component';
 import { AutosugguestValueComponent } from './L1-items/autosugguest-selected-cities-value/autosugguest-value.component';
-import { ValidationTextComponent } from './L0-components/forms-view/validation-text/validation-text.component';
+import { ValidationTextComponent } from './L0-components/forms-edit/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
 import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
@@ -22,17 +22,18 @@ import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/au
 import { AutosuggestBadgesComponent } from './L2-groups/autosuggest-badges/autosuggest-badges.component';
 import { AutosuggestCitiesSelectedValueComponent } from './L0-components/forms-edit/autosuggest-cities-selected-value/autosuggest-cities-selected-value.component';
 import { AutosuggestCitiesBadgesComponent } from './L2-groups/autosuggest-cities-badges/autosuggest-cities-badges.component';
-
+import { AboutComponent } from './L2-groups/candidates/about/about.component';
+import { TextInputComponent } from './L0-components/forms-edit/text-input/text-input.component';
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule, MatAutocompleteModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
-                  AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent],
+                  AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
-                  AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent]
+                  AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent]
 })
 export class SharedModule { }

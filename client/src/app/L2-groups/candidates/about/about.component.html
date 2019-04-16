@@ -1,0 +1,7 @@
+<div class="form-group">
+  <form (submit)="textInput.selfValidate()?formSubmit() : ''">
+    <app-text-input #textInput placeholder="John" label="First name"  (formOutput)="firstName($event)" requiredErrorMsg="Please enter first name" ></app-text-input>
+    <app-text-input #textInput placeholder="Smith" label="Last name"  (formOutput)="lastName($event)" requiredErrorMsg="Please enter last name" ></app-text-input>
+    <button type="submit" >Submit</button>
+  </form>
+</div>

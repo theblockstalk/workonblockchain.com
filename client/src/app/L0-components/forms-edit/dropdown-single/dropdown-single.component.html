@@ -1,5 +1,5 @@
 <div class="form-group">
-  <label >{{label}}</label>
+  <label [ngClass]="labelClass">{{label}}</label>
   <select class="selectpicker form-control" title="(select one)" (change)="valueChanged($event)">
     <option *ngFor="let options of dropdownList">{{options}}</option>
   </select>

@@ -9,9 +9,11 @@ export class DropdownSingleComponent implements OnInit {
   @Input() dropdownList;
   @Input() label;
   @Output () selectedValue : EventEmitter<any> = new EventEmitter<any>();
+  labelClass = '';
   constructor() { }
 
   ngOnInit() {
+    if(!this.label) this.labelClass = 'invisible';
 
   }
 

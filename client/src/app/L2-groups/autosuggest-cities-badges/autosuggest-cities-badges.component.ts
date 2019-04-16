@@ -13,11 +13,9 @@ export class AutosuggestCitiesBadgesComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateSelectedItem(e) {
-    console.log("event");
-    console.log(e);
-    let objIndex = this.selectedItems.findIndex((obj => obj.name === e.target.value));
-    this.selectedItems[objIndex].visa_needed = e.target.checked;
+  updateSelectedItem(event) {
+    let objIndex = this.selectedItems.findIndex((obj => obj.name === event.target.value));
+    this.selectedItems[objIndex].visa_needed = event.target.checked;
     this.updatedSelectedItems.emit(this.selectedItems);
   }
 

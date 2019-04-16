@@ -19,8 +19,8 @@ export class AutosuggestCitiesSelectedValueComponent implements OnInit {
     this.deleteItem.emit();
   }
 
-  updateSelectedItem() {
-    this.updateItem.emit();
+  updateSelectedItem(event) {
+    this.updateItem.emit(event);
   }
 
 }
