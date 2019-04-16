@@ -279,11 +279,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
 
-    let new_roles = constants.workRoles;
-
-    for(let i=0;i<this.pagedItems.length;i++){
-      this.pagedItems[i].candidate.roles = getFilteredNames(this.pagedItems[i],new_roles);
-    }
+  rolesData = constants.workRoles;
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 }
