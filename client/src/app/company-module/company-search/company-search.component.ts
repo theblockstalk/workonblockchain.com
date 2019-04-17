@@ -599,7 +599,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if (this.timestamp) queryBody.timestamp = this.timestamp;
     if (!queryBody.location) queryBody.location = [];
-
+    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -688,6 +688,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   current_currency_log;
 
   savedNewSearch() {
+    console.log(this.preferncesForm.value);
     let queryBody: any = {};
     if (this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if (this.newSearchLocation && this.newSearchLocation.length > 0) {
