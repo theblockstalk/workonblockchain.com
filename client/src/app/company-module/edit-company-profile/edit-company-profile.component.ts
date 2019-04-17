@@ -380,6 +380,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           count = 1;
         }
         if(this.preferncesForm.value.prefItems[i].work_type === 'employee'){
+          if(this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].current_salary);
+            if(checkNumber === false) {
+              count = 1;
+              this.current_currency_log = "Salary should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
+          }
           if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
             console.log("2");
             this.current_currency_log = "Please choose currency ";
@@ -393,6 +401,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
 
         if(this.preferncesForm.value.prefItems[i].work_type === 'contractor') {
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+            if(checkNumber === false) {
+              count = 1;
+              this.expected_hourly_rate_log = "Hourly rate should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+          }
           if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
             console.log("4")
             this.expected_hourly_rate_log = "Please choose currency ";
@@ -658,13 +674,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   checkNumber(salary) {
-    if(!Number(this.preferncesForm.value.current_salary)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
+    return /^[0-9]*$/.test(salary);
   }
 
   get DynamicWorkFormControls()

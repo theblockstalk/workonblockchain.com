@@ -448,7 +448,7 @@
                           <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary)|| (preferncesForm.value.prefItems[i].current_currency && !preferncesForm.value.prefItems[i].current_salary)" >
                             {{current_currency_log}}
                           </div>
-                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary && checkNumber(preferncesForm.value.prefItems[i].current_salary)  " >
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary && !checkNumber(preferncesForm.value.prefItems[i].current_salary)  " >
                             {{current_currency_log}}
                           </div>
 
@@ -465,7 +465,7 @@
                             {{expected_hourly_rate_log}}
                           </div>
 
-                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].currency && preferncesForm.value.prefItems[i].expected_hourly_rate && checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
+                          <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].currency && preferncesForm.value.prefItems[i].expected_hourly_rate && !checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
                             {{expected_hourly_rate_log}}
                           </div>
 
