@@ -57,7 +57,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+              <div class="col-md-6 mt-3" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
                 <div class="form-group">
                   <select multiple formControlName="job_type"  title="Position type (optional)" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
@@ -65,7 +65,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-3">
                 <div class="form-group">
                   <select multiple formControlName="position" title="Role" class="form-control selectpicker">
                     <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
