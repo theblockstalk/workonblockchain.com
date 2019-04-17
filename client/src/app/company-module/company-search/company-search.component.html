@@ -559,8 +559,8 @@
                 </div>
               </div>
 
-              <div class="col-md-12">
-                <div class = "form-group">
+              <div class="col-md-6">
+                <div class = "form-group" [ngClass]="preferncesForm.value.work_type !== 'employee'? 'mt-3': ''">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                     <label class="form-check-label" for="defaultCheck1">
@@ -569,6 +569,8 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-md-6" *ngIf="preferncesForm.value.work_type === 'employee'"></div>
 
 
               <div class="col-md-6 mt-2">
