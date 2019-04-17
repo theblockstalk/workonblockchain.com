@@ -89,6 +89,10 @@ module.exports.up = async function() {
                     newSearch.name = newSearch.name + ' - freelancer';
                     newSearch.work_type = 'contractor';
                     delete newSearch.job_type;
+                    if(search.current_salary) {
+                        newSearch.expected_hourly_rate = Math.ceil((2*newSearch.current_salary)/(46*5*8));
+                        delete newSearch.current_salary;
+                    }
                     newSavedSearches.push(newSearch);
                 };
             }
