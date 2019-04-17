@@ -85,7 +85,7 @@ module.exports.up = async function() {
                         delete search.current_salary;
                     }
                     if(search.job_type.length === 1) delete search.job_type;
-                    else delete search.job_type[index];
+                    else search.job_type.splice(index, 1);
                 }
             }
         }
