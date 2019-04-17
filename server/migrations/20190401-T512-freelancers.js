@@ -80,10 +80,12 @@ module.exports.up = async function() {
                 index = search.job_type.findIndex(obj => obj === 'Freelance');
                 if(index >= 0) {
                     search.work_type = 'contractor';
-                    if(search.current_salary) search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
+                    if(search.current_salary) {
+                        search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
+                        delete search.current_salary;
+                    }
                     if(search.job_type.length === 1) delete search.job_type;
                     else delete search.job_type[index];
-                    delete search.current_salary;
                 }
             }
         }
