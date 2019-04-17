@@ -415,7 +415,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         else this.salary = '';
 
         if (key['current_salary'] && key['current_currency']) this.currencyChange = key['current_currency'];
-        else this.currencyChange = [];
+        else this.currencyChange = '';
 
         if (key['expected_hourly_rate']) this.hourly_rate = key['expected_hourly_rate'];
         else this.hourly_rate = '';
@@ -742,7 +742,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
         if (checkNumber === false) {
           errorCount = 1;
-          this.expected_hourly_rate_log = "Hourly rate should be a number "
+          this.expected_hourly_rate_log = "Hourly rate should be a number";
         }
         else {
           queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
@@ -770,6 +770,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (errorCount === 0) {
+
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
       if (index < 0 && this.preferncesForm.value.name) {

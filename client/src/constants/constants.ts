@@ -322,7 +322,7 @@ export const constants = {
   ],
   workTypes : [
     {name: 'Employee (full/part time)', value:'employee', checked:false},
-    {name: 'Contractor/freelancer', value:'contractor', checked:false},
+    {name: 'Contractor/Freelancer', value:'contractor', checked:false},
     {name: 'Volunteer', value:'volunteer', checked:false}
   ],
   email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly']
