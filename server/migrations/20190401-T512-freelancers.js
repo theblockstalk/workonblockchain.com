@@ -82,6 +82,7 @@ module.exports.up = async function() {
                     search.work_type = 'contractor';
                     if(search.current_salary) search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
                     delete search.job_type[index];
+                    delete search.current_salary;
                 }
             }
         }
