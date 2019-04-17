@@ -608,30 +608,24 @@
 
               <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'contractor'">
                 <div class = "form-group w-auto">
-
                   <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
-
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.currency?true:null">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.expected_hourly_rate && preferncesForm.value.currency) || (preferncesForm.value.expected_hourly_rate && !preferncesForm.value.currency)  " >
                     {{expected_hourly_rate_log}}
                   </div>
-
                   <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.currency && preferncesForm.value.expected_hourly_rate && !checkNumber(preferncesForm.value.expected_hourly_rate)  " >
                     {{expected_hourly_rate_log}}
                   </div>
-
                 </div>
               </div>
-
             </div>
 
             <div class="row my-2">
               <div class="col-md-12">
                 <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
                 <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
-
               </div>
             </div>
 

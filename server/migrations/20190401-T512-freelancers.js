@@ -1,4 +1,5 @@
 const users = require('../model/mongoose/users');
+const companies = require('../model/mongoose/company');
 const logger = require('../controller/services/logger');
 const crypto = require('../controller/services/crypto');
 const objects = require('../controller/services/objects');
@@ -52,6 +53,44 @@ module.exports.up = async function() {
             await users.update({_id : userDoc._id}, updateObj );
             totalModified++;
         }
+    });
+
+    console.log('Total user document to process: ' + totalDocsToProcess);
+    console.log('Total user processed document: ' + totalProcessed);
+    console.log('Total user modified document: ' + totalModified);
+
+    /////// company
+    totalDocsToProcess=0;totalProcessed=0;totalModified=0;
+    totalDocsToProcess = await companies.count({saved_searches : {$exists: true , $ne : []}});
+    logger.debug(totalDocsToProcess);
+    await companies.findAndIterate({saved_searches : {$exists: true , $ne : []}}, async function(companyDoc) {
+        totalProcessed++;
+        logger.debug('company doc id: ' + companyDoc._id);
+        let set = { };
+
+        for(let search of companyDoc.saved_searches) {
+            if(search.job_type && search.job_type.length > 0) {
+                let jobTypes = [];
+                let index = search.job_type.findIndex(obj => obj === 'Full time');
+                if(index >= 0) search.work_type = 'employee';
+
+                index = search.job_type.findIndex(obj => obj === 'Part time');
+                if(index >= 0) search.work_type = 'employee';
+
+                index = search.job_type.findIndex(obj => obj === 'Freelance');
+                if(index >= 0) {
+                    search.work_type = 'contractor';
+                    if(search.current_salary) search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
+                    delete search.job_type[index];
+                }
+            }
+        }
+
+        set['saved_searches'] = companyDoc.saved_searches;
+        logger.debug('set object: ', set );
+        await companies.update({_id : companyDoc._id}, {$set: set} );
+        totalModified++;
+
     });
 
     console.log('Total user document to process: ' + totalDocsToProcess);
