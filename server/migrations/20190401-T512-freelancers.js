@@ -70,7 +70,7 @@ module.exports.up = async function() {
 
         for(let search of companyDoc.saved_searches) {
             if(search.job_type && search.job_type.length > 0) {
-                let jobTypes = [];
+                console.log(search.job_type.length);
                 let index = search.job_type.findIndex(obj => obj === 'Full time');
                 if(index >= 0) search.work_type = 'employee';
 
@@ -81,7 +81,8 @@ module.exports.up = async function() {
                 if(index >= 0) {
                     search.work_type = 'contractor';
                     if(search.current_salary) search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
-                    delete search.job_type[index];
+                    if(search.job_type.length === 1) delete search.job_type;
+                    else delete search.job_type[index];
                     delete search.current_salary;
                 }
             }
