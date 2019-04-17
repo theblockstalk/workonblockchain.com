@@ -10,22 +10,22 @@ export class TextInputComponent implements OnInit {
   @Input() placeholder;
   @Input() errorMsg;
   @Input() requiredErrorMsg;
-  textValue;
-  @Output() formOutput : EventEmitter<any> = new EventEmitter<any>();
+ // @Input() textValue;
+  @Input('textValue') textValue: string;
+  //@Output() formOutput : EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 
   ngOnInit() {
   }
 
   selfValidate(){
-    console.log(this.textValue);
     if(this.requiredErrorMsg) {
       if(!this.textValue) {
         this.errorMsg = this.requiredErrorMsg;
         return false;
       }
     }
-    this.formOutput.emit(this.textValue);
+    //this.formOutput.emit(this.textValue);
     return true;
   }
 }

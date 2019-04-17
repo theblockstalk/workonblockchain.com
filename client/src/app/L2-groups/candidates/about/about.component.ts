@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
+import { TextInputComponent } from '../../../L0-components/forms-edit/text-input/text-input.component';
 
 @Component({
   selector: 'app-about',
@@ -7,24 +8,18 @@ import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
   first_name;
-  firstNameErrorMsg;
   last_name;
-  @ViewChild('textInput') textInputRef: ElementRef;
+  @ViewChild(TextInputComponent ) textInput: TextInputComponent ;
   constructor() { }
 
   ngOnInit() {
   }
-  firstName(name) {
-    console.log(name);
-    this.first_name = name;
-  }
-  lastName(name) {
-    console.log(name);
-    this.last_name = name;
-  }
+
   formSubmit() {
     console.log("form submit");
-    //this.textInputRef.nativeElement.selfValidate();
+    console.log(this.textInput.textValue);
+    console.log(this.last_name);
+    this.textInput.selfValidate();
   }
 
 }
