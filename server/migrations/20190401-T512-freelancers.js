@@ -67,30 +67,40 @@ module.exports.up = async function() {
         totalProcessed++;
         logger.debug('company doc id: ' + companyDoc._id);
         let set = { };
-
+        let newSavedSearches =[];
         for(let search of companyDoc.saved_searches) {
             if(search.job_type && search.job_type.length > 0) {
-                console.log(search.job_type.length);
-                let index = search.job_type.findIndex(obj => obj === 'Full time');
-                if(index >= 0) search.work_type = 'employee';
+                let jobType = [];
+                let newSearch;
+                if (search.job_type.findIndex(obj => obj === 'Full time') >= 0) jobType.push('Full time');
+                if (search.job_type.findIndex(obj => obj === 'Part time') >= 0) jobType.push('Part time');
 
-                index = search.job_type.findIndex(obj => obj === 'Part time');
-                if(index >= 0) search.work_type = 'employee';
-
-                index = search.job_type.findIndex(obj => obj === 'Freelance');
-                if(index >= 0) {
-                    search.work_type = 'contractor';
-                    if(search.current_salary) {
-                        search.expected_hourly_rate = Math.ceil((2*search.current_salary)/(46*5*8));
-                        delete search.current_salary;
-                    }
-                    if(search.job_type.length === 1) delete search.job_type;
-                    else search.job_type.splice(index, 1);
+                if ( jobType.length > 0 ) {
+                    newSearch = objects.copyObject(search);
+                    delete newSearch._id;
+                    newSearch.work_type = 'employee';
+                    newSearch.job_type = jobType;
+                    newSavedSearches.push(newSearch);
                 }
+
+                if (search.job_type.findIndex(obj => obj === 'Freelance') >= 0) {
+                    newSearch = objects.copyObject(search);
+                    delete newSearch._id;
+                    newSearch.name = newSearch.name + ' - freelancer';
+                    newSearch.work_type = 'contractor';
+                    delete newSearch.job_type;
+                    newSavedSearches.push(newSearch);
+                };
+            }
+            else {
+                newSearch = objects.copyObject(search);
+                delete newSearch._id;
+                newSavedSearches.push(newSearch);
             }
         }
 
-        set['saved_searches'] = companyDoc.saved_searches;
+
+        set['saved_searches'] = newSavedSearches;
         logger.debug('set object: ', set );
         await companies.update({_id : companyDoc._id}, {$set: set} );
         totalModified++;

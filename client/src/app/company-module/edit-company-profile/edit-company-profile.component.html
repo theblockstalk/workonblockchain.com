@@ -348,7 +348,7 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-2" >
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'" >
                       <div class="form-group">
                         <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
                           <option *ngFor='let job_type of job_types'  [value]="job_type">{{job_type}}</option>
