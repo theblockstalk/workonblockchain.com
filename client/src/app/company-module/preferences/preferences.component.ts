@@ -174,6 +174,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 currency: [data['saved_searches'][0].current_currency],
                 work_type: [data['saved_searches'][0].work_type]
               });
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 400);
 
               if(data['saved_searches'][0].location)
               {
