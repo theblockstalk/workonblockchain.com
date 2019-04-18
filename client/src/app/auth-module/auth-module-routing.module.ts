@@ -25,8 +25,7 @@ const routes: Routes = [
   { path : 'verify_email', component: VerifyEmailComponent },
   { path : 'not_found' , component: NotFoundComponent},
   { path : 'google-auth' , component: SocialAuthComponent},
-  { path : 'linkedin-auth' , component: LinkedinAuthComponent},
-
+  { path : 'linkedin-auth' , component: LinkedinAuthComponent}
 ];
 
 @NgModule({
