@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor( private route: ActivatedRoute,
                private router: Router,
                private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
-    this.titleService.setTitle('Work on blockchain today! Learning, freelance and jobs for developers and blockchain enthusiasts.');
+    this.titleService.setTitle('Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers');
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
       if(ref_code) {
@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngOnInit()
   {
-    this.newMeta.updateTag({ name: 'description', content: 'Work for full-time, part-time, freelance, volunteers and agencies in the best blockchain projects! Opportunities and jobs for developers, designers and other technical professionals on public and enterprise blockchain technology.' });
-    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
-    this.newMeta.updateTag({ name: 'title', content: 'Work on blockchain today! Learning, freelance and jobs for developers and blockchain enthusiasts.' });
+    this.newMeta.updateTag({ name: 'description', content: 'Work and jobs for blockchain, cryptocurrency and DLT. Work for freelancers, volunteers, developers, CTOs and more with or without blockchain experience.' });
+    this.newMeta.updateTag({ name: 'keywords', content: 'Jobs work blockchain technology, Developers freelance cryptocurrency, Hiring projects companies' });
+    this.newMeta.updateTag({ name: 'title', content: 'Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers' });
     $('#text').html($('.active > .carousel-caption').html());
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
