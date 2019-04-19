@@ -627,17 +627,6 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <label >Role</label>
-                  <select name="role" title="(select one)" [(ngModel)]="contractor.role" class="form-control selectpicker">
-                    <option *ngFor='let role of rolesData' [value]="role.value" [attr.selected]="role.value === contractor.role">{{role.name}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.role">
-                    {{contractor_role_log}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
                   <label for="validationCustomSalary">Hourly rate</label>
                   <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate" [(ngModel)]="contractor.hourly_rate" class="form-control" placeholder="">
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate || (contractor.hourly_rate && !checkNumber(contractor.hourly_rate))">

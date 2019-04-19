@@ -122,6 +122,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contractor_roles_log;
   contractor_hourly_log;
   agency_website_log;
+  contractor_description_log;
   contractor_type_log;
   contract_location_log;
   volunteer_location_log;
@@ -242,32 +243,26 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.contractor.currency = contractor.currency;
                 if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
                 this.contractor.contractor_type = contractor.contractor_type;
-                this.contract_type = contractor.contractor_type;
-                for(let type of contractor.contractor_type) {
-                  for(let option of this.contractor_types)
-                  {
-                    if(option.value === type) option.checked = true;
-
+                for(let type of this.contractor_types ) {
+                  if(contractor.contractor_type.find(x => x === type.value)){
+                    type.checked = true;
                   }
+                  else type.checked = false;
                 }
+                this.contract_type = contractor.contractor_type;
 
                 if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
                 if(contractor.service_description) this.contractor.service_description = contractor.service_description;
 
               }
               if(data['candidate'].volunteer) {
-                console.log("volunteer");
                 this.volunteerCheck = true;
                 this.selected_work_type.push('volunteer');
                 let volunteer = data['candidate'].volunteer;
-                console.log(volunteer.location);
                 this.changeLocationDisplayFormat(volunteer.location, 'volunteer');
                 this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
                 this.volunteer.learning_objectives = volunteer.learning_objectives;
                 this.volunteer.roles = volunteer.roles;
-                console.log("volunteer");
-
-                console.log(this.volunteer['volunteer_roles']);
               }
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
@@ -500,6 +495,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
               if(data['candidate'].work_history) {
+
                 this.jobData = data['candidate'].work_history;
 
                 for(let data1 of data['candidate'].work_history)
@@ -1000,6 +996,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         this.agency_website_log = "Please enter agency website";
         contractorCount = 1;
       }
+      if(!this.contractor.service_description) {
+        this.contractor_description_log = "Please enter service description";
+        contractorCount = 1;
+      }
     }
 
     if(this.volunteerCheck) {
@@ -1009,8 +1009,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         volunteerCount = 1;
       }
       if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
-        console.log(this.volunteer.selectedLocation);
-        console.log(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length);
         if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
           volunteerCount = 1;
           this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
@@ -1272,11 +1270,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
-    console.log(this.count);
-    console.log((this.employeeCheck || this.contractorCheck || this.volunteerCheck))
-    console.log(employeeCount);
-    console.log(contractorCount);
-    console.log(volunteerCount);
 
     if(this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
@@ -1705,7 +1698,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   suggestedOptions(inputParam) {
-    console.log(inputParam);
     if(inputParam !== '') {
       this.error='';
       this.authenticationService.autoSuggestOptions(inputParam , true)
@@ -1782,7 +1774,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.selected_work_type.splice(index, 1);
     }
 
-    console.log(this.selected_work_type);
 
     if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
     else this.employeeCheck = false;
@@ -1904,8 +1895,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   volunteerSelectedValueFunction(e) {
-    console.log("volunteerArray");
-    console.log(this.volunteerArray);
+
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
 
@@ -1967,7 +1957,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   onJobSelected(e, type) {
-    console.log(type);
     this.jobselected = [];
     if(type === 'employee') {
       if(this.employee.roles) this.jobselected = this.employee.roles;
@@ -1984,7 +1973,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.jobselected.push(e.target.value);
     }
     else {
-      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.jobselected.find(x => x === e.target.value);
       let index = this.jobselected.indexOf(updateItem);
       this.jobselected.splice(index, 1);
     }
@@ -2010,7 +1999,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contract_type.splice(index, 1);
     }
     this.contractor.contractor_type = this.contract_type;
-    console.log(this.contractor.contractor_type)
     this.checkContractValue(this.contractor.contractor_type);
   }
 
@@ -2028,7 +2016,5 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
   }
-
-
 
 }
