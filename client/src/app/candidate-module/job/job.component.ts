@@ -147,7 +147,6 @@ export class JobComponent implements OnInit,AfterViewInit {
             if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
             if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
             if(data['candidate'].employee) {
-              console.log("employee");
               this.employeeCheck = true;
               this.selected_work_type.push('employee');
               let employee = data['candidate'].employee;
@@ -182,7 +181,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
             }
             if(data['candidate'].volunteer) {
-              console.log("volunteer");
               this.volunteerCheck = true;
               this.selected_work_type.push('volunteer');
               let volunteer = data['candidate'].volunteer;
@@ -190,15 +188,11 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
               this.volunteer.learning_objectives = volunteer.learning_objectives;
               this.volunteer.roles = volunteer.roles;
-              console.log("volunteer");
-
-              console.log(this.volunteer['volunteer_roles']);
             }
             setTimeout(() => {
               $('.selectpicker').selectpicker();
             }, 500);
 
-            console.log(data);
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
@@ -283,7 +277,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   onJobSelected(e, type) {
-    console.log(type);
     this.jobselected = [];
     if(type === 'employee') {
       if(this.employee.roles) this.jobselected = this.employee.roles;
@@ -345,7 +338,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   checkContractValue(array) {
-    console.log(array)
     if(array && array.indexOf('agency') > -1) return true;
     else return false;
   }
@@ -483,8 +475,6 @@ export class JobComponent implements OnInit,AfterViewInit {
         volunteerCount = 1;
       }
       if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
-        console.log(this.volunteer.selectedLocation);
-        console.log(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length);
         if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
           volunteerCount = 1;
           this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
@@ -577,14 +567,12 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) inputQuery.current_currency = this.current_currency;
 
-      console.log(inputQuery);
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
 
         .subscribe(
           data => {
             if (data) {
-              console.log(data);
               this.router.navigate(['/resume']);
             }
           },
@@ -609,7 +597,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   suggestedOptions(inputParam) {
-    console.log(inputParam);
     if(inputParam !== '') {
       this.error='';
       this.authenticationService.autoSuggestOptions(inputParam , true)
@@ -821,8 +808,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   volunteerArray = [];
   volunteerSelectedValueFunction(e) {
-    console.log("volunteerArray");
-    console.log(this.volunteerArray);
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
 

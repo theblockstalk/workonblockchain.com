@@ -275,18 +275,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
               }
               if(data['candidate'].volunteer) {
-                console.log("volunteer");
                 this.volunteerCheck = true;
                 this.selected_work_type.push('volunteer');
                 let volunteer = data['candidate'].volunteer;
-                console.log(volunteer.location);
                 this.changeLocationDisplayFormat(volunteer.location, 'volunteer');
                 this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
                 this.volunteer.learning_objectives = volunteer.learning_objectives;
                 this.volunteer.roles = volunteer.roles;
-                console.log("volunteer");
-
-                console.log(this.volunteer['volunteer_roles']);
               }
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
@@ -1001,8 +996,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         volunteerCount = 1;
       }
       if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
-        console.log(this.volunteer.selectedLocation);
-        console.log(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length);
         if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
           volunteerCount = 1;
           this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
@@ -1780,8 +1773,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.selected_work_type.splice(index, 1);
     }
 
-    console.log(this.selected_work_type);
-
     if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
     else this.employeeCheck = false;
     if(this.selected_work_type.indexOf('contractor') > -1) this.contractorCheck = true;
@@ -1901,8 +1892,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   volunteerSelectedValueFunction(e) {
-    console.log("volunteerArray");
-    console.log(this.volunteerArray);
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
@@ -1963,7 +1952,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   onJobSelected(e, type) {
-    console.log(type);
     this.jobselected = [];
     if(type === 'employee') {
       if(this.employee.roles) this.jobselected = this.employee.roles;
