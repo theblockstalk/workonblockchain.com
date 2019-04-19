@@ -122,6 +122,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contractor_roles_log;
   contractor_hourly_log;
   agency_website_log;
+  contractor_description_log;
   contractor_type_log;
   contract_location_log;
   volunteer_location_log;
@@ -247,10 +248,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   for(let option of this.contractor_types)
                   {
                     if(option.value === type) option.checked = true;
-
                   }
                 }
-
+                console.log(this.contractor.contractor_type);
+                console.log(this.contract_type);
+                console.log(this.contractor_types);
                 if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
                 if(contractor.service_description) this.contractor.service_description = contractor.service_description;
 
@@ -998,6 +1000,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       }
       if(this.checkContractValue(this.contractor.contractor_type) && !this.contractor.agency_website) {
         this.agency_website_log = "Please enter agency website";
+        contractorCount = 1;
+      }
+      if(!this.contractor.service_description) {
+        this.contractor_description_log = "Please enter service description";
         contractorCount = 1;
       }
     }

@@ -411,8 +411,11 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label>Service description (optional):</label>
+                <label>Service description:</label>
                 <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required [(ngModel)]="contractor.service_description" name="service_description" ></textarea>
+                <div class = "invalid-feedback d-inline" #validateUrl *ngIf="!contractor.service_description">
+                  {{contractor_description_log}}
+                </div>
               </div>
 
             </div>
@@ -514,7 +517,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Learning objectives:</label>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
+                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="Learn more about P2P protocols and cryptocurrency exchange architectures." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
                 <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.learning_objectives">
                   {{objective_log}}
                 </div>

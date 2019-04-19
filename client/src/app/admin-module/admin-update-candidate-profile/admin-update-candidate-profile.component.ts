@@ -135,6 +135,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   contractor_roles_log;
   contractor_hourly_log;
   agency_website_log;
+  contractor_description_log;
   contractor_type_log;
   contract_location_log;
   volunteer_location_log;
@@ -987,6 +988,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       }
       if(this.checkContractValue(this.contractor.contractor_type) && !this.contractor.agency_website) {
         this.agency_website_log = "Please enter agency website";
+        contractorCount = 1;
+      }
+      if(!this.contractor.service_description) {
+        this.contractor_description_log = "Please enter service description";
         contractorCount = 1;
       }
     }

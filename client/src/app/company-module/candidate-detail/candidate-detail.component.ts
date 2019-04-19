@@ -151,7 +151,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.contractor.hourly_rate = contractorOffer.hourly_rate ;
                 this.contractor.currency = contractorOffer.currency;
                 this.contractor.location = contractorOffer.location
-                this.contractor.role = contractorOffer.role;
                 this.contractor.contract_description = contractorOffer.contract_description;
               }
 
@@ -476,10 +475,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         this.contractor_location_log = 'Please enter location';
         errorCount = 1;
       }
-      if (!this.contractor.role) {
-        this.contractor_role_log = 'Please select role';
-        errorCount = 1;
-      }
       if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
         this.hourly_rate_log = 'Salary should be a number';
         errorCount = 1;
@@ -522,7 +517,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       if(this.approach_work_type === 'contractor') {
         job_offer.location = this.contractor.location;
         job_offer.hourly_rate = this.contractor.hourly_rate;
-        job_offer.role = this.contractor.role;
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
         new_offer.approach  = {
