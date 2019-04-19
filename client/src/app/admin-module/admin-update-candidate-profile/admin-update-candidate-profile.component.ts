@@ -1980,7 +1980,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.jobselected.push(e.target.value);
     }
     else {
-      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.jobselected.find(x => x === e.target.value);
       let index = this.jobselected.indexOf(updateItem);
       this.jobselected.splice(index, 1);
     }
