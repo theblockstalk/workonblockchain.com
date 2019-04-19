@@ -170,23 +170,13 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.contractor.currency = contractor.currency;
               if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
               this.contractor.contractor_type = contractor.contractor_type;
-              this.contract_type = contractor.contractor_type;
-              for(let type of contractor.contractor_type)
-              {
-
-                for(let option of this.contractor_types)
-                {
-
-                  if(option.value === type)
-                  {
-                    option.checked = true;
-
-                  }
-
+              for(let type of this.contractor_types ) {
+                if(contractor.contractor_type.find(x => x === type.value)){
+                  type.checked = true;
                 }
-
+                else type.checked = false;
               }
-
+              this.contract_type = contractor.contractor_type;
               if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
               if(contractor.service_description) this.contractor.service_description = contractor.service_description;
 

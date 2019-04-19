@@ -512,7 +512,7 @@
 
                   <div class="checkbox">
                     <div class="form-check" *ngFor = "let type of contractor_types">
-                      <input class="form-check-input" type="checkbox" [value]="type.value" [checked]="type.checked" (change)="contractor_type($event)" >
+                      <input class="form-check-input" type="checkbox" value="{{type.value}}" [checked]="type.checked" (change)="contractor_type($event)" >
                       <label class="form-check-label" >
                         {{type.name}}
                       </label>

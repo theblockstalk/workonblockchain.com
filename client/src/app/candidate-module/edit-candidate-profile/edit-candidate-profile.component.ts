@@ -169,6 +169,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   skill_expYear_db=[];
   ngOnInit()
   {
+   //this.contractor_types = constants.contractorTypes;
+
+    console.log(this.contractor_types);
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
@@ -243,16 +246,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.contractor.currency = contractor.currency;
                 if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
                 this.contractor.contractor_type = contractor.contractor_type;
-                this.contract_type = contractor.contractor_type;
-                for(let type of contractor.contractor_type) {
-                  for(let option of this.contractor_types)
-                  {
-                    if(option.value === type) option.checked = true;
+                for(let type of this.contractor_types ) {
+                  if(contractor.contractor_type.find(x => x === type.value)){
+                    type.checked = true;
                   }
+                  else type.checked = false;
                 }
-                console.log(this.contractor.contractor_type);
-                console.log(this.contract_type);
-                console.log(this.contractor_types);
+                this.contract_type = contractor.contractor_type;
+
                 if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
                 if(contractor.service_description) this.contractor.service_description = contractor.service_description;
 
@@ -502,6 +503,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
               if(data['candidate'].work_history) {
+
                 this.jobData = data['candidate'].work_history;
 
                 for(let data1 of data['candidate'].work_history)
@@ -2007,6 +2009,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   contractor_type(inputParam) {
+    console.log("input param");
+    console.log(inputParam);
     if(inputParam.target.checked) {
       this.contract_type.push(inputParam.target.value);
     }
@@ -2034,7 +2038,5 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
   }
-
-
 
 }
