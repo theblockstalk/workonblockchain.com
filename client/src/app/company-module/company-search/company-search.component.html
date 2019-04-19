@@ -357,15 +357,7 @@
             </div>
 
             <div class="row" *ngIf="approach_work_type === 'contractor'">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="validationCustom02">Location</label>
-                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
-                    {{contractor_location_log}}
-                  </div>
-                </div>
-              </div>
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustomSalary">Hourly rate</label>
@@ -383,6 +375,15 @@
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
                     {{hourly_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
                   </div>
                 </div>
               </div>
