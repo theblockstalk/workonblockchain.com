@@ -178,7 +178,6 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
         employerDoc = req.auth.user;
     }
-    console.log(employerDoc);
     if(employerDoc){
         const queryBody = req.body;
         let employerUpdate = {};
@@ -233,9 +232,7 @@ module.exports.endpoint = async function (req, res) {
             }
 
         }
-        console.log("update object");
-        console.log(employerUpdate);
-        console.log(employerDoc._id);
+
         await companies.update({ _creator: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
