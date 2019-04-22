@@ -199,7 +199,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            let rolesQuery =[]
+            let rolesQuery =[];
             const setRoleQuery = function (roleQuery){
                 const rolesFilter = {[roleQuery]: {$in: search.positions}};
                 rolesQuery.push(rolesFilter);
@@ -261,13 +261,45 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.years_exp_min) {
-            const yearsExpFilter = {
-                "candidate.programming_languages": {
-                    $elemMatch: {
-                        "exp_year": {$gte: search.years_exp_min}
-                    }
-                }};
-            userQuery.push(yearsExpFilter);
+            let expQuery = [];
+            const setMinExpQuery = function (experienceYear){
+                const yearsExpFilter = {
+                    "candidate.programming_languages.exp_year": experienceYear
+                };
+                expQuery.push(yearsExpFilter);
+            };
+            if(search.years_exp_min === 1) {
+                setMinExpQuery('0-1');
+                setMinExpQuery('1-2');
+                setMinExpQuery('2-4');
+                setMinExpQuery('4-6');
+                setMinExpQuery('6+');
+            }
+            if(search.years_exp_min === 2) {
+                setMinExpQuery('1-2');
+                setMinExpQuery('2-4');
+                setMinExpQuery('4-6');
+                setMinExpQuery('6+');
+            }
+            if(search.years_exp_min === 3) {
+                setMinExpQuery('2-4');
+                setMinExpQuery('4-6');
+                setMinExpQuery('6+');
+            }
+            if(search.years_exp_min === 4) {
+                setMinExpQuery('4-6');
+                setMinExpQuery('6+');
+            }
+            if(search.years_exp_min === 6) {
+                setMinExpQuery('6+');
+            }
+
+            if(expQuery && expQuery.length > 0) {
+                console.log(expQuery);
+                userQuery.push({
+                    $or: expQuery
+                });
+            }
         }
 
         if (search.residence_country && search.residence_country.length > 0) {
@@ -289,6 +321,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
+    logger.debug("query", {query: userQuery});
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {

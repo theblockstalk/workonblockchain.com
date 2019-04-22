@@ -160,15 +160,15 @@ describe('search candidates as company', function () {
             const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGeneratorV2.candidateProfile();
+            const profileLanguageExprData = docGeneratorV2.candidateProfile();
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
             await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const params = {
-                years_exp_min: '1'
-            }
+                years_exp_min: 1
+            };
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);

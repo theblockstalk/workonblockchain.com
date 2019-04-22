@@ -486,7 +486,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.visa_check) queryBody.visa_needed = this.visa_check;
       if (this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
       if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
-      if (this.years_exp_value) queryBody.years_exp_min = this.years_exp_value;
+      if (this.years_exp_value) queryBody.years_exp_min = parseInt(this.years_exp_value);
 
       if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary = this.salary;
