@@ -169,7 +169,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
       companyForm.value.company_founded = parseInt(companyForm.value.company_founded);
-      this.authenticationService.about_company(this.currentUser._id,companyForm.value)
+      console.log(companyForm.value)
+      this.authenticationService.edit_company_profile(this.currentUser._id, companyForm.value, false)
         .subscribe(
           data => {
             if (data) {
@@ -184,10 +185,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                   if (inputEl.files.item(0).size < this.file_size) {
 
 
-                    formData.append('photo', inputEl.files.item(0));
+                    formData.append('company_logo', inputEl.files.item(0));
 
-
-                    this.authenticationService.company_image(formData)
+                    this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
                       .subscribe(
                         imageRes => {
                           this.router.navigate(['/preferences']);
