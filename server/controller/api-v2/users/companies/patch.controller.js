@@ -15,6 +15,10 @@ const paramSchema = new Schema({
     user_id: String
 });
 
+const querySchema = new Schema({
+    admin: Boolean
+});
+
 const bodySchema = new Schema({
     first_name: {
         type:String
@@ -150,6 +154,7 @@ const bodySchema = new Schema({
 
 module.exports.inputValidation = {
     params: paramSchema,
+    query: querySchema,
     body: bodySchema
 };
 
@@ -163,9 +168,20 @@ module.exports.auth = async function (req) {
 
 
 module.exports.endpoint = async function (req, res) {
-    let userId = req.auth.user._id;
-    const employerDoc = await companies.findOne({ _creator: userId });
-
+    let userId;
+    let employerDoc;
+    console.log(req.query);
+    console.log(req.params)
+    if (req.query.admin) {
+        console.log("if")
+        userId = req.params.user_id;
+        employerDoc = await companies.findOne({ _creator: userId });
+    }
+    else {
+        console.log("else")
+        userId = req.auth.user._id;
+        employerDoc = req.auth.user;
+    }
     if(employerDoc){
         const queryBody = req.body;
         let employerUpdate = {};

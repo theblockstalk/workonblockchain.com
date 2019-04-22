@@ -4,6 +4,8 @@ const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const myUserDoc = req.auth.user;
+    console.log("params");
+    console.log(req.params._id);
     if(myUserDoc._id.toString() === req.params._id || myUserDoc.is_admin === 1) {
         const employerProfile =  await companies.findOneAndPopulate(req.params._id);
         if(employerProfile){
