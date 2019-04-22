@@ -190,6 +190,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   admin_log;
   ngOnInit()
   {
+    for(let type of this.contractor_types ) {
+      type.checked = false;
+    }
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
