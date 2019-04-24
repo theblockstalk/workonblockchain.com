@@ -784,7 +784,6 @@ export class ChatComponent implements OnInit {
             this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
           }
 
-          console.log(this.new_msgss);
           this.job_desc = data['messages'][0].message.approach;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(

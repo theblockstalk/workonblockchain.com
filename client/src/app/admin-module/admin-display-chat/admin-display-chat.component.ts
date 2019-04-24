@@ -165,9 +165,7 @@ export class AdminDisplayChatComponent implements OnInit {
           this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
         }
 
-        console.log(this.new_msgss);
         this.job_desc = data['messages'][0].message.approach;
-        console.log(this.job_desc);
         if(data['datas'][1]){
           if(data['datas'][1].is_company_reply==1){
             this.company_reply = 1;
