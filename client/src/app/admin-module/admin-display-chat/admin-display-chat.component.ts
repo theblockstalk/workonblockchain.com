@@ -161,6 +161,10 @@ export class AdminDisplayChatComponent implements OnInit {
     .subscribe(
       data =>{
         this.new_msgss = data['messages'];
+        if(data['messages'].length > 1) {
+          this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+        }
+
         this.job_desc = data['messages'][0].message.approach;
         if(data['datas'][1]){
           if(data['datas'][1].is_company_reply==1){
@@ -261,4 +265,17 @@ export class AdminDisplayChatComponent implements OnInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
+  reverseArray(arr: any,i: any,size: any){
+    let temp;
+    while (i<size){
+      temp=arr[i];
+      arr[i]=arr[size];
+      arr[size]=temp;
+      i++;
+      size--;
+    }
+    return arr;
+  }
+
 }

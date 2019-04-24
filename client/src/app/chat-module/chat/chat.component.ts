@@ -380,6 +380,9 @@ export class ChatComponent implements OnInit {
               .subscribe(
                 data => {
                   this.new_msgss = data['messages'];
+                  if(data['messages'].length > 1) {
+                    this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                  }
                 },
                 error => {
                   if(error.message == 500 || error.message == 401){
@@ -421,6 +424,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
               data => {
                 this.new_msgss = data['messages'];
+                if(data['messages'].length > 1) {
+                  this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                }
                 this.company_reply = 0;
               },
               error => {}
@@ -455,6 +461,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
               data => {
                 this.new_msgss = data['messages'];
+                if(data['messages'].length > 1) {
+                  this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                }
                 this.company_reply = 1;
               },
               error => {
@@ -539,6 +548,9 @@ export class ChatComponent implements OnInit {
               .subscribe(
                 data => {
                   this.new_msgss = data['messages'];
+                  if(data['messages'].length > 1) {
+                    this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                  }
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {
@@ -687,6 +699,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
               data => {
                 this.new_msgss = data['messages'];
+                if(data['messages'].length > 1) {
+                  this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                }
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
@@ -727,6 +742,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
               data => {
                 this.new_msgss = data['messages'];
+                if(data['messages'].length > 1) {
+                  this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                }
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
@@ -760,7 +778,12 @@ export class ChatComponent implements OnInit {
     this.authenticationService.get_user_messages_comp(this.credentials.id)
       .subscribe(
         data => {
+          //reversing msgs order
           this.new_msgss = data['messages'];
+          if(data['messages'].length > 1) {
+            this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+          }
+
           this.job_desc = data['messages'][0].message.approach;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(
@@ -854,6 +877,9 @@ export class ChatComponent implements OnInit {
                 data => {
                   this.file_uploaded = 1;
                   this.new_msgss = data['messages'];
+                  if(data['messages'].length > 1) {
+                    this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                  }
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {
@@ -931,6 +957,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
               data => {
                 this.new_msgss = data['messages'];
+                if(data['messages'].length > 1) {
+                  this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
+                }
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
@@ -1000,4 +1029,17 @@ export class ChatComponent implements OnInit {
     $("#popModal").modal("hide");
 
   }
+
+  reverseArray(arr: any,i: any,size: any){
+    let temp;
+    while (i<size){
+      temp=arr[i];
+      arr[i]=arr[size];
+      arr[size]=temp;
+      i++;
+      size--;
+    }
+    return arr;
+  }
+
 }
