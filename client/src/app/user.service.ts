@@ -128,8 +128,6 @@ export class UserService {
     {
       if (res)
       {
-        console.log("ressssss");
-        console.log(res);
         if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);

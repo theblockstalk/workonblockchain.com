@@ -169,7 +169,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
       companyForm.value.company_founded = parseInt(companyForm.value.company_founded);
-      console.log(companyForm.value)
       this.authenticationService.edit_company_profile(this.currentUser._id, companyForm.value, false)
         .subscribe(
           data => {

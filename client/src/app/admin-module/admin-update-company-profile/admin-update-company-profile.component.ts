@@ -182,7 +182,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(this.currentUser)
 
     if(!this.currentUser)
     {
@@ -272,8 +271,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
                   this.preferncesFormData()
                 )
               });
-
-              console.log(this.preferncesForm)
 
             }
           },
@@ -391,12 +388,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
           }
           if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("2");
             this.current_currency_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("3");
             this.current_currency_log = "Please enter expected hours ";
             count = 1;
           }
@@ -412,12 +407,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
           }
           if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
-            console.log("4")
             this.expected_hourly_rate_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            console.log("5")
             this.expected_hourly_rate_log = "Please enter expected hours ";
             count = 1;
           }
@@ -585,7 +578,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-              console.log(this.cities);
             }
 
           },

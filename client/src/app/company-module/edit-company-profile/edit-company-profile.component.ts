@@ -389,12 +389,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
           }
           if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("2");
             this.current_currency_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("3");
             this.current_currency_log = "Please enter expected hours ";
             count = 1;
           }
@@ -410,12 +408,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
           }
           if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
-            console.log("4")
             this.expected_hourly_rate_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            console.log("5")
             this.expected_hourly_rate_log = "Please enter expected hours ";
             count = 1;
           }
@@ -583,7 +579,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-              console.log(this.cities);
             }
 
           },
