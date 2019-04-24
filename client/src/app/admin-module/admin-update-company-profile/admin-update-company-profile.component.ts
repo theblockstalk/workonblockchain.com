@@ -86,7 +86,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   prefData;
   company_id;
   admin_log;
-
+  yearVerification;
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
     this.route.queryParams.subscribe(params => {
