@@ -259,7 +259,7 @@ export class ChatComponent implements OnInit {
       },7000);
     }
     else{
-      //this.get_messages_for_candidate();
+      this.get_messages_for_candidate();
       setInterval(() => {
         this.get_messages_for_candidate();
       },7000);
