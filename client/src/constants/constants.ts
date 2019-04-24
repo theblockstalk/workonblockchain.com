@@ -67,6 +67,9 @@ export const constants = {
   ],
   workAvailability: [
     {name: "Now" , value: "Now" },
+    {name: "1 week notice period" , value: "1 week" },
+    {name: "2 weeks notice period" , value: "2 weeks" },
+    {name: "3 weeks notice period" , value: "3 weeks" },
     {name: "1 month notice period" , value: "1 month" },
     {name: "2 months notice period", value: "2 months" },
     {name: "3 months notice period", value: "3 months" },

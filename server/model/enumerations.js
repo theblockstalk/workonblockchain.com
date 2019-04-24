@@ -15,7 +15,7 @@ module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Devel
 
 module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)',"I don't know"];
 
-module.exports.workAvailability = ['1 month','Now','2 months','3 months','Longer than 3 months'];
+module.exports.workAvailability = ['1 week', '2 weeks', '3 weeks' ,'1 month','Now','2 months','3 months','Longer than 3 months'];
 
 module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs'];
 
