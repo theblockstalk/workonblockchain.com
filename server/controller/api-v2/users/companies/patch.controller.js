@@ -176,7 +176,7 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         userId = req.auth.user._id;
-        employerDoc = req.auth.user;
+        employerDoc = await companies.findOne({ _creator: userId });
     }
     if(employerDoc){
         const queryBody = req.body;
@@ -233,7 +233,7 @@ module.exports.endpoint = async function (req, res) {
 
         }
 
-        await companies.update({ _creator: employerDoc._id },{ $set: employerUpdate});
+        await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
         res.send(updatedEmployerDoc);
