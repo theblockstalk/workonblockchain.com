@@ -498,7 +498,8 @@
                 <div class="form-group">
                   <label>Maximum hours per week (optional):</label>
 
-                  <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                  <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" required name="max_hour_per_week " >
+                    <option class='option' value="-1" >None</option>
                     <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
 
                   </select>
@@ -638,12 +639,13 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Maximum hour per week:</label>
-                  <input type="text" #hours_error="ngModel" pattern="^[0-9]*$" class="form-control" required name="volunteer_max_hour" placeholder="" [(ngModel)]="volunteer.max_hours_per_week">
+                  <label>Maximum hours per week (optional):</label>
+                  <select title="(select one)" [(ngModel)]="volunteer.max_hours_per_week" class="selectpicker form-control" required name="max_hour_per_week " >
+                    <option class='option' value="-1" >None</option>
+                    <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === volunteer.max_hours_per_week ? true : null" >{{hours}}</option>
+                  </select>
                 </div>
-                <div class = "invalid-feedback d-inline"  *ngIf="hours_error.errors && volunteer.max_hours_per_week">
-                  Maximum hour per week should be a number
-                </div>
+
               </div>
 
 

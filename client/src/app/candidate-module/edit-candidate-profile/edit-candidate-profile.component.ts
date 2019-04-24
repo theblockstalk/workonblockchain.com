@@ -1495,7 +1495,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         service_description : this.contractor.service_description
       }
       if(this.checkContractValue(this.contractor.contractor_type) && this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
-      if(this.contractor.max_hour_per_week) inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
+      if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
     }
     else inputQuery.unset_contractor = true;
 
@@ -1503,9 +1503,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       inputQuery.volunteer = {
         location: this.volunteer.locations,
         roles: this.volunteer.roles,
-        max_hours_per_week: parseInt(this.volunteer.max_hours_per_week),
         learning_objectives : this.volunteer.learning_objectives
       }
+      if(this.volunteer.max_hours_per_week && this.volunteer.max_hours_per_week !== '-1') {
+        inputQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
+      }
+
     }
     else inputQuery.unset_volunteer = true;
 
