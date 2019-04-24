@@ -263,20 +263,9 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (search.years_exp_min) {
             let expQuery = [];
             const setMinExpQuery = function (experienceYear){
-                let yearsExpFilter = [];
-                /*if (search.skills && search.skills.length > 0) {
-                    yearsExpFilter = {
-                        "$elemMatch":{
-                            "candidate.programming_languages.exp_year": experienceYear,
-                            "candidate.programming_languages.language":{$in: search.skills}
-                        }
-                    };
-                }
-                else {*/
-                    yearsExpFilter = {
-                        "candidate.programming_languages.exp_year": experienceYear
-                    };
-                //}
+                const yearsExpFilter = {
+                    "candidate.programming_languages.exp_year": experienceYear
+                };
                 expQuery.push(yearsExpFilter);
             };
             if(search.years_exp_min === 1) {
