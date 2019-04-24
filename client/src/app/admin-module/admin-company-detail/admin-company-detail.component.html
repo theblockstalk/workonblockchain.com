@@ -2,7 +2,14 @@
   <div class="container pt-2">
     <div class="row">
       <div class="col-md-12" *ngFor = "let data of info" >
-        <section class = "border rounded py-3 px-5 bg-white">
+        <div class="row">
+          <div class="col-md-12">
+            <button [routerLink]="['/update-company-profile']" [queryParams]="{company: data._creator._id }" class = "btn btn-primary float-right">Edit Profile</button>
+
+          </div>
+        </div>
+
+        <section class = "border rounded py-3 px-5 mt-3 bg-white">
           <div class="row">
             <div class="col-md-6">
               <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>

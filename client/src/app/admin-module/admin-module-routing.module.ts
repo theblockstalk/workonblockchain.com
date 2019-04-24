@@ -9,6 +9,7 @@ import { AdminCompanySearchComponent } from './admin-company-search/admin-compan
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
 import { StyleGuideComponent } from './style-guide/style-guide.component';
+import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profile/admin-update-company-profile.component';
 
 const routes: Routes = [
   {path : 'admin-dashboard' , component: AdminDashboardComponent},
@@ -19,6 +20,8 @@ const routes: Routes = [
   {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
   {path : 'update-candidate-profile' , component : AdminUpdateCandidateProfileComponent },
   { path : 'style-guide' , component : StyleGuideComponent},
+  {path : 'update-company-profile' , component : AdminUpdateCompanyProfileComponent },
+
 
 ];
 

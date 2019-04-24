@@ -19,16 +19,6 @@ const SummaryTnC = module.exports.SummaryTnC = async function SummaryTnC(termsID
     return res;
 }
 
-const companyAboutWizard = module.exports.companyAboutWizard = async function companyAboutWizard(aboutData , jwtToken){
-
-    const res = await chai.request(server)
-        .put('/users/about_company')
-        .set('Authorization', jwtToken)
-        .send(aboutData)
-    res.should.have.status(200);
-    return res;
-}
-
 
 const sendNewNotification = module.exports.sendNewNotification = async function sendNewNotification(last_email_sent , when_receive_notification) {
     const now = new Date();

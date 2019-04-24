@@ -1,22 +1,19 @@
 import { Component, OnInit, ElementRef , AfterViewInit , AfterViewChecked} from '@angular/core';
 import {UserService} from '../../user.service';
-import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router , ActivatedRoute} from '@angular/router';
 import { DatePipe } from '@angular/common';
 declare var $:any;
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
-
 @Component({
-  selector: 'app-edit-company-profile',
-  templateUrl: './edit-company-profile.component.html',
-  styleUrls: ['./edit-company-profile.component.css']
+  selector: 'app-admin-update-company-profile',
+  templateUrl: './admin-update-company-profile.component.html',
+  styleUrls: ['./admin-update-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit , AfterViewInit, AfterViewChecked  {
+export class AdminUpdateCompanyProfileComponent implements OnInit {
 
   info : any;
   currentUser: any;
@@ -77,8 +74,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   selectedLocations;
   emptyInput;
   when_receive_email_notitfications;
-  yearVerification;
-
   countries = constants.countries;
   job_types = constants.job_type;
   roles = constants.workRoles;
@@ -89,9 +84,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   residenceCountries = constants.countries;
   workTypes = constants.workTypes;
   prefData;
+  company_id;
+  admin_log;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+    this.route.queryParams.subscribe(params => {
+      this.company_id = params['company'];
+    });
   }
 
   ngAfterViewInit() {
@@ -179,6 +179,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -186,7 +187,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     {
       this.router.navigate(['/login']);
     }
-    else if(this.currentUser && this.currentUser.type === 'company')
+    else if(this.currentUser && this.admin_log)
     {
       this.job_types.sort(function(a, b){
         if(a < b) { return -1; }
@@ -215,7 +216,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.company_id)
         .subscribe(
           data =>
           {
@@ -270,8 +271,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
-
-              console.log(this.preferncesForm)
 
             }
           },
@@ -448,7 +447,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(inputEl.files.item(0).size < this.file_size)
         {
           formData.append('company_logo', inputEl.files.item(0));
-          this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
+          this.authenticationService.edit_company_profile(this.company_id, formData, true)
             .subscribe(
               data => {
                 if(data && this.currentUser)
@@ -533,12 +532,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       }
       profileForm.value.saved_searches = saved_searches;
 
-      this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)
+      this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/company_profile']);
+              this.router.navigate(['/admin-company-detail'], { queryParams: { user: this.company_id } });
             }
 
           },
@@ -692,5 +691,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       $('.selectpicker').selectpicker('refresh');
     }, 300);
   }
+
 
 }

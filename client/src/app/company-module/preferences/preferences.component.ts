@@ -440,7 +440,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
       inputQuery.saved_searches = this.saved_searches;
 
-      this.authenticationService.edit_company_profile(inputQuery)
+      this.authenticationService.edit_company_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data =>
           {

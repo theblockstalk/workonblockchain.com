@@ -622,7 +622,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
         }
       }
-      this.authenticationService.edit_company_profile({'saved_searches': this.savedSearches})
+      this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
         .subscribe(
           data => {
             if (data && this.currentUser) {
@@ -792,7 +792,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             }
           }
         }
-        this.authenticationService.edit_company_profile({'saved_searches': this.savedSearches})
+        this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
           .subscribe(
             data => {
               if (data && this.currentUser) {
