@@ -259,7 +259,7 @@ export class ChatComponent implements OnInit {
       },7000);
     }
     else{
-      this.get_messages_for_candidate();
+      //this.get_messages_for_candidate();
       setInterval(() => {
         this.get_messages_for_candidate();
       },7000);
@@ -784,6 +784,7 @@ export class ChatComponent implements OnInit {
             this.new_msgss = this.reverseArray(data['messages'], 0,data['messages'].length-1);
           }
 
+          console.log(this.new_msgss);
           this.job_desc = data['messages'][0].message.approach;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(
