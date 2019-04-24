@@ -557,6 +557,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.selectedWorkType = '';
     this.hourly_rate = '';
     this.contractorCurrency = '';
+    this.years_exp_value = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});
