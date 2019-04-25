@@ -50,8 +50,8 @@ describe('admin search company by filter', function () {
         await userHelper.makeAdmin(candidate.email);
         const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 
-        const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
-        const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+        const approachOffer = docGeneratorV2.messages.approach(candidateUserDoc._id);
+        const res = await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
         const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
         const data = {

@@ -5,6 +5,7 @@ import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-admin-company-search',
@@ -33,27 +34,12 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   candidate_status;
   candidate_status_account;
-  msgTagsOptions =
-    [
-      {value:'normal', name:'Normal' , checked:false},
-      {value:'job_offer', name:'Job offer sent' , checked:false},
-      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
-      {value:'interview_offer', name:'Interview offer sent' , checked:false},
-      {value:'employment_offer', name:'Employment offer sent' , checked:false},
-      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
-      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
-    ];
 
-  admin_checks_email_verify = [
-    {value:1, name:'Verified'},
-    {value:0, name:'Not Verified'}
-  ];
+  msgTagsOptions = constants.chatMsgTypes;
 
-  admin_checks_candidate_account = [
-    {value:false, name:'Enabled'},
-    {value:true, name:'Disabled'}
-  ];
+  admin_checks_email_verify = constants.admin_checks_email_verify
+
+  admin_checks_candidate_account = constants.admin_checks_candidate_account;
 
   constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void

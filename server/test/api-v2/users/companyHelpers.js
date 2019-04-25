@@ -13,7 +13,7 @@ const signupCompany = module.exports.signupCompany = async function signupCompan
 }
 
 module.exports.companyProfileData = async function companyProfileData(user_id, jwtToken, profiledata) {
-
+    console.log(user_id);
     const res = await chai.request(server)
         .patch('/v2/users/'+user_id +'/companies')
         .set('Authorization', jwtToken)

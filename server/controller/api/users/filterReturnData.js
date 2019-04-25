@@ -20,7 +20,7 @@ const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_i
 const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
     'availability_day', 'why_work', 'commercial_platforms', 'blockchain', 'experimented_platforms', 'smart_contract_platforms' , 'commercial_skills',
     'formal_skills' , 'current_currency', 'current_salary', 'programming_languages', 'education_history', 'work_history', 'description',
-    'nationality'];
+    'nationality','employee','contractor','volunteer'];
 
 const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(userDoc) {
 
@@ -70,8 +70,8 @@ const createInitials = module.exports.createInitials = function createInitials(f
 
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
-    const acceptedJobOffer = await Messages.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
-    if (acceptedJobOffer && acceptedJobOffer.length>0)
+    const acceptedApproachOffer = await Messages.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'approach_accepted'})
+    if (acceptedApproachOffer && acceptedApproachOffer.length>0)
         return removeSensativeData(candidateDoc);
     else
         return anonymousSearchCandidateData(candidateDoc);

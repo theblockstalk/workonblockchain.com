@@ -156,89 +156,12 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h2><i class="fas fa-briefcase"></i> Desired job</h2>
+                <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','job_candidate')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12" >
-                <div class="form-group" *ngIf="noVisaArray && noVisaArray.length > 0">
-                  <label>Desired location:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of noVisaArray'>
-                      <div *ngIf="country.name === 'Remote'">
-                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-                     <div *ngIf="country.type === 'country' ">
-                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-                    <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group" *ngIf="visaRequiredArray && visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of visaRequiredArray'>
-                      <div *ngIf="country.type === 'country'" >
-                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'city'">
-                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12">
-                <div class="form-group ">
-                  <label> Area of interest:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'>
-                      {{interest_area}}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <label> Desired roles:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'>
-                      {{roles_data}}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12" *ngIf="expected_salary">
-                <div class="form-group">
-                  <label> Expected annual salary:</label>
-                  <p class="mr-2">
-                    {{expected_currency}} {{expected_salary}}
-                  <p>
-                </div>
               </div>
             </div>
 
@@ -254,16 +177,238 @@
               </div>
             </div>
 
-            <div class="row mt-4">
-              <div class = "col-md-12" *ngIf="availability_day">
+            <div class="row mt-2" *ngIf="employee.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-user-secret"></i> Employee</h4>
+              </div>
+
+              <div class="col-md-12 mt-4">
                 <div class="form-group">
-                  <label> Your availablity:</label>
-                  <p class="mr-2">
-                    {{availability_day}}
-                  <p>
+                  <label>Position type: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let type of employee.value.employment_type;'> {{type}} </div>
+                  </div>
                 </div>
               </div>
+
+              <div class = "col-md-12" >
+                <div class="form-group" *ngIf="employee.noVisaArray && employee.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="employee.visaRequiredArray && employee.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of employee.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Expected annual salary: </label>
+                  <p>{{employee.value.currency}} {{employee.value.expected_annual_salary}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Availability: </label>
+                  <p>{{employee.value.employment_availability}}</p>
+                </div>
+              </div>
+
             </div>
+
+            <div class="row mt-2" *ngIf="contractor.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-address-card"></i> Contractor</h4>
+              </div>
+
+
+              <div class = "col-md-12 mt-4" >
+                <div class="form-group" *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of contractor.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Hourly rate: </label>
+                  <p>{{contractor.value.currency}} {{contractor.value.expected_hourly_rate}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
+              <div class="form-group">
+                <label>Maximum hours per week (optional): </label>
+                <p>{{contractor.value.max_hour_per_week}}</p>
+              </div>
+            </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.contractor_type">
+                <div class="form-group">
+                  <label>Contractor type: </label>
+                  <p *ngFor="let contractorType of contractor.value.contractor_type">{{contractorType}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.agency_website">
+                <div class="form-group">
+                  <label>Agency website: </label>
+                  <p >{{contractor.value.agency_website}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.service_description">
+                <div class="form-group">
+                  <label>Service description: </label>
+                  <pre >{{contractor.value.service_description}}</pre>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-2" *ngIf="volunteer.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-user-check"></i> Volunteer</h4>
+              </div>
+
+
+              <div class = "col-md-12 mt-4" >
+                <div class="form-group" *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of volunteer.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
+                <div class="form-group">
+                  <label>Maximum hours per week: </label>
+                  <p >{{volunteer.value.max_hours_per_week}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
+                <div class="form-group">
+                  <label>Learning objectives: </label>
+                  <pre >{{volunteer.value.learning_objectives}}</pre>
+                </div>
+              </div>
+
+            </div>
+
+
           </section>
 
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
@@ -281,11 +426,24 @@
             <div class = "row mt-4" *ngIf="why_work">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Why do you want to work on blockchain?</label>
+                  <label>Why do work on blockchain?</label>
                   <p>
                     {{why_work}}
                   </p>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class = "col-md-12">
+                <div class="form-group ">
+                  <label>Interests:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'>
+                      {{interest_area}}
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 

@@ -45,6 +45,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   error;
   selectedLocations;
   emptyInput;
+  workTypes = constants.workTypes;
+  expected_hourly_rate_log;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }
@@ -65,7 +67,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   residenceCountries = constants.countries;
-  job_types = constants.position_type;
+  job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
   blockchain = constants.blockchainPlatforms;
@@ -117,6 +119,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         when_receive_email_notitfications: new FormControl(),
         order_preferences: new FormControl(),
         residence_country: new FormControl(),
+        expected_hourly_rate: new FormControl(),
+        currency: new FormControl(),
+        work_type: new FormControl()
       });
 
       this.preferncesForm = this._fb.group({
@@ -133,6 +138,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         when_receive_email_notitfications: [''],
         order_preferences: [],
         residence_country: [],
+        expected_hourly_rate:[''],
+        currency: [''],
+        work_type: ['']
       });
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
@@ -162,7 +170,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 when_receive_email_notitfications: [data['when_receive_email_notitfications']],
                 order_preferences: [data['saved_searches'][0].order_preferences],
                 residence_country: [data['saved_searches'][0].residence_country],
+                expected_hourly_rate: [data['saved_searches'][0].expected_hourly_rate],
+                currency: [data['saved_searches'][0].current_currency],
+                work_type: [data['saved_searches'][0].work_type]
               });
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 400);
 
               if(data['saved_searches'][0].location)
               {
@@ -276,49 +290,56 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   name_log;
 
   checkNumber(salary) {
-    if(!Number(this.preferncesForm.value.current_salary)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
+    return /^[0-9]*$/.test(salary);
   }
+
   candidate_prefernces() {
     this.saved_searches = [];
     this.error_msg = "";
     this.validatedLocation = [];
+    let count = 0;
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      console.log("selectedValueArray")
       this.country_input_log = "Please select at least one location";
+      count=1;
     }
     if(!this.selectedLocations) {
+      console.log("selectedLocations")
       this.country_log = "Please select at least one location";
+      count=1;
     }
     if(this.selectedLocations && this.selectedLocations.length > 0) {
+      console.log("selectedLocations >0")
+      console.log(this.selectedLocations);
       for(let location of this.selectedLocations) {
         if(location.name.includes(', ')) {
-          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          this.validatedLocation.push({city: location._id });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          this.validatedLocation.push({remote: true });
         }
-
       }
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 10) {
+      console.log("selectedLocations >10")
       this.country_log = "Please select maximum 10 locations";
+      count=1;
     }
 
     if(!this.preferncesForm.value.name) {
+      console.log("name")
       this.name_log = "Please enter saved search name";
+      count=1;
     }
 
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
+      console.log("position")
       this.position_log = "Please select roles";
+      count=1;
     }
 
-    if(!this.preferncesForm.value.current_currency) {
+    /*if(this.preferncesForm.value !this.preferncesForm.value.current_currency) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
     if(!this.preferncesForm.value.current_salary) {
@@ -326,20 +347,62 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     }
     if(this.preferncesForm.value.current_salary && !Number(this.preferncesForm.value.current_salary)){
       this.current_currency_log = "Salary should be a number";
-    }
+    }*/
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
-    }
-    let count = 0;
-    if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
-      this.residence_country_log = "Please select maximum 50 countries";
       count=1;
+    }
+
+    if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+      const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+      console.log(checkNumber);
+      if(checkNumber === false) {
+        console.log("1");
+        count = 1;
+        this.current_currency_log = "Salary should be a number";
+      }
 
     }
-    if(count === 0 &&this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
-      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
-      this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications ) {
+
+    if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+      const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
+      if(checkNumber === false) {
+        console.log('6')
+        count = 1;
+        this.expected_hourly_rate_log = "Hourly rate should be a number "
+      }
+    }
+    console.log(this.preferncesForm.value);
+    if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+      console.log("2");
+      this.current_currency_log = "Please choose currency ";
+      count = 1;
+    }
+
+    if(this.preferncesForm.value.work_type === 'employee' && !this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+      console.log("3");
+      this.current_currency_log = "Please enter expected hours ";
+      count = 1;
+    }
+
+    if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+      console.log("4")
+      this.expected_hourly_rate_log = "Please choose currency ";
+      count = 1;
+    }
+
+    if(this.preferncesForm.value.work_type === 'contractor' && !this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+      console.log("5")
+      this.expected_hourly_rate_log = "Please enter expected hours ";
+      count = 1;
+    }
+
+    if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      console.log("residence");
+      this.residence_country_log = "Please select maximum 50 countries";
+      count=1;
+    }
+    if(count === 0) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
@@ -355,20 +418,29 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location
       if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name
       if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed
-      if(this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
+      if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
       if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position
-      if(this.preferncesForm.value.current_currency) searchInput.current_currency = this.preferncesForm.value.current_currency
-      if(this.preferncesForm.value.current_salary) searchInput.current_salary = this.preferncesForm.value.current_salary
       if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain
       if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills
       if(this.preferncesForm.value.other_technologies) searchInput.other_technologies = this.preferncesForm.value.other_technologies
       if(this.preferncesForm.value.order_preferences) searchInput.order_preferences = this.preferncesForm.value.order_preferences
       if(this.preferncesForm.value.residence_country) searchInput.residence_country = this.preferncesForm.value.residence_country
+      if(this.preferncesForm.value.work_type) searchInput.work_type = this.preferncesForm.value.work_type;
+      if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+          searchInput.current_currency = this.preferncesForm.value.current_currency;
+          searchInput.current_salary  = this.preferncesForm.value.current_salary;
+      }
+
+      if(this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+          searchInput.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
+          searchInput.current_currency  = this.preferncesForm.value.currency;
+      }
+
       this.saved_searches.push(searchInput);
 
       inputQuery.saved_searches = this.saved_searches;
 
-      this.authenticationService.edit_company_profile(inputQuery)
+      this.authenticationService.edit_company_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data =>
           {
@@ -577,6 +649,12 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   checkValidation(value) {
     return value.filter(i => i.visa_needed === true).length;
+  }
+
+  changeWorkTypes(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
   }
 
 

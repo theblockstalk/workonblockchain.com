@@ -67,6 +67,9 @@ export const constants = {
   ],
   workAvailability: [
     {name: "Now" , value: "Now" },
+    {name: "1 week notice period" , value: "1 week" },
+    {name: "2 weeks notice period" , value: "2 weeks" },
+    {name: "3 weeks notice period" , value: "3 weeks" },
     {name: "1 month notice period" , value: "1 month" },
     {name: "2 months notice period", value: "2 months" },
     {name: "3 months notice period", value: "3 months" },
@@ -266,7 +269,6 @@ export const constants = {
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
     {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false}
   ],
-  position_type: ['Full time' , 'Part time' , 'Freelance'],
   job_type: ["Part time", "Full time"],
   candidateStatus: [
     {value:'created', name:'Created'},
@@ -289,9 +291,9 @@ export const constants = {
   ],
   chatMsgTypes: [
     {value:'normal', name:'Normal' , checked:false},
-    {value:'job_offer', name:'Job offer sent' , checked:false},
-    {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-    {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
+    {value:'approach', name:'Approach sent' , checked:false},
+    {value:'approach_accepted', name:'Approach offer accepted' , checked:false},
+    {value:'approach_rejected', name:'Approach offer rejected' , checked:false},
     {value:'interview_offer', name:'Interview offer sent' , checked:false},
     {value:'employment_offer', name:'Employment offer sent' , checked:false},
     {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
@@ -316,6 +318,15 @@ export const constants = {
     {value:'job found', name:'Job found'},
     {value:'not responded', name:'Not responded'},
     {value:'other', name:'Other'}
+  ],
+  contractorTypes : [
+    {name: "I work by myself as a freelancer", value: "freelance",checked:false},
+    {name: "I worked through a development agency with a team", value: "agency", checked:false}
+  ],
+  workTypes : [
+    {name: 'Employee (full/part time)', value:'employee', checked:false},
+    {name: 'Contractor/Freelancer', value:'contractor', checked:false},
+    {name: 'Volunteer', value:'volunteer', checked:false}
   ],
   email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly']
 };

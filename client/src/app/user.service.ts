@@ -131,19 +131,17 @@ export class UserService {
         if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);
-
         }
 
         else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
         {
           this.router.navigate(['/about']);
         }
-        else if(!res['candidate'].locations  || !res['candidate'].roles || !res['candidate'].interest_areas|| !res['candidate'].expected_salary)
+        else if(!res['candidate'].employee && !res['candidate'].contractor && !res['candidate'].volunteer)
         {
-
           this.router.navigate(['/job']);
         }
-        else if(!res['candidate'].why_work)
+        else if(!res['candidate'].why_work && !res['candidate'].interest_areas)
         {
           this.router.navigate(['/resume']);
         }
@@ -892,9 +890,13 @@ export class UserService {
     }));
   }
 
-  edit_company_profile(queryBody :any   )
+  edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._id +'/companies', queryBody , {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/' +company_id+ '/companies?admin='+ true;
+    else urlString = URL+'v2/users/' +company_id+ '/companies';
+
+    return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

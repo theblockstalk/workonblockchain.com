@@ -15,16 +15,20 @@ module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Devel
 
 module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)',"I don't know"];
 
-module.exports.workAvailability = ['1 month','Now','2 months','3 months','Longer than 3 months'];
+module.exports.workAvailability = ['1 week', '2 weeks', '3 weeks' ,'1 month','Now','2 months','3 months','Longer than 3 months'];
 
 module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs'];
 
 module.exports.email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
-module.exports.jobTypes = ['Full time' , 'Part time' , 'Freelance', 'Contract'];
-
 module.exports.candidateStatus = ['created','wizard completed','updated', 'updated by admin', 'approved','rejected','deferred', 'other', 'reviewed'];
 
 module.exports.statusReasons = ['garbage','recruiter','not technical','other','profile incomplete','not looking for job', 'job found','not responded'];
 
-module.exports.chatMsgTypes = ['normal', 'job_offer', 'job_offer_accepted','job_offer_rejected', 'interview_offer', 'employment_offer', 'employment_offer_accepted', 'employment_offer_rejected', 'file'];
+module.exports.chatMsgTypes = ['normal', 'approach', 'approach_accepted','approach_rejected', 'interview_offer', 'employment_offer', 'employment_offer_accepted', 'employment_offer_rejected', 'file'];
+
+module.exports.employmentTypes = ['Full time', 'Part time'];
+
+module.exports.contractorTypes = ['freelance', 'agency'];
+
+module.exports.workTypes = ['employee', 'contractor', 'volunteer'];

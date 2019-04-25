@@ -44,6 +44,25 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
 
     if (search) {
+        let locationQuery;
+        let roleQuery;
+
+        if(search.work_type === 'employee') {
+            locationQuery= "candidate.employee.location";
+            roleQuery = "candidate.employee.roles";
+            userQuery.push({'candidate.employee': {$exists: true}});
+        }
+        if(search.work_type === 'contractor') {
+            locationQuery= "candidate.contractor.location";
+            roleQuery = "candidate.contractor.roles";
+            userQuery.push({'candidate.contractor': {$exists: true}});
+        }
+        if(search.work_type === 'volunteer') {
+            locationQuery= "candidate.volunteer.location";
+            roleQuery = "candidate.volunteer.roles";
+            userQuery.push({'candidate.volunteer': {$exists: true}});
+        }
+
         if(search.name) {
             const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
                 {last_name : {'$regex' : search.name, $options: 'i'}}] };
@@ -55,6 +74,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(wordSearch);
         }
         if (search.locations && search.locations.length > 0 ) {
+            logger.debug("locations: " ,search.locations);
             let locationsQuery = [];
             let citiesArray=[];
             let countriesArray = [];
@@ -69,59 +89,106 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
                     for (let city of citiesArray) {
-                        const cityQuery = {
-                            "candidate.locations": {
-                                $elemMatch: {
-                                    city: city,
-                                    visa_needed: true
+                        const setCityLocationQuery = function (locationQuery){
+                            const cityQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        city: city,
+                                        visa_needed: true
+                                    }
                                 }
                             }
+                            locationsQuery.push(cityQuery)
+                        };
+                        if(locationQuery) setCityLocationQuery(locationQuery);
+                        else {
+                            setCityLocationQuery("candidate.employee.location");
+                            setCityLocationQuery("candidate.contractor.location");
+                            setCityLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(cityQuery)
                     }
 
                     for (let country of countriesArray) {
-                        const countryQuery = {
-                            "candidate.locations": {
-                                $elemMatch: {
-                                    country: country,
-                                    visa_needed: true
+                        const setCountryLocationQuery = function (locationQuery){
+                            const countryQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        country: country,
+                                        visa_needed: true
+                                    }
                                 }
                             }
+                            locationsQuery.push(countryQuery)
+                        };
+                        if(locationQuery) setCountryLocationQuery(locationQuery);
+                        else {
+                            setCountryLocationQuery("candidate.employee.location");
+                            setCountryLocationQuery("candidate.contractor.location");
+                            setCountryLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(countryQuery)
+
                     }
                 }
                 else {
                     for (let city of citiesArray) {
-                        const cityQuery = {
-                            "candidate.locations": {
-                                $elemMatch: {
-                                    city: city,
-                                    visa_needed: false
+                        const setCityLocationQuery = function (locationQuery){
+                            const cityQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        city: city,
+                                        visa_needed: false
+                                    }
                                 }
                             }
+                            locationsQuery.push(cityQuery)
+                        };
+                        if(locationQuery) setCityLocationQuery(locationQuery);
+                        else {
+                            setCityLocationQuery("candidate.employee.location");
+                            setCityLocationQuery("candidate.contractor.location");
+                            setCityLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(cityQuery)
                     }
 
                     for (let country of countriesArray) {
-                        const countryQuery = {
-                            "candidate.locations": {
-                                $elemMatch: {
-                                    country: country,
-                                    visa_needed: false
+                        const setCountryLocationQuery = function (locationQuery){
+                            const countryQuery = {
+                                [locationQuery]: {
+                                    $elemMatch: {
+                                        country: country,
+                                        visa_needed: false
+                                    }
                                 }
                             }
+                            locationsQuery.push(countryQuery)
+                        };
+                        if(locationQuery) setCountryLocationQuery(locationQuery);
+                        else {
+                            setCountryLocationQuery("candidate.employee.location");
+                            setCountryLocationQuery("candidate.contractor.location");
+                            setCountryLocationQuery("candidate.volunteer.location");
                         }
-                        locationsQuery.push(countryQuery)
+
                     }
 
                 }
 
             }
             if(search.locations.find(x => x.remote === true)) {
-                const locationRemoteFilter = {"candidate.locations.remote" : true};
+                let locationRemote;
+                if(search.work_type === 'employee') locationRemote = {"candidate.employee.location.remote" : true};
+                else if(search.work_type === 'contractor') locationRemote = {"candidate.contractor.location.remote" : true};
+                else if(search.work_type === 'volunteer') locationRemote = {"candidate.volunteer.location.remote" : true};
+                else {
+                    locationRemote = {
+                        $or: [
+                            {"candidate.employee.location.remote" : true},
+                            {"candidate.contractor.location.remote" : true},
+                            {"candidate.volunteer.location.remote" : true}
+                        ]
+                    };
+                }
+                const locationRemoteFilter = locationRemote;
                 locationsQuery.push(locationRemoteFilter);
             }
             if(locationsQuery && locationsQuery.length > 0) {
@@ -133,8 +200,24 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            const rolesFilter = {"candidate.roles": {$in: search.positions}};
-            userQuery.push(rolesFilter);
+            let rolesQuery =[]
+            const setRoleQuery = function (roleQuery){
+                const rolesFilter = {[roleQuery]: {$in: search.positions}};
+                rolesQuery.push(rolesFilter);
+            };
+            if(roleQuery) setRoleQuery(roleQuery);
+            else {
+                setRoleQuery("candidate.employee.roles");
+                setRoleQuery("candidate.contractor.roles");
+                setRoleQuery("candidate.volunteer.roles");
+            }
+
+            if(rolesQuery && rolesQuery.length > 0) {
+                userQuery.push({
+                    $or: rolesQuery
+                });
+            }
+
         }
         if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
@@ -149,13 +232,28 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
             const salary = search.salary.current_salary;
-            const usd = [{'candidate.expected_salary_currency': "$ USD"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
-            const gbp = [{'candidate.expected_salary_currency': "£ GBP"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
-            const eur = [{'candidate.expected_salary_currency': "€ EUR"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+            const usd = [{'candidate.employee.currency' : "$ USD"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+            const gbp = [{'candidate.employee.currency': "£ GBP"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+            const eur = [{'candidate.employee.currency': "€ EUR"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+
             const currencyFiler = {
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
             userQuery.push(currencyFiler);
+        }
+
+        if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.current_currency) {
+            const curr = search.hourly_rate.currency;
+            const hourly_rate = search.hourly_rate.expected_hourly_rate;
+            const usd = [{'candidate.contractor.currency' : "$ USD"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "$ USD", hourly_rate)}}];
+            const gbp = [{'candidate.contractor.currency': "£ GBP"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "£ GBP", hourly_rate)}}];
+            const eur = [{'candidate.contractor.currency': "€ EUR"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "€ EUR", hourly_rate)}}];
+
+            const hourlyRateFilter = {
+                $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
+            };
+            userQuery.push(hourlyRateFilter);
+
         }
 
         if (search.skills && search.skills.length > 0) {
@@ -182,7 +280,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
-
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
@@ -238,3 +335,4 @@ function removeDups(names) {
     });
     return Object.keys(unique);
 }
+

@@ -46,14 +46,15 @@ describe('admin get metrics', function () {
         console.log("blockchain");
         aggregrated.nationality[profileData.nationality].should.equal(1);
         should.not.exist(aggregrated.nationality.Australian);
-        aggregrated.availabilityDay[profileData.availability_day].should.equal(1);
+        console.log(aggregrated)
+        aggregrated.employmentAvailability[profileData.employee.employment_availability].should.equal(1);
         aggregrated.baseCountry[profileData.base_country].should.equal(1);
-        if(profileData.expected_salary_currency === '€ EUR')
-        aggregrated.expectedSalaryUSD.min.should.equal(profileData.expected_salary*settings.CURRENCY_RATES_USD.Euro);
+        if(profileData.employee.currency === '€ EUR')
+        aggregrated.expectedSalaryUSD.min.should.equal(profileData.employee.expected_annual_salary*settings.CURRENCY_RATES_USD.Euro);
         aggregrated.interestAreas[profileData.interest_areas[0]].should.equal(1);
-        aggregrated.locations[profileData.locations[1].country].count.should.equal(1);
-        aggregrated.locations[profileData.locations[1].country].aggregate[profileData.locations[1].visa_needed].should.equal(1);
-        aggregrated.roles[profileData.roles[0]].should.equal(1);
+        aggregrated.employee.location[profileData.employee.location[1].country].count.should.equal(1);
+        aggregrated.employee.location[profileData.employee.location[1].country].aggregate[profileData.employee.location[1].visa_needed].should.equal(1);
+        aggregrated.employee.roles[profileData.employee.roles[0]].should.equal(1);
         aggregrated.programmingLanguages[profileData.programming_languages[0].language].count.should.equal(1);
         aggregrated.programmingLanguages[profileData.programming_languages[0].language].aggregate[profileData.programming_languages[0].exp_year].should.equal(1);
         aggregrated.programmingLanguages[profileData.programming_languages[1].language].count.should.equal(1);

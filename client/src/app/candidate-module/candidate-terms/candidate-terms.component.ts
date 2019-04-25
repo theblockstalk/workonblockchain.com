@@ -103,7 +103,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.link="/job";
                   }
 
-                  if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
+                  if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -113,7 +113,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   }
 
 
-                    if(data['candidate'].why_work )
+                    if(data['candidate'].why_work && data['candidate'].interest_areas )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";

@@ -80,13 +80,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   yearVerification;
 
   countries = constants.countries;
-  job_types = constants.position_type;
+  job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
   blockchain = constants.blockchainPlatforms;
   language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
   residenceCountries = constants.countries;
+  workTypes = constants.workTypes;
   prefData;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
@@ -111,6 +112,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     return this._fb.group({
       _id :[],
+      work_type: [''],
+      expected_hourly_rate: [''],
+      currency : [''],
       location: [''],
       name: [''],
       visa_needed : [false],
@@ -130,7 +134,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -267,6 +271,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 )
               });
 
+              console.log(this.preferncesForm)
+
             }
           },
           error =>
@@ -303,6 +309,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   search_log;
   search_name_log;
   residence_log;
+  expected_hourly_rate_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -371,22 +378,61 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(!this.preferncesForm.value.prefItems[i].name) {
           this.search_name_log = 'Please enter search name';
           count = 1;
+        }
+        if(this.preferncesForm.value.prefItems[i].work_type === 'employee'){
+          if(this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].current_salary);
+            if(checkNumber === false) {
+              count = 1;
+              this.current_currency_log = "Salary should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
+          }
+          if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
+            this.current_currency_log = "Please choose currency ";
+            count = 1;
+          }
+          if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
+            this.current_currency_log = "Please enter expected hours ";
+            count = 1;
+          }
+        }
+
+        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor') {
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+            if(checkNumber === false) {
+              count = 1;
+              this.expected_hourly_rate_log = "Hourly rate should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+          }
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
+            this.expected_hourly_rate_log = "Please choose currency ";
+            count = 1;
+          }
+          if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
+            this.expected_hourly_rate_log = "Please enter expected hours ";
+            count = 1;
+          }
 
         }
-        else if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
+
+
+        if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
           !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
           !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
+          !this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency &&
           !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
           this.search_log = 'Please fill atleast one field in job search';
           count = 1;
         }
-        else if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
+        if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
           this.residence_log = "Please select maximum 50 countries";
+          count = 1;
         }
-        else {
 
-        }
       }
     }
 
@@ -402,7 +448,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(inputEl.files.item(0).size < this.file_size)
         {
           formData.append('company_logo', inputEl.files.item(0));
-          this.authenticationService.edit_company_profile(formData)
+          this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
             .subscribe(
               data => {
                 if(data && this.currentUser)
@@ -468,9 +514,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
           if(key['name']) searchQuery.name = key['name'];
 
-          if(key['current_currency'] !== 'Currency' && key['current_salary']) {
+          if(key['work_type']) searchQuery.work_type = key['work_type'];
+          if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
+          }
+
+          if(key['work_type']==='contractor' && key['currency'] && key['current_currency'] !== 'Currency' && key['expected_hourly_rate']) {
+            searchQuery.expected_hourly_rate = Number(key['expected_hourly_rate']);
+            searchQuery.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           saved_searches.push(searchQuery);
@@ -481,7 +533,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       }
       profileForm.value.saved_searches = saved_searches;
 
-      this.authenticationService.edit_company_profile(profileForm.value)
+      this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)
         .subscribe(
           data => {
             if(data && this.currentUser)
@@ -617,13 +669,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   checkNumber(salary) {
-    if(!Number(this.preferncesForm.value.current_salary)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
+    return /^[0-9]*$/.test(salary);
   }
 
   get DynamicWorkFormControls()
@@ -639,6 +685,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }, 100);
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
+  }
+
+  changeWorkTypes() {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
   }
 
 }
