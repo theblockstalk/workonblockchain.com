@@ -69,17 +69,18 @@
                   <div class = "p-1 p-md-3 w-sm-100 w-75 float-left">
                     <ul class="cand_info-ul">
                       <ng-container *ngIf="job_desc.employee;">
-                        <li>Job title: {{job_desc.employee.job_title}}</li>
+                        <li>Approach type: Employee</li>
                         <li>Job type: {{job_desc.employee.employment_type}}</li>
+                        <li>Job title: {{job_desc.employee.job_title}}</li>
                         <li>Salary: {{job_desc.employee.currency}} {{job_desc.annual_salary}}</li>
                       </ng-container>
                       <ng-container *ngIf="job_desc.contractor;">
-                        <li>Job type: Contractor</li>
+                        <li>Approach type: Contractor</li>
                         <li>Hourly rate: {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</li>
                         <br>
                       </ng-container>
                       <ng-container *ngIf="job_desc.volunteer;">
-                        <li>Job type: Volunteer</li>
+                        <li>Approach type: Volunteer</li>
                         <br>
                       </ng-container>
                     </ul>
@@ -104,6 +105,10 @@
                           <p class = "p-2 send_p job-description rounded d-inline-block">
                             <!-- msg.message.approach.employee starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.employee">
+                               <span>
+                                <b>Employment opportunity</b>
+                                 <br/>
+                              </span>
                               <span>
                                 <b>Job title:</b>
                                 {{msg.message.approach.employee.job_title}}
@@ -137,6 +142,10 @@
                             <!-- msg.message.approach.volunteer starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.volunteer">
                               <span>
+                                <b>Volunteer opportunity</b>
+                                <br/>
+                              </span>
+                              <span>
                                 <b>Location: </b>
                                 {{msg.message.approach.volunteer.location}}
                                 <br/>
@@ -153,6 +162,10 @@
 
                             <!-- msg.message.approach.contractor starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.contractor">
+                              <span>
+                                <b>Contract/freelancer opportunity</b>
+                                <br/>
+                              </span>
                               <span>
                                 <b>Location: </b>
                                 {{msg.message.approach.contractor.location}}
@@ -289,6 +302,10 @@
                             <!-- msg.message.approach.employee starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.employee">
                               <span>
+                                <b>Employment opportunity</b>
+                                <br/>
+                              </span>
+                              <span>
                                 <b>Job title:</b>
                                 {{msg.message.approach.employee.job_title}}
                                 <br/>
@@ -321,6 +338,10 @@
                             <!-- msg.message.approach.volunteer starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.volunteer">
                               <span>
+                                <b>Volunteer opportunity</b>
+                                <br/>
+                              </span>
+                              <span>
                                 <b>Description:</b><br>
                               </span>
                               <span [innerHTML]="msg.message.approach.volunteer.opportunity_description | safeHtml">
@@ -332,6 +353,10 @@
 
                             <!-- msg.message.approach.contractor starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.contractor">
+                              <span>
+                                <b>Contractor opportunity</b>
+                                <br/>
+                              </span>
                               <span>
                                 <b>Location: </b>
                                 {{msg.message.approach.contractor.location}}
@@ -808,6 +833,12 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label>Approach type:</label>
+                  <p>Employee</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Job title:</label>
                   <p>{{job_desc.employee.job_title}}</p>
                 </div>
@@ -861,6 +892,12 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label>Approach type:</label>
+                  <p>Contractor</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Location:</label>
                   <p>{{job_desc.contractor.location}} </p>
                 </div>
@@ -871,12 +908,7 @@
                   <p>{{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</p>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Job type:</label>
-                  <p>Contractor</p>
-                </div>
-              </div>
+
 
             </div>
             <div class="row">
@@ -895,6 +927,12 @@
           <!--popup for volunteer starts-->
           <ng-container *ngIf="job_desc.volunteer;">
             <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Approach type:</label>
+                  <p>Volunteer</p>
+                </div>
+              </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Location:</label>
