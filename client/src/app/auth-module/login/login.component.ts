@@ -21,12 +21,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   currentUser: User;
   type;
   user;data;result;googleUser;linkedinUser;
-  code; ref_msg;
+  code;
   button_status = '';
   public isUserAuthenticatedEmittedValue = false;
   public isUserAuthenticated;
-  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
-
   message:string;
   error;
   forgetMessage;
@@ -74,7 +72,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.message='';
     this.type='candidate';
     this.response = 'process';
-
+    console.log(this.credentials);
     if(this.credentials.email && this.credentials.password)
     {
       this.authenticationService.candidate_login({email : this.credentials.email, password : this.credentials.password})

@@ -146,7 +146,7 @@
               <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
               <label>Country</label>
               <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
-                <option *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                <option *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
               </select>
               <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
                 {{companyCountryLog}}

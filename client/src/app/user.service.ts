@@ -131,19 +131,17 @@ export class UserService {
         if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);
-
         }
 
         else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
         {
           this.router.navigate(['/about']);
         }
-        else if(!res['candidate'].locations  || !res['candidate'].roles || !res['candidate'].interest_areas|| !res['candidate'].expected_salary)
+        else if(!res['candidate'].employee && !res['candidate'].contractor && !res['candidate'].volunteer)
         {
-
           this.router.navigate(['/job']);
         }
-        else if(!res['candidate'].why_work)
+        else if(!res['candidate'].why_work && !res['candidate'].interest_areas)
         {
           this.router.navigate(['/resume']);
         }
@@ -727,38 +725,50 @@ export class UserService {
 
   getCurrentCompany(_id: string)
   {
-    return this.http.get(URL+'users/current_company/' +_id, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
+    if(!_id) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('googleUser');
+      localStorage.removeItem('close_notify');
+      localStorage.removeItem('linkedinUser');
+      localStorage.removeItem('admin_log');
+      window.location.href = '/login';
 
-      if (res)
+    }
+    else {
+      return this.http.get(URL+'users/current_company/' +_id, {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }).pipe(map((res: Response) =>
       {
-        return res  ;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
+
+        if (res)
+        {
+          return res  ;
+        }
+      }), catchError((error: any) =>
       {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        if (error)
         {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          this.router.navigate(['/not_found']);
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.router.navigate(['/not_found']);
+          }
+
+          else return throwError(new Error(error));
         }
 
-        else return throwError(new Error(error));
-      }
+      }));
+    }
 
-    }));
   }
 
   get_user_messages_comp(receiver_id: string)
@@ -880,9 +890,13 @@ export class UserService {
     }));
   }
 
-  edit_company_profile(queryBody :any   )
+  edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._id +'/companies', queryBody , {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/' +company_id+ '/companies?admin='+ true;
+    else urlString = URL+'v2/users/' +company_id+ '/companies';
+
+    return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

@@ -93,7 +93,7 @@ module.exports.endpoint = async function (req, res) {
             userDoc = await users.findOneByEmail(linkedinData.email);
 
             if (userDoc.linkedin_id && userDoc.linkedin_id !== linkedinData.linkedin_id) {
-                throw new Error("Incorrect google id");
+                throw new Error("Incorrect linkedin id");
             }
             if (!userDoc.linkedin_id) {
                 const userLinkedinDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});
@@ -108,7 +108,6 @@ module.exports.endpoint = async function (req, res) {
         else {
             errors.throwError('There was a problem with your linkedin identity', 400);
         }
-
     }
 
 

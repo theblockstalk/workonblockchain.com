@@ -95,8 +95,8 @@ describe('search candidates as company', function () {
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
             const params = {
-                current_currency: candidateUserDoc.candidate.expected_salary_currency,
-                current_salary: candidateUserDoc.candidate.expected_salary*0.5
+                current_currency: candidateUserDoc.candidate.employee.currency,
+                current_salary: candidateUserDoc.candidate.employee.expected_annual_salary*0.5
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -117,7 +117,7 @@ describe('search candidates as company', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
-            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",
@@ -142,8 +142,7 @@ describe('search candidates as company', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
-            console.log(candidateUserDoc.candidate.expected_salary_currency, candidateUserDoc.candidate.expected_salary);
-            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",

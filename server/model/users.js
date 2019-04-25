@@ -83,6 +83,9 @@ const UserSchema = new Schema({
         type:Boolean,
         default:true
     },
+    last_message_reminder_email: {
+        type:Date
+    },
     disable_account: {
         type:Boolean,
         default:false
@@ -121,7 +124,7 @@ const UserSchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
-            locations: {
+            locations: { //DELETE ME
                 type: [{
                     city: {
                         type : Schema.Types.ObjectId,
@@ -135,19 +138,145 @@ const UserSchema = new Schema({
                     }
                 }]
             },
-            roles: {
+            roles: { //DELETE ME
                 type: [{
                     type: String,
                     enum: enumerations.workRoles
                 }]
             },
-            expected_salary_currency: {
+            expected_salary_currency: { //DELETE ME
                 type: String,
                 enum: enumerations.currencies
             },
-            expected_salary: {
+            expected_salary: { //DELETE ME
                 type:Number,
                 min: 0
+            },
+            availability_day: { //DELETE ME
+                type:String,
+                enum: enumerations.workAvailability
+            },
+            employee: {
+                type: {
+                    employment_type :  {
+                        type : String,
+                        enum: enumerations.employmentTypes
+                    },
+                    expected_annual_salary: {
+                        type: Number,
+                        min:0
+                    },
+                    currency : {
+                        type: String,
+                        enum: enumerations.currencies
+                    },
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }
+                        ]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    employment_availability: {
+                        type:String,
+                        enum: enumerations.workAvailability
+                    }
+                }
+            },
+            contractor: {
+                type: {
+                    expected_hourly_rate:  {
+                        type : Number,
+                        min:0,
+                    },
+                    currency: {
+                        type: String,
+                        enum: enumerations.currencies
+                    },
+                    max_hour_per_week : {
+                        type : Number,
+                        min:0,
+                    },
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    contractor_type: {
+                        type: String,
+                        enum: enumerations.contractorTypes
+                    },
+                    agency_website: {
+                        type: String,
+                        validate: regexes.url
+                    },
+                    service_description: {
+                        type: String,
+                        maxlength: 3000
+                    }
+                }
+            },
+            volunteer: {
+                type: {
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    max_hours_per_week: {
+                        type: Number,
+                        min: 0
+                    },
+                    learning_objectives: {
+                        type: String,
+                        maxlength: 3000
+
+                    }
+                }
             },
             current_currency: {
                 type: String,
@@ -156,10 +285,6 @@ const UserSchema = new Schema({
             current_salary: {
                 type:Number,
                 min: 0
-            },
-            availability_day: {
-                type:String,
-                enum: enumerations.workAvailability
             },
             why_work: String,
             programming_languages: {
@@ -242,7 +367,8 @@ const UserSchema = new Schema({
                         }]
                     },
                     description_commercial_platforms:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                     experimented_platforms: {
                         type: [{
@@ -251,7 +377,8 @@ const UserSchema = new Schema({
                         }],
                     },
                     description_experimented_platforms:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                     commercial_skills : {
                         type: [{
@@ -266,7 +393,8 @@ const UserSchema = new Schema({
                         }],
                     },
                     description_commercial_skills:{
-                        type: String
+                        type: String,
+                        maxlength: 3000
                     },
                 }
             },

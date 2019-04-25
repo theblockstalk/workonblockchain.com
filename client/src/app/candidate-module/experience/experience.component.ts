@@ -8,6 +8,7 @@ import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-experience',
@@ -121,11 +122,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
             {
               this.active_class='fa fa-check-circle text-success';
 
             }
+            if(data['candidate'].description) this.Intro = data['candidate'].description;
 
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
@@ -198,11 +200,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   }
                 }
               }
+
             }
             this.Intro =data['candidate'].description;
 
 
-            if(!data['candidate'].why_work)
+            if(!data['candidate'].why_work && data['candidate'].interest_areas)
             {
               this.router.navigate(['/resume']);
             }
@@ -254,66 +257,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   }
 
-  currency=
-    [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  current_work=
-    [
-      {name:'I currently work here', value:'current', checked:false}
-    ]
-
-  language_opt=
-    [
-      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
-      {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
-      {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
-      {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
-      {name:'Delphi/Object Pascal', value:'Delphi/Object Pascal', checked:false},{name:'Swift', value:'Swift', checked:false},
-      {name:'Perl', value:'Perl', checked:false},{name:'Ruby', value:'Ruby', checked:false},
-      {name:'Assembly language', value:'Assembly language', checked:false},{name:'R', value:'R', checked:false},
-      {name:'Visual Basic', value:'Visual Basic', checked:false},{name:'Objective-C', value:'Objective-C', checked:false},
-      {name:'Go', value:'Go', checked:false},{name:'MATLAB', value:'MATLAB', checked:false},
-      {name:'PL/SQL', value:'PL/SQL', checked:false},{name:'Scratch', value:'Scratch', checked:false},
-      {name:'Solidity', value:'Solidity', checked:false},{name:'Serpent', value:'Serpent', checked:false},
-      {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
-      {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
-      {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-
-    ]
-
-  exp_year=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  roles_opt =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'BI Engineer', value:'BI Engineer', checked:false},
-      {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Lead Developer', value:'Lead Developer', checked:false},
-      {name:'Database Administrator', value:'Database Administrator', checked:false},
-      {name:'Security Engineer', value:'Security Engineer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-    ]
-
-  graduation_year=
-    [
-      2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994
-    ]
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
-    ]
-  month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  current_work = constants.current_work;
+  language_opt = constants.programmingLanguages;
+  exp_year = constants.experienceYears;
+  year = constants.year;
+  month = constants.calen_month;
 
   onExpOptions(obj)
   {
@@ -372,8 +320,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       fieldname:[this.fieldname],
       eduyear:[]
     });
-
-
   }
 
 
@@ -567,9 +513,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.end_date_year_log = "Please fill end date year ";
         }
-
-
-
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&

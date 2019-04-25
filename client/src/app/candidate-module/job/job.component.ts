@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
 
@@ -17,24 +18,19 @@ export class JobComponent implements OnInit,AfterViewInit {
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
   info: any = {};
   country ='';
-  roles='';
   interest_area='';
   expected_salary='';
-  checked_country='';
   selectedValue = [];
-  selectedcountry = [];
   expYear=[];
-  interest='';
-  optionSelected: any;
   jobselected=[];
   position='';
   experience_year='';
   currentUser: User;exp_class;
   log; salary; available;link;class;
-  availability_day;availability_year;
+  availability_day;
   active_class;
   job_active_class;
-  exp_active_class;resume_active_class;resume_class;base_currency;
+  exp_active_class;resume_active_class;resume_class;
   about_active_class;
   term_active_class;
   term_link;
@@ -45,32 +41,60 @@ export class JobComponent implements OnInit,AfterViewInit {
   error_msg;
   expected_validation;
   selectedValueArray=[];
-  countriesModel;
   error;
-  selectedLocations;
   cities;
   country_log;
-  roles_log;
   currency_log;
   salary_log;
-  interest_log;
   avail_log;
   current_sal_log;
   current_currency_log;
   count;
   emptyInput;
+  validatedLocation=[];
+  position_type = constants.job_type;
+  employment_type_log;
+  employment_location_log;
+  employee_roles_log;
+  work_type_log;
+  selected_work_type=[];
+  employeeCheck=false;
+  contractorCheck=false;
+  volunteerCheck=false;
+  employee: any = {};
+  contractor: any = {};
+  volunteer: any = {};
+  contractor_currency_log;
+  contractor_roles_log;
+  contractor_hourly_log;
+  agency_website_log;
+  contractor_description_log;
+  contractor_type_log;
+  contract_location_log;
+  volunteer_location_log;
+  volunteer_roles_log;
+  objective_log;
+  max_hours=[];
+  validateUrl;
+  employement_availability = constants.workAvailability;
+
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 200);
+    }, 700);
   }
   ngOnInit()
   {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
+    this.employee.employee_roles = this.roles;
+    this.volunteer.volunteer_roles = this.roles;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    for(let i =5; i<=60; i=i+5) {
+      this.max_hours.push(i);
+    }
 
     if(!this.currentUser)
     {
@@ -78,27 +102,15 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
 
-      this.dropdown_options.sort(function(a, b){
+      this.roles.sort(function(a, b){
+
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
       })
 
-      this.area_interested.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+
       this.class="btn disabled";
       this.exp_class="btn disabled";
       this.authenticationService.getById(this.currentUser._id)
@@ -113,114 +125,73 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
-
-            if(data['candidate'].locations || data['candidate'].roles || data['candidate'].interest_areas ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
+            if(data['candidate'].why_work && data['candidate'].interest_areas)
             {
-              if(data['candidate'].locations)
-              {
-                for (let country1 of data['candidate'].locations)
-                {
-                  if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
-
-                  }
-
-                  if (country1['country']) {
-                    let country = country1['country'] + ' (country)'
-                    this.selectedValueArray.push({name:  country , visa_needed : country1.visa_needed});
-                  }
-                  if (country1['city']) {
-                    let city = country1['city'].city + ", " + country1['city'].country + " (city)";
-                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
-                  }
-                }
-
-                this.selectedValueArray.sort();
-                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                  let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                  this.selectedValueArray.splice(0, 0, remoteValue);
-                  this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                }
-                this.selectedLocations = this.selectedValueArray;
-              }
-
-
-              if(data['candidate'].interest_areas)
-              {
-                for (let interest of data['candidate'].interest_areas)
-                {
-
-                  for(let option of this.area_interested)
-                  {
-
-                    if(option.value === interest)
-                    {
-                      option.checked=true;
-                      this.selectedValue.push(interest);
-
-                    }
-
-                  }
-
-                }
-              }
-              if(data['candidate'].roles)
-              {
-                for (let area of data['candidate'].roles)
-                {
-
-                  for(let option of this.dropdown_options)
-                  {
-                    if(option.value === area)
-                    {
-                      option.checked=true;
-                      this.jobselected.push(area);
-
-                    }
-
-                  }
-
-                }
-              }
-
-              this.salary = data['candidate'].expected_salary;
-              this.availability_day = data['candidate'].availability_day;
-              if(data['candidate'].expected_salary_currency)
-                this.base_currency = data['candidate'].expected_salary_currency;
-              if(data['candidate'].current_currency && data['candidate'].current_salary)
-                this.current_currency =data['candidate'].current_currency;
-              this.current_salary = data['candidate'].current_salary;
-
-
-              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
-              {
-                this.active_class = 'fa fa-check-circle text-success';
-                this.class = "btn";
-                this.job_active_class = 'fa fa-check-circle text-success';
-                this.resume_disable ='';
-                this.resume_class="/resume";
-
-              }
-
-              if(data['candidate'].why_work)
-              {
-                this.exp_disable ='';
-                this.resume_active_class='fa fa-check-circle text-success';
-                this.exp_class = "/experience";
-              }
-
-
-
-              if(data['candidate'].description )
-              {
-                this.exp_class = "/experience";
-                this.exp_active_class = 'fa fa-check-circle text-success';
-              }
-
+              this.exp_disable ='';
+              this.resume_active_class='fa fa-check-circle text-success';
+              this.exp_class = "/experience";
             }
 
+            if(data['candidate'].description )
+            {
+              this.exp_class = "/experience";
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer) {
+              this.active_class = 'fa fa-check-circle text-success';
+              this.class = "btn";
+              this.job_active_class = 'fa fa-check-circle text-success';
+              this.resume_disable ='';
+              this.resume_class="/resume";
+            }
+            if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
+            if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+            if(data['candidate'].employee) {
+              this.employeeCheck = true;
+              this.selected_work_type.push('employee');
+              let employee = data['candidate'].employee;
+              this.employee.employment_type = employee.employment_type;
+              this.changeLocationDisplayFormat(employee.location, 'employee');
+              this.employee.roles = employee.roles;
+              this.employee.expected_annual_salary = employee.expected_annual_salary;
+              this.employee.currency = employee.currency;
+              this.employee.employment_availability = employee.employment_availability;
 
+
+            }
+            if(data['candidate'].contractor) {
+              this.contractorCheck = true;
+              this.selected_work_type.push('contractor');
+              let contractor = data['candidate'].contractor;
+              this.changeLocationDisplayFormat(contractor.location, 'contractor');
+              this.contractor.roles = contractor.roles;
+              this.contractor.hourly_rate = contractor.expected_hourly_rate;
+              this.contractor.currency = contractor.currency;
+              if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
+              this.contractor.contractor_type = contractor.contractor_type;
+              for(let type of this.contractor_types ) {
+                if(contractor.contractor_type.find(x => x === type.value)){
+                  type.checked = true;
+                }
+                else type.checked = false;
+              }
+              this.contract_type = contractor.contractor_type;
+              if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
+              if(contractor.service_description) this.contractor.service_description = contractor.service_description;
+
+            }
+            if(data['candidate'].volunteer) {
+              this.volunteerCheck = true;
+              this.selected_work_type.push('volunteer');
+              let volunteer = data['candidate'].volunteer;
+              this.changeLocationDisplayFormat(volunteer.location, 'volunteer');
+              this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
+              this.volunteer.learning_objectives = volunteer.learning_objectives;
+              this.volunteer.roles = volunteer.roles;
+            }
+            setTimeout(() => {
+              $('.selectpicker').selectpicker();
+            }, 500);
 
           },
           error => {
@@ -250,215 +221,289 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  currency=
-    [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  experience=
-    [
-
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  countries =
-    [
-      {id:'000' , value:''},
-      {id:'001' , value:'France'},
-      {id:'002' , value:'United Kingdom'},
-      {id:'003' , value:'Ireland'},
-      {id:'004' , value:'Netherlands'},
-      {id:'005' , value:'Germany'},
-      {id:'006' , value:'Israel'},
-      {id:'007' , value:'Spain'},
-
-    ]
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  roles = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
+  year = constants.year;
+  availability = constants.workAvailability;
+  contractor_types = constants.contractorTypes;
 
 
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ]
-
-  area_interested=
-    [
-      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
-      {name:'Public blockchain', value:'Public blockchain', checked:false},
-      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
-      {name:'Smart contract development', value:'Smart contract development', checked:false},
-      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-      {name:"I don't know", value:"I don't know", checked:false},
-    ]
-
-
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991"
-    ]
-  availability = [
-    {name: "Now" , value: "Now" },
-    {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 months" },
-    {name: "3 months notice period", value: "3 months" },
-    {name: "3+ months notice period", value: "Longer than 3 months" }
-  ]
-
-  onAreaSelected(e)
-  {
-    if(e.target.checked)
+  changeLocationDisplayFormat(array,value) {
+    let locationArray = [];
+    if(array)
     {
-      this.selectedValue.push(e.target.value);
-    }
-    else{
-      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
-      let index = this.selectedValue.indexOf(updateItem);
-      this.selectedValue.splice(index, 1);
+      for (let country1 of array)
+      {
+        if (country1['remote'] === true) {
+          locationArray.push({name: 'Remote' , visa_needed : country1['visa_needed']});
+
+        }
+
+        if (country1['country']) {
+          let country = country1['country'] + ' (country)'
+          locationArray.push({name:  country , visa_needed : country1['visa_needed']});
+        }
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country + " (city)";
+          locationArray.push({_id:country1['city']._id ,name: city , visa_needed : country1['visa_needed']});
+        }
+      }
+
+      locationArray.sort();
+      if(locationArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = locationArray.find((obj => obj.name === 'Remote'));
+        locationArray.splice(0, 0, remoteValue);
+        locationArray = this.filter_array(locationArray);
+
+      }
+      if(value === 'employee')  {
+        this.employee.selectedLocation = locationArray;
+        this.selectedValueArray= locationArray;
+      }
+      if(value === 'contractor')  {
+        this.contractor.selectedLocation = locationArray;
+        this.contractorArray = locationArray;
+
+      }
+      if(value === 'volunteer')  {
+        this.volunteer.selectedLocation = locationArray;
+        this.volunteerArray = locationArray;
+      }
+
     }
 
   }
 
-  onJobSelected(e)
-  {
-    if(e.target.checked)
-    {
+  onJobSelected(e, type) {
+    this.jobselected = [];
+    if(type === 'employee') {
+      if(this.employee.roles) this.jobselected = this.employee.roles;
+    }
+    if(type === 'contractor') {
+      if(this.contractor.roles) this.jobselected = this.contractor.roles;
+
+    }
+    if(type === 'volunteer') {
+      if(this.volunteer.roles) this.jobselected = this.volunteer.roles;
+
+    }
+    if(e.target.checked) {
       this.jobselected.push(e.target.value);
     }
-    else{
-      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+    else {
+      let updateItem = this.jobselected.find(x => x === e.target.value);
       let index = this.jobselected.indexOf(updateItem);
       this.jobselected.splice(index, 1);
     }
+    if(type === 'employee') {
+      this.employee.roles=  this.jobselected;
+    }
+    if(type === 'contractor') {
+      this.contractor.roles=  this.jobselected;
+    }
+    if(type === 'volunteer') {
+      this.volunteer.roles=  this.jobselected;
+    }
 
   }
-
-
 
   findIndexToUpdate(type) {
     return type == this;
   }
 
-  onExperienceChange(event)
-  {
+  onExperienceChange(event) {
     this.experience_year=event.target.value;
     this.expYear.push(event.target.value);
   }
 
-
-
   checkValidation(value) {
-    if(value.filter(i => i.visa_needed === true).length === this.selectedLocations.length) return true;
+    if(value.filter(i => i.visa_needed === true).length === value.length) return true;
     else return false;
   }
 
-  validatedLocation=[];
-  country_input_log;
-  onSubmit(f: NgForm)
-  {
+  contract_type= [];
+  contractor_type(inputParam) {
+    if(inputParam.target.checked) {
+      this.contract_type.push(inputParam.target.value);
+    }
+    else {
+      let updateItem = this.contract_type.find(x => x === inputParam.target.value);
+      let index = this.contract_type.indexOf(updateItem);
+      this.contract_type.splice(index, 1);
+    }
+    this.contractor.contractor_type = this.contract_type;
+    this.checkContractValue(this.contractor.contractor_type);
+  }
+
+  checkContractValue(array) {
+    if(array && array.indexOf('agency') > -1) return true;
+    else return false;
+  }
+
+  onSubmit(f: NgForm) {
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
-    this.validatedLocation = [];
-    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
-      this.country_input_log = "Please select at least one location";
-    }
-    if(!this.selectedLocations) {
-      this.country_log = "Please select at least one location which you can work in without needing a visa";
-    }
 
-    if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_needed === true).length === this.selectedLocations.length)
-        this.country_log = "Please select at least one location which you can work in without needing a visa";
-      for(let location of this.selectedLocations) {
-        if(location.name.includes('city')) {
-          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
-        }
-        if(location.name.includes('country')) {
-          this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
-        }
-        if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
-        }
+    let employeeCount = 0;
+    let contractorCount = 0;
+    let volunteerCount = 0;
+    let inputQuery: any = {};
+    if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
+      this.work_type_log = "Please select at least one work type";
+    }
+    if(this.employeeCheck) {
+      if(!this.employee.employment_type) {
+        this.employment_type_log = "Please choose position type";
+        employeeCount = 1;
+      }
 
+      if(!this.employee.selectedLocation || (this.employee.selectedLocation && this.employee.selectedLocation.length <= 0) ) {
+        this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
+        employeeCount = 1;
+      }
+      if(this.employee.selectedLocation && this.employee.selectedLocation.length > 0) {
+        if(this.employee.selectedLocation.filter(i => i.visa_needed === true).length === this.employee.selectedLocation.length) {
+          this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
+          employeeCount = 1;
+        }
+        this.validatedLocation = [];
+        for(let location of this.employee.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+        }
+        this.employee.locations = this.validatedLocation;
+      }
+
+      if(this.employee.selectedLocation && this.employee.selectedLocation.length > 10) {
+        this.employment_location_log = "Please select maximum 10 locations";
+        employeeCount = 1;
+      }
+
+      if(!this.employee.roles) {
+        this.employee_roles_log = "Please select minimum one role";
+        employeeCount = 1;
+      }
+
+      if(!this.employee.expected_annual_salary) {
+        this.salary_log = "Please enter expected yearly salary";
+        employeeCount = 1;
+      }
+      if(!this.employee.currency) {
+        this.currency_log = "Please choose currency";
+        employeeCount = 1;
+      }
+      if(!this.employee.employment_availability) {
+        this.avail_log = "Please select employment availability";
+        employeeCount = 1;
       }
     }
 
-    if(this.selectedLocations && this.selectedLocations.length > 10) {
-      this.country_log = "Please select maximum 10 locations";
+    if(this.contractorCheck) {
+
+      if(!this.contractor.selectedLocation || (this.contractor.selectedLocation && this.contractor.selectedLocation.length <= 0) ) {
+        this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
+        contractorCount = 1;
+      }
+      if(this.contractor.selectedLocation && this.contractor.selectedLocation.length > 0) {
+        if(this.contractor.selectedLocation.filter(i => i.visa_needed === true).length === this.contractor.selectedLocation.length) {
+          contractorCount = 1;
+          this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
+        }
+        this.validatedLocation=[];
+        for(let location of this.contractor.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+
+        }
+        this.contractor.locations = this.validatedLocation;
+      }
+
+      if(this.contractor.selectedLocation && this.contractor.selectedLocation.length > 10) {
+        this.contract_location_log = "Please select maximum 10 locations";
+        contractorCount = 1;
+      }
+
+      if(!this.contractor.roles) {
+        this.contractor_roles_log = "Please select minimum one role";
+        contractorCount = 1;
+      }
+
+      if(!this.contractor.hourly_rate) {
+        this.contractor_hourly_log = "Please enter hourly rate";
+        contractorCount = 1;
+      }
+      if(!this.contractor.currency) {
+        this.contractor_currency_log = "Please choose currency";
+        contractorCount = 1;
+      }
+      if(!this.contractor.contractor_type) {
+        this.contractor_type_log = "Please select minimum one contractor type";
+        contractorCount = 1;
+      }
+      if(this.checkContractValue(this.contractor.contractor_type) && !this.contractor.agency_website) {
+        this.agency_website_log = "Please enter agency website";
+        contractorCount = 1;
+      }
+      if(!this.contractor.service_description) {
+        this.contractor_description_log = "Please enter service description";
+        contractorCount = 1;
+      }
     }
 
-    if(this.jobselected.length<=0)
-    {
-      this.roles_log = "Please select at least one role";
+    if(this.volunteerCheck) {
+
+      if(!this.volunteer.selectedLocation || (this.volunteer.selectedLocation && this.volunteer.selectedLocation.length <= 0) ) {
+        this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        volunteerCount = 1;
+      }
+      if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
+        if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
+          volunteerCount = 1;
+          this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        }
+        this.validatedLocation=[];
+        for(let location of this.volunteer.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+
+        }
+        this.volunteer.locations = this.validatedLocation;
+      }
+      if(!this.volunteer.roles || (this.volunteer.roles && this.volunteer.roles.length<=0)) {
+        this.volunteer_roles_log = "Please select minimum one role";
+        volunteerCount=1;
+      }
+      if(!this.volunteer.learning_objectives) {
+        this.objective_log = "Please enter learning objectives";
+        volunteerCount=1;
+      }
     }
 
-    if(!this.base_currency)
-    {
-      this.currency_log = "Please choose currency";
-    }
-
-    if(!this.salary)
-    {
-      this.salary_log = "Please enter expected yearly salary";
-    }
-
-    if(this.selectedValue.length<=0)
-    {
-      this.interest_log = "Please select at least one area of interest";
-    }
-
-    if(!this.availability_day)
-    {
-      this.avail_log = "Please select employment availability";
-    }
 
     if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
@@ -474,46 +519,78 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
+
     if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
       this.count = 0;
     }
 
-
-    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length > 0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
+    if( this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
+      && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
-      if(typeof(f.value.expected_salary) === 'string' )
-        f.value.expected_salary = parseInt(f.value.expected_salary);
-      if(f.value.current_salary && typeof (f.value.current_salary) === 'string') {
-        f.value.current_salary = parseInt(f.value.current_salary);
+      if(this.employeeCheck) {
+        inputQuery.employee = {
+          employment_type : this.employee.employment_type,
+          expected_annual_salary: parseInt(this.employee.expected_annual_salary),
+          currency: this.employee.currency,
+          location: this.employee.locations,
+          roles: this.employee.roles,
+          employment_availability: this.employee.employment_availability
+        }
+      }
+      else inputQuery.unset_employee = true;
 
+
+      if(this.contractorCheck) {
+        inputQuery.contractor = {
+          expected_hourly_rate : parseInt(this.contractor.hourly_rate),
+          currency: this.contractor.currency,
+          location: this.contractor.locations,
+          roles: this.contractor.roles,
+          contractor_type: this.contractor.contractor_type,
+          service_description : this.contractor.service_description
+        }
+        if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
+        if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
-      if(f.value.current_salary === '') {
-        f.value.current_salary = 0;
+      else inputQuery.unset_contractor = true;
+
+      if(this.volunteerCheck) {
+        inputQuery.volunteer = {
+          location: this.volunteer.locations,
+          roles: this.volunteer.roles,
+          learning_objectives : this.volunteer.learning_objectives
+        }
+        if(this.volunteer.max_hours_per_week && this.volunteer.max_hours_per_week !== '-1') {
+          inputQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
+        }
       }
-      f.value.current_salary = parseInt(f.value.current_salary);
-      f.value.expected_salary = parseInt(f.value.expected_salary);
-      f.value.country = this.validatedLocation;
-      this.authenticationService.job(this.currentUser._id, f.value)
+      else inputQuery.unset_volunteer = true;
+
+      if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
+      if(this.current_currency) inputQuery.current_currency = this.current_currency;
+
+
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
+
         .subscribe(
           data => {
-            if(data && this.currentUser)
-            {
+            if (data) {
               this.router.navigate(['/resume']);
             }
-
-            if(data['error'] )
-            {
-              this.log= data['error'];
-            }
-
           },
           error => {
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.router.navigate(['/not_found']);
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
+          }
+        );
 
-
-          });
 
     }
     else{
@@ -521,63 +598,107 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
-
-  suggestedOptions() {
-    if(this.countriesModel !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.countriesModel , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
-                  if(cities['country'] ) {
-                    let countryString = cities['country']  + " (country)";
-                    if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-                      citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
-                  }
+  suggestedOptions(inputParam) {
+    if(inputParam !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(inputParam , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
+                if(cities['country'] ) {
+                  let countryString = cities['country']  + " (country)";
+                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
+                }
               }
+              this.cities = this.filter_array(citiesOptions);
 
-            },
-            error=>
+            }
+
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
+          });
     }
+    return this.cities;
   }
 
-  selectedValueFunction(e) {
+  updateCitiesOptions(input, check,array) {
+    let objIndex = array.findIndex((obj => obj.name === input));
+    array[objIndex].visa_needed = check;
+    return array;
 
+  }
+
+  deleteLocationRow(array, index){
+    array.splice(index, 1);
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
+  }
+
+  workTypeChange(event) {
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
+    if(event.target.checked)
+    {
+      this.selected_work_type.push(event.target.value);
+    }
+    else{
+      let updateItem = this.selected_work_type.find(x => x === event.target.value);
+      let index = this.selected_work_type.indexOf(updateItem);
+      this.selected_work_type.splice(index, 1);
+    }
+
+    if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
+    else this.employeeCheck = false;
+    if(this.selected_work_type.indexOf('contractor') > -1) this.contractorCheck = true;
+    else this.contractorCheck = false;
+    if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteerCheck = true;
+    else this.volunteerCheck = false;
+  }
+
+  employeeSelectedValueFunction(e) {
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
-
-        this.countriesModel = '';
+        this.employee.country = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';
@@ -615,33 +736,139 @@ export class JobComponent implements OnInit,AfterViewInit {
           this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
         }
-        this.selectedLocations = this.selectedValueArray;
+        this.employee.selectedLocation = this.selectedValueArray;
       }
     }
 
   }
 
-  updateCitiesOptions(e) {
-    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
-    this.selectedLocations = this.selectedValueArray;
+  employeeUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.employee.selectedLocation );
 
   }
 
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  employeeDeleteLocationRow(index){
+    this.deleteLocationRow(this.employee.selectedLocation, index);
   }
 
-  filter_array(arr) {
-    var hashTable = {};
+  contractorArray = [];
+  contractorSelectedValueFunction(e) {
+    if(this.cities) {
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
+        this.contractor.country = '';
+        this.cities = [];
+        if(this.contractorArray.length > 9) {
+          this.error = 'You can select maximum 10 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.contractorArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
 
-    return arr.filter(function (el) {
-      var key = JSON.stringify(el);
-      var match = Boolean(hashTable[key]);
+          else {
+            if(citiesExist) this.contractorArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
+            else this.contractorArray.push({ name: e, visa_needed:false});
+          }
 
-      return (match ? false : hashTable[key] = true);
-    });
+
+        }
+
+
+      }
+      if(this.contractorArray.length > 0) {
+        this.contractorArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.contractorArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.contractorArray.find((obj => obj.name === 'Remote'));
+          this.contractorArray.splice(0, 0, remoteValue);
+          this.contractorArray = this.filter_array(this.contractorArray);
+
+        }
+        this.contractor.selectedLocation = this.contractorArray;
+      }
+    }
+
+  }
+  contractorUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.contractor.selectedLocation );
+
+  }
+  contractorDeleteLocationRow(index){
+    this.deleteLocationRow(this.contractor.selectedLocation, index);
   }
 
+
+  volunteerArray = [];
+  volunteerSelectedValueFunction(e) {
+    if(this.cities) {
+      const citiesExist = this.cities.find(x => x.name === e);
+
+      if(citiesExist) {
+
+        this.volunteer.country = '';
+        this.cities = [];
+        if(this.volunteerArray.length > 9) {
+          this.error = 'You can select maximum 10 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.volunteerArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(citiesExist) this.volunteerArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
+            else this.volunteerArray.push({ name: e, visa_needed:false});
+          }
+
+
+        }
+
+
+      }
+      if(this.volunteerArray.length > 0) {
+        this.volunteerArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.volunteerArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.volunteerArray.find((obj => obj.name === 'Remote'));
+          this.volunteerArray.splice(0, 0, remoteValue);
+          this.volunteerArray = this.filter_array(this.volunteerArray);
+
+        }
+        this.volunteer.selectedLocation = this.volunteerArray;
+      }
+    }
+
+  }
+  volunteerUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.volunteer.selectedLocation );
+
+  }
+  volunteerDeleteLocationRow(index){
+    this.deleteLocationRow(this.volunteer.selectedLocation, index);
+  }
+
+  populateRoles(value, array) {
+    if(array && array.find((obj => obj === value))) return true;
+    else false
+  }
 }
 

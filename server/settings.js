@@ -66,8 +66,8 @@ if (isLiveApplication()) {
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 } else {
-    if(settings.ENVIRONMENT === 'test') {
-        config.mongo.databaseName = config.mongo.databaseName + '-test';
+    if(settings.ENVIRONMENT === 'default') {
+        config.mongo.databaseName = config.mongo.databaseName + '-default';
     }
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
@@ -82,7 +82,8 @@ if (isLiveApplication()) {
 settings.CRON = {
     UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
     AUTO_NOTIFICATION: config.cron.autoNotification,
-    SYNC_SENDGRID: config.cron.syncSendgrid
+    SYNC_SENDGRID: config.cron.syncSendgrid,
+    NEW_MESSAGES_EMAIL: config.cron.newMessagesEmail
 };
 
 settings.googleCredentials = config.googleConfig;

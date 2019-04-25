@@ -36,7 +36,6 @@ const companyRegister = require('./controller/api/users/company/createCompany.co
 const companyGet = require('./controller/api/users/company/getCompany.controller');
 const companyGetCurrent = require('./controller/api/users/company/getCurrentCompany.controller');
 const companyImage = require('./controller/api/users/company/image.controller');
-const companyWizardAbout = require('./controller/api/users/company/wizard/about.controller');
 const companyWizardTnT = require('./controller/api/users/company/wizard/getSummaryTnC.controller');
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
@@ -91,7 +90,6 @@ router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
-router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
 router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates));

@@ -7,10 +7,9 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../../data.service";
-import {environment} from '../../../environments/environment';
-const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
-import { map } from 'rxjs/operators';
+import {constants} from '../../../constants/constants';
+import {removeDuplication} from "../../../services/object";
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -23,7 +22,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   info: any = {}; log;
   selectedValue = [];
   selectedcountry = [];
-  expYear=[];
   jobselected=[];
   salary;
   expected_salaryyy;
@@ -39,11 +37,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   commercial_expYear=[];
   db_valye=[];
   db_lang;
-  platforms_designed=[];
   platforms=[];
-  plat_db_valye=[];
-  platformreferringData;
-  designed_expYear_db=[];
   EducationForm: FormGroup;
   ExperienceForm: FormGroup;
   language=[];
@@ -90,13 +84,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   edu_count=0;
   why_work_log;
   country_log;
-  roles_log;
   currency_log;
   salary_log;
-  interest_log;
   avail_log;
-  current_sal_logg;
-  current_currency_logg;
+  current_currency_log;
+
   first_name_log;
   last_name_log;
   contact_name_log;
@@ -114,15 +106,40 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  position_type = constants.job_type;
+  employment_type_log;
+  employment_location_log;
+  employee_roles_log;
+  work_type_log;
+  selected_work_type=[];
+  employeeCheck=false;
+  contractorCheck=false;
+  volunteerCheck=false;
+  employee: any = {};
+  contractor: any = {};
+  volunteer: any = {};
+  contractor_currency_log;
+  contractor_roles_log;
+  contractor_hourly_log;
+  agency_website_log;
+  contractor_description_log;
+  contractor_type_log;
+  contract_location_log;
+  volunteer_location_log;
+  volunteer_roles_log;
+  objective_log;
+  max_hours=[];
+  validateUrl;
+  contract_type= [];
+  volunteerArray=[];
+  current_salary;
+  contractorArray = [];
 
-  nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
-
-  current_work_check=[];
-  current_work=
-    [
-      {name:'I currently work here', value:'current', checked:false}
-    ]
-  countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  nationality = constants.nationalities;
+  current_work_check = [];
+  current_work = constants.current_work;
+  countries = constants.countries;
+  employement_availability= constants.workAvailability;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -145,42 +162,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
 
-  otherSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-  otherFormalSkills =
-    [
-      {name:'P2P protocols', value:'P2P protocols', checked:false},
-      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
-      {name:'Security', value:'Security', checked:false},
-      {name:'Formal verification', value:'Formal verification', checked:false},
-      {name:'Cryptography', value:'Cryptography', checked:false},
-      {name:'Game theory', value:'Game theory', checked:false},
-      {name:'Economics', value:'Economics', checked:false},
-      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
-    ]
-
-
+  otherSkills = constants.otherSkills;
+  contractor_types= constants.contractorTypes;
   skillDbArray=[];
   skillDb;
   skill_expYear_db=[];
-  formalDbArray=[];
-  formalSkillDb;
-  formal_expYear_db=[];
   ngOnInit()
   {
+    for(let type of this.contractor_types ) {
+        type.checked = false;
+    }
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    for(let i =5; i<=60; i=i+5) {
+      this.max_hours.push(i);
+    }
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -190,19 +186,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
     if(this.currentUser && this.currentUser.type=='candidate')
     {
-
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
-      })
-
-      this.dropdown_options.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
+      this.roles.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
       })
@@ -218,11 +203,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.designed.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
       this.experimented.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -233,13 +213,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
-
-      this.otherFormalSkills.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
       this.language_opt.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -251,6 +224,72 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             if(data)
             {
               this.info.email = data['email'];
+              if(data['candidate'].employee) {
+                this.employeeCheck = true;
+                this.selected_work_type.push('employee');
+                let employee = data['candidate'].employee;
+                this.employee.employment_type = employee.employment_type;
+                this.changeLocationDisplayFormat(employee.location, 'employee');
+                this.employee.roles = employee.roles;
+                this.employee.expected_annual_salary = employee.expected_annual_salary;
+                this.employee.currency = employee.currency;
+                this.employee.employment_availability = employee.employment_availability;
+
+              }
+              if(data['candidate'].contractor) {
+                this.contractorCheck = true;
+                this.selected_work_type.push('contractor');
+                let contractor = data['candidate'].contractor;
+                this.changeLocationDisplayFormat(contractor.location, 'contractor');
+                this.contractor.roles = contractor.roles;
+                this.contractor.hourly_rate = contractor.expected_hourly_rate;
+                this.contractor.currency = contractor.currency;
+                if(contractor.max_hour_per_week) this.contractor.max_hour_per_week = contractor.max_hour_per_week;
+                this.contractor.contractor_type = contractor.contractor_type;
+                for(let type of this.contractor_types ) {
+                  if(contractor.contractor_type.find(x => x === type.value)){
+                    type.checked = true;
+                  }
+                  else type.checked = false;
+                }
+                this.contract_type = contractor.contractor_type;
+
+                if(contractor.agency_website) this.contractor.agency_website = contractor.agency_website;
+                if(contractor.service_description) this.contractor.service_description = contractor.service_description;
+
+              }
+              if(data['candidate'].volunteer) {
+                this.volunteerCheck = true;
+                this.selected_work_type.push('volunteer');
+                let volunteer = data['candidate'].volunteer;
+                this.changeLocationDisplayFormat(volunteer.location, 'volunteer');
+                this.volunteer.max_hours_per_week = volunteer.max_hours_per_week;
+                this.volunteer.learning_objectives = volunteer.learning_objectives;
+                this.volunteer.roles = volunteer.roles;
+              }
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
+
+              if(data['candidate'].interest_areas)
+              {
+                for (let interest of data['candidate'].interest_areas)
+                {
+
+                  for(let option of this.area_interested)
+                  {
+
+                    if(option.value === interest)
+                    {
+                      option.checked=true;
+                      this.selectedValue.push(interest);
+
+                    }
+
+                  }
+
+                }
+              }
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
                 this.info.contact_number = data['contact_number'];
@@ -407,84 +446,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas &&  data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].expected_salary_currency)
-              {
 
-                if(data['candidate'].locations)
-                {
-                  for (let country1 of data['candidate'].locations)
-                  {
-                    if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_needed : country1['visa_needed']});
-
-                    }
-
-                    if (country1['country']) {
-                      let country = country1['country'] + ' (country)'
-                      this.selectedValueArray.push({name:  country , visa_needed : country1['visa_needed']});
-                    }
-                    if (country1['city']) {
-                      let city = country1['city'].city + ", " + country1['city'].country + " (city)";
-                      this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1['visa_needed']});
-                    }
-                  }
-
-                  this.selectedValueArray.sort();
-                  if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                    this.selectedValueArray.splice(0, 0, remoteValue);
-                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                  }
-                  this.selectedLocations = this.selectedValueArray;
-                }
-
-                for(let interest of data['candidate'].interest_areas)
-                {
-
-                  for(let option of this.area_interested)
-                  {
-
-                    if(option.value === interest)
-                    {
-                      option.checked = true;
-                      this.selectedValue.push(interest);
-
-                    }
-
-                  }
-
-                }
-
-                for (let area of data['candidate'].roles)
-                {
-
-                  for(let option of this.dropdown_options)
-                  {
-                    if(option.value === area)
-                    {
-                      option.checked=true;
-                      this.jobselected.push(area);
-
-                    }
-
-                  }
-
-                }
-
-                this.expected_salaryyy = data['candidate'].expected_salary;
-
-                this.availability_day = data['candidate'].availability_day;
-                if(data['candidate'].expected_salary_currency)
-                  this.base_currency = data['candidate'].expected_salary_currency;
-              }
 
 
               if(data['candidate'].current_currency ){
                 this.current_currency =data['candidate'].current_currency;
               }
               if(data['candidate'].current_salary) {
-                this.salary = data['candidate'].current_salary;
+                this.current_salary = data['candidate'].current_salary;
               }
               this.Intro =data['candidate'].description;
               if(data['candidate'].programming_languages && data['candidate'].programming_languages.length > 0)
@@ -529,6 +498,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
               if(data['candidate'].work_history) {
+
                 this.jobData = data['candidate'].work_history;
 
                 for(let data1 of data['candidate'].work_history)
@@ -605,176 +575,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
 
-  currency=
-    [
-      "£ GBP" ,"€ EUR" , "$ USD"
-    ]
-
-  experience=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-      {name:'UI Developer', value:'UI Developer', checked:false},
-      {name:'UX Designer', value:'UX Designer', checked:false},
-      {name:'Fullstack Developer', value:'Fullstack Developer', checked:false},
-      {name:'Blockchain Developer', value:'Blockchain Developer', checked:false},
-      {name:'Smart Contract Developer', value:'Smart Contract Developer', checked:false},
-      {name:'Architect', value:'Architect', checked:false},
-      {name:'DevOps', value:'DevOps', checked:false},
-      {name:'Software Tester', value:'Software Tester', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Technical Lead', value:'Technical Lead', checked:false},
-      {name:'Product Manager', value:'Product Manager', checked:false},
-      {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher', checked:false},
-      {name:'Mobile app developer', value:'Mobile app developer', checked:false},
-      {name:'Data scientist', value:'Data scientist', checked:false},
-      {name:'Security specialist ', value:'Security specialist', checked:false},
-    ]
-
-  area_interested=
-    [
-      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
-      {name:'Public blockchain', value:'Public blockchain', checked:false},
-      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
-      {name:'Smart contract development', value:'Smart contract development', checked:false},
-      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-      {name:"I don't know", value:"I don't know", checked:false},
-    ]
-
-
-
-  graduation_year=
-    [
-      2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994
-    ]
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
-    ]
-
-  availability = [
-    {name: "Now" , value: "Now" },
-    {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 months" },
-    {name: "3 months notice period", value: "3 months" },
-    {name: "3+ months notice period", value: "Longer than 3 months" }
-  ]
-
-  commercially=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Stellar', value:'Stellar', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-
-    ]
-
-  designed=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-    ]
-
-  experimented=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steemit', value:'Steemit', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
-      {name:'Dash', value:'Dash', checked:false},
-      {name:'Doge', value:'Doge', checked:false},
-    ]
-
-  exp_year=
-    [
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
+  currency = constants.currencies;
+  experience = constants.experienceYears;
+  roles = constants.workRoles;
+  area_interested = constants.workBlockchainInterests;
+  graduation_year = constants.year;
+  year = constants.year;
+  availability = constants.workAvailability;
+  commercially = constants.blockchainPlatforms;
+  experimented = constants.experimented;
+  exp_year = constants.experienceYears;
 
   onExpOptions(e)
   {
@@ -823,34 +633,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   }
 
-  onPlatformOptions(obj)
-  {
-
-    let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
-    let index = this.platforms_designed.indexOf(updateItem);
-    if(index > -1)
-    {
-      this.platforms_designed.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.platforms, 'name', obj.value);
-      let index2 = this.platforms.indexOf(updateItem2);
-
-      if(index2 > -1)
-      {
-
-        this.platforms.splice(index2, 1);
-      }
-    }
-    else
-    {
-      obj.checked =true;
-      this.platforms_designed.push(obj);
-    }
-
-
-  }
-
-
-
   onComExpYearOptions(e, value)
   {
 
@@ -893,40 +675,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     return null;
   }
 
-  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
-
-  language_opt=
-    [
-      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
-      {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
-      {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
-      {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
-      {name:'Delphi/Object Pascal', value:'Delphi/Object Pascal', checked:false},{name:'Swift', value:'Swift', checked:false},
-      {name:'Perl', value:'Perl', checked:false},{name:'Ruby', value:'Ruby', checked:false},
-      {name:'Assembly language', value:'Assembly language', checked:false},{name:'R', value:'R', checked:false},
-      {name:'Visual Basic', value:'Visual Basic', checked:false},{name:'Objective-C', value:'Objective-C', checked:false},
-      {name:'Go', value:'Go', checked:false},{name:'MATLAB', value:'MATLAB', checked:false},
-      {name:'PL/SQL', value:'PL/SQL', checked:false},{name:'Scratch', value:'Scratch', checked:false},
-      {name:'Solidity', value:'Solidity', checked:false},{name:'Serpent', value:'Serpent', checked:false},
-      {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
-      {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
-      {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-
-    ]
-
-
-  roles_opt =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'BI Engineer', value:'BI Engineer', checked:false},
-      {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Lead Developer', value:'Lead Developer', checked:false},
-      {name:'Database Administrator', value:'Database Administrator', checked:false},
-      {name:'Security Engineer', value:'Security Engineer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-    ]
+  calen_month = constants.calen_month;
+  language_opt = constants.programmingLanguages;
 
   onLangExpOptions(obj)
   {
@@ -964,24 +715,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     return obj.value === this;
   }
 
-
-
-  onJobSelected(e)
-  {
-    if(e.target.checked)
-    {
-      this.jobselected.push(e.target.value);
-    }
-    else{
-
-      let updateItem = this.jobselected.find(this.findIndexToUpdateCheck, e.target.value);
-
-      let index = this.jobselected.indexOf(updateItem);
-
-      this.jobselected.splice(index, 1);
-    }
-  }
-
   initItemRows()
   {
     return this._fb.group({
@@ -991,35 +724,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       eduyear:[]
     });
 
-  }
-  initItemRows_db()
-  {
-    return this._fb.group({
-      uniname: [this.uniname],
-      degreename:[this.degreename],
-      fieldname:[this.fieldname],
-      edudate:[this.edudate],
-      eduyear:[this.eduyear]
-    });
-
-
-  }
-
-  initExpRows_db()
-  {
-    return this._fb.group({
-      companyname: [this.companyname],
-      positionname:[this.positionname],
-      locationname: [this.locationname],
-      description: [this.description] ,
-      startdate:[this.startdate],
-      startyear:[this.startyear],
-      enddate:[this.enddate],
-      endyear:[this.endyear],
-      currentwork:[this.currentwork],
-      currentenddate:[this.currentdate],
-      currentendyear:[this.currentyear]
-    });
   }
 
 
@@ -1126,12 +830,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       return 0;
     });
   }
-  onRoleYearOptions(e, value)
-  {
-    this.value=value;
-    this.referringData = { name:this.value, exp_year: e.target.value};
-    this.expYearRole.push(this.referringData);
-  }
+
 
   work_start_data(e)
   {
@@ -1140,40 +839,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   work_start_year(e)
   {
     this.start_year= e.target.value;
-  }
-
-  onAreaSelected(e)
-  {
-
-    if(e.target.checked)
-    {
-      this.selectedValue.push(e.target.value);
-    }
-    else{
-      let updateItem = this.selectedValue.find(this.findIndexToUpdateCheck, e.target.value);
-
-      let index = this.selectedValue.indexOf(updateItem);
-
-      this.selectedValue.splice(index, 1);
-    }
-
-  }
-
-  updateCheckedOptions(e)
-  {
-    if(e.target.checked)
-    {
-      this.selectedcountry.push(e.target.value);
-    }
-    else{
-      let updateItem = this.selectedcountry.find(this.findIndexToUpdateCheck, e.target.value);
-
-      let index = this.selectedcountry.indexOf(updateItem);
-
-      this.selectedcountry.splice(index, 1);
-    }
-
-
   }
 
   findIndexToUpdateCheck(type) {
@@ -1204,6 +869,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   count;
   validatedLocation=[];
   country_input_log;
+  interest_log;
   commercial_desc_log;
   experimented_desc_log;
   commercialSkills_desc_log;
@@ -1219,6 +885,185 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     let flag_commercialSkills_desc = true;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let employeeCount = 0;
+    let contractorCount = 0;
+    let volunteerCount = 0;
+    let inputQuery: any = {};
+    if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
+      this.work_type_log = "Please select at least one work type";
+    }
+    if(this.employeeCheck) {
+      if(!this.employee.employment_type) {
+        this.employment_type_log = "Please choose position type";
+        employeeCount = 1;
+      }
+
+      if(!this.employee.selectedLocation || (this.employee.selectedLocation && this.employee.selectedLocation.length <= 0) ) {
+        this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
+        employeeCount = 1;
+      }
+      if(this.employee.selectedLocation && this.employee.selectedLocation.length > 0) {
+        if(this.employee.selectedLocation.filter(i => i.visa_needed === true).length === this.employee.selectedLocation.length) {
+          this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
+          employeeCount = 1;
+        }
+        this.validatedLocation = [];
+        for(let location of this.employee.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+        }
+        this.employee.locations = this.validatedLocation;
+      }
+
+      if(this.employee.selectedLocation && this.employee.selectedLocation.length > 10) {
+        this.employment_location_log = "Please select maximum 10 locations";
+        employeeCount = 1;
+      }
+
+      if(!this.employee.roles) {
+        this.employee_roles_log = "Please select minimum one role";
+        employeeCount = 1;
+      }
+
+      if(!this.employee.expected_annual_salary) {
+        this.salary_log = "Please enter expected yearly salary";
+        employeeCount = 1;
+      }
+      if(!this.employee.currency) {
+        this.currency_log = "Please choose currency";
+        employeeCount = 1;
+      }
+      if(!this.employee.employment_availability) {
+        this.avail_log = "Please select employment availability";
+        employeeCount = 1;
+      }
+    }
+
+    if(this.contractorCheck) {
+
+      if(!this.contractor.selectedLocation || (this.contractor.selectedLocation && this.contractor.selectedLocation.length <= 0) ) {
+        this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
+        contractorCount = 1;
+      }
+      if(this.contractor.selectedLocation && this.contractor.selectedLocation.length > 0) {
+        if(this.contractor.selectedLocation.filter(i => i.visa_needed === true).length === this.contractor.selectedLocation.length) {
+          contractorCount = 1;
+          this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
+        }
+        this.validatedLocation=[];
+        for(let location of this.contractor.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+
+        }
+        this.contractor.locations = this.validatedLocation;
+      }
+
+      if(this.contractor.selectedLocation && this.contractor.selectedLocation.length > 10) {
+        this.contract_location_log = "Please select maximum 10 locations";
+        contractorCount = 1;
+      }
+
+      if(!this.contractor.roles) {
+        this.contractor_roles_log = "Please select minimum one role";
+        contractorCount = 1;
+      }
+
+      if(!this.contractor.hourly_rate) {
+        this.contractor_hourly_log = "Please enter hourly rate";
+        contractorCount = 1;
+      }
+      if(!this.contractor.currency) {
+        this.contractor_currency_log = "Please choose currency";
+        contractorCount = 1;
+      }
+      if(!this.contractor.contractor_type || (this.contractor.contractor_type && this.contractor.contractor_type.length <=0)) {
+        this.contractor_type_log = "Please select minimum one contractor type";
+        contractorCount = 1;
+      }
+      if(this.checkContractValue(this.contractor.contractor_type) && !this.contractor.agency_website) {
+        this.agency_website_log = "Please enter agency website";
+        contractorCount = 1;
+      }
+      if(!this.contractor.service_description) {
+        this.contractor_description_log = "Please enter service description";
+        contractorCount = 1;
+      }
+    }
+
+    if(this.volunteerCheck) {
+
+      if(!this.volunteer.selectedLocation || (this.volunteer.selectedLocation && this.volunteer.selectedLocation.length <= 0) ) {
+        this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        volunteerCount = 1;
+      }
+      if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
+        if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
+          volunteerCount = 1;
+          this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+        }
+        this.validatedLocation=[];
+        for(let location of this.volunteer.selectedLocation) {
+          if(location.name.includes('city')) {
+            this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+          }
+          if(location.name.includes('country')) {
+            this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+          }
+          if(location.name === 'Remote') {
+            this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+          }
+
+        }
+        this.volunteer.locations = this.validatedLocation;
+      }
+      if(!this.volunteer.roles || (this.volunteer.roles && this.volunteer.roles.length<=0)) {
+        this.volunteer_roles_log = "Please select minimum one role";
+        volunteerCount=1;
+      }
+      if(!this.volunteer.learning_objectives) {
+        this.objective_log = "Please enter learning objectives";
+        volunteerCount=1;
+      }
+    }
+
+
+    if(this.current_salary && !this.current_currency ) {
+      this.current_currency_log = "Please choose currency";
+      this.count++;
+    }
+
+    if(this.current_salary && this.current_currency === "-1" ) {
+      this.current_currency_log = "Please choose currency";
+      this.count++;
+    }
+
+    if(!this.current_salary && this.current_currency !== "-1") {
+      this.current_sal_log = "Please enter current base salary";
+      this.count++;
+    }
+
+    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
+      this.count = 0;
+    }
+    if(this.selectedValue.length<=0)
+    {
+      this.interest_log = "Please select at least one area of interest";
+    }
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -1248,63 +1093,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.city_log ="Please enter base city";
     }
-    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
-      this.country_input_log = "Please select at least one location";
-    }
 
-    if(!this.selectedLocations) {
-      this.country_log = "Please select at least one location which you can work in without needing a visa";
-    }
-
-    if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_needed === true).length === this.selectedLocations.length)
-        this.country_log = "Please select at least one location which you can work in without needing a visa";
-
-      for(let location of this.selectedLocations) {
-        if(location.name.includes('city')) {
-          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
-        }
-        if(location.name.includes('country')) {
-          this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
-        }
-        if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
-        }
-
-      }
-      profileForm.value.country = this.validatedLocation;
-
-    }
-
-    if(this.selectedLocations && this.selectedLocations.length > 10) {
-      this.country_log = "Please select maximum 10 locations";
-    }
-
-    if(this.jobselected.length<=0)
-    {
-      this.roles_log = "Please select at least one role";
-    }
-
-
-    if(!this.base_currency)
-    {
-      this.currency_log = "Please choose currency";
-    }
-
-    if(!this.expected_salaryyy)
-    {
-      this.salary_log = "Please enter expected yearly salary";
-    }
-
-    if(this.selectedValue.length <= 0)
-    {
-      this.interest_log = "Please select at least one area of interest";
-    }
-
-    if(!this.availability_day)
-    {
-      this.avail_log = "Please select employment availability";
-    }
 
     if(!this.why_work)
     {
@@ -1484,24 +1273,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
-    if((this.salary && !this.current_currency) || (this.salary && this.current_currency === -1)) {
-      this.current_currency_logg = "Please choose currency";
-      this.count++;
-    }
 
-
-    if(!this.salary && this.current_currency !== '-1') {
-      this.current_sal_log = "Please enter current base salary";
-      this.count++;
-    }
-
-    if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
-      this.count = 0;
-    }
-
-    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
-      this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedLocations && this.selectedLocations.length > 0
-      && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
+    if(this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
+      && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      this.info.city && this.info.base_country && this.selectedValue.length > 0 &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1639,14 +1414,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.language_experience_year = this.LangexpYear;
     }
 
-    if(this.jobselected){
-      profileForm.roles = this.jobselected;
-    }
-
-    if(this.selectedValue){
-      profileForm.interest_area = this.selectedValue;
-    }
-
     let inputQuery:any ={};
 
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
@@ -1669,16 +1436,19 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
 
+    if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
+    else inputQuery.unset_curret_currency = true;
+    if(this.salary) inputQuery.current_salary = this.salary;
+
     if(this.info.nationality) inputQuery.nationality = this.info.nationality;
     if(this.Intro) inputQuery.description = this.Intro;
     if(this.info.base_country) inputQuery.base_country = this.info.base_country;
     if(this.info.city) inputQuery.base_city = this.info.city;
+
     if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
     if(this.jobselected) inputQuery.roles = this.jobselected;
     if(this.expected_salaryyy) inputQuery.expected_salary = this.expected_salaryyy;
     if(this.base_currency) inputQuery.expected_salary_currency = this.base_currency;
-    if(this.current_currency) inputQuery.current_currency = this.current_currency;
-    if(this.salary) inputQuery.current_salary = this.salary;
     if(this.selectedValue) inputQuery.interest_areas = this.selectedValue;
     if(this.availability_day) inputQuery.availability_day = this.availability_day;
     if(this.why_work) inputQuery.why_work = this.why_work;
@@ -1703,6 +1473,48 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.experiencearray && this.experiencearray.length>0) inputQuery.work_history = this.experiencearray;
     else inputQuery.unset_work_history = true;
 
+    if(this.employeeCheck) {
+      inputQuery.employee = {
+        employment_type : this.employee.employment_type,
+        expected_annual_salary: parseInt(this.employee.expected_annual_salary),
+        currency: this.employee.currency,
+        location: this.employee.locations,
+        roles: this.employee.roles,
+        employment_availability: this.employee.employment_availability
+      }
+    }
+    else inputQuery.unset_employee = true;
+
+    if(this.contractorCheck) {
+      inputQuery.contractor = {
+        expected_hourly_rate : parseInt(this.contractor.hourly_rate),
+        currency: this.contractor.currency,
+        location: this.contractor.locations,
+        roles: this.contractor.roles,
+        contractor_type: this.contractor.contractor_type,
+        service_description : this.contractor.service_description
+      }
+      if(this.checkContractValue(this.contractor.contractor_type) && this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
+      if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
+    }
+    else inputQuery.unset_contractor = true;
+
+    if(this.volunteerCheck) {
+      inputQuery.volunteer = {
+        location: this.volunteer.locations,
+        roles: this.volunteer.roles,
+        learning_objectives : this.volunteer.learning_objectives
+      }
+      if(this.volunteer.max_hours_per_week && this.volunteer.max_hours_per_week !== '-1') {
+        inputQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
+      }
+
+    }
+    else inputQuery.unset_volunteer = true;
+
+    if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
+    if(this.current_currency) inputQuery.current_currency = this.current_currency;
+    if(this.selectedValue.length > 0) inputQuery.interest_areas = this.selectedValue;
     this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
       .subscribe(
         data => {
@@ -1833,67 +1645,155 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
   }
 
+  changeLocationDisplayFormat(array,value) {
+    let locationArray = [];
+    if(array)
+    {
+      for (let country1 of array)
+      {
+        if (country1['remote'] === true) {
+          locationArray.push({name: 'Remote' , visa_needed : country1['visa_needed']});
+
+        }
+
+        if (country1['country']) {
+          let country = country1['country'] + ' (country)'
+          locationArray.push({name:  country , visa_needed : country1['visa_needed']});
+        }
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country + " (city)";
+          locationArray.push({_id:country1['city']._id ,name: city , visa_needed : country1['visa_needed']});
+        }
+      }
+
+      locationArray.sort();
+      if(locationArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = locationArray.find((obj => obj.name === 'Remote'));
+        locationArray.splice(0, 0, remoteValue);
+        locationArray = removeDuplication(locationArray);
+
+      }
+      if(value === 'employee')  {
+        this.employee.selectedLocation = locationArray;
+        this.selectedValueArray= locationArray;
+      }
+      if(value === 'contractor')  {
+        this.contractor.selectedLocation = locationArray;
+        this.contractorArray = locationArray;
+
+      }
+      if(value === 'volunteer')  {
+        this.volunteer.selectedLocation = locationArray;
+        this.volunteerArray = locationArray;
+      }
+
+    }
+
+  }
+
+
   checkValidation(value) {
-    if(value.filter(i => i.visa_needed === true).length === this.selectedLocations.length) return true;
+    if(value.filter(i => i.visa_needed === true).length === value.length) return true;
     else return false;
   }
 
-  suggestedOptions() {
-    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-    if(this.countriesModel !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.countriesModel , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
-                  if(cities['country'] ) {
-                    let countryString = cities['country']  + " (country)";
-                    if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-                      citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
-                  }
-                }
-                this.cities = this.filter_array(citiesOptions);
-              }
-
-            },
-            error=>
-            {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
-
-            });
-    }
+  checkContractValue(array) {
+    //console.log(array);
+    if(array && array.indexOf('agency') > -1) return true;
+    else return false;
   }
 
-  selectedValueFunction(e) {
+  suggestedOptions(inputParam) {
+    if(inputParam !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(inputParam , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
+                }
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
+                if(cities['country'] ) {
+                  let countryString = cities['country']  + " (country)";
+                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
+                }
+              }
+              this.cities = removeDuplication(citiesOptions);
 
+            }
+
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
+
+          });
+    }
+    return this.cities;
+  }
+
+  updateCitiesOptions(input, check,array) {
+    let objIndex = array.findIndex((obj => obj.name === input));
+    array[objIndex].visa_needed = check;
+    return array;
+
+  }
+
+  deleteLocationRow(array, index){
+    array.splice(index, 1);
+  }
+
+  workTypeChange(event) {
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
+    if(event.target.checked)
+    {
+      this.selected_work_type.push(event.target.value);
+    }
+    else{
+      let updateItem = this.selected_work_type.find(x => x === event.target.value);
+      let index = this.selected_work_type.indexOf(updateItem);
+      this.selected_work_type.splice(index, 1);
+    }
+
+
+    if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
+    else this.employeeCheck = false;
+    if(this.selected_work_type.indexOf('contractor') > -1) this.contractorCheck = true;
+    else this.contractorCheck = false;
+    if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteerCheck = true;
+    else this.volunteerCheck = false;
+  }
+
+  employeeSelectedValueFunction(e) {
     if(this.cities) {
       const citiesExist = this.cities.find(x => x.name === e);
       if(citiesExist) {
-        this.countriesModel = '';
+        this.employee.country = '';
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';
@@ -1928,35 +1828,199 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
           let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
           this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+          this.selectedValueArray = removeDuplication(this.selectedValueArray);
 
         }
-        this.selectedLocations = this.selectedValueArray;
+        this.employee.selectedLocation = this.selectedValueArray;
       }
     }
 
   }
+  employeeUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.employee.selectedLocation );
 
-  updateCitiesOptions(e) {
-    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
-    this.selectedLocations = this.selectedValueArray;
+  }
+  employeeDeleteLocationRow(index){
+    this.deleteLocationRow(this.employee.selectedLocation, index);
+  }
+
+  contractorSelectedValueFunction(e) {
+    if(this.cities) {
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
+
+        this.contractor.country = '';
+        this.cities = [];
+        if(this.contractorArray.length > 9) {
+          this.error = 'You can select maximum 10 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.contractorArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(citiesExist) this.contractorArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
+            else this.contractorArray.push({ name: e, visa_needed:false});
+          }
+
+
+        }
+
+
+      }
+      if(this.contractorArray.length > 0) {
+        this.contractorArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.contractorArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.contractorArray.find((obj => obj.name === 'Remote'));
+          this.contractorArray.splice(0, 0, remoteValue);
+          this.contractorArray = removeDuplication(this.contractorArray);
+
+        }
+        this.contractor.selectedLocation = this.contractorArray;
+      }
+    }
+
+  }
+  contractorUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.contractor.selectedLocation );
+
+  }
+  contractorDeleteLocationRow(index){
+    this.deleteLocationRow(this.contractor.selectedLocation, index);
+  }
+
+  volunteerSelectedValueFunction(e) {
+
+    if(this.cities) {
+      const citiesExist = this.cities.find(x => x.name === e);
+
+      if(citiesExist) {
+        this.volunteer.country = '';
+        this.cities = [];
+        if(this.volunteerArray.length > 9) {
+          this.error = 'You can select maximum 10 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.volunteerArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(citiesExist) this.volunteerArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
+            else this.volunteerArray.push({ name: e, visa_needed:false});
+          }
+
+
+        }
+
+
+      }
+      if(this.volunteerArray.length > 0) {
+        this.volunteerArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.volunteerArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.volunteerArray.find((obj => obj.name === 'Remote'));
+          this.volunteerArray.splice(0, 0, remoteValue);
+          this.volunteerArray = removeDuplication(this.volunteerArray);
+
+        }
+        this.volunteer.selectedLocation = this.volunteerArray;
+      }
+    }
+
+  }
+  volunteerUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.volunteer.selectedLocation );
+
+  }
+  volunteerDeleteLocationRow(index){
+    this.deleteLocationRow(this.volunteer.selectedLocation, index);
+  }
+
+  populateRoles(value, array) {
+    if(array && array.find((obj => obj === value))) return true;
+    else false
+  }
+
+  onJobSelected(e, type) {
+    this.jobselected = [];
+    if(type === 'employee') {
+      if(this.employee.roles) this.jobselected = this.employee.roles;
+    }
+    if(type === 'contractor') {
+      if(this.contractor.roles) this.jobselected = this.contractor.roles;
+
+    }
+    if(type === 'volunteer') {
+      if(this.volunteer.roles) this.jobselected = this.volunteer.roles;
+
+    }
+    if(e.target.checked) {
+      this.jobselected.push(e.target.value);
+    }
+    else {
+      let updateItem = this.jobselected.find(x => x === e.target.value);
+      let index = this.jobselected.indexOf(updateItem);
+      this.jobselected.splice(index, 1);
+    }
+    if(type === 'employee') {
+      this.employee.roles=  this.jobselected;
+    }
+    if(type === 'contractor') {
+      this.contractor.roles=  this.jobselected;
+    }
+    if(type === 'volunteer') {
+      this.volunteer.roles=  this.jobselected;
+    }
 
   }
 
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  contractor_type(inputParam) {
+    if(inputParam.target.checked) {
+      this.contract_type.push(inputParam.target.value);
+    }
+    else {
+      let updateItem = this.contract_type.find(x => x === inputParam.target.value);
+      let index = this.contract_type.indexOf(updateItem);
+      this.contract_type.splice(index, 1);
+    }
+    this.contractor.contractor_type = this.contract_type;
+    this.checkContractValue(this.contractor.contractor_type);
   }
 
-  filter_array(arr) {
-    var hashTable = {};
+  onAreaSelected(e)
+  {
+    if(e.target.checked)
+    {
+      this.selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.selectedValue.find(x => x === e.target.value);
+      let index = this.selectedValue.indexOf(updateItem);
+      this.selectedValue.splice(index, 1);
+    }
 
-    return arr.filter(function (el) {
-      var key = JSON.stringify(el);
-      var match = Boolean(hashTable[key]);
 
-      return (match ? false : hashTable[key] = true);
-    });
   }
 
 }

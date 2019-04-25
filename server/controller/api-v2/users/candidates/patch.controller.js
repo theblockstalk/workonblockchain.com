@@ -56,33 +56,127 @@ const bodySchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
-            locations: {
-                type: [{
-                    city: {
-                        type : Schema.Types.ObjectId,
-                        ref: 'Cities'
+            employee: {
+                type: {
+                    employment_type :  {
+                        type : String,
+                        enum: enumerations.employmentTypes
                     },
-                    country: enumerations.countries,
-                    remote: Boolean,
-                    visa_needed: {
-                        type: Boolean,
-                        required: true,
+                    expected_annual_salary: {
+                        type: Number,
+                        min:0
+                    },
+                    currency : {
+                        type: String,
+                        enum: enumerations.currencies
+                    },
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }
+                        ]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    employment_availability: {
+                        type:String,
+                        enum: enumerations.workAvailability
                     }
-                }]
+                }
             },
-            roles: {
-                type: [{
-                    type: String,
-                    enum: enumerations.workRoles
-                }]
+            contractor: {
+                type: {
+                    expected_hourly_rate:  {
+                        type : Number,
+                        min:0,
+                    },
+                    currency: {
+                        type: String,
+                        enum: enumerations.currencies
+                    },
+                    max_hour_per_week : {
+                        type : Number,
+                        min:0,
+                    },
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    contractor_type: {
+                        type: String,
+                        enum: enumerations.contractorTypes
+                    },
+                    agency_website: {
+                        type: String,
+                        validate: regexes.url
+                    },
+                    service_description: {
+                        type: String,
+                        maxlength: 3000
+                    }
+                }
             },
-            expected_salary_currency: {
-                type: String,
-                enum: enumerations.currencies
-            },
-            expected_salary: {
-                type:Number,
-                min: 0
+            volunteer: {
+                type: {
+                    location: {
+                        type: [{
+                            city: {
+                                type : Schema.Types.ObjectId,
+                                ref: 'Cities'
+                            },
+                            country: enumerations.countries,
+                            remote: Boolean,
+                            visa_needed: {
+                                type: Boolean,
+                                required: true,
+                            }
+                        }]
+                    },
+                    roles: {
+                        type: [{
+                            type: String,
+                            enum: enumerations.workRoles
+                        }]
+                    },
+                    max_hours_per_week: {
+                        type: Number,
+                        min: 0
+                    },
+                    learning_objectives: {
+                        type: String,
+                        maxlength: 3000
+
+                    }
+                }
             },
             current_currency: {
                 type: String,
@@ -91,10 +185,6 @@ const bodySchema = new Schema({
             current_salary: {
                 type:Number,
                 min: 0
-            },
-            availability_day: {
-                type:String,
-                enum: enumerations.workAvailability
             },
             why_work: String,
             programming_languages: {
@@ -216,6 +306,10 @@ const bodySchema = new Schema({
     unset_exchange_account: Boolean,
     unset_linkedin_account: Boolean,
     unset_medium_account: Boolean,
+    unset_employee: Boolean,
+    unset_contractor: Boolean,
+    unset_volunteer: Boolean,
+    unset_curret_currency: Boolean
 });
 
 module.exports.inputValidation = {
@@ -244,6 +338,8 @@ module.exports.endpoint = async function (req, res) {
     let userDoc;
     let unset = {};
 
+    console.log(queryBody);
+
     if (req.query.admin) {
         userId = req.params.user_id;
         userDoc = await users.findOneById(userId);
@@ -263,24 +359,80 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
         if (queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
         if (queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
-        if (queryBody.locations) {
-            for (let loc of queryBody.locations) {
-                if (loc.city) {
-                    const index = queryBody.locations.findIndex((obj => obj.city === loc.city));
-                    queryBody.locations[index].city = mongoose.Types.ObjectId(loc.city);
+        if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
+        if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
+        if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+        if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+
+        if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+        else unset['candidate.current_currency'] = 1;
+
+        if (queryBody.current_salary) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+        else unset['candidate.current_salary'] = 1;
+
+        if(queryBody.unset_employee) unset['candidate.employee'] = 1;
+        else {
+            if(queryBody.employee) {
+                for(let loc of queryBody.employee.location) {
+                    if(loc.city) {
+                        const index = queryBody.employee.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
+
+                    }
                 }
+                updateCandidateUser['candidate.employee'] = queryBody.employee;
             }
-            updateCandidateUser['candidate.locations'] = queryBody.locations;
         }
+
+        if(queryBody.unset_contractor) unset['candidate.contractor'] = 1;
+        else {
+            if(queryBody.contractor) {
+                for(let loc of queryBody.contractor.location) {
+                    if(loc.city) {
+                        const index = queryBody.contractor.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
+                    }
+                }
+                updateCandidateUser['candidate.contractor'] = queryBody.contractor;
+            }
+        }
+
+        if(queryBody.unset_volunteer) unset['candidate.volunteer'] = 1;
+        else {
+            if(queryBody.volunteer) {
+                for(let loc of queryBody.volunteer.location) {
+                    if(loc.city) {
+                        const index = queryBody.volunteer.location.findIndex((obj => obj.city === loc.city));
+                        queryBody.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
+                    }
+                }
+                updateCandidateUser['candidate.volunteer'] = queryBody.volunteer;
+            }
+        }
+
         if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
         if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
         if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
-        if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
-        if (queryBody.current_salary) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
         if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
         if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
         if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
+        if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
+        else unset['candidate.education_history'] = 1;
+
+        if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
+        else unset['candidate.work_history'] = 1;
         if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
+
+        if (queryBody.unset_curret_currency) {
+            unset['candidate.current_currency'] = 1;
+            unset['candidate.current_salary'] = 1;
+        }
+        else{
+            if (queryBody.current_currency && queryBody.current_salary) {
+                updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+                updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+            }
+        }
 
         if (queryBody.unset_commercial_platforms) {
             unset['candidate.blockchain.commercial_platforms'] = 1;
@@ -354,7 +506,7 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
         }
     }
-    
+
     let timestamp = new Date();
     let history = {
         timestamp : timestamp
