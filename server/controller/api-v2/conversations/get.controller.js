@@ -43,11 +43,12 @@ module.exports.endpoint = async function (req, res) {
 
     let conversations = userDoc.conversations;
     if (conversations && conversations.length > 0) {
-        conversations.sort(function (a, b) {
-            return a.last_message < b.last_message;
+        conversations.sort(function(a, b) {
+            return (a.last_message > b.last_message) ? -1 : ((a.last_message < b.last_message) ? 1 : 0);
         });
         logger.debug('converstaions', {conversations:conversations,'userID':userDoc._id});
         logger.debug("length", {length: conversations.length});
+
         for (let i = 0; i < conversations.length; i++) {
             const conversationUser = await users.findOneById(conversations[i].user_id);
             if (conversationUser.type === 'candidate') {
