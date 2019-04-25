@@ -505,11 +505,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.candidate_data = data;
             this.searchData = true;
 
-            // this.filterAndSort();
-
             this.setPage(1);
-            if (this.candidate_data.length > 0) {
-              this.not_found = '';
+            if(this.candidate_data && this.candidate_data.length > 0) {
+              this.not_found='';
             }
             this.responseMsg = "response";
           },
@@ -865,11 +863,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         dataa => {
           this.candidate_data = dataa;
 
-          //this.filterAndSort();
-
           this.setPage(1);
-          if (this.candidate_data.length > 0) {
-            this.not_found = '';
+          if(this.candidate_data && this.candidate_data.length > 0) {
+            this.not_found='';
           }
           this.responseMsg = "response";
         },
@@ -1303,13 +1299,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
-  changeWorkTypes(){
+  changeWorkTypes() {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
     //this.populatePopupFields();
     //this.searchdata("work_type", this.workTypes);
+  }
 
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 
 }
