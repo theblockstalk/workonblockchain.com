@@ -53,7 +53,7 @@
                     <li>Approach type: Employee</li>
                     <li>Job title: {{job_desc.employee.job_title}}</li>
                     <li>Job type: {{job_desc.employee.employment_type}}</li>
-                    <li>Salary: {{job_desc.employee.currency}} {{job_desc.annual_salary}}</li>
+                    <li>Salary: {{job_desc.employee.currency}} {{job_desc.employee.annual_salary}}</li>
                   </ng-container>
                   <ng-container *ngIf="job_desc.contractor;">
                     <li>Approach type: Contractor</li>
@@ -93,7 +93,7 @@
                               </span>
                           <span>
                                 <b>Salary:</b>
-                                {{msg.message.approach.employee.annual_salary}} {{msg.message.approach.employee.currency}}
+                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary}}
                                 <br/>
                               </span>
                           <span>
@@ -277,7 +277,7 @@
                               </span>
                           <span>
                                 <b>Salary:</b>
-                                {{msg.message.approach.employee.annual_salary}} {{msg.message.approach.employee.currency}}
+                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary}}
                                 <br/>
                               </span>
                           <span>
