@@ -41,7 +41,7 @@
                 </select>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" style="display: none;" id="skills_exp">
                 <select title="Years experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="years_exp_value" name="years_exp" (ngModelChange)="searchdata('years_exp_min', $event)" class="selectpicker form-control" placeholder="Years experience">
                   <option *ngFor = "let years of years_exp" [value]="years.value">{{years.name}}</option>
                 </select>
