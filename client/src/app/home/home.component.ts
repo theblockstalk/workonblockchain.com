@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
     });
-    console.log('for test');
   }
 
   internalRoute(page,dst){
