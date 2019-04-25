@@ -216,7 +216,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: new FormControl(),
       order_preferences: new FormControl(),
       residence_country: new FormControl(),
-      timestamp: new FormControl()
+      timestamp: new FormControl(),
+      years_exp_value: new FormControl(),
     });
 
     this.success_msg = '';
@@ -368,11 +369,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: [],
       order_preferences: [this.blockchain_order],
       residence_country: [this.residence_country],
+      years_exp_value: [this.years_exp_value],
     });
   }
 
   fillFields(searches, name) {
-    console.log("fill fields");
     this.selectedValueArray = [];
     for (let key of searches) {
       if (key['name'] === name) {
@@ -511,7 +512,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.saveSearchName) {
         newQueryBody.searchName = this.saveSearchName;
       }
-      console.log(queryBody);
 
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
@@ -708,6 +708,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   savedNewSearch() {
     let queryBody: any = {};
+
+    if (this.preferncesForm.value.years_exp_value) queryBody.years_exp_min = this.preferncesForm.value.years_exp_value;
     if (this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if (this.newSearchLocation && this.newSearchLocation.length > 0) {
       let validatedLocation = [];
@@ -735,7 +737,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
       if (checkNumber === false) {
-        console.log("1");
         errorCount = 1;
         this.current_currency_log = "Salary should be a number";
       }
@@ -749,7 +750,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
       const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
       if (checkNumber === false) {
-        console.log('6')
         errorCount = 1;
         this.expected_hourly_rate_log = "Hourly rate should be a number "
       }
@@ -760,12 +760,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (!this.preferncesForm.value.name) {
-      console.log('7')
       this.search_name_log = "Please enter saved search name";
       errorCount = 1;
     }
     if (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
-      console.log('8')
       this.residence_country_log = "Please select maximum 50 countries";
       errorCount = 1;
     }

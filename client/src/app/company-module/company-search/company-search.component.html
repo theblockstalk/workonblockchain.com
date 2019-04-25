@@ -489,12 +489,11 @@
               <div class="col-md-12 mt-2">
                 <div class="form-group">
                   <div class="form-check" *ngFor="let types of workTypes">
-                    <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
                     <label class="form-check-label simple-radio-button" >
+                      <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
                       {{types.name}}
                     </label>
                   </div>
-
                 </div>
               </div>
 
@@ -503,7 +502,6 @@
                   <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_type'  [value]="job_type" selected>{{job_type}}</option>
                   </select>
-
                 </div>
               </div>
 
@@ -511,9 +509,7 @@
                 <div class="form-group">
                   <select multiple formControlName="position" title="Role" class="form-control selectpicker">
                     <option *ngFor='let role of rolesData'   [value]="role.value" selected>{{role.name}}</option>
-
                   </select>
-
                 </div>
               </div>
 
@@ -534,11 +530,8 @@
 
                     <div *ngIf="newSearchLocation.length > 0">
                       <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteNewLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
-
                     </div>
-
                   </div>
-
                 </div>
               </div>
 
@@ -548,7 +541,6 @@
                     <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" selected>{{blockchain.name}}</option>
                   </select>
                   <small class="text-secondary" >Only select this if essential for the job</small>
-
                 </div>
               </div>
 
@@ -579,6 +571,14 @@
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}
                   </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2">
+                <div class = "form-group">
+                  <select title="Years experience" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_value" >
+                    <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_value?true:null">{{years_exp_min.name}}</option>
+                  </select>
                 </div>
               </div>
 
