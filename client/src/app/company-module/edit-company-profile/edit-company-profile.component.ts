@@ -272,9 +272,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
-
-              console.log(this.preferncesForm)
-
             }
           },
           error =>
@@ -383,12 +380,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
         if(this.preferncesForm.value.prefItems[i].work_type === 'employee'){
           if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("2");
             this.current_currency_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            console.log("3");
             this.current_currency_log = "Please enter expected hours ";
             count = 1;
           }
@@ -396,12 +391,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
         if(this.preferncesForm.value.prefItems[i].work_type === 'contractor') {
           if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
-            console.log("4")
             this.expected_hourly_rate_log = "Please choose currency ";
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            console.log("5")
             this.expected_hourly_rate_log = "Please enter expected hours ";
             count = 1;
           }
@@ -486,7 +479,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
           if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
           if(key['_id']) searchQuery._id = key['_id'];
-          if(key['years_exp_min']) searchQuery.years_exp_min = key['years_exp_min'];
 
           if(i < this.preferncesForm.value.prefItems.length) {
             if(this.locationArray[i]) {
@@ -505,17 +497,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
           }
           if(key['name']) searchQuery.name = key['name'];
-
-          if(key['work_type']) searchQuery.work_type = key['work_type'];
+          if(key['years_exp_min']) searchQuery.years_exp_min = key['years_exp_min'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
           }
-
           if(key['work_type']==='contractor' && key['currency'] && key['current_currency'] !== 'Currency' && key['expected_hourly_rate']) {
             searchQuery.expected_hourly_rate = Number(key['expected_hourly_rate']);
             searchQuery.current_currency = key['currency'];
           }
+          if(key['work_type']) searchQuery.work_type = key['work_type'];
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           saved_searches.push(searchQuery);
           if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
@@ -571,7 +562,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-              console.log(this.cities);
             }
 
           },
