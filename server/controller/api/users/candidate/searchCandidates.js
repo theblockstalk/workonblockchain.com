@@ -252,36 +252,34 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
             userQuery.push(hourlyRateFilter);
-
         }
 
         if (search.skills && search.skills.length > 0) {
-            const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
-            userQuery.push(skillsFilter);
-        }
-
-        let skillsFilter;
-
-        if (search.years_exp_min) {
-            let skillsAndExpFilter = [];
-            for (let skills of search.skills) {
-                skillsAndExpFilter = {
-                    "candidate.programming_languages": {
-                        $elemMatch: {
-                            "language": skills,
-                            "exp_year": {$in: minExpToArray(search.years_exp_min)}
+            let skillsFilterNew;
+            if (search.years_exp_min) {
+                let skillsAndExpFilter = [];
+                for (let skills of search.skills) {
+                    skillsAndExpFilter = {
+                        "candidate.programming_languages": {
+                            $elemMatch: {
+                                "language": skills,
+                                "exp_year": {$in: minExpToArray(search.years_exp_min)}
+                            }
                         }
-                    }
-                };
-
-                skillsFilter = {$or: skillsAndExpFilter}
+                    };
+                    skillsFilterNew = {$or: [skillsAndExpFilter]}
+                }
             }
-        } else {
-            skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
+            else{
+                const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
+                userQuery.push(skillsFilter);
+            }
+            if(skillsFilterNew){
+                userQuery.push(skillsFilterNew);
+            }
         }
-        if(skillsFilter && skillsFilter.length > 0) {
-            userQuery.push(skillsFilter);
-        }
+
+
 
         if (search.residence_country && search.residence_country.length > 0) {
             const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
@@ -359,7 +357,7 @@ function removeDups(names) {
     return Object.keys(unique);
 }
 
-function minExpToArray(expYears) {
+const minExpToArray  = function(expYears) {
     switch (expYears) {
         case 1:
             return ['0-1', '1-2', '2-4', '4-6', '6+'];
@@ -367,10 +365,10 @@ function minExpToArray(expYears) {
         case 2:
             return ['1-2', '2-4', '4-6', '6+'];
             break;
-        case 4:
+        case 3:
             return ['2-4', '4-6', '6+'];
             break;
-        case 6:
+        case 4:
             return ['4-6', '6+'];
             break;
         default:
