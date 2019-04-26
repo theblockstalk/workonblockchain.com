@@ -112,9 +112,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="phone">Phone number (including country code)</label>
-                <input type="tel" class="form-control" id="phone" placeholder="(+1) 123 456 7890" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
+                <input type="tel" #phoneNumber="ngModel" class="form-control" id="phone" placeholder="(+1) 123 456 7890" name="contact_number"  pattern="^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$" required [(ngModel)]="info.contact_number" >
                 <div class = "invalid-feedback d-inline"  *ngIf="!info.contact_number">
                   {{contact_name_log}}
+                </div>
+                <div class = "invalid-feedback d-inline"  *ngIf="phoneNumber.errors">
+                  Enter phone number in proper format.
                 </div>
               </div>
             </div>
