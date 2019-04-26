@@ -807,7 +807,9 @@
           </section>
 
           <div class = "form-group text-right">
-            <a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" class = "btn btn-secondary text-white mr-2">Cancel</a>
+            <L0-buttons-others [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" buttonClass="btn-primary" buttonType="button" label="Cancel"></L0-buttons-others>
+
+            <!--<a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" class = "btn btn-secondary text-white mr-2">Cancel</a>-->
             <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Save"></L0-buttons-others>
 
             <br/>

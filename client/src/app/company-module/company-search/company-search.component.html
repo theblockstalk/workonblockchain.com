@@ -123,9 +123,7 @@
                 </form>
               </div>
               <div class="col-md-4">
-                <form (click)="reset()">
-                  <L0-buttons-others buttonClass="btn-secondary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Reset" ></L0-buttons-others>
-                </form>
+                  <L0-buttons-others (click)="reset()" buttonClass="btn-secondary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Reset" ></L0-buttons-others>
               </div>
               <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
                 {{success_msg}}
