@@ -9,7 +9,7 @@ const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
 const companyEmail = require('../../../controller/services/cron/companyAutomaticEmailOfNewCandidate');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
-const companiesHelperV2 = require('../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
 const userHelper = require('../../api/users/usersHelpers');
 
 const assert = chai.assert;

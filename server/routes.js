@@ -47,7 +47,6 @@ const updateExplanationPopupStatus = require('./controller/api/chat/updateExplan
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
 const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
-const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
@@ -100,7 +99,6 @@ router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddlew
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
 // Admin
-router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
 router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
 router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
 router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
