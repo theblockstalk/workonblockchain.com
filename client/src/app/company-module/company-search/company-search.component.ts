@@ -353,6 +353,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   populatePopupFields() {
+    $('#years_exp').css('display','none');
+    if(this.skill_value && this.skill_value.length>0) $('#years_exp').css('display','block');
     this.preferncesForm = this._fb.group({
       name: [],
       work_type: [this.selectedWorkType],
@@ -567,6 +569,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.hourly_rate = '';
     this.contractorCurrency = '';
     this.years_exp_value = '';
+    $('#skills_exp').css('display','none');
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});

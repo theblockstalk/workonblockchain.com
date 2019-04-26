@@ -574,7 +574,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" id="years_exp" style="display: none;">
+              <div class="col-md-6 mt-2" id="years_exp">
                 <div class = "form-group">
                   <select title="Years experience" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_value" >
                     <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_value?true:null">{{years_exp_min.name}}</option>
