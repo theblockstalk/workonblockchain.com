@@ -445,26 +445,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data) {
-              this.authenticationService.aprrove_user(this.currentUser.company_id , 1, false)
-                .subscribe(
-                  data =>
-                  {
-                    $('#whatHappensNextModal').modal('show');
-                  },
-                  error =>
-                  {
-                    if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                    {
-                      this.error = error['error']['message'];
-                    }
-                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                    {
-                      this.error = error['error']['message'];
-                    }
-                    else {
-                      this.error = "Something went wrong";
-                    }
-                  });
+              $('#whatHappensNextModal').modal('show');
             }
           },
           error => {

@@ -1023,12 +1023,9 @@ export class UserService {
     }));
   }
   //////////////call admin functions//////////////////
-  aprrove_user(user_id:string , detail :number ,admin: boolean )
+  aprrove_user(user_id:string , detail :number )
   {
-    let urlString;
-    if(admin === true) urlString = URL+'v2/users/' + user_id + '/companies/status?admin=' + admin;
-    else urlString = URL+'v2/users/' + user_id + '/companies/status';
-    return this.http.post( urlString, {is_approved : detail},  {
+    return this.http.post( URL+'v2/users/' + user_id + '/companies/status', {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

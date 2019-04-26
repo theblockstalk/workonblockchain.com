@@ -159,7 +159,7 @@ export class AdminCompanyDetailComponent implements OnInit {
       this.is_approve =0;
     }
 
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve , true)
+    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
       .subscribe(
         data =>
         {
