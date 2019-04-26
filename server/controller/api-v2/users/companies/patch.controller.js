@@ -4,7 +4,6 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
-
 const companies = require('../../../../model/mongoose/company');
 
 module.exports.request = {

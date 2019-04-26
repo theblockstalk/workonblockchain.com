@@ -32,7 +32,6 @@ const candidateWizardPrefilledProfile = require('./controller/api/users/candidat
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
 
 // Companies
-const companyRegister = require('./controller/api/users/company/createCompany.controller');
 const companyGet = require('./controller/api/users/company/getCompany.controller');
 const companyGetCurrent = require('./controller/api/users/company/getCurrentCompany.controller');
 const companyImage = require('./controller/api/users/company/image.controller');
@@ -85,7 +84,6 @@ router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddle
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
-router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));

@@ -247,7 +247,7 @@ export class UserService {
 
   create_employer(employer: any)
   {
-    return this.http.post(URL+'users/create_employer', employer) .pipe(map(employer => {
+    return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
       return employer
     }));
 
