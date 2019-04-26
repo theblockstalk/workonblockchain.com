@@ -52,6 +52,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   country_log;
   city_log;
   countries = constants.countries;
+  country_codes = constants.country_codes;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {

@@ -328,5 +328,6 @@ export const constants = {
     {name: 'Contractor/Freelancer', value:'contractor', checked:false},
     {name: 'Volunteer', value:'volunteer', checked:false}
   ],
-  email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly']
+  email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly'],
+  country_codes: ['+92','+1','+44','+96','+99','+30']
 };
