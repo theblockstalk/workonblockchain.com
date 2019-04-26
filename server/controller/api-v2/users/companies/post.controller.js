@@ -78,8 +78,8 @@ module.exports.endpoint = async function (req, res) {
             salt : salt,
             type: queryBody.type,
             created_date: new Date(),
-            referred_email : queryBody.referred_email
-
+            referred_email : queryBody.referred_email,
+            is_approved: 1
         };
         const companyUserCreated =  await Users.insert(newCompanyDoc);
         if(companyUserCreated)
