@@ -16,7 +16,6 @@ export class LinkedinAuthComponent implements OnInit {
   refcode;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
     this.refcode = localStorage.getItem('ref_code');
-    console.log(this.refcode);
     if(this.refcode) {
       this.authenticationService.getByRefrenceCode(this.refcode)
         .subscribe(
@@ -35,14 +34,10 @@ export class LinkedinAuthComponent implements OnInit {
     else  {
       this.getParam();
     }
-
-
-
   }
 
   getParam(){
     this.linkedinUser = (localStorage.getItem('linkedinLogin'));
-
     this.route.queryParams.subscribe(params => {
       this.code =  params['code'];
     });
@@ -58,11 +53,9 @@ export class LinkedinAuthComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
   login(code) {
     localStorage.removeItem('linkedinLogin');
-
     this.authenticationService.candidate_login({linkedin_code : code})
       .subscribe(
         user => {
@@ -87,12 +80,9 @@ export class LinkedinAuthComponent implements OnInit {
   }
 
   passCodeToBE(code) {
-    console.log(this.referred_email);
     let queryBody : any = {};
-
     if(this.referred_email) queryBody.referred_email  = this.referred_email;
     queryBody.linkedin_code = code;
-    console.log(queryBody);
     this.authenticationService.createCandidate(queryBody)
       .subscribe(
         user => {

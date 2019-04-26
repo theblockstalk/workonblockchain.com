@@ -16,7 +16,6 @@ export class SocialAuthComponent implements OnInit {
   refcode;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
     this.refcode = localStorage.getItem('ref_code');
-    console.log(this.refcode);
     if (this.refcode) {
       this.authenticationService.getByRefrenceCode(this.refcode)
         .subscribe(
@@ -35,8 +34,6 @@ export class SocialAuthComponent implements OnInit {
     else {
       this.getParam();
     }
-
-
   }
   getParam() {
     this.googleUser = (localStorage.getItem('googleLogin'));
@@ -45,18 +42,15 @@ export class SocialAuthComponent implements OnInit {
       this.code =  params['code'];
     });
     if(this.code && this.googleUser === 'true') {
-      console.log(this.code);
       this.login(this.code);
     }
     else if(this.code && !this.googleUser) {
-      console.log(this.code);
       this.passCodeToBE(this.code);
     }
     else {
       this.router.navigate(['/not_found']);
     }
   }
-
 
   ngOnInit() {
 
