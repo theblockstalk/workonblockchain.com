@@ -1307,7 +1307,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }, 300);
     //this.populatePopupFields();
     //this.searchdata("work_type", this.workTypes);
+  }
 
+  changeSkills(){
+    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0) $('#years_exp').css('display','block');
+    else{
+      $('#years_exp').css('display','none');
+      this.preferncesForm.value.years_exp_value = '';
+    }
   }
 
 }
