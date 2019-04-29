@@ -506,11 +506,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   languageSelectedOptions(lang) {
-    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0) $('#years_exp').css('display','block');
-    else{
-      $('#years_exp').css('display','none');
-      this.preferncesForm.value.years_exp_min = '';
-    }
+    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0){}
+    else this.preferncesForm.value.years_exp_min = '';
     this.index = this.languageSelected.indexOf(lang);
     if(this.index > -1) {
       return 'selected';

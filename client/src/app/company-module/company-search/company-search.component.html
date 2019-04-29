@@ -41,7 +41,7 @@
                 </select>
               </div>
 
-              <div class="form-group" style="display: none;" id="skills_exp">
+              <div class="form-group" *ngIf="skill_value && skill_value.length > 0" id="skills_exp">
                 <select title="Years experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="years_exp_value" name="years_exp" (ngModelChange)="searchdata('years_exp_min', $event)" class="selectpicker form-control" placeholder="Years experience">
                   <option *ngFor = "let years of years_exp" [value]="years.value">{{years.name}}</option>
                 </select>
@@ -558,7 +558,7 @@
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language" (ngModelChange)="changeSkills('skill', $event)">
+                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language">
                     <option class='option' *ngFor='let language of skillsData' [value]="language.value" selected>{{language.name}}</option>
                   </select>
                 </div>
@@ -574,7 +574,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" id="years_exp">
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.skills && preferncesForm.value.skills.length > 0">
                 <div class = "form-group">
                   <select title="Years experience" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_value" >
                     <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_value?true:null">{{years_exp_min.name}}</option>

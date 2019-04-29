@@ -353,8 +353,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   populatePopupFields() {
-    $('#years_exp').css('display','none');
-    if(this.skill_value && this.skill_value.length>0) $('#years_exp').css('display','block');
     this.preferncesForm = this._fb.group({
       name: [],
       work_type: [this.selectedWorkType],
@@ -483,15 +481,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
       if (this.searchWord) queryBody.word = this.searchWord;
 
-      if (this.skill_value && this.skill_value.length > 0) {
-        $("#skills_exp").css("display", "block");
-        queryBody.skills = this.skill_value;
-      }
-      else{
-        this.years_exp_value = '';
-        $("#skills_exp").css("display", "none");
-      }
-
       if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if (this.role_value && this.role_value.length > 0) queryBody.positions = this.role_value;
       if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
@@ -569,7 +558,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.hourly_rate = '';
     this.contractorCurrency = '';
     this.years_exp_value = '';
-    $('#skills_exp').css('display','none');
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});
@@ -1310,14 +1298,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }, 300);
     //this.populatePopupFields();
     //this.searchdata("work_type", this.workTypes);
-  }
-
-  changeSkills(){
-    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0) $('#years_exp').css('display','block');
-    else{
-      $('#years_exp').css('display','none');
-      this.preferncesForm.value.years_exp_value = '';
-    }
   }
 
 }
