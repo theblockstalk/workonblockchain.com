@@ -49,7 +49,7 @@
               <div class="col-md-12 mt-2">
                 <div class="form-group">
                   <div class="form-check" *ngFor="let types of workTypes">
-                    <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                    <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
                     <label class="form-check-label simple-radio-button" >
                       {{types.name}}
                     </label>
@@ -133,8 +133,8 @@
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills (optional)" class="form-control selectpicker">
-                    <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
+                  <select multiple formControlName="skills" title="Skills (optional)" class="form-control selectpicker" (change)="refreshSelectBox()">
+                    <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value"  >{{language.name}}</option>
                   </select>
                 </div>
               </div>
@@ -149,7 +149,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.skills && preferncesForm.value.skills.length > 0">
+              <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.skills && preferncesForm.value.skills.length > 0">
                 <div class = "form-group">
                   <select title="Years experience" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_min" >
                     <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_min?true:null">{{years_exp_min.name}}</option>

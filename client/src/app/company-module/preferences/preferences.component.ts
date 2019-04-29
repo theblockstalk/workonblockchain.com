@@ -639,7 +639,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     return value.filter(i => i.visa_needed === true).length;
   }
 
-  changeWorkTypes(){
+  refreshSelectBox(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
