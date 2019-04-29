@@ -394,7 +394,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
       if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
       if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
-      if(!this.preferncesForm.value.years_exp_min) this.preferncesForm.value.years_exp_min = [];
 
       let inputQuery : any ={};
       inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
