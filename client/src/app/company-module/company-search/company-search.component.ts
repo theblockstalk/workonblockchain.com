@@ -480,7 +480,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       let queryBody: any = {};
       if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
       if (this.searchWord) queryBody.word = this.searchWord;
-
+      if (this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
       if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if (this.role_value && this.role_value.length > 0) queryBody.positions = this.role_value;
       if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
@@ -1292,7 +1292,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
-  changeWorkTypes(){
+  refreshSelectBox(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);

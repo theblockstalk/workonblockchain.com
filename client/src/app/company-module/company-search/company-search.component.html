@@ -288,7 +288,7 @@
                 <div class="form-group">
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
-                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
                       {{types.name}}
                     </label>
                   </div>
@@ -490,7 +490,7 @@
                 <div class="form-group">
                   <div class="form-check" *ngFor="let types of workTypes">
                     <label class="form-check-label simple-radio-button" >
-                      <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                      <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
                       {{types.name}}
                     </label>
                   </div>
@@ -558,7 +558,7 @@
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language">
+                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language" (change)="refreshSelectBox()">
                     <option class='option' *ngFor='let language of skillsData' [value]="language.value" selected>{{language.name}}</option>
                   </select>
                 </div>

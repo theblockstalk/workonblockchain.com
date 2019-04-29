@@ -369,6 +369,8 @@ const minExpToArray  = function(expYears) {
             return ['2-4', '4-6', '6+'];
             break;
         case 4:
+        case 5:
+        case 6:
             return ['4-6', '6+'];
             break;
         default:
