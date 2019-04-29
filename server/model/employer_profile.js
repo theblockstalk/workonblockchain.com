@@ -131,7 +131,7 @@ const CompanyProfileSchema = new Schema({
             years_exp_min: {
                 type: Number,
                 min: 1,
-                max: 6
+                max: 20
             },
             residence_country: {
                 type: [{
