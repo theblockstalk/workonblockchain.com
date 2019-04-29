@@ -37,20 +37,26 @@
               <div class="col-md-5 mt-3">
                 <ul class="list-group list-group-flush float-right">
                   <li class="list-group-item">
-                    <span><i class="fas fa-landmark mr-2"></i></span>
-                    <span>Nationality: {{nationality}}</span>
+                    <span><i class="fas fa-flag mr-2"></i></span>
+                    <span> {{nationality}}</span>
                   </li>
                   <li class="list-group-item">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> Phone: {{contact_number}}</span>
+                    <span>{{contact_number}}</span>
                   </li>
                   <li class="list-group-item">
-                    <i class="fas fa-user mr-2"></i>
-                    Candidate status: <span class = "text-capitalize">{{candidate_status.status}}</span>
+                    <i class="fas fa-user mr-2"></i>Status:
+                    <span *ngIf="candidate_status.status === 'created'">Created</span>
+                    <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
+                    <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                    <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'updated'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                    <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-clock mr-2"></i>
-                    <span>Date created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
+                    <span>Created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
                 </ul>
               </div>
@@ -86,8 +92,10 @@
                 <div class="form-group">
                   <label> Github account URL:</label>
                   <p>
-                    {{github}}
-                  <p>
+                    <a href="{{github}}" target="_blank">
+                      {{github}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -95,8 +103,10 @@
                 <div class="form-group">
                   <label> Linkedin account URL:</label>
                   <p>
-                    {{linkedin_account}}
-                  <p>
+                    <a href="{{linkedin_account}}" target="_blank">
+                      {{linkedin_account}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -104,8 +114,10 @@
                 <div class="form-group">
                   <label> Medium account URL:</label>
                   <p>
-                    {{medium_account}}
-                  <p>
+                    <a href="{{medium_account}}" target="_blank">
+                      {{medium_account}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -113,11 +125,12 @@
                 <div class="form-group">
                   <label> Stackexchange account URL:</label>
                   <p>
-                    {{stack}}
-                  <p>
+                    <a href="{{stack}}" target="_blank">
+                      {{stack}}
+                    </a>
+                  </p>
                 </div>
               </div>
-
             </div>
           </section>
 

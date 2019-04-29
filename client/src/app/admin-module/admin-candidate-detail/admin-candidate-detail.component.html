@@ -43,25 +43,35 @@
                   </ng-template>
                 </li>
                 <li class="list-group-item">
-                  <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality: {{data.nationality}}</span>
+                  <span><i class="fas fa-flag"></i></span>
+                  <span> {{data.nationality}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-phone mr-2"></i></span>
-                  <span>Phone: {{data.contact_number}}</span>
+                  <span>{{data.contact_number}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                  <span >City : {{data.candidate.base_city}}</span>
+                  <span >{{data.candidate.base_city}}</span>
                 </li>
-
+                <li class="list-group-item">
+                  <span><i class="fas fa-user mr-2"></i></span>Status:
+                  <span *ngIf="candidate_status.status === 'created'">Created</span>
+                  <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
+                  <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'updated'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                  <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-user mr-2"></i></span>
+                  <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
+                </li>
               </ul>
             </div>
-
           </div>
-
-        </section >
-
+        </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
@@ -70,46 +80,6 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Current status:</label>
-              </div>
-
-              <label *ngIf="candidate_status.status === 'approved' || candidate_status.status === 'created' || candidate_status.status === 'wizard completed' || candidate_status.status === 'updated' || candidate_status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
-                {{candidate_status.status}}
-              </label>
-              <label *ngIf="candidate_status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
-                {{candidate_status.status}}
-              </label>
-              <label *ngIf="candidate_status.status === 'reviewed'" class="border border-info p-2 text-info rounded font-weight-normal">
-                {{candidate_status.status}}
-              </label>
-              <label *ngIf="candidate_status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">
-                {{candidate_status.status}}: {{candidate_status.reason}}
-              </label>
-              <label *ngIf="candidate_status.status === 'deferred'" class="border border-warning p-2 text-warning rounded font-weight-normal">
-                {{candidate_status.status}}: {{candidate_status.reason}}
-              </label>
-
-            </div>
-            <!--<div class = "col-md-6" *ngIf="candidate_status.reason">
-              <div class="form-group">
-                <label>Reason:</label>
-                <p>
-                  {{candidate_status.reason}}
-                </p>
-              </div>
-            </div>  -->
-
-            <div class = "col-md-6">
-              <div class="form-group">
-                <label>Date created:</label>
-                <p>
-
-                  {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}
-                </p>
-              </div>
-            </div>
             <div class = "col-md-6">
               <div class="form-group">
                 <label>Email verified:</label>
@@ -359,8 +329,10 @@
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  {{data.candidate.github_account}}
-                <p>
+                  <a href="{{data.candidate.github_account}}" target="_blank">
+                    {{data.candidate.github_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -368,8 +340,10 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  {{data.candidate.stackexchange_account}}
-                <p>
+                  <a href="{{data.candidate.stackexchange_account}}" target="_blank">
+                    {{data.candidate.stackexchange_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -377,8 +351,10 @@
               <div class="form-group" >
                 <label>Linkedin account url:</label>
                 <p>
-                  {{data.candidate.linkedin_account}}
-                <p>
+                  <a href="{{data.candidate.linkedin_account}}" target="_blank">
+                    {{data.candidate.linkedin_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -386,12 +362,13 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  {{data.candidate.medium_account}}
-                <p>
+                  <a href="{{data.candidate.medium_account}}" target="_blank">
+                    {{data.candidate.medium_account}}
+                  </a>
+                </p>
               </div>
             </div>
           </div>
-
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
@@ -404,7 +381,6 @@
             </div>
           </div>
           <div class="row mt-3">
-
             <div class="col-md-6 mb-3">
               <div class="form-group">
                 <label>Country: </label>

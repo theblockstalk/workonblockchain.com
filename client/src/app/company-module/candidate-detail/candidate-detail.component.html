@@ -32,24 +32,21 @@
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
                 <li class="list-group-item">
-                  <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality: {{data.nationality}}</span>
+                  <span><i class="fas fa-flag"></i></span>
+                  <span> {{data.nationality}}</span>
                 </li>
                 <li class="list-group-item" *ngIf="data.first_name">
                   <span><i class="fas fa-phone mr-2"></i></span>
-                  <span >Phone: {{data.contact_number}}</span>
+                  <span >{{data.contact_number}}</span>
                 </li>
                 <li class="list-group-item" *ngIf="data.first_name">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                  <span >City : {{data.candidate.base_city}}</span>
+                  <span >{{data.candidate.base_city}}</span>
                 </li>
-
               </ul>
             </div>
-
           </div>
-
-        </section >
+        </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf='data.first_name'>
           <div class="row">
@@ -75,8 +72,10 @@
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  {{data.candidate.github_account}}
-                <p>
+                  <a href="{{data.candidate.github_account}}" target="_blank">
+                    {{data.candidate.github_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -84,8 +83,10 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  {{data.candidate.stackexchange_account}}
-                <p>
+                  <a href="{{data.candidate.stackexchange_account}}" target="_blank">
+                    {{data.candidate.stackexchange_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -93,8 +94,10 @@
               <div class="form-group" >
                 <label>Linkedin account url: </label>
                 <p>
-                  {{data.candidate.linkedin_account}}
-                <p>
+                  <a href="{{data.candidate.linkedin_account}}" target="_blank">
+                    {{data.candidate.linkedin_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -102,8 +105,10 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  {{data.candidate.medium_account}}
-                <p>
+                  <a href="{{data.candidate.medium_account}}" target="_blank">
+                    {{data.candidate.medium_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
