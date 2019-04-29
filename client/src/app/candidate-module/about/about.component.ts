@@ -53,6 +53,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   city_log;
   countries = constants.countries;
   country_codes = constants.country_codes;
+  country_code_log;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -121,8 +122,10 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
-
-              this.info.contact_number = data['contact_number'];
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.split(" ");
+              this.info.country_code = contact_number[0];
+              this.info.contact_number = contact_number[1];
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
               if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
@@ -226,6 +229,10 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.contact_name_log = "Please enter contact number";
     }
 
+    if (!this.info.country_code) {
+      this.country_code_log = "Please select country code";
+    }
+
     if (!this.info.nationality) {
       this.nationality_log = "Please choose nationality";
     }
@@ -235,7 +242,9 @@ export class AboutComponent implements OnInit,AfterViewInit
     if (!this.info.city) {
       this.city_log = "Please enter base city";
     }
-    if (this.info.contact_number && this.info.nationality && this.info.city && this.info.country && this.info.first_name && this.info.last_name) {
+    if (this.info.country_code && this.info.contact_number && this.info.nationality && this.info.city && this.info.country && this.info.first_name && this.info.last_name) {
+      this.info.contact_number = this.info.country_code +' '+this.info.contact_number;
+      console.log(this.info.contact_number);
       this.authenticationService.about(this.currentUser._id, this.info)
         .subscribe(
           data => {

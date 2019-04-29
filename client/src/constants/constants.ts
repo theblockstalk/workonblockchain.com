@@ -329,5 +329,17 @@ export const constants = {
     {name: 'Volunteer', value:'volunteer', checked:false}
   ],
   email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly'],
-  country_codes: ['+92','+1','+44','+96','+99','+30']
+  country_codes: [
+    {name: 'Afghanistan +93', value:'+93'},{name: 'Albania +355', value:'+355'},
+    {name: 'Algeria +213', value:'+213'},{name: 'Andorra +376', value:'+376'},
+    {name: 'Angola +244', value:'+244'},{name: 'Antigua +268', value:'+268'},
+    {name: 'Argentina +54', value:'+54'},{name: 'Armenia +374', value:'374'},
+    {name: 'Australia +61', value:'+61'},{name: 'Austria +43', value:'+43'},
+    {name: 'Azerbaijan +994', value:'+994'},{name: 'Bahamas +242', value:'+242'},
+    {name: 'Bahrain +973', value:'+973'},{name: 'Bangladesh +880', value:'880'},
+    {name: 'Barbados +246', value:'246'},{name: 'Belarus +375', value:'375'},
+    {name: 'Belgium +32', value:'+32'},{name: 'Belize +501', value:'+501'},
+    {name: 'Benin +229', value:'+229'},{name: 'Bhutan +975', value:'+975'},
+    {name: 'Bolivia +591', value:'+591'},{name: 'Bosnia Herzegovina  +387', value:'+387'}
+  ]
 };
