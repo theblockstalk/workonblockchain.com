@@ -14,7 +14,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('update profile as company', function () {
+describe('update company status', function () {
 
     afterEach(async () => {
         console.log('dropping database');
