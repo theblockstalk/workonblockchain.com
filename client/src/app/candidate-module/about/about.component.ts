@@ -214,27 +214,45 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   about() {
     this.error_msg = "";
+    let errorCount = 0;
     if (this.referred_id) {
       this.info.referred_id = this.referred_id;
     }
 
-    if(!this.info.first_name) this.first_name_log = 'Please enter first name';
-    if(!this.info.last_name) this.last_name_log = 'Please enter last name';
+    if(!this.info.first_name) {
+      this.first_name_log = 'Please enter first name';
+      errorCount = 1;
+    }
+    if(!this.info.last_name) {
+      this.last_name_log = 'Please enter last name';
+      errorCount = 1;
+    }
 
     if (!this.info.contact_number) {
       this.contact_name_log = "Please enter contact number";
-    }
+      errorCount = 1;
 
-    if (!this.info.nationality) {
+    }
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) ) {
       this.nationality_log = "Please choose nationality";
+      errorCount = 1;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      errorCount = 1;
+
     }
     if (!this.info.country) {
       this.country_log = "Please choose base country";
+      errorCount = 1;
+
     }
     if (!this.info.city) {
       this.city_log = "Please enter base city";
+      errorCount = 1;
+
     }
-    if (this.info.contact_number && this.info.nationality && this.info.city && this.info.country && this.info.first_name && this.info.last_name) {
+    if ( errorCount === 0) {
       this.authenticationService.about(this.currentUser._id, this.info)
         .subscribe(
           data => {

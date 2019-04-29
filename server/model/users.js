@@ -19,8 +19,10 @@ const UserSchema = new Schema({
     last_name: String,
     contact_number: String,
     nationality: {
-        type:String,
-        enum: enumerations.nationalities
+        type: [{
+            type: String,
+            enum: enumerations.nationalities
+        }]
     },
     image: {
         type: String,

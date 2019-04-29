@@ -1068,9 +1068,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(!this.info.nationality )
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) )
     {
       this.nationality_log ="Please choose nationality";
+      this.count++;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
     }
 
     if(!this.info.base_country )
