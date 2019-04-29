@@ -676,7 +676,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     control.push(this.initPrefRows());
   }
 
-  changeWorkTypes() {
+  refreshSelectBox() {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
