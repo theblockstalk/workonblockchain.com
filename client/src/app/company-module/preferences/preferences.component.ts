@@ -402,7 +402,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       let searchInput : any = {};
       if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location;
       if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name;
-      if(this.preferncesForm.value.years_exp_min && this.preferncesForm.value.years_exp_min.length>0) searchInput.years_exp_min = this.preferncesForm.value.years_exp_min;
+      if(this.preferncesForm.value.years_exp_min) searchInput.years_exp_min = this.preferncesForm.value.years_exp_min;
       if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed;
       if(this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type;
       if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position;
