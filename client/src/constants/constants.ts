@@ -94,12 +94,12 @@ export const constants = {
     {name:'Fullstack developer', value:'Fullstack Developer', checked:false},
     {name:'Blockchain developer', value:'Blockchain Developer', checked:false},
     {name:'Smart contract developer', value:'Smart Contract Developer', checked:false},
-    {name:'Architect', value:'Architect', checked:false},
+    {name:'Software architect', value:'Architect', checked:false},
     {name:'Devops', value:'DevOps', checked:false},
     {name:'Software tester', value:'Software Tester', checked:false},
     {name:'CTO', value:'CTO', checked:false},
     {name:'Technical lead', value:'Technical Lead', checked:false},
-    {name:'Product manager', value:'Product Manager', checked:false},
+    {name:'Technical product manager', value:'Product Manager', checked:false},
     {name:'Intern developer', value:'Intern Developer', checked:false},
     {name:'Applied researcher', value:'Researcher', checked:false},
     {name:'Mobile app developer', value:'Mobile app developer', checked:false},
@@ -108,6 +108,9 @@ export const constants = {
     {name:'Technical business analyst', value:'Technical business analyst', checked:false},
     {name:'Technical project manager', value:'Technical project manager', checked:false},
     {name:'Machine learning engineer', value:'Machine learning engineer', checked:false},
+    {name:'Crypto-economist', value:'Crypto-economist', checked:false},
+    {name:'Solutions architect', value:'Solutions architect', checked:false},
+
   ],
   currencies: [
     "£ GBP" ,"€ EUR" , "$ USD"
@@ -267,7 +270,9 @@ export const constants = {
     {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
     {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-    {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false}
+    {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false},
+    {name:'Angularjs', value:'Angularjs', checked:false},
+    {name:'Reactjs', value:'Reactjs', checked:false}
   ],
   job_type: ["Part time", "Full time"],
   candidateStatus: [
