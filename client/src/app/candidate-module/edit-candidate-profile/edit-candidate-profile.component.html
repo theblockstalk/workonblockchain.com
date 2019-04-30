@@ -41,9 +41,9 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label for="phone"><b>Contact number (10 digit)</b></label>
+                <label><b>Contact number (10 digit)</b></label>
                 <div class="input-group">
-                  <div class="input-group-prepend w-25">
+                  <div class="input-group-prepend my-style">
                     <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
                       <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
                     </select>
@@ -1155,7 +1155,7 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/candidate_profile']"  class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary" [disabled]="!profileForm.valid">Save</button>
+            <button type="submit" class = "btn btn-primary">Save</button>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}

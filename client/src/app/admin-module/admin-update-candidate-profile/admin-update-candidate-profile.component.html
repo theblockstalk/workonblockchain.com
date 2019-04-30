@@ -41,8 +41,13 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact number</label>
+                <label><b>Contact number (10 digit)</b></label>
+                <div class="input-group">
+                  <div class="input-group-prepend my-style">
+                    <select class="form-control selectpicker" disabled title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                    </select>
+                  </div>
                   <input type="tel" class="form-control" disabled required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}

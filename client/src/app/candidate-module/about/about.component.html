@@ -112,7 +112,7 @@
             <div class="col-md-6">
               <label for="phone"><b>Phone number (10 digit)</b></label>
               <div class="input-group">
-                <div class="input-group-prepend w-25">
+                <div class="input-group-prepend my-style">
                   <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
                     <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
                   </select>
