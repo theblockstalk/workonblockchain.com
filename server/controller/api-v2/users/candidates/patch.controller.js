@@ -522,6 +522,9 @@ module.exports.endpoint = async function (req, res) {
         if (wizardStatus.length === 0 && queryBody.description) {
             history.status = { status: 'wizard completed' };
         }
+        else if (wizardStatus.length === 0 && !queryBody.description) {
+            history.status = { status: 'wizard' };
+        }
         else {
             history.status = { status: 'updated' };
         }
