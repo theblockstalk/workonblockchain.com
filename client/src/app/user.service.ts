@@ -1448,8 +1448,8 @@ export class UserService {
   candidate_status_history(user_id: string,queryInput:any , admin:boolean)
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/'+ user_id +'/candidates/history?admin='+ true;
-    else urlString = URL+'v2/users/'+ user_id +'/candidates/history';
+    if(admin === true) urlString = URL+'v2/users/candidates/history?admin='+ true +'&user_id='+ user_id;
+    else urlString = URL+'v2/users/candidates/history?user_id='+ user_id;
 
     return this.http.post(urlString , queryInput, {
       headers: new HttpHeaders().set('Authorization', this.token)

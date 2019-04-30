@@ -11,13 +11,12 @@ const filterReturnData = require('../../../../api/users/filterReturnData');
 
 module.exports.request = {
     type: 'post',
-    path: '/users/:user_id/candidates/history'
+    path: '/users/candidates/history'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
+
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 const bodySchema = new Schema({
     status: {
@@ -34,7 +33,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
@@ -49,7 +47,7 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    let userId = req.params.user_id;
+    let userId = req.query.user_id;
     let userDoc = await users.findOneById(userId);
     let sanitizedEmailHtml;
     if(userDoc) {
