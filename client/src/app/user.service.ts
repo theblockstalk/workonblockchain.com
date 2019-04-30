@@ -840,7 +840,7 @@ export class UserService {
     let urlString;
     let queryParam;
     if(admin === true) urlString = URL+'v2/users/companies?admin='+ true + '&user_id=' +company_id;
-    else urlString = URL+'v2/users/companies'+ '&user_id=' +company_id;
+    else urlString = URL+'v2/users/companies'+ '?user_id=' +company_id;
 
     return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)

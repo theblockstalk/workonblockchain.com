@@ -150,7 +150,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
