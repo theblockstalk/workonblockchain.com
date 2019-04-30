@@ -18,6 +18,13 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
     await userHelpers.approve(company.email);
 }
 
+
+module.exports.signupAdminCompany = async function signupAdminCompany(company) {
+    await signupCompany(company);
+    await userHelpers.verifyEmail(company.email);
+    await userHelpers.makeAdmin(company.email);
+}
+
 module.exports.companyProfileData = async function companyProfileData(user_id, jwtToken, profiledata) {
     console.log(user_id);
     const res = await chai.request(server)

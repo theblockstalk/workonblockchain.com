@@ -6,7 +6,6 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const companyHepler = require('../company/companyHelpers');
 const candidateHepler = require('../candidate/candidateHelpers');
-const candidateWizardHelper = require('../candidate/wizard/candidateWizardHelpers');
 
 const authenticateHepler = require('./authenticateHelpers');
 const docGenerator = require('../../../helpers/docGenerator');
