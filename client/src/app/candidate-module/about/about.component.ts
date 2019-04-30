@@ -29,7 +29,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   exp_active_class;
   resume_active_class;
   image_log;
-  file_size=61463;
+  file_size=1048576;
   error_msg;
   gender =
     [

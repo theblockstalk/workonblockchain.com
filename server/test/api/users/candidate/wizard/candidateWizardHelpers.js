@@ -15,15 +15,6 @@ const experience = module.exports.experience = async function experience(data,jw
     return res;
 }
 
-const job = module.exports.job = async function job(data,jwtToken) {
-
-    const res = await chai.request(server)
-        .put('/users/welcome/job')
-        .set('Authorization', jwtToken)
-        .send(data);
-    return res;
-}
-
 const resume = module.exports.resume = async function resume(data,jwtToken) {
 
     const res = await chai.request(server)
