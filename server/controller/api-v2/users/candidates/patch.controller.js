@@ -11,14 +11,12 @@ const objects = require('../../../services/objects');
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id/candidates'
+    path: '/users/candidates'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
 
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 
 const bodySchema = new Schema({
@@ -317,7 +315,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
@@ -345,7 +342,7 @@ module.exports.endpoint = async function (req, res) {
     console.log(queryBody);
 
     if (req.query.admin) {
-        userId = req.params.user_id;
+        userId = req.query.user_id;
         userDoc = await users.findOneById(userId);
     }
     else {

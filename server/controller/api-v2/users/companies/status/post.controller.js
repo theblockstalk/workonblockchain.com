@@ -8,9 +8,9 @@ const companyApprovedEmail = require('../../../../services/email/emails/companyA
 
 module.exports.request = {
     type: 'post',
-    path: '/users/:user_id/companies/status'
+    path: '/users/companies/status'
 };
-const paramSchema = new Schema({
+const querySchema = new Schema({
     user_id: String
 });
 
@@ -23,7 +23,7 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
+    query: querySchema,
     body: bodySchema
 };
 
@@ -33,7 +33,7 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     const queryBody = req.body;
-    const userId = req.params.user_id;
+    const userId = req.query.user_id;
     const employerDoc = await companies.findOne({ _creator: userId });
 
     await users.update({ _id:  userId },{ $set: {'is_approved': queryBody.is_approved} });

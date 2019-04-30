@@ -804,8 +804,8 @@ export class UserService {
   edit_candidate_profile(user_id : any,queryBody: any, admin:boolean)
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/' +user_id+ '/candidates?admin='+ true;
-    else urlString = URL+'v2/users/' +user_id+ '/candidates';
+    if(admin === true) urlString = URL+'v2/users/candidates?admin='+ true + '&user_id=' + user_id;
+    else urlString = URL+'v2/users/candidates?user_id='+ user_id ;
 
     return this.http.patch( urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -971,7 +971,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-    return this.http.post( URL+'v2/users/' + user_id + '/companies/status', {is_approved : detail},  {
+    return this.http.post( URL+'v2/users/companies/status?user_id=' + user_id , {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
