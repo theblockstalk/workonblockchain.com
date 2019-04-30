@@ -58,6 +58,14 @@ const bodySchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
+            stackoverflow_url: {
+                type:String,
+                validate: regexes.url
+            },
+            personal_website_url: {
+                type:String,
+                validate: regexes.url
+            },
             employee: {
                 type: {
                     employment_type :  {
@@ -308,6 +316,8 @@ const bodySchema = new Schema({
     unset_exchange_account: Boolean,
     unset_linkedin_account: Boolean,
     unset_medium_account: Boolean,
+    unset_stackoverflow_url: Boolean,
+    unset_personal_website_url: Boolean,
     unset_employee: Boolean,
     unset_contractor: Boolean,
     unset_volunteer: Boolean,
@@ -361,10 +371,6 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
         if (queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
         if (queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
-        if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
-        if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
-        if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
-        if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
 
         if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
         else unset['candidate.current_currency'] = 1;
@@ -506,6 +512,17 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.medium_account'] = 1;
         } else {
             if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+        }
+        if (queryBody.unset_stackoverflow_url) {
+            unset['candidate.stackoverflow_url'] = 1;
+        } else {
+            if (queryBody.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = queryBody.stackoverflow_url;
+        }
+
+        if (queryBody.unset_personal_website_url) {
+            unset['candidate.personal_website_url'] = 1;
+        } else {
+            if (queryBody.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = queryBody.personal_website_url;
         }
     }
 

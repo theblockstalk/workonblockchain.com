@@ -111,6 +111,26 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
+                <label for="githubURL">Stackoverflow URL (optional)</label>
+                <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                <div class = "invalid-feedback d-inline"  *ngIf="stackoverflowaccount.errors">
+                  Enter url in proper format.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="stackURL">Personal website URL (optional)</label>
+                <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                <div class = "invalid-feedback d-inline"  *ngIf="personalaccount.errors">
+                  Enter url in proper format.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
                 <label for="phone">Phone number (including country code)</label>
                 <input type="tel" class="form-control" id="phone" placeholder="(+1) 123 456 7890" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
                 <div class = "invalid-feedback d-inline"  *ngIf="!info.contact_number">

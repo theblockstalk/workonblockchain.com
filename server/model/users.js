@@ -126,6 +126,14 @@ const UserSchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
+            stackoverflow_url: {
+                type:String,
+                validate: regexes.url
+            },
+            personal_website_url: {
+                type:String,
+                validate: regexes.url
+            },
             locations: { //DELETE ME
                 type: [{
                     city: {
