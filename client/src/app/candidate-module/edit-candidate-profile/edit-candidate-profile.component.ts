@@ -294,7 +294,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
-                this.info.contact_number = data['contact_number'];
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.split(" ");
+                this.info.country_code = contact_number[0];
+                this.info.contact_number = contact_number[1];
                 if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
                 if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
                 if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
@@ -1299,8 +1302,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
       if(this.salary && typeof (this.salary) === 'string') {
         profileForm.value.salary = parseInt(this.salary);
-
       }
+      profileForm.value.contact_number = this.info.country_code +' '+this.info.contact_number;
+      console.log(profileForm.value.contact_number);
 
       this.updateProfileData(profileForm.value);
     }
