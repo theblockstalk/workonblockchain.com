@@ -162,13 +162,17 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_and_condition(termsForm: NgForm)
   {
 
-      if(this.termscondition == false)
+      if(this.termscondition === false)
       {
           this.terms_log = "Please accept terms and conditions";
       }
       else
       {
-        this.authenticationService.terms(this.currentUser._id,termsForm.value)
+        let queryBody: any = {};
+        queryBody.terms_id = termsForm.value.termsID;
+        queryBody.marketing_emails = termsForm.value.marketing;
+
+        this.authenticationService.account_settings(this.currentUser._id,queryBody)
         .subscribe(
           data =>
           {
