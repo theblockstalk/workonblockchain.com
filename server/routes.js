@@ -12,7 +12,6 @@ const authForgotPassword = require('./controller/api/users/auth/forgotPassword.c
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
-const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
 
 // Referrals
@@ -41,7 +40,6 @@ const updateExplanationPopupStatus = require('./controller/api/chat/updateExplan
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
-const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
@@ -59,7 +57,6 @@ router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword))
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword));
 router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword));
 router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient));
-router.post('/users/account_settings' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
 router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
 
 // Referrals
@@ -85,7 +82,6 @@ router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(com
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
 // Admin

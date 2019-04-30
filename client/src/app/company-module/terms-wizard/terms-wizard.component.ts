@@ -119,7 +119,11 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      this.authenticationService.company_terms(this.currentUser._id,termsForm.value)
+      let queryBody: any = {};
+      queryBody.terms_id = termsForm.value.termsID;
+      queryBody.marketing_emails = termsForm.value.marketing;
+
+      this.authenticationService.company_terms(this.currentUser._id, queryBody)
         .subscribe(
           data => {
             if(data && this.currentUser)
