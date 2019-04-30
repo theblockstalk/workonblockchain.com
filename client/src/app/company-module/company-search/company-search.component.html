@@ -310,7 +310,8 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustomSalary">Annual salary</label>
-                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="employee.salary" class="form-control" placeholder="">
+                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="employee.salary" class="form-control w-50 float-left" placeholder="Min">
+                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="employee.salary" class="form-control w-50 position-relative" placeholder="Max">
                   <div class = "invalid-feedback d-inline"  *ngIf="!employee.salary || (employee.salary && !checkNumber(employee.salary))">
                     {{salary_log}}
                   </div>

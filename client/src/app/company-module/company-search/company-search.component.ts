@@ -197,6 +197,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    console.log(constants.workTypes);
+    console.log(this.workTypes);
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
       work_type: new FormControl(),
