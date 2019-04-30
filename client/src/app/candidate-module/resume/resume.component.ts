@@ -80,7 +80,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       this.exp_class="";
       this.active_class="fa fa-check-circle text-success";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['candidate'].terms_id)

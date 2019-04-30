@@ -113,7 +113,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       this.class="btn disabled";
       this.exp_class="btn disabled";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['contact_number']  && data['nationality'])

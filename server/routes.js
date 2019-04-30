@@ -23,7 +23,6 @@ const getReferralDetailForAdmin  = require('./controller/api/users/referrals/get
 
 // Candidates
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
-const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
@@ -72,7 +71,6 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
-router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
 router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));

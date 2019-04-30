@@ -88,10 +88,14 @@ export class UserService {
 
   }
 
-
-  getById(_id: string)
+//getCandidateProfileById
+  getCandidateProfileById(_id: string, admin: boolean)
   {
-    return this.http.get(URL+'users/current/' + _id,  {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/'+  _id + '/candidates?admin=true';
+    else urlString = URL+'v2/users/'+  _id + '/candidates';
+
+    return this.http.get(urlString,  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -118,65 +122,6 @@ export class UserService {
       }
 
     }));
-  }
-
-  getProfileById(_id:string)
-  {
-    return this.http.get(URL+'users/current/' + _id,  {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        if(!res['candidate'].terms_id)
-        {
-          this.router.navigate(['/terms-and-condition']);
-        }
-
-        else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
-        {
-          this.router.navigate(['/about']);
-        }
-        else if(!res['candidate'].employee && !res['candidate'].contractor && !res['candidate'].volunteer)
-        {
-          this.router.navigate(['/job']);
-        }
-        else if(!res['candidate'].why_work && !res['candidate'].interest_areas)
-        {
-          this.router.navigate(['/resume']);
-        }
-
-        else if(!res['candidate'].description)
-        {
-          this.router.navigate(['/experience']);
-
-        }
-
-        else
-        {
-          return res;
-        }
-        // return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-
   }
 
   getByRefrenceCode(code: string){

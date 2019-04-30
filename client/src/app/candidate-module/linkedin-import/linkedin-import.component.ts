@@ -49,7 +49,7 @@ export class LinkedinImportComponent implements OnInit {
 
     if(this.currentUser && this.currentUser.type=='candidate')
     {
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data =>
           {

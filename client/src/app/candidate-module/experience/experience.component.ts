@@ -108,7 +108,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
 

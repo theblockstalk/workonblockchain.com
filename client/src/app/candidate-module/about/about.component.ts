@@ -101,7 +101,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if(this.currentUser && this.currentUser.type=='candidate')
     {
 
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
         .subscribe(
           data =>
           {
@@ -301,7 +301,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       else inputQuery.unset_medium_account = true;
 
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
-      if(this.info.base_country) inputQuery.base_country = this.info.base_country;
+      if(this.info.country) inputQuery.base_country = this.info.country;
       if(this.info.city) inputQuery.base_city = this.info.city;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
