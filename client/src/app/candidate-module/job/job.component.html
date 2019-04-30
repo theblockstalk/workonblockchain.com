@@ -89,7 +89,7 @@
                     <div class="form-check mt-4">
                     <label class="form-check-label">
                       <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
-                      empolyee (full/part time)
+                      Employee (full/part time)
                     </label>
                     </div>
                   </div>
@@ -98,7 +98,7 @@
                     <div class="form-check mt-4">
                     <label class="form-check-label">
                       <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
-                      contractor/freelancer
+                      Contractor/Freelancer
                     </label>
                     </div>
                   </div>
@@ -109,7 +109,7 @@
                     <div class="form-check">
                     <label class="form-check-label">
                       <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
-                      temporary volunteer
+                      Temporary volunteer
                     </label>
                     </div>
                   </div>
@@ -369,6 +369,7 @@
                 <label>Maximum hours per week (optional):</label>
 
                 <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                  <option class='option' value="-1" >None</option>
                   <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
                </select>
 
@@ -411,8 +412,11 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label>Service description (optional):</label>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required [(ngModel)]="contractor.service_description" name="service_description" ></textarea>
+                <label>Service description:</label>
+                <textarea class="form-control" rows="5"  maxlength="3000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required [(ngModel)]="contractor.service_description" name="service_description" ></textarea>
+                <div class = "invalid-feedback d-inline" #validateUrl *ngIf="!contractor.service_description">
+                  {{contractor_description_log}}
+                </div>
               </div>
 
             </div>
@@ -502,11 +506,11 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Maximum hour per week:</label>
-                <input type="text" #hours_error="ngModel" pattern="^[0-9]*$" class="form-control" required name="volunteer_max_hour" placeholder="" [(ngModel)]="volunteer.max_hours_per_week">
-              </div>
-              <div class = "invalid-feedback d-inline"  *ngIf="hours_error.errors && volunteer.max_hours_per_week">
-                Maximum hour per week should be a number
+                <label>Maximum hours per week (optional):</label>
+                <select title="(select one)" [(ngModel)]="volunteer.max_hours_per_week" class="selectpicker form-control" required name="max_hour_per_week " >
+                  <option class='option' value="-1" >None</option>
+                  <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === volunteer.max_hours_per_week ? true : null" >{{hours}}</option>
+                </select>
               </div>
             </div>
 
@@ -514,7 +518,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Learning objectives:</label>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
+                <textarea class="form-control" rows="5"  maxlength="3000" placeholder="Learn more about P2P protocols and cryptocurrency exchange architectures." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
                 <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.learning_objectives">
                   {{objective_log}}
                 </div>

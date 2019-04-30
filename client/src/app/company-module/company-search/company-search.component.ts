@@ -422,7 +422,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         else this.salary = '';
 
         if (key['current_salary'] && key['current_currency']) this.currencyChange = key['current_currency'];
-        else this.currencyChange = [];
+        else this.currencyChange = '';
 
         if (key['expected_hourly_rate']) this.hourly_rate = key['expected_hourly_rate'];
         else this.hourly_rate = '';
@@ -514,11 +514,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.candidate_data = data;
             this.searchData = true;
 
-            // this.filterAndSort();
-
             this.setPage(1);
-            if (this.candidate_data.length > 0) {
-              this.not_found = '';
+            if(this.candidate_data && this.candidate_data.length > 0) {
+              this.not_found='';
             }
             this.responseMsg = "response";
           },
@@ -610,7 +608,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if (this.timestamp) queryBody.timestamp = this.timestamp;
     if (!queryBody.location) queryBody.location = [];
-
+    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -633,7 +631,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
         }
       }
-      this.authenticationService.edit_company_profile({'saved_searches': this.savedSearches})
+      this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
         .subscribe(
           data => {
             if (data && this.currentUser) {
@@ -699,6 +697,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   current_currency_log;
 
   savedNewSearch() {
+    console.log(this.preferncesForm.value);
     let queryBody: any = {};
 
     if (this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
@@ -723,29 +722,50 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
     if (this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
     let errorCount = 0;
-    if (this.preferncesForm.value.work_type === 'employee' && this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
-      if (checkNumber === false) {
-        errorCount = 1;
-        this.current_currency_log = "Salary should be a number";
+    if (this.preferncesForm.value.work_type === 'employee' ) {
+      if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.current_currency_log = "Salary should be a number";
+        }
+        else {
+          queryBody.current_currency = this.preferncesForm.value.current_currency;
+          queryBody.current_salary = this.preferncesForm.value.current_salary;
+        }
       }
-      else {
-        queryBody.current_currency = this.preferncesForm.value.current_currency;
-        queryBody.current_salary = this.preferncesForm.value.current_salary;
+      if(!this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+        errorCount = 1;
+        this.current_currency_log = "Please enter salary";
+      }
+      if(this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
+        errorCount = 1;
+        this.current_currency_log = "Please enter currency";
       }
 
-    }
+      }
 
-    if (this.preferncesForm.value.work_type === 'contractor' && this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-      const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
-      if (checkNumber === false) {
+    if (this.preferncesForm.value.work_type === 'contractor' ) {
+      if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
+        const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
+        if (checkNumber === false) {
+          errorCount = 1;
+          this.expected_hourly_rate_log = "Hourly rate should be a number";
+        }
+        else {
+          queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
+          queryBody.current_currency = this.preferncesForm.value.currency;
+        }
+      }
+      if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
         errorCount = 1;
-        this.expected_hourly_rate_log = "Hourly rate should be a number "
+        this.expected_hourly_rate_log = "Please enter hourly rate";
       }
-      else {
-        queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-        queryBody.current_currency = this.preferncesForm.value.currency;
+      if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
+        errorCount = 1;
+        this.expected_hourly_rate_log = "Please enter currency";
       }
+
     }
     if (this.preferncesForm.value.work_type) queryBody.work_type = this.preferncesForm.value.work_type;
 
@@ -759,6 +779,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (errorCount === 0) {
+
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
       if (index < 0 && this.preferncesForm.value.name) {
@@ -780,7 +801,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             }
           }
         }
-        this.authenticationService.edit_company_profile({'saved_searches': this.savedSearches})
+        this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
           .subscribe(
             data => {
               if (data && this.currentUser) {
@@ -829,9 +850,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       else {
         this.new_error_msg = "Search name already exists.";
-        setInterval(() => {
-          this.new_error_msg = "";
-        }, 5000);
+
       }
 
     }
@@ -855,11 +874,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         dataa => {
           this.candidate_data = dataa;
 
-          //this.filterAndSort();
-
           this.setPage(1);
-          if (this.candidate_data.length > 0) {
-            this.not_found = '';
+          if(this.candidate_data && this.candidate_data.length > 0) {
+            this.not_found='';
           }
           this.responseMsg = "response";
         },
@@ -980,6 +997,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   hourly_rate_log;
   hourly_currency_log;
   contract_desc_log;
+  contractor_role_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1086,7 +1104,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data => {
             this.job_offer_log_success = 'Message successfully sent';
             this.employee = {};
-            $("#jobDescriptionModal").modal("hide");
+            $("#approachModal").modal("hide");
             this.router.navigate(['/chat']);
           },
           error => {
@@ -1292,6 +1310,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
+
   refreshSelectBox(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');

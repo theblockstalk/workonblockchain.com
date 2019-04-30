@@ -28,8 +28,8 @@
               <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
               <div class="form-group px-1">
                 <div class="form-check" *ngFor="let types of workTypes">
-                  <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
                   <label class="form-check-label simple-radio-button" >
+                    <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
                     {{types.name}}
                   </label>
                 </div>
@@ -198,9 +198,6 @@
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
 
-                          <!--<h5 class="ml-5">
-                            <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.candidate.roles"> {{roles}} </span>
-                          </h5>-->
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -361,6 +358,7 @@
             </div>
 
             <div class="row" *ngIf="approach_work_type === 'contractor'">
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustomSalary">Hourly rate</label>
@@ -497,7 +495,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" >
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'employee'">
                 <div class="form-group">
                   <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_type'  [value]="job_type" selected>{{job_type}}</option>
@@ -505,7 +503,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-2" >
                 <div class="form-group">
                   <select multiple formControlName="position" title="Role" class="form-control selectpicker">
                     <option *ngFor='let role of rolesData'   [value]="role.value" selected>{{role.name}}</option>
@@ -544,8 +542,8 @@
                 </div>
               </div>
 
-              <div class="col-md-12">
-                <div class = "form-group">
+              <div class="col-md-6">
+                <div class = "form-group" [ngClass]="preferncesForm.value.work_type !== 'employee'? 'mt-3': ''">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                     <label class="form-check-label" for="defaultCheck1">
@@ -554,6 +552,8 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-md-6" *ngIf="preferncesForm.value.work_type === 'employee'"></div>
 
 
               <div class="col-md-6 mt-2">
@@ -601,30 +601,24 @@
 
               <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'contractor'">
                 <div class = "form-group w-auto">
-
                   <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
-
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.currency?true:null">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.expected_hourly_rate && preferncesForm.value.currency) || (preferncesForm.value.expected_hourly_rate && !preferncesForm.value.currency)  " >
                     {{expected_hourly_rate_log}}
                   </div>
-
                   <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.currency && preferncesForm.value.expected_hourly_rate && !checkNumber(preferncesForm.value.expected_hourly_rate)  " >
                     {{expected_hourly_rate_log}}
                   </div>
-
                 </div>
               </div>
-
             </div>
 
             <div class="row my-2">
               <div class="col-md-12">
                 <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
                 <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
-
               </div>
             </div>
 

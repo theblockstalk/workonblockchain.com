@@ -1000,4 +1000,5 @@ export class ChatComponent implements OnInit {
     $("#popModal").modal("hide");
 
   }
+
 }

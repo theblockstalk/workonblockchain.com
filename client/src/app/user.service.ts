@@ -128,8 +128,6 @@ export class UserService {
     {
       if (res)
       {
-        console.log("ressssss");
-        console.log(res);
         if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);
@@ -249,7 +247,7 @@ export class UserService {
 
   create_employer(employer: any)
   {
-    return this.http.post(URL+'users/create_employer', employer) .pipe(map(employer => {
+    return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
       return employer
     }));
 
@@ -892,9 +890,13 @@ export class UserService {
     }));
   }
 
-  edit_company_profile(queryBody :any   )
+  edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._id +'/companies', queryBody , {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/' +company_id+ '/companies?admin='+ true;
+    else urlString = URL+'v2/users/' +company_id+ '/companies';
+
+    return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1023,8 +1025,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-
-    return this.http.put(URL+'users/approve/' + user_id, {is_approve : detail}, {
+    return this.http.post( URL+'v2/users/' + user_id + '/companies/status', {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

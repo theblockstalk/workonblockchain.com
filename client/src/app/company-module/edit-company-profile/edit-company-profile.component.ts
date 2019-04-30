@@ -379,6 +379,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           count = 1;
         }
         if(this.preferncesForm.value.prefItems[i].work_type === 'employee'){
+          if(this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].current_salary);
+            if(checkNumber === false) {
+              count = 1;
+              this.current_currency_log = "Salary should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
+          }
           if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
             this.current_currency_log = "Please choose currency ";
             count = 1;
@@ -390,6 +398,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
 
         if(this.preferncesForm.value.prefItems[i].work_type === 'contractor') {
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
+            const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+            if(checkNumber === false) {
+              count = 1;
+              this.expected_hourly_rate_log = "Hourly rate should be a number";
+            }
+            else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
+          }
           if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
             this.expected_hourly_rate_log = "Please choose currency ";
             count = 1;
@@ -432,7 +448,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(inputEl.files.item(0).size < this.file_size)
         {
           formData.append('company_logo', inputEl.files.item(0));
-          this.authenticationService.edit_company_profile(formData)
+          this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
             .subscribe(
               data => {
                 if(data && this.currentUser)
@@ -516,7 +532,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       }
       profileForm.value.saved_searches = saved_searches;
 
-      this.authenticationService.edit_company_profile(profileForm.value)
+      this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)
         .subscribe(
           data => {
             if(data && this.currentUser)
@@ -652,13 +668,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   checkNumber(salary) {
-    if(!Number(this.preferncesForm.value.current_salary)) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
+    return /^[0-9]*$/.test(salary);
   }
 
   get DynamicWorkFormControls()

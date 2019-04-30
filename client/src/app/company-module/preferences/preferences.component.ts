@@ -178,6 +178,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 work_type: [data['saved_searches'][0].work_type],
                 years_exp_min: [data['saved_searches'][0].years_exp_min],
               });
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 400);
 
               if(data['saved_searches'][0].location)
               {
@@ -425,7 +428,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
       inputQuery.saved_searches = this.saved_searches;
 
-      this.authenticationService.edit_company_profile(inputQuery)
+      this.authenticationService.edit_company_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data =>
           {

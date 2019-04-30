@@ -50,16 +50,17 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if(search.work_type === 'employee') {
             locationQuery= "candidate.employee.location";
             roleQuery = "candidate.employee.roles";
+            userQuery.push({'candidate.employee': {$exists: true}});
         }
         if(search.work_type === 'contractor') {
             locationQuery= "candidate.contractor.location";
             roleQuery = "candidate.contractor.roles";
-
+            userQuery.push({'candidate.contractor': {$exists: true}});
         }
         if(search.work_type === 'volunteer') {
             locationQuery= "candidate.volunteer.location";
             roleQuery = "candidate.volunteer.roles";
-
+            userQuery.push({'candidate.volunteer': {$exists: true}});
         }
 
         if(search.name) {

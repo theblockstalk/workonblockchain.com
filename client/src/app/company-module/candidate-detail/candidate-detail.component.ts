@@ -71,6 +71,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   hourly_currency_log;
   contract_desc_log;
   workTypes = constants.workTypes;
+  rolesData = constants.workRoles;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -132,11 +133,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
-            console.log(data);
             if(data && data['message'].approach) {
               let approach = data['message'].approach;
-              console.log(approach);
-
               if(approach.employee) {
                 this.approach_work_type = 'employee';
                 let employeeOffer = approach.employee;
@@ -153,7 +151,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.contractor.hourly_rate = contractorOffer.hourly_rate ;
                 this.contractor.currency = contractorOffer.currency;
                 this.contractor.location = contractorOffer.location
-
                 this.contractor.contract_description = contractorOffer.contract_description;
               }
 
@@ -433,6 +430,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
   volunteer_location_log;
   contractor_location_log;
+  contractor_role_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -477,8 +475,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         this.contractor_location_log = 'Please enter location';
         errorCount = 1;
       }
-      console.log(this.checkNumber(this.contractor.hourly_rate));
-      console.log(this.contractor.hourly_rate)
       if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
         this.hourly_rate_log = 'Salary should be a number';
         errorCount = 1;
@@ -535,14 +531,12 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           volunteer : job_offer
         }
       }
-      console.log(new_offer);
       this.authenticationService.send_message(this.credentials.user_id, 'approach', new_offer)
         .subscribe(
           data => {
             this.job_offer_msg_success = 'Message successfully sent';
             this.employee = {};
-            $("#jobDescriptionModal").modal("hide");
-            //this.router.navigate(['/chat']);
+            this.router.navigate(['/chat']);
           },
           error => {
             if (error['status'] === 400) {

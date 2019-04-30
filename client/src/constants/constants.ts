@@ -67,6 +67,9 @@ export const constants = {
   ],
   workAvailability: [
     {name: "Now" , value: "Now" },
+    {name: "1 week notice period" , value: "1 week" },
+    {name: "2 weeks notice period" , value: "2 weeks" },
+    {name: "3 weeks notice period" , value: "3 weeks" },
     {name: "1 month notice period" , value: "1 month" },
     {name: "2 months notice period", value: "2 months" },
     {name: "3 months notice period", value: "3 months" },
@@ -91,12 +94,12 @@ export const constants = {
     {name:'Fullstack developer', value:'Fullstack Developer', checked:false},
     {name:'Blockchain developer', value:'Blockchain Developer', checked:false},
     {name:'Smart contract developer', value:'Smart Contract Developer', checked:false},
-    {name:'Architect', value:'Architect', checked:false},
+    {name:'Software architect', value:'Architect', checked:false},
     {name:'Devops', value:'DevOps', checked:false},
     {name:'Software tester', value:'Software Tester', checked:false},
     {name:'CTO', value:'CTO', checked:false},
     {name:'Technical lead', value:'Technical Lead', checked:false},
-    {name:'Product manager', value:'Product Manager', checked:false},
+    {name:'Technical product manager', value:'Product Manager', checked:false},
     {name:'Intern developer', value:'Intern Developer', checked:false},
     {name:'Applied researcher', value:'Researcher', checked:false},
     {name:'Mobile app developer', value:'Mobile app developer', checked:false},
@@ -105,6 +108,9 @@ export const constants = {
     {name:'Technical business analyst', value:'Technical business analyst', checked:false},
     {name:'Technical project manager', value:'Technical project manager', checked:false},
     {name:'Machine learning engineer', value:'Machine learning engineer', checked:false},
+    {name:'Crypto-economist', value:'Crypto-economist', checked:false},
+    {name:'Solutions architect', value:'Solutions architect', checked:false},
+
   ],
   currencies: [
     "£ GBP" ,"€ EUR" , "$ USD"
@@ -264,7 +270,9 @@ export const constants = {
     {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
     {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-    {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false}
+    {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false},
+    {name:'Angularjs', value:'Angularjs', checked:false},
+    {name:'Reactjs', value:'Reactjs', checked:false}
   ],
   job_type: ["Part time", "Full time"],
   candidateStatus: [
@@ -321,9 +329,9 @@ export const constants = {
     {name: "I worked through a development agency with a team", value: "agency", checked:false}
   ],
   workTypes : [
-    {name: 'employee (full/part time)', value:'employee', checked:false},
-    {name: 'contractor/freelancer', value:'contractor', checked:false},
-    {name: 'volunteer', value:'volunteer', checked:false}
+    {name: 'Employee (full/part time)', value:'employee', checked:false},
+    {name: 'Contractor/Freelancer', value:'contractor', checked:false},
+    {name: 'Volunteer', value:'volunteer', checked:false}
   ],
   email_notificaiton: ['Never' , 'Daily' , '3 days' , 'Weekly'],
   years_exp_min: [
