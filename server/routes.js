@@ -25,7 +25,6 @@ const getReferralDetailForAdmin  = require('./controller/api/users/referrals/get
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
@@ -78,7 +77,6 @@ router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
 router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
-router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));

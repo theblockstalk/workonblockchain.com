@@ -6,14 +6,6 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-const about = module.exports.about = async function about(data,jwtToken) {
-    const res = await chai.request(server)
-        .put('/users/welcome/about')
-        .set('Authorization', jwtToken)
-        .send(data);
-    return res;
-}
-
 const experience = module.exports.experience = async function experience(data,jwtToken) {
 
     const res = await chai.request(server)
