@@ -3,8 +3,9 @@ const Schema = require('mongoose').Schema;
 
 const users = require('../../../model/mongoose/users');
 const companies = require('../../../model/mongoose/company');
-const Pages = require('../../../model/pages_content');
+const Pages = require('../../../model/mongoose/pages');
 const errors = require('../../services/errors');
+const mongoose = require('mongoose');
 
 
 module.exports.request = {
@@ -48,36 +49,32 @@ module.exports.endpoint = async function (req, res) {
     const timestamp = new Date();
     let terms_page_doc_id;
 
-    if(queryBody.marketing_emails === true) updateCandidateUser['marketing_emails'] = queryBody.marketing_emails;
-    if(queryBody.marketing_emails === false) updateCandidateUser['marketing_emails'] = false;
+    if(queryBody.marketing_emails ||  queryBody.marketing_emails === false) {
+        updateCandidateUser['marketing_emails'] = queryBody.marketing_emails;
+    }
 
-    if(queryBody.disable_account === true) {
+    if(queryBody.disable_account || queryBody.disable_account === false) {
         updateCandidateUser['disable_account'] = queryBody.disable_account;
         updateCandidateUser['dissable_account_timestamp'] = timestamp;
     }
-    if(queryBody.disable_account === false) {
-        updateCandidateUser['disable_account'] = false;
-        updateCandidateUser['dissable_account_timestamp'] = timestamp;
-    }
 
-    if(queryBody.is_unread_msgs_to_send === true) updateCandidateUser['is_unread_msgs_to_send'] = queryBody.is_unread_msgs_to_send;
-    if(queryBody.is_unread_msgs_to_send === false)  updateCandidateUser['is_unread_msgs_to_send'] = false;
+
+    if(queryBody.is_unread_msgs_to_send || queryBody.is_unread_msgs_to_send === false) updateCandidateUser['is_unread_msgs_to_send'] = queryBody.is_unread_msgs_to_send;
 
     if(queryBody.terms_id) {
-        const pagesDoc =  await Pages.findOne({_id: queryBody.terms_id}).lean();
-        if(pagesDoc) {
-            if(pagesDoc._id) terms_page_doc_id = pagesDoc._id;
-        }
-        else
-        {
-            errors.throwError("Terms and Conditions document not found", 404);
-        }
-        if(userDoc.type === 'candidate'){
-            updateCandidateUser['candidate.terms_id'] = terms_page_doc_id;
-        }
 
-        if(userDoc.type === 'company') {
-            await companies.update({ _creator: userId },{ $set: {'terms_id' : terms_page_doc_id} });
+        if (userDoc.type === 'candidate') {
+            let latest_terms = await Pages.findOneAndSort({page_name: 'Terms and Condition for candidate'});
+            if (queryBody.terms_id === latest_terms._id.toString()) {
+                updateCandidateUser['candidate.terms_id'] = queryBody.terms_id;
+            }
+        }
+        else {
+            console.log(queryBody)
+            let latest_terms = await Pages.findOne({page_name: 'Terms and Condition for company'});
+            if (queryBody.terms_id === latest_terms._id.toString()) {
+                await companies.update({ _creator: userId },{ $set: {'terms_id' : queryBody.terms_id} });
+            }
         }
     }
     await users.update({ _id: userId },{ $set: updateCandidateUser });

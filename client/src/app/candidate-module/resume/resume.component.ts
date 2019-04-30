@@ -434,7 +434,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
       if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
-
+      expForm.value.wizardNum = 4;
       this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
         .subscribe(
           data => {

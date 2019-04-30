@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../helpers/mongo');
 const Users = require('../../../model/mongoose/users');
-const Pages = require('../../../model/pages_content');
+const Pages = require('../../../model/mongoose/pages');
 
 const Companies = require('../../../model/employer_profile');
 const companyHepler = require('./companies/companyHelpers');
@@ -54,12 +54,13 @@ describe('account setting' , function () {
 
         const info = docGenerator.cmsContentFroTC();
         const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
-        const cmsDoc = await Pages.findOne({page_name: info.page_name}).lean();
+        const cmsDoc = await Pages.findOne({page_name: info.page_name});
         let userId = companyDoc._id;
 
-        const SummaryTnC = await usersHelpers.accountSetting(userId, {terms_id : cmsDoc._id} ,companyDoc.jwt_token);
+        await usersHelpers.accountSetting(userId, {terms_id : cmsDoc._id} ,companyDoc.jwt_token);
 
         const newCompanyDoc = await Companies.findOne({_creator: companyDoc._id});
+        console.log(newCompanyDoc)
         const cmsID = newCompanyDoc.terms_id.toString();
         cmsID.should.equal(cmsDoc._id.toString());
     })

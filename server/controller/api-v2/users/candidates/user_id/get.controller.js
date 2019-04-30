@@ -32,7 +32,7 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    if (req.query.admin) userId = req.params.user_id;
+    if (req.query.admin || req.auth.user.type === 'company') userId = req.params.user_id;
     else userId = req.auth.user._id;
 
     const userDoc = await users.findByIdAndPopulate(userId);
@@ -41,7 +41,6 @@ module.exports.endpoint = async function (req, res) {
         if (!userDoc.password_hash) password = false;
         const filterData = filterReturnData.removeSensativeData(userDoc);
         filterData.password = password;
-        console.log(filterData);
         res.send(filterData);
     }
     else {

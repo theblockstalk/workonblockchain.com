@@ -303,7 +303,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) inputQuery.base_country = this.info.country;
       if(this.info.city) inputQuery.base_city = this.info.city;
-
+      inputQuery.wizardNum = 2;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {

@@ -404,6 +404,7 @@ export class LinkedinImportComponent implements OnInit {
             if (obj.work || obj.education || obj.basics ) {
               info.education_history = education_json_array;
               info.work_history = experiencearray;
+              info.wizardNum = 1;
               backendService.edit_candidate_profile(this.currentUser._id, info, false )
                 .subscribe(
                   data => {

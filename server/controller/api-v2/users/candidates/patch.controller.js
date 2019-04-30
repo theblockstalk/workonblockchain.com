@@ -309,7 +309,11 @@ const bodySchema = new Schema({
     unset_employee: Boolean,
     unset_contractor: Boolean,
     unset_volunteer: Boolean,
-    unset_curret_currency: Boolean
+    unset_curret_currency: Boolean,
+    wizardNum : {
+        type: Number,
+        enum: [1,2,3,4,5]
+    }
 });
 
 module.exports.inputValidation = {
@@ -516,14 +520,16 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-        let wizardStatus = candidateHistory.filter(
+        let wizardCompletedStatus = candidateHistory.filter(
             (history) => history.status && history.status.status === 'wizard completed'
         );
-        if (wizardStatus.length === 0 && queryBody.description) {
-            history.status = { status: 'wizard completed' };
-        }
-        else if (wizardStatus.length === 0 && !queryBody.description) {
+
+        let wizardNumbersArray = [1,2,3,4,5];
+        if (wizardCompletedStatus.length === 0 && wizardNumbersArray.indexOf(queryBody.wizardNum) > -1) {
             history.status = { status: 'wizard' };
+        }
+        else if (wizardCompletedStatus.length === 0 && queryBody.wizardNum === 5 ) {
+            history.status = { status: 'wizard completed' };
         }
         else {
             history.status = { status: 'updated' };
