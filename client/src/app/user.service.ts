@@ -838,8 +838,9 @@ export class UserService {
   edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/' +company_id+ '/companies?admin='+ true;
-    else urlString = URL+'v2/users/' +company_id+ '/companies';
+    let queryParam;
+    if(admin === true) urlString = URL+'v2/users/companies?admin='+ true + '&user_id=' +company_id;
+    else urlString = URL+'v2/users/companies'+ '&user_id=' +company_id;
 
     return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
