@@ -19,7 +19,7 @@ const endpoints = [
     require('./controller/api-v2/users/auth/post.controller'),
     require('./controller/api-v2/users/companies/status/post.controller'),
     require('./controller/api-v2/users/companies/post.controller'),
-    require('./controller/api-v2/users/candidates/user_id/get.controller'),
+    require('./controller/api-v2/users/candidates/get.controller'),
     require('./controller/api-v2/users/settings/patch.controller')
 ];
 

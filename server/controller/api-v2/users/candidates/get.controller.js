@@ -1,24 +1,20 @@
-const auth = require('../../../../middleware/auth-v2');
+const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const users = require('../../../../../model/mongoose/users');
-const errors = require('../../../../services/errors');
-const filterReturnData = require('../../../../api/users/filterReturnData');
+const users = require('../../../../model/mongoose/users');
+const errors = require('../../../services/errors');
+const filterReturnData = require('../../../api/users/filterReturnData');
 
 module.exports.request = {
     type: 'get',
-    path: '/users/:user_id/candidates'
+    path: '/users/candidates'
 };
 
-const paramSchema = new Schema({
+const querySchema = new Schema({
+    admin: Boolean,
     user_id: String
 });
 
-const querySchema = new Schema({
-    admin: Boolean
-});
-
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema
 }
 
@@ -32,7 +28,7 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    if (req.query.admin || req.auth.user.type === 'company') userId = req.params.user_id;
+    if (req.query.admin || req.auth.user.type === 'company') userId = req.query.user_id;
     else userId = req.auth.user._id;
 
     const userDoc = await users.findByIdAndPopulate(userId);
