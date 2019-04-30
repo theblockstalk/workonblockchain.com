@@ -172,7 +172,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
         queryBody.terms_id = termsForm.value.termsID;
         queryBody.marketing_emails = termsForm.value.marketing;
 
-        this.authenticationService.account_settings(this.currentUser._id,queryBody)
+        this.authenticationService.account_settings(queryBody)
         .subscribe(
           data =>
           {

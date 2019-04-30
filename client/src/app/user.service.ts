@@ -1236,9 +1236,9 @@ export class UserService {
     }));
   }
 
-  account_settings(user_id: string, queryInput: any)
+  account_settings(queryInput: any)
   {
-    return this.http.patch(URL+'v2/users/'+user_id, queryInput , {
+    return this.http.patch(URL+'v2/users/settings', queryInput , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

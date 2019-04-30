@@ -20,7 +20,7 @@ const endpoints = [
     require('./controller/api-v2/users/companies/status/post.controller'),
     require('./controller/api-v2/users/companies/post.controller'),
     require('./controller/api-v2/users/candidates/user_id/get.controller'),
-    require('./controller/api-v2/users/patch.controller')
+    require('./controller/api-v2/users/settings/patch.controller')
 ];
 
 function isEmpty(obj) {

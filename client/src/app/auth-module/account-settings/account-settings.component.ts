@@ -113,7 +113,7 @@ export class AccountSettingsComponent implements OnInit {
     if(this.currentUser)
     {
 
-      this.authenticationService.account_settings(this.currentUser._id, queryInput)
+      this.authenticationService.account_settings(queryInput)
         .subscribe(
           data =>
           {

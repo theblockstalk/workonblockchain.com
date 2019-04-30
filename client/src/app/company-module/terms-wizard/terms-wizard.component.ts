@@ -123,7 +123,7 @@ export class TermsWizardComponent implements OnInit {
       queryBody.terms_id = termsForm.value.termsID;
       queryBody.marketing_emails = termsForm.value.marketing;
 
-      this.authenticationService.company_terms(this.currentUser._id, queryBody)
+      this.authenticationService.account_settings(queryBody)
         .subscribe(
           data => {
             if(data && this.currentUser)

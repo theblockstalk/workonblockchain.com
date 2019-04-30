@@ -1,20 +1,17 @@
-const auth = require('../../middleware/auth-v2');
+const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 
-const users = require('../../../model/mongoose/users');
-const companies = require('../../../model/mongoose/company');
-const Pages = require('../../../model/mongoose/pages');
-const errors = require('../../services/errors');
+const users = require('../../../../model/mongoose/users');
+const companies = require('../../../../model/mongoose/company');
+const Pages = require('../../../../model/mongoose/pages');
+const errors = require('../../../services/errors');
 const mongoose = require('mongoose');
 
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id'
+    path: '/users/settings'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
 
 const bodySchema = new Schema({
     marketing_emails: {
@@ -30,7 +27,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     body: bodySchema
 };
 
