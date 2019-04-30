@@ -30,9 +30,6 @@ describe('verify email of candidate or company', function () {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
 
-            const candidateProfileInfo = docGenerator.profileData();
-            await candidateWizardHelper.about(candidateProfileInfo,candidateRes.body.jwt_token);
-
             await authenticateHepler.verifyClient(candidate.email);
             
             let candidateUserDoc = await Users.findOne({email: candidate.email}).lean();

@@ -31,12 +31,12 @@ export class LinkedinImportComponent implements OnInit {
   resume_active_class;
   exp_active_class;
   error_log;
-
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
   }
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     this.skip_value = 0;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
@@ -351,9 +351,7 @@ export class LinkedinImportComponent implements OnInit {
           else {
             if (obj.basics.name || obj.basics.phone || obj.basics.summary) {
               name = obj.basics.name.split(' ');
-              info = {first_name: name[0], last_name: name[1] , summary : obj.basics.summary};
-
-
+              info = {first_name: name[0], last_name: name[1] , description : obj.basics.summary};
             }
 
             if(obj.work){
@@ -404,7 +402,9 @@ export class LinkedinImportComponent implements OnInit {
 
 
             if (obj.work || obj.education || obj.basics ) {
-              backendService.prefilled_profile(info , experiencearray,  education_json_array )
+              info.education_history = education_json_array;
+              info.work_history = experiencearray;
+              backendService.edit_candidate_profile(this.currentUser._id, info, false )
                 .subscribe(
                   data => {
                     if(data && this.currentUser)
