@@ -112,12 +112,12 @@
             <div class="col-md-6">
               <label for="phone"><b>Phone number (10 digit)</b></label>
               <div class="input-group">
-                <div class="input-group<form-prepend w-25">
+                <div class="input-group-prepend w-25">
                   <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
                     <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
                   </select>
                 </div>
-                <input type="tel" title="(select one)" #phoneNumber="ngModel" class="form-control" id="phone" placeholder="1234567890" name="contact_number"  pattern="^\d{3}\d{3}\d{4}$" required [(ngModel)]="info.contact_number">
+                <input type="tel" #phoneNumber="ngModel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" pattern="^\d{3}\d{3}\d{4}$" required [(ngModel)]="info.contact_number">
                 <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                   {{contact_name_log}}
                 </div>

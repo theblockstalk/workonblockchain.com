@@ -41,11 +41,22 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact number</label>
-                  <input type="tel" class="form-control"   required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
+                <label for="phone"><b>Contact number (10 digit)</b></label>
+                <div class="input-group">
+                  <div class="input-group-prepend w-25">
+                    <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                    </select>
+                  </div>
+                  <input type="tel" class="form-control" #phoneNumber="ngModel" required placeholder="1234567890" pattern="^\d{3}\d{3}\d{4}$" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
+                    {{country_code_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="phoneNumber.errors">
+                    Enter phone number in proper format.
                   </div>
                 </div>
               </div>
@@ -1144,13 +1155,12 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/candidate_profile']"  class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary" >Save</button>
+            <button type="submit" class = "btn btn-primary" [disabled]="!profileForm.valid">Save</button>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}
             </div>
           </div>
-
         </div>
       </div>
     </form>
