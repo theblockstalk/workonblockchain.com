@@ -92,7 +92,7 @@ export class UserService {
   getCandidateProfileById(_id: string, admin: boolean)
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users//candidates?admin=true&user_id='+_id;
+    if(admin === true) urlString = URL+'v2/users/candidates?admin=true&user_id='+_id;
     else urlString = URL+'v2/users/candidates?user_id='+_id;
 
     return this.http.get(urlString,  {
