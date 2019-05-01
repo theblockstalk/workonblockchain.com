@@ -521,12 +521,9 @@ module.exports.endpoint = async function (req, res) {
             (history) => history.status && history.status.status === 'wizard completed'
         );
 
-        let wizardNumbersArray = [1,2,3,4,5];
-        if (wizardCompletedStatus.length === 0 && wizardNumbersArray.indexOf(queryBody.wizardNum) > -1) {
-            history.status = { status: 'wizard' };
-        }
-        else if (wizardCompletedStatus.length === 0 && queryBody.wizardNum === 5 ) {
-            history.status = { status: 'wizard completed' };
+        if (wizardCompletedStatus.length === 0) {
+            if(queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };
+            else history.status = { status: 'wizard' };
         }
         else {
             history.status = { status: 'updated' };

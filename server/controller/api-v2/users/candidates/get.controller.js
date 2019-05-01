@@ -28,16 +28,10 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    let userDoc;
-    if (req.query.admin || req.auth.user.type === 'company') {
-        userId = req.query.user_id;
-        userDoc = await users.findByIdAndPopulate(userId);
-    }
-    else {
-        userId = req.auth.user._id;
-        userDoc = req.auth.user;
-    }
+    if (req.query.admin || req.auth.user.type === 'company') userId = req.query.user_id;
+    else userId = req.auth.user._id;
 
+    const userDoc = await users.findByIdAndPopulate(userId);
     if(userDoc) {
         let password = true;
         if (!userDoc.password_hash) password = false;
