@@ -80,7 +80,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       this.exp_class="";
       this.active_class="fa fa-check-circle text-success";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['candidate'].terms_id)
@@ -434,7 +434,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
       if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
-
+      expForm.value.wizardNum = 4;
       this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
         .subscribe(
           data => {

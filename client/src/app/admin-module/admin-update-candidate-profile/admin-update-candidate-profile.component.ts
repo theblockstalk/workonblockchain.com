@@ -243,7 +243,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.user_id)
+
+      this.authenticationService.getCandidateProfileById(this.user_id , true)
         .subscribe(data =>
           {
             if(data)

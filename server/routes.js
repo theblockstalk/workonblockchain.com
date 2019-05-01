@@ -12,7 +12,6 @@ const authForgotPassword = require('./controller/api/users/auth/forgotPassword.c
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
-const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
 
 // Referrals
@@ -23,12 +22,8 @@ const getReferralDetailForAdmin  = require('./controller/api/users/referrals/get
 
 // Candidates
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
-const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
-const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
-const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
 
 // Companies
@@ -45,7 +40,6 @@ const updateExplanationPopupStatus = require('./controller/api/chat/updateExplan
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
-const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
@@ -63,7 +57,6 @@ router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword))
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword));
 router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword));
 router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient));
-router.post('/users/account_settings' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
 router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
 
 // Referrals
@@ -75,11 +68,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
-router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
 router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
-router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
-router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
-router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
@@ -93,7 +82,6 @@ router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(com
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
 // Admin

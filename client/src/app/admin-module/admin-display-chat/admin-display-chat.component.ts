@@ -234,7 +234,7 @@ export class AdminDisplayChatComponent implements OnInit {
 			);
 		}
 		else{
-			this.authenticationService.getById(this.user_id)
+			this.authenticationService.getCandidateProfileById(this.user_id, true)
 			.subscribe(
 				data =>{
 				  if(data['error']){
