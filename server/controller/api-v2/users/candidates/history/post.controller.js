@@ -38,12 +38,8 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    if (req.query.admin) {
-        await auth.isAdmin(req);
-    }
-    else {
-        errors.throwError("Unauthorize user", 401)
-    }
+    await auth.isAdmin(req);
+    if(!req.auth.admin) throw new Error("User is not an admin");
 }
 
 module.exports.endpoint = async function (req, res) {
