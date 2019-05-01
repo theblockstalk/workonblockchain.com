@@ -936,7 +936,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.approach_work_type = 'employee';
               let employeeOffer = approach.employee;
               this.employee.job_title = employeeOffer.job_title;
-              this.employee.salary = employeeOffer.annual_salary;
+              this.employee.min_salary = employeeOffer.annual_salary.min;
+              if(employeeOffer.annual_salary && employeeOffer.annual_salary.max) {
+                this.employee.max_salary = employeeOffer.annual_salary.max;
+              }
               this.employee.currency = employeeOffer.currency;
               this.employee.location = employeeOffer.location;
               this.employee.job_type = employeeOffer.employment_type;
@@ -945,10 +948,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             if(approach.contractor) {
               this.approach_work_type = 'contractor';
               let contractorOffer = approach.contractor;
-              this.contractor.hourly_rate = contractorOffer.hourly_rate ;
+              this.contractor.hourly_rate_min = contractorOffer.hourly_rate.min ;
+              if(contractorOffer.hourly_rate && contractorOffer.hourly_rate.max) {
+                this.contractor.hourly_rate_max = contractorOffer.hourly_rate.max;
+              }
               this.contractor.currency = contractorOffer.currency;
               this.contractor.contract_description = contractorOffer.contract_description;
               this.contractor.location = contractorOffer.location;
+              console.log(this.contractor);
+              console.log(contractorOffer);
             }
 
             if(approach.volunteer) {
@@ -989,6 +997,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   hourly_currency_log;
   contract_desc_log;
   contractor_role_log;
+  max_salary_log;
+  max_hourly_rate_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1002,14 +1012,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.location_log = 'Please enter location';
         errorCount = 1;
       }
-      if (!this.employee.salary) {
-        this.salary_log = 'Please enter salary';
+      if (!this.employee.min_salary) {
+        this.salary_log = 'Please enter minimum salary';
         errorCount = 1;
       }
-      if(this.employee.salary && !this.checkNumber(this.employee.salary)) {
+      if(this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
         this.salary_log = 'Salary should be a number';
         errorCount = 1;
       }
+      if(this.employee.max_salary && !this.checkNumber(this.employee.max_salary)) {
+        this.max_salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+
+      if(Number(this.employee.max_salary) < Number(this.employee.min_salary)) {
+        errorCount = 1;
+      }
+
       if (!this.employee.currency) {
         this.salary_currency_log = 'Please select currency';
         errorCount = 1;
@@ -1022,16 +1041,24 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.job_desc_log = 'Please enter job description';
         errorCount = 1;
       }
+      console.log(this.employee)
     }
 
     if (this.approach_work_type === 'contractor') {
-      if (!this.contractor.hourly_rate) {
+      if (!this.contractor.hourly_rate_min) {
         this.hourly_rate_log = 'Please enter hourly rate';
         errorCount = 1;
       }
 
-      if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
+      if(this.contractor.hourly_rate_min && !this.checkNumber(this.contractor.hourly_rate_min)) {
         this.hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(this.contractor.hourly_rate_max && !this.checkNumber(this.contractor.hourly_rate_max)) {
+        this.max_hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(Number(this.contractor.hourly_rate_min) > Number(this.contractor.hourly_rate_max)) {
         errorCount = 1;
       }
       if (!this.contractor.currency) {
@@ -1046,6 +1073,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.contractor_location_log = 'Please enter opportunity description';
         errorCount = 1;
       }
+      console.log(this.contractor)
     }
 
     if (this.approach_work_type === 'volunteer') {
@@ -1063,8 +1091,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       let job_offer: any = {};
       let new_offer: any = {};
       if(this.approach_work_type === 'employee') {
+        let salary :any = {}
         job_offer.job_title = this.employee.job_title;
-        job_offer.annual_salary = this.employee.salary;
+        salary.min = Number(this.employee.min_salary);
+        if(this.employee.max_salary) salary.max = Number(this.employee.max_salary);
+        job_offer.annual_salary = salary;
         job_offer.currency = this.employee.currency;
         job_offer.employment_type = this.employee.job_type;
         job_offer.location = this.employee.location;
@@ -1074,7 +1105,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
       }
       if(this.approach_work_type === 'contractor') {
-        job_offer.hourly_rate = this.contractor.hourly_rate;
+        let hourly_rate : any = {};
+        hourly_rate.min = Number(this.contractor.hourly_rate_min);
+        if(this.contractor.hourly_rate_max) hourly_rate.max = Number(this.contractor.hourly_rate_max);
+        job_offer.hourly_rate = hourly_rate;
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
         job_offer.location = this.contractor.location;
@@ -1311,6 +1345,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   filterAndSort(roles) {
     return getFilteredNames(roles, this.rolesData);
+  }
+
+  convertNumber(string) {
+    return Number(string);
   }
 
 }
