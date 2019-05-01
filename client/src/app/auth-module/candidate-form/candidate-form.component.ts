@@ -290,6 +290,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
+      this.credentials.phone_number = this.credentials.country_code +' '+this.credentials.phone_number;
       this.authenticationService.create_employer(this.credentials)
         .subscribe(
           data =>
