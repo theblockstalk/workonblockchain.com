@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 
 const accountSetting = module.exports.accountSetting = async function (id, queryInput ,jwtToken){
     const res = await chai.request(server)
-        .patch('/v2/users/'+ id)
+        .patch('/v2/users/settings')
         .set('Authorization', jwtToken)
         .send(queryInput)
     res.should.have.status(200);

@@ -28,7 +28,7 @@ module.exports.signupAdminCompany = async function signupAdminCompany(company) {
 module.exports.companyProfileData = async function companyProfileData(user_id, jwtToken, profiledata) {
     console.log(user_id);
     const res = await chai.request(server)
-        .patch('/v2/users/'+user_id +'/companies')
+        .patch('/v2/users/companies?user_id='+ user_id)
         .set('Authorization', jwtToken)
         .send(profiledata);
     res.should.have.status(200);
@@ -38,7 +38,7 @@ module.exports.companyProfileData = async function companyProfileData(user_id, j
 module.exports.approveUser = async function approveUser(user_id, params, jwtToken, admin) {
     console.log(user_id);
     const res = await chai.request(server)
-        .post('/v2/users/'+user_id +'/companies/status')
+        .post('/v2/users/companies/status?user_id='+ user_id)
         .set('Authorization', jwtToken)
         .send(params);
     res.should.have.status(200);
