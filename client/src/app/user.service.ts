@@ -247,7 +247,7 @@ export class UserService {
 
   create_employer(employer: any)
   {
-    return this.http.post(URL+'users/create_employer', employer) .pipe(map(employer => {
+    return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
       return employer
     }));
 
@@ -1025,8 +1025,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-
-    return this.http.put(URL+'users/approve/' + user_id, {is_approve : detail}, {
+    return this.http.post( URL+'v2/users/' + user_id + '/companies/status', {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

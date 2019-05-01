@@ -32,7 +32,6 @@ const candidateWizardPrefilledProfile = require('./controller/api/users/candidat
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
 
 // Companies
-const companyRegister = require('./controller/api/users/company/createCompany.controller');
 const companyGet = require('./controller/api/users/company/getCompany.controller');
 const companyGetCurrent = require('./controller/api/users/company/getCurrentCompany.controller');
 const companyImage = require('./controller/api/users/company/image.controller');
@@ -47,7 +46,6 @@ const updateExplanationPopupStatus = require('./controller/api/chat/updateExplan
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
 const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
-const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
@@ -86,7 +84,6 @@ router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddle
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
-router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
@@ -100,7 +97,6 @@ router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddlew
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
 // Admin
-router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
 router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
 router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
 router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));

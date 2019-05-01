@@ -45,7 +45,7 @@ describe('admin get metrics', function () {
         const aggregrated = metrics.approvedEnabled.aggregated;
         console.log("blockchain");
         aggregrated.nationality[profileData.nationality].should.equal(1);
-        should.not.exist(aggregrated.nationality.Australian);
+        if(profileData.nationality !== 'Australian')should.not.exist(aggregrated.nationality.Australian);
         console.log(aggregrated)
         aggregrated.employmentAvailability[profileData.employee.employment_availability].should.equal(1);
         aggregrated.baseCountry[profileData.base_country].should.equal(1);

@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
     const res = await chai.request(server)
-        .post('/users/create_employer')
+        .post('/v2/users/companies')
         .send(company);
     res.should.have.status(200);
     return res;

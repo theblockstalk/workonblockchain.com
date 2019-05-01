@@ -200,7 +200,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            let rolesQuery =[]
+            let rolesQuery =[];
             const setRoleQuery = function (roleQuery){
                 const rolesFilter = {[roleQuery]: {$in: search.positions}};
                 rolesQuery.push(rolesFilter);
@@ -253,13 +253,34 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
             userQuery.push(hourlyRateFilter);
-
         }
 
         if (search.skills && search.skills.length > 0) {
-            const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
-            userQuery.push(skillsFilter);
+            let skillsFilterNew;
+            if (search.years_exp_min) {
+                let skillsAndExpFilter = [];
+                for (let skills of search.skills) {
+                    skillsAndExpFilter = {
+                        "candidate.programming_languages": {
+                            $elemMatch: {
+                                "language": skills,
+                                "exp_year": {$in: minExpToArray(search.years_exp_min)}
+                            }
+                        }
+                    };
+                    skillsFilterNew = {$or: [skillsAndExpFilter]}
+                }
+            }
+            else{
+                const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
+                userQuery.push(skillsFilter);
+            }
+            if(skillsFilterNew){
+                userQuery.push(skillsFilterNew);
+            }
         }
+
+
 
         if (search.residence_country && search.residence_country.length > 0) {
             const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
@@ -280,6 +301,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             };
         }
     }
+    logger.debug("query", {query: userQuery});
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
@@ -336,3 +358,24 @@ function removeDups(names) {
     return Object.keys(unique);
 }
 
+const minExpToArray  = function(expYears) {
+    switch (expYears) {
+        case 1:
+            return ['0-1', '1-2', '2-4', '4-6', '6+'];
+            break;
+        case 2:
+            return ['1-2', '2-4', '4-6', '6+'];
+            break;
+        case 3:
+            return ['2-4', '4-6', '6+'];
+            break;
+        case 4:
+        case 5:
+        case 6:
+            return ['4-6', '6+'];
+            break;
+        default:
+            return ['6+'];
+            break;
+    }
+}

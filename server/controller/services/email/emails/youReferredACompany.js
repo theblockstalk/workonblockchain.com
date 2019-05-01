@@ -5,7 +5,7 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     const sendTo = {
         email: data.email
     };
-    const subject = data.FNAME_REFERRED + ' has created a profile on Work on Blockchain!';
+    const subject = data.fname_referred + ' has created a profile on Work on Blockchain!';
     const sendToArray = [sendTo];
     logger.debug('referred email: ' , data.email);
     let merge_tags, templateData, sendGridTo;

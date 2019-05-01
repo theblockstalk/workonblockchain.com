@@ -4,7 +4,6 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
-
 const companies = require('../../../../model/mongoose/company');
 
 module.exports.request = {
@@ -126,6 +125,11 @@ const bodySchema = new Schema({
                     type: String,
                     enum: enumerations.programmingLanguages
                 }]
+            },
+            years_exp_min: {
+                type: Number,
+                min: 1,
+                max: 20
             },
             residence_country: {
                 type : [{

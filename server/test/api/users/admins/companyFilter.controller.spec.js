@@ -12,7 +12,7 @@ const adminHelper = require('./adminHelpers');
 const userHelper = require('../../users/usersHelpers');
 const docGeneratorV2 = require('../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../test/api-v2/helpers');
-const companiesHelperV2 = require('../../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../../api-v2/users/companies/companyHelpers')
 
 const assert = chai.assert;
 const expect = chai.expect;
