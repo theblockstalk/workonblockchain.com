@@ -53,7 +53,7 @@
                 </mat-autocomplete>
                 <mat-form-field floatLabel="always">
                   <mat-label></mat-label>
-                  <input matInput placeholder="Location" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
 
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
@@ -91,7 +91,7 @@
               <hr/>
 
               <div class="form-group">
-                <select class="form-control selectpicker" title="Residence country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                <select class="form-control selectpicker" title="Residence/base country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
                   <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                 </select>
                 <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
@@ -125,7 +125,6 @@
 
             <div class="wob-bg-primary2 p-2 border mt-2">
               <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Talent preferences</h4>
-              <small class="text-center ml-1" >This will determine the order of the candidates but not filter any candidates</small>
               <div class = "form-group mt-3">
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
@@ -134,11 +133,11 @@
             </div>
 
             <div class="row my-3">
-              <div class="col-md-8">
+              <div class="col-md-6">
                 <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
               </div>
-              <div class="col-md-4">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Reset</button>
+              <div class="col-md-6">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear filters</button>
               </div>
               <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
                 {{success_msg}}
@@ -283,6 +282,9 @@
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
                       {{types.name}}
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-user-clock"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-times"></i>
                     </label>
                   </div>
                 </div>
@@ -422,7 +424,6 @@
 
             </div>
 
-
             <div class="row">
               <div class="col-md-12">
                 <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
@@ -437,13 +438,8 @@
               <button type="reset" class="btn btn-secondary">Reset</button>
               <button type="submit" class="btn btn-primary">Send</button>
             </div>
-            <div class = "invalid-feedback d-inline-block text-right">
-              {{job_offer_log}}
-            </div>
           </form>
-
         </div>
-
       </div>
     </div>
   </div>
@@ -521,7 +517,7 @@
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -569,7 +565,7 @@
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select multiple class="form-control selectpicker" title="Residence/base country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
@@ -614,7 +610,6 @@
             <div class="row my-2">
               <div class="col-md-12">
                 <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
-                <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
               </div>
             </div>
 

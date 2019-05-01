@@ -65,7 +65,7 @@
                   <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                 </li>
                 <li class="list-group-item">
-                  <span><i class="fas fa-user mr-2"></i></span>
+                  <span><i class="fas fa-calendar mr-2"></i></span>
                   <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
                 </li>
               </ul>
@@ -317,19 +317,11 @@
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-group">
-                <label>Contact number:</label>
-                <p>
-                  {{data.contact_number}}
-                <p>
-              </div>
-            </div>
             <div class="col-md-6 mb-3" *ngIf="data.candidate.github_account">
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  <a href="{{data.candidate.github_account}}" target="_blank">
+                  <a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
                     {{data.candidate.github_account}}
                   </a>
                 </p>
@@ -340,7 +332,7 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  <a href="{{data.candidate.stackexchange_account}}" target="_blank">
+                  <a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
                     {{data.candidate.stackexchange_account}}
                   </a>
                 </p>
@@ -351,7 +343,7 @@
               <div class="form-group" >
                 <label>Linkedin account url:</label>
                 <p>
-                  <a href="{{data.candidate.linkedin_account}}" target="_blank">
+                  <a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
                     {{data.candidate.linkedin_account}}
                   </a>
                 </p>
@@ -362,7 +354,7 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  <a href="{{data.candidate.medium_account}}" target="_blank">
+                  <a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
                     {{data.candidate.medium_account}}
                   </a>
                 </p>
@@ -722,7 +714,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
-                <i class="fas fa-briefcase"></i>
+                <i class="fas fa-code"></i>
                 Experience
               </h2>
             </div>

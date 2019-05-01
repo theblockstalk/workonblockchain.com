@@ -55,7 +55,7 @@
                     <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                   </li>
                   <li class="list-group-item">
-                    <i class="fas fa-clock mr-2"></i>
+                    <i class="fas fa-calendar mr-2"></i>
                     <span>Created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
                 </ul>
@@ -92,7 +92,7 @@
                 <div class="form-group">
                   <label> Github account URL:</label>
                   <p>
-                    <a href="{{github}}" target="_blank">
+                    <a [href]="websiteUrl(github)" target="_blank">
                       {{github}}
                     </a>
                   </p>
@@ -103,7 +103,7 @@
                 <div class="form-group">
                   <label> Linkedin account URL:</label>
                   <p>
-                    <a href="{{linkedin_account}}" target="_blank">
+                    <a [href]="websiteUrl(linkedin_account)" target="_blank">
                       {{linkedin_account}}
                     </a>
                   </p>
@@ -114,7 +114,7 @@
                 <div class="form-group">
                   <label> Medium account URL:</label>
                   <p>
-                    <a href="{{medium_account}}" target="_blank">
+                    <a [href]="websiteUrl(medium_account)" target="_blank">
                       {{medium_account}}
                     </a>
                   </p>
@@ -125,7 +125,7 @@
                 <div class="form-group">
                   <label> Stackexchange account URL:</label>
                   <p>
-                    <a href="{{stack}}" target="_blank">
+                    <a [href]="websiteUrl(stack)" target="_blank">
                       {{stack}}
                     </a>
                   </p>
@@ -509,7 +509,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="languages && languages.length>0">
             <div class="row">
               <div class="col-md-6">
-                <h2><i class="fas fa-briefcase"></i> Experience</h2>
+                <h2><i class="fas fa-code"></i> Experience</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">

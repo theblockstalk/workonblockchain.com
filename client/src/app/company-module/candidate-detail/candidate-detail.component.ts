@@ -72,6 +72,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   contract_desc_log;
   workTypes = constants.workTypes;
   rolesData = constants.workRoles;
+  already_approached = 0;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -134,6 +135,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           data => {
             if(data && data['message'].approach) {
+              this.already_approached=1;
+              console.log(data['message'].approach);
               let approach = data['message'].approach;
               if(approach.employee) {
                 this.approach_work_type = 'employee';
@@ -588,4 +591,19 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
   }
+
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
+
 }
