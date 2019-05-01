@@ -147,7 +147,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       {
         this.information.country = -1;
 
-        this.authenticationService.getProfileById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
           .subscribe(
             data => {
               if(data)
@@ -254,11 +254,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.volunteer.value.roles = rolesValue.sort();
                 }
 
+                if(data['candidate'].interest_areas) {
+                  this.interest_area = data['candidate'].interest_areas;
+                  this.interest_area.sort();
+                }
 
-                this.interest_area =data['candidate'].interest_areas;
-                this.interest_area.sort();
 
-                this.why_work = data['candidate'].why_work;
+                if(data['candidate'].why_work) this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {
                   if(data['candidate'].blockchain.commercial_platforms) {
                     this.commercial = data['candidate'].blockchain.commercial_platforms;
@@ -318,8 +320,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
 
 
-                this.current_currency = data['candidate'].current_currency;
-                this.current_salary = data['candidate'].current_salary;
+                if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+                if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
 
 
                 if(data['image'] != null )
@@ -385,7 +387,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     {
       this.city_log ="Please enter base city";
     }
-    if(this.information.country !== -1 && this.information.city  )
+    if(this.information.country !== -1 && this.information.city)
     {
       this.authenticationService.about(this.currentUser._id,this.information)
         .subscribe(

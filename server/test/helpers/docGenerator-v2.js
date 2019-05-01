@@ -341,3 +341,18 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
         }]
     }
 }
+
+module.exports.accountSetting = function accountSetting(){
+    return {
+        marketing_emails : true,
+        is_unread_msgs_to_send : false
+    }
+}
+
+module.exports.cmsContentFroTC = function cmsContentFroTC() {
+    return {
+        page_title: "T&C for Company",
+        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        page_name: "Terms and Condition for company"
+    }
+}
