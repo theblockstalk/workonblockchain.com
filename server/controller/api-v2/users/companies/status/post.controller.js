@@ -30,7 +30,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isAdmin(req);
-    if(!req.auth.admin) throw new Error("User is not an admin");
+    if(!req.query.admin) throw new Error("User is not an admin");
 }
 
 module.exports.endpoint = async function (req, res) {

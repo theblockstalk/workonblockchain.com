@@ -38,7 +38,7 @@ module.exports.companyProfileData = async function companyProfileData(user_id, j
 module.exports.approveUser = async function approveUser(user_id, params, jwtToken, admin) {
     console.log(user_id);
     const res = await chai.request(server)
-        .post('/v2/users/companies/status?admin=true&user_id='+ user_id)
+        .post('/v2/users/companies/status?admin='+true+'&user_id='+ user_id)
         .set('Authorization', jwtToken)
         .send(params);
     res.should.have.status(200);
