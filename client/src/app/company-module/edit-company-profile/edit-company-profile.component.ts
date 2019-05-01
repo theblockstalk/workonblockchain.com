@@ -78,6 +78,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   emptyInput;
   when_receive_email_notitfications;
   yearVerification;
+  country_code;
+  country_code_log;
 
   countries = constants.countries;
   job_types = constants.job_type;
@@ -88,6 +90,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   email_notificaiton = constants.email_notificaiton;
   residenceCountries = constants.countries;
   workTypes = constants.workTypes;
+  country_codes = constants.country_codes;
   prefData;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
@@ -176,6 +179,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   locationArray = [];
   ngOnInit()
   {
+    $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
@@ -252,7 +256,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.job_title =data['job_title'];
               this.company_name=data['company_name'];
               this.company_website=data['company_website'];
-              this.company_phone=data['company_phone'];
+
+              let contact_number = data['company_phone'];
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1){
+                this.country_code = contact_number[0];
+                this.company_phone = contact_number[1];
+              }
+              else this.company_phone = contact_number[0];
+
               this.company_country=data['company_country'];
               this.company_city =data['company_city'];
               this.company_postcode = data['company_postcode'];
@@ -270,9 +282,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
-
-              console.log(this.preferncesForm)
-
             }
           },
           error =>
@@ -333,6 +342,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
     if(!this.company_phone) {
       this.company_phone_log="Please enter first name";
+    }
+    if(!this.country_code) {
+      this.country_code_log="Please select country code";
     }
     if(this.company_country === -1) {
       this.company_country_log="Please enter company name";
@@ -439,7 +451,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
-      this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode )  {
+      this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       let formData = new FormData();
       let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
@@ -531,6 +543,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           i++;
         }
       }
+
+      profileForm.value.phone_number = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
       this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)
