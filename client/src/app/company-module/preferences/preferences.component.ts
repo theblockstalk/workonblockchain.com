@@ -532,7 +532,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   redirectToCompany()
   {
     $('#whatHappensNextModal').modal('hide');
-    this.router.navigate(['/company_profile']);
+    this.router.navigate(['/candidate-search']);
   }
 
 
