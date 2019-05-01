@@ -955,8 +955,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.contractor.currency = contractorOffer.currency;
               this.contractor.contract_description = contractorOffer.contract_description;
               this.contractor.location = contractorOffer.location;
-              console.log(this.contractor);
-              console.log(contractorOffer);
             }
 
             if(approach.volunteer) {
