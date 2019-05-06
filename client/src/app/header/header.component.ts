@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
       if(this.user_type === 'candidate')
       {
 
-        this.authenticationService.getById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
             {

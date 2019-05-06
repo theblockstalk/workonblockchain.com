@@ -103,7 +103,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if(this.currentUser && this.currentUser.type=='candidate')
     {
 
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
         .subscribe(
           data =>
           {
@@ -224,83 +224,114 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   about() {
     this.error_msg = "";
+    let errorCount = 0;
     if (this.referred_id) {
       this.info.referred_id = this.referred_id;
     }
 
-    if(!this.info.first_name) this.first_name_log = 'Please enter first name';
-    if(!this.info.last_name) this.last_name_log = 'Please enter last name';
+    if(!this.info.first_name) {
+      this.first_name_log = 'Please enter first name';
+      errorCount++;
+    }
+    if(!this.info.last_name) {
+      this.last_name_log = 'Please enter last name';
+      errorCount++;
+    }
 
     if (!this.info.contact_number) {
       this.contact_name_log = "Please enter contact number";
+      errorCount++;
     }
 
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
+      errorCount++;
     }
 
     if (!this.info.nationality) {
       this.nationality_log = "Please choose nationality";
+      errorCount++;
     }
     if (!this.info.country) {
       this.country_log = "Please choose base country";
+      errorCount++;
     }
     if (!this.info.city) {
       this.city_log = "Please enter base city";
+      errorCount++;
     }
-    if (this.info.country_code && this.info.contact_number && this.info.nationality && this.info.city && this.info.country && this.info.first_name && this.info.last_name) {
-      this.info.contact_number = this.info.country_code +' '+this.info.contact_number;
-      console.log(this.info.contact_number);
-      this.authenticationService.about(this.currentUser._id, this.info)
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+    let fileCount: number = inputEl.files.length;
+    let formData = new FormData();
+    if (fileCount > 0 ) {
+      console.log(inputEl.files.item(0).size);
+      console.log(this.file_size);
+      if(inputEl.files.item(0).size < this.file_size)
+      {
+        formData.append('image', inputEl.files.item(0));
+        this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
+          .subscribe(
+            data => {
+              if (data) {
+                //console.log(data);
+                //this.router.navigate(['/candidate_profile']);
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
+      }
+      else
+      {
+        this.image_log = "Image size should be less than 1MB";
+      }
+    }
+    if (errorCount === 0) {
+      let inputQuery:any ={};
+
+      if(this.info.first_name) inputQuery.first_name = this.info.first_name;
+      if(this.info.last_name) inputQuery.last_name = this.info.last_name;
+      if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+ this.info.contact_number;
+
+      if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+      else inputQuery.unset_github_account = true;
+
+      if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+      else inputQuery.unset_exchange_account = true;
+
+      if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+      else inputQuery.unset_linkedin_account = true;
+
+      if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+      else inputQuery.unset_medium_account = true;
+
+      if(this.info.nationality) inputQuery.nationality = this.info.nationality;
+      if(this.info.country) inputQuery.base_country = this.info.country;
+      if(this.info.city) inputQuery.base_city = this.info.city;
+      inputQuery.wizardNum = 2;
+      this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {
-            if (data['success']) {
-
-              if (this.info.image) {
-
-                let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-                let fileCount: number = inputEl.files.length;
-                let formData = new FormData();
-                if (fileCount > 0) {
-                  if (inputEl.files.item(0).size < this.file_size) {
-                    formData.append('photo', inputEl.files.item(0));
-                    this.authenticationService.uploadCandImage(formData)
-                    .subscribe(
-                      data => {
-                        if (data['success']) {
-                          this.router.navigate(['/job']);
-                        }
-                      },
-                      error => {
-                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                          localStorage.removeItem('currentUser');
-                          localStorage.removeItem('googleUser');
-                          localStorage.removeItem('close_notify');
-                          localStorage.removeItem('linkedinUser');
-                          localStorage.removeItem('admin_log');
-                          window.location.href = '/login';
-                        }
-                      }
-                    );
-                  }
-                  else {
-                    this.image_log = "Image size should be less than 1MB";
-                  }
-                }
-                else {
-                  this.router.navigate(['/job']);
-                }
-              }
-              else {
-                this.router.navigate(['/job']);
-              }
+            if(data)
+            {
+              this.router.navigate(['/job']);
             }
+
           },
           error => {
-            if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              window.location.href = '/not_found';
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.router.navigate(['/not_found']);
             }
+
           });
     }
     else {
@@ -308,34 +339,6 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
   }
 
-  /*referred_email()
-  {
-    if(this.referred_id)
-    {
-      this.email_data.referred_id = this.referred_id;
-      this.email_data.referred_fname = this.info.first_name;
-      this.email_data.referred_lname = this.info.last_name;
-
-      this.authenticationService.email_referred_user(this.email_data).subscribe(
-        data =>
-        {
-          if(data.success === true)
-          {
-
-          }
-          else
-          {
-
-          }
-
-        });
-
-    }
-    else {
-
-    }
-<<<<<<< HEAD
-  }*/
   verify_email()
   {
 

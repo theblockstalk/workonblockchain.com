@@ -88,10 +88,14 @@ export class UserService {
 
   }
 
-
-  getById(_id: string)
+//getCandidateProfileById
+  getCandidateProfileById(_id: string, admin: boolean)
   {
-    return this.http.get(URL+'users/current/' + _id,  {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/candidates?admin=true&user_id='+_id;
+    else urlString = URL+'v2/users/candidates?user_id='+_id;
+
+    return this.http.get(urlString,  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -118,65 +122,6 @@ export class UserService {
       }
 
     }));
-  }
-
-  getProfileById(_id:string)
-  {
-    return this.http.get(URL+'users/current/' + _id,  {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        if(!res['candidate'].terms_id)
-        {
-          this.router.navigate(['/terms-and-condition']);
-        }
-
-        else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
-        {
-          this.router.navigate(['/about']);
-        }
-        else if(!res['candidate'].employee && !res['candidate'].contractor && !res['candidate'].volunteer)
-        {
-          this.router.navigate(['/job']);
-        }
-        else if(!res['candidate'].why_work && !res['candidate'].interest_areas)
-        {
-          this.router.navigate(['/resume']);
-        }
-
-        else if(!res['candidate'].description)
-        {
-          this.router.navigate(['/experience']);
-
-        }
-
-        else
-        {
-          return res;
-        }
-        // return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-
   }
 
   getByRefrenceCode(code: string){
@@ -247,7 +192,7 @@ export class UserService {
 
   create_employer(employer: any)
   {
-    return this.http.post(URL+'users/create_employer', employer) .pipe(map(employer => {
+    return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
       return employer
     }));
 
@@ -859,8 +804,8 @@ export class UserService {
   edit_candidate_profile(user_id : any,queryBody: any, admin:boolean)
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/' +user_id+ '/candidates?admin='+ true;
-    else urlString = URL+'v2/users/' +user_id+ '/candidates';
+    if(admin === true) urlString = URL+'v2/users/candidates?admin='+ true + '&user_id=' + user_id;
+    else urlString = URL+'v2/users/candidates?user_id='+ user_id ;
 
     return this.http.patch( urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -893,8 +838,9 @@ export class UserService {
   edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/' +company_id+ '/companies?admin='+ true;
-    else urlString = URL+'v2/users/' +company_id+ '/companies';
+    let queryParam;
+    if(admin === true) urlString = URL+'v2/users/companies?admin='+ true + '&user_id=' +company_id;
+    else urlString = URL+'v2/users/companies'+ '?user_id=' +company_id;
 
     return this.http.patch(urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -1025,8 +971,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-
-    return this.http.put(URL+'users/approve/' + user_id, {is_approve : detail}, {
+    return this.http.post( URL+'v2/users/companies/status?admin=' + true + '&user_id=' + user_id , {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1292,9 +1237,9 @@ export class UserService {
     }));
   }
 
-  account_settings(user_id: string, status: any)
+  account_settings(queryInput: any)
   {
-    return this.http.post(URL+'users/account_settings', {user_id:user_id,status:status} , {
+    return this.http.patch(URL+'v2/users/settings', queryInput , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1503,8 +1448,8 @@ export class UserService {
   candidate_status_history(user_id: string,queryInput:any , admin:boolean)
   {
     let urlString;
-    if(admin === true) urlString = URL+'v2/users/'+ user_id +'/candidates/history?admin='+ true;
-    else urlString = URL+'v2/users/'+ user_id +'/candidates/history';
+    if(admin === true) urlString = URL+'v2/users/candidates/history?admin='+ true +'&user_id='+ user_id;
+    else urlString = URL+'v2/users/candidates/history?user_id='+ user_id;
 
     return this.http.post(urlString , queryInput, {
       headers: new HttpHeaders().set('Authorization', this.token)

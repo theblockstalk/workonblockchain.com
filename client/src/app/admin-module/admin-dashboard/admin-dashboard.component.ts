@@ -24,7 +24,7 @@ export class AdminDashboardComponent implements OnInit {
           this.user_type = this.currentUser.type;
           if(this.user_type === 'candidate')
           {
-           this.authenticationService.getById(this.currentUser._id)
+           this.authenticationService.getCandidateProfileById(this.currentUser._id, true)
             .subscribe(
                 data =>
                 {

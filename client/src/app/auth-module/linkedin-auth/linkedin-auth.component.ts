@@ -8,14 +8,36 @@ import {UserService} from '../../user.service';
   styleUrls: ['./linkedin-auth.component.css']
 })
 export class LinkedinAuthComponent implements OnInit {
-
   code;
   log;
   linkedinUser;
   previousUrl;
+  public referred_email;
+  refcode;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
-    this.linkedinUser = (localStorage.getItem('linkedinLogin'));
+    this.refcode = localStorage.getItem('ref_code');
+    if(this.refcode) {
+      this.authenticationService.getByRefrenceCode(this.refcode)
+        .subscribe(
+          data => {
+            if (data) {
+              console.log(data)
+              this.referred_email =  data['email'];
+              this.getParam();
+              console.log(this.referred_email);
+            }
+          },
+          error => {
+          }
+        );
+    }
+    else  {
+      this.getParam();
+    }
+  }
 
+  getParam(){
+    this.linkedinUser = (localStorage.getItem('linkedinLogin'));
     this.route.queryParams.subscribe(params => {
       this.code =  params['code'];
     });
@@ -31,16 +53,12 @@ export class LinkedinAuthComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
   }
   login(code) {
     localStorage.removeItem('linkedinLogin');
-
     this.authenticationService.candidate_login({linkedin_code : code})
       .subscribe(
         user => {
-
           if(user) {
             window.location.href = '/candidate_profile';
           }
@@ -62,7 +80,10 @@ export class LinkedinAuthComponent implements OnInit {
   }
 
   passCodeToBE(code) {
-    this.authenticationService.createCandidate({linkedin_code : code})
+    let queryBody : any = {};
+    if(this.referred_email) queryBody.referred_email  = this.referred_email;
+    queryBody.linkedin_code = code;
+    this.authenticationService.createCandidate(queryBody)
       .subscribe(
         user => {
           if(user) {

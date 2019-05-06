@@ -181,7 +181,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       queryBody.first_name = this.credentials.first_name;
       queryBody.last_name = this.credentials.last_name;
       queryBody.password = this.credentials.password;
-
+      if(this.credentials.referred_email) queryBody.referred_email  = this.credentials.referred_email;
       this.authenticationService.createCandidate(queryBody)
         .subscribe(
           data =>

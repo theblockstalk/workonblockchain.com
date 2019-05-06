@@ -91,6 +91,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   residenceCountries = constants.countries;
   workTypes = constants.workTypes;
   country_codes = constants.country_codes;
+  years_exp = constants.years_exp_min;
   prefData;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
@@ -130,14 +131,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       other_technologies: [''],
       order_preferences: [''],
       residence_country: [''],
-      timestamp:[]
+      timestamp:[],
+      years_exp_min: []
     });
   }
 
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, years_exp_min: [i.years_exp_min],order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -436,7 +438,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
           !this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency &&
-          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
+          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].years_exp_min &&
+          !this.preferncesForm.value.prefItems[i].order_preferences) {
           this.search_log = 'Please fill atleast one field in job search';
           count = 1;
         }
@@ -525,7 +528,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
           }
           if(key['name']) searchQuery.name = key['name'];
-
+          if(key['years_exp_min']) searchQuery.years_exp_min = key['years_exp_min'];
           if(key['work_type']) searchQuery.work_type = key['work_type'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
@@ -701,7 +704,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     control.push(this.initPrefRows());
   }
 
-  changeWorkTypes() {
+  refreshSelectBox() {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);

@@ -4,19 +4,16 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
-
 const companies = require('../../../../model/mongoose/company');
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id/companies'
+    path: '/users/companies'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
 
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 
 const bodySchema = new Schema({
@@ -127,6 +124,11 @@ const bodySchema = new Schema({
                     enum: enumerations.programmingLanguages
                 }]
             },
+            years_exp_min: {
+                type: Number,
+                min: 1,
+                max: 20
+            },
             residence_country: {
                 type : [{
                     type: String,
@@ -153,7 +155,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
@@ -171,7 +172,7 @@ module.exports.endpoint = async function (req, res) {
     let userId;
     let employerDoc;
     if (req.query.admin) {
-        userId = req.params.user_id;
+        userId = req.query.user_id;
         employerDoc = await companies.findOne({ _creator: userId });
     }
     else {

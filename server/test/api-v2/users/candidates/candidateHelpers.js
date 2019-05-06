@@ -24,7 +24,7 @@ module.exports.candidateProfile = async function candidateProfile(candidate, pro
 
 const candidateProfilePatch = module.exports.candidateProfilePatch = async function candidateProfilePatch(user_id, jwt_token, inputQuery ) {
     const res = await chai.request(server)
-        .patch('/v2/users/'+ user_id + '/candidates')
+        .patch('/v2/users/candidates?user_id='+ user_id)
         .set('Authorization', jwt_token)
         .send(inputQuery);
     res.should.have.status(200);
@@ -34,7 +34,7 @@ const candidateProfilePatch = module.exports.candidateProfilePatch = async funct
 const changeCandidateStatus = module.exports.changeCandidateStatus = async function changeCandidateStatus(user_id,inputQuery,jwtToken) {
 
     const res = await chai.request(server)
-        .post('/v2/users/'+ user_id + '/candidates/history?admin='+true)
+        .post('/v2/users/candidates/history?admin='+true+ '&user_id='+user_id)
         .set('Authorization', jwtToken)
         .send(inputQuery);
     res.should.have.status(200);

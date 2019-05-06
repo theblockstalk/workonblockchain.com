@@ -7,7 +7,7 @@ const users = require('../../../../../model/users');
 const docGenerator = require('../../../../helpers/docGenerator-v2');
 const candidateHelper = require('../candidateHelpers');
 const userHelper = require('../../../../api/users/usersHelpers');
-const companyHelper = require('../../companyHelpers');
+const companyHelper = require('../../companies/companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
