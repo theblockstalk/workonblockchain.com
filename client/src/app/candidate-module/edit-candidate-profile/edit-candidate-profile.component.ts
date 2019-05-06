@@ -1308,7 +1308,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else {
       this.verify = false;
     }
-    console.log(profileForm);
     if(this.verify === true) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);

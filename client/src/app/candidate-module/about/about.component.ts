@@ -125,13 +125,11 @@ export class AboutComponent implements OnInit,AfterViewInit
             {
               let contact_number = data['contact_number'];
               contact_number = contact_number.split(" ");
-              console.log(contact_number.length);
               if(contact_number.length>1){
                 this.info.country_code = contact_number[0];
                 this.info.contact_number = contact_number[1];
               }
               else this.info.contact_number = contact_number[0];
-              console.log(this.info.contact_number);
 
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
@@ -225,7 +223,6 @@ export class AboutComponent implements OnInit,AfterViewInit
   }
 
   about(aboutForm: NgForm) {
-    console.log(aboutForm);
     this.error_msg = "";
     let errorCount = 0;
     if (this.referred_id) {
@@ -266,8 +263,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     let fileCount: number = inputEl.files.length;
     let formData = new FormData();
     if (fileCount > 0 ) {
-      console.log(inputEl.files.item(0).size);
-      console.log(this.file_size);
+
       if(inputEl.files.item(0).size < this.file_size)
       {
         formData.append('image', inputEl.files.item(0));
