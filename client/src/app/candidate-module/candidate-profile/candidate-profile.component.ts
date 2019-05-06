@@ -59,6 +59,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   employee: any = {};
   contractor:any = {};
   volunteer: any = {};
+  stackoverflow_url;
+  personal_website_url;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -173,6 +175,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 if(data['candidate'].linkedin_account) this.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.medium_account = data['candidate'].medium_account;
+
+                if(data['candidate'].stackoverflow_url) this.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.personal_website_url = data['candidate'].personal_website_url;
 
 
                 if(data['candidate'] && data['candidate'].base_country){

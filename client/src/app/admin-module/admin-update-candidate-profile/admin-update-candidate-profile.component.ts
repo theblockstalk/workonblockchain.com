@@ -241,6 +241,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         if(a.name > b.name) { return 1; }
         return 0;
       })
+      this.otherSkills.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
       this.authenticationService.getCandidateProfileById(this.user_id , true)
         .subscribe(data =>
           {
@@ -326,6 +332,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
                 if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
+                if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
+
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
@@ -1077,9 +1086,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(!this.info.nationality )
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) )
     {
       this.nationality_log ="Please choose nationality";
+      this.count++;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
     }
 
     if(!this.info.base_country )
@@ -1431,6 +1445,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
+
+    if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+    else inputQuery.unset_stackoverflow_url= true;
+
+    if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+    else inputQuery.unset_personal_website_url = true;
 
     if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
     else inputQuery.unset_curret_currency = true;

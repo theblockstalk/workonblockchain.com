@@ -35,6 +35,7 @@ export const constants = {
     {name:'Economics', value:'Economics', checked:false},
     {name:'Smart contract audits', value:'Smart contract audits', checked:false},
     {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
+    {name:'Currency exchanges', value:'Currency exchanges', checked:false}
   ],
   experimented: [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
