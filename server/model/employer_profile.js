@@ -127,6 +127,11 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.programmingLanguages
                 }]
             },
+            years_exp_min: {
+                type: Number,
+                min: 1,
+                max: 20
+            },
             residence_country: {
                 type: [{
                     type: String,

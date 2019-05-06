@@ -971,7 +971,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-    return this.http.post( URL+'v2/users/companies/status?user_id=' + user_id , {is_approved : detail},  {
+    return this.http.post( URL+'v2/users/companies/status?admin=' + true + '&user_id=' + user_id , {is_approved : detail},  {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

@@ -11,7 +11,8 @@ module.exports.request = {
     path: '/users/companies/status'
 };
 const querySchema = new Schema({
-    user_id: String
+    user_id: String,
+    admin: Boolean
 });
 
 const bodySchema = new Schema({
@@ -29,6 +30,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isAdmin(req);
+    if(!req.query.admin) throw new Error("User is not an admin");
 }
 
 module.exports.endpoint = async function (req, res) {

@@ -88,7 +88,7 @@ export class LinkedinAuthComponent implements OnInit {
         user => {
           if(user) {
             localStorage.setItem('currentUser', JSON.stringify(user));
-            //window.location.href = '/candidate_profile';
+            window.location.href = '/candidate_profile';
           }
 
         },
