@@ -193,7 +193,7 @@ module.exports.candidateProfile = function candidateProfile(){
         github_account: 'fb.com',
         linkedin_account : 'http://linkedin.com/in/sadia_abbas',
         medium_account : 'http://medium.com/sadia_abbas',
-        nationality: random.enum(enumerations.nationalities),
+        nationality: [random.enum(enumerations.nationalities)],
         base_country : random.enum(enumerations.countries),
         base_city : 'Islamabad',
 
