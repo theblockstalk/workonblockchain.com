@@ -110,11 +110,22 @@
 
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="phone">Phone number (including country code)</label>
-                <input type="tel" class="form-control" id="phone" placeholder="(+1) 123 456 7890" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
-                <div class = "invalid-feedback d-inline"  *ngIf="!info.contact_number">
+              <label for="phone"><b>Phone (10 digit)</b></label>
+              <div class="input-group">
+                <div class="input-group-prepend my-style">
+                  <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                    <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                  </select>
+                </div>
+                <input type="tel" #phoneNumber="ngModel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" pattern="^\d{3}\d{3}\d{4}$" required [(ngModel)]="info.contact_number">
+                <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                   {{contact_name_log}}
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
+                  {{country_code_log}}
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="phoneNumber.errors">
+                  Enter phone number in proper format.
                 </div>
               </div>
             </div>
