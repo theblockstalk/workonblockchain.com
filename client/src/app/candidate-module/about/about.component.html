@@ -159,14 +159,38 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Image (optional)</label>
-                <input id="aa" #Image type="file" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control-file" />
-                <label>
-                  <span *ngIf="img_src" >{{img_src}}</span>
-                </label>
-                <div class = "invalid-feedback d-inline" *ngIf="image_log">
-                  <br/>
-                  {{image_log}}
+                <!--<input type="file" (change)="fileChangeEvent($event)" />-->
+
+                <!--<image-cropper-->
+                  <!--[imageChangedEvent]="imageChangedEvent"-->
+                  <!--[maintainAspectRatio]="true"-->
+                  <!--[aspectRatio]="3 / 2"-->
+                  <!--[resizeToWidth]="128"-->
+                  <!--format="png"-->
+                  <!--(imageCropped)="imageCropped($event)"-->
+                  <!--(imageLoaded)="imageLoaded()"-->
+                  <!--(cropperReady)="cropperReady()"-->
+                  <!--(loadImageFailed)="loadImageFailed()"-->
+                <!--&gt;</image-cropper>-->
+
+                <!--<img [src]="croppedImage" />-->
+                <div class="file-upload">
+                  <span class="text">upload</span>
+                  <input id="custom-input" type="file" accept="image/*" (change)="fileChangeListener($event)">
                 </div>
+                <img-cropper #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+                <br>
+                <span class="result rounded" *ngIf="imageCropData.image" >
+                  <img [src]="imageCropData.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                </span>
+                <!--<input id="aa" #Image type="file" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control-file" />-->
+                <!--<label>-->
+                  <!--<span *ngIf="img_src" >{{img_src}}</span>-->
+                <!--</label>-->
+                <!--<div class = "invalid-feedback d-inline" *ngIf="image_log">-->
+                  <!--<br/>-->
+                  <!--{{image_log}}-->
+                <!--</div>-->
               </div>
             </div>
           </div>

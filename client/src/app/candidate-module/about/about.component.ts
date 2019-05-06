@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,6 +6,8 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 
 @Component({
   selector: 'app-about',
@@ -14,6 +16,11 @@ import {constants} from '../../../constants/constants';
 })
 export class AboutComponent implements OnInit,AfterViewInit
 {
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   currentUser: User;
   log='';
   info: any = {};
@@ -55,6 +62,15 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 100;
+    this.cropperSettings.height = 100;
+    this.cropperSettings.croppedWidth = 300;
+    this.cropperSettings.croppedHeight = 300;
+    this.cropperSettings.canvasWidth = 400;
+    this.cropperSettings.canvasHeight = 300;
+    this.imageCropData = {};
   }
 
   ngAfterViewInit(): void
@@ -245,42 +261,74 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    let fileCount: number = inputEl.files.length;
-    let formData = new FormData();
-    if (fileCount > 0 )
-    {
-      console.log(inputEl.files.item(0).size);
-      console.log(this.file_size);
-      if(inputEl.files.item(0).size < this.file_size)
-      {
-        formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
-          .subscribe(
-            data => {
-              if (data) {
-                //console.log(data);
-                //this.router.navigate(['/candidate_profile']);
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-            }
-          );
-      }
-      else
-      {
-        this.image_log = "Image size should be less than 1MB";
-      }
-    }
+
+    fetch(this.imageCropData.image)
+      .then(res => res.blob())
+      .then(blob => {
+        var fd = new FormData()
+        fd.append('image', blob, 'filename')
+
+        console.log(blob)
+        this.authenticationService.edit_candidate_profile(this.currentUser._id , fd, false)
+              .subscribe(
+                data => {
+                  if (data) {
+                    //console.log(data);
+                    //this.router.navigate(['/candidate_profile']);
+                  }
+                },
+                error => {
+                  if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('googleUser');
+                    localStorage.removeItem('close_notify');
+                    localStorage.removeItem('linkedinUser');
+                    localStorage.removeItem('admin_log');
+                    window.location.href = '/login';
+                  }
+                }
+              );
+        // Upload
+        // fetch('upload', {method: 'POST', body: fd})
+      })
+
+    // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+    // let fileCount: number = inputEl.files.length;
+    // let formData = new FormData();
+    // if (fileCount > 0 )
+    // {
+    //   console.log(inputEl.files.item(0).size);
+    //   console.log(this.file_size);
+    //   if(inputEl.files.item(0).size < this.file_size)
+    //   {
+    //     formData.append('image', inputEl.files.item(0));
+    //     this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
+    //       .subscribe(
+    //         data => {
+    //           if (data) {
+    //             //console.log(data);
+    //             //this.router.navigate(['/candidate_profile']);
+    //           }
+    //         },
+    //         error => {
+    //           if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+    //             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+    //             localStorage.removeItem('currentUser');
+    //             localStorage.removeItem('googleUser');
+    //             localStorage.removeItem('close_notify');
+    //             localStorage.removeItem('linkedinUser');
+    //             localStorage.removeItem('admin_log');
+    //             window.location.href = '/login';
+    //           }
+    //         }
+    //       );
+    //   }
+    //   else
+    //   {
+    //     this.image_log = "Image size should be less than 1MB";
+    //   }
+    // }
     if (errorCount === 0) {
       let inputQuery:any ={};
 
@@ -341,6 +389,53 @@ export class AboutComponent implements OnInit,AfterViewInit
 
     }
 
+  }
+
+  // imageChangedEvent: any = '';
+  // croppedImage: any = '';
+  //
+  // fileChangeEvent(event: any): void {
+  //   this.imageChangedEvent = event;
+  // }
+  // imageCropped(event: any) {
+  //   console.log(event);
+  //   this.croppedImage = event.base64;
+  // }
+  // imageLoaded() {
+  //   // show cropper
+  // }
+  // cropperReady() {
+  //   // cropper ready
+  // }
+  // loadImageFailed() {
+  //   // show message
+  // }
+
+
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    console.log(file);
+    myReader.readAsDataURL(file);
+  }
+  getImageData(){
+    fetch(this.imageCropData.image)
+      .then(res => res.blob())
+      .then(blob => {
+        var fd = new FormData()
+        fd.append('image', blob, 'filename')
+
+        console.log(blob)
+
+        // Upload
+        // fetch('upload', {method: 'POST', body: fd})
+      })
   }
 
 
