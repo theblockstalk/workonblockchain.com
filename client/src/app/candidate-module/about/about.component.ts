@@ -66,10 +66,12 @@ export class AboutComponent implements OnInit,AfterViewInit
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 100;
     this.cropperSettings.height = 100;
-    this.cropperSettings.croppedWidth = 300;
-    this.cropperSettings.croppedHeight = 300;
-    this.cropperSettings.canvasWidth = 200;
-    this.cropperSettings.canvasHeight = 200;
+    this.cropperSettings.minWidth = 220;
+    this.cropperSettings.minHeight = 220;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 220;
+    this.cropperSettings.canvasHeight = 220;
     this.cropperSettings.rounded = true;
     this.imageCropData = {};
   }
@@ -158,6 +160,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
               if(data['image'] != null )
               {
+                this.imagePreviewLink = data['image'];
                 this.info.image_src = data['image'] ;
 
 
@@ -228,7 +231,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
 
   }
-
+  imagePreviewLink;
   about() {
     this.error_msg = "";
     let errorCount = 0;
@@ -262,102 +265,34 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    var file = this.dataURLtoFile(this.imageCropData.image, 'profile_pic');
-    console.log("data url to file");
-    let formData = new FormData();
+    if(errorCount === 0 && this.imageCropData.image) {
+      const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+      console.log("data url to file");
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
+        .subscribe(
+          data => {
+            if (data) {
 
-    formData.append('image', file);
-    this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
-          .subscribe(
-            data => {
-              if (data) {
-                //console.log(data);
-                //this.router.navigate(['/candidate_profile']);
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
             }
-          );
-    // fetch(this.imageCropData.image)
-    //   .then(res => res.blob())
-    //   .then(blob => {
-    //     var fd = new FormData();
-    //     const file = new File([blob], "File name");
-    //     fd.append('image', blob, 'filename')
-    //
-    //     console.log(blob)
-    //     this.authenticationService.edit_candidate_profile(this.currentUser._id , fd, false)
-    //       .subscribe(
-    //         data => {
-    //           if (data) {
-    //             //console.log(data);
-    //             //this.router.navigate(['/candidate_profile']);
-    //           }
-    //         },
-    //         error => {
-    //           if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-    //             localStorage.setItem('jwt_not_found', 'Jwt token not found');
-    //             localStorage.removeItem('currentUser');
-    //             localStorage.removeItem('googleUser');
-    //             localStorage.removeItem('close_notify');
-    //             localStorage.removeItem('linkedinUser');
-    //             localStorage.removeItem('admin_log');
-    //             window.location.href = '/login';
-    //           }
-    //         }
-    //       );
-    //     // Upload
-    //     // fetch('upload', {method: 'POST', body: fd})
-    //   })
+          },
+          error => {
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
+
+    }
 
 
-    //test code
-    // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    // let fileCount: number = inputEl.files.length;
-    // let formData = new FormData();
-    // if (fileCount > 0 )
-    // {
-    //   console.log(inputEl.files.item(0).size);
-    //   console.log(this.file_size);
-    //   if(inputEl.files.item(0).size < this.file_size)
-    //   {    // let formData = new FormData();
-
-    //     formData.append('image', inputEl.files.item(0));
-    //     this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
-    //       .subscribe(
-    //         data => {
-    //           if (data) {
-    //             //console.log(data);
-    //             //this.router.navigate(['/candidate_profile']);
-    //           }
-    //         },
-    //         error => {
-    //           if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-    //             localStorage.setItem('jwt_not_found', 'Jwt token not found');
-    //             localStorage.removeItem('currentUser');
-    //             localStorage.removeItem('googleUser');
-    //             localStorage.removeItem('close_notify');
-    //             localStorage.removeItem('linkedinUser');
-    //             localStorage.removeItem('admin_log');
-    //             window.location.href = '/login';
-    //           }
-    //         }
-    //       );
-    //   }
-    //   else
-    //   {
-    //     this.image_log = "Image size should be less than 1MB";
-    //   }
-    // }
     if (errorCount === 0) {
       let inputQuery:any ={};
 
@@ -440,7 +375,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   //   // show message
   // }
 
-
+  imageName;
   fileChangeListener($event) {
     var image:any = new Image();
     var file:File = $event.target.files[0];
@@ -450,22 +385,11 @@ export class AboutComponent implements OnInit,AfterViewInit
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
-    console.log(file);
+    console.log(file.name);
+    this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
-  getImageData(){
-    fetch(this.imageCropData.image)
-      .then(res => res.blob())
-      .then(blob => {
-        var fd = new FormData()
-        fd.append('image', blob, 'filename')
 
-        console.log(blob)
-
-        // Upload
-        // fetch('upload', {method: 'POST', body: fd})
-      })
-  }
 
   dataURLtoFile(dataurl, filename) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -480,29 +404,13 @@ export class AboutComponent implements OnInit,AfterViewInit
     return new File([u8arr], filename, {type:mime[1]});
   }
 
-  b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
-
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      var byteNumbers = new Array(slice.length);
-      for (var i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      var byteArray = new Uint8Array(byteNumbers);
-
-      byteArrays.push(byteArray);
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
     }
-
-    var blob = new Blob(byteArrays, {type: contentType});
-    return blob;
+    $('#imageModal').modal('hide');
   }
+
 
 }
 
