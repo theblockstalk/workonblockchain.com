@@ -146,13 +146,6 @@
                 {{error_msg}}
               </div>
             </div>
-
-            <div class="row my-3">
-              <div class="col-md-12">
-                <button  type="button" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
-              </div>
-            </div>
-
           </div>
 
           <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -189,11 +182,19 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
-
                         </div>
+                        <span *ngIf="data.candidate.employee">
+                          Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
+                        </span>
+                        <span *ngIf="data.candidate.contractor">
+                          Expects {{data.candidate.contractor.expected_hourly_rate}} {{data.candidate.contractor.currency}} per hour
+                        </span>
+                        <br>
+                        <span *ngIf = 'data.first_name' class = "badge badge-pill badge-primary">
+                          Already approached
+                        </span>
                       </div>
                       <div class="col-md-3">
                         <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">

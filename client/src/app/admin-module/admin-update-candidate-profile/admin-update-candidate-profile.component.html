@@ -128,6 +128,7 @@
                   <ul>
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                    <li> What value do you add to a project? </li>
                   </ul>
                   <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
@@ -669,7 +670,7 @@
                 <div class="form-group">
                   <label>Why work on blockchain?</label>
                   <ul>
-                    <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> Let companies know what excites you about this space. </li>
                     <li> This is the first field that a company sees! </li>
                   </ul>
                   <input type="text" class="form-control" required placeholder="I want to work on blockchain because ..."  #whywork name="why_work" [(ngModel)]="why_work">

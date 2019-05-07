@@ -26,7 +26,7 @@
                 <span *ngIf='data.first_name'><h3>{{data.first_name}} {{data.last_name}}</h3></span>
                 <span *ngIf='data.initials'><h3>{{data.initials}}</h3></span>
                 <span *ngIf = 'already_approached === 1'>
-                  <button type="button" class = "btn btn-primary"> Already approached </button>
+                  <span class = "badge badge-pill badge-primary"> Already approached </span>
                 </span>
                 <span><pre>{{data.candidate.description}}</pre></span>
               </div>

@@ -169,7 +169,7 @@
           <div *ngFor="let searches of saved_searche; let i = index ">
           <div class="row">
             <div class="col-md-12">
-              <h3 class="pt-2 mb-3"> Job search {{i+1}}: {{searches.name}}</h3>
+              <h3 class="pt-2 mb-3"> Work search name: {{searches.name}}</h3>
             </div>
           </div>
 
@@ -207,7 +207,7 @@
 
             <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
               <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
-                <label>Location:</label>
+                <label>Work place (city/remote):</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
                     <div *ngIf="country.name === 'Remote'">
@@ -245,7 +245,7 @@
 
             <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
               <div class="form-group">
-                <label>Skills:</label>
+                <label>Languages:</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let lang of searches.skills"> {{lang}}</div>
                 </div>
@@ -253,7 +253,7 @@
             </div>
             <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
               <div class="form-group">
-                <label>Residence country:</label>
+                <label>Residence/base country:</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let residence of searches.residence_country"> {{residence}}</div>
                 </div>
@@ -263,7 +263,7 @@
 
             <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
               <div class="form-group">
-                <label>Salary:</label>
+                <label>Annual salary:</label>
                 <p>
                   {{searches.current_currency}} {{searches.current_salary}}
                 <p>

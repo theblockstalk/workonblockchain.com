@@ -653,7 +653,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
     else {
-      this.error_msg = 'Please first select saved search';
+      $('#saveNewSearch').modal('show');
       setInterval(() => {
         this.error_msg = "";
       }, 9000);
@@ -1138,6 +1138,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    console.log(this.pagedItems);
   }
 
   suggestedOptions() {
