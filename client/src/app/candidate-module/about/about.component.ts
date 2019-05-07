@@ -68,14 +68,14 @@ export class AboutComponent implements OnInit,AfterViewInit
   {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
-    this.cropperSettings.width = 100;
-    this.cropperSettings.height = 100;
-    this.cropperSettings.minWidth = 220;
-    this.cropperSettings.minHeight = 220;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
     this.cropperSettings.croppedWidth = 200;
     this.cropperSettings.croppedHeight = 200;
-    this.cropperSettings.canvasWidth = 220;
-    this.cropperSettings.canvasHeight = 220;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
     this.cropperSettings.rounded = true;
     this.imageCropData = {};
   }
