@@ -251,6 +251,10 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.nationality_log = "Please choose nationality";
       errorCount++;
     }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      errorCount++;
+    }
     if (!this.info.country) {
       this.country_log = "Please choose base country";
       errorCount++;
@@ -262,7 +266,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
     let fileCount: number = inputEl.files.length;
     let formData = new FormData();
-    if (fileCount > 0 ) {
+    if (errorCount=== 0 && fileCount > 0 ) {
 
       if(inputEl.files.item(0).size < this.file_size)
       {

@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''" class="list-group-item">
+                <li *ngIf="referred_name !== ''" class="list-group-item list-without-underline">
                   <ng-container *ngIf="referred_link ; else noLink">
                     <span><i class="fas fa-user mr-2"></i></span>
                     <span>Refered By:
@@ -42,15 +42,16 @@
                     </span>
                   </ng-template>
                 </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality: {{data.nationality}}</span>
+                <li class="list-group-item list-without-underline">
+                  <span><i class="fas fa-flag mr-2"></i></span>
+                  <span *ngFor="let nation of data.nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < data.nationality.length"/></span>
+
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item list-without-underline">
                   <span><i class="fas fa-phone mr-2"></i></span>
                   <span>Phone: {{data.contact_number}}</span>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item list-without-underline">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                   <span >City : {{data.candidate.base_city}}</span>
                 </li>

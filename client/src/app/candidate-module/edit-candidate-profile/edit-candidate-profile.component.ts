@@ -1104,6 +1104,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
+    }
+
     if(!this.info.base_country )
     {
       this.base_country_log ="Please choose base country";
