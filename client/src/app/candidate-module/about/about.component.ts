@@ -68,8 +68,9 @@ export class AboutComponent implements OnInit,AfterViewInit
     this.cropperSettings.height = 100;
     this.cropperSettings.croppedWidth = 300;
     this.cropperSettings.croppedHeight = 300;
-    this.cropperSettings.canvasWidth = 400;
-    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.canvasWidth = 200;
+    this.cropperSettings.canvasHeight = 200;
+    this.cropperSettings.rounded = true;
     this.imageCropData = {};
   }
 
@@ -261,38 +262,65 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
+    var file = this.dataURLtoFile(this.imageCropData.image, 'profile_pic');
+    console.log("data url to file");
+    let formData = new FormData();
 
-    fetch(this.imageCropData.image)
-      .then(res => res.blob())
-      .then(blob => {
-        var fd = new FormData()
-        fd.append('image', blob, 'filename')
+    formData.append('image', file);
+    this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
+          .subscribe(
+            data => {
+              if (data) {
+                //console.log(data);
+                //this.router.navigate(['/candidate_profile']);
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
+    // fetch(this.imageCropData.image)
+    //   .then(res => res.blob())
+    //   .then(blob => {
+    //     var fd = new FormData();
+    //     const file = new File([blob], "File name");
+    //     fd.append('image', blob, 'filename')
+    //
+    //     console.log(blob)
+    //     this.authenticationService.edit_candidate_profile(this.currentUser._id , fd, false)
+    //       .subscribe(
+    //         data => {
+    //           if (data) {
+    //             //console.log(data);
+    //             //this.router.navigate(['/candidate_profile']);
+    //           }
+    //         },
+    //         error => {
+    //           if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+    //             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+    //             localStorage.removeItem('currentUser');
+    //             localStorage.removeItem('googleUser');
+    //             localStorage.removeItem('close_notify');
+    //             localStorage.removeItem('linkedinUser');
+    //             localStorage.removeItem('admin_log');
+    //             window.location.href = '/login';
+    //           }
+    //         }
+    //       );
+    //     // Upload
+    //     // fetch('upload', {method: 'POST', body: fd})
+    //   })
 
-        console.log(blob)
-        this.authenticationService.edit_candidate_profile(this.currentUser._id , fd, false)
-              .subscribe(
-                data => {
-                  if (data) {
-                    //console.log(data);
-                    //this.router.navigate(['/candidate_profile']);
-                  }
-                },
-                error => {
-                  if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('googleUser');
-                    localStorage.removeItem('close_notify');
-                    localStorage.removeItem('linkedinUser');
-                    localStorage.removeItem('admin_log');
-                    window.location.href = '/login';
-                  }
-                }
-              );
-        // Upload
-        // fetch('upload', {method: 'POST', body: fd})
-      })
 
+    //test code
     // let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
     // let fileCount: number = inputEl.files.length;
     // let formData = new FormData();
@@ -301,7 +329,8 @@ export class AboutComponent implements OnInit,AfterViewInit
     //   console.log(inputEl.files.item(0).size);
     //   console.log(this.file_size);
     //   if(inputEl.files.item(0).size < this.file_size)
-    //   {
+    //   {    // let formData = new FormData();
+
     //     formData.append('image', inputEl.files.item(0));
     //     this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
     //       .subscribe(
@@ -438,6 +467,42 @@ export class AboutComponent implements OnInit,AfterViewInit
       })
   }
 
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    console.log(arr);
+    mime = mime.split("/");
+    console.log(mime);
+    console.log(mime[1]);
+    return new File([u8arr], filename, {type:mime[1]});
+  }
+
+  b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  }
 
 }
 
