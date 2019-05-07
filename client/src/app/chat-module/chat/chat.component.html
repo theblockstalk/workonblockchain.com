@@ -855,7 +855,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Salary:</label>
-                  <p>{{job_desc.employee.currency}} {{job_desc.employee.annual_salary.min}} - {{job_desc.employee.currency}} {{job_desc.employee.annual_salary.max}}</p>
+                  <p>{{job_desc.employee.currency}} {{job_desc.employee.annual_salary.min}} <span *ngIf="job_desc.employee.annual_salary.max">- {{job_desc.employee.currency}} {{job_desc.employee.annual_salary.max}}</span></p>
                 </div>
               </div>
               <div class="col-md-6">

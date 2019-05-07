@@ -196,8 +196,10 @@ pre {
 .my-style{
   width: 30%;
 }
-
-
+.list-without-underline {
+  margin-bottom: -12px;
+  border: none;
+}
 
 
 

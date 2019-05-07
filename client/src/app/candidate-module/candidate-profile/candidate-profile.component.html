@@ -36,19 +36,19 @@
               </div>
               <div class="col-md-5 mt-3">
                 <ul class="list-group list-group-flush float-right">
-                  <li class="list-group-item">
-                    <span><i class="fas fa-landmark mr-2"></i></span>
-                    <span>Nationality: {{nationality}}</span>
+                  <li class="list-group-item list-without-underline">
+                    <span><i class="fas fa-flag mr-2"></i></span>
+                    <span *ngFor="let nation of nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < nationality.length"/></span>
                   </li>
-                  <li class="list-group-item">
+                  <li class="list-group-item list-without-underline">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> Phone: {{contact_number}}</span>
+                    <span> {{contact_number}}</span>
                   </li>
-                  <li class="list-group-item">
+                  <li class="list-group-item list-without-underline">
                     <i class="fas fa-user mr-2"></i>
-                    Candidate status: <span class = "text-capitalize">{{candidate_status.status}}</span>
+                    Status: <span class = "text-capitalize">{{candidate_status.status}}</span>
                   </li>
-                  <li class="list-group-item">
+                  <li class="list-group-item list-without-underline">
                     <i class="fas fa-clock mr-2"></i>
                     <span>Date created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
