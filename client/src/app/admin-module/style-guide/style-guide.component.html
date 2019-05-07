@@ -632,6 +632,23 @@
       </ul>
     </div>
   </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Phone</p>
+    </div>
+    <div class="col-md-7">
+      <div class="input-group">
+        <div class="input-group-prepend my-style">
+          <select class="form-control selectpicker" title="(Country code)" name="country_code">
+            <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
+          </select>
+        </div>
+        <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required>
+      </div>
+    </div>
+  </div>
+
   <div class = "row">
     <div class="col-md-2">
       <p>Check box</p>

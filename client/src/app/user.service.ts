@@ -137,7 +137,17 @@ export class UserService {
       {
         if (error)
         {
-          return throwError(error);
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else return throwError(error);
         }
 
       }));
@@ -272,162 +282,6 @@ export class UserService {
       }));
   }
 
-  terms(user_id: string, data: any)
-  {
-
-    return this.http.put(URL+'users/welcome/terms', data , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);                }
-    }));
-
-  }
-
-  prefilled_profile(basics: any , work:any , education : any)
-  {
-
-    return this.http.put(URL+'users/welcome/prefilled_profile' , {basics : basics , workHistory : work , educationHistory : education} , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-
-  }
-
-  about(user_id: string, detail: any)
-  {
-
-    return this.http.put(URL+'users/welcome/about' , detail , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error )
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-
-  }
-
-  job(user_id: string, detail: CandidateProfile)
-  {
-
-    return this.http.put(URL+'users/welcome/job' , detail , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    } ).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-
-  }
-
-  experience(user_id: string,detail : any ,  exp : any , history : any,language_roles :any )
-  {
-
-    return this.http.put(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles  } , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-    }));
-
-  }
 
   company_terms(user_id: string, detail: any)
   {
@@ -458,101 +312,6 @@ export class UserService {
 
     }));
   }
-
-  about_company(user_id: string, detail: any)
-  {
-
-    return this.http.put(URL+'users/about_company' , detail, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error));
-      }
-
-    }));
-  }
-
-  company_image(imageObject: any)
-  {
-
-    return this.http.post(URL+ 'users/employer_image' , imageObject, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error));
-      }
-
-    }));
-  }
-
-
-  candidate_prefernece(prefernces: any)
-  {
-
-    return this.http.put(URL + 'users/saved_searches' , {saved_searches : prefernces }, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error));
-      }
-
-    }));
-  }
-
 
   verify_email(email_hash: string)
   {
@@ -731,7 +490,17 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(new Error(error.status));
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
 
     }));
@@ -754,7 +523,17 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(new Error(error.status));
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
 
     }));
@@ -773,7 +552,17 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(error);
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));
@@ -793,7 +582,17 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(error);
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));
@@ -949,7 +748,17 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(error);
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));
@@ -964,6 +773,23 @@ export class UserService {
       if (data)
       {
         return data;
+      }
+
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));
@@ -1135,9 +961,19 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error )
       {
-        return throwError(new Error(error.status));
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
 
     }));
@@ -1154,9 +990,19 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error)
       {
-        return throwError(new Error(error.status));
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
 
     }));
@@ -1209,9 +1055,19 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error)
       {
-        return throwError(error);
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));
@@ -1229,9 +1085,19 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error )
       {
-        return throwError(new Error(error.status));
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
 
     }));
@@ -1335,8 +1201,18 @@ export class UserService {
         return res;
       }
     }), catchError((error: any) => {
-      if (error.status) {
-        return throwError(new Error(error.status));
+      if (error) {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
     }));
   }
@@ -1349,8 +1225,18 @@ export class UserService {
         return res;
       }
     }), catchError((error: any) => {
-      if (error.status) {
-        return throwError(new Error(error.status));
+      if (error) {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
     }));
   }
@@ -1363,8 +1249,18 @@ export class UserService {
         return res;
       }
     }), catchError((error: any) => {
-      if (error.status) {
-        return throwError(new Error(error.status));
+      if (error) {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
       }
     }));
   }
@@ -1381,7 +1277,17 @@ export class UserService {
       {
         if (error )
         {
-          return throwError(error);
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else return throwError(error);
         }
 
       }));
@@ -1489,9 +1395,19 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error)
       {
-        return throwError(error);
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
       }
 
     }));

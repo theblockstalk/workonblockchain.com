@@ -73,7 +73,7 @@ module.exports = async function (req, res) {
                 aggregateObjArrayAggregate(volunteerLocationAggregate, candidate.volunteer.location, enumerations.countries, "country", "visa_needed");
 
             }
-            aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
+            aggregateArray(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
             aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
             if(candidate.interest_areas)aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
             if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
