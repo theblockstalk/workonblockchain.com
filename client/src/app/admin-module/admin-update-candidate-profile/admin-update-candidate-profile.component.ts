@@ -1338,7 +1338,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       console.log("data url to file");
       const formData = new FormData();
       formData.append('image', file);
-      this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
+      this.authenticationService.edit_candidate_profile(this.user_id ,formData , true)
         .subscribe(
           data => {
             if (data) {
