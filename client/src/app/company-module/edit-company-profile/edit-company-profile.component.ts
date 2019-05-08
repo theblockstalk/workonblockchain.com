@@ -99,6 +99,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   years_exp = constants.years_exp_min;
   prefData;
   imagePreviewLink;
+  prefil_image;
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
     this.cropperSettings = new CropperSettings();

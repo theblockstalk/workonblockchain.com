@@ -98,7 +98,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   country_code;
   country_code_log;
   imagePreviewLink;
-
+  prefil_image;
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
     this.route.queryParams.subscribe(params => {

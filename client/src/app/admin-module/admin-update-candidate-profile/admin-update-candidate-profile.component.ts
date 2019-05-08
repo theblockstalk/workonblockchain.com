@@ -165,7 +165,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   employement_availability= constants.workAvailability;
   country_codes = constants.country_codes;
   imagePreviewLink;
-
+  prefil_image;
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
     this.cropperSettings = new CropperSettings();

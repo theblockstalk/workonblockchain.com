@@ -63,6 +63,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   country_codes = constants.country_codes;
   country_code_log;
   imagePreviewLink;
+  prefil_image;
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
     this.cropperSettings = new CropperSettings();

@@ -37,6 +37,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   pref_active_class;
   pref_disable;
   imagePreviewLink;
+  prefil_image;
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
