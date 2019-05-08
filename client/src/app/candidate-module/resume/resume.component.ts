@@ -5,6 +5,7 @@ import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from '../../../services/object';
 
 @Component({
   selector: 'app-resume',
@@ -34,7 +35,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
-
+  commercially;
+  otherSkills;
+  experimented;
+  exp_year;
+  area_interested;
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
               private authenticationService: UserService) { }
@@ -46,6 +51,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
+    this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
+    this.otherSkills = unCheckCheckboxes(constants.otherSkills);
+    this.experimented = unCheckCheckboxes(constants.experimented);
+    this.exp_year = unCheckCheckboxes(constants.experienceYears);
+    this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -300,11 +310,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
   }
 
-  commercially = constants.blockchainPlatforms;
-  otherSkills = constants.otherSkills;
-  experimented = constants.experimented;
-  exp_year = constants.experienceYears;
-  area_interested = constants.workBlockchainInterests;
+
 
 
   onExpOptions(e)
