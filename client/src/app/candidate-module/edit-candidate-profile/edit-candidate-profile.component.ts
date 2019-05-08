@@ -1090,6 +1090,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contact_name_log ="Please enter contact number";
     }
 
+    if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
+      this.count++;
+    }
+
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
     }
@@ -2047,6 +2051,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 
 }
