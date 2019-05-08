@@ -51,7 +51,6 @@ module.exports.inputValidation = {
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
-    console.log(queryBody);
     let email;
     let timestamp = new Date();
     let newUserDoc = {

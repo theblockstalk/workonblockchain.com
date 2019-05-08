@@ -36,9 +36,6 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, 'uploads')
             },
             filename: function (req, file, cb) {
-                console.log("multer function")
-                console.log(req);
-                console.log(file);
                 const originalname = sanitize.recursivelySanitize(file.originalname);
                 cb(null, Date.now().toString() + originalname)
             }
