@@ -568,6 +568,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           data => {
             this.job_offer_msg_success = 'Message successfully sent';
             this.employee = {};
+            $("#approachModal").modal("hide");
             this.router.navigate(['/chat']);
           },
           error => {

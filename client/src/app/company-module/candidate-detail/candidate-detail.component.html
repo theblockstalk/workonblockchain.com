@@ -16,7 +16,7 @@
   <div class="container pt-2">
 
     <div class="row">
-      <div class="col-md-9 mb-4" *ngFor= "let data of cand_data">
+      <div class="col-md-12 mb-4" *ngFor= "let data of cand_data">
         <section class = "border rounded py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
@@ -25,7 +25,7 @@
               <div class="mt-3">
                 <span *ngIf='data.first_name'><h3>{{data.first_name}} {{data.last_name}}</h3></span>
                 <span *ngIf='data.initials'><h3>{{data.initials}}</h3></span>
-                <span *ngIf = 'already_approached === 1'>
+                <span *ngIf = "already_approached === 1">
                   <span class = "badge badge-pill badge-primary"> Already approached </span>
                 </span>
                 <span><pre>{{data.candidate.description}}</pre></span>
@@ -46,6 +46,22 @@
                   <span >{{data.candidate.base_city}}</span>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="text-right">
+                <ng-container *ngIf="already_approached === 1;else no_already_approached">
+                  <a [routerLink]="['/chat']">
+                    <button type="button" class = "btn btn-primary">
+                      <i class="fa fa-comment-dots"></i> Chat
+                    </button>
+                  </a>
+                  </ng-container>
+                <ng-template #no_already_approached>
+                  <button type="button" class = "btn btn-primary" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach</button>
+                </ng-template>
+              </div>
             </div>
           </div>
         </section>
@@ -554,7 +570,7 @@
         </section>
 
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3" style="display:none;">
         <section class = "border rounded py-2 px-3 bg-white">
           <div class="row">
             <div class="col-md-12 mb-2">
@@ -747,6 +763,218 @@
             </div>
           </form>
         </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach Modal -->
+  <div class="modal fade" id="approachModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title mx-auto" id="exampleModalLabel"><i class="fa fa-paper-plane"></i> Approach</h5>
+        </div>
+        <div class="modal-body">
+          <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+            <ng-container *ngIf="job_offer_log;else no_modal">
+            </ng-container>
+            <ng-template #no_modal>
+            </ng-template>
+            <div class="row">
+              <div class="col-md-4" *ngFor="let types of workTypes">
+                <div class="form-group">
+                  <div class="form-check" >
+                    <label class="form-check-label simple-radio-button" >
+                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()">
+                      {{types.name}}
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-user-clock"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-times"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="approach_work_type === 'employee'">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom1">Job title</label>
+                  <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="employee.job_title" class="form-control" placeholder="Director">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_title">
+                    {{job_title_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="employee.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.location">
+                    {{location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Annual salary</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="min_salary" [(ngModel)]="employee.min_salary" class="form-control" placeholder="Min">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!employee.min_salary || (employee.min_salary && !checkNumber(employee.min_salary))">
+                        {{salary_log}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="max_salary" [(ngModel)]="employee.max_salary" class="form-control" placeholder="Max">
+                      <div class = "invalid-feedback d-inline"  *ngIf="employee.max_salary && !checkNumber(employee.max_salary)">
+                        {{max_salary_log}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(employee.max_salary) < convertNumber(employee.min_salary) ">
+                    Maximum salary should be greater the minimum salary
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02" class="invisible">Currency</label>
+                  <select title="Currency" name="currency" [(ngModel)]="employee.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === employee.currency? true: null">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
+                    {{salary_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="validationCustom02">Employment type</label>
+                  <div class="form-check" *ngFor="let options of job_type">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="employee.job_type" [value]="options">
+                    <label class="form-check-label simple-radio-button" for="{{options}}">
+                      {{options}}
+                    </label>
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_type">
+                    {{employment_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Employment description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc">
+                    {{job_desc_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'contractor'">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Hourly rate</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_min" [(ngModel)]="contractor.hourly_rate_min" class="form-control" placeholder="Min">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_min || (contractor.hourly_rate_min && !checkNumber(contractor.hourly_rate_min))">
+                        {{hourly_rate_log}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_max" [(ngModel)]="contractor.hourly_rate_max" class="form-control" placeholder="Max">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_max || (contractor.hourly_rate_max && !checkNumber(contractor.hourly_rate_max))">
+                        {{max_hourly_rate_log}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(contractor.hourly_rate_min) > convertNumber(contractor.hourly_rate_max) ">
+                    Maximum rate should be greater the minimum rate
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02" class="invisible">Currency</label>
+                  <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                    {{hourly_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contract description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
+                    {{contract_desc_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.location">
+                    {{volunteer_location_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Opportunity description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="volunteer.opportunity_description" #myckeditor name="opportunity_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description">
+                    {{volunteer_desc_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
+                  {{job_offer_log_erorr}}
+                </div>
+                <div class = "alert alert-success" *ngIf="job_offer_log_success">
+                  {{job_offer_log_success}}
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary">Reset</button>
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

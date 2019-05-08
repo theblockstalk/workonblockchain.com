@@ -42,15 +42,15 @@
                     </span>
                   </ng-template>
                 </li>
-                <li class="list-group-item list-without-underline">
+                <li class="list-group-item">
                   <span><i class="fas fa-flag mr-2"></i></span>
                   <span *ngFor="let nation of data.nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < data.nationality.length"/></span>
                 </li>
-                <li class="list-group-item list-without-underline">
+                <li class="list-group-item">
                   <span><i class="fas fa-phone mr-2"></i></span>
                   <span>{{data.contact_number}}</span>
                 </li>
-                <li class="list-group-item list-without-underline">
+                <li class="list-group-item">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                   <span >{{data.candidate.base_city}}</span>
                 </li>
