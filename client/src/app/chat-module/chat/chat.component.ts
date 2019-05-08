@@ -154,7 +154,7 @@ export class ChatComponent implements OnInit {
     this.file_url = URL;
     if(this.currentUser){
       if(this.currentUser.type == 'candidate'){
-        this.authenticationService.getById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data => {
               this.profile_pic = data['image'];

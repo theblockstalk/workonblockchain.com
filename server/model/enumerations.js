@@ -17,7 +17,7 @@ module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public block
 
 module.exports.workAvailability = ['1 week', '2 weeks', '3 weeks' ,'1 month','Now','2 months','3 months','Longer than 3 months'];
 
-module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs'];
+module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs', 'Currency exchanges'];
 
 module.exports.email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 

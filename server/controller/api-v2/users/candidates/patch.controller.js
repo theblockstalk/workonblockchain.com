@@ -11,14 +11,12 @@ const objects = require('../../../services/objects');
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id/candidates'
+    path: '/users/candidates'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
 
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 
 const bodySchema = new Schema({
@@ -26,8 +24,10 @@ const bodySchema = new Schema({
     last_name: String,
     contact_number: String,
     nationality: {
-        type:String,
-        enum: enumerations.nationalities
+        type: [{
+            type: String,
+            enum: enumerations.nationalities
+        }]
     },
     image: {
         type: String,
@@ -53,6 +53,14 @@ const bodySchema = new Schema({
                 validate: regexes.url
             },
             medium_account: {
+                type:String,
+                validate: regexes.url
+            },
+            stackoverflow_url: {
+                type:String,
+                validate: regexes.url
+            },
+            personal_website_url: {
                 type:String,
                 validate: regexes.url
             },
@@ -306,14 +314,19 @@ const bodySchema = new Schema({
     unset_exchange_account: Boolean,
     unset_linkedin_account: Boolean,
     unset_medium_account: Boolean,
+    unset_stackoverflow_url: Boolean,
+    unset_personal_website_url: Boolean,
     unset_employee: Boolean,
     unset_contractor: Boolean,
     unset_volunteer: Boolean,
-    unset_curret_currency: Boolean
+    unset_curret_currency: Boolean,
+    wizardNum : {
+        type: Number,
+        enum: [1,2,3,4,5]
+    }
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
@@ -341,7 +354,7 @@ module.exports.endpoint = async function (req, res) {
     console.log(queryBody);
 
     if (req.query.admin) {
-        userId = req.params.user_id;
+        userId = req.query.user_id;
         userDoc = await users.findOneById(userId);
     }
     else {
@@ -359,10 +372,6 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
         if (queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
         if (queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
-        if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
-        if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
-        if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
-        if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
 
         if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
         else unset['candidate.current_currency'] = 1;
@@ -505,6 +514,17 @@ module.exports.endpoint = async function (req, res) {
         } else {
             if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
         }
+        if (queryBody.unset_stackoverflow_url) {
+            unset['candidate.stackoverflow_url'] = 1;
+        } else {
+            if (queryBody.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = queryBody.stackoverflow_url;
+        }
+
+        if (queryBody.unset_personal_website_url) {
+            unset['candidate.personal_website_url'] = 1;
+        } else {
+            if (queryBody.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = queryBody.personal_website_url;
+        }
     }
 
     let timestamp = new Date();
@@ -516,11 +536,13 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-        let wizardStatus = candidateHistory.filter(
+        let wizardCompletedStatus = candidateHistory.filter(
             (history) => history.status && history.status.status === 'wizard completed'
         );
-        if (wizardStatus.length === 0 && queryBody.description) {
-            history.status = { status: 'wizard completed' };
+
+        if (wizardCompletedStatus.length === 0) {
+            if(queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };
+            else history.status = { status: 'wizard' };
         }
         else {
             history.status = { status: 'updated' };

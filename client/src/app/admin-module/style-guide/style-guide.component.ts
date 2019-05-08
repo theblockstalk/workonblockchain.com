@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import {constants} from '../../../constants/constants';
 declare var $:any;
 
 @Component({
@@ -14,6 +15,8 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
+  country_codes = constants.country_codes;
+
   constructor() { }
 
   ngOnInit() {

@@ -95,15 +95,25 @@
               </div>
 
               <div class="col-md-6">
+                <label><b>Phone (10 digit)</b></label>
                 <div class="form-row">
-                  <div class="form-group w-100">
-                    <label>Phone number</label>
-                    <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder=" (+1) 123 456 7890" required>
+                  <div class="input-group w-100">
+                    <div class="input-group-prepend my-style">
+                      <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="country_code" name="country_code">
+                        <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === country_code ? true : null">{{country_code.name}}</option>
+                      </select>
+                    </div>
+                    <input name="phone_number" #phoneNumber="ngModel" pattern="^\d{3}\d{3}\d{4}$" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder=" (+1) 123 456 7890" required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                       {{company_phone_log}}
                     </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="!country_code">
+                      {{country_code_log}}
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="phoneNumber.errors">
+                      Enter phone number in proper format.
+                    </div>
                   </div>
-
                 </div>
               </div>
 
@@ -342,7 +352,7 @@
                       <div class="form-group">
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
-                            <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                            <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()">
                             {{types.name}}
                             <i *ngIf="types.value === 'employee'" class="fas fa-user"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-user-clock"></i>
@@ -418,7 +428,7 @@
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
                         <label>Languages:</label>
-                        <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker">
+                        <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker" (change)="refreshSelectBox()">
                           <option class='option' *ngFor='let language of language_opt' [value]="language.value" >{{language.name}}</option>
                         </select>
                       </div>

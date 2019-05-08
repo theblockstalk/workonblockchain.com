@@ -46,7 +46,8 @@ const bodySchema = new Schema({
                             type: String,
                         },
                         annual_salary: {
-                            type: Number,
+                            min: Number,
+                            max: Number
                         },
                         currency: {
                             type: String,
@@ -71,7 +72,8 @@ const bodySchema = new Schema({
                 contractor: {
                     type: {
                         hourly_rate: {
-                            type: Number,
+                            min: Number,
+                            max: Number
                         },
                         currency: {
                             type: String,

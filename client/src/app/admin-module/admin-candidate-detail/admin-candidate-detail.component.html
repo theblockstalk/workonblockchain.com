@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''" class="list-group-item">
+                <li *ngIf="referred_name !== ''" class="list-group-item list-without-underline">
                   <ng-container *ngIf="referred_link ; else noLink">
                     <span><i class="fas fa-user mr-2"></i></span>
                     <span>Refered By:
@@ -42,15 +42,15 @@
                     </span>
                   </ng-template>
                 </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-flag"></i></span>
-                  <span> {{data.nationality}}</span>
+                <li class="list-group-item list-without-underline">
+                  <span><i class="fas fa-flag mr-2"></i></span>
+                  <span *ngFor="let nation of data.nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < data.nationality.length"/></span>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item list-without-underline">
                   <span><i class="fas fa-phone mr-2"></i></span>
                   <span>{{data.contact_number}}</span>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item list-without-underline">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                   <span >{{data.candidate.base_city}}</span>
                 </li>
@@ -252,7 +252,7 @@
             <div class="col-md-6">
               <div class="form-group" *ngIf="history.status">
 
-                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'wizard completed' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
+                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'wizard' || history.status.status === 'wizard completed' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
                   {{history.status.status}}
                 </label>
                 <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
@@ -360,6 +360,26 @@
                 </p>
               </div>
             </div>
+
+            <div class = "col-md-6 mb-3" *ngIf="data.candidate.stackoverflow_url">
+              <div class="form-group">
+                <label> Stackoverflow URL:</label>
+                <p>
+                  {{data.candidate.stackoverflow_url}}
+                <p>
+              </div>
+            </div>
+
+            <div class = "col-md-6 mb-3" *ngIf="data.candidate.personal_website_url">
+              <div class="form-group">
+                <label> Personal website URL:</label>
+                <p>
+                  {{data.candidate.personal_website_url}}
+                <p>
+              </div>
+            </div>
+
+
           </div>
         </section>
 

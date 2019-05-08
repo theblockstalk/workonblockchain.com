@@ -116,7 +116,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       this.class="btn disabled";
       this.exp_class="btn disabled";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['contact_number']  && data['nationality'])
@@ -595,7 +595,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) inputQuery.current_currency = this.current_currency;
-
+      inputQuery.wizardNum = 3;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
 

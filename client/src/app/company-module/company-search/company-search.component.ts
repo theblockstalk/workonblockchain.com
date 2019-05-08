@@ -118,6 +118,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   newSearchLocation = [];
   selectedWorkType;
   searchData;
+  years_exp_value = '';
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
@@ -179,6 +180,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residenceCountries = constants.countries;
   rolesData = constants.workRoles;
   blockchainData = constants.blockchainPlatforms;
+  years_exp = constants.years_exp_min;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -197,6 +199,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
       work_type: new FormControl(),
@@ -214,7 +217,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: new FormControl(),
       order_preferences: new FormControl(),
       residence_country: new FormControl(),
-      timestamp: new FormControl()
+      timestamp: new FormControl(),
+      years_exp_value: new FormControl(),
     });
 
     this.success_msg = '';
@@ -366,6 +370,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: [],
       order_preferences: [this.blockchain_order],
       residence_country: [this.residence_country],
+      years_exp_value: [this.years_exp_value],
     });
   }
 
@@ -387,6 +392,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
         if (key['skills']) this.skill_value = key['skills'];
         else this.skill_value = '';
+
+        if (key['years_exp_min']) this.years_exp_value = key['years_exp_min'];
+        else this.years_exp_value = '';
 
         if (key['_id']) this._id = key['_id'];
         else this._id = '';
@@ -480,6 +488,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.visa_check) queryBody.visa_needed = this.visa_check;
       if (this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
       if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
+      if (this.years_exp_value) queryBody.years_exp_min = parseInt(this.years_exp_value);
+
       if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary = this.salary;
         queryBody.current_currency = this.currencyChange;
@@ -546,6 +556,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.selectedWorkType = '';
     this.hourly_rate = '';
     this.contractorCurrency = '';
+    this.years_exp_value = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});
@@ -584,7 +595,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.location = this.filter_array(validatedLocation);
     }
     if (this.saveSearchName) queryBody.name = this.saveSearchName;
-    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
+    if (this.years_exp_value) queryBody.years_exp_min = this.years_exp_value;
     if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange) {
       queryBody.current_currency = this.currencyChange;
       queryBody.current_salary = this.salary;
@@ -594,10 +605,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.expected_hourly_rate = this.hourly_rate;
       queryBody.current_currency = this.contractorCurrency;
     }
+    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if (this.timestamp) queryBody.timestamp = this.timestamp;
     if (!queryBody.location) queryBody.location = [];
-    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -686,8 +697,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   current_currency_log;
 
   savedNewSearch() {
-    console.log(this.preferncesForm.value);
     let queryBody: any = {};
+
     if (this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if (this.newSearchLocation && this.newSearchLocation.length > 0) {
       let validatedLocation = [];
@@ -702,15 +713,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.location = this.filter_array(validatedLocation);
     }
     if (this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
+    if (this.preferncesForm.value.years_exp_value) queryBody.years_exp_min = this.preferncesForm.value.years_exp_value;
     if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
     if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
     if (this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
     if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if (this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
     if (this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
-    if (this.preferncesForm.value.work_type) queryBody.work_type = this.preferncesForm.value.work_type;
-
-
     let errorCount = 0;
     if (this.preferncesForm.value.work_type === 'employee' ) {
       if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
@@ -757,6 +766,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
 
     }
+    if (this.preferncesForm.value.work_type) queryBody.work_type = this.preferncesForm.value.work_type;
 
     if (!this.preferncesForm.value.name) {
       this.search_name_log = "Please enter saved search name";
@@ -934,7 +944,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.approach_work_type = 'employee';
               let employeeOffer = approach.employee;
               this.employee.job_title = employeeOffer.job_title;
-              this.employee.salary = employeeOffer.annual_salary;
+              this.employee.min_salary = employeeOffer.annual_salary.min;
+              if(employeeOffer.annual_salary && employeeOffer.annual_salary.max) {
+                this.employee.max_salary = employeeOffer.annual_salary.max;
+              }
               this.employee.currency = employeeOffer.currency;
               this.employee.location = employeeOffer.location;
               this.employee.job_type = employeeOffer.employment_type;
@@ -943,7 +956,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             if(approach.contractor) {
               this.approach_work_type = 'contractor';
               let contractorOffer = approach.contractor;
-              this.contractor.hourly_rate = contractorOffer.hourly_rate ;
+              this.contractor.hourly_rate_min = contractorOffer.hourly_rate.min ;
+              if(contractorOffer.hourly_rate && contractorOffer.hourly_rate.max) {
+                this.contractor.hourly_rate_max = contractorOffer.hourly_rate.max;
+              }
               this.contractor.currency = contractorOffer.currency;
               this.contractor.contract_description = contractorOffer.contract_description;
               this.contractor.location = contractorOffer.location;
@@ -987,6 +1003,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   hourly_currency_log;
   contract_desc_log;
   contractor_role_log;
+  max_salary_log;
+  max_hourly_rate_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1000,14 +1018,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.location_log = 'Please enter location';
         errorCount = 1;
       }
-      if (!this.employee.salary) {
-        this.salary_log = 'Please enter salary';
+      if (!this.employee.min_salary) {
+        this.salary_log = 'Please enter minimum salary';
         errorCount = 1;
       }
-      if(this.employee.salary && !this.checkNumber(this.employee.salary)) {
+      if(this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
         this.salary_log = 'Salary should be a number';
         errorCount = 1;
       }
+      if(this.employee.max_salary && !this.checkNumber(this.employee.max_salary)) {
+        this.max_salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+
+      if(Number(this.employee.max_salary) < Number(this.employee.min_salary)) {
+        errorCount = 1;
+      }
+
       if (!this.employee.currency) {
         this.salary_currency_log = 'Please select currency';
         errorCount = 1;
@@ -1023,13 +1050,20 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (this.approach_work_type === 'contractor') {
-      if (!this.contractor.hourly_rate) {
+      if (!this.contractor.hourly_rate_min) {
         this.hourly_rate_log = 'Please enter hourly rate';
         errorCount = 1;
       }
 
-      if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
+      if(this.contractor.hourly_rate_min && !this.checkNumber(this.contractor.hourly_rate_min)) {
         this.hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(this.contractor.hourly_rate_max && !this.checkNumber(this.contractor.hourly_rate_max)) {
+        this.max_hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(Number(this.contractor.hourly_rate_min) > Number(this.contractor.hourly_rate_max)) {
         errorCount = 1;
       }
       if (!this.contractor.currency) {
@@ -1061,8 +1095,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       let job_offer: any = {};
       let new_offer: any = {};
       if(this.approach_work_type === 'employee') {
+        let salary :any = {}
         job_offer.job_title = this.employee.job_title;
-        job_offer.annual_salary = this.employee.salary;
+        salary.min = Number(this.employee.min_salary);
+        if(this.employee.max_salary) salary.max = Number(this.employee.max_salary);
+        job_offer.annual_salary = salary;
         job_offer.currency = this.employee.currency;
         job_offer.employment_type = this.employee.job_type;
         job_offer.location = this.employee.location;
@@ -1072,7 +1109,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
       }
       if(this.approach_work_type === 'contractor') {
-        job_offer.hourly_rate = this.contractor.hourly_rate;
+        let hourly_rate : any = {};
+        hourly_rate.min = Number(this.contractor.hourly_rate_min);
+        if(this.contractor.hourly_rate_max) hourly_rate.max = Number(this.contractor.hourly_rate_max);
+        job_offer.hourly_rate = hourly_rate;
         job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
         job_offer.location = this.contractor.location;
@@ -1318,7 +1358,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   deleteNewLocationRow(index) {
     this.newSearchLocation.splice(index, 1);
   }
-  changeWorkTypes() {
+
+  refreshSelectBox(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
@@ -1326,8 +1367,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     //this.searchdata("work_type", this.workTypes);
   }
 
-  filterAndSort(roles) {
-    return getFilteredNames(roles, this.rolesData);
+  convertNumber(string) {
+    return Number(string);
   }
+
 
 }

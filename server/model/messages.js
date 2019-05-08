@@ -110,8 +110,11 @@ const MessageSchema = new Schema({
                             required: true
                         },
                         annual_salary: {
-                            type: Number,
-                            required: true
+                            min: {
+                                type: Number,
+                                required: true
+                            },
+                            max: Number
                         },
                         currency: {
                             type: String,
@@ -137,8 +140,11 @@ const MessageSchema = new Schema({
                 contractor: {
                     type: {
                         hourly_rate: {
-                            type: Number,
-                            required: true
+                            min : {
+                                type: Number,
+                                required: true
+                            },
+                            max: Number
                         },
                         currency: {
                             type: String,

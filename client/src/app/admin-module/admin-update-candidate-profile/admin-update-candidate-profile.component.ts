@@ -147,6 +147,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   volunteerArray=[];
   current_salary;
   contractorArray = [];
+  country_code_log;
+
   nationality = constants.nationalities;
   current_work_check=[];
   current_work = constants.current_work;
@@ -160,6 +162,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   employment_remote_error;
   contractor_remote_error;
   volunteer_remote_error;
+  country_codes = constants.country_codes;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -241,7 +244,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.user_id)
+      this.otherSkills.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.authenticationService.getCandidateProfileById(this.user_id , true)
         .subscribe(data =>
           {
             if(data)
@@ -314,12 +323,21 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1){
+                  this.info.country_code = contact_number[0];
+                  this.info.contact_number = contact_number[1];
+                }
+                else this.info.contact_number = contact_number[0];
 
-                this.info.contact_number = data['contact_number'];
                 if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
                 if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
                 if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
+                if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
+
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
@@ -1093,9 +1111,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(!this.info.nationality )
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) )
     {
       this.nationality_log ="Please choose nationality";
+      this.count++;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
     }
 
     if(!this.info.base_country )
@@ -1431,8 +1454,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
-    if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
-
+    if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+this.info.contact_number;
 
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
     else inputQuery.unset_github_account = true;
@@ -1448,6 +1470,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
+
+    if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+    else inputQuery.unset_stackoverflow_url= true;
+
+    if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+    else inputQuery.unset_personal_website_url = true;
 
     if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
     else inputQuery.unset_curret_currency = true;

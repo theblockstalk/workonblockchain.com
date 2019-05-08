@@ -310,7 +310,6 @@
                 </div>
               </div>
 
-
               <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
                 <div class="form-group">
                   <label>Languages:</label>
@@ -319,6 +318,14 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
+                <div class="form-group">
+                  <label>Years of experience:</label>
+                  <p>{{searches.years_exp_min}}+ years</p>
+                </div>
+              </div>
+
               <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
                 <div class="form-group">
                   <label>Residence/base country:</label>
@@ -327,7 +334,6 @@
                   </div>
                 </div>
               </div>
-
 
               <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
                 <div class="form-group">

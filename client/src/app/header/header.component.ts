@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
       if(this.user_type === 'candidate')
       {
 
-        this.authenticationService.getById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
             {
@@ -78,10 +78,11 @@ export class HeaderComponent implements OnInit {
                 this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
-                  //this.admin_route = '/admin';
+                  localStorage.setItem('admin_log', JSON.stringify(data));
                 }
                 else
                 {
+                  localStorage.removeItem('admin_log');
                   this.admin_route = '';
                 }
               }
@@ -109,10 +110,11 @@ export class HeaderComponent implements OnInit {
                 this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
-                  //this.admin_route = '/admin';
+                  localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
                 }
                 else
                 {
+                  localStorage.removeItem('admin_log');
                   this.admin_route = '';
                 }
               }

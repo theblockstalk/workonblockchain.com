@@ -116,7 +116,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
     };
@@ -133,7 +132,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
-        this.authenticationService.getById(this.user_id)
+        this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
               this._id  = data['_id'];

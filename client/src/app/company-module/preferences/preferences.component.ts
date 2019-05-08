@@ -84,14 +84,15 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       skills: [''],
       other_technologies: [''],
       order_preferences: [''],
-      residence_country: ['']
+      residence_country: [''],
+      years_exp_min: ['']
     });
   }
 
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], years_exp_min: i.years_exp_min ,other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -133,6 +134,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   email_notificaiton = constants.email_notificaiton;
   prefData;
   when_receive_email_notitfications;
+  years_exp = constants.years_exp_min;
 
   ngOnInit() {
     this.prefData=[];
@@ -182,7 +184,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         residence_country: new FormControl(),
         expected_hourly_rate: new FormControl(),
         currency: new FormControl(),
-        work_type: new FormControl()
+        work_type: new FormControl(),
+        years_exp_min: new FormControl()
       });
 
       this.preferncesForm = this._fb.group({
@@ -297,7 +300,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       }
     }
     console.log(this.validatedLocation);
-
     if(!this.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
       count=1;
@@ -375,6 +377,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           searchInput.location = this.validatedLocation;
 
           if(key['name']) searchInput.name = key['name'];
+          if(key['years_exp_min']) searchInput.years_exp_min = key['years_exp_min'];
+
           if(key['work_type']) searchInput.work_type = key['work_type'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchInput.current_currency = key['current_currency'];
@@ -473,6 +477,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   languageSelectedOptions(lang) {
+    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0){}
+    else this.preferncesForm.value.years_exp_min = '';
     this.index = this.languageSelected.indexOf(lang);
     if(this.index > -1) {
       return 'selected';
@@ -485,7 +491,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   redirectToCompany()
   {
     $('#whatHappensNextModal').modal('hide');
-    this.router.navigate(['/company_profile']);
+    this.router.navigate(['/candidate-search']);
   }
 
 
@@ -611,7 +617,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     return value.filter(i => i.visa_needed === true).length;
   }
 
-  changeWorkTypes(){
+  refreshSelectBox(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);

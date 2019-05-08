@@ -137,12 +137,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   employment_remote_error;
   contractor_remote_error;
   volunteer_remote_error;
+  country_code_log;
 
   nationality = constants.nationalities;
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
   employement_availability= constants.workAvailability;
+  country_codes = constants.country_codes;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -221,7 +223,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getProfileById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(data =>
           {
             if(data)
@@ -295,11 +297,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
-                this.info.contact_number = data['contact_number'];
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1){
+                  this.info.country_code = contact_number[0];
+                  this.info.contact_number = contact_number[1];
+                }
+                else this.info.contact_number = contact_number[0];
+
                 if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
                 if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
                 if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
+                if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
@@ -1104,9 +1115,27 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contact_name_log ="Please enter contact number";
     }
 
+    if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
+      this.count++;
+    }
+
+    if (!this.info.country_code) {
+      this.country_code_log = "Please select country code";
+    }
+
     if(!this.info.nationality )
     {
       this.nationality_log ="Please choose nationality";
+    }
+
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) ) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
+    }
+
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
     }
 
     if(!this.info.base_country )
@@ -1300,7 +1329,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
     if(this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
-      && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.country_code && this.info.nationality &&
       this.info.city && this.info.base_country && this.selectedValue.length > 0 &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
       this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
@@ -1313,12 +1342,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else {
       this.verify = false;
     }
-    if(this.verify === true ) {
+    if(this.verify === true) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
       if(this.salary && typeof (this.salary) === 'string') {
         profileForm.value.salary = parseInt(this.salary);
-
       }
 
       this.updateProfileData(profileForm.value);
@@ -1443,23 +1471,25 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
-    if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
-
+    if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+this.info.contact_number;
 
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
     else inputQuery.unset_github_account = true;
 
-
     if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
     else inputQuery.unset_exchange_account = true;
-
 
     if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
     else inputQuery.unset_linkedin_account = true;
 
-
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
+
+    if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+    else inputQuery.unset_stackoverflow_url= true;
+
+    if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+    else inputQuery.unset_personal_website_url = true;
 
     if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
     else inputQuery.unset_curret_currency = true;
@@ -2046,6 +2076,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 
 }
