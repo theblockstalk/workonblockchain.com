@@ -169,18 +169,8 @@ export class AboutComponent implements OnInit,AfterViewInit
                 this.info.city = data['candidate'].base_city;
               }
 
-              if(data['image'] != null )
-              {
+              if(data['image'] != null ) {
                 this.imagePreviewLink = data['image'];
-                this.info.image_src = data['image'] ;
-
-
-                let x = this.info.image_src.split("/");
-
-                let last:any = x[x.length-1];
-
-                this.img_src = last;
-
               }
 
             }
@@ -379,25 +369,6 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  // imageChangedEvent: any = '';
-  // croppedImage: any = '';
-  //
-  // fileChangeEvent(event: any): void {
-  //   this.imageChangedEvent = event;
-  // }
-  // imageCropped(event: any) {
-  //   console.log(event);
-  //   this.croppedImage = event.base64;
-  // }
-  // imageLoaded() {
-  //   // show cropper
-  // }
-  // cropperReady() {
-  //   // cropper ready
-  // }
-  // loadImageFailed() {
-  //   // show message
-  // }
 
   imageName;
   fileChangeListener($event) {

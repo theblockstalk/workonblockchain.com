@@ -230,19 +230,19 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header bg-primary">
-          <h5 class="modal-title text-center" id="exampleModalLabel">Image cropper</h5>
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
         </div>
-        <div class="modal-body">
-          <div class="file-upload">
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
             <input type="file" accept="image/*" (change)="fileChangeListener($event)">
           </div>
-          <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
-          <br>
-
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Crop</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
         </div>
       </div>
     </div>
