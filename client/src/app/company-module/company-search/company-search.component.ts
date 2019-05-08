@@ -1138,7 +1138,25 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    console.log(this.pagedItems);
+    for(let i=0;i<this.pagedItems.length;i++){
+      this.pagedItems[i].already_approached = 0;
+      if(this.pagedItems[i].initials) {
+        this.authenticationService.get_user_messages_comp(this.pagedItems[i]._id)
+          .subscribe(
+            data => {
+              if(data['messages'][0].message.approach) this.pagedItems[i].already_approached = 1;
+            },
+            error => {
+              if (error.message === 500 || error.message === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) {
+              }
+            }
+          );
+      }
+    }
   }
 
   suggestedOptions() {

@@ -192,9 +192,18 @@
                           Expects {{data.candidate.contractor.expected_hourly_rate}} {{data.candidate.contractor.currency}} per hour
                         </span>
                         <br>
-                        <span *ngIf = 'data.first_name' class = "badge badge-pill badge-primary">
+                        <div *ngIf = "data.first_name" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
+                            Already approached
+                          </span>
+                        </div>
+                        <div *ngIf = "data.already_approached === 1" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
                           Already approached
                         </span>
+                        </div>
                       </div>
                       <div class="col-md-3">
                         <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
