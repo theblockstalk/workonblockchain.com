@@ -484,9 +484,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
               }
             }
           );
-
       }
-
 
       let saved_searches = [];
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0){
