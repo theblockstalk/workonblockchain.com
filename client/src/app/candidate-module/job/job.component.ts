@@ -79,7 +79,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   employement_availability = constants.workAvailability;
   employment_remote_error;
   contractor_remote_error;
-  volunteer_remote_error
+  volunteer_remote_error;
 
   ngAfterViewInit(): void
   {
@@ -355,6 +355,10 @@ export class JobComponent implements OnInit,AfterViewInit {
     let contractorCount = 0;
     let volunteerCount = 0;
     let inputQuery: any = {};
+    this.employment_remote_error = '';
+    this.contractor_remote_error = '';
+    this.volunteer_remote_error = '';
+
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
     }
@@ -429,6 +433,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           contractorCount = 1;
           this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
         }
+        this.contractor_remote_error = '';
         if(this.contractor.selectedLocation.filter(i => i.name !== 'Remote').length === this.contractor.selectedLocation.length) {
           console.log('no remote');
           this.contractor_remote_error = "Please select remote";
@@ -494,6 +499,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           volunteerCount = 1;
           this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
         }
+        this.volunteer_remote_error = '';
         if(this.volunteer.selectedLocation.filter(i => i.name !== 'Remote').length === this.volunteer.selectedLocation.length) {
           console.log('no remote');
           this.volunteer_remote_error = "Please select remote";
