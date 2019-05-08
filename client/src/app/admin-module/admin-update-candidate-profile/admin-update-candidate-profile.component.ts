@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from '../../../services/object';
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
@@ -193,9 +194,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   admin_log;
   ngOnInit()
   {
-    for(let type of this.contractor_types ) {
-      type.checked = false;
-    }
+    this.contractor_types = unCheckCheckboxes(constants.contractorTypes);
+    this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
+    this.otherSkills = unCheckCheckboxes(constants.otherSkills);
+    this.experimented = unCheckCheckboxes(constants.experimented);
+    this.exp_year = unCheckCheckboxes(constants.experienceYears);
+    this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+    this.roles = unCheckCheckboxes(constants.workRoles);
+
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
