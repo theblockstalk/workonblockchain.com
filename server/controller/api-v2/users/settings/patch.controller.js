@@ -43,7 +43,6 @@ module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
     let updateCandidateUser = {};
     const timestamp = new Date();
-    let terms_page_doc_id;
 
     if(queryBody.marketing_emails ||  queryBody.marketing_emails === false) {
         updateCandidateUser['marketing_emails'] = queryBody.marketing_emails;
@@ -66,8 +65,7 @@ module.exports.endpoint = async function (req, res) {
             }
         }
         else {
-            console.log(queryBody)
-            let latest_terms = await Pages.findOne({page_name: 'Terms and Condition for company'});
+            let latest_terms = await Pages.findOneAndSort({page_name: 'Terms and Condition for company'});
             if (queryBody.terms_id === latest_terms._id.toString()) {
                 await companies.update({ _creator: userId },{ $set: {'terms_id' : queryBody.terms_id} });
             }
