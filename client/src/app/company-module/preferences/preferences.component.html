@@ -77,7 +77,7 @@
                       <div class="form-group">
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
-                            <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                            <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
                             {{types.name}}
                             <i *ngIf="types.value === 'employee'" class="fas fa-user"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-user-clock"></i>
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="col-md-6" >
-                      <div class = "form-group" [ngClass]="preferncesForm.value.prefItems[i].work_type !== 'employee'? 'mt-4' : ''">
+                      <div class = "form-group" [ngClass]="preferncesForm.value.prefItems[i].work_type !== 'employee'? 'mt-2' : ''">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                           <label class="form-check-label" for="defaultCheck1">
@@ -162,7 +162,7 @@
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
                         <label>Languages:</label>
-                        <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker">
+                        <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker" (change)="refreshSelectBox()">
                           <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
                         </select>
                       </div>
@@ -179,23 +179,23 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.skills && preferncesForm.value.skills.length > 0">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length > 0">
                       <div class = "form-group">
                         <label>Years experience:</label>
-                        <select title="1" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_min" >
-                          <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_min?true:null">{{years_exp_min.name}}</option>
+                        <select title="1" class="selectpicker form-control position-relative" formControlName = "years_exp_min" >
+                          <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.prefItems[i].years_exp_min?true:null">{{years_exp_min.name}}</option>
                         </select>
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label>Annual salary:</label>
                         <input type="text" formControlName="current_salary" [value] = "preferncesForm.value.prefItems[i].current_salary" class="form-control" placeholder="1000">
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "current_currency" >
@@ -211,14 +211,14 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type === 'contractor'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type === 'contractor'">
                       <div class = "form-group">
                         <label>Hourly rate:</label>
                         <input type="text" formControlName="expected_hourly_rate" [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate" class="form-control" placeholder="100">
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type === 'contractor'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type === 'contractor'">
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "currency" >
