@@ -23,14 +23,12 @@ const getReferralDetailForAdmin  = require('./controller/api/users/referrals/get
 // Candidates
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
 
 // Companies
 const companyGet = require('./controller/api/users/company/getCompany.controller');
 const companyGetCurrent = require('./controller/api/users/company/getCurrentCompany.controller');
 const companyImage = require('./controller/api/users/company/image.controller');
-const companyWizardTnT = require('./controller/api/users/company/wizard/getSummaryTnC.controller');
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
 const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
@@ -68,14 +66,12 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
-router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
-router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
 router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates));
