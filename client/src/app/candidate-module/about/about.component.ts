@@ -63,7 +63,6 @@ export class AboutComponent implements OnInit,AfterViewInit
   country_codes = constants.country_codes;
   country_code_log;
   imagePreviewLink;
-
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
     this.cropperSettings = new CropperSettings();
@@ -234,7 +233,6 @@ export class AboutComponent implements OnInit,AfterViewInit
   }
 
   about(aboutForm: NgForm) {
-
     this.error_msg = "";
     let errorCount = 0;
     if (this.referred_id) {

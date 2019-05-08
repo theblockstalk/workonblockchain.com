@@ -149,6 +149,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   country_codes = constants.country_codes;
   imagePreviewLink;
 
+
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
     this.cropperSettings = new CropperSettings();
@@ -1102,6 +1103,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contact_name_log ="Please enter contact number";
     }
 
+    if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
+      this.count++;
+    }
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
     }
@@ -2085,6 +2089,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     $('#imageModal').modal('hide');
   }
 
-
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
+  }
 
 }
