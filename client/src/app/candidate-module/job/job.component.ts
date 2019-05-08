@@ -77,6 +77,9 @@ export class JobComponent implements OnInit,AfterViewInit {
   max_hours=[];
   validateUrl;
   employement_availability = constants.workAvailability;
+  employment_remote_error;
+  contractor_remote_error;
+  volunteer_remote_error
 
   ngAfterViewInit(): void
   {
@@ -370,6 +373,12 @@ export class JobComponent implements OnInit,AfterViewInit {
           this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
           employeeCount = 1;
         }
+        if(this.employee.selectedLocation.filter(i => i.name !== 'Remote').length === this.employee.selectedLocation.length) {
+          console.log('no remote');
+          this.employment_remote_error = "Please select remote";
+          employeeCount = 1;
+        }
+
         this.validatedLocation = [];
         for(let location of this.employee.selectedLocation) {
           if(location.name.includes('city')) {
@@ -420,6 +429,12 @@ export class JobComponent implements OnInit,AfterViewInit {
           contractorCount = 1;
           this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
         }
+        if(this.contractor.selectedLocation.filter(i => i.name !== 'Remote').length === this.contractor.selectedLocation.length) {
+          console.log('no remote');
+          this.contractor_remote_error = "Please select remote";
+          contractorCount = 1;
+        }
+
         this.validatedLocation=[];
         for(let location of this.contractor.selectedLocation) {
           if(location.name.includes('city')) {
@@ -479,6 +494,12 @@ export class JobComponent implements OnInit,AfterViewInit {
           volunteerCount = 1;
           this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
         }
+        if(this.volunteer.selectedLocation.filter(i => i.name !== 'Remote').length === this.volunteer.selectedLocation.length) {
+          console.log('no remote');
+          this.volunteer_remote_error = "Please select remote";
+          volunteerCount = 1;
+        }
+
         this.validatedLocation=[];
         for(let location of this.volunteer.selectedLocation) {
           if(location.name.includes('city')) {
