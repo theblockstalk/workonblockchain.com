@@ -323,6 +323,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   expected_hourly_rate_log;
   company_profile(profileForm: NgForm)
   {
+    let count = 0;
     this.error_msg = "";
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
@@ -344,6 +345,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
     if(!this.company_phone) {
       this.company_phone_log="Please enter first name";
+    }
+    if((this.company_phone.length < 10 || this.company_phone.length > 10) || this.checkNumber(this.company_phone) === false){
+      count = 1;
     }
     if(!this.country_code) {
       this.country_code_log="Please select country code";
@@ -386,7 +390,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    let count = 0;
     if(this.preferncesForm.value.prefItems.length > 0) {
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
         if(!this.preferncesForm.value.prefItems[i].name) {
