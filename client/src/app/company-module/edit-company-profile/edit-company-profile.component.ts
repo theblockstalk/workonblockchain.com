@@ -114,6 +114,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     this.cropperSettings.croppedHeight = 200;
     this.cropperSettings.canvasWidth = 300;
     this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
     this.cropperSettings.rounded = true;
     this.imageCropData = {};
   }
