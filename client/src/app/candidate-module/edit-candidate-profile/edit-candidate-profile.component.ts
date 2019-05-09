@@ -142,6 +142,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   countries = constants.countries;
   employement_availability= constants.workAvailability;
   country_codes = constants.country_codes;
+  contact_number_log;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -1087,11 +1088,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     if(!this.info.contact_number)
     {
-      this.contact_name_log ="Please enter contact number";
+      this.contact_name_log ="Please enter phone number";
     }
-
-    if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
-      this.count++;
+    if(this.info.contact_number){
+      if(!(this.info.contact_number.length >= 4 && this.info.contact_number.length <= 15) || this.checkNumber(this.info.contact_number) === false){
+        this.contact_number_log ="Please enter phone number in proper format";
+        this.count++;
+      }
     }
 
     if (!this.info.country_code) {

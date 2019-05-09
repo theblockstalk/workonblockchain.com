@@ -224,6 +224,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   companyPostalCodeLog;
   companyCityLog;
   companyPasswordLog;
+  contact_number_log;
 
   company_signup(signupForm: NgForm)
   {
@@ -232,6 +233,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.credentials.type="company";
     this.credentials.social_type='';
     this.password_log = '';
+    this.contact_number_log = '';
+    let errorCount = 0;
+
     if(this.credentials.password != this.credentials.confirm_password )
     {
       this.credentials.confirm_password = '';
@@ -266,6 +270,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
+    if(this.credentials.phone_number){
+      if(!(this.credentials.phone_number.length >= 4 && this.credentials.phone_number.length <= 15) || this.checkNumber(this.credentials.phone_number) === false){
+        this.contact_number_log = "Please enter phone number in proper format";
+        errorCount = 1;
+      }
+    }
+
     if(!this.credentials.country_code)
     {
       this.country_code_log = 'Please select country code';
@@ -286,7 +297,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPasswordLog = 'Please enter password'
     }
-    if(signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+    if(errorCount === 0 && signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
       && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
@@ -315,5 +326,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           });
     }
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 }

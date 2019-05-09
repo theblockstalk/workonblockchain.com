@@ -55,6 +55,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   countries = constants.countries;
   country_codes = constants.country_codes;
   country_code_log;
+  contact_number_log;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -225,6 +226,8 @@ export class AboutComponent implements OnInit,AfterViewInit
   about(aboutForm: NgForm) {
     this.error_msg = "";
     let errorCount = 0;
+    this.contact_number_log = '';
+
     if (this.referred_id) {
       this.info.referred_id = this.referred_id;
     }
@@ -239,9 +242,16 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
 
     if (!this.info.contact_number) {
-      this.contact_name_log = "Please enter contact number";
+      this.contact_name_log = "Please enter phone number";
       errorCount++;
     }
+    if (this.info.contact_number) {
+      if(!(this.info.contact_number.length >= 4 && this.info.contact_number.length <= 15) || this.checkNumber(this.info.contact_number) === false){
+        this.contact_number_log = "Please enter phone number in proper format";
+        errorCount++;
+      }
+    }
+
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
       errorCount++;
@@ -365,6 +375,9 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
+  }
 
 }
 

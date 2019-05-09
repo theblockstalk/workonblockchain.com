@@ -95,7 +95,7 @@
               </div>
 
               <div class="col-md-6">
-                <label><b>Phone (10 digit)</b></label>
+                <label><b>Phone (4-15 digit)</b></label>
                 <div class="form-row">
                   <div class="input-group w-100">
                     <div class="input-group-prepend my-style">
@@ -103,15 +103,15 @@
                         <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === country_code ? true : null">{{country_code.name}}</option>
                       </select>
                     </div>
-                    <input name="phone_number" #phoneNumber="ngModel" pattern="^\d{3}\d{3}\d{4}$" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
+                    <input name="phone_number" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                       {{company_phone_log}}
                     </div>
                     <div class = "invalid-feedback d-inline" *ngIf="!country_code">
                       {{country_code_log}}
                     </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="phoneNumber.errors">
-                      Enter phone number in proper format.
+                    <div class = "invalid-feedback d-inline" *ngIf="contact_number_log">
+                      {{contact_number_log}}
                     </div>
                   </div>
                 </div>

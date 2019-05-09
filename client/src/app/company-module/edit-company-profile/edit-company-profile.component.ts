@@ -93,6 +93,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   country_codes = constants.country_codes;
   years_exp = constants.years_exp_min;
   prefData;
+  contact_number_log;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -325,6 +326,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     let count = 0;
     this.error_msg = "";
+    this.contact_number_log = '';
+
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
     }
@@ -344,10 +347,13 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.company_website_log="Please enter first name";
     }
     if(!this.company_phone) {
-      this.company_phone_log="Please enter first name";
+      this.company_phone_log="Please enter phone number name";
     }
-    if((this.company_phone.length < 10 || this.company_phone.length > 10) || this.checkNumber(this.company_phone) === false){
-      count = 1;
+    if(this.company_phone) {
+      if(!(this.company_phone.length >= 4 && this.company_phone.length <= 15) || this.checkNumber(this.company_phone) === false){
+        this.contact_number_log = "Please enter phone number in proper format";
+        count = 1;
+      }
     }
     if(!this.country_code) {
       this.country_code_log="Please select country code";
