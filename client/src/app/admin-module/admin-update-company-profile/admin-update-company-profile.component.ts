@@ -97,8 +97,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   yearVerification;
   country_code;
   country_code_log;
+  contact_number_log;
   imagePreviewLink;
   prefil_image;
+
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
     this.route.queryParams.subscribe(params => {
@@ -334,6 +336,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   {
     let count = 0;
     this.error_msg = "";
+    this.contact_number_log = '';
+
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
     }
@@ -353,10 +357,16 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.company_website_log="Please enter first name";
     }
     if(!this.company_phone) {
-      this.company_phone_log="Please enter first name";
+      this.company_phone_log="Please enter phone number";
     }
-    if((this.company_phone.length < 10 || this.company_phone.length > 10) || this.checkNumber(this.company_phone) === false){
-      count = 1;
+    if (this.company_phone) {
+      if(this.company_phone.length < 4 || this.company_phone.length > 15){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        count = 1;
+      }
+      if(!this.checkNumber(this.company_phone)) {
+        count = 1;
+      }
     }
 
     if(!this.country_code){

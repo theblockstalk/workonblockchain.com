@@ -62,8 +62,10 @@ export class AboutComponent implements OnInit,AfterViewInit
   countries = constants.countries;
   country_codes = constants.country_codes;
   country_code_log;
+  contact_number_log;
   imagePreviewLink;
   prefil_image;
+
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
     this.cropperSettings = new CropperSettings();
@@ -143,13 +145,17 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
-              let contact_number = data['contact_number'];
-              contact_number = contact_number.split(" ");
-              if(contact_number.length>1){
-                this.info.country_code = contact_number[0];
-                this.info.contact_number = contact_number[1];
+              let phone_number;
+              this.info.contact_number = '';
+              if(data['contact_number']) {
+                phone_number = data['contact_number'];
+                phone_number = phone_number.split(" ");
+                if (phone_number.length > 1) {
+                  this.info.country_code = phone_number[0];
+                  this.info.contact_number = phone_number[1];
+                }
+                else this.info.contact_number = phone_number[0];
               }
-              else this.info.contact_number = contact_number[0];
 
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
@@ -236,6 +242,8 @@ export class AboutComponent implements OnInit,AfterViewInit
   about(aboutForm: NgForm) {
     this.error_msg = "";
     let errorCount = 0;
+    this.contact_number_log = '';
+
     if (this.referred_id) {
       this.info.referred_id = this.referred_id;
     }
@@ -250,9 +258,19 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
 
     if (!this.info.contact_number) {
-      this.contact_name_log = "Please enter contact number";
+      this.contact_name_log = "Please enter phone number";
       errorCount++;
     }
+    if (this.info.contact_number) {
+      if((this.info.contact_number.length < 4 || this.info.contact_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount++;
+      }
+      if(!this.checkNumber(this.info.contact_number)) {
+        errorCount++;
+      }
+    }
+
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
       errorCount++;
@@ -367,6 +385,9 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
+  }
 
   imageName;
   fileChangeListener($event) {

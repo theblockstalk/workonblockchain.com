@@ -147,6 +147,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   countries = constants.countries;
   employement_availability= constants.workAvailability;
   country_codes = constants.country_codes;
+  contact_number_log;
   imagePreviewLink;
   prefil_image;
 
@@ -1106,11 +1107,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     if(!this.info.contact_number)
     {
-      this.contact_name_log ="Please enter contact number";
+      this.contact_name_log ="Please enter phone number";
     }
-
-    if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
-      this.count++;
+    if (this.info.contact_number) {
+      if(this.info.contact_number.length < 4 || this.info.contact_number.length > 15){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        this.count++;
+      }
+      if(!this.checkNumber(this.info.contact_number)) {
+        this.count++;
+      }
     }
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
