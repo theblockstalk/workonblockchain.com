@@ -138,17 +138,22 @@
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group" >
-                  <label>Profile picture</label>
-                  <input type="file" class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
-                  <label>
-                    <span *ngIf="img_src" >{{img_src}}</span>
-                  </label>
-                  <div class = "invalid-feedback d-inline" *ngIf="image_log">
-                    {{image_log}}
-                  </div>
+                  <label>Image (optional)</label>
+                  <p>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+                  </p>
+                  <span *ngIf="imageCropData.image;else prefil_image" >
+                  <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                </span>
+
+                  <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                  <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" >
+                </span>
                 </div>
               </div>
             </div>
@@ -1187,4 +1192,27 @@
       </div>
     </form>
   </div>
+  <!-- Image crop popup -->
+  <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+        </div>
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
+            <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+          </div>
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>

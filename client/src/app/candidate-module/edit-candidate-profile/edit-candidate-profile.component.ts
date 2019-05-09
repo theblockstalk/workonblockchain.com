@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit ,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 import {removeDuplication, unCheckCheckboxes} from "../../../services/object";
 
 @Component({
@@ -17,7 +18,11 @@ import {removeDuplication, unCheckCheckboxes} from "../../../services/object";
   styleUrls: ['./edit-candidate-profile.component.css']
 })
 export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
-
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   currentUser: User;
   info: any = {}; log;
   selectedValue = [];
@@ -142,9 +147,23 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   countries = constants.countries;
   employement_availability= constants.workAvailability;
   country_codes = constants.country_codes;
+  imagePreviewLink;
+  prefil_image;
 
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
   }
 
   private education_data(): FormGroup[]
@@ -318,14 +337,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
 
-                if(data['image'] != null )
-                {
-                  this.info.image_src =  data['image'] ;
-                  let x = this.info.image_src.split("/");
-
-                  let last:any = x[x.length-1];
-
-                  this.img_src = last;
+                if(data['image'] != null ) {
+                  this.imagePreviewLink = data['image'];
                 }
 
                 if(data['candidate'] && data['candidate'].base_country)
@@ -1099,7 +1112,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if((this.info.contact_number.length < 10 || this.info.contact_number.length > 10) || this.checkNumber(this.info.contact_number) === false){
       this.count++;
     }
-
     if (!this.info.country_code) {
       this.country_code_log = "Please select country code";
     }
@@ -1347,40 +1359,31 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.experiencearray=[];
     this.education_json_array=[];
     this.submit = 'click';
-    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    let fileCount: number = inputEl.files.length;
-    let formData = new FormData();
-    if (fileCount > 0 )
-    {
+    if(this.imageCropData.image) {
+      const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+      console.log("data url to file");
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
+        .subscribe(
+          data => {
+            if (data) {
 
-      if(inputEl.files.item(0).size < this.file_size)
-      {
-        formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
-          .subscribe(
-            data => {
-              if (data) {
-                //console.log(data);
-                //this.router.navigate(['/candidate_profile']);
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
             }
-          );
-      }
-      else
-      {
-        this.image_log = "Image size should be less than 1MB";
-      }
+          },
+          error => {
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
+
     }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
@@ -2046,8 +2049,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onAreaSelected(e)
   {
-    if(e.target.checked)
-    {
+    if(e.target.checked) {
       this.selectedValue.push(e.target.value);
     }
     else{
@@ -2055,8 +2057,42 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       let index = this.selectedValue.indexOf(updateItem);
       this.selectedValue.splice(index, 1);
     }
+  }
+
+  imageName;
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    console.log(file.name);
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
 
 
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    console.log(arr);
+    mime = mime.split("/");
+    console.log(mime);
+    console.log(mime[1]);
+    return new File([u8arr], filename, {type:mime[1]});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
   }
 
   checkNumber(salary) {

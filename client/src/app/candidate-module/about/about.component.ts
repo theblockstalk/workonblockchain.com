@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,7 +6,9 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 import {NgForm} from '@angular/forms';
+
 
 @Component({
   selector: 'app-about',
@@ -15,6 +17,11 @@ import {NgForm} from '@angular/forms';
 })
 export class AboutComponent implements OnInit,AfterViewInit
 {
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   currentUser: User;
   log='';
   info: any = {};
@@ -55,9 +62,22 @@ export class AboutComponent implements OnInit,AfterViewInit
   countries = constants.countries;
   country_codes = constants.country_codes;
   country_code_log;
-
+  imagePreviewLink;
+  prefil_image;
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
   }
 
   ngAfterViewInit(): void
@@ -149,17 +169,8 @@ export class AboutComponent implements OnInit,AfterViewInit
                 this.info.city = data['candidate'].base_city;
               }
 
-              if(data['image'] != null )
-              {
-                this.info.image_src = data['image'] ;
-
-
-                let x = this.info.image_src.split("/");
-
-                let last:any = x[x.length-1];
-
-                this.img_src = last;
-
+              if(data['image'] != null ) {
+                this.imagePreviewLink = data['image'];
               }
 
             }
@@ -263,39 +274,31 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    let fileCount: number = inputEl.files.length;
-    let formData = new FormData();
-    if (errorCount=== 0 && fileCount > 0 ) {
+    if(errorCount === 0 && this.imageCropData.image) {
+      const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+      console.log("data url to file");
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
+        .subscribe(
+          data => {
+            if (data) {
 
-      if(inputEl.files.item(0).size < this.file_size)
-      {
-        formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.currentUser._id , formData, false)
-          .subscribe(
-            data => {
-              if (data) {
-                //console.log(data);
-                //this.router.navigate(['/candidate_profile']);
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
             }
-          );
-      }
-      else
-      {
-        this.image_log = "Image size should be less than 1MB";
-      }
+          },
+          error => {
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
+
     }
     if (errorCount === 0 && aboutForm.valid === true) {
       let inputQuery:any ={};
@@ -363,6 +366,43 @@ export class AboutComponent implements OnInit,AfterViewInit
 
     }
 
+  }
+
+
+  imageName;
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    console.log(file.name);
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
+
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    console.log(arr);
+    mime = mime.split("/");
+    console.log(mime);
+    console.log(mime[1]);
+    return new File([u8arr], filename, {type:mime[1]});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
   }
 
 
