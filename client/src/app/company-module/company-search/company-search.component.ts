@@ -1167,10 +1167,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   sorting(languages){
-
     return languages.sort(function(a, b){
-      if(a.language < b.language) { return -1; }
-      if(a.language > b.language) { return 1; }
+      a = a.exp_year.split('-');
+      b = b.exp_year.split('-');
+      if(a[0] > b[0]) { return -1; }
+      if(a[0] < b[0]) { return 1; }
       return 0;
     })
   }

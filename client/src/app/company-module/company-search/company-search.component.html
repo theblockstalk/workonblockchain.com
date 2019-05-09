@@ -241,7 +241,11 @@
                           <div class="form-group">
                             <label><h4>Languages</h4></label>
                             <div>
-                              <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.candidate.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                              <div *ngFor = "let lang of sorting(data.candidate.programming_languages); let i = index">
+                                <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngIf="i < 5">
+                                  {{lang.language}}: {{lang.exp_year}} years
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
