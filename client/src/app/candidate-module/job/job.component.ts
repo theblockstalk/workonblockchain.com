@@ -7,6 +7,7 @@ declare var $:any;
 import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
+import {unCheckCheckboxes} from "../../../services/object";
 
 @Component({
   selector: 'app-job',
@@ -92,6 +93,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
+    this.roles = unCheckCheckboxes(constants.workRoles);
     this.employee.employee_roles = this.roles;
     this.volunteer.volunteer_roles = this.roles;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

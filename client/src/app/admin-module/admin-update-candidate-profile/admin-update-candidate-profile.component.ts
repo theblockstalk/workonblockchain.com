@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit ,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,8 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import {unCheckCheckboxes} from '../../../services/object';
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
@@ -16,7 +18,11 @@ import {constants} from '../../../constants/constants';
   styleUrls: ['./admin-update-candidate-profile.component.css']
 })
 export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewInit {
-
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   user_id;
   currentUser: User;
   info: any = {}; log;
@@ -148,7 +154,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   current_salary;
   contractorArray = [];
   country_code_log;
-
   nationality = constants.nationalities;
   current_work_check=[];
   current_work = constants.current_work;
@@ -163,9 +168,22 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   contractor_remote_error;
   volunteer_remote_error;
   country_codes = constants.country_codes;
-
+  imagePreviewLink;
+  prefil_image;
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
@@ -196,9 +214,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   admin_log;
   ngOnInit()
   {
-    for(let type of this.contractor_types ) {
-      type.checked = false;
-    }
+    this.contractor_types = unCheckCheckboxes(constants.contractorTypes);
+    this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
+    this.otherSkills = unCheckCheckboxes(constants.otherSkills);
+    this.experimented = unCheckCheckboxes(constants.experimented);
+    this.exp_year = unCheckCheckboxes(constants.experienceYears);
+    this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+    this.roles = unCheckCheckboxes(constants.workRoles);
+
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
@@ -342,14 +366,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
 
-                if(data['image'] != null )
-                {
-                  this.info.image_src =  data['image'] ;
-                  let x = this.info.image_src.split("/");
-
-                  let last:any = x[x.length-1];
-
-                  this.img_src = last;
+                if(data['image'] != null ) {
+                  this.imagePreviewLink = data['image'];
                 }
 
                 if(data['candidate'] && data['candidate'].base_country)
@@ -1341,45 +1359,36 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   file_size=1048576;
   image_log;
-
+  imageName;
   updateProfileData(profileForm)
   {
     profileForm.selectedlocations = this.validatedLocation;
     this.experiencearray=[];
     this.education_json_array=[];
-    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    let fileCount: number = inputEl.files.length;
-    let formData = new FormData();
-    if (fileCount > 0 )
-    {
+    if(this.imageCropData.image) {
+      const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.user_id ,formData , true)
+        .subscribe(
+          data => {
+            if (data) {
 
-      if(inputEl.files.item(0).size < this.file_size)
-      {
-        formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.user_id , formData, true)
-          .subscribe(
-            data => {
-              if (data) {
-
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
             }
-          );
-      }
-      else
-      {
-        this.image_log = "Image size should be less than 1MB";
-      }
+          },
+          error => {
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
+
     }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
@@ -2057,8 +2066,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   onAreaSelected(e)
   {
-    if(e.target.checked)
-    {
+    if(e.target.checked) {
       this.selectedValue.push(e.target.value);
     }
     else{
@@ -2066,7 +2074,37 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       let index = this.selectedValue.indexOf(updateItem);
       this.selectedValue.splice(index, 1);
     }
-
-
   }
+
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
+
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, {type:mime});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
+  }
+
 }
