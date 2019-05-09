@@ -41,8 +41,13 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact number</label>
+                <label><b>Phone (10 digit)</b></label>
+                <div class="input-group">
+                  <div class="input-group-prepend my-style">
+                    <select class="form-control selectpicker" disabled title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                    </select>
+                  </div>
                   <input type="tel" class="form-control" disabled required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
@@ -93,15 +98,38 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Stackoverflow URL (optional)</label>
+                  <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.stackoverflow_url && stackoverflowaccount.errors">
+                    Enter url in proper format.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Personal website URL (optional)</label>
+                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.personal_website_url && personalaccount.errors">
+                    Enter url in proper format.
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class = "row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Nationality</label>
-                  <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null ">{{options.name}}</option>
+                  <select class="form-control selectpicker" multiple title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
+                    <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
+                    {{nationality_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.nationality && info.nationality.length > 4">
                     {{nationality_log}}
                   </div>
                 </div>

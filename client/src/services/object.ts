@@ -148,3 +148,10 @@ export const removeDuplication = function (array) {
     return (match ? false : hashTable[key] = true);
   });
 }
+
+export const unCheckCheckboxes = function(array) {
+  for(let type of array ) {
+    type.checked = false;
+  }
+  return array;
+}

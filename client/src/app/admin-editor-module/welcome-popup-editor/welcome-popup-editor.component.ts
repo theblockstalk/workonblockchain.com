@@ -47,7 +47,6 @@ export class WelcomePopupEditorComponent implements OnInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '35rem',
       minHeight: '10rem',
     };

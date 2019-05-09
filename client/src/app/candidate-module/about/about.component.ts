@@ -6,6 +6,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-about',
@@ -52,6 +53,8 @@ export class AboutComponent implements OnInit,AfterViewInit
   country_log;
   city_log;
   countries = constants.countries;
+  country_codes = constants.country_codes;
+  country_code_log;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -120,13 +123,20 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1){
+                this.info.country_code = contact_number[0];
+                this.info.contact_number = contact_number[1];
+              }
+              else this.info.contact_number = contact_number[0];
 
-              this.info.contact_number = data['contact_number'];
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
               if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
               if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
-
+              if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
+              if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
               if(data['nationality'])
               {
                 this.info.nationality = data['nationality'];
@@ -212,7 +222,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  about() {
+  about(aboutForm: NgForm) {
     this.error_msg = "";
     let errorCount = 0;
     if (this.referred_id) {
@@ -232,9 +242,17 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.contact_name_log = "Please enter contact number";
       errorCount++;
     }
+    if (!this.info.country_code) {
+      this.country_code_log = "Please select country code";
+      errorCount++;
+    }
 
-    if (!this.info.nationality) {
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) ) {
       this.nationality_log = "Please choose nationality";
+      errorCount++;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
       errorCount++;
     }
     if (!this.info.country) {
@@ -248,10 +266,8 @@ export class AboutComponent implements OnInit,AfterViewInit
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
     let fileCount: number = inputEl.files.length;
     let formData = new FormData();
-    if (fileCount > 0 )
-    {
-      console.log(inputEl.files.item(0).size);
-      console.log(this.file_size);
+    if (errorCount=== 0 && fileCount > 0 ) {
+
       if(inputEl.files.item(0).size < this.file_size)
       {
         formData.append('image', inputEl.files.item(0));
@@ -281,12 +297,12 @@ export class AboutComponent implements OnInit,AfterViewInit
         this.image_log = "Image size should be less than 1MB";
       }
     }
-    if (errorCount === 0) {
+    if (errorCount === 0 && aboutForm.valid === true) {
       let inputQuery:any ={};
 
       if(this.info.first_name) inputQuery.first_name = this.info.first_name;
       if(this.info.last_name) inputQuery.last_name = this.info.last_name;
-      if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+      if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+ this.info.contact_number;
 
       if(this.info.github_account) inputQuery.github_account = this.info.github_account;
       else inputQuery.unset_github_account = true;
@@ -299,6 +315,12 @@ export class AboutComponent implements OnInit,AfterViewInit
 
       if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
       else inputQuery.unset_medium_account = true;
+
+      if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+      else inputQuery.unset_stackoverflow_url= true;
+
+      if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+      else inputQuery.unset_personal_website_url = true;
 
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) inputQuery.base_country = this.info.country;

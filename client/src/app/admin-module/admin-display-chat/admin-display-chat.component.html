@@ -53,11 +53,11 @@
                     <li>Approach type: Employee</li>
                     <li>Job title: {{job_desc.employee.job_title}}</li>
                     <li>Job type: {{job_desc.employee.employment_type}}</li>
-                    <li>Salary: {{job_desc.employee.currency}} {{job_desc.employee.annual_salary}}</li>
+                    <li>Salary: {{job_desc.employee.currency}} {{job_desc.employee.annual_salary.min}} <span *ngIf="job_desc.employee.annual_salary.max">- {{job_desc.employee.currency}} {{job_desc.employee.annual_salary.max}}</span></li>
                   </ng-container>
                   <ng-container *ngIf="job_desc.contractor;">
                     <li>Approach type: Contractor</li>
-                    <li>Hourly rate: {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate}}</li>
+                    <li>Hourly rate: {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate.min}} <span *ngIf="job_desc.contractor.hourly_rate.max">- {{job_desc.contractor.currency}} {{job_desc.contractor.hourly_rate.max}}</span></li>
                     <br>
                   </ng-container>
                   <ng-container *ngIf="job_desc.volunteer;">
@@ -93,7 +93,7 @@
                               </span>
                           <span>
                                 <b>Salary:</b>
-                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary}}
+                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary.min}} <span *ngIf="msg.message.approach.employee.annual_salary.max">- {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary.max}}</span>
                                 <br/>
                               </span>
                           <span>
@@ -135,7 +135,7 @@
                               </span>
                               <span>
                                 <b>Hourly rate: </b>
-                                {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
+                                {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate.min}} <span *ngIf="job_desc.contractor.hourly_rate.max">- {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate.max}}</span>
                                 <br/>
                               </span>
                           <span>
@@ -277,7 +277,7 @@
                               </span>
                           <span>
                                 <b>Salary:</b>
-                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary}}
+                                {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary.min}} <span *ngIf="msg.message.approach.employee.annual_salary.max">- {{msg.message.approach.employee.currency}} {{msg.message.approach.employee.annual_salary.max}}</span>
                                 <br/>
                               </span>
                           <span>
@@ -319,7 +319,7 @@
                               </span>
                               <span>
                                 <b>Hourly rate: </b>
-                                {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate}}
+                                {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate.min}} <span *ngIf="job_desc.contractor.hourly_rate.max">- {{msg.message.approach.contractor.currency}} {{msg.message.approach.contractor.hourly_rate.max}}</span>
                                 <br/>
                               </span>
                           <span>

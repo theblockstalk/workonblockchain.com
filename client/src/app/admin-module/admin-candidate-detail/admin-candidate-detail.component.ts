@@ -116,7 +116,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
     };
