@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 import {constants} from '../../../constants/constants';
 declare var $:any;
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 @Component({
   selector: 'app-style-guide',
@@ -77,8 +77,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   countriesModel;
   error;
   selectedValue(e) {
-    console.log("event");
-    console.log(e);
+
    if(this.countries && this.countries.find(x=> x === e)) {
      if(this.selectedValueArray.find(x => x === e)) {
        this.error = 'You selected this already';
@@ -120,11 +119,8 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
-    console.log(arr);
-    mime = mime.split("/");
-    console.log(mime);
-    console.log(mime[1]);
-    return new File([u8arr], filename, {type:mime[1]});
+
+    return new File([u8arr], filename, {type:mime});
   }
 
   imageCropped(key) {

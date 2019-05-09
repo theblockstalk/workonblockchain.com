@@ -8,8 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
 import { DatePipe } from '@angular/common';
 declare var $:any;
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
-
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 const URL = environment.backend_url;
 
 @Component({
@@ -184,7 +183,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
             if (data) {
               if(this.imageCropData.image) {
                 const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
-                console.log("data url to file");
                 const formData = new FormData();
                 formData.append('company_logo', file);
                 this.authenticationService.edit_company_profile(this.currentUser._id ,formData , false)
@@ -250,7 +248,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
-    console.log(file.name);
     this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
@@ -262,11 +259,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
-    console.log(arr);
-    mime = mime.split("/");
-    console.log(mime);
-    console.log(mime[1]);
-    return new File([u8arr], filename, {type:mime[1]});
+    return new File([u8arr], filename, {type:mime});
   }
 
   imageCropped(key) {

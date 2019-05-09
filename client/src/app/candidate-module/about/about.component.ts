@@ -6,7 +6,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
 
 
@@ -276,7 +276,6 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
     if(errorCount === 0 && this.imageCropData.image) {
       const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
-      console.log("data url to file");
       const formData = new FormData();
       formData.append('image', file);
       this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
@@ -379,7 +378,6 @@ export class AboutComponent implements OnInit,AfterViewInit
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
-    console.log(file.name);
     this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
@@ -391,11 +389,8 @@ export class AboutComponent implements OnInit,AfterViewInit
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
-    console.log(arr);
-    mime = mime.split("/");
-    console.log(mime);
-    console.log(mime[1]);
-    return new File([u8arr], filename, {type:mime[1]});
+
+    return new File([u8arr], filename, {type:mime});
   }
 
   imageCropped(key) {
