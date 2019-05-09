@@ -1,17 +1,17 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const crypto = require('crypto');
-const server = require('../../../../../server');
-const mongo = require('../../../../helpers/mongo');
-const Users = require('../../../../../model/mongoose/users');
-const Pages = require('../../../../../model/mongoose/pages');
+const server = require('../../../../server');
+const mongo = require('../../../helpers/mongo');
+const Users = require('../../../../model/mongoose/users');
+const Pages = require('../../../../model/mongoose/pages');
 
-const Companies = require('../../../../../model/employer_profile');
-const companyHepler = require('../../companies/companyHelpers');
-const candidateHepler = require('../candidateHelpers');
-const usersHelpers = require('../../usersHelpers');
-const docGenerator = require('../../../../helpers/docGenerator-v2');
-const adminHelper = require('../../../../api/users/admins/adminHelpers');
+const Companies = require('../../../../model/employer_profile');
+const companyHepler = require('../companies/companyHelpers');
+const candidateHepler = require('../candidates/candidateHelpers');
+const usersHelpers = require('../usersHelpers');
+const docGenerator = require('../../../helpers/docGenerator-v2');
+const adminHelper = require('../../../api/users/admins/adminHelpers');
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
@@ -40,9 +40,10 @@ describe('account setting' , function () {
         const accountSetting = await usersHelpers.accountSetting(userId, accountSettingObject, userDoc.jwt_token);
 
         userDoc = await Users.findOne({email: company.email});
-        userDoc.marketing_emails.should.equal(true);
         userDoc.is_unread_msgs_to_send.should.equal(false);
         userDoc.disable_account.should.equal(false);
+        const newCompanyDoc = await Companies.findOne({_creator: userDoc._id});
+        newCompanyDoc.marketing_emails.should.equal(true);
 
     })
 

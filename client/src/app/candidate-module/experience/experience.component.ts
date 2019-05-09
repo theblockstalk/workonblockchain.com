@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from "../../../services/object";
 
 @Component({
   selector: 'app-experience',
@@ -78,6 +79,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngOnInit()
   {
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
