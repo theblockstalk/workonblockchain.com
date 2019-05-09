@@ -40,9 +40,10 @@ describe('account setting' , function () {
         const accountSetting = await usersHelpers.accountSetting(userId, accountSettingObject, userDoc.jwt_token);
 
         userDoc = await Users.findOne({email: company.email});
-        userDoc.marketing_emails.should.equal(true);
         userDoc.is_unread_msgs_to_send.should.equal(false);
         userDoc.disable_account.should.equal(false);
+        const newCompanyDoc = await Companies.findOne({_creator: userDoc._id});
+        newCompanyDoc.marketing_emails.should.equal(true);
 
     })
 
