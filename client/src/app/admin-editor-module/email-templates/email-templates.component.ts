@@ -20,7 +20,8 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   editor_log;
   error_msg;
   name_log;
-
+  success;
+  error;
   constructor(private router: Router, private authenticationService: UserService) { }
 
   ngAfterViewInit(): void
@@ -66,7 +67,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       this.template_log = 'Please select template name';
       errorCount++;
     }
-    if (!editorForm.value.editor_content) {
+    if (!editorForm.value.body) {
       this.editor_log = 'Please enter body';
       errorCount++;
     }
@@ -75,12 +76,35 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       errorCount++;
     }
     if (errorCount === 0) {
-
+      let InputBody : any = {};
+      if(editorForm.value.template && this.new_template === false) InputBody.name = editorForm.value.template;
+      if (this.new_template === true && editorForm.value.name) InputBody.name = editorForm.value.name;
+      if(editorForm.value.subject) InputBody.subject = editorForm.value.subject;
+      if(editorForm.value.body) InputBody.body = editorForm.value.body;
+      this.authenticationService.email_templates(InputBody)
+        .subscribe(
+          data =>
+          {
+            if(data)
+            {
+              this.success = "Content Successfully Updated";
+            }
+            else
+            {
+              this.error="Something went wrong";
+            }
+          },
+          error =>
+          {
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
+          });
     }
     else {
       this.error_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
-
   }
 
   newTemplate(value: boolean) {

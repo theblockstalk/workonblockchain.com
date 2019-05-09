@@ -1413,4 +1413,33 @@ export class UserService {
     }));
   }
 
+  email_templates(queryBody : any) {
+    return this.http.post(URL+'v2/email_templates?admin=true', queryBody, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
 }

@@ -56,7 +56,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Body</label>
-                <ckeditor [(ngModel)]="editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                <ckeditor [(ngModel)]="editor_content"  #myckeditor name="body" [config]="ckeConfig" debounce="500" >
                 </ckeditor>
                 <div class = "invalid-feedback d-inline"  *ngIf="!html_text || editor_log">
                   {{editor_log}}
