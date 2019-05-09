@@ -246,8 +246,11 @@ export class AboutComponent implements OnInit,AfterViewInit
       errorCount++;
     }
     if (this.info.contact_number) {
-      if(!(this.info.contact_number.length >= 4 && this.info.contact_number.length <= 15) || this.checkNumber(this.info.contact_number) === false){
-        this.contact_number_log = "Please enter phone number in proper format";
+      if(!(this.info.contact_number.length < 4 || this.info.contact_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount++;
+      }
+      if(!this.checkNumber(this.info.contact_number)) {
         errorCount++;
       }
     }
