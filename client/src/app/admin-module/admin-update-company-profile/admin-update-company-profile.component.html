@@ -110,12 +110,16 @@
                     <div class = "invalid-feedback d-inline" *ngIf="!country_code">
                       {{country_code_log}}
                     </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="company_phone && !checkNumber(company_phone)">
-                      Please enter only numbers
-                    </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="company_phone.length < 4 || company_phone.length > 15 ">
-                      {{contact_number_log}}
-                    </div>
+                    <ng-container *ngIf="company_phone;else no_company_phone">
+                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(company_phone)">
+                        Please enter only numbers
+                      </div>
+                      <div class = "invalid-feedback d-inline" *ngIf="company_phone.length < 4 || company_phone.length > 15 ">
+                        {{contact_number_log}}
+                      </div>
+                    </ng-container>
+                    <ng-template #no_company_phone>
+                    </ng-template>
                   </div>
                 </div>
               </div>
