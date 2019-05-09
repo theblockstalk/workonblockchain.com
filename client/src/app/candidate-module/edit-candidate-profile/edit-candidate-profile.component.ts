@@ -163,6 +163,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.cropperSettings.canvasWidth = 300;
     this.cropperSettings.canvasHeight = 300;
     this.cropperSettings.rounded = true;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
     this.imageCropData = {};
   }
 
