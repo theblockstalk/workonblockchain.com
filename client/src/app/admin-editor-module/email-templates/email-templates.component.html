@@ -1,3 +1,89 @@
-<p>
-  email-templates works!
-</p>
+<section class = "wob-bg-primary2 py-5 mt-5">
+  <div class="container pt-2">
+    <div class="row bg-white p-3">
+      <div class="col-md-12">
+        <form (submit)="editor(editorForm)" #editorForm = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Email templates</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Template</label>
+                <select class="form-control selectpicker" title="(select one)" required name="template" [(ngModel)]="template">
+                  <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
+                </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="!new_template && !template">
+                  {{template_log}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <br/>
+                <button type="button" class="btn btn-primary py-1 px-4 mt-2 ml-5" (click)="newTemplate(true)" > New </button>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="new_template === true">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name" [(ngModel)]="name" >
+                <div class = "invalid-feedback d-inline"  *ngIf="new_template && !name">
+                  {{name_log}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <br/>
+                <button type="button" class="btn btn-primary py-1 px-4 mt-2 ml-5" (click)="newTemplate(false)" > Cancel </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Subject</label>
+                <input type="text" class="form-control"  name="subject" [(ngModel)]="subject" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Body</label>
+                <ckeditor [(ngModel)]="editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+                <div class = "invalid-feedback d-inline"  *ngIf="!html_text || editor_log">
+                  {{editor_log}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class = "btn btn-primary float-right" >Save</button> <br/>
+              <div class = "invalid-feedback d-inline text-right float-right mt-2" *ngIf="error_msg">
+                {{error_msg}}
+              </div>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="alert alert-success" role="alert" *ngIf = "success">
+                {{success}}
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf = "error">
+                {{error}}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
