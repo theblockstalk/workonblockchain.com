@@ -151,9 +151,16 @@
               <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
                 {{country_code_log}}
               </div>
-              <div class = "invalid-feedback d-inline" *ngIf="contact_number_log">
-                {{contact_number_log}}
-              </div>
+              <ng-container *ngIf="credentials.phone_number;else no_contact_number">
+                <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
+                  Please enter only numbers
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
+                  {{contact_number_log}}
+                </div>
+              </ng-container>
+              <ng-template #no_contact_number>
+              </ng-template>
             </div>
             <div class="form-group">
               <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>

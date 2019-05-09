@@ -349,12 +349,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.company_phone) {
       this.company_phone_log="Please enter phone number name";
     }
-    if(this.company_phone) {
-      if(!(this.company_phone.length >= 4 && this.company_phone.length <= 15) || this.checkNumber(this.company_phone) === false){
-        this.contact_number_log = "Please enter phone number in proper format";
+    if (this.company_phone) {
+      if(this.company_phone.length < 4 || this.company_phone.length > 15){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        count = 1;
+      }
+      if(!this.checkNumber(this.company_phone)) {
         count = 1;
       }
     }
+
     if(!this.country_code) {
       this.country_code_log="Please select country code";
     }

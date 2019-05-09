@@ -124,13 +124,17 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
-              let contact_number = data['contact_number'];
-              contact_number = contact_number.split(" ");
-              if(contact_number.length>1){
-                this.info.country_code = contact_number[0];
-                this.info.contact_number = contact_number[1];
+              let phone_number;
+              this.info.contact_number = '';
+              if(data['contact_number']) {
+                phone_number = data['contact_number'];
+                phone_number = phone_number.split(" ");
+                if (phone_number.length > 1) {
+                  this.info.country_code = phone_number[0];
+                  this.info.contact_number = phone_number[1];
+                }
+                else this.info.contact_number = phone_number[0];
               }
-              else this.info.contact_number = contact_number[0];
 
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
@@ -246,7 +250,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       errorCount++;
     }
     if (this.info.contact_number) {
-      if(!(this.info.contact_number.length < 4 || this.info.contact_number.length > 15)){
+      if((this.info.contact_number.length < 4 || this.info.contact_number.length > 15)){
         this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
         errorCount++;
       }

@@ -270,9 +270,12 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
-    if(this.credentials.phone_number){
-      if(!(this.credentials.phone_number.length >= 4 && this.credentials.phone_number.length <= 15) || this.checkNumber(this.credentials.phone_number) === false){
-        this.contact_number_log = "Please enter phone number in proper format";
+    if (this.credentials.phone_number) {
+      if((this.credentials.phone_number.length < 4 || this.credentials.phone_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount = 1;
+      }
+      if(!this.checkNumber(this.credentials.phone_number)) {
         errorCount = 1;
       }
     }
