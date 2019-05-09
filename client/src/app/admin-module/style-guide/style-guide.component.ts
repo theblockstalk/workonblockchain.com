@@ -21,6 +21,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   when_receive_email_notitfications;
   tweet;
   country_codes = constants.country_codes;
+  imageName;
 
   constructor() {
     this.cropperSettings = new CropperSettings();
@@ -109,6 +110,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
+    this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
 
