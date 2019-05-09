@@ -124,7 +124,7 @@
                           <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                             {{error}}
                           </div>
-                          <div class="invalid-feedback d-inline" #emptyInput *ngIf="locationArray[i].length <= 0">
+                          <div class="invalid-feedback d-inline" #emptyInput *ngIf="locationArray[i] && locationArray[i].length <= 0">
                             {{country_input_log}}
                           </div>
 
@@ -254,6 +254,13 @@
                         <select multiple formControlName="order_preferences" title="Commercial blockchain experience" class="form-control selectpicker">
                           <option *ngFor='let blockchain of blockchain' [selected] = "blockchainOrderSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
                         </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3" *ngIf="i>0">
+                    <div class="col-md-12">
+                      <div class = "form-group text-right">
+                        <a (click)="deletePrefRow(i)" class = "btn btn-danger text-white" >Remove</a>
                       </div>
                     </div>
                   </div>

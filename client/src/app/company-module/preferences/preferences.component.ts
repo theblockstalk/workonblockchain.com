@@ -137,6 +137,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   years_exp = constants.years_exp_min;
 
   ngOnInit() {
+    $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) {
@@ -631,11 +632,17 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   addNewSearch()
   {
     setTimeout(() => {
-      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('');
       $('.selectpicker').selectpicker('refresh');
     }, 100);
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
+  }
+
+  deletePrefRow(index: number)
+  {
+    const control = <FormArray>this.preferncesForm.controls['prefItems'];
+    control.removeAt(index);
   }
 
 }
