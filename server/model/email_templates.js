@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const PagesSchema = new Schema({
+const EmailTemplateSchema = new Schema({
     type:[{
         name:{
             type:String,
@@ -29,7 +29,7 @@ const PagesSchema = new Schema({
     }]
 });
 
-module.exports = mongoose.model('pages_content', PagesSchema);
+module.exports = mongoose.model('email_templates', EmailTemplateSchema);
 
 
 
