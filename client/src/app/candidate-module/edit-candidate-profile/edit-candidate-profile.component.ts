@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {removeDuplication, unCheckCheckboxes} from "../../../services/object";
 
 @Component({
@@ -1361,7 +1361,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.submit = 'click';
     if(this.imageCropData.image) {
       const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
-      console.log("data url to file");
       const formData = new FormData();
       formData.append('image', file);
       this.authenticationService.edit_candidate_profile(this.currentUser._id ,formData , false)
@@ -1737,7 +1736,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   checkContractValue(array) {
-    //console.log(array);
     if(array && array.indexOf('agency') > -1) return true;
     else return false;
   }
@@ -2069,7 +2067,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
-    console.log(file.name);
     this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
@@ -2081,11 +2078,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
-    console.log(arr);
-    mime = mime.split("/");
-    console.log(mime);
-    console.log(mime[1]);
-    return new File([u8arr], filename, {type:mime[1]});
+
+    return new File([u8arr], filename, {type:mime});
   }
 
   imageCropped(key) {

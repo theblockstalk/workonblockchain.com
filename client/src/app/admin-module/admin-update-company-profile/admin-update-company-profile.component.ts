@@ -8,7 +8,7 @@ declare var $:any;
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 @Component({
   selector: 'app-admin-update-company-profile',
@@ -471,7 +471,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       if(this.imageCropData.image) {
         const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
-        console.log("data url to file");
         const formData = new FormData();
         formData.append('company_logo', file);
         this.authenticationService.edit_company_profile(this.company_id ,formData , true)
@@ -719,7 +718,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
     };
-    console.log(file.name);
     this.imageName = file.name;
     myReader.readAsDataURL(file);
   }
@@ -731,11 +729,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
-    console.log(arr);
-    mime = mime.split("/");
-    console.log(mime);
-    console.log(mime[1]);
-    return new File([u8arr], filename, {type:mime[1]});
+
+    return new File([u8arr], filename, {type:mime});
   }
 
   imageCropped(key) {
