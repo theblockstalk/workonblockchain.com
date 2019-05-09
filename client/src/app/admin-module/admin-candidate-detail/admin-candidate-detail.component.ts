@@ -554,4 +554,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
+  refreshSelect(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
+  }
 }
