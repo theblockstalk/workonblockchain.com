@@ -47,15 +47,7 @@ module.exports.endpoint = async function (req, res) {
 
     const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
     if(emailTemplateDoc) {
-        let updateTemplate = {
-            name : queryBody.name,
-            body: sanitizedBody,
-            updated_by: userId,
-            updated_date: timestamp
-        };
-        if(queryBody.subject) updateTemplate.subject = queryBody.subject;
-        const updatedTemplateDoc = await emailTemplates.update({_id: emailTemplateDoc._id }, updateTemplate);
-        console.log(updatedTemplateDoc);
+       errors.throwError("Template name already exists", 400);
     }
     else {
         let addNewTemplate = {
@@ -65,7 +57,7 @@ module.exports.endpoint = async function (req, res) {
             updated_date: timestamp
         };
         if(queryBody.subject) addNewTemplate.subject = queryBody.subject;
-        const newTemplateDoc = await emailTemplates.insert(addNewTemplate);
-        console.log(newTemplateDoc);
+        await emailTemplates.insert(addNewTemplate);
+        res.send(true);
     }
 }
