@@ -364,6 +364,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 200);
 
                 if(data['image'] != null ) {
                   this.imagePreviewLink = data['image'];
@@ -587,6 +590,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 }, 900);
               }
             }
+
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 300);
 
           },
           error =>

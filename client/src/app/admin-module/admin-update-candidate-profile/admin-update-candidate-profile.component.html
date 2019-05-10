@@ -123,7 +123,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Nationality</label>
-                  <select class="form-control selectpicker" multiple title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
+                  <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality' required>
                     <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">

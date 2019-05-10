@@ -339,6 +339,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 200);
 
                 if(data['image'] != null ) {
                   this.imagePreviewLink = data['image'];
@@ -573,6 +576,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }, 900);
               }
             }
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 300);
 
           },
           error =>
