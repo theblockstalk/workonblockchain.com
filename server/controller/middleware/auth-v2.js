@@ -55,3 +55,32 @@ module.exports.isValidCandidate = async function (req) {
     if (!user.first_approved_date) errors.throwError("User is not a approved", 403);
     if (user.disable_account !== false) errors.throwError("User account was dissabled", 403);
 }
+
+
+module.exports.isCandidateType = async function(req) {
+    await getUserFromToken(req);
+    console.log(req.query);
+    let user = req.auth.user;
+    if (req.query.admin) {
+        if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
+    }
+    else {
+        if (user.type !== 'candidate') {
+            errors.throwError("Can only be called by a candidate")
+        }
+    }
+}
+
+module.exports.isCompanyType = async function(req) {
+    await getUserFromToken(req);
+    console.log(req.query);
+    let user = req.auth.user;
+    if (req.query.admin) {
+        if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
+    }
+    else {
+        if (user.type !== 'company') {
+            errors.throwError("Can only be called by a company")
+        }
+    }
+}

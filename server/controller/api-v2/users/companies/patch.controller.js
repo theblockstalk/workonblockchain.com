@@ -165,14 +165,8 @@ module.exports.files = async function(req) {
 }
 
 module.exports.auth = async function (req) {
-    await auth.isLoggedIn(req);
-    if (req.query.admin) {
-        await auth.isAdmin(req);
-    }
-    else if (req.auth.user.type !== 'company') {
-        errors.throwError("Can only be called by a company");
-    }
-    else {}
+    await auth.isCompanyType(req);
+
 }
 
 
