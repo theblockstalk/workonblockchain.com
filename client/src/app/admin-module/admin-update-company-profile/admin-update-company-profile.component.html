@@ -36,7 +36,7 @@
                   <div class="form-group w-100">
                     <label>Company website</label>
                     <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
-                    <div class = "invalid-feedback" *ngIf="!company_website">
+                    <div class = "invalid-feedback d-inline" *ngIf="!company_website">
                       <span class = "error">{{company_website_log}}</span>
                     </div>
                     <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
