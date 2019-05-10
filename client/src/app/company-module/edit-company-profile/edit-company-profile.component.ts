@@ -348,16 +348,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.first_name_log="Please enter first name";
     }
     if(!this.last_name) {
-      this.last_name_log="Please enter first name";
+      this.last_name_log="Please enter last name";
     }
     if(!this.job_title) {
-      this.job_title_log="Please enter first name";
+      this.job_title_log="Please enter job title";
     }
     if(!this.company_name) {
-      this.company_name_log="Please enter first name";
+      this.company_name_log="Please enter company name";
     }
     if(!this.company_website) {
-      this.company_website_log="Please enter first name";
+      this.company_website_log="Please enter company website";
     }
     if(!this.company_phone) {
       this.company_phone_log="Please enter phone number name";
@@ -376,7 +376,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.country_code_log="Please select country code";
     }
     if(this.company_country === -1) {
-      this.company_country_log="Please enter company name";
+      this.company_country_log="Please select country";
     }
     if(!this.company_city) {
       this.company_city_log="Please enter city name";
