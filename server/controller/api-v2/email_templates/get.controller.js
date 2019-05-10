@@ -1,4 +1,4 @@
-const auth = require('../../../middleware/auth-v2');
+const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const emailTemplates = require('../../../model/mongoose/email_templates');
 const errors = require('../../services/errors');
@@ -9,8 +9,7 @@ module.exports.request = {
 };
 
 const querySchema = new Schema({
-    admin: Boolean,
-    name: String
+    admin: Boolean
 });
 
 module.exports.inputValidation = {
@@ -23,7 +22,7 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    let templateName = req.query.name;
-    const emailTemplateDoc = await emailTemplates.find({name: templateName});
+    const emailTemplateDoc = await emailTemplates.findAll();
+    console.log(emailTemplateDoc)
     res.send(emailTemplateDoc);
 }

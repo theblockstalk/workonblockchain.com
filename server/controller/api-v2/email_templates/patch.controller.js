@@ -48,13 +48,13 @@ module.exports.endpoint = async function (req, res) {
     const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
     if(emailTemplateDoc) {
         let updateTemplate = {
-            name : queryBody.name,
             body: sanitizedBody,
             updated_by: userId,
             updated_date: timestamp
         };
         if(queryBody.subject) updateTemplate.subject = queryBody.subject;
-        await emailTemplates.update({_id: userId}, {$set : updateTemplate});
+        console.log(updateTemplate)
+        await emailTemplates.update({_id: emailTemplateDoc._id}, {$set : updateTemplate});
         res.send(true);
     }
     else {

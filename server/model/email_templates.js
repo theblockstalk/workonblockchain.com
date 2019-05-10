@@ -9,7 +9,6 @@ const EmailTemplateSchema = new Schema({
     },
     subject:{
         type:String,
-        required:true,
     },
     body: {
         type:String,

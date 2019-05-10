@@ -7,9 +7,11 @@ module.exports.insert = async function insert(data) {
 
     return newDoc._doc;
 }
-module.exports.find = async function find(selector) {
-    return await Templates.find(selector).lean();
+
+module.exports.findAll = async function findAll() {
+    return await Templates.find();
 }
+
 module.exports.findOne = async function findOne(selector) {
     return await Templates.findOne(selector).lean();
 }
