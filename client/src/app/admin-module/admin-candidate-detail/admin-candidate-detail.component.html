@@ -283,7 +283,7 @@
             <div class="col-md-6">
               <div class="form-group" *ngIf="history.status">
 
-                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'wizard completed' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
+                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'wizard' || history.status.status === 'wizard completed' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
                   {{history.status.status}}
                 </label>
                 <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">

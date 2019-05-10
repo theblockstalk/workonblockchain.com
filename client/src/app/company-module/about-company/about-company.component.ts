@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -8,11 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
 import { DatePipe } from '@angular/common';
 declare var $:any;
-import { map } from 'rxjs/operators';
-
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 const URL = environment.backend_url;
-
-
 
 @Component({
   selector: 'app-about-company',
@@ -20,6 +17,11 @@ const URL = environment.backend_url;
   styleUrls: ['./about-company.component.css']
 })
 export class AboutCompanyComponent implements OnInit,AfterViewInit {
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   info : any;
   currentUser: User;log;
   founded_log;employee_log;funded_log;des_log;image_src;
@@ -33,9 +35,25 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   preference;
   pref_active_class;
   pref_disable;
+  imagePreviewLink;
+  prefil_image;
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
   }
 
   ngAfterViewInit(): void
@@ -67,14 +85,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.company_funded=data['company_funded'];
               this.company_description =data['company_description'];
               if(data['company_logo'] != null){
-                this.img_data  =  data['company_logo'];
-
-                let x = this.img_data.split("/");
-
-                let last:any = x[x.length-1];
-
-                this.img_src = last;
-
+                this.imagePreviewLink = data['company_logo'];
               }
               this.preference  = '/preferences';
             }
@@ -164,7 +175,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(!this.company_description)
     {
       this.des_log = 'Please fill company description';
-
     }
     if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
@@ -173,35 +183,29 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             if (data) {
-
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
-              let fileCount: number = inputEl.files.length;
-              let formData = new FormData();
-              if (fileCount > 0) {
-
-                if (inputEl && inputEl.files && inputEl.files.length > 0) {
-                  let formData = new FormData();
-                  if (inputEl.files.item(0).size < this.file_size) {
-
-
-                    formData.append('company_logo', inputEl.files.item(0));
-
-                    this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
-                      .subscribe(
-                        imageRes => {
-                          this.router.navigate(['/preferences']);
-                        });
-                  }
-                  else {
-                    this.image_log = "Image size should be less than 1MB";
-                  }
-
-                }
-
-                else {
-                  this.router.navigate(['/preferences']);
-                  //this.router.navigate(['/company_profile']);
-                }
+              if(this.imageCropData.image) {
+                const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+                const formData = new FormData();
+                formData.append('company_logo', file);
+                this.authenticationService.edit_company_profile(this.currentUser._id ,formData , false)
+                  .subscribe(
+                    data => {
+                      if (data) {
+                        this.router.navigate(['/preferences']);
+                      }
+                    },
+                    error => {
+                      if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
+                        window.location.href = '/login';
+                      }
+                    }
+                  );
 
               }
               else {
@@ -234,5 +238,36 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
+  }
+
+  imageName;
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
+
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
   }
 }

@@ -394,7 +394,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     }
     if(this.information.country !== -1 && this.information.city)
     {
-      this.authenticationService.about(this.currentUser._id,this.information)
+      this.authenticationService.edit_candidate_profile(this.currentUser._id,this.information, false)
         .subscribe(
           data =>
           {

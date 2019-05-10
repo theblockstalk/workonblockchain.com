@@ -6,7 +6,7 @@ const companies = require('../../../../model/mongoose/company');
 const Pages = require('../../../../model/mongoose/pages');
 const errors = require('../../../services/errors');
 const mongoose = require('mongoose');
-
+const objects = require('../../../services/objects');
 
 module.exports.request = {
     type: 'patch',
@@ -41,39 +41,45 @@ module.exports.endpoint = async function (req, res) {
     const userId = req.auth.user._id;
 
     let queryBody = req.body;
-    let updateCandidateUser = {};
+    let updateUser = {};
+    let updateCompany = {};
     const timestamp = new Date();
-    let terms_page_doc_id;
 
     if(queryBody.marketing_emails ||  queryBody.marketing_emails === false) {
-        updateCandidateUser['marketing_emails'] = queryBody.marketing_emails;
+        if (userDoc.type === 'candidate') updateUser['marketing_emails'] = queryBody.marketing_emails;
+        else updateCompany['marketing_emails'] = queryBody.marketing_emails;
     }
 
     if(queryBody.disable_account || queryBody.disable_account === false) {
-        updateCandidateUser['disable_account'] = queryBody.disable_account;
-        updateCandidateUser['dissable_account_timestamp'] = timestamp;
+        updateUser['disable_account'] = queryBody.disable_account;
+        updateUser['dissable_account_timestamp'] = timestamp;
     }
 
 
-    if(queryBody.is_unread_msgs_to_send || queryBody.is_unread_msgs_to_send === false) updateCandidateUser['is_unread_msgs_to_send'] = queryBody.is_unread_msgs_to_send;
+    if(queryBody.is_unread_msgs_to_send || queryBody.is_unread_msgs_to_send === false) updateUser['is_unread_msgs_to_send'] = queryBody.is_unread_msgs_to_send;
 
     if(queryBody.terms_id) {
 
         if (userDoc.type === 'candidate') {
             let latest_terms = await Pages.findOneAndSort({page_name: 'Terms and Condition for candidate'});
             if (queryBody.terms_id === latest_terms._id.toString()) {
-                updateCandidateUser['candidate.terms_id'] = queryBody.terms_id;
+                updateUser['candidate.terms_id'] = queryBody.terms_id;
             }
         }
         else {
-            console.log(queryBody)
-            let latest_terms = await Pages.findOne({page_name: 'Terms and Condition for company'});
+            let latest_terms = await Pages.findOneAndSort({page_name: 'Terms and Condition for company'});
             if (queryBody.terms_id === latest_terms._id.toString()) {
-                await companies.update({ _creator: userId },{ $set: {'terms_id' : queryBody.terms_id} });
+                updateCompany['terms_id'] = queryBody.terms_id;
             }
         }
     }
-    await users.update({ _id: userId },{ $set: updateCandidateUser });
+    if(!objects.isEmpty(updateUser)) {
+        await users.update({ _id: userId },{ $set: updateUser });
+    }
+    if(!objects.isEmpty(updateCompany)) {
+        await companies.update({ _creator: userId },{ $set: updateCompany });
+    }
+
     res.send({
         success : true
     })

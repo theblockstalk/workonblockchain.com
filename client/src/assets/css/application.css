@@ -201,5 +201,6 @@ pre {
   border: none;
 }
 
-
-
+.bootstrap-select.disabled, .bootstrap-select>.disabled {
+  background-color: #e9ecef !important;
+}
