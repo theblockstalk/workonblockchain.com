@@ -28,9 +28,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   google_url;
   linkedin_url;
   linkedin_id;
+  country_code_log;
 
   credentials: any = {};
   countries = constants.countries;
+  country_codes = constants.country_codes;
 
   constructor(
     private route: ActivatedRoute,
@@ -222,6 +224,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   companyPostalCodeLog;
   companyCityLog;
   companyPasswordLog;
+  contact_number_log;
 
   company_signup(signupForm: NgForm)
   {
@@ -230,6 +233,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.credentials.type="company";
     this.credentials.social_type='';
     this.password_log = '';
+    this.contact_number_log = '';
+    let errorCount = 0;
+
     if(this.credentials.password != this.credentials.confirm_password )
     {
       this.credentials.confirm_password = '';
@@ -264,6 +270,20 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
+    if (this.credentials.phone_number) {
+      if((this.credentials.phone_number.length < 4 || this.credentials.phone_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount = 1;
+      }
+      if(!this.checkNumber(this.credentials.phone_number)) {
+        errorCount = 1;
+      }
+    }
+
+    if(!this.credentials.country_code)
+    {
+      this.country_code_log = 'Please select country code';
+    }
     if(!this.credentials.country)
     {
       this.companyCountryLog = 'Please select country name';
@@ -280,10 +300,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPasswordLog = 'Please enter password'
     }
-    if(signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
-      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
+    if(errorCount === 0 && signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
+      this.credentials.phone_number = this.credentials.country_code +' '+this.credentials.phone_number;
       this.authenticationService.create_employer(this.credentials)
         .subscribe(
           data =>
@@ -308,5 +329,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           });
     }
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 }

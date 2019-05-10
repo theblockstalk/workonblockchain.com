@@ -193,7 +193,7 @@ module.exports.candidateProfile = function candidateProfile(){
         github_account: 'fb.com',
         linkedin_account : 'http://linkedin.com/in/sadia_abbas',
         medium_account : 'http://medium.com/sadia_abbas',
-        nationality: random.enum(enumerations.nationalities),
+        nationality: [random.enum(enumerations.nationalities)],
         base_country : random.enum(enumerations.countries),
         base_city : 'Islamabad',
 
@@ -339,5 +339,20 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
             enddate: '2018-10-09T07:32:38.732Z',
             currentwork: true
         }]
+    }
+}
+
+module.exports.accountSetting = function accountSetting(){
+    return {
+        marketing_emails : true,
+        is_unread_msgs_to_send : false
+    }
+}
+
+module.exports.cmsContentFroTC = function cmsContentFroTC() {
+    return {
+        page_title: "T&C for Company",
+        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        page_name: "Terms and Condition for company"
     }
 }

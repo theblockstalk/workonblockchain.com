@@ -19,8 +19,10 @@ const UserSchema = new Schema({
     last_name: String,
     contact_number: String,
     nationality: {
-        type:String,
-        enum: enumerations.nationalities
+        type: [{
+            type: String,
+            enum: enumerations.nationalities
+        }]
     },
     image: {
         type: String,
@@ -121,6 +123,14 @@ const UserSchema = new Schema({
                 validate: regexes.url
             },
             medium_account: {
+                type:String,
+                validate: regexes.url
+            },
+            stackoverflow_url: {
+                type:String,
+                validate: regexes.url
+            },
+            personal_website_url: {
                 type:String,
                 validate: regexes.url
             },

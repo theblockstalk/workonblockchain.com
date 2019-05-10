@@ -59,6 +59,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   employee: any = {};
   contractor:any = {};
   volunteer: any = {};
+  stackoverflow_url;
+  personal_website_url;
+  country_code;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -147,7 +150,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       {
         this.information.country = -1;
 
-        this.authenticationService.getProfileById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
           .subscribe(
             data => {
               if(data)
@@ -174,6 +177,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 if(data['candidate'].linkedin_account) this.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.medium_account = data['candidate'].medium_account;
 
+                if(data['candidate'].stackoverflow_url) this.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.personal_website_url = data['candidate'].personal_website_url;
+
 
                 if(data['candidate'] && data['candidate'].base_country){
                   this.base_country = data['candidate'].base_country;
@@ -185,7 +191,20 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.first_name=data['first_name'];
                 this.last_name =data['last_name'];
                 this.nationality = data['nationality'];
-                this.contact_number =data['contact_number'];
+
+                this.contact_number = '';
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
+                }
+                else this.contact_number = contact_number[0];
+
                 this.description =data['candidate'].description;
                 if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {
@@ -254,11 +273,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.volunteer.value.roles = rolesValue.sort();
                 }
 
+                if(data['candidate'].interest_areas) {
+                  this.interest_area = data['candidate'].interest_areas;
+                  this.interest_area.sort();
+                }
 
-                this.interest_area =data['candidate'].interest_areas;
-                this.interest_area.sort();
 
-                this.why_work = data['candidate'].why_work;
+                if(data['candidate'].why_work) this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {
                   if(data['candidate'].blockchain.commercial_platforms) {
                     this.commercial = data['candidate'].blockchain.commercial_platforms;
@@ -318,8 +339,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
 
 
-                this.current_currency = data['candidate'].current_currency;
-                this.current_salary = data['candidate'].current_salary;
+                if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+                if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
 
 
                 if(data['image'] != null )
@@ -385,9 +406,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     {
       this.city_log ="Please enter base city";
     }
-    if(this.information.country !== -1 && this.information.city  )
+    if(this.information.country !== -1 && this.information.city)
     {
-      this.authenticationService.about(this.currentUser._id,this.information)
+      this.authenticationService.edit_candidate_profile(this.currentUser._id,this.information, false)
         .subscribe(
           data =>
           {

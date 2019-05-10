@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit ,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,8 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import {unCheckCheckboxes} from '../../../services/object';
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
@@ -16,7 +18,11 @@ import {constants} from '../../../constants/constants';
   styleUrls: ['./admin-update-candidate-profile.component.css']
 })
 export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewInit {
-
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   user_id;
   currentUser: User;
   info: any = {}; log;
@@ -147,6 +153,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   volunteerArray=[];
   current_salary;
   contractorArray = [];
+  country_code_log;
   nationality = constants.nationalities;
   current_work_check=[];
   current_work = constants.current_work;
@@ -157,9 +164,25 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   roles = constants.workRoles;
   contractor_types = constants.contractorTypes;
   employement_availability= constants.workAvailability;
-
+  country_codes = constants.country_codes;
+  imagePreviewLink;
+  prefil_image;
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
@@ -190,9 +213,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   admin_log;
   ngOnInit()
   {
-    for(let type of this.contractor_types ) {
-      type.checked = false;
-    }
+    this.contractor_types = unCheckCheckboxes(constants.contractorTypes);
+    this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
+    this.otherSkills = unCheckCheckboxes(constants.otherSkills);
+    this.experimented = unCheckCheckboxes(constants.experimented);
+    this.exp_year = unCheckCheckboxes(constants.experienceYears);
+    this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+    this.roles = unCheckCheckboxes(constants.workRoles);
+
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     for(let i =5; i<=60; i=i+5) {
@@ -238,7 +267,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.user_id)
+      this.otherSkills.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.authenticationService.getCandidateProfileById(this.user_id , true)
         .subscribe(data =>
           {
             if(data)
@@ -311,24 +346,34 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
+                this.info.contact_number = '';
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.info.country_code = contact_number[i];
+                    else this.info.contact_number = this.info.contact_number+''+contact_number[i];
+                  }
+                }
+                else this.info.contact_number = contact_number[0];
 
-                this.info.contact_number = data['contact_number'];
                 if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
                 if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
                 if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
+                if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
+
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 200);
 
-                if(data['image'] != null )
-                {
-                  this.info.image_src =  data['image'] ;
-                  let x = this.info.image_src.split("/");
-
-                  let last:any = x[x.length-1];
-
-                  this.img_src = last;
+                if(data['image'] != null ) {
+                  this.imagePreviewLink = data['image'];
                 }
 
                 if(data['candidate'] && data['candidate'].base_country)
@@ -549,6 +594,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                 }, 900);
               }
             }
+
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 300);
 
           },
           error =>
@@ -1068,9 +1117,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(!this.info.nationality )
+    if(!this.info.nationality || (this.info.nationality && this.info.nationality.length === 0) )
     {
       this.nationality_log ="Please choose nationality";
+      this.count++;
+    }
+    if(this.info.nationality && this.info.nationality.length > 4) {
+      this.nationality_log = "Please select maximum 4 nationalities";
+      this.count++;
     }
 
     if(!this.info.base_country )
@@ -1293,45 +1347,36 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   file_size=1048576;
   image_log;
-
+  imageName;
   updateProfileData(profileForm)
   {
     profileForm.selectedlocations = this.validatedLocation;
     this.experiencearray=[];
     this.education_json_array=[];
-    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-    let fileCount: number = inputEl.files.length;
-    let formData = new FormData();
-    if (fileCount > 0 )
-    {
+    if(this.imageCropData.image) {
+      const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.user_id ,formData , true)
+        .subscribe(
+          data => {
+            if (data) {
 
-      if(inputEl.files.item(0).size < this.file_size)
-      {
-        formData.append('image', inputEl.files.item(0));
-        this.authenticationService.edit_candidate_profile(this.user_id , formData, true)
-          .subscribe(
-            data => {
-              if (data) {
-
-              }
-            },
-            error => {
-              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
             }
-          );
-      }
-      else
-      {
-        this.image_log = "Image size should be less than 1MB";
-      }
+          },
+          error => {
+            if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
+
     }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
@@ -1406,8 +1451,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
-    if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
-
+    if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+this.info.contact_number;
 
     if(this.info.github_account) inputQuery.github_account = this.info.github_account;
     else inputQuery.unset_github_account = true;
@@ -1423,6 +1467,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
     else inputQuery.unset_medium_account = true;
+
+    if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+    else inputQuery.unset_stackoverflow_url= true;
+
+    if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+    else inputQuery.unset_personal_website_url = true;
 
     if(this.current_currency && this.current_currency !== '-1') inputQuery.current_currency = this.current_currency;
     else inputQuery.unset_curret_currency = true;
@@ -2004,8 +2054,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   onAreaSelected(e)
   {
-    if(e.target.checked)
-    {
+    if(e.target.checked) {
       this.selectedValue.push(e.target.value);
     }
     else{
@@ -2013,7 +2062,37 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       let index = this.selectedValue.indexOf(updateItem);
       this.selectedValue.splice(index, 1);
     }
-
-
   }
+
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
+
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, {type:mime});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
+  }
+
 }

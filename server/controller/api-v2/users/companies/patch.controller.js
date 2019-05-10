@@ -5,17 +5,16 @@ const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/company');
+const errors = require('../../../services/errors');
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id/companies'
+    path: '/users/companies'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
 
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 
 const bodySchema = new Schema({
@@ -157,7 +156,6 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
@@ -168,6 +166,13 @@ module.exports.files = async function(req) {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
+    if (req.query.admin) {
+        await auth.isAdmin(req);
+    }
+    else {
+        await auth.isCompanyType(req);
+    }
+
 }
 
 
@@ -175,7 +180,7 @@ module.exports.endpoint = async function (req, res) {
     let userId;
     let employerDoc;
     if (req.query.admin) {
-        userId = req.params.user_id;
+        userId = req.query.user_id;
         employerDoc = await companies.findOne({ _creator: userId });
     }
     else {

@@ -72,6 +72,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   contract_desc_log;
   workTypes = constants.workTypes;
   rolesData = constants.workRoles;
+  country_code;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -139,7 +140,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.approach_work_type = 'employee';
                 let employeeOffer = approach.employee;
                 this.employee.job_title = employeeOffer.job_title;
-                this.employee.salary = employeeOffer.annual_salary;
+                this.employee.min_salary = employeeOffer.annual_salary.min;
+                if(employeeOffer.annual_salary && employeeOffer.annual_salary.max) {
+                  this.employee.max_salary = employeeOffer.annual_salary.max;
+                }
                 this.employee.currency = employeeOffer.currency;
                 this.employee.location = employeeOffer.location;
                 this.employee.job_type = employeeOffer.employment_type;
@@ -148,7 +152,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               if(approach.contractor) {
                 this.approach_work_type = 'contractor';
                 let contractorOffer = approach.contractor;
-                this.contractor.hourly_rate = contractorOffer.hourly_rate ;
+                this.contractor.hourly_rate_min = contractorOffer.hourly_rate.min ;
+                if(contractorOffer.hourly_rate && contractorOffer.hourly_rate.max) {
+                  this.contractor.hourly_rate_max = contractorOffer.hourly_rate.max;
+                }
                 this.contractor.currency = contractorOffer.currency;
                 this.contractor.location = contractorOffer.location
                 this.contractor.contract_description = contractorOffer.contract_description;
@@ -258,6 +265,21 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.volunteer.value.roles = rolesValue.sort();
               }
 
+              this.contact_number = '';
+              let contact_number = dataa['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
+              }
+              else this.contact_number = contact_number[0];
+
+              dataa['contact_number'] = this.contact_number;
+              console.log(dataa['contact_number']);
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
@@ -431,6 +453,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   volunteer_location_log;
   contractor_location_log;
   contractor_role_log;
+  max_salary_log;
+  max_hourly_rate_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -444,14 +468,23 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         this.location_log = 'Please enter location';
         errorCount = 1;
       }
-      if (!this.employee.salary) {
-        this.salary_log = 'Please enter salary';
+      if (!this.employee.min_salary) {
+        this.salary_log = 'Please enter minimum salary';
         errorCount = 1;
       }
-      if(this.employee.salary && !this.checkNumber(this.employee.salary)) {
+      if(this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
         this.salary_log = 'Salary should be a number';
         errorCount = 1;
       }
+      if(this.employee.max_salary && !this.checkNumber(this.employee.max_salary)) {
+        this.max_salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+
+      if(Number(this.employee.max_salary) < Number(this.employee.min_salary)) {
+        errorCount = 1;
+      }
+
       if (!this.employee.currency) {
         this.salary_currency_log = 'Please select currency';
         errorCount = 1;
@@ -467,16 +500,24 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
 
     if (this.approach_work_type === 'contractor') {
-      if (!this.contractor.hourly_rate) {
-        this.hourly_rate_log = 'Please enter hourly rate';
-        errorCount = 1;
-      }
       if (!this.contractor.location) {
         this.contractor_location_log = 'Please enter location';
         errorCount = 1;
       }
-      if(this.contractor.hourly_rate && !this.checkNumber(this.contractor.hourly_rate)) {
+      if (!this.contractor.hourly_rate_min) {
+        this.hourly_rate_log = 'Please enter hourly rate';
+        errorCount = 1;
+      }
+
+      if(this.contractor.hourly_rate_min && !this.checkNumber(this.contractor.hourly_rate_min)) {
         this.hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(this.contractor.hourly_rate_max && !this.checkNumber(this.contractor.hourly_rate_max)) {
+        this.max_hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(Number(this.contractor.hourly_rate_min) > Number(this.contractor.hourly_rate_max)) {
         errorCount = 1;
       }
       if (!this.contractor.currency) {
@@ -504,9 +545,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       let job_offer: any = {};
       let new_offer: any = {};
       if(this.approach_work_type === 'employee') {
+        let salary:any = {};
         job_offer.job_title = this.employee.job_title;
-        job_offer.annual_salary = this.employee.salary;
-        job_offer.currency = this.employee.currency;
+        salary.min = Number(this.employee.min_salary);
+        if(this.employee.max_salary) salary.max = Number(this.employee.max_salary);
+        job_offer.annual_salary = salary;        job_offer.currency = this.employee.currency;
         job_offer.employment_type = this.employee.job_type;
         job_offer.location = this.employee.location;
         job_offer.employment_description = this.employee.job_desc;
@@ -515,9 +558,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         }
       }
       if(this.approach_work_type === 'contractor') {
+        let hourly_rate : any = {};
         job_offer.location = this.contractor.location;
-        job_offer.hourly_rate = this.contractor.hourly_rate;
-        job_offer.currency = this.contractor.currency;
+        hourly_rate.min = Number(this.contractor.hourly_rate_min);
+        if(this.contractor.hourly_rate_max) hourly_rate.max = Number(this.contractor.hourly_rate_max);
+        job_offer.hourly_rate = hourly_rate;        job_offer.currency = this.contractor.currency;
         job_offer.contract_description = this.contractor.contract_description;
         new_offer.approach  = {
           contractor : job_offer
@@ -587,5 +632,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
+  }
+  convertNumber(string) {
+    return Number(string);
   }
 }

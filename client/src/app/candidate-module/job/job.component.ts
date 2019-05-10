@@ -7,6 +7,7 @@ declare var $:any;
 import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
+import {unCheckCheckboxes} from "../../../services/object";
 
 @Component({
   selector: 'app-job',
@@ -89,6 +90,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
+    this.roles = unCheckCheckboxes(constants.workRoles);
     this.employee.employee_roles = this.roles;
     this.volunteer.volunteer_roles = this.roles;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -113,7 +115,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       this.class="btn disabled";
       this.exp_class="btn disabled";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['contact_number']  && data['nationality'])
@@ -568,7 +570,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) inputQuery.current_currency = this.current_currency;
-
+      inputQuery.wizardNum = 3;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
 

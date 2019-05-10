@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from "../../../services/object";
 
 @Component({
   selector: 'app-experience',
@@ -78,6 +79,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngOnInit()
   {
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
@@ -108,7 +111,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
 
@@ -651,8 +654,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     if(this.Intro) inputQuery.description =  this.Intro;
 
-    inputQuery.status = 'wizard completed';
-
+    inputQuery.wizardNum = 5;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {

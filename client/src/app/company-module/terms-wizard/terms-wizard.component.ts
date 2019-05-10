@@ -70,8 +70,6 @@ export class TermsWizardComponent implements OnInit {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';
               this.about_company = '/about_comp';
-              this.preference  = '/preferences';
-
             }
 
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
@@ -119,7 +117,11 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      this.authenticationService.company_terms(this.currentUser._id,termsForm.value)
+      let queryBody: any = {};
+      queryBody.terms_id = termsForm.value.termsID;
+      queryBody.marketing_emails = termsForm.value.marketing;
+
+      this.authenticationService.account_settings(queryBody)
         .subscribe(
           data => {
             if(data && this.currentUser)
