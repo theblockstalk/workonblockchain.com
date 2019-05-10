@@ -8,7 +8,7 @@ module.exports = async function (req,res) {
     let userId = req.auth.user._id;
     let queryBody = req.body;
     logger.info(req.body);
-    const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
+    const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text, true);
     const pagesDoc = await Pages.findOne({ page_name: queryBody.page_name}).lean();
     if(pagesDoc) {
         let updatePage =

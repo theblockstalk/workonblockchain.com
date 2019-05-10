@@ -19,5 +19,21 @@ module.exports.recursivelySanitize = function recursivelySanitize(obj) {
 };
 
 module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
-    return sanitizeHtmlRepo(htmlString, options);
+    let htmlOptions;
+    if(options === true) {
+        htmlOptions = {
+            allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+                'nl', 'li', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+                'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe'],
+            allowedStyles: {
+                '*': {
+                    // Match HEX and RGB
+                    'text-align': [/^left$/, /^right$/, /^center$/],
+                    // Match any number with px, em, or %
+                    'font-size': [/^\d+(?:px|em|%)$/]
+                }
+            }
+        }
+    }
+    return sanitizeHtmlRepo(htmlString, htmlOptions);
 }
