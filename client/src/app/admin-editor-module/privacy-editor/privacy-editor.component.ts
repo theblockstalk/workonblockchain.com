@@ -77,6 +77,7 @@ export class PrivacyEditorComponent implements OnInit {
     success; error;
    editor(editorForm: NgForm)
    {
+     console.log(editorForm.value.html_text);
        if(editorForm.value.page_title && editorForm.value.html_text){
 		   this.editor_text = this.editor_content;
 		   this.authenticationService.add_new_pages_content(editorForm.value)

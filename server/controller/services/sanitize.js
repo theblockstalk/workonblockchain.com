@@ -25,6 +25,12 @@ module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
             allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
                 'nl', 'li', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
                 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe'],
+            allowedAttributes: {
+                'h1': ['style'],
+                'h2': ['style'],
+                'p': ["style"],
+                'a': [ 'href', 'name', 'target' ],
+            },
             allowedStyles: {
                 '*': {
                     // Match HEX and RGB
