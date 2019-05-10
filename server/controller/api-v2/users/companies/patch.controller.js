@@ -5,6 +5,7 @@ const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/company');
+const errors = require('../../../services/errors');
 
 module.exports.request = {
     type: 'patch',
@@ -165,6 +166,12 @@ module.exports.files = async function(req) {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
+    if (req.query.admin) {
+        await auth.isAdmin(req);
+    }
+    if (req.auth.user.type !== 'company') {
+        errors.throwError("Can only be called by a company");
+    }
 }
 
 

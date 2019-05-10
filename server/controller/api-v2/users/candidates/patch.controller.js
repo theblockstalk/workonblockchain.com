@@ -4,6 +4,7 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
+const errors = require('../../../services/errors');
 
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../../../api/users/filterReturnData');
@@ -337,9 +338,11 @@ module.exports.files = async function(req) {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-
     if (req.query.admin) {
         await auth.isAdmin(req);
+    }
+    if (req.auth.user.type !== 'candidate') {
+        errors.throwError("Can only be called by a candidate")
     }
 }
 
