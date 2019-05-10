@@ -20,23 +20,23 @@ module.exports.recursivelySanitize = function recursivelySanitize(obj) {
 
 module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
     let htmlOptions;
-    if(options === true) {
+    if(options) {
         htmlOptions = {
-            allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-                'nl', 'li', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+            allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'li', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
                 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe'],
             allowedAttributes: {
                 'h1': ['style'],
                 'h2': ['style'],
+                'h3': ['style'],
+                'h4': ['style'],
+                'h5': ['style'],
+                'h6': ['style'],
                 'p': ["style"],
                 'a': [ 'href', 'name', 'target' ],
             },
             allowedStyles: {
                 '*': {
-                    // Match HEX and RGB
                     'text-align': [/^left$/, /^right$/, /^center$/],
-                    // Match any number with px, em, or %
-                    'font-size': [/^\d+(?:px|em|%)$/]
                 }
             }
         }
