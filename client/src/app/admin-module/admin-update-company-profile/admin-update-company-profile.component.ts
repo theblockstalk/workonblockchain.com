@@ -271,11 +271,15 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               this.company_name=data['company_name'];
               this.company_website=data['company_website'];
 
+              this.company_phone = '';
               let contact_number = data['company_phone'];
+              contact_number = contact_number.replace(/^00/, '+');
               contact_number = contact_number.split(" ");
-              if(contact_number.length>1){
-                this.country_code = contact_number[0];
-                this.company_phone = contact_number[1];
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = contact_number[i];
+                  else this.company_phone = this.company_phone+''+contact_number[i];
+                }
               }
               else this.company_phone = contact_number[0];
 

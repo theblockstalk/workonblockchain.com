@@ -147,16 +147,18 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
-              let phone_number;
               this.info.contact_number = '';
               if(data['contact_number']) {
-                phone_number = data['contact_number'];
-                phone_number = phone_number.split(" ");
-                if (phone_number.length > 1) {
-                  this.info.country_code = phone_number[0];
-                  this.info.contact_number = phone_number[1];
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.info.country_code = contact_number[i];
+                    else this.info.contact_number = this.info.contact_number+''+contact_number[i];
+                  }
                 }
-                else this.info.contact_number = phone_number[0];
+                else this.info.contact_number = contact_number[0];
               }
 
               if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
