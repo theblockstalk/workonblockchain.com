@@ -342,9 +342,7 @@ module.exports.auth = async function (req) {
         await auth.isAdmin(req);
     }
     else {
-        if (req.auth.user === 'candidate') {
-            await auth.isCandidateType(req);
-        }
+        await auth.isCandidateType(req);
     }
 }
 
@@ -543,7 +541,7 @@ module.exports.endpoint = async function (req, res) {
         const candidateHistory = userDoc.candidate.history;
         let wizardCompletedStatus = candidateHistory.filter(
             (history) => history.status && history.status.status === 'wizard completed'
-        );
+    );
 
         if (wizardCompletedStatus.length === 0) {
             if(queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };

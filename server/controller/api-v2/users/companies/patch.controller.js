@@ -170,10 +170,9 @@ module.exports.auth = async function (req) {
         await auth.isAdmin(req);
     }
     else {
-        if (req.auth.user === 'company') {
-            await auth.isCompanyType(req);
-        }
+        await auth.isCompanyType(req);
     }
+
 }
 
 
