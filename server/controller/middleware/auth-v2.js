@@ -60,25 +60,16 @@ module.exports.isValidCandidate = async function (req) {
 module.exports.isCandidateType = async function(req) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    if (req.query.admin) {
-        if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
+    if (user.type !== 'candidate') {
+        errors.throwError("Can only be called by a candidate")
     }
-    else {
-        if (user.type !== 'candidate') {
-            errors.throwError("Can only be called by a candidate")
-        }
-    }
+
 }
 
 module.exports.isCompanyType = async function(req) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    if (req.query.admin) {
-        if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
-    }
-    else {
-        if (user.type !== 'company') {
-            errors.throwError("Can only be called by a company")
-        }
+    if (user.type !== 'company') {
+        errors.throwError("Can only be called by a company")
     }
 }
