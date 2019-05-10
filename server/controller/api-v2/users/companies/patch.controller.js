@@ -169,9 +169,10 @@ module.exports.auth = async function (req) {
     if (req.query.admin) {
         await auth.isAdmin(req);
     }
-    if (req.auth.user.type !== 'company') {
+    else if (req.auth.user.type !== 'company') {
         errors.throwError("Can only be called by a company");
     }
+    else {}
 }
 
 

@@ -341,9 +341,10 @@ module.exports.auth = async function (req) {
     if (req.query.admin) {
         await auth.isAdmin(req);
     }
-    if (req.auth.user.type !== 'candidate') {
+    else if (req.auth.user.type !== 'candidate') {
         errors.throwError("Can only be called by a candidate")
     }
+    else {}
 }
 
 
