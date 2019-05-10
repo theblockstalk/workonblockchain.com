@@ -22,8 +22,8 @@ module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
     let htmlOptions;
     if(options) {
         htmlOptions = {
-            allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'li', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-                'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe'],
+            allowedTags: ['u', 'b' , 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'li', 'i', 'strong', 'em', 'strike', 'hr', 'br',
+                'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre' ],
             allowedAttributes: {
                 'h1': ['style'],
                 'h2': ['style'],
@@ -31,6 +31,7 @@ module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
                 'h4': ['style'],
                 'h5': ['style'],
                 'h6': ['style'],
+                'blockquote': ['style'],
                 'p': ["style"],
                 'a': [ 'href', 'name', 'target' ],
             },
