@@ -59,7 +59,6 @@ module.exports.isValidCandidate = async function (req) {
 
 module.exports.isCandidateType = async function(req) {
     await getUserFromToken(req);
-    console.log(req.query);
     let user = req.auth.user;
     if (req.query.admin) {
         if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
@@ -73,7 +72,6 @@ module.exports.isCandidateType = async function(req) {
 
 module.exports.isCompanyType = async function(req) {
     await getUserFromToken(req);
-    console.log(req.query);
     let user = req.auth.user;
     if (req.query.admin) {
         if (req.auth.user.is_admin !== 1) errors.throwError("User is not an admin", 403);
