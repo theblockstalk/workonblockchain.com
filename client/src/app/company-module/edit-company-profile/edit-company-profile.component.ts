@@ -357,7 +357,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.company_name_log="Please enter company name";
     }
     if(!this.company_website) {
-      this.company_website_log="Please enter company website";
+      this.company_website_log="Please enter company website url";
     }
     if(!this.company_phone) {
       this.company_phone_log="Please enter phone number name";
