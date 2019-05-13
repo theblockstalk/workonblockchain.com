@@ -55,8 +55,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     if (this.currentUser && this.admin_log ) {
       if (this.admin_log.is_admin === 1) {
         this.getTemplateOptions();
-        this.template = this.templates[0];
-        if (this.template) this.fillFields('', this.template);
         setTimeout(() => {
           $('.selectpicker').selectpicker();
         }, 200);
@@ -71,6 +69,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
   editor(editorForm: NgForm) {
+    this.error_msg = '';
     console.log(editorForm.value);
     let errorCount = 0;
     if (!editorForm.value.template && this.new_template === false) {
@@ -101,11 +100,8 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               {
                 this.success = "Content Successfully Updated";
                 this.getTemplateOptions();
-                this.fillFields('', InputBody.name);
+                this.new_template = false;
 
-                setTimeout(() => {
-                  $('.selectpicker').selectpicker();
-                }, 200);
               }
 
             },
@@ -126,10 +122,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               {
                 this.success = "Content Successfully Updated";
                 this.getTemplateOptions();
-                this.fillFields('', InputBody.name);
-                setTimeout(() => {
-                  $('.selectpicker').selectpicker();
-                }, 200);
+
               }
             },
             error =>
@@ -159,7 +152,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
             for(let x of this.templateDoc) {
               this.templates.push(x.name);
             }
-
+            if(this.template)this.fillFields('', this.template);
+            else if(this.name)this.fillFields('', this.name);
+            else this.fillFields('', this.templates[0]);
 
             window.scrollTo(0, 0);
             setTimeout(() => {
@@ -168,7 +163,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
 
             setTimeout(() => {
               $('.selectpicker').selectpicker('refresh');
-            }, 500);
+            }, 300);
           }
         },
         error =>
@@ -199,8 +194,13 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     let template;
     if(name && name !== '') template = this.templateDoc.find(x => x.name === name);
     else template = this.templateDoc.find(x => x.name === event.target.value);
-    this.subject = template.subject;
+    if('subject' in template) this.subject = template.subject;
+    else this.subject = '';
     this.body = template.body;
+    this.template = template.name;
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
     console.log(template);
   }
 

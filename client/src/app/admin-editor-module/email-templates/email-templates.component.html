@@ -13,7 +13,7 @@
               <div class="form-group">
                 <label>Template</label>
                 <select class="form-control selectpicker" title="(select one)" required name="template" [(ngModel)]="template" (change)="fillFields($event, '')">
-                  <option *ngFor='let name of templates'  [value]="name" >{{name}}</option>
+                  <option *ngFor='let name of templates'  [value]="name" [attr.selected]="template === name? true: null" >{{name}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!new_template && !template">
                   {{template_log}}
@@ -58,7 +58,7 @@
                 <label>Body</label>
                 <ckeditor [(ngModel)]="body"  #myckeditor name="body" [config]="ckeConfig" debounce="500" >
                 </ckeditor>
-                <div class = "invalid-feedback d-inline"  *ngIf="!html_text || editor_log">
+                <div class = "invalid-feedback d-inline"  *ngIf="!body">
                   {{editor_log}}
                 </div>
               </div>
