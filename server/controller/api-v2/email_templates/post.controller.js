@@ -42,7 +42,7 @@ module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
     let userId = req.auth.user._id;
     let timestamp = new Date();
-    const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body);
+    const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
 
     const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
     if(emailTemplateDoc) {

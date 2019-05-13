@@ -44,9 +44,9 @@ module.exports.endpoint = async function (req, res) {
     let userId = req.auth.user._id;
     let timestamp = new Date();
     let unset = {};
-    const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body);
-
+    const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
     const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
+
     if(emailTemplateDoc) {
         let updateTemplate = {
             body: sanitizedBody,
@@ -57,7 +57,7 @@ module.exports.endpoint = async function (req, res) {
         else unset.subject = 1;
 
         let updateObj = {};
-        if(!objects.isEmpty(updateTemplate)) updateObj.$set = updateTemplate
+        if(!objects.isEmpty(updateTemplate)) updateObj.$set = updateTemplate;
         if(!objects.isEmpty(unset)) updateObj.$unset = unset;
 
         await emailTemplates.update({_id: emailTemplateDoc._id}, updateObj);

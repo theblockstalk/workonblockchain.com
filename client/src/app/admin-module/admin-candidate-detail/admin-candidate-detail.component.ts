@@ -612,6 +612,5 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
-    console.log(template);
   }
 }

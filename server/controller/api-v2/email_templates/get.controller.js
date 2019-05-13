@@ -23,6 +23,5 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     const emailTemplateDoc = await emailTemplates.findAll();
-    console.log(emailTemplateDoc);
     res.send(emailTemplateDoc);
 }

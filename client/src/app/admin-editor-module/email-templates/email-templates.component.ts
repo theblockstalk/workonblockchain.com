@@ -71,7 +71,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   editor(editorForm: NgForm) {
     this.success = '';
     this.error_msg = '';
-    console.log(editorForm.value);
     let errorCount = 0;
     if (!editorForm.value.template && this.new_template === false) {
       this.template_log = 'Please select template name';
@@ -91,7 +90,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       if (this.new_template === true && editorForm.value.name) InputBody.name = editorForm.value.name;
       if(editorForm.value.subject) InputBody.subject = editorForm.value.subject;
       if(editorForm.value.body) InputBody.body = editorForm.value.body;
-      console.log(InputBody)
       if (this.new_template === true) {
         this.authenticationService.email_templates_post(InputBody)
           .subscribe(
@@ -154,7 +152,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
         data =>
         {
           if(data) {
-            console.log(data);
             this.templateDoc = data;
             for(let x of this.templateDoc) {
               this.templates.push(x.name);
@@ -208,7 +205,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
-    console.log(template);
   }
 
 }
