@@ -44,7 +44,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
   country_code;
-
+  templates;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -87,6 +87,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   candidateHistory;
   _id;
   send_email;
+  templateDoc;
 
   ngAfterViewInit(): void
   {
@@ -133,6 +134,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
+        this.getTemplateOptions();
         this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
@@ -441,6 +443,33 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getTemplateOptions()  {
+    this.templates = [];
+    this.authenticationService.email_templates_get()
+      .subscribe(
+        data =>
+        {
+          if(data) {
+            console.log(data);
+            this.templateDoc = data;
+            for(let x of data) {
+              this.templates.push(x.name);
+            }
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 300);
+          }
+        },
+        error =>
+        {
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+        });
+  }
+
+
 
 
   changeStatus(event){
@@ -575,5 +604,20 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
+  }
+
+  selectTemplate(event, name){
+    let template = this.templateDoc.find(x => x.name === event.target.value);
+    if(name === 'note') {
+      this.note = template.body;
+    }
+    else  {
+      if('subject' in template) this.email_subject = template.subject;
+      this.email_text = template.body;
+    }
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
+    console.log(template);
   }
 }

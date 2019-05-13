@@ -210,7 +210,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>Template</label>
-                <select class="form-control selectpicker" title="(select one)" required name="template" [(ngModel)]="template">
+                <select class="form-control selectpicker" (change)="selectTemplate($event, 'note')" title="(select one)" required name="template" [(ngModel)]="note_template">
                   <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
                 </select>
 
@@ -238,7 +238,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Template</label>
-                  <select class="form-control selectpicker" title="(select one)" required name="template" [(ngModel)]="template">
+                  <select class="form-control selectpicker" (change)="selectTemplate($event, 'email')" title="(select one)" required name="template" [(ngModel)]="email_template">
                     <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
                   </select>
 
@@ -333,7 +333,7 @@
               <div class="form-group" *ngIf="history.note">
                 <div>
                   <label>Note</label>
-                  <pre>{{history.note}}</pre>
+                  <div  [innerHTML] = "history.note| safeHtml "></div>
                 </div>
               </div>
             </div>

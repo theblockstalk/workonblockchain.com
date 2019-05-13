@@ -69,6 +69,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
   editor(editorForm: NgForm) {
+    this.success = '';
     this.error_msg = '';
     console.log(editorForm.value);
     let errorCount = 0;
@@ -99,6 +100,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               if(data)
               {
                 this.success = "Content Successfully Updated";
+                setTimeout(() => {
+                  this.success = '';
+                }, 1000);
                 this.getTemplateOptions();
                 this.new_template = false;
 
@@ -121,6 +125,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               if(data)
               {
                 this.success = "Content Successfully Updated";
+                setTimeout(() => {
+                  this.success = '';
+                }, 1000);
                 this.getTemplateOptions();
 
               }

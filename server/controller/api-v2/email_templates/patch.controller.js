@@ -3,6 +3,7 @@ const Schema = require('mongoose').Schema;
 const errors = require('../../services/errors');
 const sanitizer = require('../../services/sanitize');
 const emailTemplates = require('../../../model/mongoose/email_templates');
+const objects = require('../../services/objects');
 
 module.exports.request = {
     type: 'patch',
@@ -42,6 +43,7 @@ module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
     let userId = req.auth.user._id;
     let timestamp = new Date();
+    let unset = {};
     const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body);
 
     const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
@@ -52,8 +54,13 @@ module.exports.endpoint = async function (req, res) {
             updated_date: timestamp
         };
         if(queryBody.subject) updateTemplate.subject = queryBody.subject;
-        console.log(updateTemplate)
-        await emailTemplates.update({_id: emailTemplateDoc._id}, {$set : updateTemplate});
+        else unset.subject = 1;
+
+        let updateObj = {};
+        if(!objects.isEmpty(updateTemplate)) updateObj.$set = updateTemplate
+        if(!objects.isEmpty(unset)) updateObj.$unset = unset;
+
+        await emailTemplates.update({_id: emailTemplateDoc._id}, updateObj);
         res.send(true);
     }
     else {
