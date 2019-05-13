@@ -266,20 +266,22 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               }
 
               this.contact_number = '';
-              let contact_number = dataa['contact_number'];
-              contact_number = contact_number.replace(/^00/, '+');
-              contact_number = contact_number.split(" ");
-              if(contact_number.length>1) {
-                for (let i = 0; i < contact_number.length; i++) {
-                  if (i === 0) this.country_code = '('+contact_number[i]+')';
-                  else this.contact_number = this.contact_number+''+contact_number[i];
+              if(dataa['contact_number']) {
+                let contact_number = dataa['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
                 }
-                this.contact_number = this.country_code+' '+this.contact_number
-              }
-              else this.contact_number = contact_number[0];
+                else this.contact_number = contact_number[0];
 
-              dataa['contact_number'] = this.contact_number;
-              console.log(dataa['contact_number']);
+                dataa['contact_number'] = this.contact_number;
+              }
+
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
