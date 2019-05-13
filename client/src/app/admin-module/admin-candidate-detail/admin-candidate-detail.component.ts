@@ -449,16 +449,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       .subscribe(
         data =>
         {
-          if(data) {
-            console.log(data);
-            this.templateDoc = data;
-            for(let x of data) {
-              this.templates.push(x.name);
-            }
-            setTimeout(() => {
-              $('.selectpicker').selectpicker('refresh');
-            }, 300);
+          this.templateDoc = data;
+          for(let i = 0; i < data['length']; i++) {
+              this.templates.push(data[i].name);
           }
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
         },
         error =>
         {
@@ -468,9 +465,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           }
         });
   }
-
-
-
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
