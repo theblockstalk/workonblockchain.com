@@ -202,12 +202,6 @@ pre {
   border: none;
 }
 
-@media (min-width:250px) {
-  .content {
-    min-height: calc(75vh - 16px);
-    background: #f8f9fa !important;
-  }
-}
 .bootstrap-select.disabled, .bootstrap-select>.disabled {
   background-color: #e9ecef !important;
 }
