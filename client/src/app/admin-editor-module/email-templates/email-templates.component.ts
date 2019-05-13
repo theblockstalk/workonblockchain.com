@@ -113,6 +113,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               {
                 this.router.navigate(['/not_found']);
               }
+              else {
+                this.error_msg = error['error'].message;
+              }
             });
       }
       else {
@@ -135,6 +138,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
               if(error.message === 403)
               {
                 this.router.navigate(['/not_found']);
+              }
+              else {
+                this.error_msg = error['error'].message;
               }
             });
       }
@@ -176,6 +182,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
           {
             this.router.navigate(['/not_found']);
           }
+
         });
   }
 
