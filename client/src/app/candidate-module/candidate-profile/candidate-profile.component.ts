@@ -61,6 +61,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   volunteer: any = {};
   stackoverflow_url;
   personal_website_url;
+  country_code;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -190,7 +191,20 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.first_name=data['first_name'];
                 this.last_name =data['last_name'];
                 this.nationality = data['nationality'];
-                this.contact_number =data['contact_number'];
+
+                this.contact_number = '';
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
+                }
+                else this.contact_number = contact_number[0];
+
                 this.description =data['candidate'].description;
                 if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {

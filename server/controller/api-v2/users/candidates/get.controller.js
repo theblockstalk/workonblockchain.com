@@ -37,6 +37,7 @@ module.exports.endpoint = async function (req, res) {
         if (!userDoc.password_hash) password = false;
         const filterData = filterReturnData.removeSensativeData(userDoc);
         filterData.password = password;
+        //if(req.auth.user.type === 'company') res.send(await filterReturnData.candidateAsCompany(userDoc, userId)); will do later
         res.send(filterData);
     }
     else {

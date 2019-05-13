@@ -43,6 +43,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   volunteer: any = {};
   roles = constants.workRoles;
   contractorTypes = constants.contractorTypes;
+  country_code;
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -188,6 +189,21 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
               }, 200);
+
+              this.contact_number = '';
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
+              }
+              else this.contact_number = contact_number[0];
+
+              data['contact_number'] = this.contact_number;
 
               this.info.push(data);
               this.verify =data['is_verify'];

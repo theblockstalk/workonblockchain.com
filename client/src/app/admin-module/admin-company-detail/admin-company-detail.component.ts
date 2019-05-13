@@ -59,6 +59,22 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
+            let company_phone = '';
+            let country_code = '';
+            let contact_number = data['company_phone'];
+            contact_number = contact_number.replace(/^00/, '+');
+            contact_number = contact_number.split(" ");
+            if(contact_number.length>1) {
+              for (let i = 0; i < contact_number.length; i++) {
+                if (i === 0) country_code = '('+contact_number[i]+')';
+                else company_phone = company_phone+''+contact_number[i];
+              }
+              company_phone = country_code+' '+company_phone
+            }
+            else company_phone = contact_number[0];
+
+            data['company_phone'] = company_phone;
+
               this.info.push(data);
               this.approve = data['_creator'].is_approved;
               this.verify =data['_creator'].is_verify;

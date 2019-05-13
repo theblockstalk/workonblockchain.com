@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef , AfterViewInit , AfterViewChecked} from '@angular/core';
+import { Component, OnInit, ElementRef , AfterViewInit , Input, ViewChild} from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
@@ -10,14 +10,19 @@ declare var $:any;
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 @Component({
   selector: 'app-edit-company-profile',
   templateUrl: './edit-company-profile.component.html',
   styleUrls: ['./edit-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit , AfterViewInit, AfterViewChecked  {
-
+export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   info : any;
   currentUser: any;
   log;
@@ -93,9 +98,26 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   country_codes = constants.country_codes;
   years_exp = constants.years_exp_min;
   prefData;
+  contact_number_log;
+  imagePreviewLink;
+  prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
   }
 
   ngAfterViewInit() {
@@ -106,10 +128,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 900);
-  }
-
-  ngAfterViewChecked() {
-
   }
 
   initPrefRows()
@@ -237,15 +255,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.company_funded = data['company_funded'];
               this.company_description = data['company_description'];
               if(data['company_logo'] != null) {
-
-                this.img_data = data['company_logo'];
-
-                let x = this.img_data.split("/");
-
-                let last: any = x[x.length - 1];
-
-                this.img_src = last;
-
+                this.imagePreviewLink = data['company_logo'];
               }
 
             }
@@ -259,11 +269,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.company_name=data['company_name'];
               this.company_website=data['company_website'];
 
+              this.company_phone = '';
               let contact_number = data['company_phone'];
+              contact_number = contact_number.replace(/^00/, '+');
               contact_number = contact_number.split(" ");
-              if(contact_number.length>1){
-                this.country_code = contact_number[0];
-                this.company_phone = contact_number[1];
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = contact_number[i];
+                  else this.company_phone = this.company_phone+''+contact_number[i];
+                }
               }
               else this.company_phone = contact_number[0];
 
@@ -325,6 +339,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     let count = 0;
     this.error_msg = "";
+    this.contact_number_log = '';
+
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
     }
@@ -332,28 +348,35 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.first_name_log="Please enter first name";
     }
     if(!this.last_name) {
-      this.last_name_log="Please enter first name";
+      this.last_name_log="Please enter last name";
     }
     if(!this.job_title) {
-      this.job_title_log="Please enter first name";
+      this.job_title_log="Please enter job title";
     }
     if(!this.company_name) {
-      this.company_name_log="Please enter first name";
+      this.company_name_log="Please enter company name";
     }
     if(!this.company_website) {
-      this.company_website_log="Please enter first name";
+      this.company_website_log="Please enter company website url";
     }
     if(!this.company_phone) {
-      this.company_phone_log="Please enter first name";
+      this.company_phone_log="Please enter phone number name";
     }
-    if((this.company_phone.length < 10 || this.company_phone.length > 10) || this.checkNumber(this.company_phone) === false){
-      count = 1;
+    if (this.company_phone) {
+      if(this.company_phone.length < 4 || this.company_phone.length > 15){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        count = 1;
+      }
+      if(!this.checkNumber(this.company_phone)) {
+        count = 1;
+      }
     }
+
     if(!this.country_code) {
       this.country_code_log="Please select country code";
     }
     if(this.company_country === -1) {
-      this.company_country_log="Please enter company name";
+      this.company_country_log="Please select country";
     }
     if(!this.company_city) {
       this.company_city_log="Please enter city name";
@@ -454,47 +477,33 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       }
     }
 
-    if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
-      let formData = new FormData();
-      let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
-      if (inputEl && inputEl.files && inputEl.files.length > 0)
-      {
-        if(inputEl.files.item(0).size < this.file_size)
-        {
-          formData.append('company_logo', inputEl.files.item(0));
-          this.authenticationService.edit_company_profile(this.currentUser._id, formData, false)
-            .subscribe(
-              data => {
-                if(data && this.currentUser)
-                {
-                  //this.router.navigate(['/company_profile']);
-                }
-
-              },
-              error => {
-                if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                  this.dataservice.changeMessage(error['error']['message']);
-                }
-                else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                  this.dataservice.changeMessage(error['error']['message']);
-                }
-                else {
-                  this.dataservice.changeMessage("Something went wrong");
-                }
-
-              });
-
-
-        }
-        else
-        {
-          this.image_log = "Image size should be less than 1MB";
-        }
-
+      if(this.imageCropData.image) {
+        const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
+        const formData = new FormData();
+        formData.append('company_logo', file);
+        this.authenticationService.edit_company_profile(this.currentUser._id ,formData , false)
+          .subscribe(
+            data => {
+              if (data) {
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
       }
 
       let saved_searches = [];
@@ -712,5 +721,34 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       $('.selectpicker').selectpicker('refresh');
     }, 300);
   }
+  imageName;
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
 
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
+    }
+    $('#imageModal').modal('hide');
+  }
 }

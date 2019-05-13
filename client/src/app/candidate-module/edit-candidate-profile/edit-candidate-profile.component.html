@@ -41,23 +41,30 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label><b>Phone (10 digit)</b></label>
+                <label><b>Phone</b></label>
                 <div class="input-group">
                   <div class="input-group-prepend my-style">
                     <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
                       <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
                     </select>
                   </div>
-                  <input type="tel" class="form-control" #phoneNumber="ngModel" required placeholder="1234567890" pattern="^\d{3}\d{3}\d{4}$" name="contact_number" [(ngModel)]="info.contact_number">
+                  <input type="tel" class="form-control" required placeholder="1234567890" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
                   </div>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
                     {{country_code_log}}
                   </div>
-                  <div class = "invalid-feedback d-inline" *ngIf="phoneNumber.errors">
-                    Enter phone number in proper format.
-                  </div>
+                  <ng-container *ngIf="info.contact_number;else no_phone">
+                    <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
+                      Please enter only numbers
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="info.contact_number.length < 4 || info.contact_number.length > 15 ">
+                      {{contact_number_log}}
+                    </div>
+                  </ng-container>
+                  <ng-template #no_phone>
+                  </ng-template>
                 </div>
               </div>
             </div>
@@ -127,7 +134,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Nationality</label>
-                  <select class="form-control selectpicker" multiple title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
+                  <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality' required>
                     <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
@@ -138,17 +145,22 @@
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group" >
-                  <label>Profile picture</label>
-                  <input type="file" class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
-                  <label>
-                    <span *ngIf="img_src" >{{img_src}}</span>
-                  </label>
-                  <div class = "invalid-feedback d-inline" *ngIf="image_log">
-                    {{image_log}}
-                  </div>
+                  <label>Image (optional)</label>
+                  <p>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+                  </p>
+                  <span *ngIf="imageCropData.image;else prefil_image" >
+                  <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                </span>
+
+                  <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                  <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200" >
+                </span>
                 </div>
               </div>
             </div>
@@ -1187,4 +1199,27 @@
       </div>
     </form>
   </div>
+  <!-- Image crop popup -->
+  <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+        </div>
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
+            <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+          </div>
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
