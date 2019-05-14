@@ -29,6 +29,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   template;
   subject_log;
   template_id;
+  templateName;
   constructor(private router: Router, private authenticationService: UserService) { }
 
   ngAfterViewInit(): void
@@ -56,7 +57,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
 
     if (this.currentUser && this.admin_log ) {
       if (this.admin_log.is_admin === 1) {
-        this.getTemplateOptions();
+         this.getTemplateOptions();
         setTimeout(() => {
           $('.selectpicker').selectpicker();
         }, 200);
@@ -92,11 +93,11 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     }
     if (errorCount === 0) {
       let InputBody : any = {};
-      if(editorForm.value.template && this.new_template === false) InputBody.name = editorForm.value.template;
-      if (this.new_template === true && editorForm.value.name) InputBody.name = editorForm.value.name;
       if(editorForm.value.subject) InputBody.subject = editorForm.value.subject;
       if(editorForm.value.body) InputBody.body = editorForm.value.body;
-      if (this.new_template === true) {
+      console.log(this.template_id);
+      if (!this.template_id) {
+        if(editorForm.value.name !== this.templateName) InputBody.name = editorForm.value.name;
         this.authenticationService.email_templates_post(InputBody)
           .subscribe(
             data =>
@@ -125,6 +126,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
             });
       }
       else {
+        if (editorForm.value.name) InputBody.name = editorForm.value.name;
         this.authenticationService.email_templates_patch(InputBody, this.template_id)
           .subscribe(
             data =>
@@ -157,6 +159,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     }
   }
 
+
   getTemplateOptions()  {
     this.templates = [];
     this.authenticationService.email_templates_get()
@@ -168,9 +171,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
             for(let x of this.templateDoc) {
               this.templates.push(x.name);
             }
-            if(this.template)this.fillFields('', this.template);
-            else if(this.name)this.fillFields('', this.name);
-            else this.fillFields('', this.templates[0]);
+             // if(this.template)this.fillFields('', this.template);
+             // else if(this.name)this.fillFields('', this.name);
+            // else this.fillFields('', this.templates[0]);
 
             window.scrollTo(0, 0);
             setTimeout(() => {
@@ -196,7 +199,14 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     this.new_template = value;
     if (!value) {
       this.name = '';
-      this.getTemplateOptions();
+      this.subject = '';
+      this.body = '';
+      this.template = '';
+      this.error_msg='';
+      this.name_log= '';
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 200);
     }
     else {
       this.subject = '';
@@ -209,14 +219,17 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
   fillFields(event, name) {
+    this.new_template = true;
     let template;
     if(name && name !== '') template = this.templateDoc.find(x => x.name === name);
     else template = this.templateDoc.find(x => x.name === event.target.value);
-    if('subject' in template) this.subject = template.subject;
-    else this.subject = '';
+    // if('subject' in template) this.subject = template.subject;
+    // else this.subject = '';
     this.body = template.body;
     this.template = template.name;
     this.template_id = template._id;
+    this.name = template.name;
+    this.templateName = template.name;
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);

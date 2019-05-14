@@ -49,15 +49,23 @@ module.exports.endpoint = async function (req, res) {
     let emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
 
     if(emailTemplateDoc) {
-            let updateTemplate = {
-                subject: queryBody.subject,
-                body: sanitizedBody,
-                updated_by: userId,
-                updated_date: timestamp
-            };
+        if(emailTemplateDoc.name !== queryBody.name) {
+            const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
+            if(emailTemplateDoc) {
+                errors.throwError("Template name already exists", 400);
+            }
+        }
+        let updateTemplate = {
+            name: queryBody.name,
+            subject: queryBody.subject,
+            body: sanitizedBody,
+            updated_by: userId,
+            updated_date: timestamp
+        };
 
-            await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
-            res.send(true);
+        await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
+        res.send(true);
+
     }
     else {
         errors.throwError("Template doc not found", 404);

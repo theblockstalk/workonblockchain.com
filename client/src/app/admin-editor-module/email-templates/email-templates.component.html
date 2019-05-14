@@ -15,7 +15,7 @@
                 <select class="form-control selectpicker" title="(select one)" required name="template" [(ngModel)]="template" (change)="fillFields($event, '')">
                   <option *ngFor='let name of templates'  [value]="name" [attr.selected]="template === name? true: null" >{{name}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!new_template && !template">
+                <div class = "invalid-feedback d-inline"  *ngIf="!template">
                   {{template_log}}
                 </div>
               </div>
@@ -32,16 +32,13 @@
               <div class="form-group">
                 <label>Name</label>
                 <input type="text" class="form-control" name="name" [(ngModel)]="name" >
-                <div class = "invalid-feedback d-inline"  *ngIf="new_template && !name">
+                <div class = "invalid-feedback d-inline"  *ngIf="!name">
                   {{name_log}}
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-group">
-                <br/>
-                <button type="button" class="btn btn-primary py-1 px-4 mt-2 ml-5" (click)="newTemplate(false)" > Cancel </button>
-              </div>
+
             </div>
           </div>
           <div class="row">
@@ -69,8 +66,10 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12">
-              <button type="submit" class = "btn btn-primary float-right" >Save</button> <br/>
+            <div class="col-md-12 text-right">
+              <button type="button" class="btn btn-secondary mr-4" (click)="newTemplate(false)" > Cancel </button>
+
+              <button type="submit" class = "btn btn-primary" >Save</button> <br/>
               <div class = "invalid-feedback d-inline text-right float-right mt-2" *ngIf="error_msg">
                 {{error_msg}}
               </div>
