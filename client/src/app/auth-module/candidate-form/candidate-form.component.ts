@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
@@ -7,6 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
 import {environment} from '../../../environments/environment';
 import {constants} from '../../../constants/constants';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-candidate-form',
@@ -32,7 +33,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   credentials: any = {};
   countries = constants.countries;
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, 
     private route: ActivatedRoute,
     private router: Router,private dataservice: DataService,
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -82,7 +83,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 300);
@@ -103,12 +104,12 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+google_redirect_url;
     this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
     $(function(){
-      var hash = window.location.hash;
+      var hash = this.window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');
       $('.nav-tabs a').click(function (e) {
         $(this).tab('show');
         var scrollmem = $('body').scrollTop();
-        window.location.hash = this.hash;
+        this.window.location.hash = this.hash;
         $('html,body').scrollTop(scrollmem);
       });
     });
@@ -184,9 +185,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
         .subscribe(
           data =>
           {
-            localStorage.setItem('currentUser', JSON.stringify(data));
-            localStorage.removeItem('ref_code');
-            window.location.href = '/candidate-verify-email';
+            this.localStorage.setItem('currentUser', JSON.stringify(data));
+            this.localStorage.removeItem('ref_code');
+            this.window.location.href = '/candidate-verify-email';
 
           },
           error =>
@@ -288,9 +289,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
         .subscribe(
           data =>
           {
-            localStorage.setItem('currentUser', JSON.stringify(data));
-            localStorage.removeItem('ref_code');
-            window.location.href = '/company-verify-email';
+            this.localStorage.setItem('currentUser', JSON.stringify(data));
+            this.localStorage.removeItem('ref_code');
+            this.window.location.href = '/company-verify-email';
           },
           error =>
           {

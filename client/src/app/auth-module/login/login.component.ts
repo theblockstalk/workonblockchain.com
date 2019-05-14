@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,Directive } from '@angular/core';
+import { Component, OnInit,OnDestroy,Directive, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 const URL = environment.backend_url;
 @Component({
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   message:string;
   error;
   forgetMessage;
-  constructor(private http: HttpClient , private route: ActivatedRoute,
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient , private route: ActivatedRoute,
               private router: Router,
               private authenticationService: UserService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
     this.titleService.setTitle('Work on Blockchain | Login');
@@ -57,11 +58,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     setInterval(() => {
       //this.log='';
     }, 30000);
-    localStorage.removeItem('currentUser');
-    this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
-    localStorage.removeItem('password_change_msg');
+    this.localStorage.removeItem('currentUser');
+    this.password_message = JSON.parse(this.localStorage.getItem('password_change_msg'));
+    this.localStorage.removeItem('password_change_msg');
 
-    localStorage.removeItem('jwt_not_found');
+    this.localStorage.removeItem('jwt_not_found');
 
   }
   reset;
@@ -81,17 +82,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if(user['type'] === 'company') {
               this.response = 'data';
-              this.previousUrl = localStorage.getItem('previousUrl');
+              this.previousUrl = this.localStorage.getItem('previousUrl');
 
               if(this.previousUrl) {
-                window.location.href = '/' + this.previousUrl;
+                this.window.location.href = '/' + this.previousUrl;
               }
               else {
                 if (new Date(user['created_date']) < new Date('2018/11/28')) {
-                  window.location.href = '/candidate-search';
+                  this.window.location.href = '/candidate-search';
                 }
                 else {
-                  window.location.href = '/candidate-search';
+                  this.window.location.href = '/candidate-search';
 
                 }
               }
@@ -99,7 +100,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
             if(user['type'] === 'candidate')
             {
-              window.location.href = '/candidate_profile';
+              this.window.location.href = '/candidate_profile';
             }
 
           },
@@ -134,19 +135,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   signInWithGoogle()
   {
-    localStorage.setItem('googleLogin', 'true');
+    this.localStorage.setItem('googleLogin', 'true');
     let google_id = environment.google_client_id;
     let google_redirect_url = environment.google_redirect_url;
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+google_id+'&redirect_uri='+google_redirect_url;
-    window.location.href = this.google_url;
+    this.window.location.href = this.google_url;
   }
 
   loginWithLinkedin() {
-    localStorage.setItem('linkedinLogin', 'true');
+    this.localStorage.setItem('linkedinLogin', 'true');
     let linkedin_id = environment.linkedin_id;
     let linkedin_redirect_url = environment.linkedin_redirect_url;
     this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
-    window.location.href = this.linkedin_url;
+    this.window.location.href = this.linkedin_url;
   }
 
 

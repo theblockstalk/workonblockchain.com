@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve, Router,CanActivate  } from '@angular/router';
 import {UserService} from "../user.service";
 import {environment} from '../../environments/environment';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 const URL = environment.frontend_url;
 
 @Injectable({
@@ -10,7 +11,7 @@ const URL = environment.frontend_url;
 export class VerifyEmailMiddleware implements CanActivate {
   currentUser;
 
-  constructor( private router: Router, private authenticationService: UserService) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any,  private router: Router, private authenticationService: UserService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -55,13 +56,13 @@ export class VerifyEmailMiddleware implements CanActivate {
             {
               if(error['message'] === 500 || error['message'] === 401)
               {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
 
               if(error['message'] === 403)

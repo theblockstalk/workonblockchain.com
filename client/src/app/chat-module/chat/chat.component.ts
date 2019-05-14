@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, ViewChild, Inject } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
@@ -6,6 +6,7 @@ import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {IMyDpOptions} from 'mydatepicker';
 import {environment} from '../../../environments/environment';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $: any;
 
 const back_url = environment.backend_url;
@@ -73,7 +74,7 @@ export class ChatComponent implements OnInit {
   salary_currency_select = ["£ GBP" ,"€ EUR" , "$ USD"];
   employment_type_select = ["Part time", "Full time", "Contract"];
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, 
     private authenticationService: UserService,
     private fb: FormBuilder,
     private el: ElementRef,
@@ -150,7 +151,7 @@ export class ChatComponent implements OnInit {
 
     this.loading = true;
     this.count=0;
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.file_url = URL;
     if(this.currentUser){
       if(this.currentUser.type == 'candidate'){
@@ -189,8 +190,8 @@ export class ChatComponent implements OnInit {
             },
             error => {
               if(error['message'] === 500 || error['message'] === 401){
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.window.location.href = '/login';
               }
               if(error['message'] === 403){}
             }
@@ -233,8 +234,8 @@ export class ChatComponent implements OnInit {
             },
             error => {
               if(error['message'] === 500 || error['message'] === 401){
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.window.location.href = '/login';
               }
               if(error['message'] === 403){}
             }
@@ -298,13 +299,13 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if(error.status === 500 || error.status === 401){
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.localStorage.removeItem('currentUser');
+            this.localStorage.removeItem('googleUser');
+            this.localStorage.removeItem('close_notify');
+            this.localStorage.removeItem('linkedinUser');
+            this.localStorage.removeItem('admin_log');
+            this.window.location.href = '/login';
           }
           if(error.status === 404){
             this.log = error.error.message;
@@ -343,13 +344,13 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if(error.status === 500 || error.status === 401){
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.localStorage.removeItem('currentUser');
+            this.localStorage.removeItem('googleUser');
+            this.localStorage.removeItem('close_notify');
+            this.localStorage.removeItem('linkedinUser');
+            this.localStorage.removeItem('admin_log');
+            this.window.location.href = '/login';
           }
           if(error.status === 404){
             this.log = error.error.message;
@@ -365,7 +366,7 @@ export class ChatComponent implements OnInit {
     this.img_name = '';
     if(this.credentials.msg_body && this.credentials.id){
       this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
       this.msg_tag = 'normal';
       this.is_company_reply = 1;
       if(this.first_message == 1){
@@ -390,8 +391,8 @@ export class ChatComponent implements OnInit {
                 },
                 error => {
                   if(error.message == 500 || error.message == 401){
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    window.location.href = '/login';
+                    this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    this.window.location.href = '/login';
                   }
                   if(error.message == 403){}
                 }
@@ -399,8 +400,8 @@ export class ChatComponent implements OnInit {
           },
           error => {
             if(error.message == 500 || error.message == 401){
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.window.location.href = '/login';
             }
             if(error.message == 403){}
           }
@@ -409,7 +410,7 @@ export class ChatComponent implements OnInit {
   }
 
   reject_offer(msgForm : NgForm){
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.credentials.msg_body = 'I am not interested';
     this.is_company_reply = 0;
     this.show_accpet_reject = 3;
@@ -434,8 +435,8 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if(error.message == 500 || error.message == 401){
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if(error.message == 403){}
         }
@@ -443,7 +444,7 @@ export class ChatComponent implements OnInit {
   }
 
   accept_offer(msgForm : NgForm){
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.is_company_reply = 1;
     this.show_accpet_reject = 4;
     this.msg_tag = 'job_offer_accepted';
@@ -464,8 +465,8 @@ export class ChatComponent implements OnInit {
               },
               error => {
                 if(error.message == 500 || error.message == 401){
-                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                  window.location.href = '/login';
+                  this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                  this.window.location.href = '/login';
                 }
                 if(error.message == 403){}
               }
@@ -473,8 +474,8 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if(error.message == 500 || error.message == 401){
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if(error.message == 403){}
         }
@@ -512,7 +513,7 @@ export class ChatComponent implements OnInit {
 
     if (interview_date && this.credentials.time && this.credentials.location && this.credentials.description) {
       $("#myModal").modal("hide");
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.msg_tag = 'interview_offer';
       this.credentials.msg_body = 'You have been invited for a job interview. Please send message to rsvp.';
@@ -547,8 +548,8 @@ export class ChatComponent implements OnInit {
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    window.location.href = '/login';
+                    this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    this.window.location.href = '/login';
                   }
                   if (error.message == 403) {}
                 }
@@ -556,8 +557,8 @@ export class ChatComponent implements OnInit {
           },
           error => {
             if (error.message == 500 || error.message == 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.window.location.href = '/login';
             }
             if (error.message == 403) {}
           }
@@ -672,7 +673,7 @@ export class ChatComponent implements OnInit {
   }
 
   accept_job_offer(msgForm1 : NgForm) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.is_company_reply = 1;
     this.cand_job_offer = 0;
     this.is_job_offer = 2;//2 for accepted
@@ -695,8 +696,8 @@ export class ChatComponent implements OnInit {
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
-                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                  window.location.href = '/login';
+                  this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                  this.window.location.href = '/login';
                 }
                 if (error.message == 403) {}
               }
@@ -704,8 +705,8 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if (error.message == 500 || error.message == 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if (error.message == 403) {}
         }
@@ -713,7 +714,7 @@ export class ChatComponent implements OnInit {
   }
 
   reject_job_offer(msgForm1 : NgForm) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.is_company_reply = 1;
     this.cand_job_offer = 0;
     this.is_job_offer = 3;//3 for rejected
@@ -735,8 +736,8 @@ export class ChatComponent implements OnInit {
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
-                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                  window.location.href = '/login';
+                  this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                  this.window.location.href = '/login';
                 }
                 if (error.message == 403) {}
               }
@@ -744,8 +745,8 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if (error.message == 500 || error.message == 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if (error.message == 403) {}
         }
@@ -761,7 +762,7 @@ export class ChatComponent implements OnInit {
     this.new_msgss = '';
     this.credentials.id = id;
     this.credentials.msg_body = '';
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.authenticationService.get_user_messages_comp(this.credentials.id)
       .subscribe(
         data => {
@@ -775,8 +776,8 @@ export class ChatComponent implements OnInit {
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
-                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                  window.location.href = '/login';
+                  this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                  this.window.location.href = '/login';
                 }
                 if (error.message == 403) {}
               }
@@ -822,8 +823,8 @@ export class ChatComponent implements OnInit {
         },
         error => {
           if (error.message == 500 || error.message == 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if (error.message == 403) {}
         }
@@ -859,8 +860,8 @@ export class ChatComponent implements OnInit {
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    window.location.href = '/login';
+                    this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    this.window.location.href = '/login';
                   }
                   if (error.message == 403) {}
                 }
@@ -868,8 +869,8 @@ export class ChatComponent implements OnInit {
           },
           error => {
             if (error.message == 500 || error.message == 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.window.location.href = '/login';
             }
             if (error.message == 403) {}
           }
@@ -899,7 +900,7 @@ export class ChatComponent implements OnInit {
   }
 
   send_employment_offer(my_credentials: any,file: any, formData:any) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.is_company_reply = 1;
     this.msg_tag = 'employment_offer';
     this.is_job_offer = 1;
@@ -936,8 +937,8 @@ export class ChatComponent implements OnInit {
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
-                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                  window.location.href = '/login';
+                  this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                  this.window.location.href = '/login';
                 }
                 if (error.message == 403) {}
               }
@@ -949,8 +950,8 @@ export class ChatComponent implements OnInit {
             this.job_offer_log_error = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
           }
           if (error.message == 500 || error.message == 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if (error.message == 403) {}
         }

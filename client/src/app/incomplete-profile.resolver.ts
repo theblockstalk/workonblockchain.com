@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import { map } from 'rxjs/operators';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 const URL = environment.backend_url;
 
 @Injectable()
 export class ProfileResolver  {
   currentUser;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient, private router: Router) {}
 
   resolve() : void {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     if (this.currentUser)
     {
       if(this.currentUser.type === 'candidate')
@@ -48,8 +49,8 @@ export class ProfileResolver  {
           {
             if(error.message === 500 || error.message === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.window.location.href = '/login';
             }
 
 

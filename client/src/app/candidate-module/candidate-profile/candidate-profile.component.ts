@@ -1,4 +1,4 @@
-import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
+import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter, Inject} from '@angular/core';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import { DataService } from "../../data.service";
 declare var $: any;
 import {constants} from "../../../constants/constants";
 import {getNameFromValue} from "../../../services/object";
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -51,7 +52,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   description_commercial_skills;
 
   public loading = false;information: any = {};
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
   {
 
 
@@ -81,7 +82,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
   }
   tweet_text;
   dateA;dateB;
@@ -123,7 +124,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
     this.dataservice.eemailMessage.subscribe(message => this.message = message);
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
 
     this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!";
     if(this.user_id)
@@ -374,13 +375,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             {
               if(err.message == 500 || err.message == 401)
               {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
 
             });
@@ -442,8 +443,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
           {
             if(error.message === 500 || error.message === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.window.location.href = '/login';
             }
 
             if(error.message === 403)

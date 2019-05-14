@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Inject } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 declare var $:any;
 
 @Component({
@@ -14,7 +15,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
-  constructor() { }
+  constructor(@Inject(WINDOW) private window: Window, ) { }
 
   ngOnInit() {
     this.when_receive_email_notitfications = 'Daily';
@@ -40,7 +41,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   }
 
   ngAfterViewInit() {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);

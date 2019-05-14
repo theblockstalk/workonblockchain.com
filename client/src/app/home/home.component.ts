@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Inject} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Title, Meta } from '@angular/platform-browser';
 import {NgForm} from '@angular/forms';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $: any;
 
 @Component({
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   currentUser: User;
   log_error; log_success;
   data;result;
-  constructor( private route: ActivatedRoute,
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any,  private route: ActivatedRoute,
                private router: Router,
                private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
     this.titleService.setTitle('Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers');
@@ -33,7 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     $('.carousel').carousel({
       interval: 3500
     });
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
   }
   ngOnInit()
   {
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
     });
+    console.log('for test');
   }
 
   internalRoute(page,dst){

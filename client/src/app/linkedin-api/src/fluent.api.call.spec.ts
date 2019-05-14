@@ -1,7 +1,6 @@
 import { FluentApiCall } from './fluent.api.call';
 
-import { Observable } from 'rxjs/Observable';
-import { AsyncSubject } from 'rxjs/AsyncSubject';
+import { Observable,AsyncSubject } from 'rxjs';
 
 import {
     fakeAsync
@@ -113,7 +112,7 @@ describe('FluentApiCall', () => {
             subject.url(url).asObservable().subscribe();
             expect(rawApiUrlSpy).not.toHaveBeenCalledWith(url);
         });
-        
+
         it('should not call raw api mehtod() with param when calling method unless library is loaded',() => {
             let method = 'GET';
             let rawApiMethodSpy = spyOn(rawApi, 'method').and.callThrough();
@@ -156,7 +155,7 @@ describe('FluentApiCall', () => {
                 subject.url(url).asObservable().subscribe();
                 expect(rawApiUrlSpy).toHaveBeenCalledWith(url);
             });
-            
+
             it('should call raw api mehtod() with param when calling method',() => {
                 let method = 'GET';
                 let rawApiMethodSpy = spyOn(rawApi, 'method').and.callThrough();
@@ -218,6 +217,6 @@ describe('FluentApiCall', () => {
 
                 expect(called).toBeTruthy();
             }));
-        });        
+        });
     });
 });

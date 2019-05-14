@@ -1,9 +1,10 @@
-import {Component, OnInit,ElementRef} from '@angular/core';
+import {Component, OnInit,ElementRef, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 declare var $: any;
 
@@ -45,7 +46,7 @@ export class AdminDisplayChatComponent implements OnInit {
   display_name;
   new_messges = [];
 
-  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
       this.user_type = params['type'];
@@ -58,8 +59,8 @@ export class AdminDisplayChatComponent implements OnInit {
     styles.type = "text/css";
     styles.href = "../../assets/css/chat.css";
     document.getElementsByTagName("head")[0].appendChild(styles);
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
     if(this.user_id && this.admin_log && this.currentUser){
       if(this.admin_log.is_admin == 1){
         this.get_user_type();
@@ -91,13 +92,13 @@ export class AdminDisplayChatComponent implements OnInit {
                 this.length = 0;
               }
               if(error.status === 500 || error.status === 401){
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
               if(error.status === 404){
                 this.log = error.error.message;
@@ -130,13 +131,13 @@ export class AdminDisplayChatComponent implements OnInit {
                 this.length = 0;
               }
               if(error.status === 500 || error.status === 401){
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
               if(error.status === 404){
                 this.log = error.error.message;
@@ -200,8 +201,8 @@ export class AdminDisplayChatComponent implements OnInit {
       },
       error =>{
         if(error.message === 500 || error.message === 401){
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          window.location.href = '/login';
+          this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          this.window.location.href = '/login';
         }
         if(error.message === 403){}
       }
@@ -225,8 +226,8 @@ export class AdminDisplayChatComponent implements OnInit {
 				},
         error =>{
           if(error.message === 500 || error.message === 401){
-						localStorage.setItem('jwt_not_found', 'Jwt token not found');
-						window.location.href = '/login';
+						this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+						this.window.location.href = '/login';
 					}
 					if(error.message === 403){}
         }
@@ -238,7 +239,7 @@ export class AdminDisplayChatComponent implements OnInit {
 				data =>{
 				  if(data['error']){
 				    this.log= "Something Went Wrong";
-						localStorage.removeItem('company_type');
+						this.localStorage.removeItem('company_type');
 					}
 					else{
 					  if(data['image']!=''){

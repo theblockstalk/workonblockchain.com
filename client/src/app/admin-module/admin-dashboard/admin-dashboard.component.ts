@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 
 @Component({
@@ -14,11 +15,11 @@ export class AdminDashboardComponent implements OnInit {
     currentUser: any;
     is_admin;
     user_type;
-  constructor(private router: Router,private authenticationService: UserService) { }
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
       if(this.currentUser )
       {
           this.user_type = this.currentUser.type;
@@ -33,11 +34,11 @@ export class AdminDashboardComponent implements OnInit {
                          this.is_admin = data['is_admin'];
                         if(this.is_admin == 1)
                         {
-                            localStorage.setItem('admin_log', JSON.stringify(data));
+                            this.localStorage.setItem('admin_log', JSON.stringify(data));
                         }
                         else
                         {
-                            localStorage.removeItem('admin_log');
+                            this.localStorage.removeItem('admin_log');
                             this.router.navigate(['/not_found']);
                         }
                     }
@@ -47,13 +48,13 @@ export class AdminDashboardComponent implements OnInit {
                 {
                     if(error.message === 500 || error.message === 401)
                         {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log');
-                            window.location.href = '/login';
+                            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            this.localStorage.removeItem('currentUser');
+                                    this.localStorage.removeItem('googleUser');
+                                    this.localStorage.removeItem('close_notify');
+                                    this.localStorage.removeItem('linkedinUser');
+                                    this.localStorage.removeItem('admin_log');
+                            this.window.location.href = '/login';
                         }
 
                         if(error.message === 403)
@@ -75,11 +76,11 @@ export class AdminDashboardComponent implements OnInit {
                          this.is_admin = data['_creator'].is_admin;
                         if(this.is_admin == 1)
                         {
-                            localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
+                            this.localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
                         }
                         else
                         {
-                            localStorage.removeItem('admin_log');
+                            this.localStorage.removeItem('admin_log');
                             this.router.navigate(['/not_found']);
                         }
                         //localStorage.setItem('admin_log', JSON.stringify(data[0]._creator));
@@ -89,7 +90,7 @@ export class AdminDashboardComponent implements OnInit {
          }
           else
           {
-              localStorage.removeItem('admin_log');
+              this.localStorage.removeItem('admin_log');
                 this.router.navigate(['/not_found']);
           }
            //this.is_admin = this.currentUser.is_admin;
@@ -97,7 +98,7 @@ export class AdminDashboardComponent implements OnInit {
       }
       else
        {
-          localStorage.removeItem('admin_log');
+          this.localStorage.removeItem('admin_log');
            this.router.navigate(['/not_found']);
        }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import { DataService } from '../../data.service';
 declare var $:any;
 import {constants} from "../../../constants/constants";
 import {getNameFromValue} from "../../../services/object";
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-candidate-detail',
@@ -50,7 +51,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
 
-  constructor(private dataservice: DataService , private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private dataservice: DataService , private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -87,7 +88,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   selectedValueArray=[];
 
   ngAfterViewInit() {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 300);
@@ -100,8 +101,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   {
     this.invalidMsg = '';
     this.selectedValueArray=[];
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    localStorage.removeItem('previousUrl');
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
       this.authenticationService.getLastJobDesc()
         .subscribe(
@@ -122,13 +123,13 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if (error['message'] === 403) {
@@ -337,10 +338,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
     else
     {
-      const location = window.location.href.split('/');
+      const location = this.window.location.href.split('/');
       window.localStorage.setItem('previousUrl', location[3]);
       this.router.navigate(['/login']);
-
     }
   }
 
@@ -391,7 +391,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.full_name = this.first_name;
     if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
       if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
         let job_offer : any = {};
         job_offer.title = this.credentials.job_title;
         job_offer.salary = this.credentials.salary;
@@ -412,22 +412,22 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
             }
             if(error['status'] === 500 || error['status'] === 401){
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
             if(error['status'] === 404){
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
           }
         );

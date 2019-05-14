@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
 import { DataService } from '../../data.service';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-welcome-popup-editor',
@@ -32,7 +33,7 @@ export class WelcomePopupEditorComponent implements OnInit {
   company_error;
   company_success;
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) {
 
   }
 
@@ -55,8 +56,8 @@ export class WelcomePopupEditorComponent implements OnInit {
     this.candidateMsgName = 'Candidate popup message';
     this.companyMsgName = 'Company popup message';
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
 
     if(this.currentUser && this.admin_log )
     {
@@ -86,13 +87,13 @@ export class WelcomePopupEditorComponent implements OnInit {
             {
               if(error.message === 500 || error.message === 401)
               {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
 
               }
               else

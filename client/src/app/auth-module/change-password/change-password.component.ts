@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm , FormsModule} from '@angular/forms';
 import { DataService } from '../../data.service';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-change-password',
@@ -19,12 +20,12 @@ export class ChangePasswordComponent implements OnInit {
   log;
   buttonSubmit;
 
-  constructor( private route: ActivatedRoute,
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any,  private route: ActivatedRoute,
                private router: Router,
                private authenticationService: UserService,private dataservice: DataService) { }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     if(this.currentUser)
     {
       this.id= this.currentUser._id;
@@ -70,13 +71,13 @@ export class ChangePasswordComponent implements OnInit {
           {
               this.log='';
 
-              localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
+              this.localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
 
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
 
 
 

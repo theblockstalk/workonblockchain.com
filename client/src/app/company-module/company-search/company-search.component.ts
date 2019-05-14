@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit, Inject } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ declare var $:any;
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-company-search',
@@ -65,7 +66,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   no_value = false;
   saveSearchName;
 
-  constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
     this.route.queryParams.subscribe(params => {
       if(params['queryBody']) {
         this.urlParameters = JSON.parse(params['queryBody']);
@@ -116,7 +117,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainData = constants.blockchainPlatforms;
 
   ngAfterViewInit() {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 300);
@@ -169,7 +170,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.info = [];
     this.msg='';
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
     {
@@ -264,13 +265,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             if(error.message === 500)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error.message === 403)
@@ -842,8 +843,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         error => {
           if(error['message'] === 500 || error['message'] === 401  )
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.window.location.href = '/login';
           }
           if(error['message'] === 403)
           {
@@ -893,13 +894,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         },
         error => {
           if (error['message'] === 500 || error['message'] === 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.localStorage.removeItem('currentUser');
+            this.localStorage.removeItem('googleUser');
+            this.localStorage.removeItem('close_notify');
+            this.localStorage.removeItem('linkedinUser');
+            this.localStorage.removeItem('admin_log');
+            this.window.location.href = '/login';
           }
 
           if (error['message'] === 403) {
@@ -924,7 +925,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   job_offer_log_erorr;
 
   send_job_offer(msgForm : NgForm){
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.job_title_log = '';
     this.location_log = '';
     this.salary_log = '';
@@ -982,22 +983,22 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
               }
               if (error['status'] === 500 || error['status'] === 401) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
               if (error['status'] === 404) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
             }
           );
@@ -1067,13 +1068,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error.message === 403)

@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import { Title, Meta } from '@angular/platform-browser';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 declare var $: any;
 
@@ -15,7 +16,7 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
   approvedUsers;
   blockchainExperienceUsers;
 
-  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
     this.titleService.setTitle('Hire developers today. Work and jobs platform for blockchain, cryptocurrency and DLT projects');
     this.newMeta.updateTag({ name: 'description', content: 'Hire and contract talent for blockchain, cryptocurrency and DLT. Jobs, freelancers, agencies, developers, CTOs and more with or without blockchain experience.' });
     this.newMeta.updateTag({ name: 'title', content: 'Hire developers today. Work and jobs platform for blockchain, cryptocurrency and DLT projects' });
@@ -31,7 +32,7 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
   }
 
   ngOnInit() {

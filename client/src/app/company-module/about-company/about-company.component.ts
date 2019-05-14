@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Inject } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -9,6 +9,7 @@ import {environment} from '../../../environments/environment';
 import { DatePipe } from '@angular/common';
 declare var $:any;
 import { map } from 'rxjs/operators';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 const URL = environment.backend_url;
 
@@ -33,14 +34,14 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   preference;
   pref_active_class;
   pref_disable;
-  constructor(private route: ActivatedRoute,private datePipe: DatePipe,
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
   }
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
   }
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     this.pref_disable='disabled';
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
     {
@@ -98,13 +99,13 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error['message'] === 403)

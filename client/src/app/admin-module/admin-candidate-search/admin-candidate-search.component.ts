@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit} from '@angular/core';
+import { Component, OnInit , AfterViewInit, Inject} from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -40,10 +41,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   msgTagsOptions = constants.chatMsgTypes;
 
-  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
@@ -56,8 +57,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.candidate_status = 1;
     this.candidate_status_account = false;
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);

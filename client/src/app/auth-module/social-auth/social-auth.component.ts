@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-social-auth',
@@ -12,7 +13,7 @@ export class SocialAuthComponent implements OnInit {
   code;
   log;
   googleUser;
-  constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
     this.googleUser = (localStorage.getItem('googleLogin'));
 
     this.route.queryParams.subscribe(params => {
@@ -36,14 +37,14 @@ export class SocialAuthComponent implements OnInit {
   }
 
   login(code) {
-    localStorage.removeItem('googleLogin');
+    this.localStorage.removeItem('googleLogin');
 
     this.authenticationService.candidate_login({google_code : code})
       .subscribe(
         user => {
 
           if(user) {
-            window.location.href = '/candidate_profile';
+            this.window.location.href = '/candidate_profile';
           }
 
         },
@@ -68,8 +69,8 @@ export class SocialAuthComponent implements OnInit {
       .subscribe(
         user => {
           if(user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = '/candidate_profile';
+            this.localStorage.setItem('currentUser', JSON.stringify(user));
+            this.window.location.href = '/candidate_profile';
           }
 
         },

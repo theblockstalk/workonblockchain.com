@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-linkedin-auth',
@@ -13,7 +14,7 @@ export class LinkedinAuthComponent implements OnInit {
   log;
   linkedinUser;
   previousUrl;
-  constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
     this.linkedinUser = (localStorage.getItem('linkedinLogin'));
 
     this.route.queryParams.subscribe(params => {
@@ -35,14 +36,14 @@ export class LinkedinAuthComponent implements OnInit {
 
   }
   login(code) {
-    localStorage.removeItem('linkedinLogin');
+    this.localStorage.removeItem('linkedinLogin');
 
     this.authenticationService.candidate_login({linkedin_code : code})
       .subscribe(
         user => {
 
           if(user) {
-            window.location.href = '/candidate_profile';
+            this.window.location.href = '/candidate_profile';
           }
 
         },
@@ -66,8 +67,8 @@ export class LinkedinAuthComponent implements OnInit {
       .subscribe(
         user => {
           if(user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = '/candidate_profile';
+            this.localStorage.setItem('currentUser', JSON.stringify(user));
+            this.window.location.href = '/candidate_profile';
           }
 
         },

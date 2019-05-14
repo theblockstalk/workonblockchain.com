@@ -8,13 +8,14 @@ import {
 import {
     ZoneHelper
 } from './zone.helper';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Injectable()
 export class DomHelper {
     public constructor(
-        private _zoneHelper: ZoneHelper,
-        @Inject(DOCUMENT) private _document: any,
-        @Inject('window') private _window: any
+      private _zoneHelper: ZoneHelper,
+      @Inject(DOCUMENT) private _document: any,
+      @Inject('window') private _window: any
     ) {
     }
 

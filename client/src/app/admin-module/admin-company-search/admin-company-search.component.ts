@@ -1,9 +1,10 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $:any;
 
 @Component({
@@ -55,10 +56,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     {value:true, name:'Disabled'}
   ];
 
-  constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
@@ -71,8 +72,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.candidate_status = 1;
     this.candidate_status_account = false;
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
 
     if(!this.currentUser)
     {

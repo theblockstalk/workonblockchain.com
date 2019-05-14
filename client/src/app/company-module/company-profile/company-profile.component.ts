@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject  } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm , FormGroup,FormControl,FormBuilder} from '@angular/forms';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $:any;
 
 @Component({
@@ -42,7 +43,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
-  constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any,  private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
                private authenticationService: UserService) { }
 
@@ -69,7 +70,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
   }
 
   url;
@@ -118,7 +119,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       this.sectionScroll= null;
     });
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);

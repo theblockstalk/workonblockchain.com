@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, Input, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 declare var $: any;
 import {constants} from '../../../constants/constants';
 import {getNameFromValue} from "../../../services/object";
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -38,7 +39,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   description_experimented_platforms;
   description_commercial_skills;
 
-  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -91,7 +92,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 600);
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
 
   }
 
@@ -105,8 +106,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 500);
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
 
     this.ckeConfig = {
       allowedContent: false,

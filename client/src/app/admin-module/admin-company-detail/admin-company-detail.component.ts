@@ -1,10 +1,11 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
+import { Component, OnInit,ElementRef, Input, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 
 
 
@@ -28,7 +29,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   imgPath;
 
 
-  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(@Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -48,8 +49,8 @@ export class AdminCompanyDetailComponent implements OnInit {
   {
     this.referred_link = "";
     this.referred_name = "";
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
     this.error ='';
 

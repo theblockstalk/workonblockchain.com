@@ -1,10 +1,11 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 import {NgForm} from '@angular/forms';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $: any;
 
 const URL = environment.backend_url;
@@ -32,11 +33,11 @@ export class LinkedinImportComponent implements OnInit {
   exp_active_class;
   error_log;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
   }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.skip_value = 0;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
@@ -93,13 +94,13 @@ export class LinkedinImportComponent implements OnInit {
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error['message'] === 403)
@@ -158,8 +159,8 @@ export class LinkedinImportComponent implements OnInit {
     }
 
     let linkedinToJsonResume;
-    if ((<any>window).ga) {
-      (<any>window).ga('send', 'event', 'linkedin-to-json-resume', 'file-selected');
+    if ((<any>this.window).ga) {
+      (<any>this.window).ga('send', 'event', 'linkedin-to-json-resume', 'file-selected');
     }
     Promise.all([
       import('./converter'),
@@ -326,8 +327,8 @@ export class LinkedinImportComponent implements OnInit {
         });
 
         Promise.all(promises).then(() => {
-          if ((<any>window).ga) {
-            (<any>window).ga(
+          if ((<any>this.window).ga) {
+            (<any>this.window).ga(
               'send',
               'event',
               'linkedin-to-json-resume',

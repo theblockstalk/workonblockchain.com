@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
@@ -7,6 +7,7 @@ declare var $:any;
 import {constants} from '../../../constants/constants';
 
 import { HttpClient } from '@angular/common/http';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-job',
@@ -15,7 +16,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class JobComponent implements OnInit,AfterViewInit {
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
   info: any = {};
   country ='';
   roles='';
@@ -58,7 +59,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   emptyInput;
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
+    this.window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
@@ -67,7 +68,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
     {
@@ -213,13 +214,13 @@ export class JobComponent implements OnInit,AfterViewInit {
           error => {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error['message'] === 403)
@@ -295,7 +296,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   country_input_log;
   onSubmit(f: NgForm)
   {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
     this.validatedLocation = [];
@@ -445,13 +446,13 @@ export class JobComponent implements OnInit,AfterViewInit {
             {
               if(error['message'] === 500 || error['message'] === 401)
               {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
 
               if(error.message === 403)

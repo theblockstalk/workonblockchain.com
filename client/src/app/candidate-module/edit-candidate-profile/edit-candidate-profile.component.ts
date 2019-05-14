@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit ,ElementRef, Input,AfterViewInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import { DataService } from "../../data.service";
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../constants/constants';
+import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -111,7 +112,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
-  constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
+  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
   }
 
@@ -139,7 +140,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   ngOnInit()
   {
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -512,13 +513,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(error.message === 500 || error.message === 401)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              this.localStorage.removeItem('currentUser');
+              this.localStorage.removeItem('googleUser');
+              this.localStorage.removeItem('close_notify');
+              this.localStorage.removeItem('linkedinUser');
+              this.localStorage.removeItem('admin_log');
+              this.window.location.href = '/login';
             }
 
             if(error.message === 403)
@@ -933,7 +934,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     let flag_experimented_desc = true;
     let flag_commercialSkills_desc = true;
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -1272,13 +1273,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             },
             error => {
               if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
             }
           );
@@ -1435,13 +1436,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.log = 'Something went wrong';
           if(error.message === 500)
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            this.localStorage.removeItem('currentUser');
+            this.localStorage.removeItem('googleUser');
+            this.localStorage.removeItem('close_notify');
+            this.localStorage.removeItem('linkedinUser');
+            this.localStorage.removeItem('admin_log');
+            this.window.location.href = '/login';
           }
 
         });
@@ -1587,13 +1588,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             {
               if(error['message'] === 500 || error['message'] === 401)
               {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
+                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                this.localStorage.removeItem('currentUser');
+                this.localStorage.removeItem('googleUser');
+                this.localStorage.removeItem('close_notify');
+                this.localStorage.removeItem('linkedinUser');
+                this.localStorage.removeItem('admin_log');
+                this.window.location.href = '/login';
               }
 
               if(error.message === 403)
