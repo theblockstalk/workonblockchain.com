@@ -46,16 +46,10 @@ module.exports.endpoint = async function (req, res) {
     let userId = req.auth.user._id;
     let timestamp = new Date();
     const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
-    const emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
+    let emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
 
     if(emailTemplateDoc) {
-        const emailTemplateDoc = await emailTemplates.findOne({name: emailTemplateDoc.name});
-        if(emailTemplateDoc) {
-            errors.throwError("Template name already exists", 400);
-        }
-        else {
             let updateTemplate = {
-                name: queryBody.name,
                 subject: queryBody.subject,
                 body: sanitizedBody,
                 updated_by: userId,
@@ -64,7 +58,6 @@ module.exports.endpoint = async function (req, res) {
 
             await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
             res.send(true);
-        }
     }
     else {
         errors.throwError("Template doc not found", 404);

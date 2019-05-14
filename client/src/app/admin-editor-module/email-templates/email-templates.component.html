@@ -49,6 +49,9 @@
               <div class="form-group">
                 <label>Subject</label>
                 <input type="text" class="form-control"  name="subject" [(ngModel)]="subject" >
+                <div class = "invalid-feedback d-inline"  *ngIf="!subject">
+                  {{subject_log}}
+                </div>
               </div>
             </div>
           </div>

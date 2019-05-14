@@ -1442,8 +1442,8 @@ export class UserService {
     }));
   }
 
-  email_templates_patch(queryBody : any) {
-    return this.http.patch(URL+'v2/email_templates?admin=true', queryBody, {
+  email_templates_patch(queryBody : any, template_id: string) {
+    return this.http.patch(URL+'v2/email_templates?admin=true&template_id='+template_id , queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

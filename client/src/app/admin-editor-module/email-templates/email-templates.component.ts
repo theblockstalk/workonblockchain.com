@@ -27,6 +27,8 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   subject;
   body;
   template;
+  subject_log;
+  template_id;
   constructor(private router: Router, private authenticationService: UserService) { }
 
   ngAfterViewInit(): void
@@ -80,6 +82,10 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       this.editor_log = 'Please enter body';
       errorCount++;
     }
+    if (!editorForm.value.subject) {
+      this.subject_log = 'Please enter subject';
+      errorCount++;
+    }
     if (this.new_template === true && !editorForm.value.name) {
       this.name_log = 'Please enter name';
       errorCount++;
@@ -119,7 +125,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
             });
       }
       else {
-        this.authenticationService.email_templates_patch(InputBody)
+        this.authenticationService.email_templates_patch(InputBody, this.template_id)
           .subscribe(
             data =>
             {
@@ -190,13 +196,14 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     this.new_template = value;
     if (!value) {
       this.name = '';
+      this.getTemplateOptions();
     }
     else {
       this.subject = '';
       this.body = '';
       this.template = '';
       setTimeout(() => {
-        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
       }, 200);
     }
   }
@@ -209,6 +216,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     else this.subject = '';
     this.body = template.body;
     this.template = template.name;
+    this.template_id = template._id;
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
