@@ -220,8 +220,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 )
               });
 
-              console.log(this.preferncesForm)
-
             }
 
           },
@@ -276,22 +274,16 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     this.error_msg = "";
     this.validatedLocation = [];
     let count = 0;
-    console.log(this.locationArray);
     if(!this.locationArray[0] || this.locationArray[0].length <= 0) {
-      console.log("locationArray[0]");
       this.country_input_log = "Please select at least one location";
       count=1;
     }
     if(!this.locationArray[0]) {
-      console.log("locationArray[0]");
       this.country_log = "Please select at least one location";
       count=1;
     }
     if(this.locationArray[0] && this.locationArray[0].length > 0) {
-      console.log("locationArray[0] >0");
-      console.log(this.locationArray[0]);
       for(let location of this.locationArray[0]) {
-        console.log(location);
         if(location.name.includes(', ')) {
           this.validatedLocation.push({city: location.city});
         }
@@ -300,7 +292,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         }
       }
     }
-    console.log(this.validatedLocation);
     if(!this.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
       count=1;
@@ -361,7 +352,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       }
     }
     if(count === 0) {
-      console.log(this.validatedLocation);
       let inputQuery : any ={};
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0) {
         let i = 0;
@@ -437,7 +427,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   jobTypesSelectedOptions(type) {
-    console.log(this.jobTypesSelected);
     this.index = this.jobTypesSelected.indexOf(type);
     if(this.index > -1) {
       return 'selected';
@@ -515,7 +504,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-              console.log(this.cities);
             }
 
           },
@@ -542,12 +530,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   selectedValueFunction(locValue, index) {
-    console.log(locValue);
-    console.log(index);
     if(this.cities) {
       let citiesExist = this.cities.find(x => x.name === locValue);
       if(citiesExist) {
-        console.log(citiesExist);
         ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');
         this.cities = [];
         if(!this.locationArray[index]) this.locationArray[index] = [];
@@ -567,7 +552,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
           else {
             if(citiesExist) {
-              console.log('in if citiesExist');
               this.locationArray[index].push({city:citiesExist._id ,  name: locValue, visa_needed:false});
             }
             else this.locationArray[index].push({ name: locValue, visa_needed:false});

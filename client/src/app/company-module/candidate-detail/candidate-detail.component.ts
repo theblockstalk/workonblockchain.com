@@ -150,7 +150,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           data => {
             if(data && data['message'].approach) {
-              console.log(data['message'].approach);
               let approach = data['message'].approach;
               if(approach.employee) {
                 this.approach_work_type = 'employee';

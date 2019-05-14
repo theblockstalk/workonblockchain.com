@@ -1082,7 +1082,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       }
     }
 
-    if(visaRequired){
+    if(visaRequired === 1){
       remote_error_count = 1;
       this.remote_location_log = "Please select at least one location which you can work in without needing a visa";
     }

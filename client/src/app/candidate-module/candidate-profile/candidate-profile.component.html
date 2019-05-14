@@ -135,7 +135,9 @@
                 <div class="form-group">
                   <label> Stackoverflow URL:</label>
                   <p>
-                    {{stackoverflow_url}}
+                    <a [href]="websiteUrl(stackoverflow_url)" target="_blank">
+                      {{stackoverflow_url}}
+                    </a>
                   <p>
                 </div>
               </div>
@@ -144,7 +146,9 @@
                 <div class="form-group">
                   <label> Personal website URL:</label>
                   <p>
-                    {{personal_website_url}}
+                    <a [href]="websiteUrl(personal_website_url)" target="_blank">
+                      {{personal_website_url}}
+                    </a>
                   <p>
                 </div>
               </div>

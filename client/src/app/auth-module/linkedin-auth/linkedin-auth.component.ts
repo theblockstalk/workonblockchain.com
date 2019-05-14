@@ -21,10 +21,8 @@ export class LinkedinAuthComponent implements OnInit {
         .subscribe(
           data => {
             if (data) {
-              console.log(data)
               this.referred_email =  data['email'];
               this.getParam();
-              console.log(this.referred_email);
             }
           },
           error => {
