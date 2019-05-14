@@ -57,7 +57,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
 
     if (this.currentUser && this.admin_log ) {
       if (this.admin_log.is_admin === 1) {
-         this.getTemplateOptions();
+         this.getTemplateOptions(false);
         setTimeout(() => {
           $('.selectpicker').selectpicker();
         }, 200);
@@ -108,7 +108,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
                 setTimeout(() => {
                   this.success = '';
                 }, 1000);
-                this.getTemplateOptions();
+                this.getTemplateOptions(true);
                 this.new_template = false;
 
               }
@@ -137,7 +137,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
                 setTimeout(() => {
                   this.success = '';
                 }, 1000);
-                this.getTemplateOptions();
+                this.getTemplateOptions(true);
 
               }
             },
@@ -160,7 +160,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
 
-  getTemplateOptions()  {
+  getTemplateOptions(bindData: boolean)  {
     this.templates = [];
     this.authenticationService.email_templates_get()
       .subscribe(
@@ -170,6 +170,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
             this.templateDoc = data;
             for(let x of this.templateDoc) {
               this.templates.push(x.name);
+            }
+            if(bindData) {
+              this.fillFields('', this.name);
             }
              // if(this.template)this.fillFields('', this.template);
              // else if(this.name)this.fillFields('', this.name);
@@ -209,6 +212,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       }, 200);
     }
     else {
+      this.name = '';
       this.subject = '';
       this.body = '';
       this.template = '';
@@ -219,6 +223,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
   fillFields(event, name) {
+    console.log(name);
     this.new_template = true;
     let template;
     if(name && name !== '') template = this.templateDoc.find(x => x.name === name);

@@ -7,7 +7,7 @@ const objects = require('../../services/objects');
 
 module.exports.request = {
     type: 'patch',
-    path: '/email_templates'
+    path: '/email_templates/search'
 };
 
 const querySchema = new Schema({
@@ -47,11 +47,11 @@ module.exports.endpoint = async function (req, res) {
     let timestamp = new Date();
     const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
     let emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
-
+    console.log(emailTemplateDoc)
     if(emailTemplateDoc) {
         if(emailTemplateDoc.name !== queryBody.name) {
-            emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
-            if(emailTemplateDoc) {
+            const emailTemplateDocByName = await emailTemplates.findOne({name: queryBody.name});
+            if(emailTemplateDocByName) {
                 errors.throwError("Template name already exists", 400);
             }
         }
@@ -62,7 +62,7 @@ module.exports.endpoint = async function (req, res) {
             updated_by: userId,
             updated_date: timestamp
         };
-
+        console.log(emailTemplateDoc)
         await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
         res.send(true);
 
