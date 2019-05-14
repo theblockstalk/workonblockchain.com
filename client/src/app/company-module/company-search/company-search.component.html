@@ -192,6 +192,9 @@
                         <span *ngIf="data.candidate.employee">
                           Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
                         </span>
+                        <span *ngIf="data.candidate.employee && data.candidate.contractor">
+                          or
+                        </span>
                         <span *ngIf="data.candidate.contractor">
                           Expects {{data.candidate.contractor.expected_hourly_rate}} {{data.candidate.contractor.currency}} per hour
                         </span>

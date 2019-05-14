@@ -513,6 +513,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             this.candidate_data = data;
+            this.alreadyApproachedCheck();
             this.searchData = true;
 
             this.setPage(1);
@@ -872,7 +873,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-
+          this.alreadyApproachedCheck();
           this.setPage(1);
           if(this.candidate_data && this.candidate_data.length > 0) {
             this.not_found='';
@@ -1179,25 +1180,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    for(let i=0;i<this.pagedItems.length;i++){
-      this.pagedItems[i].already_approached = 0;
-      if(this.pagedItems[i].initials) {
-        this.authenticationService.get_user_messages_comp(this.pagedItems[i]._id)
-          .subscribe(
-            data => {
-              if(data['messages'][0].message.approach) this.pagedItems[i].already_approached = 1;
-            },
-            error => {
-              if (error.message === 500 || error.message === 401) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                window.location.href = '/login';
-              }
-              if (error.message === 403) {
-              }
-            }
-          );
-      }
-    }
   }
 
   suggestedOptions() {
@@ -1372,5 +1354,26 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     return Number(string);
   }
 
+  alreadyApproachedCheck(){
+    for(let i=0;i<this.candidate_data.length;i++){
+      this.candidate_data[i].already_approached = 0;
+      if(this.candidate_data[i].initials) {
+        this.authenticationService.get_user_messages_comp(this.candidate_data[i]._id)
+          .subscribe(
+            data => {
+              if(data['messages'][0].message.approach) this.candidate_data[i].already_approached = 1;
+            },
+            error => {
+              if (error.message === 500 || error.message === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) {
+              }
+            }
+          );
+      }
+    }
+  }
 
 }

@@ -59,8 +59,7 @@
                   <span *ngIf="candidate_status.status === 'created'">Created</span>
                   <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
                   <span *ngIf="candidate_status.status === 'approved'">Approved</span>
-                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
-                  <span *ngIf="candidate_status.status === 'updated'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'updated' || candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
                   <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
                   <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                 </li>
@@ -365,7 +364,9 @@
               <div class="form-group">
                 <label> Stackoverflow URL:</label>
                 <p>
-                  {{data.candidate.stackoverflow_url}}
+                  <a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                    {{data.candidate.stackoverflow_url}}
+                  </a>
                 <p>
               </div>
             </div>
@@ -374,7 +375,9 @@
               <div class="form-group">
                 <label> Personal website URL:</label>
                 <p>
-                  {{data.candidate.personal_website_url}}
+                  <a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                    {{data.candidate.personal_website_url}}
+                  </a>
                 <p>
               </div>
             </div>

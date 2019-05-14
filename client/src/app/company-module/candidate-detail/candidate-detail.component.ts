@@ -130,12 +130,26 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
+      //checking already approached or not
+      this.authenticationService.get_user_messages_comp(this.user_id)
+        .subscribe(
+          data => {
+            if(data['messages'][0].message.approach) this.already_approached=1;
+          },
+          error => {
+            if (error.message === 500 || error.message === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+            if (error.message === 403) {
+            }
+          }
+        );
 
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
             if(data && data['message'].approach) {
-              this.already_approached=1;
               console.log(data['message'].approach);
               let approach = data['message'].approach;
               if(approach.employee) {
