@@ -50,7 +50,7 @@ module.exports.endpoint = async function (req, res) {
 
     if(emailTemplateDoc) {
         if(emailTemplateDoc.name !== queryBody.name) {
-            const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
+            emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
             if(emailTemplateDoc) {
                 errors.throwError("Template name already exists", 400);
             }
