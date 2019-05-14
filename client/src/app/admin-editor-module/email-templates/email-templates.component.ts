@@ -207,6 +207,9 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       this.template = '';
       this.error_msg='';
       this.name_log= '';
+      this.template_log='';
+      this.editor_log='';
+      this.subject_log='';
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');
       }, 200);
@@ -216,6 +219,11 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       this.subject = '';
       this.body = '';
       this.template = '';
+      this.error_msg='';
+      this.name_log= '';
+      this.template_log='';
+      this.editor_log='';
+      this.subject_log='';
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');
       }, 200);
@@ -235,6 +243,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
     this.template_id = template._id;
     this.name = template.name;
     this.templateName = template.name;
+    this.subject = template.subject;
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
