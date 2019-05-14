@@ -20,6 +20,7 @@ const bodySchema = new Schema({
     },
     subject:{
         type:String,
+        required: true,
     },
     body: {
         type:String,
@@ -51,11 +52,11 @@ module.exports.endpoint = async function (req, res) {
     else {
         let addNewTemplate = {
             name : queryBody.name,
+            subject: queryBody.subject,
             body: sanitizedBody,
             updated_by: userId,
             updated_date: timestamp
         };
-        if(queryBody.subject) addNewTemplate.subject = queryBody.subject;
         await emailTemplates.insert(addNewTemplate);
         res.send(true);
     }

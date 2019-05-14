@@ -12,6 +12,7 @@ module.exports.request = {
 
 const querySchema = new Schema({
     admin: Boolean,
+    template_id: String
 });
 
 const bodySchema = new Schema({
@@ -21,6 +22,7 @@ const bodySchema = new Schema({
     },
     subject:{
         type:String,
+        required:true,
     },
     body: {
         type:String,
@@ -43,25 +45,26 @@ module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
     let userId = req.auth.user._id;
     let timestamp = new Date();
-    let unset = {};
     const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
-    const emailTemplateDoc = await emailTemplates.findOne({name: queryBody.name});
+    const emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
 
     if(emailTemplateDoc) {
-        let updateTemplate = {
-            body: sanitizedBody,
-            updated_by: userId,
-            updated_date: timestamp
-        };
-        if(queryBody.subject) updateTemplate.subject = queryBody.subject;
-        else unset.subject = 1;
+        const emailTemplateDoc = await emailTemplates.findOne({name: emailTemplateDoc.name});
+        if(emailTemplateDoc) {
+            errors.throwError("Template name already exists", 400);
+        }
+        else {
+            let updateTemplate = {
+                name: queryBody.name,
+                subject: queryBody.subject,
+                body: sanitizedBody,
+                updated_by: userId,
+                updated_date: timestamp
+            };
 
-        let updateObj = {};
-        if(!objects.isEmpty(updateTemplate)) updateObj.$set = updateTemplate;
-        if(!objects.isEmpty(unset)) updateObj.$unset = unset;
-
-        await emailTemplates.update({_id: emailTemplateDoc._id}, updateObj);
-        res.send(true);
+            await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
+            res.send(true);
+        }
     }
     else {
         errors.throwError("Template doc not found", 404);
