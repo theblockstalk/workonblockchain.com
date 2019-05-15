@@ -27,7 +27,7 @@ export class ChangePasswordComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser)
     {
-      this.id= this.currentUser._creator;
+      this.id= this.currentUser._id;
     }
     else
     {
@@ -92,7 +92,7 @@ export class ChangePasswordComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
 
           });

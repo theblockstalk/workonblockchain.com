@@ -7,8 +7,11 @@ export const environment = {
   production: false,
   backend_url: 'http://localhost:4000/',
   frontend_url: 'http://localhost:4200/',
-  google_id : '507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com',
-  linkedin_id: '78lfupn2m88e4u',
+  google_client_id : '699068166900-r52plq8abcks3d2sanfisp6a4i8hoem2.apps.googleusercontent.com',
+  linkedin_id: '860wydxdy7qqd2',
+  linkedin_redirect_url : 'http://localhost:4200/linkedin-auth',
+  google_redirect_url : 'http://localhost:4200/google-auth'
+
 };
 
 //console.log(environment);

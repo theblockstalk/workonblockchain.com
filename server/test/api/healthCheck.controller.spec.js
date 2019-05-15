@@ -31,20 +31,20 @@ describe('healthCheck', function () {
             assert(res.body.message === "this is a health check for the API");
         })
 
-        it('it should throw an Application error', async () => {
+        it('it should throw an Application error', async function () {
+        let res = await chai.request(server)
+            .get('/?error=true')
+            .send();
 
-            let res = await chai.request(server)
-                .get('/?error=true')
-                .send();
+        res.should.have.status(400);
 
-            res.should.have.status(400);
-
-            // Three ways of running tests using chai
-            res.body.success.should.equal(false);
-            res.body.message.should.equal("I am an application error");
+        // Three ways of running tests using chai
+        res.body.success.should.equal(false);
+        res.body.message.should.equal("I am an application error");
         })
 
-        it('it should throw a normal error', async () => {
+
+        it('it should throw a normal error', async function()  {
 
             let res = await chai.request(server)
                 .get('/?error=true&raw=true')

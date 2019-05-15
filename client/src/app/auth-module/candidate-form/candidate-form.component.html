@@ -62,14 +62,14 @@
               <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
             </div>
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-linkedin text-center"  (click)="subscribeToLogin()">
+              <a  class = "btn btn-block btn-social btn-linkedin text-center" href="{{linkedin_url}}">
                 <i class="fab fa-linkedin" aria-hidden="true"></i>
                 Sign up with LinkedIn
               </a>
             </div>
 
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-google text-center"  (click)="signInWithGoogle()">
+              <a  class = "btn btn-block btn-social btn-google text-center"  href="{{google_url}}">
                 <i class="fab fa-google" aria-hidden="true"></i>
                 Sign up with Google
               </a>
@@ -130,23 +130,43 @@
               <div class="invalid-feedback d-inline" *ngIf="!credentials.company_website">
                 {{companyWebsiteLog}}
               </div>
-              <div class="invalid-feedback d-inline" *ngIf="website.errors && credentials.company_website!='' && companySignup">
+              <div class="invalid-feedback d-inline" *ngIf="website.errors && credentials.company_website!=='' && companySignup">
                 Enter url in proper format.
               </div>
             </div>
             <div class="form-group">
               <span><i class="fas fa-phone mr-1" aria-hidden="true"></i></span>
-              <label>Phone number</label>
-              <input type="tel" class="form-control" placeholder="(+1) 123 456 7890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
+              <label>Phone</label>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend my-style">
+                <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="credentials.country_code" name="country_code">
+                  <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
+                </select>
+              </div>
+              <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
               <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
                 {{companyPhoneLog}}
               </div>
+              <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
+                {{country_code_log}}
+              </div>
+              <ng-container *ngIf="credentials.phone_number;else no_contact_number">
+                <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
+                  Please enter only numbers
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
+                  {{contact_number_log}}
+                </div>
+              </ng-container>
+              <ng-template #no_contact_number>
+              </ng-template>
             </div>
             <div class="form-group">
               <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
               <label>Country</label>
               <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
-                <option *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                <option *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
               </select>
               <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
                 {{companyCountryLog}}

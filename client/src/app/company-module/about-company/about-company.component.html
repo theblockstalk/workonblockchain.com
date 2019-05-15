@@ -63,7 +63,6 @@
               </div>
 
               <div class="row">
-
                 <div class="col-md-6">
                   <div class="form-group w-100">
                     <label>Number of employees?</label>
@@ -73,28 +72,30 @@
                     </div>
                   </div>
                 </div>
+              </div>
 
+              <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group w-100">
-                      <label>Company logo (optional)</label>
-                      <div class="form-group">
-                        <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
-                        <span *ngIf="img_src" >{{img_src}}</span>
-                      </div>
-                      <div class="invalid-feedback d-inline" *ngIf="!image_log">
-                        {{image_log}}
-                      </div>
-                    </div>
+                  <div class="form-group w-100">
+                    <label>Logo (optional)</label>
+                    <p>
+                      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload company logo</button>
+                    </p>
+                    <span *ngIf="imageCropData.image;else prefil_image" >
+                      <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                    </span>
+                    <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                      <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200" >
+                    </span>
+                  </div>
                 </div>
-
-
               </div>
 
               <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                       <label>Company description</label>
-                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                      <textarea name="company_description" maxlength="3000" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
                       <div class="invalid-feedback d-inline" *ngIf="!company_description">
                         {{des_log}}
                       </div>
@@ -128,4 +129,27 @@
       </div>
     </div>
     </div>
+
+  <!-- Image crop popup -->
+  <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+        </div>
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
+            <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+          </div>
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

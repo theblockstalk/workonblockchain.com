@@ -12,7 +12,7 @@ const adminHelper = require('./adminHelpers');
 const userHelper = require('../../users/usersHelpers');
 const docGeneratorV2 = require('../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../test/api-v2/helpers');
-const companiesHelperV2 = require('../../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../../api-v2/users/companies/companyHelpers')
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -50,8 +50,8 @@ describe('admin search company by filter', function () {
         await userHelper.makeAdmin(candidate.email);
         const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 
-        const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
-        const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+        const approachOffer = docGeneratorV2.messages.approach(candidateUserDoc._id);
+        const res = await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
         const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
         const data = {

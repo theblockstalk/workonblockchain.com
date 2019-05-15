@@ -49,7 +49,7 @@ only to be applied to the chat page*/
   position: relative;
   float: right;
   margin-right: 15px;
-  top: -25px;
+  top: -60px;
   font-size: 10px;
 }
 
@@ -67,7 +67,7 @@ only to be applied to the chat page*/
   position: relative;
   float: left;
   margin-left: 5px;
-  top: -25px;
+  top: -65px;
   font-size: 10px;
 }
 
@@ -147,12 +147,14 @@ input[type=file] {
   float: right;
   left: 14px;
   position: relative;
+  top: -35px;
 }
 
 .send_p{
   float: left;
   right: 14px;
   position: relative;
+  top: -40px;
 }
 
 .rec_p::before{
@@ -217,7 +219,7 @@ input[type=file] {
 
 @media (max-width: 768px){
   .message {
-    max-height: 325px;
+    max-height: 510px;
     min-height: 325px;
   }
 
@@ -229,7 +231,7 @@ input[type=file] {
     height: 130vh;
   }
 
-  #cke_editor3, #cke_editor1{
+  #cke_editor1, #cke_editor3, #cke_editor7{
     width: 20rem !important;
   }
 

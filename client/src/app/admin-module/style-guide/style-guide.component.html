@@ -2,6 +2,7 @@
   <h1 class = "text-center">Web Application Style Guide</h1>
   <p class = "text-center">This part is inside a .container class.</p>
 </div>
+
 <div class = "container">
   <h1>Primary Colours</h1>
   <hr>
@@ -602,6 +603,49 @@
   </div>
   <div class = "row">
     <div class="col-md-2">
+      <p>Image crop popup</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Image (optional)</label>
+        <p>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+        </p>
+        <span *ngIf="imageCropData.image" >
+          <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+        </span>
+      </div>
+    </div>
+    <!-- Image crop popup -->
+    <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary">
+            <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+          </div>
+          <div class="modal-body ">
+            <div class="file-upload mb-3">
+              <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+            </div>
+            <div class="text-center">
+              <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Image cropper</li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-2">
       <p>Validated input</p>
     </div>
     <div class="col-md-7">
@@ -631,6 +675,23 @@
       </ul>
     </div>
   </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Phone</p>
+    </div>
+    <div class="col-md-7">
+      <div class="input-group">
+        <div class="input-group-prepend my-style">
+          <select class="form-control selectpicker" title="(Country code)" name="country_code">
+            <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
+          </select>
+        </div>
+        <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required>
+      </div>
+    </div>
+  </div>
+
   <div class = "row">
     <div class="col-md-2">
       <p>Check box</p>
@@ -883,29 +944,31 @@
       </ul>
     </div>
   </div>
+
   <div class = "row">
     <div class="col-md-2">
-      <p>Auto suggestion text box</p>
+      <p>Angular material auto suggestion text box</p>
     </div>
     <div class="col-md-7">
       <div class="form-group">
-        <label>Text box with auto suggestion</label>
+        <label>Angular material auto suggestion</label>
         <div class="form-group">
-
-          <datalist id="countryList">
-            <select class="form-control">
-              <option *ngFor = "let country of countries" value="{{country}}">
-
-            </select>
-
-          </datalist>
-          <input type="text" list="countryList" autocomplete="off" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
+          <mat-form-field class="example-full-width" floatLabel="always">
+            <mat-label></mat-label>
+            <input matInput [matAutocomplete]="auto2" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)" placeholder="Location">
+          </mat-form-field>
           <div class="invalid-feedback d-inline" *ngIf="error">
             {{error}}
           </div>
+
           <div *ngIf="selectedValueArray.length > 0">
             <div class="d-inline-block p-2 border rounded mr-1 mt-2" *ngFor="let value of selectedValueArray">{{value}}</div>
           </div>
+          <mat-autocomplete #auto2="matAutocomplete">
+            <mat-option *ngFor="let country of countries" [value]="country">
+              <span>{{ country }}</span>
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
     </div>
@@ -915,6 +978,7 @@
       </ul>
     </div>
   </div>
+
   <div class = "row">
     <div class="col-md-2">
       <p>Input type upload</p>
@@ -1166,10 +1230,8 @@ Moreover, I think blockchain can solve many problems and my eager to work with c
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header bg-primary">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
               <h5 class="modal-title text-center" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
             </div>
             <div class="modal-body">
               <form action="/action_page.php">

@@ -21,11 +21,22 @@
   "cron": {
     "unreadMessagesTick": "0-59 * * * *",
     "syncSendgrid": "0-59 * * * *",
-    "autoNotification" : "0-59 * * * *"
+    "autoNotification" : "0-59 * * * *",
+    "newMessagesEmail": "* * * * 1-7"
   },
   "sendGrid": {
     "accountFromAddress" : "antonio@workonblockchain.com",
     "accountFromName" : "Antonio Sabado"
+  },
+  "googleConfig": {
+    "clientId": "699068166900-r52plq8abcks3d2sanfisp6a4i8hoem2.apps.googleusercontent.com",
+    "clientSecret": "H623HO3h6nsZVcriG7_gFeTt",
+    "redirectUrl": "http://localhost:4200/google-auth"
+  },
+  "linkedinConfig" : {
+    "clientId": "860wydxdy7qqd2",
+    "clientSecret": "8Gb0q3rRMu65IuhY",
+    "redirectUrl": "http://localhost:4200/linkedin-auth"
   }
 }
 

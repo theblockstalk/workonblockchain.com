@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'resume', component: ResumeComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'experience', component: ExperienceComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'candidate_profile', component: CandidateProfileComponent ,  canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
-  { path: 'edit_profile' , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware] },
+  { path: 'edit_profile' , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
   { path: 'candidate-verify-email' , component: CandidateVerifyEmailComponent}
 ];
 

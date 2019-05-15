@@ -55,7 +55,7 @@
           <div class="row mt-4">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Why do you want to work on blockchain?</label>
+                <label>Why work on blockchain?</label>
                 <ul>
                   <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have with trust and transparency? </li>
                   <li> This is the first field that a company sees! </li>
@@ -63,6 +63,28 @@
                 <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because ..."  #whywork name="why_work" required [(ngModel)]="why_work">
                 <div class = "invalid-feedback d-inline"  *ngIf="!why_work">
                   {{why_work_log}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Interests</label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+                        {{position_option.name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
+                <div class = "invalid-feedback d-inline"  *ngIf="selectedValue && selectedValue.length <=0">
+                  {{interest_log}}
                 </div>
               </div>
             </div>
@@ -121,13 +143,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description of experience</label>
+                <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
               </div>
             </div>
-            <div class = "col-md-12">
-              <div class="form-group">
-                <textarea rows="4" cols="100" name="description_commercial_platforms" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
-              </div>
-            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && !description_commercial_platforms">
+            {{commercial_desc_log}}
           </div>
 
           <div class="row">
@@ -154,13 +175,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description of experimentation</label>
+                <textarea rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
               </div>
             </div>
-            <div class = "col-md-12">
-              <div class="form-group">
-                <textarea rows="4" cols="100" name="description_experimented_platforms" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
-              </div>
-            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && !description_experimented_platforms">
+            {{experimented_desc_log}}
           </div>
 
           <!-- commercial skills -->
@@ -213,13 +233,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description of commercial experience</label>
+                <textarea rows="5" maxlength="3000" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
               </div>
             </div>
-            <div class = "col-md-12">
-              <div class="form-group">
-                <textarea rows="4" cols="100" name="description_commercial_skills" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
-              </div>
-            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && !description_commercial_skills">
+            {{commercialSkills_desc_log}}
           </div>
 
           <div class = "form-group text-right">

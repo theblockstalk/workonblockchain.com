@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const userHelpers = require('../usersHelpers')
-const candidateWizardHelpers = require('./wizard/candidateWizardHelpers');
 const candidateHelperV2 = require('../../../api-v2/users/candidates/candidateHelpers');
 
 const should = chai.should();
@@ -13,7 +12,7 @@ chai.use(chaiHttp);
 
 const signupCandidate = module.exports.signupCandidate = async function signupCandidate(candidate) {
     const res = await chai.request(server)
-        .post('/users/register')
+        .post('/v2/users/candidates')
         .send(candidate);
     res.should.have.status(200);
     return res;

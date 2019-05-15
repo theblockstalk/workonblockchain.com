@@ -39,8 +39,8 @@ describe('update candidate profile', function () {
         candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.github_account);
         candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.exchange_account);
         candidateUserDoc.contact_number.should.equal(candidateEditProfileData.contact_number);
-        candidateUserDoc.candidate.locations.should.valueOf(candidateEditProfileData.locations);
-        candidateUserDoc.candidate.roles.should.valueOf(candidateEditProfileData.roles);
+        candidateUserDoc.candidate.employee.location.should.valueOf(candidateEditProfileData.employee.location);
+        candidateUserDoc.candidate.employee.roles.should.valueOf(candidateEditProfileData.employee.roles);
         candidateUserDoc.candidate.interest_areas.should.valueOf(candidateEditProfileData.interest_areas);
         blockchainSkills.experimented_platforms.should.valueOf(candidateEditProfileData.experimented_platforms);
         candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.programming_languages);

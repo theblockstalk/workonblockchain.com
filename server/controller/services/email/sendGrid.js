@@ -19,6 +19,8 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
         email: settings.SENDGRID.FROM_ADDRESS
     }
 
+    sendGridOptions.templateData.subject = sendGridOptions.subject;
+
     const msg = {
         personalizations: sendGridOptions.personalizations,
         from: sendGridOptions.from ? sendGridOptions.from : defaultFrom,
@@ -26,7 +28,6 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
         templateId: sendGridOptions.templateId,
         dynamic_template_data: sendGridOptions.templateData
     };
-
     logger.debug("Send email msg object: ", msg);
 
     try {

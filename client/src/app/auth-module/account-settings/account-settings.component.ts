@@ -23,6 +23,7 @@ export class AccountSettingsComponent implements OnInit {
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService)
   { }
 
+  password = true;
   ngOnInit()
   {
     this.inform = '';
@@ -30,10 +31,13 @@ export class AccountSettingsComponent implements OnInit {
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
 
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
         .subscribe(
           data =>
           {
+            if(data && data['password']=== false) {
+              this.password = false;
+            }
             if(data['is_unread_msgs_to_send']){
               this.info.unread_msgs_emails = data['is_unread_msgs_to_send'];
             }
@@ -47,7 +51,7 @@ export class AccountSettingsComponent implements OnInit {
 
     else if(this.currentUser && this.currentUser.type === 'company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -92,18 +96,24 @@ export class AccountSettingsComponent implements OnInit {
   status;
   account_setting(statusName , statusValue)
   {
-
+    let queryInput : any = {};
     this.inform = '';
     if(statusName === 'marketingEmail') {
-      this.status = {statusName : statusName , statusValue : this.info.marketing};
+      queryInput.marketing_emails = this.info.marketing;
     }
     if(statusName === 'disabledAccount') {
-      this.status = {statusName : statusName , statusValue : this.info.disable_account};
+      queryInput.disable_account = this.info.disable_account;
     }
+
+    if(statusName === 'unreadMsgNotification') {
+      queryInput.is_unread_msgs_to_send = this.info.unread_msgs_emails;
+    }
+
 
     if(this.currentUser)
     {
-      this.authenticationService.account_settings(this.currentUser._creator, this.status)
+
+      this.authenticationService.account_settings(queryInput)
         .subscribe(
           data =>
           {
@@ -120,47 +130,7 @@ export class AccountSettingsComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
-            }
-
-          }
-        );
-    }
-
-  }
-  unread_msgs_emails_send(){
-    this.inform='';
-    if(this.currentUser)
-    {
-      this.authenticationService.set_unread_msgs_emails_status(this.info.unread_msgs_emails)
-        .subscribe(
-          data =>
-          {
-            if(data['error'] )
-            {
-              this.log=data['error'];
-            }
-            else
-            {
-              this.inform=data;
-
-            }
-          },
-          error => {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-
-            if(error.message === 403)
-            {
-              // this.router.navigate(['/not_found']);
+              this.log = "Something went wrong";
             }
 
           }

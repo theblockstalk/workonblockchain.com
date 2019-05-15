@@ -12,7 +12,7 @@ declare var $:any;
 })
 export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
-  currentUser: User;
+  currentUser: any;
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
   imgPath;
@@ -42,6 +42,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
+  country_code;
+
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
                private authenticationService: UserService) { }
@@ -126,7 +128,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     if(this.currentUser && this.currentUser.type === 'company')
     {
 
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
@@ -165,7 +167,20 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
                   this.company_website = 'http://' + data['company_website'];
                 }
               }
-              this.company_phone =data['company_phone'];
+
+              this.company_phone = '';
+              let contact_number = data['company_phone'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.company_phone = this.company_phone+''+contact_number[i];
+                }
+                this.company_phone = this.country_code+' '+this.company_phone
+              }
+              else this.company_phone = contact_number[0];
+
               this.company_country =data['company_country'];
               this.company_city=data['company_city'];
               this.company_postcode=data['company_postcode'];

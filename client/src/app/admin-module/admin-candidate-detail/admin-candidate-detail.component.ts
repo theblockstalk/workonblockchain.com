@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
+import {constants} from '../../../constants/constants';
+import {changeLocationDisplayFormat, getNameFromValue, getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -27,34 +29,22 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   set_status;
   status_reason_rejected;
   status_reason_deferred;
-  set_candidate_status = [
-    {value:'approved', name:'Approved'},
-    {value:'reviewed', name: 'Reviewed'},
-    {value:'rejected', name:'Rejected'},
-    {value:'deferred', name:'Deferred'},
-    {value:'other', name:'Other'}
-  ];
-
-  set_candidate_status_rejected = [
-    {value:'garbage', name:'Garbage'},
-    {value:'recruiter', name:'Recruiter'},
-    {value:'not technical', name:'Not Technical'},
-    {value:'other', name:'Other'}
-  ];
-
-  set_candidate_status_deferred = [
-    {value:'profile incomplete', name:'Profile Incomplete'},
-    {value:'not looking for job', name:'Not Looking for Job'},
-    {value:'job found', name:'Job Found'},
-    {value:'not responded', name:'Not Responded'},
-    {value:'other', name:'Other'}
-  ];
+  set_candidate_status = constants.set_candidate_status;
+  set_candidate_status_rejected = constants.statusReasons_rejected;
+  set_candidate_status_deferred = constants.statusReasons_deferred;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
 
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+  country_code;
+  templates;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -82,7 +72,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   };
 
   commercial;
-  roles;
   platforms;
   email;
   response;
@@ -98,6 +87,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   candidateHistory;
   _id;
   send_email;
+  templateDoc;
 
   ngAfterViewInit(): void
   {
@@ -128,11 +118,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
-      // removePlugins :'elementspath,save,image,flash,iframe,link,smiley,tabletools,find,pagebreak,templates,about,maximize,showblocks,newpage,language',
-      // removeButtons : 'Subscript,Superscript,Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField',
     };
 
     this.credentials.user_id = this.user_id;
@@ -147,36 +134,81 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
-        this.authenticationService.getById(this.user_id)
+        this.getTemplateOptions();
+        this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
               this._id  = data['_id'];
+              if(data['candidate'].employee) {
+                this.employee.value = data['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(data['candidate'].contractor) {
+                this.contractor.value = data['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue;
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType.sort();
+              }
+
+              if(data['candidate'].volunteer) {
+                this.volunteer.value = data['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh');
               }, 200);
-              /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
+
+              this.contact_number = '';
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
               }
-              else{
-                this.set_status = this.candidate_status.status;
-              }
-              if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
-                this.status_reason_rejected = this.candidate_status.reason;
-                $("#sel1-reason-rejected").css("display", "block");
-              }
-              if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
-                this.status_reason_deferred = this.candidate_status.reason;
-                $("#status_reason_deferred").css("display", "block");
-              }*/
+              else this.contact_number = contact_number[0];
+
+              data['contact_number'] = this.contact_number;
+
               this.info.push(data);
               this.verify =data['is_verify'];
-              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-              else this.availability_day =data['candidate'].availability_day;
 
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -251,8 +283,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
-              this.roles  = data['candidate'].roles;
-              if(this.roles) this.roles.sort();
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -413,7 +443,28 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-
+  getTemplateOptions()  {
+    this.templates = [];
+    this.authenticationService.email_templates_get()
+      .subscribe(
+        data =>
+        {
+          this.templateDoc = data;
+          for(let i = 0; i < data['length']; i++) {
+              this.templates.push(data[i].name);
+          }
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
+        },
+        error =>
+        {
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+        });
+  }
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
@@ -436,8 +487,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    console.log(this.email_text);
-    console.log(approveForm.value);
     if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
@@ -482,7 +531,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
-    console.log(approveForm);
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -523,7 +571,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = error['error']['message'];
           }
           else {
-            this.error = "Something getting wrong";
+            this.error = "Something went wrong";
           }
         });
   }
@@ -544,5 +592,25 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       var match = Boolean(hashTable[key]);
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  refreshSelect(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
+  }
+
+  selectTemplate(event, name){
+    let template = this.templateDoc.find(x => x.name === event.target.value);
+    if(name === 'note') {
+      this.note = template.body;
+    }
+    else  {
+      if('subject' in template) this.email_subject = template.subject;
+      this.email_text = template.body;
+    }
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 }

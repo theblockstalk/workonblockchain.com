@@ -1,13 +1,12 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { AuthService } from 'angular4-social-login';
-import { GoogleLoginProvider } from 'angular4-social-login';
 import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
-import { LinkedInService } from '../../linkedin-api';
+import {environment} from '../../../environments/environment';
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-candidate-form',
@@ -25,16 +24,20 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   public isUserAuthenticated;
   first_name_log;
   last_name_log;
-
-  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'public-profile-url', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
+  google_id;
+  google_url;
+  linkedin_url;
+  linkedin_id;
+  country_code_log;
 
   credentials: any = {};
-  countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  countries = constants.countries;
+  country_codes = constants.country_codes;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,private dataservice: DataService,
-    private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
+    private authenticationService: UserService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
     this.code = localStorage.getItem('ref_code');
@@ -72,7 +75,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           }
         );
@@ -94,6 +97,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    this.google_id = environment.google_client_id;
+    this.linkedin_id = environment.linkedin_id;
+    let linkedin_redirect_url = environment.linkedin_redirect_url;
+    let google_redirect_url = environment.google_redirect_url;
+
+    this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+google_redirect_url;
+    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
     $(function(){
       var hash = window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');
@@ -122,62 +132,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   button_status;
   emailname;
 
-  public rawApiCall() {
-    let url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
-    this._linkedInService.raw(url)
-      .asObservable()
-      .subscribe({
-        next: (data) => {
-          localStorage.setItem('linkedinUser', JSON.stringify(data));
-          if(data)
-          {
-            this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-            this.credentials.email= this.linkedinUser.emailAddress;
-            this.credentials.password= '';
-            this.credentials.type="candidate";
-            this.credentials.social_type='LINKEDIN';
-            this.credentials.linkedin_id = this.linkedinUser.id;
-            this.credentials.first_name = this.linkedinUser.firstName;
-            this.credentials.last_name = this.linkedinUser.lastName;
-            this.credentials.linkedin_account = this.linkedinUser.publicProfileUrl;
-            if(this.linkedinUser.emailAddress)
-            {
-              this.authenticationService.create(this.credentials)
-                .subscribe(
-                  data => {
-                    this.credentials.email = '';
 
-                    localStorage.setItem('currentUser', JSON.stringify(data));
-                    localStorage.removeItem('ref_code');
-                    window.location.href = '/terms-and-condition';
-
-                  },
-                  error => {
-                    this.loading = false;
-                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.log = error['error']['message'];
-                    }
-                    else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.log = error['error']['message'];
-                    }
-                    else {
-                      this.log = 'Something getting wrong';
-                    }
-
-                  });
-            }
-            else
-            {
-              this.log = 'Something getting wrong';
-            }
-          }
-        },
-        error: (err) => {
-        },
-        complete: () => {
-        }
-      });
-  }
 
   signup_candidate(loginForm: NgForm)
   {
@@ -221,8 +176,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     }
     if(loginForm.valid === true && this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
-
-      this.authenticationService.create(this.credentials)
+      let queryBody :any = {};
+      queryBody.email = this.credentials.email;
+      queryBody.first_name = this.credentials.first_name;
+      queryBody.last_name = this.credentials.last_name;
+      queryBody.password = this.credentials.password;
+      if(this.credentials.referred_email) queryBody.referred_email  = this.credentials.referred_email;
+      this.authenticationService.createCandidate(queryBody)
         .subscribe(
           data =>
           {
@@ -242,87 +202,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
           });
 
 
     }
 
-  }
-
-  signInWithGoogle()
-  {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.authService.authState.subscribe((user) =>
-    {
-      this.user = user;
-      this.data = JSON.stringify(this.user);
-      this.result = JSON.parse(this.data);
-      localStorage.setItem('googleUser', JSON.stringify(this.result));
-      if(this.result)
-      {
-        this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-        this.credentials.email= this.googleUser.email;
-        this.credentials.password= '';
-        this.credentials.type="candidate";
-        this.credentials.social_type=this.googleUser.provider;
-        this.credentials.first_name = this.googleUser.firstName;
-        this.credentials.last_name = this.googleUser.lastName;
-        this.authenticationService.create(this.credentials)
-          .subscribe(
-            data => {
-              this.credentials.email= '';
-              localStorage.setItem('currentUser', JSON.stringify(data));
-              localStorage.removeItem('ref_code');
-              window.location.href = '/terms-and-condition';
-
-            },
-            error => {
-              this.loading = false;
-              if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.log = error['error']['message'];
-              }
-              else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.log = error['error']['message'];
-              }
-              else {
-                this.log = 'Something getting wrong';
-              }
-            });
-      }
-      else
-      {
-        this.router.navigate(['/signup']);
-      }
-
-    });
-
-  }
-
-  public subscribeToLogin()
-  {
-    this._linkedInService.login().subscribe({
-      next: (state) =>
-      {
-      },
-      complete: () => {
-        // Completed
-      }
-    });
-
-    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
-    let count = 0;
-    this._linkedInService.isUserAuthenticated$.subscribe({
-      next: (state) => {
-        if(state === true && count===0) {
-          this.rawApiCall();
-          count++;
-
-        }
-        this.isUserAuthenticatedEmittedValue = true;
-      }
-    });
   }
 
   company_log;
@@ -338,6 +224,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   companyPostalCodeLog;
   companyCityLog;
   companyPasswordLog;
+  contact_number_log;
 
   company_signup(signupForm: NgForm)
   {
@@ -346,6 +233,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.credentials.type="company";
     this.credentials.social_type='';
     this.password_log = '';
+    this.contact_number_log = '';
+    let errorCount = 0;
+
     if(this.credentials.password != this.credentials.confirm_password )
     {
       this.credentials.confirm_password = '';
@@ -380,6 +270,20 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
+    if (this.credentials.phone_number) {
+      if((this.credentials.phone_number.length < 4 || this.credentials.phone_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount = 1;
+      }
+      if(!this.checkNumber(this.credentials.phone_number)) {
+        errorCount = 1;
+      }
+    }
+
+    if(!this.credentials.country_code)
+    {
+      this.country_code_log = 'Please select country code';
+    }
     if(!this.credentials.country)
     {
       this.companyCountryLog = 'Please select country name';
@@ -396,10 +300,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPasswordLog = 'Please enter password'
     }
-    if(signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
-      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
+    if(errorCount === 0 && signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
+      this.credentials.phone_number = this.credentials.country_code +' '+this.credentials.phone_number;
       this.authenticationService.create_employer(this.credentials)
         .subscribe(
           data =>
@@ -419,10 +324,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               this.company_log = error['error']['message'];
             }
             else {
-              this.log = 'Something getting wrong';
+              this.log = 'Something went wrong';
             }
           });
     }
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 }

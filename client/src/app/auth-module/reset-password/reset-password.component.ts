@@ -30,14 +30,16 @@ export class ResetPasswordComponent implements OnInit {
 
   }
   reset_password_log;
+  button_response;
 
   reset_password(f: NgForm)
   {
     this.reset_password_log = '';
+    this.button_response = 'submit';
     if(!f.value.password) {
       this.reset_password_log = 'Please enter the new password.';
     }
-    else {
+    if(f.valid === true) {
       this.authenticationService.reset_password(this.hash, f.value)
         .subscribe(
           data => {
@@ -53,10 +55,10 @@ export class ResetPasswordComponent implements OnInit {
               this.log = error['error']['message'];
             }
             else if (error['status'] === 500) {
-              this.log = "Something getting wrong. Please check your link";
+              this.log = "Something went wrong. Please check your link";
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
 
           });
