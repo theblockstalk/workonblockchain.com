@@ -47,7 +47,6 @@ module.exports.endpoint = async function (req, res) {
     let timestamp = new Date();
     const sanitizedBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body, true);
     let emailTemplateDoc = await emailTemplates.findOneById(req.query.template_id);
-    console.log(emailTemplateDoc)
     if(emailTemplateDoc) {
         if(emailTemplateDoc.name !== queryBody.name) {
             const emailTemplateDocByName = await emailTemplates.findOne({name: queryBody.name});
@@ -62,10 +61,8 @@ module.exports.endpoint = async function (req, res) {
             updated_by: userId,
             updated_date: timestamp
         };
-        console.log(emailTemplateDoc)
         await emailTemplates.update({_id: emailTemplateDoc._id}, {$set: updateTemplate});
         res.send(true);
-
     }
     else {
         errors.throwError("Template doc not found", 404);
