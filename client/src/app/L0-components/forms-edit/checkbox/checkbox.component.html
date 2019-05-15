@@ -1,0 +1,9 @@
+<div class="form-group">
+  <label>{{label}}</label>
+  <div class="form-check" *ngFor="let opt of options">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input" [(ngModel)]= "value" value="opt.value" />
+      {{opt.name}}
+    </label>
+  </div>
+</div>
