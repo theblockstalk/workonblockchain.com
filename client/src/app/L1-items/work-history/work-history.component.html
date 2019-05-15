@@ -14,14 +14,12 @@
             {{company_log}}
           </div>
         </div>
-
         <div class="col-md-4">
           <app-c-forme-text placeholder="Full stack developer" [(textValue)]="position" label="Position"></app-c-forme-text>
           <div class = "invalid-feedback d-inline" *ngIf="!position">
             {{company_log}}
           </div>
         </div>
-
         <div class="col-md-4">
           <app-c-forme-text placeholder="London" [(textValue)]="location" label="Location"></app-c-forme-text>
           <div class = "invalid-feedback d-inline" *ngIf="!position">
@@ -33,100 +31,61 @@
         <div class="col-md-4">
           <div class="row">
             <div class="col-md-12">
-              <div class="form-group mb-0">
-                <label>Start date</label>
-
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <select title="(select one)" formControlName="start_date" class="selectpicker form-control xs_input" id="month" required (change)="work_start_data($event)">
-                  <option  *ngFor='let start_month of month' [value]="start_month" [attr.selected]="ExperienceForm.value.ExpItems[i].start_date === start_month ? true : null">{{start_month}}</option>
-                </select>
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single label="Start date" [(value)]="start_month" [options]="month" [checked]="ExperienceForm.value.ExpItems[i].start_date === start_month ? true : null" ></app-c-forme-dropdown-single>
                 <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date;else startDateVerification">
                   {{start_date_log}}
                 </div>
-                <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear)">
+                <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="checkDateVerification(ExperienceForm.value.ExpItems[i].start_date , ExperienceForm.value.ExpItems[i].startyear)">
                   Date must be in the past
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <select title="(select one)" formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
-                  <option  *ngFor='let start_year of year'  [value]="start_year" [attr.selected]="ExperienceForm.value.ExpItems[i].startyear === start_year ? true : null">{{start_year}}</option>
-                </select>
-                <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].startyear">
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single label="" [(value)]="start_year" [options]="year" [checked]="ExperienceForm.value.ExpItems[i].startyear === start_year ? true : null" ></app-c-forme-dropdown-single>
+                <div class = "invalid-feedback d-inline" *ngIf="!ExperienceForm.value.ExpItems[i].startyear">
                   {{start_date_year_log}}
                 </div>
-
               </div>
             </div>
-
           </div>
         </div>
         <div class="col-md-4" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false ">
           <div class="row">
             <div class="col-md-12">
-              <div class="form-group mb-0">
-                <label>End date</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group mb-0">
-                <select title = "(select one)" formControlName="end_date" class="selectpicker form-control xs_input"  required name="roles"  required=""  (change) = "endDateYear()">
-                  <option  *ngFor='let end_month of month'  [value]="end_month" [attr.selected]="ExperienceForm.value.ExpItems[i].end_date === end_month ? true : null">{{end_month}}</option>
-                </select>
-                <div class = "invalid-feedback d-inline mb-1" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date  && this.ExperienceForm.value.ExpItems[i].currentwork === false;else endDateVerification">
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single label="End date" [(value)]="end_month" [options]="month" [checked]="ExperienceForm.value.ExpItems[i].end_date === end_month ? true : null"></app-c-forme-dropdown-single>
+                <div class = "invalid-feedback d-inline mb-1" *ngIf="!ExperienceForm.value.ExpItems[i].end_date  && ExperienceForm.value.ExpItems[i].currentwork === false;else endDateVerification">
                   {{end_date_log}}
                 </div>
 
-                <div class = "invalid-feedback d-inline mb-1" #endDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear);else compareDate">
+                <div class = "invalid-feedback d-inline mb-1" #endDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(ExperienceForm.value.ExpItems[i].end_date , ExperienceForm.value.ExpItems[i].endyear)">
                   Date must be in the past
                 </div>
-
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group mb-0">
-                <select title="(select one)" formControlName="endyear" class="selectpicker form-control xs_input" required name="roles" required=""  (change) = "endDateYear()">
-                  <option  *ngFor='let end_year of year'  [value]="end_year" [attr.selected]="ExperienceForm.value.ExpItems[i].endyear === end_year ? true : null" >{{end_year}}</option>
-                </select>
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single label="" [(value)]="end_year" [options]="year" [checked]="ExperienceForm.value.ExpItems[i].endyear === end_year ? true : null" ></app-c-forme-dropdown-single>
                 <div class = "invalid-feedback d-inline mb-1" *ngIf="(!this.ExperienceForm.value.ExpItems[i].endyear  && this.ExperienceForm.value.ExpItems[i].currentwork ===false)">
                   {{end_date_year_log}}
                 </div>
-
-
               </div>
             </div>
+            
             <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="button_status=== 'submit' &&  compareDates(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear,this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear , this.ExperienceForm.value.ExpItems[i].currentwork)">
               {{dateValidation}}
             </div>
           </div>
-
         </div>
         <div class="col-md-4 mt-2 p-4">
-          <div class="form-group">
-            <div class="checkbox">
-              <div class="row ">
-                <div class="form-check" *ngFor="let current of current_work">
-                  <label class="form-check-label">
-                    <input type="checkbox" (change)="currentWork()" class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
-                    {{current.name}}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-c-forme-checkbox [options]="current_work" [(value)]="currently-working"></app-c-forme-checkbox>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
           <app-c-forme-text-area rows="5" [(value)]="description" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." label="Job description (optional)"></app-c-forme-text-area>
-
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-12 ">
           <div class = "form-group text-right">
@@ -137,6 +96,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-12 p-0">
       <div class = "form-group">
         <form (click)="addNewExpRow()">

@@ -9,6 +9,7 @@ export class DropdownSingleComponent implements OnInit {
   @Input() options;
   @Input() label;
   @Input() value;
+  @Input() checked;
   @Output () selectedValue : EventEmitter<any> = new EventEmitter<any>();
   labelClass = '';
 
