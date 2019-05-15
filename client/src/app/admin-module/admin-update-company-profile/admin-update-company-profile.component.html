@@ -36,7 +36,7 @@
                   <div class="form-group w-100">
                     <label>Company website</label>
                     <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
-                    <div class = "invalid-feedback" *ngIf="!company_website">
+                    <div class = "invalid-feedback d-inline" *ngIf="!company_website">
                       <span class = "error">{{company_website_log}}</span>
                     </div>
                     <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
@@ -95,7 +95,7 @@
               </div>
 
               <div class="col-md-6">
-                <label><b>Phone (4-15 digit)</b></label>
+                <label><b>Phone</b></label>
                 <div class="form-row">
                   <div class="input-group w-100">
                     <div class="input-group-prepend my-style">
@@ -110,12 +110,16 @@
                     <div class = "invalid-feedback d-inline" *ngIf="!country_code">
                       {{country_code_log}}
                     </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="company_phone && !checkNumber(company_phone)">
-                      Please enter only numbers
-                    </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="company_phone.length < 4 || company_phone.length > 15 ">
-                      {{contact_number_log}}
-                    </div>
+                    <ng-container *ngIf="company_phone;else no_company_phone">
+                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(company_phone)">
+                        Please enter only numbers
+                      </div>
+                      <div class = "invalid-feedback d-inline" *ngIf="company_phone.length < 4 || company_phone.length > 15 ">
+                        {{contact_number_log}}
+                      </div>
+                    </ng-container>
+                    <ng-template #no_company_phone>
+                    </ng-template>
                   </div>
                 </div>
               </div>
@@ -189,7 +193,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group w-100">
-                  <label>Image (optional)</label>
+                  <label>Logo (optional)</label>
                   <p>
                     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload company logo</button>
                   </p>

@@ -4,6 +4,7 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
+const errors = require('../../../services/errors');
 
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../../../api/users/filterReturnData');
@@ -337,9 +338,11 @@ module.exports.files = async function(req) {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-
     if (req.query.admin) {
         await auth.isAdmin(req);
+    }
+    else {
+        await auth.isCandidateType(req);
     }
 }
 
@@ -538,7 +541,7 @@ module.exports.endpoint = async function (req, res) {
         const candidateHistory = userDoc.candidate.history;
         let wizardCompletedStatus = candidateHistory.filter(
             (history) => history.status && history.status.status === 'wizard completed'
-        );
+    );
 
         if (wizardCompletedStatus.length === 0) {
             if(queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };

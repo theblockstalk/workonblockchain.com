@@ -117,6 +117,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     this.cropperSettings.canvasWidth = 300;
     this.cropperSettings.canvasHeight = 300;
     this.cropperSettings.rounded = true;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
     this.imageCropData = {};
   }
 
@@ -269,11 +271,15 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               this.company_name=data['company_name'];
               this.company_website=data['company_website'];
 
+              this.company_phone = '';
               let contact_number = data['company_phone'];
+              contact_number = contact_number.replace(/^00/, '+');
               contact_number = contact_number.split(" ");
-              if(contact_number.length>1){
-                this.country_code = contact_number[0];
-                this.company_phone = contact_number[1];
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = contact_number[i];
+                  else this.company_phone = this.company_phone+''+contact_number[i];
+                }
               }
               else this.company_phone = contact_number[0];
 
@@ -345,16 +351,16 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.first_name_log="Please enter first name";
     }
     if(!this.last_name) {
-      this.last_name_log="Please enter first name";
+      this.last_name_log="Please enter last name";
     }
     if(!this.job_title) {
-      this.job_title_log="Please enter first name";
+      this.job_title_log="Please enter job title";
     }
     if(!this.company_name) {
-      this.company_name_log="Please enter first name";
+      this.company_name_log="Please enter company name";
     }
     if(!this.company_website) {
-      this.company_website_log="Please enter first name";
+      this.company_website_log="Please enter company website url";
     }
     if(!this.company_phone) {
       this.company_phone_log="Please enter phone number";
@@ -373,7 +379,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.country_code_log = 'Please select country code';
     }
     if(this.company_country === -1) {
-      this.company_country_log="Please enter company name";
+      this.company_country_log="Please select country";
     }
     if(!this.company_city) {
       this.company_city_log="Please enter city name";

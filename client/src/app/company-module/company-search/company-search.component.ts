@@ -1006,6 +1006,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   contractor_role_log;
   max_salary_log;
   max_hourly_rate_log;
+  work_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1092,6 +1093,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
     }
 
+    if(!this.approach_work_type) {
+      this.work_log = "Please select work type";
+      errorCount = 1;
+    }
     if (errorCount === 0) {
       let job_offer: any = {};
       let new_offer: any = {};

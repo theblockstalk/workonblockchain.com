@@ -356,3 +356,19 @@ module.exports.cmsContentFroTC = function cmsContentFroTC() {
         page_name: "Terms and Condition for company"
     }
 }
+
+module.exports.newEmailTemplate = function newEmailTemplate() {
+    return {
+        name: "Template 1",
+        subject: "Template subject",
+        body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>",
+    }
+}
+
+module.exports.updateEmailTemplate = function updateEmailTemplate() {
+    return {
+        name: "Template 1 update",
+        subject: "Template subject update",
+        body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry update.</p>",
+    }
+}

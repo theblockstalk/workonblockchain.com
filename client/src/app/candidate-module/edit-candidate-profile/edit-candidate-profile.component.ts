@@ -166,6 +166,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.cropperSettings.canvasWidth = 300;
     this.cropperSettings.canvasHeight = 300;
     this.cropperSettings.rounded = true;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
     this.imageCropData = {};
   }
 
@@ -322,11 +324,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
+                this.info.contact_number = '';
                 let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
                 contact_number = contact_number.split(" ");
-                if(contact_number.length>1){
-                  this.info.country_code = contact_number[0];
-                  this.info.contact_number = contact_number[1];
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.info.country_code = contact_number[i];
+                    else this.info.contact_number = this.info.contact_number+''+contact_number[i];
+                  }
                 }
                 else this.info.contact_number = contact_number[0];
 
@@ -339,6 +345,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 200);
 
                 if(data['image'] != null ) {
                   this.imagePreviewLink = data['image'];
@@ -573,6 +582,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }, 900);
               }
             }
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 300);
 
           },
           error =>

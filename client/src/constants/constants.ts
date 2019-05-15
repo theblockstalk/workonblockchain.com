@@ -430,10 +430,9 @@ export const constants = {
     {name: 'United Arab Emirates +971', value: '+971'},{name: 'United Kingdom +44', value: '+44'},
     {name: 'United States +1', value: '+1'},{name: 'Uruguay +598', value: '+598'},
     {name: 'Uzbekistan +998', value: '+998'},{name: 'Vanuatu +678', value: '+678'},
-    {name: 'Vatican City +379', value: '+379'},{name: '', value: ''},
-    {name: 'Venezuela +58', value: '+58'},{name: 'Vietnam +84', value: '+84'},
-    {name: 'Yemen +967', value: '+967'},{name: 'Zambia +260', value: '+260'},
-    {name: 'Zimbabwe +263', value: '+263'}
+    {name: 'Vatican City +379', value: '+379'},{name: 'Venezuela +58', value: '+58'},
+    {name: 'Vietnam +84', value: '+84'},{name: 'Yemen +967', value: '+967'},
+    {name: 'Zambia +260', value: '+260'},{name: 'Zimbabwe +263', value: '+263'}
   ],
   years_exp_min: [
     {value:1, name:'1+ years'},{value:2, name:'2+ years'},

@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label><b>Phone (4-15 digit)</b></label>
+                <label><b>Phone</b></label>
                 <div class="input-group">
                   <div class="input-group-prepend my-style">
                     <select class="form-control selectpicker" disabled title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
@@ -123,7 +123,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Nationality</label>
-                  <select class="form-control selectpicker" multiple title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
+                  <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality' required>
                     <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
@@ -340,7 +340,7 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
@@ -468,7 +468,7 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="contractorUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
@@ -636,7 +636,7 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>

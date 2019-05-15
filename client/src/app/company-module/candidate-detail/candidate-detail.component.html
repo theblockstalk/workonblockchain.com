@@ -603,6 +603,9 @@
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     </label>
                   </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!this.approach_work_type">
+                    {{work_log}}
+                  </div>
                 </div>
               </div>
             </div>

@@ -73,6 +73,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   workTypes = constants.workTypes;
   rolesData = constants.workRoles;
   already_approached = 0;
+  country_code;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -280,6 +281,23 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.volunteer.value.roles = rolesValue.sort();
               }
 
+              this.contact_number = '';
+              if(dataa['contact_number']) {
+                let contact_number = dataa['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
+                }
+                else this.contact_number = contact_number[0];
+
+                dataa['contact_number'] = this.contact_number;
+              }
+
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
@@ -455,6 +473,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   contractor_role_log;
   max_salary_log;
   max_hourly_rate_log;
+  work_log;
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -541,6 +560,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       }
     }
 
+    if(!this.approach_work_type) {
+      this.work_log = "Please select work type";
+      errorCount = 1;
+    }
     if (errorCount === 0) {
       let job_offer: any = {};
       let new_offer: any = {};
