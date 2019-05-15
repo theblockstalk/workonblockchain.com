@@ -367,6 +367,7 @@ module.exports.newEmailTemplate = function newEmailTemplate() {
 
 module.exports.updateEmailTemplate = function updateEmailTemplate() {
     return {
+        name: "Template 1 update",
         subject: "Template subject update",
         body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry update.</p>",
     }

@@ -26,12 +26,11 @@ describe('Patch /email_templates', function () {
 
             const emailTemp = docGeneratorV2.newEmailTemplate();
             await templateHelper.newEmailTemplate(emailTemp, userDoc.jwt_token);
-
+            let emailTemplateDoc = await emailTemplate.findOne({name: emailTemp.name});
             const updateEmailTemp = docGeneratorV2.updateEmailTemplate();
-            updateEmailTemp.name = emailTemp.name;
-            await templateHelper.updateEmailTemplate(updateEmailTemp, userDoc.jwt_token);
+            await templateHelper.updateEmailTemplate(emailTemplateDoc._id, updateEmailTemp, userDoc.jwt_token);
 
-            const emailTemplateDoc = await emailTemplate.findAll();
+            emailTemplateDoc = await emailTemplate.findAll();
             emailTemplateDoc[0].name.should.equal(updateEmailTemp.name);
             emailTemplateDoc[0].body.should.equal(updateEmailTemp.body);
             emailTemplateDoc[0].subject.should.equal(updateEmailTemp.subject);
