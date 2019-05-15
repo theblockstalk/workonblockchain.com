@@ -1,5 +1,5 @@
 <div class="form-group">
   <label>{{label}}</label>
-  <ckeditor   #myckeditor [ngClass]="formattingClass"  [config]="ckeEditorConfig" debounce="500" >
+  <ckeditor   #myckeditor [ngClass]="formattingClass" [(ngModel)]="value" [config]="ckeEditorConfig" debounce="500" >
   </ckeditor>
 </div>

@@ -1,0 +1,4 @@
+<app-c-forme-text placeholder="John" [(textValue)]="value" label="First name"></app-c-forme-text>
+<div class = "invalid-feedback d-inline" *ngIf="!value">
+  {{errorMsg}}
+</div>

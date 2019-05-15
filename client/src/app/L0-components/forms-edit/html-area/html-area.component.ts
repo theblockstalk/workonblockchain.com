@@ -10,13 +10,12 @@ export class HtmlAreaComponent implements OnInit {
   @Input() formattingBar;
   @Input() height;
   @Input() width;
+  @Input() value;
   ckeEditorConfig;
   formattingClass;
-  labelClass = '';
   constructor() { }
 
   ngOnInit() {
-   // if(!this.label)
     if(this.formattingBar === 'true') this.formattingClass = 'ckeditor_tab';
     const ckeEditor =  {
       allowedContent: false,

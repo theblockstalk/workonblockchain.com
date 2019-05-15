@@ -16,10 +16,10 @@ export class AboutComponent implements OnInit {
   }
 
   formSubmit() {
-    console.log("form submit");
-    console.log(this.textInput.textValue);
-    console.log(this.last_name);
-    this.textInput.selfValidate();
+    // console.log("form submit");
+    // console.log(this.textInput.textValue);
+    // console.log(this.last_name);
+    // this.textInput.selfValidate();
   }
 
 }
