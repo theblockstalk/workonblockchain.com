@@ -303,9 +303,9 @@
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
                       {{types.name}}
-                      <i *ngIf="types.value === 'employee'" class="fas fa-user"></i>
-                      <i *ngIf="types.value === 'contractor'" class="fas fa-user-clock"></i>
-                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-times"></i>
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     </label>
                   </div>
                 </div>
