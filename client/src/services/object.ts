@@ -19,7 +19,6 @@ export const changeLocationDisplayFormat = function(locationArray) {
   let countries;
   let visaRequiredArray = [];
   let noVisaArray = [];
-  console.log(locationArray);
   if(locationArray && locationArray.length > 0)
   {
     let citiesArray = [];
@@ -77,7 +76,6 @@ export const changeLocationFormatToBE = function(locationArray) {
   let countries;
   let visaRequiredArray = [];
   let noVisaArray = [];
-  console.log(locationArray);
   if(locationArray && locationArray.length > 0)
   {
     let citiesArray = [];
