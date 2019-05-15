@@ -172,6 +172,7 @@
                   <ul>
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                    <li> What value do you add to a project? </li>
                   </ul>
                   <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
@@ -338,6 +339,9 @@
                     <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) ">
                       {{employment_location_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" *ngIf="employment_remote_error">
+                      {{employment_remote_error}}
+                    </div>
 
                     <div *ngIf="employee.selectedLocation && employee.selectedLocation.length > 0">
                       <div class="row">
@@ -363,6 +367,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
                         {{employment_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'employment_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
                   </div>
@@ -459,6 +466,9 @@
                     <div class="invalid-feedback d-inline" #emptyInput *ngIf="!contractor.selectedLocation || (contractor.selectedLocation && contractor.selectedLocation.length <= 0) ">
                       {{contract_location_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" *ngIf="contractor_remote_error">
+                      {{contractor_remote_error}}
+                    </div>
 
                     <div *ngIf="contractor.selectedLocation && contractor.selectedLocation.length > 0">
                       <div class="row">
@@ -484,6 +494,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
                         {{contract_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'contract_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
 
@@ -629,6 +642,9 @@
                     <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) ">
                       {{volunteer_location_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" *ngIf="volunteer_remote_error">
+                      {{volunteer_remote_error}}
+                    </div>
 
                     <div *ngIf="volunteer.selectedLocation && volunteer.selectedLocation.length > 0">
                       <div class="row">
@@ -654,6 +670,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
                         {{volunteer_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'volunteer_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
 
@@ -724,7 +743,7 @@
                 <div class="form-group">
                   <label>Why do you want to work on blockchain?</label>
                   <ul>
-                    <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> Let companies know what excites you about this space. </li>
                     <li> This is the first field that a company sees! </li>
                   </ul>
                   <input type="text" class="form-control" required placeholder="I want to work on blockchain because ..."  #whywork name="why_work" [(ngModel)]="why_work">

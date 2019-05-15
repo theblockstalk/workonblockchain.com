@@ -326,8 +326,8 @@ export const constants = {
     {value:'other', name:'Other'}
   ],
   contractorTypes : [
-    {name: "I work by myself as a freelancer", value: "freelance",checked:false},
-    {name: "I worked through a development agency with a team", value: "agency", checked:false}
+    {name: "I can work by myself as a freelancer", value: "freelance",checked:false},
+    {name: "I work through a development agency", value: "agency", checked:false}
   ],
   workTypes : [
     {name: 'Employee (full/part time)', value:'employee', checked:false},

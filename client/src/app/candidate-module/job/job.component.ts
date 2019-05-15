@@ -78,6 +78,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   max_hours=[];
   validateUrl;
   employement_availability = constants.workAvailability;
+  display_error;
+  remote_location_log;
 
   ngAfterViewInit(): void
   {
@@ -349,11 +351,16 @@ export class JobComponent implements OnInit,AfterViewInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
+    this.display_error = '';
+    this.remote_location_log = '';
 
     let employeeCount = 0;
     let contractorCount = 0;
     let volunteerCount = 0;
     let inputQuery: any = {};
+    let remote_error_count = 0;
+    let visaRequired = 0;
+
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
     }
@@ -369,9 +376,10 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
       if(this.employee.selectedLocation && this.employee.selectedLocation.length > 0) {
         if(this.employee.selectedLocation.filter(i => i.visa_needed === true).length === this.employee.selectedLocation.length) {
-          this.employment_location_log = "Please select at least one location which you can work in without needing a visa";
-          employeeCount = 1;
+          this.display_error = 'employment_location_error';
+          visaRequired = 1;
         }
+
         this.validatedLocation = [];
         for(let location of this.employee.selectedLocation) {
           if(location.name.includes('city')) {
@@ -412,16 +420,17 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
     if(this.contractorCheck) {
-
+      visaRequired = 0;
       if(!this.contractor.selectedLocation || (this.contractor.selectedLocation && this.contractor.selectedLocation.length <= 0) ) {
         this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
         contractorCount = 1;
       }
       if(this.contractor.selectedLocation && this.contractor.selectedLocation.length > 0) {
         if(this.contractor.selectedLocation.filter(i => i.visa_needed === true).length === this.contractor.selectedLocation.length) {
-          contractorCount = 1;
-          this.contract_location_log = "Please select at least one location which you can work in without needing a visa";
+          this.display_error = 'contract_location_error';
+          visaRequired = 1;
         }
+
         this.validatedLocation=[];
         for(let location of this.contractor.selectedLocation) {
           if(location.name.includes('city')) {
@@ -471,16 +480,17 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
     if(this.volunteerCheck) {
-
+      visaRequired = 0;
       if(!this.volunteer.selectedLocation || (this.volunteer.selectedLocation && this.volunteer.selectedLocation.length <= 0) ) {
         this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
         volunteerCount = 1;
       }
       if(this.volunteer.selectedLocation && this.volunteer.selectedLocation.length > 0) {
         if(this.volunteer.selectedLocation.filter(i => i.visa_needed === true).length === this.volunteer.selectedLocation.length) {
-          volunteerCount = 1;
-          this.volunteer_location_log = "Please select at least one location which you can work in without needing a visa";
+          this.display_error = 'volunteer_location_error';
+          visaRequired = 1;
         }
+
         this.validatedLocation=[];
         for(let location of this.volunteer.selectedLocation) {
           if(location.name.includes('city')) {
@@ -506,6 +516,10 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
     }
 
+    if(visaRequired === 1){
+      remote_error_count = 1;
+      this.remote_location_log = "Please select at least one location which you can work in without needing a visa";
+    }
 
     if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
@@ -526,7 +540,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
-    if( this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
+    if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
       if(this.employeeCheck) {

@@ -187,6 +187,9 @@
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
                       {{employment_location_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'employment_location_error' && remote_location_log">
+                      {{remote_location_log}}
+                    </div>
                   </div>
 
                 </div>
@@ -309,6 +312,9 @@
                     </div>
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
                       {{contract_location_log}}
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'contract_location_error' && remote_location_log">
+                      {{remote_location_log}}
                     </div>
                   </div>
 
@@ -476,6 +482,9 @@
                     </div>
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
                       {{volunteer_location_log}}
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'volunteer_location_error' && remote_location_log">
+                      {{remote_location_log}}
                     </div>
                   </div>
 
