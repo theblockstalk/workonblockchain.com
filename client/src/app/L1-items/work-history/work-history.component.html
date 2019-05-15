@@ -9,32 +9,23 @@
     <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
       <div class="row">
         <div class="col-md-4">
-          <div class="form-group">
-            <label>Company</label>
-            <input type="text" id="" placeholder="Google Inc." required formControlName="companyname" class="form-control" #company_field name="company">
-            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].companyname">
-              {{company_log}}
-            </div>
+          <app-c-forme-text placeholder="Google Inc." [(textValue)]="company" label="Company"></app-c-forme-text>
+          <div class = "invalid-feedback d-inline" *ngIf="!company">
+            {{company_log}}
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="form-group">
-            <label>Position</label>
-            <input type="text" formControlName="positionname" placeholder="Full stack developer" class="form-control" #position_field name="position" required>
-            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
-              {{position_log}}
-            </div>
+          <app-c-forme-text placeholder="Full stack developer" [(textValue)]="position" label="Position"></app-c-forme-text>
+          <div class = "invalid-feedback d-inline" *ngIf="!position">
+            {{company_log}}
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="form-group">
-            <label>Location</label>
-            <input type="text" formControlName="locationname" placeholder="London" class="form-control" #location_field name="location" required>
-            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
-              {{location_log}}
-            </div>
+          <app-c-forme-text placeholder="London" [(textValue)]="location" label="Location"></app-c-forme-text>
+          <div class = "invalid-feedback d-inline" *ngIf="!position">
+            {{company_log}}
           </div>
         </div>
       </div>
@@ -132,10 +123,8 @@
 
       <div class="row">
         <div class="col-md-12">
-          <div class="form-group">
-            <label>Job description (optional)</label>
-            <textarea rows="5" id="comment" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
-          </div>
+          <app-c-forme-text-area rows="5" [(value)]="description" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." label="Job description (optional)"></app-c-forme-text-area>
+
         </div>
       </div>
       <div class="row">
