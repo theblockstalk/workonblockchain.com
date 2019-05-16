@@ -1,6 +1,6 @@
 <div class="form-group">
   <label [ngClass]="labelClass">{{label}}</label>
   <select class="selectpicker form-control" title="(select one)" (change)="valueChanged($event)">
-    <option *ngFor="let opt of options" [value]="opt.value" [attr.selected]="checked">{{opt.name}}</option>
+    <option *ngFor="let opt of options" [value]="opt" [attr.selected]="opt===value?true: null">{{opt}}</option>
   </select>
 </div>

@@ -18,4 +18,7 @@ export class OthersComponent implements OnInit {
     this.class = this.buttonClass + ' ' + this.alignmentClass;
   }
 
+  buttonClick() {
+
+  }
 }

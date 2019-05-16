@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+declare var $:any;
 
 @Component({
   selector: 'app-c-forme-dropdown-single',
@@ -16,6 +17,11 @@ export class DropdownSingleComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.value);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
     if(!this.label) this.labelClass = 'invisible';
   }
 

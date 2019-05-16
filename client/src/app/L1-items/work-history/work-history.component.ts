@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import {constants} from '../../../constants/constants';
 declare var $:any;
 
 @Component({
@@ -12,8 +13,7 @@ export class WorkHistoryComponent implements OnInit {
   @Input() historyData: object;
   ExperienceForm: FormGroup;
   jobData;
-  month = [];
-  start_monthh;
+  monthNumber;
   timestamp = Date.now();
   company_log;
   position_log;
@@ -24,12 +24,22 @@ export class WorkHistoryComponent implements OnInit {
   end_date_year_log;
   dateValidation;
   exp_count;
+  years = constants.year;
+  month = constants.calen_month;
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    console.log(this.historyData);
+    this.jobData = this.historyData;
     this.ExperienceForm = this._fb.group({
       ExpItems: this._fb.array([this.initExpRows()])
     });
+    this.ExperienceForm = this._fb.group({
+      ExpItems: this._fb.array(
+        this.history_data()
+      )
+    });
+    console.log(this.ExperienceForm.value);
   }
 
   private history_data(): FormGroup[]
@@ -39,6 +49,7 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   monthNumToName(monthnum) {
+    console.log(this.month[monthnum-1]);
     return this.month[monthnum-1] || '';
   }
 
@@ -89,9 +100,9 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   monthNameToNum(monthname) {
-    this.start_monthh = this.month.indexOf(monthname);
-    this.start_monthh = "0"  + (this.start_monthh);
-    return this.start_monthh ?  this.start_monthh : 0;
+    this.monthNumber = this.month.indexOf(monthname);
+    this.monthNumber = "0"  + (this.monthNumber);
+    return this.monthNumber ?  this.monthNumber : 0;
   }
   selfValidate() {
     if(this.ExperienceForm.value.ExpItems.length >=1)
