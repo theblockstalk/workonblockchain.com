@@ -67,7 +67,6 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Current annual salary currency</label>
-
                 <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
                   <option value="-1" >Currency</option>
                   <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
@@ -174,7 +173,7 @@
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
-                              <label class="form-check-label" for="check{{i}}">
+                              <label class="form-check-label">
                                 <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
@@ -186,6 +185,9 @@
                     </div>
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
                       {{employment_location_log}}
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'employment_location_error' && remote_location_log">
+                      {{remote_location_log}}
                     </div>
                   </div>
 
@@ -297,7 +299,7 @@
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
-                              <label class="form-check-label" for="check{{i}}">
+                              <label class="form-check-label">
                                 <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="contractorUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
@@ -309,6 +311,9 @@
                     </div>
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
                       {{contract_location_log}}
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'contract_location_error' && remote_location_log">
+                      {{remote_location_log}}
                     </div>
                   </div>
 
@@ -430,7 +435,6 @@
               <h4>Volunteer</h4>
             </div>
 
-
             <div class="col-md-12 mt-4">
               <div class="form-group">
                 <label>Locations:</label>
@@ -464,7 +468,7 @@
                           </div>
                           <div class="col-12">
                             <div class="form-check" *ngIf="value.name !== 'Remote'">
-                              <label class="form-check-label" for="check{{i}}">
+                              <label class="form-check-label">
                                 <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
@@ -477,6 +481,9 @@
                     <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
                       {{volunteer_location_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'volunteer_location_error' && remote_location_log">
+                      {{remote_location_log}}
+                    </div>
                   </div>
 
                 </div>
@@ -485,7 +492,7 @@
 
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12 mt-4">
               <div class="form-group">
                 <label>Role:</label>
                 <div class="checkbox">

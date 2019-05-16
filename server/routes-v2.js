@@ -16,7 +16,14 @@ const endpoints = [
     require('./controller/api-v2/users/candidates/history/post.controller'),
     require('./controller/api-v2/users/candidates/patch.controller'),
     require('./controller/api-v2/users/candidates/post.controller'),
-    require('./controller/api-v2/users/auth/post.controller')
+    require('./controller/api-v2/users/auth/post.controller'),
+    require('./controller/api-v2/users/companies/status/post.controller'),
+    require('./controller/api-v2/users/companies/post.controller'),
+    require('./controller/api-v2/users/candidates/get.controller'),
+    require('./controller/api-v2/users/settings/patch.controller'),
+    require('./controller/api-v2/email_templates/post.controller'),
+    require('./controller/api-v2/email_templates/patch.controller'),
+    require('./controller/api-v2/email_templates/get.controller')
 ];
 
 function isEmpty(obj) {

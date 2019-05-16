@@ -42,15 +42,20 @@
                   </li>
                   <li class="list-group-item list-without-underline">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> {{contact_number}}</span>
+                    <span>{{contact_number}}</span>
                   </li>
-                  <li class="list-group-item list-without-underline">
-                    <i class="fas fa-user mr-2"></i>
-                    Status: <span class = "text-capitalize">{{candidate_status.status}}</span>
+                  <li class="list-group-item">
+                    <i class="fas fa-user mr-2"></i>Status:
+                    <span *ngIf="candidate_status.status === 'created'">Created</span>
+                    <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
+                    <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                    <span *ngIf="candidate_status.status === 'updated' || candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                    <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                   </li>
-                  <li class="list-group-item list-without-underline">
-                    <i class="fas fa-clock mr-2"></i>
-                    <span>Date created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
+                  <li class="list-group-item">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>Created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
                 </ul>
               </div>
@@ -86,8 +91,10 @@
                 <div class="form-group">
                   <label> Github account URL:</label>
                   <p>
-                    {{github}}
-                  <p>
+                    <a [href]="websiteUrl(github)" target="_blank">
+                      {{github}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -95,8 +102,10 @@
                 <div class="form-group">
                   <label> Linkedin account URL:</label>
                   <p>
-                    {{linkedin_account}}
-                  <p>
+                    <a [href]="websiteUrl(linkedin_account)" target="_blank">
+                      {{linkedin_account}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -104,8 +113,10 @@
                 <div class="form-group">
                   <label> Medium account URL:</label>
                   <p>
-                    {{medium_account}}
-                  <p>
+                    <a [href]="websiteUrl(medium_account)" target="_blank">
+                      {{medium_account}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -113,8 +124,10 @@
                 <div class="form-group">
                   <label> Stackexchange account URL:</label>
                   <p>
-                    {{stack}}
-                  <p>
+                    <a [href]="websiteUrl(stack)" target="_blank">
+                      {{stack}}
+                    </a>
+                  </p>
                 </div>
               </div>
 
@@ -122,7 +135,9 @@
                 <div class="form-group">
                   <label> Stackoverflow URL:</label>
                   <p>
-                    {{stackoverflow_url}}
+                    <a [href]="websiteUrl(stackoverflow_url)" target="_blank">
+                      {{stackoverflow_url}}
+                    </a>
                   <p>
                 </div>
               </div>
@@ -131,11 +146,12 @@
                 <div class="form-group">
                   <label> Personal website URL:</label>
                   <p>
-                    {{personal_website_url}}
+                    <a [href]="websiteUrl(personal_website_url)" target="_blank">
+                      {{personal_website_url}}
+                    </a>
                   <p>
                 </div>
               </div>
-
             </div>
           </section>
 
@@ -355,7 +371,6 @@
                   <pre >{{contractor.value.service_description}}</pre>
                 </div>
               </div>
-
             </div>
 
             <div class="row mt-2" *ngIf="volunteer.value">
@@ -423,7 +438,6 @@
                   <pre >{{volunteer.value.learning_objectives}}</pre>
                 </div>
               </div>
-
             </div>
 
 
@@ -514,7 +528,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="languages && languages.length>0">
             <div class="row">
               <div class="col-md-6">
-                <h2><i class="fas fa-briefcase"></i> Experience</h2>
+                <h2><i class="fas fa-code"></i> Experience</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">

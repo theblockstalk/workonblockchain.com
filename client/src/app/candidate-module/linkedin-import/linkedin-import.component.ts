@@ -32,6 +32,7 @@ export class LinkedinImportComponent implements OnInit {
   resume_active_class;
   exp_active_class;
   error_log;
+
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
 

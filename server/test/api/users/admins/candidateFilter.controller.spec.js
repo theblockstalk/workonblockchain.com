@@ -13,7 +13,7 @@ const adminHelper = require('./adminHelpers');
 const userHelper = require('../../users/usersHelpers');
 const docGeneratorV2 = require('../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../test/api-v2/helpers');
-const companiesHelperV2 = require('../../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../../api-v2/users/companies/companyHelpers')
 const candidateHelperV2 = require('../../../api-v2/users/candidates/candidateHelpers')
 
 const assert = chai.assert;
@@ -51,10 +51,11 @@ describe('admin search candidate by filter', function () {
         await userHelper.approveCandidate(candidate.email);
         const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 
-        const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
-        const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+        const approachOffer = docGeneratorV2.messages.approach(candidateUserDoc._id);
+        const res = await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
         const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
+        console.log(messageDoc);
         const data = {
             msg_tags : [messageDoc.msg_tag],
             is_approve : candidateUserDoc.candidate.history[0].status.status,

@@ -4,10 +4,10 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
-declare var $: any;
 import {constants} from "../../../constants/constants";
 import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
+declare var $: any;
 
 @Component({
   selector: 'app-candidate-profile',
@@ -445,5 +445,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   temp;
   index;
   countriesArray=[];
-
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
 }

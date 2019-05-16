@@ -1,13 +1,11 @@
-import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit,ViewChild ,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
-declare var $:any;
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
-import {getFilteredNames} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-company-search',
@@ -249,7 +247,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else if (this.currentUser && this.currentUser.type == 'company') {
       if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
-
       this.skillsData.sort(function (a, b) {
         if (a.name < b.name) {
           return -1;
@@ -438,7 +435,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['expected_hourly_rate'] && key['current_currency']) this.contractorCurrency = key['current_currency'];
         else this.contractorCurrency = '';
 
-
         if (key['order_preferences']) this.blockchain_order = key['order_preferences'];
         else this.blockchain_order = [];
 
@@ -522,6 +518,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             this.candidate_data = data;
+            this.alreadyApproachedCheck();
             this.searchData = true;
 
             this.setPage(1);
@@ -677,7 +674,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
     else {
-      this.error_msg = 'Please first select saved search';
+      $('#saveNewSearch').modal('show');
       setInterval(() => {
         this.error_msg = "";
       }, 9000);
@@ -889,6 +886,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          this.alreadyApproachedCheck();
 
           this.setPage(1);
           if(this.candidate_data && this.candidate_data.length > 0) {
@@ -1024,6 +1022,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   contractor_role_log;
   max_salary_log;
   max_hourly_rate_log;
+  work_log;
+
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1110,6 +1110,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
     }
 
+    if(!this.approach_work_type) {
+      this.work_log = "Please select work type";
+      errorCount = 1;
+    }
+
     if (errorCount === 0) {
       let job_offer: any = {};
       let new_offer: any = {};
@@ -1153,6 +1158,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.job_offer_log_success = 'Message successfully sent';
             this.employee = {};
             if (isPlatformBrowser(this.platformId)) $("#approachModal").modal("hide");
+
             this.router.navigate(['/chat']);
           },
           error => {
@@ -1186,10 +1192,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   sorting(languages){
-
     return languages.sort(function(a, b){
-      if(a.language < b.language) { return -1; }
-      if(a.language > b.language) { return 1; }
+      a = a.exp_year.split('-');
+      b = b.exp_year.split('-');
+      if(a[0] > b[0]) { return -1; }
+      if(a[0] < b[0]) { return 1; }
       return 0;
     })
   }
@@ -1359,19 +1366,39 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  refreshSelectBox(){
+  refreshSelectBox() {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');
       }, 300);
+      //this.populatePopupFields();
+      //this.searchdata("work_type", this.workTypes);
     }
-    //this.populatePopupFields();
-    //this.searchdata("work_type", this.workTypes);
+  }
+
+  alreadyApproachedCheck(){
+    for(let i=0;i<this.candidate_data.length;i++){
+      this.candidate_data[i].already_approached = 0;
+      if(this.candidate_data[i].initials) {
+        this.authenticationService.get_user_messages_comp(this.candidate_data[i]._id)
+          .subscribe(
+            data => {
+              if(data['messages'][0].message.approach) this.candidate_data[i].already_approached = 1;
+            },
+            error => {
+              if (error.message === 500 || error.message === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) {
+              }
+            }
+          );
+      }
+    }
   }
 
   convertNumber(string) {
     return Number(string);
   }
-
-
 }

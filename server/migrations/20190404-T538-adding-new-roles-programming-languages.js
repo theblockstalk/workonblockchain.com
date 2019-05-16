@@ -13,7 +13,6 @@ module.exports.up = async function() {
 
     await cities.findAndIterate({}, async function(cityDoc) {
         let updateObj = {};
-        logger.debug("processing city doc: ", {Id: cityDoc._id});
         if (cityDoc.country === 'Congo {Democratic Rep}') {
             updateObj['country'] = "Congo";
         }
@@ -24,6 +23,7 @@ module.exports.up = async function() {
             updateObj['country'] = "Myanmar (Burma)";
         }
         if (!objects.isEmpty(updateObj)) {
+            logger.debug("migrating city doc: ", {cityId: cityDoc._id, $set : updateObj});
             await cities.update({_id: cityDoc._id}, {$set : updateObj});
             totalModified++;
         }
@@ -35,7 +35,6 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
 
     await users.findAndIterate({}, async function(userDoc) {
-        logger.debug("processing user doc: ", {userId: userDoc._id});
         if(userDoc.type === 'candidate'){
             let updateObj = {};
             if(userDoc.candidate.locations){
@@ -84,7 +83,7 @@ module.exports.up = async function() {
             }
 
             if (!objects.isEmpty(updateObj)) {
-                logger.debug("migrate user doc", updateObj);
+                logger.debug("migrating user doc: ", {userId: userDoc._id});
                 await users.update({_id: userDoc._id}, {$set : updateObj});
                 totalModified++;
             }
@@ -93,7 +92,22 @@ module.exports.up = async function() {
             let updateObj = {};
             const companyDoc = await companies.findOne({ _creator: userDoc._id });
             if(companyDoc) {
-                logger.debug("processing company doc: ", {userId: companyDoc._id});
+                if (companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
+                    for (let savedSearch of companyDoc.saved_searches) {
+                        if (savedSearch.residence_country ) {
+                            let index = savedSearch.residence_country.findIndex((obj => obj === 'Congo {Democratic Rep}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Congo';
+
+                            index = savedSearch.residence_country.findIndex((obj => obj === 'Ireland {Republic}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Ireland';
+
+                            index = savedSearch.residence_country.findIndex((obj => obj === 'Myanmar, {Burma}'));
+                            if(index >= 0) savedSearch.residence_country[index] = 'Myanmar (Burma)';
+                        }
+                    }
+                    updateObj['saved_searches'] = companyDoc.saved_searches;
+                }
+
                 if (companyDoc.company_country === 'Congo {Democratic Rep}') {
                     updateObj['company_country'] = "Congo";
                 }
@@ -103,7 +117,9 @@ module.exports.up = async function() {
                 if (companyDoc.company_country === 'Myanmar, {Burma}') {
                     updateObj['company_country'] = "Myanmar (Burma)";
                 }
+
                 if (!objects.isEmpty(updateObj)) {
+                    logger.debug("migrating comp doc: ", {compId: companyDoc._id});
                     await companies.update({_id: companyDoc._id}, {$set: updateObj});
                     totalModified++;
                 }

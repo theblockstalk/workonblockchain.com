@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../environments/environment';
-import { map } from 'rxjs/operators';
-const URL = environment.backend_url;
+import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
-
 
 @Injectable()
 export class ProfileResolver  {
@@ -17,14 +13,10 @@ export class ProfileResolver  {
     console.log("resolve");
     if (this.currentUser)
     {
-      console.log(this.currentUser);
       if(this.currentUser.type === 'candidate') {
-        console.log("type")
-
         this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(data => {
               if (data) {
-                console.log(data['terms_id'])
                 if (!data['candidate'].terms_id) {
                   this.router.navigate(['/terms-and-condition']);
                   return false;

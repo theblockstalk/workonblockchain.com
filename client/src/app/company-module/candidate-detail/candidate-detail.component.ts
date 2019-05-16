@@ -73,8 +73,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   contract_desc_log;
   workTypes = constants.workTypes;
   rolesData = constants.workRoles;
+  already_approached = 0;
   country_code;
-
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
 
@@ -133,6 +133,21 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
+      //checking already approached or not
+      this.authenticationService.get_user_messages_comp(this.user_id)
+        .subscribe(
+          data => {
+            if(data['messages'][0].message.approach) this.already_approached=1;
+          },
+          error => {
+            if (error.message === 500 || error.message === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+            if (error.message === 403) {
+            }
+          }
+        );
 
       this.authenticationService.getLastJobDesc()
         .subscribe(
@@ -271,20 +286,21 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               }
 
               this.contact_number = '';
-              let contact_number = dataa['contact_number'];
-              contact_number = contact_number.replace(/^00/, '+');
-              contact_number = contact_number.split(" ");
-              if(contact_number.length>1) {
-                for (let i = 0; i < contact_number.length; i++) {
-                  if (i === 0) this.country_code = '('+contact_number[i]+')';
-                  else this.contact_number = this.contact_number+''+contact_number[i];
+              if(dataa['contact_number']) {
+                let contact_number = dataa['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
                 }
-                this.contact_number = this.country_code+' '+this.contact_number
-              }
-              else this.contact_number = contact_number[0];
+                else this.contact_number = contact_number[0];
 
-              dataa['contact_number'] = this.contact_number;
-              console.log(dataa['contact_number']);
+                dataa['contact_number'] = this.contact_number;
+              }
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
@@ -460,6 +476,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   contractor_role_log;
   max_salary_log;
   max_hourly_rate_log;
+  work_log;
+
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -545,7 +563,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         errorCount = 1;
       }
     }
-
+    if(!this.approach_work_type) {
+      this.work_log = "Please select work type";
+      errorCount = 1;
+    }
     if (errorCount === 0) {
       let job_offer: any = {};
       let new_offer: any = {};
@@ -586,6 +607,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           data => {
             this.job_offer_msg_success = 'Message successfully sent';
             this.employee = {};
+            if (isPlatformBrowser(this.platformId)) $("#approachModal").modal("hide");
             this.router.navigate(['/chat']);
           },
           error => {
@@ -640,6 +662,21 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       }, 300);
     }
   }
+
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
+
   convertNumber(string) {
     return Number(string);
   }

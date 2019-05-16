@@ -6,11 +6,9 @@ import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
-import {isPlatformBrowser} from "@angular/common";
-
+declare var $:any;
 const URL = environment.backend_url;
 
 @Component({

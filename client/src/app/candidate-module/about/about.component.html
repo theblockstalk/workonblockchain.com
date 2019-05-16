@@ -46,7 +46,7 @@
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
         <form (submit)="about(aboutForm)" #aboutForm = ngForm>
-          <div class="row">
+          <div class="row" *ngIf="!info.first_name && !info.last_name">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="first_name">First name</label>
@@ -112,7 +112,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="githubURL">Stackoverflow URL (optional)</label>
-                <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackoverflow.com/users/123345678/username" name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
                 <div class = "invalid-feedback d-inline"  *ngIf="stackoverflowaccount.errors">
                   Enter url in proper format.
                 </div>
@@ -121,7 +121,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="stackURL">Personal website URL (optional)</label>
-                <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
                 <div class = "invalid-feedback d-inline"  *ngIf="personalaccount.errors">
                   Enter url in proper format.
                 </div>

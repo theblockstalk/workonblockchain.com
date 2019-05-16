@@ -68,6 +68,7 @@ module.exports.endpoint = async function (req, res) {
         const googleData = await google.googleAuth(queryBody.google_code);
         if (googleData) {
             userDoc = await users.findOneByEmail(googleData.email);
+            if(!userDoc) errors.throwError('This email has not been used to signup with Google.' , 400)
 
             if (userDoc.google_id && userDoc.google_id !== googleData.google_id) {
                 throw new Error("Incorrect google id");
@@ -91,9 +92,10 @@ module.exports.endpoint = async function (req, res) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
+            if(!userDoc) errors.throwError('This email has not been used to signup with Linkedin.' , 400)
 
             if (userDoc.linkedin_id && userDoc.linkedin_id !== linkedinData.linkedin_id) {
-                throw new Error("Incorrect google id");
+                throw new Error("Incorrect linkedin id");
             }
             if (!userDoc.linkedin_id) {
                 const userLinkedinDoc = await users.findOne({linkedin_id: linkedinData.linkedin_id});

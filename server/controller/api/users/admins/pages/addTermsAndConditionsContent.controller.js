@@ -6,7 +6,7 @@ const sanitize = require('../../../../services/sanitize');
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
     let info = req.body;
-    const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
+    const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text, true);
     let document = new Pages
     ({
         page_title : info.page_title,

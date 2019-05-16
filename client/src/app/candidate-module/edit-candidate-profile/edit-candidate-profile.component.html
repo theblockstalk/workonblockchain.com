@@ -114,7 +114,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label >Stackoverflow URL (optional)</label>
-                  <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                  <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackoverflow.com/users/123345678/username" name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
                   <div class = "invalid-feedback d-inline"  *ngIf="info.stackoverflow_url && stackoverflowaccount.errors">
                     Enter url in proper format.
                   </div>
@@ -123,7 +123,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label >Personal website URL (optional)</label>
-                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
                   <div class = "invalid-feedback d-inline"  *ngIf="info.personal_website_url && personalaccount.errors">
                     Enter url in proper format.
                   </div>
@@ -172,6 +172,7 @@
                   <ul>
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                    <li> What value do you add to a project? </li>
                   </ul>
                   <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
@@ -260,6 +261,10 @@
 
             <div class="row">
               <div class="col-md-12">
+                <h4>Employee</h4>
+              </div>
+
+              <div class="col-md-6 mt-4">
                 <div class="form-group">
                   <label>Work type:</label>
                   <div class="row mt-4">
@@ -351,11 +356,10 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
-
                             </div>
                           </div>
 
@@ -363,6 +367,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
                         {{employment_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'employment_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
                   </div>
@@ -432,12 +439,12 @@
                 </div>
               </div>
             </div>
+
             <hr *ngIf = "contractorCheck" />
             <div class="row mt-2" *ngIf="contractorCheck" >
               <div class="col-md-12">
                 <h4>Contractor</h4>
               </div>
-
 
               <div class="col-md-12 mt-4">
                 <div class="form-group">
@@ -472,11 +479,10 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="contractorUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
-
                             </div>
                           </div>
 
@@ -484,6 +490,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
                         {{contract_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'contract_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
 
@@ -536,26 +545,21 @@
                     {{contractor_currency_log}}
                   </div>
                 </div>
-
               </div>
 
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Maximum hours per week (optional):</label>
-
                   <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" required name="max_hour_per_week " >
                     <option class='option' value="-1" >None</option>
                     <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
-
                   </select>
-
                 </div>
               </div>
 
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Contractor type:</label>
-
                   <div class="checkbox">
                     <div class="form-check" *ngFor = "let type of contractor_types">
                       <input class="form-check-input" type="checkbox" value="{{type.value}}" [checked]="type.checked" (change)="contractor_type($event)" >
@@ -564,10 +568,8 @@
                       </label>
                     </div>
                   </div>
-
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contractor_type || (contractor.contractor_type && contractor.contractor_type.length<=0)">
                     {{contractor_type_log}}
-
                   </div>
                 </div>
               </div>
@@ -581,11 +583,8 @@
                   </div>
                   <div class = "invalid-feedback d-inline" #validateUrl *ngIf="contractor.agency_website && agencyUrl.errors">
                     Enter url in proper format
-
                   </div>
                 </div>
-
-
               </div>
 
               <div class="col-md-12">
@@ -596,18 +595,14 @@
                     {{contractor_description_log}}
                   </div>
                 </div>
-
               </div>
-
-
             </div>
-            <hr *ngIf="volunteerCheck" />
 
+            <hr *ngIf="volunteerCheck" />
             <div class="row mt-2" *ngIf="volunteerCheck" >
               <div class="col-md-12">
                 <h4>Volunteer</h4>
               </div>
-
 
               <div class="col-md-12 mt-4">
                 <div class="form-group">
@@ -642,11 +637,10 @@
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label" for="check{{i}}">
+                                <label class="form-check-label">
                                   <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
-
                             </div>
                           </div>
 
@@ -654,6 +648,9 @@
                       </div>
                       <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
                         {{volunteer_location_log}}
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'volunteer_location_error' && remote_location_log">
+                        {{remote_location_log}}
                       </div>
                     </div>
 
@@ -724,7 +721,7 @@
                 <div class="form-group">
                   <label>Why do you want to work on blockchain?</label>
                   <ul>
-                    <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> Let companies know what excites you about this space. </li>
                     <li> This is the first field that a company sees! </li>
                   </ul>
                   <input type="text" class="form-control" required placeholder="I want to work on blockchain because ..."  #whywork name="why_work" [(ngModel)]="why_work">

@@ -27,18 +27,18 @@ describe('GET /messages', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            const approachOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
+            await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
             const res = await messagesHelpers.get(companyUserDoc.jwt_token);
             const messageDoc = res.body;
-            messageDoc.msg_tag.should.equal(jobOffer.msg_tag);
-            messageDoc.message.job_offer.title.should.equal(jobOffer.message.job_offer.title);
-            messageDoc.message.job_offer.salary.should.equal(jobOffer.message.job_offer.salary);
-            messageDoc.message.job_offer.salary_currency.should.equal(jobOffer.message.job_offer.salary_currency);
-            messageDoc.message.job_offer.type.should.equal(jobOffer.message.job_offer.type);
-            messageDoc.message.job_offer.location.should.equal(jobOffer.message.job_offer.location);
-            messageDoc.message.job_offer.description.should.equal(jobOffer.message.job_offer.description);
+            messageDoc.msg_tag.should.equal(approachOffer.msg_tag);
+            messageDoc.message.approach.employee.job_title.should.equal(approachOffer.message.approach.employee.job_title);
+            messageDoc.message.approach.employee.annual_salary.should.equal(approachOffer.message.approach.employee.annual_salary);
+            messageDoc.message.approach.employee.currency.should.equal(approachOffer.message.approach.employee.currency);
+            messageDoc.message.approach.employee.employment_type.should.equal(approachOffer.message.approach.employee.employment_type);
+            messageDoc.message.approach.employee.location.should.equal(approachOffer.message.approach.employee.location);
+            messageDoc.message.approach.employee.employment_description.should.equal(approachOffer.message.approach.employee.employment_description);
         })
     });
 });

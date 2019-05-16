@@ -31,8 +31,8 @@ describe('GET /conversations', function () {
             await candidateHelper.signupCandidateAndCompleteProfile(candidate,profileData,job,resume,experience);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            const approachOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
+            await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
             const res = await messagesHelpers.getConversations(companyUserDoc.jwt_token);
             const conversation =  res.body['conversations'][0];

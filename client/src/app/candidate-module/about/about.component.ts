@@ -4,11 +4,11 @@ declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
 import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-about',
@@ -136,7 +136,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           {
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
-            if(data['refered_id']) //&& !data.first_name && !data.last_name)
+            if(data['refered_id'])
             {
               this.referred_id = data['refered_id'];
 

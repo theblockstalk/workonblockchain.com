@@ -9,7 +9,7 @@ const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
 const companyEmail = require('../../../controller/services/cron/companyAutomaticEmailOfNewCandidate');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
-const companiesHelperV2 = require('../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
 const userHelper = require('../../api/users/usersHelpers');
 
 const assert = chai.assert;
@@ -31,34 +31,30 @@ describe('cron', function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
-            console.log(profileData);
-
             const company = docGeneratorV2.company();
-            console.log(company);
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
-            console.log(companyDoc);
+
             const updatedData = await docGeneratorV2.companyUpdateProfile();
-            console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
-                    profileData.locations[0]
+                    profileData.employee.location[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData.roles[0]
+                    profileData.employee.roles[0]
                 ],
-                current_currency: profileData.expected_salary_currency,
-                current_salary: profileData.expected_salary,
+                current_currency: profileData.employee.currency,
+                current_salary: profileData.employee.expected_annual_salary,
                 skills: [
                     profileData.programming_languages[0].language
                 ],
-                availability_day: profileData.availability_day,
+                availability_day: profileData.employee.employment_availability,
             }];
 
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
@@ -67,7 +63,6 @@ describe('cron', function () {
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
-            console.log(userCompanyDoc);
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
             const userCandidateDoc = await users.findOneByEmail(candidate.email);
@@ -91,23 +86,23 @@ describe('cron', function () {
             console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
-                    profileData.locations[0]
+                    profileData.employee.location[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData.roles[0]
+                    profileData.employee.roles[0]
                 ],
-                current_currency: profileData.expected_salary_currency,
-                current_salary: profileData.expected_salary,
+                current_currency: profileData.employee.currency,
+                current_salary: profileData.employee.expected_annual_salary,
                 skills: [
                     profileData.programming_languages[0].language
                 ],
-                availability_day: profileData.availability_day,
+                availability_day: profileData.employee.employment_availability,
             }];
 
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
@@ -150,24 +145,24 @@ describe('cron', function () {
 
             updatedData.saved_searches = [{
                 location: [
-                    profileData[0].locations[0]
+                    profileData[0].employee.location[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData[0].roles[0]
+                    profileData[0].employee.roles[0]
                 ],
-                current_currency: profileData[0].expected_salary_currency,
-                current_salary: profileData[0].expected_salary,
+                current_currency: profileData[0].employee.currecny,
+                current_salary: profileData[0].employee.expected_annual_salary,
                 skills: [
                     profileData[0].programming_languages[0].language
                 ],
-                availability_day: profileData[0].availability_day,
+                availability_day: profileData[0].employee.employment_availability,
             }];
 
             const jwtToken = companyDoc.jwt_token;
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
             // signup and approve candidate that matches the current company saved search
@@ -191,20 +186,20 @@ describe('cron', function () {
 
             let newSavedSearch = [{
                 location: [
-                    profileData[1].locations[0]
+                    profileData[1].employee.location[0]
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData[1].roles[0]
+                    profileData[1].employee.roles[0]
                 ],
-                current_currency: profileData[1].expected_salary_currency,
-                current_salary: profileData[1].expected_salary,
+                current_currency: profileData[1].employee.currency,
+                current_salary: profileData[1].employee.expected_annual_salary,
                 skills: [
                     profileData[1].programming_languages[0].language
                 ],
-                availability_day: profileData[1].availability_day,
+                availability_day: profileData[1].employee.employment_availability,
             }];
 
             // signup and approve fourth candidate that is not matched the current company saved search

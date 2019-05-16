@@ -1005,7 +1005,6 @@ export class ChatComponent implements OnInit {
         }
       );
     if (isPlatformBrowser(this.platformId)) $("#popModal").modal("hide");
-
   }
 
 }

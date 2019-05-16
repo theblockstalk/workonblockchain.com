@@ -1,7 +1,9 @@
 const version = require('../../config/version.json').version;
 const errors = require('../services/errors');
+const logger = require('../services/logger');
 
 module.exports = function healthCheck(req, res) {
+    logger.debug("Health check request: ", req);
     if (req.query && req.query.error) {
         if (req.query.raw) {
             throw new Error("I am a normal error")

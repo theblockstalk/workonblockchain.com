@@ -16,7 +16,7 @@
   <div class="container pt-2">
 
     <div class="row">
-      <div class="col-md-9 mb-4" *ngFor= "let data of cand_data">
+      <div class="col-md-12 mb-4" *ngFor= "let data of cand_data">
         <section class = "border rounded py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
@@ -25,7 +25,9 @@
               <div class="mt-3">
                 <span *ngIf='data.first_name'><h3>{{data.first_name}} {{data.last_name}}</h3></span>
                 <span *ngIf='data.initials'><h3>{{data.initials}}</h3></span>
-
+                <span *ngIf = "already_approached === 1">
+                  <span class = "badge badge-pill badge-primary"> Already approached </span>
+                </span>
                 <span><pre>{{data.candidate.description}}</pre></span>
               </div>
             </div>
@@ -37,19 +39,32 @@
                 </li>
                 <li class="list-group-item list-without-underline" *ngIf="data.first_name">
                   <span><i class="fas fa-phone mr-2"></i></span>
-                  <span >Phone: {{data.contact_number}}</span>
+                  <span >{{data.contact_number}}</span>
                 </li>
                 <li class="list-group-item list-without-underline" *ngIf="data.first_name">
                   <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                  <span >City : {{data.candidate.base_city}}</span>
+                  <span >{{data.candidate.base_city}}</span>
                 </li>
-
               </ul>
             </div>
-
           </div>
-
-        </section >
+          <div class="row">
+            <div class="col-12">
+              <div class="text-right">
+                <ng-container *ngIf="already_approached === 1;else no_already_approached">
+                  <a [routerLink]="['/chat']">
+                    <button type="button" class = "btn btn-primary">
+                      <i class="fa fa-comment-dots"></i> Chat
+                    </button>
+                  </a>
+                  </ng-container>
+                <ng-template #no_already_approached>
+                  <button type="button" class = "btn btn-primary" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach</button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf='data.first_name'>
           <div class="row">
@@ -75,8 +90,10 @@
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  {{data.candidate.github_account}}
-                <p>
+                  <a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
+                    {{data.candidate.github_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -84,8 +101,10 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  {{data.candidate.stackexchange_account}}
-                <p>
+                  <a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
+                    {{data.candidate.stackexchange_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -93,8 +112,10 @@
               <div class="form-group" >
                 <label>Linkedin account url: </label>
                 <p>
-                  {{data.candidate.linkedin_account}}
-                <p>
+                  <a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
+                    {{data.candidate.linkedin_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -102,8 +123,10 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  {{data.candidate.medium_account}}
-                <p>
+                  <a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
+                    {{data.candidate.medium_account}}
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -111,7 +134,9 @@
               <div class="form-group">
                 <label> Stackoverflow URL:</label>
                 <p>
-                  {{data.candidate.stackoverflow_url}}
+                  <a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                    {{data.candidate.stackoverflow_url}}
+                  </a>
                 <p>
               </div>
             </div>
@@ -120,11 +145,12 @@
               <div class="form-group">
                 <label> Personal website URL:</label>
                 <p>
-                  {{data.candidate.personal_website_url}}
+                  <a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                    {{data.candidate.personal_website_url}}
+                  </a>
                 <p>
               </div>
             </div>
-
 
           </div>
 
@@ -213,11 +239,9 @@
                     <div *ngIf="country.type === 'city'">
                       <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
-
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div class="col-md-12">
@@ -474,7 +498,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
-                <i class="fas fa-briefcase"></i>
+                <i class="fas fa-code"></i>
                 Experience
               </h2>
             </div>
@@ -547,40 +571,52 @@
         </section>
 
       </div>
-      <div class="col-md-3">
+    </div>
+  </div>
 
-        <section class = "border rounded py-2 px-3 bg-white">
-          <div class="row">
-            <div class="col-md-12 mb-2">
-              <h5>
-                Approach
-              </h5>
-            </div>
-          </div>
+  <!-- Approach Modal -->
+  <div class="modal fade" id="approachModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title mx-auto" id="exampleModalLabel"><i class="fa fa-paper-plane"></i> Approach</h5>
+        </div>
+        <div class="modal-body">
           <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+            <ng-container *ngIf="job_offer_log;else no_modal">
+            </ng-container>
+            <ng-template #no_modal>
+            </ng-template>
             <div class="row">
-              <div class="col-md-12" >
+              <div class="col-md-4" *ngFor="let types of workTypes">
                 <div class="form-group">
-                  <div class="form-check" *ngFor="let types of workTypes" >
+                  <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
-                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()" >
+                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()">
                       {{types.name}}
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     </label>
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!this.approach_work_type">
+                    {{work_log}}
                   </div>
                 </div>
               </div>
             </div>
             <div class="row" *ngIf="approach_work_type === 'employee'">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom1">Job title</label>
                   <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="employee.job_title" class="form-control" placeholder="Director">
-                  <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_title">
                     {{job_title_log}}
                   </div>
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom02">Location</label>
                   <input type="text" id="validationCustom02" name="location" [(ngModel)]="employee.location" class="form-control" placeholder="London">
@@ -589,7 +625,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustomSalary">Annual salary</label>
                   <div class="form-row">
@@ -612,8 +648,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
+                  <label for="validationCustom02" class="invisible">Currency</label>
                   <select title="Currency" name="currency" [(ngModel)]="employee.currency" class="selectpicker form-control">
                     <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === employee.currency? true: null">{{base_currency}}</option>
                   </select>
@@ -646,41 +683,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row" *ngIf="approach_work_type === 'contractor'">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="validationCustom02">Location</label>
-                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
-                    {{contractor_location_log}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="validationCustomSalary">Hourly rate</label>
-                  <div class="form-row">
-                    <div class="col">
-                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_min" [(ngModel)]="contractor.hourly_rate_min" class="form-control" placeholder="Min">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_min || (contractor.hourly_rate_min && !checkNumber(contractor.hourly_rate_min))">
-                        {{hourly_rate_log}}
-                      </div>
-                    </div>
-                    <div class="col">
-                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_max" [(ngModel)]="contractor.hourly_rate_max" class="form-control" placeholder="Max">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_max || (contractor.hourly_rate_max && !checkNumber(contractor.hourly_rate_max))">
-                        {{max_hourly_rate_log}}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(contractor.hourly_rate_min) > convertNumber(contractor.hourly_rate_max) ">
-                    Maximum rate should be greater the minimum rate
-                  </div>
-                </div>
-              </div>
               <div class="col-md-12">
                 <div class="form-group">
                   <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
@@ -704,8 +706,66 @@
 
             </div>
 
-            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+            <div class="row" *ngIf="approach_work_type === 'contractor'">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Hourly rate</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_min" [(ngModel)]="contractor.hourly_rate_min" class="form-control" placeholder="Min">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_min || (contractor.hourly_rate_min && !checkNumber(contractor.hourly_rate_min))">
+                        {{hourly_rate_log}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_max" [(ngModel)]="contractor.hourly_rate_max" class="form-control" placeholder="Max">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_max || (contractor.hourly_rate_max && !checkNumber(contractor.hourly_rate_max))">
+                        {{max_hourly_rate_log}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(contractor.hourly_rate_min) > convertNumber(contractor.hourly_rate_max) ">
+                    Maximum rate should be greater the minimum rate
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02" class="invisible">Currency</label>
+                  <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                    {{hourly_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
+              </div>
               <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contract description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
+                    {{contract_desc_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom02">Location</label>
                   <input type="text" id="validationCustom02" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
@@ -714,6 +774,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Opportunity description</label>
@@ -724,23 +785,24 @@
                   </div>
                 </div>
               </div>
-
             </div>
 
-            <div class="alert alert-success" role="alert" *ngIf="job_offer_msg_success">
-              {{job_offer_msg_success}}
+            <div class="row">
+              <div class="col-md-12">
+                <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
+                  {{job_offer_log_erorr}}
+                </div>
+                <div class = "alert alert-success" *ngIf="job_offer_log_success">
+                  {{job_offer_log_success}}
+                </div>
+              </div>
             </div>
-            <div class="alert alert-danger" role="alert" *ngIf="job_offer_log_erorr">
-              {{job_offer_log_erorr}}
-            </div>
-            <div class = "form-group text-center">
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary">Reset</button>
               <button type="submit" class="btn btn-primary">Send</button>
             </div>
-            <div class = "invalid-feedback d-inline-block mb-2">
-              {{job_offer_msg}}
-            </div>
           </form>
-        </section>
+        </div>
       </div>
     </div>
   </div>

@@ -43,6 +43,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   admin_checks_candidate_account = constants.admin_checks_candidate_account;
 
   constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
+
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);

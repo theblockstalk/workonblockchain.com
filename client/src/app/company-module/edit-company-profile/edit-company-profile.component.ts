@@ -1,17 +1,14 @@
 import { Component, OnInit, ElementRef , AfterViewInit , Input, ViewChild, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
-import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { Router } from '@angular/router';
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
-import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-edit-company-profile',
@@ -104,7 +101,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
+              private router: Router,private authenticationService: UserService,
+              private dataservice: DataService,
+              private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;

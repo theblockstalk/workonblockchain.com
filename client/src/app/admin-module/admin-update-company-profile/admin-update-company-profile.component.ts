@@ -3,13 +3,12 @@ import {UserService} from '../../user.service';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
 import { Router , ActivatedRoute} from '@angular/router';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
-import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-admin-update-company-profile',
@@ -103,7 +102,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
+              private router: Router ,private route: ActivatedRoute,
+              private authenticationService: UserService,
+              private dataservice: DataService,
+              private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
       this.company_id = params['company'];
     });

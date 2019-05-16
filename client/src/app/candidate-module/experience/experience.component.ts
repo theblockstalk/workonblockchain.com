@@ -1,16 +1,15 @@
 import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import {unCheckCheckboxes} from "../../../services/object";
-import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-experience',
