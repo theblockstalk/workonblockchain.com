@@ -1,12 +1,12 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 import {NgForm} from '@angular/forms';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $: any;
+import {isPlatformBrowser} from "@angular/common";
 
 const URL = environment.backend_url;
 @Component({
@@ -32,12 +32,12 @@ export class LinkedinImportComponent implements OnInit {
   resume_active_class;
   exp_active_class;
   error_log;
-
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     this.skip_value = 0;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
@@ -50,7 +50,7 @@ export class LinkedinImportComponent implements OnInit {
 
     if(this.currentUser && this.currentUser.type=='candidate')
     {
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -94,13 +94,13 @@ export class LinkedinImportComponent implements OnInit {
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.localStorage.removeItem('currentUser');
-              this.localStorage.removeItem('googleUser');
-              this.localStorage.removeItem('close_notify');
-              this.localStorage.removeItem('linkedinUser');
-              this.localStorage.removeItem('admin_log');
-              this.window.location.href = '/login';
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
 
             if(error['message'] === 403)
@@ -115,17 +115,19 @@ export class LinkedinImportComponent implements OnInit {
       this.router.navigate(['/not_found']);
     }
 
-    $('#fileselect').bind('change', function () {
-      var filename = $("#fileselect").val();
-      if (/^\s*$/.test(filename)) {
-        $(".file-uploadd").removeClass('active');
-        $("#noFile").text("No file chosen...");
-      }
-      else {
-        $(".file-uploadd").addClass('active');
-        $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
-      }
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      $('#fileselect').bind('change', function () {
+        var filename = $("#fileselect").val();
+        if (/^\s*$/.test(filename)) {
+          $(".file-uploadd").removeClass('active');
+          $("#noFile").text("No file chosen...");
+        }
+        else {
+          $(".file-uploadd").addClass('active');
+          $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+        }
+      });
+    }
   }
 
   public fileselected(e) {
@@ -159,8 +161,8 @@ export class LinkedinImportComponent implements OnInit {
     }
 
     let linkedinToJsonResume;
-    if ((<any>this.window).ga) {
-      (<any>this.window).ga('send', 'event', 'linkedin-to-json-resume', 'file-selected');
+    if ((<any>window).ga) {
+      (<any>window).ga('send', 'event', 'linkedin-to-json-resume', 'file-selected');
     }
     Promise.all([
       import('./converter'),
@@ -327,8 +329,8 @@ export class LinkedinImportComponent implements OnInit {
         });
 
         Promise.all(promises).then(() => {
-          if ((<any>this.window).ga) {
-            (<any>this.window).ga(
+          if ((<any>window).ga) {
+            (<any>window).ga(
               'send',
               'event',
               'linkedin-to-json-resume',
@@ -352,9 +354,7 @@ export class LinkedinImportComponent implements OnInit {
           else {
             if (obj.basics.name || obj.basics.phone || obj.basics.summary) {
               name = obj.basics.name.split(' ');
-              info = {first_name: name[0], last_name: name[1] , summary : obj.basics.summary};
-
-
+              info = {first_name: name[0], last_name: name[1] , description : obj.basics.summary};
             }
 
             if(obj.work){
@@ -405,7 +405,10 @@ export class LinkedinImportComponent implements OnInit {
 
 
             if (obj.work || obj.education || obj.basics ) {
-              backendService.prefilled_profile(info , experiencearray,  education_json_array )
+              info.education_history = education_json_array;
+              info.work_history = experiencearray;
+              info.wizardNum = 1;
+              backendService.edit_candidate_profile(this.currentUser._id, info, false )
                 .subscribe(
                   data => {
                     if(data && this.currentUser)

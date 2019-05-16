@@ -1,11 +1,10 @@
-import { Component, OnInit,AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-candidate-terms',
@@ -34,7 +33,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     prefill_disable;
     term_active_class;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService)
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService)
     {
 
       }
@@ -45,7 +44,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     exp_disable;
      ngAfterViewInit(): void
      {
-         this.window.scrollTo(0, 0);
+         window.scrollTo(0, 0);
 
     }
   terms_id = '';
@@ -57,12 +56,12 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       this.resume_disable = "disabled";
       this.exp_disable = "disabled";
       this.prefill_disable = "disabled";
-       this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
       if(this.currentUser && this.currentUser.type=='candidate')
        {
 
-           this.authenticationService.getById(this.currentUser._id)
+           this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
             .subscribe(
                 data =>
                 {
@@ -104,7 +103,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.link="/job";
                   }
 
-                  if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
+                  if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -114,7 +113,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   }
 
 
-                    if(data['candidate'].why_work )
+                    if(data['candidate'].why_work && data['candidate'].interest_areas )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";
@@ -136,13 +135,13 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
 
                      if(error.message === 500 || error.message === 401)
                      {
-                         this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                         this.localStorage.removeItem('currentUser');
-                         this.localStorage.removeItem('googleUser');
-                         this.localStorage.removeItem('close_notify');
-                         this.localStorage.removeItem('linkedinUser');
-                         this.localStorage.removeItem('admin_log');
-                            this.window.location.href = '/login';
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                         localStorage.removeItem('currentUser');
+                         localStorage.removeItem('googleUser');
+                         localStorage.removeItem('close_notify');
+                         localStorage.removeItem('linkedinUser');
+                         localStorage.removeItem('admin_log');
+                            window.location.href = '/login';
 
                      }
                      else
@@ -163,13 +162,17 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_and_condition(termsForm: NgForm)
   {
 
-      if(this.termscondition == false)
+      if(this.termscondition === false)
       {
           this.terms_log = "Please accept terms and conditions";
       }
       else
       {
-        this.authenticationService.terms(this.currentUser._id,termsForm.value)
+        let queryBody: any = {};
+        queryBody.terms_id = termsForm.value.termsID;
+        queryBody.marketing_emails = termsForm.value.marketing;
+
+        this.authenticationService.account_settings(queryBody)
         .subscribe(
           data =>
           {

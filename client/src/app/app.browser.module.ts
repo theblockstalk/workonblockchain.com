@@ -17,14 +17,13 @@ import { AppModule } from './app.module';
 
 @NgModule({
   imports: [
-
+    BrowserModule.withServerTransition({appId: 'app-root'}),
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
     AppModule,
-    BrowserTransferStateModule,
-    BrowserModule.withServerTransition({appId: 'app-root'}),
+    BrowserTransferStateModule
   ],
   providers: [UserService, DataService, DatePipe, CookieService,FormsModule],
   bootstrap: [AppComponent]

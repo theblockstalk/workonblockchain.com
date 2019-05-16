@@ -1,11 +1,10 @@
-import { Component, OnInit,ElementRef, Input, Inject } from '@angular/core';
+import { Component, OnInit,ElementRef, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 
 
 
@@ -29,7 +28,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   imgPath;
 
 
-  constructor(@Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -49,8 +48,8 @@ export class AdminCompanyDetailComponent implements OnInit {
   {
     this.referred_link = "";
     this.referred_name = "";
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
     this.error ='';
 
@@ -60,6 +59,22 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
+            let company_phone = '';
+            let country_code = '';
+            let contact_number = data['company_phone'];
+            contact_number = contact_number.replace(/^00/, '+');
+            contact_number = contact_number.split(" ");
+            if(contact_number.length>1) {
+              for (let i = 0; i < contact_number.length; i++) {
+                if (i === 0) country_code = '('+contact_number[i]+')';
+                else company_phone = company_phone+''+contact_number[i];
+              }
+              company_phone = country_code+' '+company_phone
+            }
+            else company_phone = contact_number[0];
+
+            data['company_phone'] = company_phone;
+
               this.info.push(data);
               this.approve = data['_creator'].is_approved;
               this.verify =data['_creator'].is_verify;

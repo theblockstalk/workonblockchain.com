@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import {environment} from '../../environments/environment';
-import { WINDOW } from '@ng-toolkit/universal';
 declare var $:any;
 
 @Component({
@@ -13,7 +12,7 @@ export class FooterComponent implements OnInit {
 
   is_cookie;
   display_cookie = 0;
-  constructor(@Inject(WINDOW) private window: Window, private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
     this.is_cookie = this.cookieService.check('wob_cookie');

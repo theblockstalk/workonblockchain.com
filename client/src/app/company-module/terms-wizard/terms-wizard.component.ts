@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-terms-wizard',
@@ -26,7 +25,7 @@ export class TermsWizardComponent implements OnInit {
   pref_active_class;
   pref_disable;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private router: Router,
               private authenticationService: UserService,private dataservice: DataService) {
   }
@@ -35,7 +34,7 @@ export class TermsWizardComponent implements OnInit {
   ngOnInit() {
     this.about_disable= "disabled";
     this.pref_disable = "disabled";
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
     {
@@ -71,8 +70,6 @@ export class TermsWizardComponent implements OnInit {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';
               this.about_company = '/about_comp';
-              this.preference  = '/preferences';
-
             }
 
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
@@ -91,13 +88,13 @@ export class TermsWizardComponent implements OnInit {
           {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.localStorage.removeItem('currentUser');
-              this.localStorage.removeItem('googleUser');
-              this.localStorage.removeItem('close_notify');
-              this.localStorage.removeItem('linkedinUser');
-              this.localStorage.removeItem('admin_log');
-              this.window.location.href = '/login';
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
 
             if(error['message'] === 403)
@@ -120,7 +117,11 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      this.authenticationService.company_terms(this.currentUser._id,termsForm.value)
+      let queryBody: any = {};
+      queryBody.terms_id = termsForm.value.termsID;
+      queryBody.marketing_emails = termsForm.value.marketing;
+
+      this.authenticationService.account_settings(queryBody)
         .subscribe(
           data => {
             if(data && this.currentUser)

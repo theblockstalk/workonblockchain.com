@@ -1,8 +1,6 @@
 import {
     DomHelper
 } from './dom.helper';
-import { WINDOW } from '@ng-toolkit/universal';
-import { Inject } from '@angular/core';
 
 describe('When using DomHelper', () => {
     describe('in the browser', () => {

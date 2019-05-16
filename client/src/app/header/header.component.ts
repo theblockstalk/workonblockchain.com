@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { DataService } from "../data.service";
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 
 @Component({
@@ -31,9 +30,10 @@ export class HeaderComponent implements OnInit {
   success_msg;
   location;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
+  constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
     this.success_msg='';
+    this.admin_route = window.location.pathname;
     router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
@@ -47,68 +47,87 @@ export class HeaderComponent implements OnInit {
     });
 
 
-    if(localStorage.getItem('currentUser')) {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-      if (this.currentUser) {
-        this.user_type = this.currentUser.type;
 
-        if (this.user_type === 'candidate') {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-          this.authenticationService.getById(this.currentUser._id)
-            .subscribe(
-              data => {
+    if(this.currentUser )
+    {
+      this.user_type = this.currentUser.type;
 
-                if (data) {
-                  this.is_verify = data['is_verify'];
-                  if (this.is_verify == 0) {
-                    this.success_msg = "not verify";
-                  }
-                  else {
-                    this.success_msg = '';
-                  }
-                  this.is_admin = data['is_admin'];
-                  this.user_name = data['first_name'] + ' ' + data['last_name'];
-                  if (this.is_admin === 1) {
-                    //this.admin_route = '/admin';
-                  }
-                  else {
-                    this.admin_route = '';
-                  }
+      if(this.user_type === 'candidate')
+      {
+
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
+          .subscribe(
+            data =>
+            {
+
+              if(data)
+              {
+                this.is_verify = data['is_verify'];
+                if(this.is_verify == 0)
+                {
+                  this.success_msg = "not verify";
                 }
-              });
-        }
-        else if (this.user_type === 'company') {
-
-          this.authenticationService.getCurrentCompany(this.currentUser._id)
-            .subscribe(
-              data => {
-                if (data) {
-                  this.is_verify = data['_creator'].is_verify;
-                  if (this.is_verify == 0) {
-                    this.success_msg = "not verify";
-                  }
-                  else {
-                    this.success_msg = '';
-                  }
-                  this.is_admin = data['_creator'].is_admin;
-                  this.user_name = data['first_name'] + ' ' + data['last_name'];
-                  if (this.is_admin === 1) {
-                    //this.admin_route = '/admin';
-                  }
-                  else {
-                    this.admin_route = '';
-                  }
+                else
+                {
+                  this.success_msg='';
                 }
-              });
-        }
+                this.is_admin = data['is_admin'];
+                this.user_name = data['first_name'] +' '+ data['last_name'];
+                if(this.is_admin === 1)
+                {
+                  localStorage.setItem('admin_log', JSON.stringify(data));
+                }
+                else
+                {
+                  localStorage.removeItem('admin_log');
+                  this.admin_route = '';
+                }
+              }
+            });
       }
-      else {
-        this.currentUser = null;
-        this.user_type = '';
+      else if(this.user_type === 'company')
+      {
 
+        this.authenticationService.getCurrentCompany(this.currentUser._id)
+          .subscribe(
+            data =>
+            {
+              if(data)
+              {
+                this.is_verify = data['_creator'].is_verify;
+                if(this.is_verify == 0)
+                {
+                  this.success_msg = "not verify";
+                }
+                else
+                {
+                  this.success_msg='';
+                }
+                this.is_admin = data['_creator'].is_admin;
+                this.user_name = data['first_name'] +' '+ data['last_name'];
+                if(this.is_admin === 1)
+                {
+                  localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
+                }
+                else
+                {
+                  localStorage.removeItem('admin_log');
+                  this.admin_route = '';
+                }
+              }
+            });
       }
     }
+    else
+    {
+      this.currentUser=null;
+      this.user_type='';
+
+    }
+
   }
 
   ngOnInit()
@@ -123,7 +142,7 @@ export class HeaderComponent implements OnInit {
       setInterval(() => {
         this.msg = "" ;
       }, 30000);
-      this.close = JSON.parse(this.localStorage.getItem('close_notify'));
+      this.close = JSON.parse(localStorage.getItem('close_notify'));
     }
 
   }
@@ -135,7 +154,7 @@ export class HeaderComponent implements OnInit {
   {
     this.success_msg='';
     this.close = "close";
-    this.localStorage.setItem('close_notify', JSON.stringify(this.close));
+    localStorage.setItem('close_notify', JSON.stringify(this.close));
 
   }
 
@@ -157,11 +176,11 @@ export class HeaderComponent implements OnInit {
         });
 
 
-    this.localStorage.removeItem('currentUser');
-    this.localStorage.removeItem('googleUser');
-    this.localStorage.removeItem('close_notify');
-    this.localStorage.removeItem('linkedinUser');
-    this.localStorage.removeItem('admin_log');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('googleUser');
+    localStorage.removeItem('close_notify');
+    localStorage.removeItem('linkedinUser');
+    localStorage.removeItem('admin_log');
 
 
   }

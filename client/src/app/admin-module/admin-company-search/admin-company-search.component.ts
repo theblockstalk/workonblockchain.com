@@ -1,11 +1,12 @@
-import { Component, OnInit,AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 declare var $:any;
+import {constants} from '../../../constants/constants';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-admin-company-search',
@@ -34,35 +35,22 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   candidate_status;
   candidate_status_account;
-  msgTagsOptions =
-    [
-      {value:'normal', name:'Normal' , checked:false},
-      {value:'job_offer', name:'Job offer sent' , checked:false},
-      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
-      {value:'interview_offer', name:'Interview offer sent' , checked:false},
-      {value:'employment_offer', name:'Employment offer sent' , checked:false},
-      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
-      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
-    ];
 
-  admin_checks_email_verify = [
-    {value:1, name:'Verified'},
-    {value:0, name:'Not Verified'}
-  ];
+  msgTagsOptions = constants.chatMsgTypes;
 
-  admin_checks_candidate_account = [
-    {value:false, name:'Enabled'},
-    {value:true, name:'Disabled'}
-  ];
+  admin_checks_email_verify = constants.admin_checks_email_verify
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  admin_checks_candidate_account = constants.admin_checks_candidate_account;
+
+  constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 200);
+    window.scrollTo(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 200);
+    }
   }
   ngOnInit()
   {
@@ -72,8 +60,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.candidate_status = 1;
     this.candidate_status_account = false;
 
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     if(!this.currentUser)
     {
@@ -271,8 +259,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.approve = '';
     this.info=[];
     this.searchWord='';
-    $('.selectpicker').val('default');
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) {
+      $('.selectpicker').val('default');
+      $('.selectpicker').selectpicker('refresh');
+    }
     this.getAllCompanies();
 
   }

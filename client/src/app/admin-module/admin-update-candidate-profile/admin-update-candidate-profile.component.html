@@ -41,9 +41,14 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Contact number</label>
-                  <input type="tel" class="form-control" disabled required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
+                <label><b>Phone</b></label>
+                <div class="input-group">
+                  <div class="input-group-prepend my-style">
+                    <select class="form-control selectpicker" disabled title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                    </select>
+                  </div>
+                  <input type="tel" class="form-control" disabled required placeholder="1234567890" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
                   </div>
@@ -93,30 +98,58 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Stackoverflow URL (optional)</label>
+                  <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.stackoverflow_url && stackoverflowaccount.errors">
+                    Enter url in proper format.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Personal website URL (optional)</label>
+                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.personal_website_url && personalaccount.errors">
+                    Enter url in proper format.
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class = "row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Nationality</label>
-                  <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null ">{{options.name}}</option>
+                  <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality' required>
+                    <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
+                    {{nationality_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="info.nationality && info.nationality.length > 4">
                     {{nationality_log}}
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group" >
-                  <label>Profile picture</label>
-                  <input type="file" class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
-                  <label>
-                    <span *ngIf="img_src" >{{img_src}}</span>
-                  </label>
-                  <div class = "invalid-feedback d-inline" *ngIf="image_log">
-                    {{image_log}}
-                  </div>
+                  <label>Image (optional)</label>
+                  <p>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+                  </p>
+                  <span *ngIf="imageCropData.image;else prefil_image" >
+                  <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                </span>
+
+                  <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                  <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200" >
+                </span>
                 </div>
               </div>
             </div>
@@ -129,7 +162,7 @@
                     <li> 2-5 sentences </li>
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
                   </ul>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                  <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                     {{intro_log}}
                   </div>
@@ -178,15 +211,106 @@
           <section class="border rounded bg-white mt-4 py-3 px-5" id="job_candidate">
             <div class="row">
               <div class="col-md-12">
-                <h2><i class="fas fa-briefcase"></i>Tell us more about your dream job</h2>
+                <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
               </div>
             </div>
-            <div class="row mt-4">
+            <div class = "row mt-4">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Current annual salary (optional):</label>
+                  <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="" #salary_field name="current_salary" [(ngModel)]="current_salary">
+                  <small id="emailHelp" class="form-text text-muted">
+                    This information is never shown to companies. It is used by us to help us help you set your expected salary.
+                  </small>
+                  <div class = "invalid-feedback d-inline" expected_validation *ngIf="(!current_salary && current_currency) ">
+                    {{current_sal_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="base_validation.errors && current_salary">
+                    Current annual salary should be a number.
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="invisible">Current annual salary currency</label>
+
+                  <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
+                    <option value="-1" >Currency</option>
+                    <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) || (current_salary && current_currency === '-1')  ">
+                    {{current_currency_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Where would you like to work? (select up to 10)</label>
+                  <label>Work type:</label>
+                  <div class="row mt-4">
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-user-secret fa-4x"></i><br/>
+                      <div class="form-check mt-4">
+                        <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
+                          Empolyee (full/part time)
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-address-card fa-4x"></i><br/>
+                      <div class="form-check mt-4">
+                        <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
+                          Contractor/Freelancer
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-user-check fa-4x"></i><br/>
+                      <small>This can be a great way to get commercial experience</small>
+                      <br/>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
+                          Temporary volunteer
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
+                    {{work_type_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="employeeCheck" >
+              <div class="col-md-12">
+                <h4>Employee</h4>
+              </div>
+
+              <div class="col-md-6 mt-4">
+                <div class="form-group">
+                  <label>Position type:</label>
+                  <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
+                    <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!employee.employment_type">
+                    {{employment_type_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Locations:</label>
                   <div>
-                    <mat-autocomplete #auto="matAutocomplete">
+
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
                       <mat-option *ngFor="let loc of cities" [value]="loc.name">
                         <span>{{ loc.name }}</span>
                       </mat-option>
@@ -194,29 +318,29 @@
 
                     <mat-form-field floatLabel="always">
                       <mat-label></mat-label>
-                      <input matInput [matAutocomplete]="auto" placeholder="Remote, Canada, London..." [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
                     </mat-form-field>
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
-                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
-                      {{country_input_log}}
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) ">
+                      {{employment_location_log}}
                     </div>
 
-                    <div *ngIf="selectedValueArray.length > 0">
+                    <div *ngIf="employee.selectedLocation && employee.selectedLocation.length > 0">
                       <div class="row">
-                        <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                        <div  *ngFor="let value of employee.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
                           <div class="border px-1 py-3 ml-2 row">
                             <div class = "col-8">
                               <label >{{value.name}}</label>
                             </div>
                             <div class = "col-4 text-right">
-                              <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                              <a (click)="employeeDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
                             </div>
                             <div class="col-12">
                               <div class="form-check" *ngIf="value.name !== 'Remote'">
                                 <label class="form-check-label" for="check{{i}}">
-                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
                                 </label>
                               </div>
 
@@ -225,128 +349,343 @@
 
                         </div>
                       </div>
-                      <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
-                        {{country_log}}
+                      <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
+                        {{employment_location_log}}
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
-            </div>
 
-
-            <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>What role are you looking for?</label>
+                  <label>Role:</label>
                   <div class="checkbox">
                     <div class="row m-0">
-                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
                         <label class="form-check-label">
-                          <input class="form-check-input" type="checkbox" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" id="{{position_option}}">
+                          <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, employee.roles) === true" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
                           {{position_option.name}}
                         </label>
                       </div>
+                      <div class="invalid-feedback d-inline" *ngIf="!employee.roles">
+                        {{employee_roles_log}}
+                      </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
-                  <div class = "invalid-feedback d-inline" *ngIf="jobselected.length<=0">
-                    {{roles_log}}
-                  </div>
+
                 </div>
               </div>
 
-
-            </div>
-
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Expected annual salary</label>
-                  <input type="text" class="form-control" #expect_salary="ngModel" pattern="^[0-9]*$" required name="expected_salary" placeholder="10000" [(ngModel)]="expected_salaryyy">
-                  <div class = "invalid-feedback d-inline">
-                    <span *ngIf="!expected_salaryyy; else expected_validation">{{salary_log}}</span>
-                    <span #expected_validation  *ngIf="expect_salary.errors && expected_salaryyy">  Yearly expected base salary should be a number. </span>
+                  <label>Expected annual salary:</label>
+                  <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" 10000" [(ngModel)]="employee.expected_annual_salary">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.expected_annual_salary; else expected_validation">
+                    {{salary_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="expect_salary.errors && employee.expected_annual_salary">
+                    Yearly expected base salary should be a number.
                   </div>
                 </div>
+
               </div>
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="invisible">Expected annual salary currency</label>
-                  <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
-                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
+                  <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
+                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!base_currency">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
                     {{currency_log}}
                   </div>
+
                 </div>
 
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Current annual salary (optional)</label>
-                  <input type="text" class="form-control" #current_salary="ngModel" pattern="^[0-9]*$" placeholder="10000" #salary_field name="salary" [(ngModel)]="salary">
-                  <small id="emailHelp" class="form-text text-muted">
-                    This information is never shown to companies. It is used by us to help us help you set your expected salary.
-                  </small>
-                  <div class = "invalid-feedback d-inline" *ngIf="(!salary && current_currency) ">
+                  <label>Availability:</label>
 
-                    {{current_sal_log}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="invisible">Current annual salary currency</label>
-                  <select [(ngModel)]="current_currency" title="Currency" class="form-control selectpicker" name="current_currency" >
-                    <option value="-1" >Currency</option>
-                    <option *ngFor='let currentCurrency of currency'  [value]="currentCurrency" [attr.selected]="current_currency === currentCurrency ? true : null">{{currentCurrency}}</option>
+                  <select title="(select one)" [(ngModel)]="employee.employment_availability" class="selectpicker" id="month" required name="availability_day" >
+                    <option class='option' *ngFor='let month of employement_availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="(salary && !current_currency) || (salary && current_currency === '-1') ">
-                    {{current_currency_logg}}
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.employment_availability">
+                    {{avail_log}}
                   </div>
+
+
                 </div>
               </div>
             </div>
+            <hr *ngIf = "contractorCheck" />
+            <div class="row mt-2" *ngIf="contractorCheck" >
+              <div class="col-md-12">
+                <h4>Contractor</h4>
+              </div>
 
-            <div class="row">
+
+              <div class="col-md-12 mt-4">
+                <div class="form-group">
+                  <label>Locations:</label>
+                  <div>
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
+                    </mat-form-field>
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!contractor.selectedLocation || (contractor.selectedLocation && contractor.selectedLocation.length <= 0) ">
+                      {{contract_location_log}}
+                    </div>
+
+                    <div *ngIf="contractor.selectedLocation && contractor.selectedLocation.length > 0">
+                      <div class="row">
+                        <div  *ngFor="let value of contractor.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
+                          <div class="border px-1 py-3 ml-2 row">
+                            <div class = "col-8">
+                              <label >{{value.name}}</label>
+                            </div>
+                            <div class = "col-4 text-right">
+                              <a (click)="contractorDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                                <label class="form-check-label" for="check{{i}}">
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="contractorUpdateCitiesOptions($event)" > Work visa required
+                                </label>
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(contractor.selectedLocation)">
+                        {{contract_location_log}}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Which area are you interested in?</label>
+                  <label>Role:</label>
                   <div class="checkbox">
                     <div class="row m-0">
-                      <div class="form-check col-md-4 mb-3" *ngFor='let position_option of area_interested'>
-                        <label class="form-check-label" >
-                          <input type="checkbox" class="form-check-input"  [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, contractor.roles) === true" value="{{position_option.value}}" (change)="onJobSelected($event, 'contractor')" required="" />
                           {{position_option.name}}
                         </label>
                       </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
-                  <div class = "invalid-feedback d-inline" *ngIf="selectedValue.length <=0">
-                    {{interest_log}}
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.roles || contractor.roles && contractor.roles.length<=0">
+                    {{contractor_roles_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Hourly rate:</label>
+                  <input type="text" #hourly_rate="ngModel" pattern="^[0-9]*$" class="form-control" required name="hourly_rate" placeholder="" [(ngModel)]="contractor.hourly_rate">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate; else expected_validation">
+                    {{contractor_hourly_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="hourly_rate.errors && contractor.hourly_rate">
+                    Hourly rate should be a number.
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="invisible">Currency</label>
+                  <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="contractor_currency" >
+                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === contractor.currency ? true : null" >{{baseCurrency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                    {{contractor_currency_log}}
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Maximum hours per week (optional):</label>
+
+                  <select title="(select one)" [(ngModel)]="contractor.max_hour_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                    <option class='option' value="-1" >None</option>
+                    <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === contractor.max_hour_per_week ? true : null" >{{hours}}</option>
+                  </select>
+
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contractor type:</label>
+
+                  <div class="checkbox">
+                    <div class="form-check" *ngFor = "let type of contractor_types">
+                      <input class="form-check-input" type="checkbox" [value]="type.value" [checked]="type.checked" (change)="contractor_type($event)" >
+                      <label class="form-check-label" >
+                        {{type.name}}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contractor_type || (contractor.contractor_type && contractor.contractor_type.length<=0)">
+                    {{contractor_type_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6" *ngIf="contractor.contractor_type && checkContractValue(contractor.contractor_type)">
+                <div class="form-group">
+                  <label>Agency website:</label>
+                  <input type="text" class="form-control" #agencyUrl="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">
+                  <div class = "invalid-feedback d-inline"  *ngIf="checkContractValue(contractor.contractor_type) && !contractor.agency_website ;else validateUrl  ">
+                    {{agency_website_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline" #validateUrl *ngIf="contractor.agency_website && agencyUrl.errors">
+                    Enter url in proper format
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Service description:</label>
+                  <textarea class="form-control" rows="5"  maxlength="3000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required [(ngModel)]="contractor.service_description" name="service_description" ></textarea>
+                  <div class = "invalid-feedback d-inline" #validateUrl *ngIf="!contractor.service_description">
+                    {{contractor_description_log}}
                   </div>
                 </div>
               </div>
             </div>
+            <hr *ngIf="volunteerCheck" />
 
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row mt-2" *ngIf="volunteerCheck" >
+              <div class="col-md-12">
+                <h4>Volunteer</h4>
+              </div>
+
+
+              <div class="col-md-12 mt-4">
                 <div class="form-group">
-                  <label>Your availability</label>
-                  <select title="Now" [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
-                    <option *ngFor='let month of availability' [value]="month.value" [attr.selected]="month.value === availability_day">{{month.name}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="!availability_day">
-                    {{avail_log}}
+                  <label>Locations:</label>
+                  <div>
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <mat-form-field floatLabel="always">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
+                    </mat-form-field>
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) ">
+                      {{volunteer_location_log}}
+                    </div>
+
+                    <div *ngIf="volunteer.selectedLocation && volunteer.selectedLocation.length > 0">
+                      <div class="row">
+                        <div  *ngFor="let value of volunteer.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
+                          <div class="border px-1 py-3 ml-2 row">
+                            <div class = "col-8">
+                              <label >{{value.name}}</label>
+                            </div>
+                            <div class = "col-4 text-right">
+                              <a (click)="volunteerDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                                <label class="form-check-label" for="check{{i}}">
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
+                                </label>
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
+                        {{volunteer_location_log}}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Role:</label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, volunteer.roles)" value="{{position_option.value}}" (change)="onJobSelected($event, 'volunteer')" required="" />
+                          {{position_option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf=" !volunteer.roles || (volunteer.roles && volunteer.roles.length<=0)">
+                    {{volunteer_roles_log}}
                   </div>
                 </div>
               </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Maximum hours per week (optional):</label>
+                  <select title="(select one)" [(ngModel)]="volunteer.max_hours_per_week" class="selectpicker form-control" id="month" required name="max_hour_per_week " >
+                    <option class='option' value="-1" >None</option>
+                    <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === volunteer.max_hours_per_week ? true : null" >{{hours}}</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Learning objectives:</label>
+                  <textarea class="form-control" rows="5"  maxlength="3000" placeholder="Learn more about P2P protocols and cryptocurrency exchange architectures." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.learning_objectives">
+                    {{objective_log}}
+                  </div>
+                </div>
+
+              </div>
+
+
             </div>
           </section>
           <!--job information form end here-->
@@ -361,7 +700,7 @@
             <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Why do you want to work on blockchain?</label>
+                  <label>Why work on blockchain?</label>
                   <ul>
                     <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
                     <li> This is the first field that a company sees! </li>
@@ -373,6 +712,29 @@
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Interests</label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+                          {{position_option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
+                  <div class = "invalid-feedback d-inline"  *ngIf="selectedValue && selectedValue.length <=0">
+                    {{interest_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="row">
               <div class="col-md-12">
@@ -423,7 +785,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experience</label>
-                  <textarea rows="4" cols="100" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -455,7 +817,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of experimentation</label>
-                  <textarea rows="4" cols="100" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -512,7 +874,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Description of commercial experience</label>
-                  <textarea rows="4" cols="100" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
+                  <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
                 </div>
               </div>
             </div>
@@ -713,7 +1075,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Job description (optional)</label>
-                        <textarea rows="5" id="comment13" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+                        <textarea rows="5" id="comment13" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                       </div>
                     </div>
 
@@ -808,7 +1170,7 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save</button>
+            <button type="submit" class = "btn btn-primary" >Save</button>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}
@@ -817,5 +1179,27 @@
         </div>
       </div>
     </form>
+  </div>
+  <!-- Image crop popup -->
+  <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+        </div>
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
+            <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+          </div>
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

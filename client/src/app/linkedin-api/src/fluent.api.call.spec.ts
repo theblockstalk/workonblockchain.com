@@ -1,5 +1,4 @@
 import { FluentApiCall } from './fluent.api.call';
-
 import { Observable,AsyncSubject } from 'rxjs';
 
 import {

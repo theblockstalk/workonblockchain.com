@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {UserService} from "../../user.service";
 import { Router } from '@angular/router';
-import { LOCAL_STORAGE } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-candidate-verify-email',
@@ -13,10 +12,10 @@ export class CandidateVerifyEmailComponent implements OnInit {
   success_msg;
   error_msg;
 
-  constructor(@Inject(LOCAL_STORAGE) private localStorage: any, private authenticationService: UserService , private router: Router) { }
+  constructor(private authenticationService: UserService , private router: Router) { }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser) {}
     else  this.router.navigate(['/candidate-verify-email']);
   }

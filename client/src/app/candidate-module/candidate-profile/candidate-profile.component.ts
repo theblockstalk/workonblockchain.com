@@ -1,4 +1,4 @@
-import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter, Inject} from '@angular/core';
+import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter, Inject, PLATFORM_ID} from '@angular/core';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -6,8 +6,8 @@ import {HttpClient} from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $: any;
 import {constants} from "../../../constants/constants";
-import {getNameFromValue} from "../../../services/object";
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -37,7 +37,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   stack;
   linkedin_account;
   medium_account;
-  roles;
   expected_currency;
   expected_salary;
   email;
@@ -50,9 +49,23 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  infoo;
+  base_country;
+  base_city;
+  commercial_skills;
+  formal_skills;
+  selectedValueArray;
+  visaRequiredArray = [];
+  noVisaArray = [];
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  stackoverflow_url;
+  personal_website_url;
+  country_code;
 
   public loading = false;information: any = {};
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object)
   {
 
 
@@ -82,7 +95,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }
   tweet_text;
   dateA;dateB;
@@ -103,14 +116,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     return 0;
   };
 
-  infoo;
-  base_country;
-  base_city;
-  commercial_skills;
-  formal_skills;
-  selectedValueArray;
-  visaRequiredArray = [];
-  noVisaArray = [];
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+
   ngOnInit()
   {
     this.infoo='';
@@ -124,7 +132,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
     this.dataservice.eemailMessage.subscribe(message => this.message = message);
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!";
     if(this.user_id)
@@ -143,7 +151,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       {
         this.information.country = -1;
 
-        this.authenticationService.getProfileById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
           .subscribe(
             data => {
               if(data)
@@ -154,12 +162,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
                 if(data['first_name'] && data['last_name'] && data['contact_number'] && data['nationality'] &&
-                  data['candidate'].locations  && data['candidate'].roles && data['candidate'].interest_areas &&
-                  data['candidate'].expected_salary && data['candidate'].why_work && data['candidate'].description
+                   data['candidate'].interest_areas && data['candidate'].why_work && data['candidate'].description
                   && !data['candidate'].base_country && !data['candidate'].base_city){
-                  $("#popModal_b").modal({
-                    show: true
-                  });
+                  if (isPlatformBrowser(this.platformId)) {
+                    $("#popModal_b").modal({
+                      show: true
+                    });
+                  }
 
                 }
 
@@ -171,6 +180,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 if(data['candidate'].linkedin_account) this.linkedin_account = data['candidate'].linkedin_account;
                 if(data['candidate'].medium_account) this.medium_account = data['candidate'].medium_account;
 
+                if(data['candidate'].stackoverflow_url) this.stackoverflow_url = data['candidate'].stackoverflow_url;
+                if(data['candidate'].personal_website_url) this.personal_website_url = data['candidate'].personal_website_url;
+
 
                 if(data['candidate'] && data['candidate'].base_country){
                   this.base_country = data['candidate'].base_country;
@@ -179,13 +191,23 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.base_city = data['candidate'].base_city;
                 }
 
-
-                this.expected_currency = data['candidate'].expected_salary_currency;
-                this.expected_salary = data['candidate'].expected_salary;
                 this.first_name=data['first_name'];
                 this.last_name =data['last_name'];
                 this.nationality = data['nationality'];
-                this.contact_number =data['contact_number'];
+
+                this.contact_number = '';
+                let contact_number = data['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
+                }
+                else this.contact_number = contact_number[0];
+
                 this.description =data['candidate'].description;
                 if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {
@@ -208,94 +230,59 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
                 }
 
-                /*this.countries = data['candidate'].locations;
-                this.countries.sort();
-                if (this.countries.findIndex(obj => obj.remote === true) > -1) {
-                  this.countries = this.filter_array(this.countries);
-                }*/
-
-                if(data['candidate'].locations)
-                {
-                  let citiesArray = [];
-                  let countriesArray = [];
-                  for (let country1 of data['candidate'].locations)
-                  {
-                    let locObject : any = {}
-                    if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_needed : false});
-                    }
-
-                    if (country1['country']) {
-                      locObject.name = country1['country'];
-                      locObject.type = 'country';
-                      if(country1['visa_needed'] === true) locObject.visa_needed = true;
-                      else locObject.visa_needed = false;
-                      countriesArray.push(locObject);
-                      countriesArray.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      });
-                    }
-                    if (country1['city']) {
-                      let city = country1['city'].city + ", " + country1['city'].country;
-                      locObject.name = city;
-                      locObject.type = 'city';
-                      if(country1['visa_needed'] === true) locObject.visa_needed = true;
-                      else locObject.visa_needed = false;
-                      citiesArray.push(locObject);
-                      citiesArray.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      });
-
-                    }
-
+                if(data['candidate'].employee) {
+                  this.employee.value = data['candidate'].employee;
+                  const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                  this.employee.noVisaArray = locationArray.noVisaArray;
+                  this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  for(let role of this.employee.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    rolesValue.push(filteredArray.name);
                   }
+                  this.employee.value.roles = rolesValue.sort();
+                  let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                  this.employee.value.employment_availability = availability.name;                }
 
-                  this.countries = citiesArray.concat(countriesArray);
-                  this.countries = this.countries.concat(this.selectedValueArray);
-                  if(this.countries.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
-                    this.countries.splice(0, 0, remoteValue);
-                    this.countries = this.filter_array(this.countries);
-
+                if(data['candidate'].contractor) {
+                  this.contractor.value = data['candidate'].contractor;
+                  const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                  this.contractor.noVisaArray = locationArray.noVisaArray;
+                  this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  for(let role of this.contractor.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    rolesValue.push(filteredArray.name);
                   }
-
-                  if(this.countries && this.countries.length > 0) {
-
-                    for(let loc of this.countries) {
-                      if(loc.visa_needed === true)
-                        this.visaRequiredArray.push(loc);
-                      if(loc.visa_needed === false)
-                        this.noVisaArray.push(loc);
-                    }
-
+                  this.contractor.value.roles = rolesValue.sort();
+                  let contractorType = [];
+                  for(let type of this.contractor.value.contractor_type) {
+                    const filteredArray = getNameFromValue(this.contractorTypes , type);
+                    contractorType.push(filteredArray.name);
                   }
-
+                  this.contractor.value.contractor_type = contractorType;
                 }
 
-                this.interest_area =data['candidate'].interest_areas;
-                this.interest_area.sort();
-                let new_roles = constants.workRoles;
-                let filtered_array = [];
-
-                this.roles  = data['candidate'].roles;
-                for(let i=0;i<this.roles.length;i++){
-                  const filteredArray = getNameFromValue(new_roles,this.roles[i]);
-                  filtered_array.push(filteredArray.name);
+                if(data['candidate'].volunteer) {
+                  this.volunteer.value = data['candidate'].volunteer;
+                  const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                  this.volunteer.noVisaArray = locationArray.noVisaArray;
+                  this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                  let rolesValue = [];
+                  for(let role of this.volunteer.value.roles){
+                    const filteredArray = getNameFromValue(this.roles,role);
+                    rolesValue.push(filteredArray.name);
+                  }
+                  this.volunteer.value.roles = rolesValue.sort();
                 }
-                this.roles = filtered_array;
-                this.roles.sort();
 
-                if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-                else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-                else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-                else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-                else this.availability_day =data['candidate'].availability_day;
+                if(data['candidate'].interest_areas) {
+                  this.interest_area = data['candidate'].interest_areas;
+                  this.interest_area.sort();
+                }
 
-                this.why_work = data['candidate'].why_work;
+
+                if(data['candidate'].why_work) this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {
                   if(data['candidate'].blockchain.commercial_platforms) {
                     this.commercial = data['candidate'].blockchain.commercial_platforms;
@@ -355,8 +342,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
 
 
-                this.current_currency = data['candidate'].current_currency;
-                this.current_salary = data['candidate'].current_salary;
+                if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+                if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
 
 
                 if(data['image'] != null )
@@ -375,13 +362,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             {
               if(err.message == 500 || err.message == 401)
               {
-                this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                this.localStorage.removeItem('currentUser');
-                this.localStorage.removeItem('googleUser');
-                this.localStorage.removeItem('close_notify');
-                this.localStorage.removeItem('linkedinUser');
-                this.localStorage.removeItem('admin_log');
-                this.window.location.href = '/login';
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
               }
 
             });
@@ -422,9 +409,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     {
       this.city_log ="Please enter base city";
     }
-    if(this.information.country !== -1 && this.information.city  )
+    if(this.information.country !== -1 && this.information.city)
     {
-      this.authenticationService.about(this.currentUser._id,this.information)
+      this.authenticationService.edit_candidate_profile(this.currentUser._id,this.information, false)
         .subscribe(
           data =>
           {
@@ -434,7 +421,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
               this.base_country = this.information.country;
               this.base_city = this.information.city;
 
-              $('#popModal_b').modal('hide');
+              if (isPlatformBrowser(this.platformId)) $('#popModal_b').modal('hide');
 
             }
 
@@ -443,8 +430,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
           {
             if(error.message === 500 || error.message === 401)
             {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.window.location.href = '/login';
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
             }
 
             if(error.message === 403)
@@ -458,26 +445,5 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   temp;
   index;
   countriesArray=[];
-  /*swapLocations(locations , index1 , value) {
-    this.temp = locations[index1];
-    this.countriesArray[0]="remote";
-    this.
-
-
-  }*/
-
-  filter_array(arr)
-  {
-    var hashTable = {};
-
-    return arr.filter(function (el) {
-      var key = JSON.stringify(el);
-      var match = Boolean(hashTable[key]);
-
-      return (match ? false : hashTable[key] = true);
-    });
-  }
-
-
 
 }

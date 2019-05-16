@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, Inject} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Inject, PLATFORM_ID} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
@@ -7,7 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
 import {environment} from '../../../environments/environment';
 import {constants} from '../../../constants/constants';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-candidate-form',
@@ -29,14 +29,17 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   google_url;
   linkedin_url;
   linkedin_id;
+  country_code_log;
 
   credentials: any = {};
   countries = constants.countries;
+  country_codes = constants.country_codes;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, 
+  constructor(
     private route: ActivatedRoute,
     private router: Router,private dataservice: DataService,
-    private authenticationService: UserService,private titleService: Title,private newMeta: Meta
+    private authenticationService: UserService,private titleService: Title,private newMeta: Meta,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
     this.code = localStorage.getItem('ref_code');
@@ -83,14 +86,16 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    window.scrollTo(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
 
@@ -103,16 +108,18 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+google_redirect_url;
     this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
-    $(function(){
-      var hash = this.window.location.hash;
-      hash && $('div.nav a[href="' + hash + '"]').tab('show');
-      $('.nav-tabs a').click(function (e) {
-        $(this).tab('show');
-        var scrollmem = $('body').scrollTop();
-        this.window.location.hash = this.hash;
-        $('html,body').scrollTop(scrollmem);
+    if (isPlatformBrowser(this.platformId)) {
+      $(function () {
+        var hash = window.location.hash;
+        hash && $('div.nav a[href="' + hash + '"]').tab('show');
+        $('.nav-tabs a').click(function (e) {
+          $(this).tab('show');
+          var scrollmem = $('body').scrollTop();
+          window.location.hash = this.hash;
+          $('html,body').scrollTop(scrollmem);
+        });
       });
-    });
+    }
 
     this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });
@@ -180,14 +187,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       queryBody.first_name = this.credentials.first_name;
       queryBody.last_name = this.credentials.last_name;
       queryBody.password = this.credentials.password;
-
+      if(this.credentials.referred_email) queryBody.referred_email  = this.credentials.referred_email;
       this.authenticationService.createCandidate(queryBody)
         .subscribe(
           data =>
           {
-            this.localStorage.setItem('currentUser', JSON.stringify(data));
-            this.localStorage.removeItem('ref_code');
-            this.window.location.href = '/candidate-verify-email';
+            localStorage.setItem('currentUser', JSON.stringify(data));
+            localStorage.removeItem('ref_code');
+            window.location.href = '/candidate-verify-email';
 
           },
           error =>
@@ -223,6 +230,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   companyPostalCodeLog;
   companyCityLog;
   companyPasswordLog;
+  contact_number_log;
 
   company_signup(signupForm: NgForm)
   {
@@ -231,6 +239,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.credentials.type="company";
     this.credentials.social_type='';
     this.password_log = '';
+    this.contact_number_log = '';
+    let errorCount = 0;
+
     if(this.credentials.password != this.credentials.confirm_password )
     {
       this.credentials.confirm_password = '';
@@ -265,6 +276,20 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
+    if (this.credentials.phone_number) {
+      if((this.credentials.phone_number.length < 4 || this.credentials.phone_number.length > 15)){
+        this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
+        errorCount = 1;
+      }
+      if(!this.checkNumber(this.credentials.phone_number)) {
+        errorCount = 1;
+      }
+    }
+
+    if(!this.credentials.country_code)
+    {
+      this.country_code_log = 'Please select country code';
+    }
     if(!this.credentials.country)
     {
       this.companyCountryLog = 'Please select country name';
@@ -281,17 +306,18 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyPasswordLog = 'Please enter password'
     }
-    if(signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
-      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
+    if(errorCount === 0 && signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
+      this.credentials.phone_number = this.credentials.country_code +' '+this.credentials.phone_number;
       this.authenticationService.create_employer(this.credentials)
         .subscribe(
           data =>
           {
-            this.localStorage.setItem('currentUser', JSON.stringify(data));
-            this.localStorage.removeItem('ref_code');
-            this.window.location.href = '/company-verify-email';
+            localStorage.setItem('currentUser', JSON.stringify(data));
+            localStorage.removeItem('ref_code');
+            window.location.href = '/company-verify-email';
           },
           error =>
           {
@@ -309,5 +335,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           });
     }
 
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
   }
 }

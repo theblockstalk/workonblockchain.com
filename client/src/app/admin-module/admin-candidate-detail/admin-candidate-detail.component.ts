@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input, ViewChild, AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit,ElementRef, Input, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -6,8 +6,8 @@ import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
 import {constants} from '../../../constants/constants';
-import {getNameFromValue} from "../../../services/object";
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {changeLocationDisplayFormat, getNameFromValue, getFilteredNames} from "../../../services/object";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -39,7 +39,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   description_experimented_platforms;
   description_commercial_skills;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+  country_code;
+
+  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router, @Inject(PLATFORM_ID) private platformId: Object)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -66,7 +73,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   };
 
   commercial;
-  roles;
   platforms;
   email;
   response;
@@ -85,34 +91,38 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 600);
-    this.window.scrollTo(0, 0);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 600);
+    }
+    window.scrollTo(0, 0);
 
   }
 
 
   ngOnInit()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 500);
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+    }
+
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
     };
@@ -129,10 +139,56 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
-        this.authenticationService.getById(this.user_id)
+        this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
               this._id  = data['_id'];
+              if(data['candidate'].employee) {
+                this.employee.value = data['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(data['candidate'].contractor) {
+                this.contractor.value = data['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue;
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType.sort();
+              }
+
+              if(data['candidate'].volunteer) {
+                this.volunteer.value = data['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
@@ -140,13 +196,23 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 $('.selectpicker').selectpicker('refresh');
               }, 200);
 
+              this.contact_number = '';
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
+              }
+              else this.contact_number = contact_number[0];
+
+              data['contact_number'] = this.contact_number;
+
               this.info.push(data);
               this.verify =data['is_verify'];
-              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-              else this.availability_day =data['candidate'].availability_day;
 
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -221,17 +287,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
-              this.roles  = data['candidate'].roles;
-              if(this.roles) {
-                let new_roles = constants.workRoles;
-                let filtered_array = [];
-                for(let i=0;i<this.roles.length;i++){
-                  const filteredArray = getNameFromValue(new_roles,this.roles[i]);
-                  filtered_array.push(filteredArray.name);
-                }
-                this.roles = filtered_array;
-                this.roles.sort();
-              }
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -396,16 +451,22 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
-      $("#sel1-reason-deferred").css('display', 'none');
-      $("#sel1-reason-rejected").css('display', 'block');
+      if (isPlatformBrowser(this.platformId)) {
+        $("#sel1-reason-deferred").css('display', 'none');
+        $("#sel1-reason-rejected").css('display', 'block');
+      }
     }
     if(event === 'Deferred' || event === 'deferred'){
-      $("#sel1-reason-rejected").css('display', 'none');
-      $("#sel1-reason-deferred").css('display', 'block');
+      if (isPlatformBrowser(this.platformId)) {
+        $("#sel1-reason-rejected").css('display', 'none');
+        $("#sel1-reason-deferred").css('display', 'block');
+      }
     }
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 200);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 200);
+    }
   }
 
   is_approve;is_approved;
@@ -483,8 +544,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           }
           this.reset();
           this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
-          $('.selectpicker').val('default');
-          $('.selectpicker').selectpicker('refresh');
+          if (isPlatformBrowser(this.platformId)) {
+            $('.selectpicker').val('default');
+            $('.selectpicker').selectpicker('refresh');
+          }
           this.success = "Successfully updated";
           setTimeout(() => {
             this.success = '';

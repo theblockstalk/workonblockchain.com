@@ -1,10 +1,8 @@
-import { Component, OnInit, ElementRef , AfterViewInit , Input, ViewChild, Inject, PLATFORM_ID} from '@angular/core';
+import { Component, OnInit, ElementRef , Input , ViewChild, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
-import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router , ActivatedRoute} from '@angular/router';
 import { DatePipe } from '@angular/common';
 declare var $:any;
 import {environment} from '../../../environments/environment';
@@ -14,11 +12,11 @@ import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {isPlatformBrowser} from "@angular/common";
 
 @Component({
-  selector: 'app-edit-company-profile',
-  templateUrl: './edit-company-profile.component.html',
-  styleUrls: ['./edit-company-profile.component.css']
+  selector: 'app-admin-update-company-profile',
+  templateUrl: './admin-update-company-profile.component.html',
+  styleUrls: ['./admin-update-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
+export class AdminUpdateCompanyProfileComponent implements OnInit {
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
@@ -83,10 +81,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   selectedLocations;
   emptyInput;
   when_receive_email_notitfications;
-  yearVerification;
-  country_code;
-  country_code_log;
-
   countries = constants.countries;
   job_types = constants.job_type;
   roles = constants.workRoles;
@@ -99,12 +93,20 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   country_codes = constants.country_codes;
   years_exp = constants.years_exp_min;
   prefData;
+  company_id;
+  admin_log;
+  yearVerification;
+  country_code;
+  country_code_log;
   contact_number_log;
   imagePreviewLink;
   prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
+              private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
+    this.route.queryParams.subscribe(params => {
+      this.company_id = params['company'];
+    });
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;
@@ -115,9 +117,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     this.cropperSettings.croppedHeight = 200;
     this.cropperSettings.canvasWidth = 300;
     this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.rounded = true;
     this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
     this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
-    this.cropperSettings.rounded = true;
     this.imageCropData = {};
   }
 
@@ -160,7 +162,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, years_exp_min: [i.years_exp_min],order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies,years_exp_min: [i.years_exp_min] ,order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -200,12 +202,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   }
 
   locationArray = [];
-  ngOnInit()
-  {
+  ngOnInit() {
     if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -213,7 +215,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     {
       this.router.navigate(['/login']);
     }
-    else if(this.currentUser && this.currentUser.type === 'company')
+    else if(this.currentUser && this.admin_log)
     {
       this.job_types.sort(function(a, b){
         if(a < b) { return -1; }
@@ -242,7 +244,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.company_id)
         .subscribe(
           data =>
           {
@@ -303,6 +305,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
                   this.preferncesFormData()
                 )
               });
+
             }
           },
           error =>
@@ -365,7 +368,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.company_website_log="Please enter company website url";
     }
     if(!this.company_phone) {
-      this.company_phone_log="Please enter phone number name";
+      this.company_phone_log="Please enter phone number";
     }
     if (this.company_phone) {
       if(this.company_phone.length < 4 || this.company_phone.length > 15){
@@ -377,8 +380,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       }
     }
 
-    if(!this.country_code) {
-      this.country_code_log="Please select country code";
+    if(!this.country_code){
+      this.country_code_log = 'Please select country code';
     }
     if(this.company_country === -1) {
       this.company_country_log="Please select country";
@@ -482,7 +485,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       }
     }
 
-    if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
@@ -491,7 +494,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
         const formData = new FormData();
         formData.append('company_logo', file);
-        this.authenticationService.edit_company_profile(this.currentUser._id ,formData , false)
+        this.authenticationService.edit_company_profile(this.company_id ,formData , true)
           .subscribe(
             data => {
               if (data) {
@@ -567,12 +570,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       profileForm.value.phone_number = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
-      this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)
+      this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/company_profile']);
+              this.router.navigate(['/admin-company-detail'], { queryParams: { user: this.company_id } });
             }
 
           },
@@ -751,6 +754,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
     }
+
     return new File([u8arr], filename, {type:mime});
   }
 

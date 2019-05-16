@@ -1,3 +1,11 @@
 .form-control:disabled, .form-control[readonly] {
   background-color: #fff;
 }
+
+.simple-radio-button {
+  background-color: transparent !important;
+}
+
+.filter_heading {
+  font-size: 1.4rem !important;;
+}

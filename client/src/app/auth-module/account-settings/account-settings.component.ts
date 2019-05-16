@@ -1,10 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { DataService } from '../../data.service';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'app-account-settings',
@@ -21,18 +20,18 @@ export class AccountSettingsComponent implements OnInit {
   message;
   unread_msgs_emails = true;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService)
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService)
   { }
 
   password = true;
   ngOnInit()
   {
     this.inform = '';
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
 
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id , false)
         .subscribe(
           data =>
           {
@@ -70,13 +69,13 @@ export class AccountSettingsComponent implements OnInit {
           {
             if(error.message === 500 || error.message === 401)
             {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.localStorage.removeItem('currentUser');
-              this.localStorage.removeItem('googleUser');
-              this.localStorage.removeItem('close_notify');
-              this.localStorage.removeItem('linkedinUser');
-              this.localStorage.removeItem('admin_log');
-              this.window.location.href = '/login';
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
 
             if(error.message === 403)
@@ -97,18 +96,24 @@ export class AccountSettingsComponent implements OnInit {
   status;
   account_setting(statusName , statusValue)
   {
-
+    let queryInput : any = {};
     this.inform = '';
     if(statusName === 'marketingEmail') {
-      this.status = {statusName : statusName , statusValue : this.info.marketing};
+      queryInput.marketing_emails = this.info.marketing;
     }
     if(statusName === 'disabledAccount') {
-      this.status = {statusName : statusName , statusValue : this.info.disable_account};
+      queryInput.disable_account = this.info.disable_account;
     }
+
+    if(statusName === 'unreadMsgNotification') {
+      queryInput.is_unread_msgs_to_send = this.info.unread_msgs_emails;
+    }
+
 
     if(this.currentUser)
     {
-      this.authenticationService.account_settings(this.currentUser._id, this.status)
+
+      this.authenticationService.account_settings(queryInput)
         .subscribe(
           data =>
           {
@@ -126,46 +131,6 @@ export class AccountSettingsComponent implements OnInit {
             }
             else {
               this.log = "Something went wrong";
-            }
-
-          }
-        );
-    }
-
-  }
-  unread_msgs_emails_send(){
-    this.inform='';
-    if(this.currentUser)
-    {
-      this.authenticationService.set_unread_msgs_emails_status(this.info.unread_msgs_emails)
-        .subscribe(
-          data =>
-          {
-            if(data['error'] )
-            {
-              this.log=data['error'];
-            }
-            else
-            {
-              this.inform=data;
-
-            }
-          },
-          error => {
-            if(error.message === 500 || error.message === 401)
-            {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.localStorage.removeItem('currentUser');
-              this.localStorage.removeItem('googleUser');
-              this.localStorage.removeItem('close_notify');
-              this.localStorage.removeItem('linkedinUser');
-              this.localStorage.removeItem('admin_log');
-              this.window.location.href = '/login';
-            }
-
-            if(error.message === 403)
-            {
-              // this.router.navigate(['/not_found']);
             }
 
           }

@@ -4,7 +4,6 @@ import { FluentApiCall } from './fluent.api.call';
 
 import { Observable,BehaviorSubject, Observer, AsyncSubject } from 'rxjs'
 import { switchMap } from 'rxjs/operators';
-import { WINDOW } from '@ng-toolkit/universal';
 
 @Injectable()
 export class LinkedInService {

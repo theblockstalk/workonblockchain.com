@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit, Inject} from '@angular/core';
+import { Component, OnInit , AfterViewInit, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
@@ -7,7 +7,7 @@ import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -41,24 +41,26 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   msgTagsOptions = constants.chatMsgTypes;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 200);
+    window.scrollTo(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 200);
+    }
   }
   ngOnInit()
   {
-    this.length='';
+    this.length=0;
     this.log='';
     this.response='';
     this.candidate_status = 1;
     this.candidate_status_account = false;
 
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
-    this.admin_log = JSON.parse(this.localStorage.getItem('admin_log'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);
@@ -90,7 +92,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         {
           this.information = this.filter_array(data);
           this.info=[];
-          this.length='';
+          this.length=0;
 
           for(let res of this.information)
           {
@@ -107,10 +109,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
-
           }
           this.setPage(1);
-          this.length='';
+          this.length=0;
 
         },
         error =>
@@ -264,8 +265,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.searchWord='';
     this.candidate_status = '';
     this.candidate_status_account = '';
-    $('.selectpicker').val('default');
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) {
+      $('.selectpicker').val('default');
+      $('.selectpicker').selectpicker('refresh');
+    }
     this.getAllCandidate();
   }
 
@@ -281,10 +284,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
-    let new_roles = constants.workRoles;
+  }
 
-    for(let i=0;i<this.pagedItems.length;i++){
-      this.pagedItems[i].candidate.roles = getFilteredNames(this.pagedItems[i],new_roles);
-    }
+  rolesData = constants.workRoles;
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 }

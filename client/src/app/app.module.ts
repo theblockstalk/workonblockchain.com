@@ -22,7 +22,7 @@ import { NgtUniversalModule } from '@ng-toolkit/universal';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

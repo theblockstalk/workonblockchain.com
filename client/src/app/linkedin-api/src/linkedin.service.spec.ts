@@ -13,8 +13,6 @@ import {
 import {
     fakeAsync
 } from '@angular/core/testing';
-import { WINDOW } from '@ng-toolkit/universal';
-import { Inject } from '@angular/core';
 
 describe('When using LinkedIn API Wrapper', () => {
     // Tests with dummy dependencies

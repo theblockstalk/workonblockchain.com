@@ -1,9 +1,9 @@
-import { Component, OnInit, AfterViewInit, Inject  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID  } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm , FormGroup,FormControl,FormBuilder} from '@angular/forms';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {isPlatformBrowser} from "@angular/common";
 declare var $:any;
 
 @Component({
@@ -43,9 +43,12 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any,  private route: ActivatedRoute, private _fb: FormBuilder ,
+  country_code;
+
+  constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
-               private authenticationService: UserService) { }
+               private authenticationService: UserService,
+               @Inject(PLATFORM_ID) private platformId: Object) { }
 
   sectionScroll;
   internalRoute(page,dst){
@@ -70,7 +73,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }
 
   url;
@@ -119,7 +122,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       this.sectionScroll= null;
     });
 
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);
@@ -166,7 +169,20 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
                   this.company_website = 'http://' + data['company_website'];
                 }
               }
-              this.company_phone =data['company_phone'];
+
+              this.company_phone = '';
+              let contact_number = data['company_phone'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.company_phone = this.company_phone+''+contact_number[i];
+                }
+                this.company_phone = this.country_code+' '+this.company_phone
+              }
+              else this.company_phone = contact_number[0];
+
               this.company_country =data['company_country'];
               this.company_city=data['company_city'];
               this.company_postcode=data['company_postcode'];
@@ -181,7 +197,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               }
 
               if(data['terms_id'] && data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'] && !data['saved_searches'] ) {
-                $('#popModal_b').modal('show');
+                if (isPlatformBrowser(this.platformId)) $('#popModal_b').modal('show');
               }
               if(data['saved_searches']) {
                 this.saved_searche = data['saved_searches'];
@@ -220,7 +236,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   redirectToCompany()
   {
-    $('#popModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#popModal').modal('hide');
     this.router.navigate(['/company_profile']);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from "../../../services/object";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-experience',
@@ -35,7 +37,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
               private router: Router,private dataservice: DataService,
-              private authenticationService: UserService) { }
+              private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) { }
 
 
   private education_data(): FormGroup[]
@@ -56,28 +58,34 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngAfterViewInit(): void
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
     window.scrollTo(0, 0);
 
   }
 
   currentWork(){
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
   }
   message;
   current_work_check=[];
 
   ngOnInit()
   {
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
@@ -108,7 +116,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
 
@@ -122,11 +130,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
             {
               this.active_class='fa fa-check-circle text-success';
 
             }
+            if(data['candidate'].description) this.Intro = data['candidate'].description;
 
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
@@ -199,11 +208,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   }
                 }
               }
+
             }
             this.Intro =data['candidate'].description;
 
 
-            if(!data['candidate'].why_work)
+            if(!data['candidate'].why_work && data['candidate'].interest_areas)
             {
               this.router.navigate(['/resume']);
             }
@@ -318,8 +328,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       fieldname:[this.fieldname],
       eduyear:[]
     });
-
-
   }
 
 
@@ -343,10 +351,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   addNewExpRow()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
 
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
@@ -364,10 +374,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   addNewRow()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
     const control = <FormArray>this.EducationForm.controls['itemRows'];
     control.push(this.initItemRows());
   }
@@ -514,9 +526,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.end_date_year_log = "Please fill end date year ";
         }
 
-
-
-
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
           this.ExperienceForm.value.ExpItems[key].startyear &&
@@ -654,18 +663,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     if(this.Intro) inputQuery.description =  this.Intro;
 
-    inputQuery.status = 'wizard completed';
-
+    inputQuery.wizardNum = 5;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {
             if(data)
             {
-              $("#popModal").modal({
-                backdrop: 'static',
-                keyboard: true,
-                show: true
-              });
+              if (isPlatformBrowser(this.platformId)) {
+                $("#popModal").modal({
+                  backdrop: 'static',
+                  keyboard: true,
+                  show: true
+                });
+              }
 
               //this.router.navigate(['/candidate_profile']);
             }
@@ -684,7 +694,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   redirectToCandidate()
   {
-    $('#popModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#popModal').modal('hide');
     this.router.navigate(['/candidate_profile']);
   }
   selectedValue;langValue;

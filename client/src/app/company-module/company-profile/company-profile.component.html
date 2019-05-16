@@ -181,7 +181,13 @@
 
 
           <div class="row mt-3">
-            <div class="col-md-6 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
+            <div class="col-md-12 mb-3" *ngIf="searches.work_type">
+              <div class="form-group">
+                <label>Work type:</label>
+               <p>{{searches.work_type}}</p>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
               <div class="form-group">
                 <label>Type:</label>
                 <div>
@@ -189,7 +195,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="searches.position && searches.position.length > 0">
+            <div class="col-md-12 mb-3" *ngIf="searches.position && searches.position.length > 0">
               <div class="form-group">
                 <label>Role:</label>
                 <div>
@@ -199,7 +205,7 @@
               </div>
             </div>
 
-            <div class = "col-md-6 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+            <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
               <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
                 <label>Location:</label>
                 <div>
@@ -224,7 +230,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+            <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
               <div class="form-group">
                 <label>Commercial blockchain experience:</label>
                 <div>
@@ -236,8 +242,7 @@
               </div>
             </div>
 
-
-            <div class="col-md-6 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
+            <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
               <div class="form-group">
                 <label>Skills:</label>
                 <div>
@@ -245,7 +250,15 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+
+            <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
+              <div class="form-group">
+                <label>Years of experience:</label>
+                <p>{{searches.years_exp_min}}+ years</p>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
               <div class="form-group">
                 <label>Residence country:</label>
                 <div>
@@ -254,12 +267,20 @@
               </div>
             </div>
 
-
-            <div class="col-md-6 mb-3" *ngIf="searches.current_currency && searches.current_salary">
+            <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
               <div class="form-group">
                 <label>Salary:</label>
                 <p>
                   {{searches.current_currency}} {{searches.current_salary}}
+                <p>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
+              <div class="form-group">
+                <label>Hourly rate:</label>
+                <p>
+                  {{searches.current_currency}} {{searches.expected_hourly_rate}}
                 <p>
               </div>
             </div>

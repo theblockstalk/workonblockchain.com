@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
@@ -7,7 +7,6 @@ import {ProfileDetail} from '../../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
 let URL = environment.frontend_url;
 declare var $: any;
 
@@ -40,7 +39,7 @@ export class ReferralComponent implements OnInit {
   button_status;
   verify;
 
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, 
+  constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | £500 reward for referrals');
@@ -54,8 +53,8 @@ export class ReferralComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.window['twttr'] && this.window['twttr'].widgets.load();
-    this.window.scrollTo(0, 0);
+    window['twttr'] && window['twttr'].widgets.load();
+    window.scrollTo(0, 0);
   }
 
   ngOnInit(){
@@ -69,11 +68,11 @@ export class ReferralComponent implements OnInit {
     this.newMeta.updateTag({ name: 'description', content: 'Refer a friend to workonblockchain.com, the blockchain recruitment platform for developers, and get £500 when they are successfully employed by a company through the platform.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'refer developer referral reward workonblockchain.com' });
 
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.show_refreal = 1;
     if(this.currentUser && this.currentUser.type === 'candidate'){
       this.show_refreal = 10;
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data) {
@@ -185,7 +184,7 @@ export class ReferralComponent implements OnInit {
             this.ref_link_for_not_logged_user = this.email_ref_link + data['url_token'];
             this.share_url = this.ref_link_for_not_logged_user;
             this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
-            this.window.scrollTo(0, 180);
+            window.scrollTo(0, 180);
           }
         },
         error => {

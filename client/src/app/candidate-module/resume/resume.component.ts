@@ -1,11 +1,11 @@
-import { Component, OnInit,AfterViewInit, Inject  } from '@angular/core';
+import { Component, OnInit,AfterViewInit  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import { LOCAL_STORAGE, WINDOW } from '@ng-toolkit/universal';
+import {unCheckCheckboxes} from '../../../services/object';
 
 @Component({
   selector: 'app-resume',
@@ -35,20 +35,29 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
-
-  constructor(@Inject(WINDOW) private window: Window, @Inject(LOCAL_STORAGE) private localStorage: any, private route: ActivatedRoute, private http: HttpClient,
+  commercially;
+  otherSkills;
+  experimented;
+  exp_year;
+  area_interested;
+  constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
               private authenticationService: UserService) { }
 
   ngAfterViewInit(): void
   {
-    this.window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 
   }
   ngOnInit()
   {
+    this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
+    this.otherSkills = unCheckCheckboxes(constants.otherSkills);
+    this.experimented = unCheckCheckboxes(constants.experimented);
+    this.exp_year = unCheckCheckboxes(constants.experienceYears);
+    this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
     this.exp_disable = "disabled";
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
     {
@@ -56,6 +65,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
     if(this.currentUser && this.currentUser.type=='candidate')
     {
+      this.area_interested.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
       this.commercially.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
@@ -75,7 +90,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       this.exp_class="";
       this.active_class="fa fa-check-circle text-success";
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data['candidate'].terms_id)
@@ -88,9 +103,46 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
 
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
+            {
+              this.job_active_class = 'fa fa-check-circle text-success';
+            }
+
+            if(data['candidate'].why_work && data['candidate'].interest_areas )
+            {
+              this.exp_class = "/experience";
+              this.exp_disable = "";
+              this.resume_active_class='fa fa-check-circle text-success';
+            }
+
+            if( data['candidate'].description)
+            {
+
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+
             if(data['candidate'].why_work){
 
               this.why_work=data['candidate'].why_work;
+            }
+            if(data['candidate'].interest_areas)
+            {
+              for (let interest of data['candidate'].interest_areas)
+              {
+
+                for(let option of this.area_interested)
+                {
+
+                  if(option.value === interest)
+                  {
+                    option.checked=true;
+                    this.selectedValue.push(interest);
+
+                  }
+
+                }
+
+              }
             }
             if(data['candidate'].blockchain)
             {
@@ -137,6 +189,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
                 }
               }
+
+              if(data['candidate'].blockchain.description_commercial_skills)
+              {
+                this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+              }
+
 
               if(data['candidate'].blockchain.description_commercial_platforms)
               {
@@ -219,40 +277,23 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             }
 
 
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day )
-            {
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';
 
+
             }
-
-            if(data['candidate'].why_work )
-            {
-              this.exp_class = "/experience";
-              this.exp_disable = "";
-              this.resume_active_class='fa fa-check-circle text-success';
-              // this.router.navigate(['/resume']);
-            }
-
-            if( data['candidate'].description)
-            {
-
-              this.exp_active_class = 'fa fa-check-circle text-success';
-              //this.router.navigate(['/experience']);
-            }
-
-
 
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
             {
-              this.localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              this.localStorage.removeItem('currentUser');
-              this.localStorage.removeItem('googleUser');
-              this.localStorage.removeItem('close_notify');
-              this.localStorage.removeItem('linkedinUser');
-              this.localStorage.removeItem('admin_log');
-              this.window.location.href = '/login';
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
 
             if(error['message'] === 403)
@@ -269,10 +310,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
   }
 
-  commercially = constants.blockchainPlatforms;
-  otherSkills = constants.otherSkills;
-  experimented = constants.experimented;
-  exp_year = constants.experienceYears;
+
+
 
   onExpOptions(e)
   {
@@ -291,6 +330,22 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
+  onAreaSelected(e)
+  {
+    if(e.target.checked)
+    {
+      this.selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.selectedValue.find(x => x === e.target.value);
+      let index = this.selectedValue.indexOf(updateItem);
+      this.selectedValue.splice(index, 1);
+    }
+
+
+  }
+
+
   findIndexToUpdateExperimented(type) {
     return type == this;
   }
@@ -303,6 +358,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   why_work_log;commercial_log;
   formal_skills=[];
   commercial_skill_log;
+  interest_log;
   commercial_desc_log;
   experimented_desc_log;
   commercialSkills_desc_log;
@@ -314,7 +370,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     let flag_experimented_desc = true;
     let flag_commercialSkills_desc = true;
 
-    this.currentUser = JSON.parse(this.localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.commercially_worked.length !== this.commercial_expYear.length )
     {
       this.commercial_log = "Please fill year of experience";
@@ -324,6 +380,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
+    if(this.selectedValue.length<=0) {
+      this.interest_log = "Please select at least one area of interest";
+    }
     if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
       flag_commercial_desc = false;
       this.commercial_desc_log = 'Please enter description of commercial experience';
@@ -343,7 +402,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length
+
+    if(this.why_work && this.selectedValue.length > 0  && this.commercially_worked.length === this.commercial_expYear.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
       && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
@@ -380,7 +440,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
       if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
-
+      expForm.value.wizardNum = 4;
       this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
         .subscribe(
           data => {
@@ -456,7 +516,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
-  selectedValue;langValue;
+  selectedValue=[];langValue;
   onComExpYearOptions(e, value)
   {
     this.langValue = value;
