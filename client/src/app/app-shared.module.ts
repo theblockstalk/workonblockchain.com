@@ -27,7 +27,9 @@ import { TextInputComponent } from './L0-components/forms-edit/text-input/text-i
 import { TextAreaComponent } from './L0-components/forms-edit/text-area/text-area.component';
 import { RadioComponent } from './L0-components/forms-edit/radio/radio.component';
 import { FirstNameComponent } from './L1-items/first-name/first-name.component';
-
+import { WorkHistoryComponent } from './L1-items/work-history/work-history.component';
+import { CandidateEditComponent } from './L2-pages/candidate-edit/candidate-edit.component';
+import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.component';
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
                   MatAutocompleteModule ],
@@ -35,12 +37,12 @@ import { FirstNameComponent } from './L1-items/first-name/first-name.component';
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
-                  TextAreaComponent, RadioComponent, FirstNameComponent],
+                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent, CheckboxComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
-                  TextAreaComponent, RadioComponent, FirstNameComponent]
+                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent, CheckboxComponent]
 })
 export class SharedModule { }

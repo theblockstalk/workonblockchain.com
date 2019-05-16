@@ -111,6 +111,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   current_work_check = [];
   current_work = constants.current_work;
   countries = constants.countries;
+  userDoc;
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
   }
@@ -186,6 +187,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(data)
             {
+              this.userDoc = data;
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {

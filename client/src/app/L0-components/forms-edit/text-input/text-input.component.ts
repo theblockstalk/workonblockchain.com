@@ -9,10 +9,11 @@ export class TextInputComponent implements OnInit {
   @Input() label: string;
   @Input() placeholder: string;
   @Input() textValue: string;
-  //@Output() formOutput : EventEmitter<any> = new EventEmitter<any>();
+  @Output() updatedValue : EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {
+    console.log(this.textValue);
   }
 
 

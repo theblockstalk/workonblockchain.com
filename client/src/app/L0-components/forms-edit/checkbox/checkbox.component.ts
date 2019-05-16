@@ -16,7 +16,7 @@ export class CheckboxComponent implements OnInit {
   }
 
   selectedValue(event) {
-    this.selectedItem.emit(event.target.value;)
+    this.selectedItem.emit(event.target.value);
   }
 
 }

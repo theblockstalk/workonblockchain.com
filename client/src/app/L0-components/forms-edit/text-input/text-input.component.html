@@ -1,4 +1,4 @@
 <div class="form-group">
   <label>{{label}}</label>
-  <input type="text" class="form-control" placeholder="{{placeholder}}" [(ngModel)]="textValue">
+  <input type="text" class="form-control" placeholder="{{placeholder}}" [(ngModel)]="textValue" (ngModelChange)="updatedValue.emit($event)">
 </div>
