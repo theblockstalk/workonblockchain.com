@@ -1,11 +1,11 @@
-const auth = require('../../middleware/auth-v2');
+const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const emailTemplates = require('../../../model/mongoose/email_templates');
-const errors = require('../../services/errors');
+const emailTemplates = require('../../../../model/mongoose/email_templates');
+const errors = require('../../../services/errors');
 
 module.exports.request = {
     type: 'get',
-    path: '/email_templates'
+    path: '/email_templates/search'
 };
 
 const querySchema = new Schema({
