@@ -23,7 +23,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <br/>
-                <button type="button" class="btn btn-primary py-1 px-4 mt-2 ml-5" (click)="newTemplate(true)" > New </button>
+                <button type="button" class="btn btn-primary py-1 px-4 mt-2 ml-5" (click)="newTemplate('new')" > New </button>
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@
 
           <div class="row">
             <div class="col-md-12 text-right">
-              <button type="button" class="btn btn-secondary mr-4" (click)="newTemplate(false)" > Cancel </button>
+              <button type="button" class="btn btn-secondary mr-4" (click)="newTemplate('cancel')" > Cancel </button>
 
               <button type="submit" class = "btn btn-primary" >Save</button> <br/>
               <div class = "invalid-feedback d-inline text-right float-right mt-2" *ngIf="error_msg">
