@@ -164,6 +164,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
             }
             if(data['candidate'].contractor) {
+              $('.selectpicker').selectpicker('refresh');
               this.contractorCheck = true;
               this.selected_work_type.push('contractor');
               let contractor = data['candidate'].contractor;

@@ -304,7 +304,7 @@
             <div class="row my-3" >
               <div class="col-md-12">
                 <div class = "form-group w-100 mb-0">
-                  <h4><i class="fas fa-envelope "></i> Get an email for new matches to your work requirements</h4>
+                  <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
                   <div class="form-check form-check-inline mt-2">
                     <div *ngFor="let receive of email_notificaiton; let i_ind =index">
                       <input type="radio" id="radio - {{receive}}"  class="d-none" name="when_receive_email_notitfications" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
@@ -356,10 +356,10 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                            {{types.name}}
                             <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                            {{types.name}}
                           </label>
                         </div>
                       </div>
@@ -448,14 +448,23 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length > 0">
+                      <div class = "form-group">
+                        <label>Years experience:</label>
+                        <select title="1" class="selectpicker form-control position-relative" formControlName = "years_exp_min" >
+                          <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.prefItems[i].years_exp_min?true:null">{{years_exp_min.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label>Annual salary:</label>
                         <input type="text" formControlName="current_salary" [value] = "preferncesForm.value.prefItems[i].current_salary"  class="form-control" placeholder="1000">
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "current_currency" >

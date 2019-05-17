@@ -29,9 +29,6 @@
                   <span>
                     <h2 class="text-capitalize">{{first_name}} {{last_name}}</h2>
                   </span>
-                  <span>
-                    <pre>{{description}}</pre>
-                  </span>
                 </div>
               </div>
               <div class="col-md-5 mt-3">
@@ -47,9 +44,10 @@
                   <li class="list-group-item">
                     <i class="fas fa-user mr-2"></i>Status:
                     <span *ngIf="candidate_status.status === 'created'">Created</span>
-                    <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
+                    <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
                     <span *ngIf="candidate_status.status === 'approved'">Approved</span>
-                    <span *ngIf="candidate_status.status === 'updated' || candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
                     <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
                     <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                   </li>
@@ -63,6 +61,11 @@
                 <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <pre>{{description}}</pre>
               </div>
             </div>
           </section>
@@ -91,7 +94,7 @@
                 <div class="form-group">
                   <label> Github account URL:</label>
                   <p>
-                    <a [href]="websiteUrl(github)" target="_blank">
+                    <i class="fab fa-github"></i><a [href]="websiteUrl(github)" target="_blank">
                       {{github}}
                     </a>
                   </p>
@@ -102,7 +105,7 @@
                 <div class="form-group">
                   <label> Linkedin account URL:</label>
                   <p>
-                    <a [href]="websiteUrl(linkedin_account)" target="_blank">
+                    <i class="fab fa-linkedin-in"></i><a [href]="websiteUrl(linkedin_account)" target="_blank">
                       {{linkedin_account}}
                     </a>
                   </p>
@@ -113,7 +116,7 @@
                 <div class="form-group">
                   <label> Medium account URL:</label>
                   <p>
-                    <a [href]="websiteUrl(medium_account)" target="_blank">
+                    <i class="fab fa-medium-m"></i><a [href]="websiteUrl(medium_account)" target="_blank">
                       {{medium_account}}
                     </a>
                   </p>
@@ -124,7 +127,7 @@
                 <div class="form-group">
                   <label> Stackexchange account URL:</label>
                   <p>
-                    <a [href]="websiteUrl(stack)" target="_blank">
+                    <i class="fab fa-stack-exchange"></i><a [href]="websiteUrl(stack)" target="_blank">
                       {{stack}}
                     </a>
                   </p>
@@ -135,7 +138,7 @@
                 <div class="form-group">
                   <label> Stackoverflow URL:</label>
                   <p>
-                    <a [href]="websiteUrl(stackoverflow_url)" target="_blank">
+                    <i class="fab fa-stack-overflow"></i><a [href]="websiteUrl(stackoverflow_url)" target="_blank">
                       {{stackoverflow_url}}
                     </a>
                   <p>
@@ -146,7 +149,7 @@
                 <div class="form-group">
                   <label> Personal website URL:</label>
                   <p>
-                    <a [href]="websiteUrl(personal_website_url)" target="_blank">
+                    <i class="fas fa-user"></i><a [href]="websiteUrl(personal_website_url)" target="_blank">
                       {{personal_website_url}}
                     </a>
                   <p>
