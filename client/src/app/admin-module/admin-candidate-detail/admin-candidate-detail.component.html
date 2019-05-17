@@ -54,6 +54,7 @@
                 <li class="list-group-item">
                   <span><i class="fas fa-user mr-2"></i></span>Status:
                   <span *ngIf="candidate_status.status === 'created'">Created</span>
+                  <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
                   <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
                   <span *ngIf="candidate_status.status === 'approved'">Approved</span>
                   <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
