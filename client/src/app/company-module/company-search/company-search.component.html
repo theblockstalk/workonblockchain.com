@@ -24,6 +24,21 @@
               </div>
             </div>
 
+            <div class="row my-3">
+              <div class="col-md-6">
+                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save</button>
+              </div>
+              <div class="col-md-6">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear</button>
+              </div>
+              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
+                {{success_msg}}
+              </div>
+              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
+                {{error_msg}}
+              </div>
+            </div>
+
             <div class="wob-bg-primary2 p-2 border mt-2">
               <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
               <div class="form-group px-1">
@@ -57,7 +72,7 @@
                 </mat-autocomplete>
                 <mat-form-field floatLabel="always">
                   <mat-label></mat-label>
-                  <input matInput placeholder="Location" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
 
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
@@ -95,7 +110,7 @@
               <hr/>
 
               <div class="form-group">
-                <select class="form-control selectpicker" title="Residence country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                <select class="form-control selectpicker" title="Residence/base country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
                   <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                 </select>
                 <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
@@ -129,35 +144,12 @@
 
             <div class="wob-bg-primary2 p-2 border mt-2">
               <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Talent preferences</h4>
-              <small class="text-center ml-1" >This will determine the order of the candidates but not filter any candidates</small>
               <div class = "form-group mt-3">
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
               </div>
             </div>
-
-            <div class="row my-3">
-              <div class="col-md-8">
-                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
-              </div>
-              <div class="col-md-4">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Reset</button>
-              </div>
-              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
-                {{success_msg}}
-              </div>
-              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
-                {{error_msg}}
-              </div>
-            </div>
-
-            <div class="row my-3">
-              <div class="col-md-12">
-                <button  type="button" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
-              </div>
-            </div>
-
           </div>
 
           <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -194,10 +186,30 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
-
+                        </div>
+                        <span *ngIf="data.candidate.employee">
+                          Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
+                        </span>
+                        <span *ngIf="data.candidate.employee && data.candidate.contractor">
+                          or
+                        </span>
+                        <span *ngIf="data.candidate.contractor">
+                          Expects {{data.candidate.contractor.expected_hourly_rate}} {{data.candidate.contractor.currency}} per hour
+                        </span>
+                        <br>
+                        <div *ngIf = "data.first_name" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
+                            Already approached
+                          </span>
+                        </div>
+                        <div *ngIf = "data.already_approached === 1" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
+                          Already approached
+                        </span>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -232,7 +244,11 @@
                           <div class="form-group">
                             <label><h4>Languages</h4></label>
                             <div>
-                              <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.candidate.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                              <div *ngFor = "let lang of sorting(data.candidate.programming_languages); let i = index">
+                                <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngIf="i < 5">
+                                  {{lang.language}}: {{lang.exp_year}} years
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -286,10 +302,17 @@
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                       {{types.name}}
                     </label>
+
                   </div>
                 </div>
+              </div>
+              <div class = "invalid-feedback d-inline ml-3 mb-3"  *ngIf="!this.approach_work_type">
+                {{work_log}}
               </div>
             </div>
             <div class="row" *ngIf="approach_work_type === 'employee'">
@@ -455,7 +478,6 @@
 
             </div>
 
-
             <div class="row">
               <div class="col-md-12">
                 <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
@@ -470,13 +492,8 @@
               <button type="reset" class="btn btn-secondary">Reset</button>
               <button type="submit" class="btn btn-primary">Send</button>
             </div>
-            <div class = "invalid-feedback d-inline-block text-right">
-              {{job_offer_log}}
-            </div>
           </form>
-
         </div>
-
       </div>
     </div>
   </div>
@@ -550,7 +567,7 @@
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -594,7 +611,7 @@
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select multiple class="form-control selectpicker" title="Residence/base country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
@@ -647,7 +664,6 @@
             <div class="row my-2">
               <div class="col-md-12">
                 <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
-                <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
               </div>
             </div>
 

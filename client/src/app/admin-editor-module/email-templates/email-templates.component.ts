@@ -95,7 +95,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       let InputBody : any = {};
       if(editorForm.value.subject) InputBody.subject = editorForm.value.subject;
       if(editorForm.value.body) InputBody.body = editorForm.value.body;
-      console.log(this.template_id);
       if (this.newTemplateButton) {
         if(editorForm.value.name !== this.templateName) InputBody.name = editorForm.value.name;
         this.authenticationService.email_templates_post(InputBody)
@@ -234,7 +233,6 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
   }
 
   fillFields(event, name) {
-    console.log(name);
     this.new_template = true;
     this.newTemplateButton = false;
     let template;

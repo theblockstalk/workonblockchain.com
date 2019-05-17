@@ -20,7 +20,6 @@ export class LoginResolver  {
              this.router.navigate(['/candidate_profile']);
          if(this.currentUser.type === 'company')
          {
-           console.log("company");
            if (new Date(this.currentUser.created_date) < new Date('2018/11/28')) {
              this.http.get(URL+'users/current_company/' +this.currentUser._id, {
                headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
