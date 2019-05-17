@@ -45,6 +45,9 @@
                 <div class="form-check" *ngFor="let types of workTypes">
                   <label class="form-check-label simple-radio-button" >
                     <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
+                    <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                    <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                    <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     {{types.name}}
                   </label>
                 </div>
@@ -535,6 +538,9 @@
                   <div class="form-check" *ngFor="let types of workTypes">
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                       {{types.name}}
                     </label>
                   </div>
