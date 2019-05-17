@@ -8,22 +8,25 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class FirstNameComponent implements OnInit {
   @Input() first_name: string;
   @Output() updateFirstName: EventEmitter<string> = new EventEmitter<string>();
-  errMsg = "Please enter first name";
+  selfValidate;
   constructor() { }
 
   ngOnInit() {
-    this.selfValidate();
+    this.selfValidate = function () {
+      console.log("self validate");
+      console.log(this.first_name)
+      if(!this.first_name) {
+        let errMsg = "Please enter first name";
+        return {error: true, msg:errMsg};
+      }
+      this.updateFirstName.emit(this.first_name);
+      return {error:false};
+    }
   }
 
-  selfValidate() {
-    if(!this.first_name) {
-      this.errMsg = "Please enter first name";
-      this.updateFirstName.emit('');
-      return false;
-    }
-    //delete this.errMsg;
-    this.updateFirstName.emit(this.first_name);
-    return true;
+  getFirstName(name){
+    console.log("get first name");
+    this.first_name = name;
   }
 
 }
