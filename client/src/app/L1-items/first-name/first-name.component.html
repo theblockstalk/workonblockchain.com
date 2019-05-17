@@ -1,2 +1,9 @@
-<app-c-forme-text placeholder="John" [validate]="selfValidate" [value]="first_name" label="First name" (change)="selfValidate()" (updatedValue)="getFirstName($event)"></app-c-forme-text>
+<app-c-forme-text
+  placeholder="John"
+  [errorMsg]="errMsg"
+  [(value)]="first_name"
+  label="First name"
+  (change)= selfValidate()
+  >
+</app-c-forme-text>
 

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FirstNameComponent } from '../../L1-items/first-name/first-name.component';
 @Component({
   selector: 'app-p-candidate-edit',
   templateUrl: './candidate-edit.component.html',
@@ -10,6 +10,7 @@ export class CandidateEditComponent implements OnInit {
   @Input() viewBy: string; // "admin", "candidate"
   first_name;
   work_history;
+  @ViewChild(FirstNameComponent) firstName : FirstNameComponent;
   constructor() { }
 
   ngOnInit() {
@@ -20,6 +21,10 @@ export class CandidateEditComponent implements OnInit {
 
   getName() {
     // console.log(this.first_name);
+  }
+
+  submit(){
+    this.firstName.selfValidate();
   }
 
 }

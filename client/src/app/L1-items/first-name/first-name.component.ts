@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {TextInputComponent} from '../../L0-components/forms-edit/text-input/text-input.component';
 
 @Component({
   selector: 'app-i-forme-first-name',
@@ -7,26 +8,26 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class FirstNameComponent implements OnInit {
   @Input() first_name: string;
-  @Output() updateFirstName: EventEmitter<string> = new EventEmitter<string>();
-  selfValidate;
+  // @Output() updateFirstName: EventEmitter<string> = new EventEmitter<string>();
+  @ViewChild(TextInputComponent ) textInput: TextInputComponent;
+
+  errMsg;
   constructor() { }
 
   ngOnInit() {
-    this.selfValidate = function () {
-      console.log("self validate");
-      console.log(this.first_name)
-      if(!this.first_name) {
-        let errMsg = "Please enter first name";
-        return {error: true, msg:errMsg};
-      }
-      this.updateFirstName.emit(this.first_name);
-      return {error:false};
-    }
   }
 
-  getFirstName(name){
-    console.log("get first name");
-    this.first_name = name;
+  selfValidate(){
+    console.log(this.textInput.value);
+    this.first_name = this.textInput.value;
+    if(!this.first_name) {
+      this.errMsg = "Please enter first name";
+      return false;
+    }
+    delete this.errMsg;
+    // this.updateFirstName.emit(this.first_name);
+    return true;
   }
+
 
 }
