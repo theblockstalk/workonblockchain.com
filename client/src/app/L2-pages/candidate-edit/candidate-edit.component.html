@@ -1,11 +1,11 @@
 <div class="row my-5">
   <div class="col-md-6">
-    <app-i-forme-first-name [value]="first_name" (updateFirstName)="first_name = $event" (change)="getName()"></app-i-forme-first-name>
+    <app-i-forme-first-name [first_name]="first_name" (updateFirstName)="first_name = $event" (change)="getName()"></app-i-forme-first-name>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <app-work-history [historyData]="work_history"></app-work-history>
+    <app-i-forme-work-history [historyData]="work_history"></app-i-forme-work-history>
   </div>
 </div>

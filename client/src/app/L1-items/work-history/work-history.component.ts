@@ -5,7 +5,7 @@ import {constants} from '../../../constants/constants';
 declare var $:any;
 
 @Component({
-  selector: 'app-work-history',
+  selector: 'app-i-forme-work-history',
   templateUrl: './work-history.component.html',
   styleUrls: ['./work-history.component.css']
 })
@@ -29,7 +29,7 @@ export class WorkHistoryComponent implements OnInit {
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
-    console.log(this.historyData);
+    // console.log(this.historyData);
     this.jobData = this.historyData;
     this.ExperienceForm = this._fb.group({
       ExpItems: this._fb.array([this.initExpRows()])
@@ -39,7 +39,7 @@ export class WorkHistoryComponent implements OnInit {
         this.history_data()
       )
     });
-    console.log(this.ExperienceForm.value);
+    // console.log(this.ExperienceForm.value);
   }
 
   private history_data(): FormGroup[]

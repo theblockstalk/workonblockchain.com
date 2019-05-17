@@ -1,4 +1,2 @@
-<app-c-forme-text placeholder="John" [(textValue)]="value" label="First name" (change)="selfValidate()" (updatedValue)="value = $event"></app-c-forme-text>
-<div class = "invalid-feedback d-inline" *ngIf="!value">
-  {{errorMsg}}
-</div>
+<app-c-forme-text placeholder="John" [errorMsg]="errMsg" [value]="first_name" label="First name" (change)="selfValidate()" (updatedValue)="first_name = $event"></app-c-forme-text>
+

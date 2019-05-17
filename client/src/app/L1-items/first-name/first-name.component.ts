@@ -6,24 +6,23 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./first-name.component.css']
 })
 export class FirstNameComponent implements OnInit {
-  @Input() value: string;
-  @Output() updateFirstName : EventEmitter<string> = new EventEmitter<string>();
-  first_name;
-  errorMsg;
+  @Input() first_name: string;
+  @Output() updateFirstName: EventEmitter<string> = new EventEmitter<string>();
+  errMsg = "Please enter first name";
   constructor() { }
 
   ngOnInit() {
-    this.first_name = this.value;
-    console.log(this.value);
+    this.selfValidate();
   }
 
   selfValidate() {
-    if(!this.value) {
-      this.errorMsg = "Please enter first name";
+    if(!this.first_name) {
+      this.errMsg = "Please enter first name";
       this.updateFirstName.emit('');
       return false;
     }
-    this.updateFirstName.emit(this.value);
+    //delete this.errMsg;
+    this.updateFirstName.emit(this.first_name);
     return true;
   }
 
