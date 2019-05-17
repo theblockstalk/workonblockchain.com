@@ -134,7 +134,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           {
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
-            if(data['refered_id']) //&& !data.first_name && !data.last_name)
+            if(data['refered_id'])
             {
               this.referred_id = data['refered_id'];
 

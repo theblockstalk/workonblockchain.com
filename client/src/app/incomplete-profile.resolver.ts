@@ -14,17 +14,12 @@ export class ProfileResolver  {
 
   resolve() : void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log("resolve");
     if (this.currentUser)
     {
-      console.log(this.currentUser);
       if(this.currentUser.type === 'candidate') {
-        console.log("type")
-
         this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(data => {
               if (data) {
-                console.log(data['terms_id'])
                 if (!data['candidate'].terms_id) {
                   this.router.navigate(['/terms-and-condition']);
                   return false;

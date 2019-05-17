@@ -513,6 +513,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             this.candidate_data = data;
+            this.alreadyApproachedCheck();
             this.searchData = true;
 
             this.setPage(1);
@@ -664,7 +665,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
     else {
-      this.error_msg = 'Please first select saved search';
+      $('#saveNewSearch').modal('show');
       setInterval(() => {
         this.error_msg = "";
       }, 9000);
@@ -872,7 +873,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-
+          this.alreadyApproachedCheck();
           this.setPage(1);
           if(this.candidate_data && this.candidate_data.length > 0) {
             this.not_found='';
@@ -1172,10 +1173,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   sorting(languages){
-
     return languages.sort(function(a, b){
-      if(a.language < b.language) { return -1; }
-      if(a.language > b.language) { return 1; }
+      a = a.exp_year.split('-');
+      b = b.exp_year.split('-');
+      if(a[0] > b[0]) { return -1; }
+      if(a[0] < b[0]) { return 1; }
       return 0;
     })
   }
@@ -1357,5 +1359,26 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     return Number(string);
   }
 
+  alreadyApproachedCheck(){
+    for(let i=0;i<this.candidate_data.length;i++){
+      this.candidate_data[i].already_approached = 0;
+      if(this.candidate_data[i].initials) {
+        this.authenticationService.get_user_messages_comp(this.candidate_data[i]._id)
+          .subscribe(
+            data => {
+              if(data['messages'][0].message.approach) this.candidate_data[i].already_approached = 1;
+            },
+            error => {
+              if (error.message === 500 || error.message === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) {
+              }
+            }
+          );
+      }
+    }
+  }
 
 }
