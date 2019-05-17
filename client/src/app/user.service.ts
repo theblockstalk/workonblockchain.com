@@ -1443,7 +1443,7 @@ export class UserService {
   }
 
   email_templates_patch(queryBody : any, template_id: string) {
-    return this.http.patch(URL+'v2/email_templates/search?admin=true&template_id='+template_id , queryBody, {
+    return this.http.patch(URL+'v2/email_templates?admin=true&template_id='+template_id , queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1472,7 +1472,7 @@ export class UserService {
   }
 
   email_templates_get() {
-    return this.http.get(URL+'v2/email_templates?admin=true', {
+    return this.http.get(URL+'v2/email_templates/search?admin=true', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

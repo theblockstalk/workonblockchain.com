@@ -7,7 +7,7 @@ const objects = require('../../services/objects');
 
 module.exports.request = {
     type: 'patch',
-    path: '/email_templates/search'
+    path: '/email_templates'
 };
 
 const querySchema = new Schema({
