@@ -17,7 +17,7 @@ const newEmailTemplate = module.exports.newEmailTemplate = async function newEma
 
 const updateEmailTemplate = module.exports.updateEmailTemplate = async function updateEmailTemplate(templateId, emailObj, jwtToken) {
     const res = await chai.request(server)
-        .patch('/v2/email_templates/search?admin=true&template_id='+ templateId)
+        .patch('/v2/email_templates?admin=true&template_id='+ templateId)
         .set('Authorization', jwtToken)
         .send(emailObj);
     res.should.have.status(200);
@@ -26,7 +26,7 @@ const updateEmailTemplate = module.exports.updateEmailTemplate = async function 
 
 const getEmailTemplate = module.exports.getEmailTemplate = async function getEmailTemplate(jwtToken) {
     const res = await chai.request(server)
-        .get('/v2/email_templates?admin=true')
+        .get('/v2/email_templates/search?admin=true')
         .set('Authorization', jwtToken)
     res.should.have.status(200);
     return res;
