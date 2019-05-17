@@ -281,7 +281,10 @@
             <div class="col-md-6">
               <div class="form-group" *ngIf="history.status">
 
-                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'wizard' || history.status.status === 'wizard completed' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
+                <label *ngIf="history.status.status === 'wizard' || history.status.status === 'wizard completed'" class="border border-success p-2 text-success rounded font-weight-normal">
+                  Wizard
+                </label>
+                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
                   {{history.status.status}}
                 </label>
                 <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
@@ -336,7 +339,6 @@
                 About
               </h2>
             </div>
-
           </div>
 
           <div class="row mt-3">
@@ -348,73 +350,77 @@
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="data.candidate.github_account">
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <h4>Links</h4>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.github_account">
+            <div class="col-md-6">
               <div class="form-group" >
-                <label>Github account url: </label>
                 <p>
-                  <i class="fab fa-github"></i><a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
+                  <i class="fab fa-github fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.github_account)" target="_blank">
                     {{data.candidate.github_account}}
                   </a>
                 </p>
               </div>
             </div>
-
-            <div class="col-md-6 mb-3" *ngIf="data.candidate.stackexchange_account">
-              <div class="form-group" >
-                <label>Stackexchange account url:</label>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.stackexchange_account">
+            <div class="col-md-6">
+              <div class="form-group">
                 <p>
-                  <i class="fab fa-stack-exchange"></i><a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
+                  <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
                     {{data.candidate.stackexchange_account}}
                   </a>
                 </p>
               </div>
             </div>
-
-            <div class="col-md-6 mb-3" *ngIf="data.candidate.linkedin_account">
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.linkedin_account">
+            <div class="col-md-6">
               <div class="form-group" >
-                <label>Linkedin account url:</label>
                 <p>
-                  <i class="fab fa-linkedin-in"></i><a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
+                  <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
                     {{data.candidate.linkedin_account}}
                   </a>
                 </p>
               </div>
             </div>
-
-            <div class="col-md-6 mb-3" *ngIf="data.candidate.medium_account">
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.medium_account">
+            <div class="col-md-6">
               <div class="form-group" >
-                <label>Medium account url:</label>
                 <p>
-                  <i class="fab fa-medium-m"></i><a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
+                  <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
                     {{data.candidate.medium_account}}
                   </a>
                 </p>
               </div>
             </div>
-
-            <div class = "col-md-6 mb-3" *ngIf="data.candidate.stackoverflow_url">
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.stackoverflow_url">
+            <div class = "col-md-6">
               <div class="form-group">
-                <label> Stackoverflow URL:</label>
                 <p>
-                  <i class="fab fa-stack-overflow"></i><a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                  <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
                     {{data.candidate.stackoverflow_url}}
                   </a>
                 <p>
               </div>
             </div>
-
-            <div class = "col-md-6 mb-3" *ngIf="data.candidate.personal_website_url">
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.personal_website_url">
+            <div class = "col-md-6">
               <div class="form-group">
-                <label> Personal website URL:</label>
                 <p>
-                  <i class="fas fa-user"></i><a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                  <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
                     {{data.candidate.personal_website_url}}
                   </a>
                 <p>
               </div>
             </div>
-
-
           </div>
         </section>
 
