@@ -28,7 +28,6 @@
                 <span *ngIf = "already_approached === 1">
                   <span class = "badge badge-pill badge-primary"> Already approached </span>
                 </span>
-                <span><pre>{{data.candidate.description}}</pre></span>
               </div>
             </div>
             <div class="col-md-6">
@@ -50,6 +49,11 @@
           </div>
           <div class="row">
             <div class="col-12">
+              <pre>{{data.candidate.description}}</pre>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
               <div class="text-right">
                 <ng-container *ngIf="already_approached === 1;else no_already_approached">
                   <a [routerLink]="['/chat']">
@@ -59,7 +63,7 @@
                   </a>
                   </ng-container>
                 <ng-template #no_already_approached>
-                  <button type="button" class = "btn btn-primary" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach</button>
+                  <button type="button" class = "btn btn-primary w-25" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach with offer</button>
                 </ng-template>
               </div>
             </div>
@@ -90,7 +94,7 @@
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
+                  <i class="fab fa-github"></i><a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
                     {{data.candidate.github_account}}
                   </a>
                 </p>
@@ -101,7 +105,7 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
+                  <i class="fab fa-stack-exchange"></i><a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
                     {{data.candidate.stackexchange_account}}
                   </a>
                 </p>
@@ -112,7 +116,7 @@
               <div class="form-group" >
                 <label>Linkedin account url: </label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
+                  <i class="fab fa-linkedin-in"></i><a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
                     {{data.candidate.linkedin_account}}
                   </a>
                 </p>
@@ -123,7 +127,7 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
+                  <i class="fab fa-medium-m"></i><a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
                     {{data.candidate.medium_account}}
                   </a>
                 </p>
@@ -134,7 +138,7 @@
               <div class="form-group">
                 <label> Stackoverflow URL:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                  <i class="fab fa-stack-overflow"></i><a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
                     {{data.candidate.stackoverflow_url}}
                   </a>
                 <p>
@@ -145,7 +149,7 @@
               <div class="form-group">
                 <label> Personal website URL:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                  <i class="fas fa-user"></i><a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
                     {{data.candidate.personal_website_url}}
                   </a>
                 <p>
@@ -597,10 +601,10 @@
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()">
-                      {{types.name}}
                       <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                       <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                      {{types.name}}
                     </label>
                   </div>
                   <div class = "invalid-feedback d-inline"  *ngIf="!this.approach_work_type">

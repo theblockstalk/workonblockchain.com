@@ -19,12 +19,9 @@
               <img *ngIf="data.image " src = "{{data.image}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
               <div class="mt-3">
                 <span><h3>{{data.first_name.charAt(0).toUpperCase()}}{{data.first_name.slice(1)}} {{data.last_name.charAt(0).toUpperCase()}}{{data.last_name.slice(1)}}</h3></span>
-
-                <span><pre >{{data.candidate.description}}</pre></span>
-
                 <span>
-                <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data.type}" >Show Chat With Companies</a></p>
-              </span>
+                  <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data.type}" >Show Chat With Companies</a></p>
+                </span>
               </div>
             </div>
             <div class="col-md-6">
@@ -57,9 +54,10 @@
                 <li class="list-group-item">
                   <span><i class="fas fa-user mr-2"></i></span>Status:
                   <span *ngIf="candidate_status.status === 'created'">Created</span>
-                  <span *ngIf="candidate_status.status === 'wizard completed'">Pending review</span>
+                  <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
                   <span *ngIf="candidate_status.status === 'approved'">Approved</span>
-                  <span *ngIf="candidate_status.status === 'updated' || candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
                   <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
                   <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                 </li>
@@ -68,6 +66,11 @@
                   <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
                 </li>
               </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <pre>{{data.candidate.description}}</pre>
             </div>
           </div>
         </section>
@@ -349,7 +352,7 @@
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
+                  <i class="fab fa-github"></i><a [href]="websiteUrl(data.candidate.github_account)" target="_blank">
                     {{data.candidate.github_account}}
                   </a>
                 </p>
@@ -360,7 +363,7 @@
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
+                  <i class="fab fa-stack-exchange"></i><a [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
                     {{data.candidate.stackexchange_account}}
                   </a>
                 </p>
@@ -371,7 +374,7 @@
               <div class="form-group" >
                 <label>Linkedin account url:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
+                  <i class="fab fa-linkedin-in"></i><a [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
                     {{data.candidate.linkedin_account}}
                   </a>
                 </p>
@@ -382,7 +385,7 @@
               <div class="form-group" >
                 <label>Medium account url:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
+                  <i class="fab fa-medium-m"></i><a [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
                     {{data.candidate.medium_account}}
                   </a>
                 </p>
@@ -393,7 +396,7 @@
               <div class="form-group">
                 <label> Stackoverflow URL:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                  <i class="fab fa-stack-overflow"></i><a [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
                     {{data.candidate.stackoverflow_url}}
                   </a>
                 <p>
@@ -404,7 +407,7 @@
               <div class="form-group">
                 <label> Personal website URL:</label>
                 <p>
-                  <a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                  <i class="fas fa-user"></i><a [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
                     {{data.candidate.personal_website_url}}
                   </a>
                 <p>

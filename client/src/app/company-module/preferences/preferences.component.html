@@ -18,7 +18,7 @@
           <li class="nav-item">
             <a routerLink="/preferences" class="nav-link">
               <i class="{{pref_active_class}}"></i>
-              Work requirements
+              Talent requirements
             </a>
           </li>
         </ul>
@@ -27,11 +27,11 @@
 
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <h3 class="text-center">What work you are search for talent for</h3>
+        <h3 class="text-center">Talent search requirements</h3>
         <div class="row my-3">
           <div class="col-md-12">
             <div class = "form-group w-100 mb-0">
-              <h4><i class="fas fa-envelope "></i> Get an email for new matches to your work requirements</h4>
+              <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
               <div class="form-check form-check-inline">
                 <div *ngFor="let receive of email_notificaiton;">
                   <input type="radio" id="radio - {{receive}}" name="when_receive_email_notitfications" class="d-none" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
@@ -78,10 +78,10 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                            {{types.name}}
                             <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                            {{types.name}}
                           </label>
                         </div>
                       </div>
@@ -264,6 +264,8 @@
                       </div>
                     </div>
                   </div>
+                  <hr *ngIf="i < (this.preferncesForm.value.prefItems.length - 1)" class="bg-dark"/>
+
                 </section>
               </div>
             </div>

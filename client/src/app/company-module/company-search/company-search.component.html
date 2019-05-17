@@ -24,6 +24,21 @@
               </div>
             </div>
 
+            <div class="row my-3">
+              <div class="col-md-6">
+                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save</button>
+              </div>
+              <div class="col-md-6">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear</button>
+              </div>
+              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
+                {{success_msg}}
+              </div>
+              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
+                {{error_msg}}
+              </div>
+            </div>
+
             <div class="wob-bg-primary2 p-2 border mt-2">
               <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
               <div class="form-group px-1">
@@ -133,21 +148,6 @@
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
-              </div>
-            </div>
-
-            <div class="row my-3">
-              <div class="col-md-6">
-                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
-              </div>
-              <div class="col-md-6">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear filters</button>
-              </div>
-              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
-                {{success_msg}}
-              </div>
-              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
-                {{error_msg}}
               </div>
             </div>
           </div>
@@ -302,10 +302,10 @@
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                      {{types.name}}
                       <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                       <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                      {{types.name}}
                     </label>
 
                   </div>
