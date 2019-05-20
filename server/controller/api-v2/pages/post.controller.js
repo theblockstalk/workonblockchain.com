@@ -34,39 +34,53 @@ module.exports.auth = async function (req) {
     await auth.isAdmin(req);
 }
 
+const insertNewPage = async function (name, content, title, user_id) {
+    let addNewPage = new Pages
+    ({
+        page_name : name,
+        page_content: content,
+        page_title: title,
+        updated_by: user_id,
+        updated_date: new Date(),
+    });
+    const newPageDoc = await addNewPage.save();
+    return newPageDoc;
+}
+
 module.exports.endpoint = async function (req, res) {
     const userId = req.auth.user._id;
     let queryBody = req.body;
     logger.info(req.body);
     const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.content, true);
-    const pagesDoc = await Pages.findOne({ page_name: queryBody.name}).lean();
-    if(pagesDoc) {
-        let updatePage =
-            {
-                page_content : sanitizedHtml,
-                page_title : queryBody.title,
-                updated_by : userId,
-                updated_date: new Date(),
-            };
-
-        await Pages.update({ _id: pagesDoc._id },{ $set: updatePage });
-        res.send({
-            success : true
-        })
-    }
-    else {
-        let addNewPage = new Pages
-        ({
-            page_name : queryBody.name,
-            page_content: sanitizedHtml,
-            page_title: queryBody.title,
-            updated_by: userId,
-            updated_date: new Date(),
-        });
-        const newPageDoc = await addNewPage.save();
+    if(queryBody.name === 'Terms and Condition for company' || queryBody.name === 'Terms and Condition for candidate'){
+        const pageData = await insertNewPage(queryBody.name, sanitizedHtml, queryBody.title,userId);
         res.send({
             success : true,
-            information : newPageDoc
+            information : pageData
         })
+    }
+    else{
+        const pagesDoc = await Pages.findOne({ page_name: queryBody.name}).lean();
+        if(pagesDoc) {
+            let updatePage =
+                {
+                    page_content : sanitizedHtml,
+                    page_title : queryBody.title,
+                    updated_by : userId,
+                    updated_date: new Date(),
+                };
+
+            await Pages.update({ _id: pagesDoc._id },{ $set: updatePage });
+            res.send({
+                success : true
+            })
+        }
+        else {
+            const pageData = await insertNewPage(queryBody.name, sanitizedHtml, queryBody.title,userId);
+            res.send({
+                success : true,
+                information : pageData
+            })
+        }
     }
 }
