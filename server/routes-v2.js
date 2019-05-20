@@ -26,7 +26,8 @@ const endpoints = [
     require('./controller/api-v2/email_template/search/get.controller'),
     require('./controller/api-v2/locations/get.controller'),
     require('./controller/api-v2/pages/post.controller'),
-    require('./controller/api-v2/pages/get.controller')
+    require('./controller/api-v2/pages/get.controller'),
+    require('./controller/api-v2/statistics/get.controller'),
 ];
 
 function isEmpty(obj) {

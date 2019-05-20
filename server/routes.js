@@ -89,7 +89,7 @@ router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics))
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent)); // will be deleted
-router.get('/users/statistics' , asyncMiddleware(getStatistics));
+router.get('/users/statistics' , asyncMiddleware(getStatistics)); // will be deleted
 
 
 module.exports = router;
