@@ -320,9 +320,9 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
 
 module.exports.cmsContent = function cmsContent() {
     return {
-        page_title: "Privacy Notice",
-        html_text: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
-        page_name: "Privacy Notice"
+        title: "Privacy Notice",
+        content: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
+        name: "Privacy Notice"
     }
 }
 

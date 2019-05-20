@@ -1315,6 +1315,7 @@ export class UserService {
     }));
   }
 
+  //will be changed to new rest API call
   autoSuggestOptions(queryInput:any, country : boolean) {
     let input = {'autosuggest' :queryInput , 'countries' : country };
     return this.http.post(URL+'users/auto_suggest/'+{}, input ,{

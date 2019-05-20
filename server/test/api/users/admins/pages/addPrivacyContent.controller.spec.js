@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../../../helpers/mongo');
-const Users = require('../../../../../model/users');
+const Users = require('../../../../../model/mongoose/users');
 const Pages = require('../../../../../model/pages_content');
 const docGenerator = require('../../../../helpers/docGenerator');
 const companyHelper = require('../../../users/company/companyHelpers');
@@ -26,7 +26,7 @@ describe('CMS page data as admin ', function () {
 
             const company = docGenerator.company();
             await companyHelper.signupAdminCompany(company);
-            const companyDoc = await Users.findOne({email: company.email}).lean();
+            const companyDoc = await Users.findOne({email: company.email});
 
             const info = docGenerator.cmsContent();
             const cmsRes = await adminHelper.addCmsContent(info , companyDoc.jwt_token);
