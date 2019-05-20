@@ -83,12 +83,12 @@ router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateE
 // Admin
 router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
 router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
-router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
-router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
+router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent)); // will be deleted
+router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent)); // will be deleted
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
-router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
+router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent)); // will be deleted
 router.get('/users/statistics' , asyncMiddleware(getStatistics));
 
 

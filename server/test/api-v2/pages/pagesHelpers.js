@@ -13,3 +13,12 @@ const addPages = module.exports.addPages = async function addPages(cmsData,jwtTo
     res.should.have.status(200);
     return res;
 }
+
+const getPage = module.exports.getPage = async function getPage(pageName,jwtToken) {
+    const res = await chai.request(server)
+        .get('/v2/pages?name=' + pageName)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}

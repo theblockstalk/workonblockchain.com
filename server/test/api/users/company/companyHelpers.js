@@ -24,6 +24,8 @@ module.exports.signupVerfiedCompany = async function signupVerfiedCompany(compan
 
 module.exports.signupAdminCompany = async function signupAdminCompany(company) {
     await signupCompany(company);
+    await userHelpers.verifyEmail(company.email);
+    await userHelpers.approve(company.email);
     await userHelpers.makeAdmin(company.email);
 }
 
