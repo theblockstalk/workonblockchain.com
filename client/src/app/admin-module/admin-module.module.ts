@@ -33,10 +33,7 @@ import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profi
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
     StyleGuideComponent,
-<<<<<<< HEAD
-=======
     AdminUpdateCompanyProfileComponent
->>>>>>> staging
   ],
   providers : [PagerService]
 

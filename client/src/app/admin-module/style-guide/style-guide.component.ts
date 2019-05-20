@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
-import {constants} from '../../../constants/constants';
 declare var $:any;
 import {constants} from "../../../constants/constants";
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';

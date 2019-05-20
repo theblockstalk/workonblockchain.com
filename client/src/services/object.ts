@@ -13,6 +13,15 @@ export const getFilteredNames = function (userRoles, enumArray) {
   return filtered_array;
 }
 
+export const filter_array = function (arr) {
+  var hashTable = {};
+  return arr.filter(function (el) {
+    var key = JSON.stringify(el);
+    var match = Boolean(hashTable[key]);
+    return (match ? false : hashTable[key] = true);
+  });
+}
+
 export const changeLocationDisplayFormat = function(locationArray) {
   let selectedValueArray = [];
   let countries;
