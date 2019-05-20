@@ -67,7 +67,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 // Candidates
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
-router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
+router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations)); // will be deleted
 
 // Companies
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
