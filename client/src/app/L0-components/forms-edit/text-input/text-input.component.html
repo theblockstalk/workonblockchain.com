@@ -5,7 +5,7 @@
     class="form-control"
     placeholder="{{placeholder}}"
     [(ngModel)]="value"
-    (ngModelChange) = "textInputChange.emit(value)"
+    (ngModelChange) = "textInputValue.emit(value)"
   >
   <div
     class = "invalid-feedback d-inline"

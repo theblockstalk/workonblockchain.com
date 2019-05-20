@@ -10,7 +10,7 @@ export class TextInputComponent implements OnInit {
   @Input() placeholder: string;
   @Input() value: string;
   @Input() errorMsg: string;
-  @Output() textInputChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() textInputValue: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {

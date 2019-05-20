@@ -1,0 +1,10 @@
+<app-c-forme-text
+  placeholder="https://github.com/username"
+  [errorMsg]="errMsg"
+  [value]="github_account"
+  label="Github account URL (optional)"
+  (change)= selfValidate()
+  (textInputChange)="github_account = $event"
+>
+</app-c-forme-text>
+

@@ -1,0 +1,9 @@
+<app-c-forme-text-area
+  rows="5"
+  placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer."
+  label="Bio"
+  [value]="description"
+  [errMsg]="errMsg"
+  (change)="selfValidate()"
+  (textareaInput) = "description= $event"
+></app-c-forme-text-area>

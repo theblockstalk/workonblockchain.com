@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-c-forme-text-area',
@@ -10,6 +10,8 @@ export class TextAreaComponent implements OnInit {
   @Input() placeholder: string;
   @Input() label: string;
   @Input() value: string;
+  @Input() errMsg: string;
+  @Output() textareaInput: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 

@@ -1,4 +1,11 @@
 <div class="form-group">
   <label>{{label}}</label>
-  <textarea [rows]="rows"  maxlength="2000" [placeholder]="placeholder" [(ngModel)]="value"></textarea>
+  <textarea
+    [rows]="rows"
+    maxlength="2000"
+    [placeholder]="placeholder"
+    [(ngModel)]="value"
+    (ngModelChange)="textareaInput.emit(value)"
+  >
+  </textarea>
 </div>

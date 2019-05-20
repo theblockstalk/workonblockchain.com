@@ -22,5 +22,4 @@ export class FirstNameComponent implements OnInit {
     return false;
   }
 
-
 }

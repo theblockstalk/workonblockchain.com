@@ -1,0 +1,10 @@
+<app-c-forme-text
+  placeholder="Smith"
+  [errorMsg]="errMsg"
+  [(value)]="last_name"
+  label="Last name"
+  (change)= selfValidate()
+  (textInputChange)="last_name = $event"
+>
+</app-c-forme-text>
+
