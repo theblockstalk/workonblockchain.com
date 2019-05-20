@@ -16,10 +16,10 @@ export class FirstNameComponent implements OnInit {
   selfValidate(){
     if(!this.first_name) {
       this.errMsg = "Please enter first name";
-      return false;
+      return true;
     }
     delete this.errMsg;
-    return true;
+    return false;
   }
 
 

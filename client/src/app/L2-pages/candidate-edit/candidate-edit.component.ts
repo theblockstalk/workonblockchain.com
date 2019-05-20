@@ -19,12 +19,13 @@ export class CandidateEditComponent implements OnInit {
     this.work_history = this.userDoc['candidate'].work_history;
   }
 
-  getName() {
-    // console.log(this.first_name);
-  }
-
   submit(){
-    this.firstName.selfValidate();
+    console.log("submit")
+    if(!this.firstName.selfValidate()){
+      console.log("ifffff");
+      this.first_name = this.firstName.first_name;
+    }
+    console.log(this.first_name);
   }
 
 }
