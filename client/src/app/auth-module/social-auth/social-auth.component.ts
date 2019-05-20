@@ -12,32 +12,50 @@ export class SocialAuthComponent implements OnInit {
   code;
   log;
   googleUser;
+  referred_email;
+  refcode;
   constructor(private route:ActivatedRoute, private router:Router,private authenticationService: UserService) {
+    this.refcode = localStorage.getItem('ref_code');
+    if (this.refcode) {
+      this.authenticationService.getByRefrenceCode(this.refcode)
+        .subscribe(
+          data => {
+            if (data) {
+              this.referred_email = data['email'];
+              this.getParam();
+            }
+          },
+          error => {
+          }
+        );
+    }
+    else {
+      this.getParam();
+    }
+  }
+  getParam() {
     this.googleUser = (localStorage.getItem('googleLogin'));
 
     this.route.queryParams.subscribe(params => {
       this.code =  params['code'];
     });
     if(this.code && this.googleUser === 'true') {
-      console.log(this.code);
       this.login(this.code);
     }
     else if(this.code && !this.googleUser) {
-      console.log(this.code);
       this.passCodeToBE(this.code);
     }
     else {
       this.router.navigate(['/not_found']);
     }
-
   }
+
   ngOnInit() {
 
   }
 
   login(code) {
     localStorage.removeItem('googleLogin');
-
     this.authenticationService.candidate_login({google_code : code})
       .subscribe(
         user => {
@@ -64,7 +82,10 @@ export class SocialAuthComponent implements OnInit {
 
 
   passCodeToBE(googleCode) {
-    this.authenticationService.createCandidate({google_code : googleCode})
+    let queryBody : any = {};
+    if(this.referred_email) queryBody.referred_email = this.referred_email;
+    queryBody.google_code = googleCode;
+    this.authenticationService.createCandidate(queryBody)
       .subscribe(
         user => {
           if(user) {

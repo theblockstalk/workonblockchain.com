@@ -37,34 +37,77 @@ const bodySchema = new Schema({
             }),
             required: false
         },
-        job_offer: {
+
+        approach: {
             type: new Schema({
-                title: {
-                    type: String,
-                    required: true
+                employee: {
+                    type: {
+                        job_title: {
+                            type: String,
+                        },
+                        annual_salary: {
+                            min: Number,
+                            max: Number
+                        },
+                        currency: {
+                            type: String,
+                            enum: enumerations.currencies,
+                        },
+                        employment_type: {
+                            type: String,
+                            enum: enumerations.employmentTypes,
+                        },
+                        location: {
+                            type: String,
+                        },
+                        employment_description: {
+                            type: String,
+                            maxlength: 3000,
+                        },
+                        location: {
+                            type: String
+                        }
+                    }
                 },
-                salary: {
-                    type: Number,
-                    required: true
+                contractor: {
+                    type: {
+                        hourly_rate: {
+                            min: Number,
+                            max: Number
+                        },
+                        currency: {
+                            type: String,
+                            enum: enumerations.currencies,
+                        },
+                        role: {
+                            type: String,
+                            enum: enumerations.workRoles
+                        },
+                        contract_description: {
+                            type: String,
+                            maxlength: 3000,
+                        },
+                        location: {
+                            type: String
+                        }
+                    }
                 },
-                salary_currency: {
-                    type: String,
-                    enum: enumerations.currencies,
-                    required: true
-                },
-                type: {
-                    type: String,
-                    enum: enumerations.jobTypes,
-                    required: true
-                },
-                description: {
-                    type: String,
-                    required: false
+                volunteer: {
+                    type: {
+                        opportunity_description: {
+                            type: String,
+                            maxlength: 3000,
+                        },
+                        location: {
+                            type: String
+                        }
+                    }
                 }
             }),
             required: false
         },
-        job_offer_accepted: {
+
+        approach_accepted: {
             type: new Schema({
                 message: {
                     type: String,
@@ -73,7 +116,8 @@ const bodySchema = new Schema({
             }),
             required: false
         },
-        job_offer_rejected: {
+
+        approach_rejected: {
             type: new Schema({
                 message: {
                     type: String,
@@ -144,16 +188,16 @@ const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) 
         messageDoc = await messages.findOne({
             sender_id: sender_id,
             receiver_id: receiver_id,
-            msg_tag: 'job_offer_accepted'
+            msg_tag: 'approach_accepted'
         });
     } else {
         messageDoc = await messages.findOne({
             sender_id: receiver_id,
             receiver_id: sender_id,
-            msg_tag: 'job_offer_accepted'
+            msg_tag: 'approach_accepted'
         });
     }
-    if (!messageDoc) errors.throwError("Job offer has not been accepted", 400);
+    if (!messageDoc) errors.throwError("Approach has not been accepted", 400);
 }
 
 const checkMessageSenderType = function (userType, expectedType) {
@@ -211,49 +255,57 @@ module.exports.endpoint = async function (req, res) {
         body.message.normal.message = object.replaceLineBreaksHtml(body.message.normal.message);
         newMessage.message.normal = body.message.normal;
     }
-    else if (body.msg_tag === "job_offer") {
+    else if (body.msg_tag === "approach") {
         checkMessageSenderType(userType, 'company');
 
         const messageDoc = await messages.findOne({
             sender_id: sender_id,
             receiver_id: receiver_id,
-            msg_tag: 'job_offer'
+            msg_tag: 'approach'
         });
-        if (messageDoc) errors.throwError("Job offer already sent", 400);
+        if (messageDoc) errors.throwError("Approach already sent", 400);
+        if(body.message.approach.employee && body.message.approach.employee.employment_description) {
+            body.message.approach.employee.employment_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.employee.employment_description);
+        }
 
-        body.message.job_offer.description = sanitize.sanitizeHtml(body.message.job_offer.description);
-        body.message.job_offer.description = object.replaceLineBreaksHtml(body.message.job_offer.description);
-        newMessage.message.job_offer = body.message.job_offer;
+        if(body.message.approach.contractor && body.message.approach.contractor.contract_description) {
+            body.message.approach.contractor.contract_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.contractor.contract_description);
+        }
+
+        if(body.message.approach.volunteer && body.message.approach.volunteer.opportunity_description) {
+            body.message.approach.volunteer.opportunity_description = sanitize.sanitizeHtml(req.unsanitizedBody.message.approach.volunteer.opportunity_description);
+        }
+        newMessage.message.approach = body.message.approach;
     }
-    else if (body.msg_tag === "job_offer_accepted") {
+    else if (body.msg_tag === "approach_accepted") {
         checkMessageSenderType(userType, 'candidate');
 
         const messageDoc = await messages.findOne({
             sender_id: sender_id,
             receiver_id: receiver_id,
-            msg_tag: 'job_offer_accepted'
+            msg_tag: 'approach_accepted'
         });
-        if (messageDoc) errors.throwError("Job offer already accepted", 400);
+        if (messageDoc) errors.throwError("Approach already accepted", 400);
 
-        newMessage.message.job_offer_accepted = body.message.job_offer_accepted;
+        newMessage.message.approach_accepted = body.message.approach_accepted;
     }
-    else if (body.msg_tag === "job_offer_rejected") {
+    else if (body.msg_tag === "approach_rejected") {
         checkMessageSenderType(userType, 'candidate');
 
         const messageDoc = await messages.findOne({
             $or: [{
                 sender_id: sender_id,
                 receiver_id: receiver_id,
-                msg_tag: 'job_offer_accepted'
+                msg_tag: 'approach_accepted'
             }, {
                 sender_id: sender_id,
                 receiver_id: receiver_id,
-                msg_tag: 'job_offer_rejected'
+                msg_tag: 'approach_rejected'
             }]
         });
-        if (messageDoc) errors.throwError("Job offer already accepted or rejected", 400);
+        if (messageDoc) errors.throwError("Approach already accepted or rejected", 400);
 
-        newMessage.message.job_offer_rejected = body.message.job_offer_rejected;
+        newMessage.message.approach_rejected = body.message.approach_rejected;
     }
     else if (body.msg_tag === "interview_offer") {
         checkMessageSenderType(userType, 'company');

@@ -6,7 +6,7 @@ import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
 import {constants} from '../../../constants/constants';
-import {getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue, getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -38,6 +38,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   description_experimented_platforms;
   description_commercial_skills;
 
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+  country_code;
+  templates;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -65,7 +72,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   };
 
   commercial;
-  roles;
   platforms;
   email;
   response;
@@ -81,6 +87,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   candidateHistory;
   _id;
   send_email;
+  templateDoc;
 
   ngAfterViewInit(): void
   {
@@ -111,7 +118,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
     };
@@ -128,10 +134,57 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
-        this.authenticationService.getById(this.user_id)
+        this.getTemplateOptions();
+        this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
               this._id  = data['_id'];
+              if(data['candidate'].employee) {
+                this.employee.value = data['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(data['candidate'].contractor) {
+                this.contractor.value = data['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue;
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType.sort();
+              }
+
+              if(data['candidate'].volunteer) {
+                this.volunteer.value = data['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
@@ -139,13 +192,23 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 $('.selectpicker').selectpicker('refresh');
               }, 200);
 
+              this.contact_number = '';
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
+              }
+              else this.contact_number = contact_number[0];
+
+              data['contact_number'] = this.contact_number;
+
               this.info.push(data);
               this.verify =data['is_verify'];
-              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-              else this.availability_day =data['candidate'].availability_day;
 
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -220,17 +283,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
-              this.roles  = data['candidate'].roles;
-              if(this.roles) {
-                let new_roles = constants.workRoles;
-                let filtered_array = [];
-                for(let i=0;i<this.roles.length;i++){
-                  const filteredArray = getNameFromValue(new_roles,this.roles[i]);
-                  filtered_array.push(filteredArray.name);
-                }
-                this.roles = filtered_array;
-                this.roles.sort();
-              }
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -391,7 +443,28 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-
+  getTemplateOptions()  {
+    this.templates = [];
+    this.authenticationService.email_templates_get()
+      .subscribe(
+        data =>
+        {
+          this.templateDoc = data;
+          for(let i = 0; i < data['length']; i++) {
+              this.templates.push(data[i].name);
+          }
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
+        },
+        error =>
+        {
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+        });
+  }
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
@@ -519,5 +592,39 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       var match = Boolean(hashTable[key]);
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
+
+  refreshSelect(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
+  }
+
+  selectTemplate(event, name){
+    let template = this.templateDoc.find(x => x.name === event.target.value);
+    if(name === 'note') {
+      this.note = template.body;
+    }
+    else  {
+      if('subject' in template) this.email_subject = template.subject;
+      this.email_text = template.body;
+    }
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 }

@@ -50,7 +50,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
-    this.length='';
+    this.length=0;
     this.log='';
     this.response='';
     this.candidate_status = 1;
@@ -89,7 +89,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         {
           this.information = this.filter_array(data);
           this.info=[];
-          this.length='';
+          this.length=0;
 
           for(let res of this.information)
           {
@@ -106,10 +106,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
-
           }
           this.setPage(1);
-          this.length='';
+          this.length=0;
 
         },
         error =>
@@ -280,10 +279,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
 
-    let new_roles = constants.workRoles;
+  }
 
-    for(let i=0;i<this.pagedItems.length;i++){
-      this.pagedItems[i].candidate.roles = getFilteredNames(this.pagedItems[i],new_roles);
-    }
+  rolesData = constants.workRoles;
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 }

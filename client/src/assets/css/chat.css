@@ -38,6 +38,7 @@ only to be applied to the chat page*/
   overflow-y: scroll;
   max-height: 400px;
   min-height: 400px;
+  background-image:url('/assets/images/chat-background.png');
 }
 
 .sent {

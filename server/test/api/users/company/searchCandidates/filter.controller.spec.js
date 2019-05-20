@@ -95,8 +95,8 @@ describe('search candidates as company', function () {
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
             const params = {
-                current_currency: candidateUserDoc.candidate.expected_salary_currency,
-                current_salary: candidateUserDoc.candidate.expected_salary*0.5
+                current_currency: candidateUserDoc.candidate.employee.currency,
+                current_salary: candidateUserDoc.candidate.employee.expected_annual_salary*0.5
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -117,7 +117,7 @@ describe('search candidates as company', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
-            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",
@@ -142,8 +142,7 @@ describe('search candidates as company', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
-            console.log(candidateUserDoc.candidate.expected_salary_currency, candidateUserDoc.candidate.expected_salary);
-            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",
@@ -153,6 +152,30 @@ describe('search candidates as company', function () {
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
             filterRes.status.should.equal(200)
+        })
+
+        it('it should return the candidate with language expr', async function () {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileLanguageExprData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
+            await userHelper.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+            const params = {
+                years_exp_min: 1
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
+            const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
         })
     })
 });

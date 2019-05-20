@@ -11,7 +11,7 @@
         <div class = "row">
           <div class = "col-md-3 ">
             <div class="wob-bg-primary2 p-2 border">
-              <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
+              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
               <input type="text" [(ngModel)]="_id" name="_id"  class="form-control d-none">
               <input type="text" [(ngModel)]="timestamp"  name = "timestamp"  class="form-control d-none">
               <input type="text" [(ngModel)]="pref_job_type" name="pref_job_type"  class="form-control d-none">
@@ -24,21 +24,48 @@
               </div>
             </div>
 
+            <div class="row my-3">
+              <div class="col-md-6">
+                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save</button>
+              </div>
+              <div class="col-md-6">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear</button>
+              </div>
+              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
+                {{success_msg}}
+              </div>
+              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
+                {{error_msg}}
+              </div>
+            </div>
+
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
+              <div class="form-group px-1">
+                <div class="form-check" *ngFor="let types of workTypes">
+                  <label class="form-check-label simple-radio-button" >
+                    <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
+                    <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                    <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                    <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                    {{types.name}}
+                  </label>
+                </div>
+              </div>
 
               <div class="form-group">
                 <select title="Skills" [disabled]="msg !== '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                   <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
                 </select>
               </div>
+
+              <div class="form-group" *ngIf="skill_value && skill_value.length > 0" id="skills_exp">
+                <select title="Years experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="years_exp_value" name="years_exp" (ngModelChange)="searchdata('years_exp_min', $event)" class="selectpicker form-control" placeholder="Years experience">
+                  <option *ngFor = "let years of years_exp" [attr.selected] = "years.value === years_exp_value ? true : null" [value]="years.value">{{years.name}}</option>
+                </select>
+              </div>
               <hr/>
 
-              <!--<div class = "form-group">
-                <select title="Desired location" [disabled]="msg !== '' ? true : false" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
-                  <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
-                </select>
-              </div>-->
               <div class="form-group">
 
                 <mat-autocomplete #auto="matAutocomplete">
@@ -48,8 +75,9 @@
                 </mat-autocomplete>
                 <mat-form-field floatLabel="always">
                   <mat-label></mat-label>
-                  <input matInput placeholder="Location" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
+
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                   {{error}}
                 </div>
@@ -85,7 +113,7 @@
               <hr/>
 
               <div class="form-group">
-                <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                <select class="form-control selectpicker" title="Residence/base country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
                   <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                 </select>
                 <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
@@ -94,12 +122,23 @@
 
               </div>
 
-              <div class = "form-group">
+              <div class = "form-group" *ngIf="selectedWorkType === 'employee'">
 
-                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Salary">
+                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Annual salary">
 
                 <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
+                  <option value="-1" >Currency</option>
                   <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
+                </select>
+
+              </div>
+
+              <div class = "form-group" *ngIf="selectedWorkType === 'contractor'">
+
+                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="hourly_rate" name="hourly_rate" (ngModelChange)="searchdata('hourly_rate' , $event)" placeholder="Hourly rate">
+
+                <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="contractorCurrency" name="contractorCurrency" (ngModelChange)="searchdata('contractorCurrency' , $event)">
+                  <option *ngFor='let current_currency of currency' [attr.selected] = "contractorCurrency === current_currency ? true : null" >{{current_currency}}</option>
                 </select>
 
               </div>
@@ -107,38 +146,13 @@
             </div>
 
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Job preferences</h4>
-              <small class="text-center ml-1" >This will determine the order of the candidates but not filter any candidates</small>
+              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Talent preferences</h4>
               <div class = "form-group mt-3">
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
               </div>
             </div>
-
-            <div class="row my-3">
-              <div class="col-md-8">
-                <form (click)="savedSearch()">
-                  <L0-buttons-others buttonClass="btn-primary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Save search" ></L0-buttons-others>
-                </form>
-              </div>
-              <div class="col-md-4">
-                  <L0-buttons-others (click)="reset()" buttonClass="btn-secondary" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Reset" ></L0-buttons-others>
-              </div>
-              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
-                {{success_msg}}
-              </div>
-              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
-                {{error_msg}}
-              </div>
-            </div>
-
-            <div class="row my-3">
-              <div class="col-md-12">
-                <L0-buttons-others buttonClass="btn-primary" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" alignmentClass="w-100" buttonType="button" label="Save new search" ></L0-buttons-others>
-              </div>
-            </div>
-
           </div>
 
           <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -154,10 +168,12 @@
 
               <div  *ngIf="msg === '' && verify_msg === ''">
 
-                <L0-alerts alertClass="alert-info" aligmentClass="mt-1" *ngIf="candidate_data && candidate_data.length > 0" [alertMsg]="candidate_data.length + ' candidates match your search'" ></L0-alerts>
-
-                <L0-alerts alertClass="alert-danger" aligmentClass="mt-1" *ngIf="not_found !== ''" [alertMsg]="not_found" ></L0-alerts>
-
+                <div *ngIf="searchData === true && candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
+                  <span>{{candidate_data.length}}</span> candidates match your search
+                </div>
+                <div *ngIf="not_found !== '' " class="alert alert-danger mt-1" role="alert">
+                  <span>{{not_found}}</span>
+                </div>
               </div>
               <div *ngIf="candidate_data && candidate_data.length > 0 ">
                 <div class="panel-group" *ngFor= "let data of pagedItems ">
@@ -174,13 +190,30 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
-
-                          <h5 class="ml-5">
-                            <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.candidate.roles"> {{roles}} </span>
-                          </h5>
+                        </div>
+                        <span *ngIf="data.candidate.employee">
+                          Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
+                        </span>
+                        <span *ngIf="data.candidate.employee && data.candidate.contractor">
+                          or
+                        </span>
+                        <span *ngIf="data.candidate.contractor">
+                          Expects {{data.candidate.contractor.expected_hourly_rate}} {{data.candidate.contractor.currency}} per hour
+                        </span>
+                        <br>
+                        <div *ngIf = "data.first_name" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
+                            Already approached
+                          </span>
+                        </div>
+                        <div *ngIf = "data.already_approached === 1" class="ml-3">
+                          <span class="ml-5"></span>
+                          <span class = "badge badge-pill badge-primary">
+                          Already approached
+                        </span>
                         </div>
                       </div>
                       <div class="col-md-3">
@@ -188,7 +221,8 @@
                           <input type="hidden" name="id" [ngModel]="data._id">
                           <input type="hidden" name="name" [ngModel]="data.initials">
                           <div class="float-right">
-                            <L0-buttons-others buttonClass="btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" buttonType="submit" label="Send job description" ></L0-buttons-others>
+
+                            <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach</button>
                           </div>
                         </form>
                       </div>
@@ -215,7 +249,11 @@
                           <div class="form-group">
                             <label><h4>Languages</h4></label>
                             <div>
-                              <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.candidate.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                              <div *ngFor = "let lang of sorting(data.candidate.programming_languages); let i = index">
+                                <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngIf="i < 5">
+                                  {{lang.language}}: {{lang.exp_year}} years
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -250,12 +288,12 @@
 
 
   <!-- Modal -->
-  <div class="modal fade" id="jobDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="approachModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header bg-primary">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h5 class="modal-title mx-auto" id="exampleModalLabel">Job description</h5>
+          <h5 class="modal-title mx-auto" id="exampleModalLabel"><i class="fa fa-paper-plane"></i> Approach</h5>
         </div>
         <div class="modal-body">
           <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
@@ -264,11 +302,30 @@
             <ng-template #no_modal>
             </ng-template>
             <div class="row">
+              <div class="col-md-4" *ngFor="let types of workTypes">
+                <div class="form-group">
+                  <div class="form-check" >
+                    <label class="form-check-label simple-radio-button" >
+                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                      {{types.name}}
+                    </label>
+
+                  </div>
+                </div>
+              </div>
+              <div class = "invalid-feedback d-inline ml-3 mb-3"  *ngIf="!this.approach_work_type">
+                {{work_log}}
+              </div>
+            </div>
+            <div class="row" *ngIf="approach_work_type === 'employee'">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom1">Job title</label>
-                  <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Full stack developer">
-                  <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
+                  <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="employee.job_title" class="form-control" placeholder="Director">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_title">
                     {{job_title_log}}
                   </div>
                 </div>
@@ -276,84 +333,173 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom02">Location</label>
-                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="location_log">
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="employee.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.location">
                     {{location_log}}
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustomSalary">Annual salary</label>
-                  <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
-                  <div class = "invalid-feedback d-inline"  *ngIf="salary_log">
-                    {{salary_log}}
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="min_salary" [(ngModel)]="employee.min_salary" class="form-control" placeholder="Min">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!employee.min_salary || (employee.min_salary && !checkNumber(employee.min_salary))">
+                        {{salary_log}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="max_salary" [(ngModel)]="employee.max_salary" class="form-control" placeholder="Max">
+                      <div class = "invalid-feedback d-inline"  *ngIf="employee.max_salary && !checkNumber(employee.max_salary)">
+                        {{max_salary_log}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(employee.max_salary) < convertNumber(employee.min_salary) ">
+                    Maximum salary should be greater the minimum salary
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="validationCustom02" class="invisible">Currency</label>
-                  <select title="Currency" name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
-                    <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
+                  <select title="Currency" name="currency" [(ngModel)]="employee.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === employee.currency? true: null">{{base_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
                     {{salary_currency_log}}
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label for="validationCustom02">Employment type</label>
                   <div class="form-check" *ngFor="let options of job_type">
-                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="employee.job_type" [value]="options">
                     <label class="form-check-label simple-radio-button" for="{{options}}">
                       {{options}}
                     </label>
                   </div>
-                  <div class = "invalid-feedback d-inline"  *ngIf="employment_log">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_type">
                     {{employment_log}}
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Job description</label>
-                  <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                  <label>Employment description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="job_desc_log">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc">
                     {{job_desc_log}}
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="row" *ngIf="approach_work_type === 'contractor'">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustomSalary">Hourly rate</label>
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_min" [(ngModel)]="contractor.hourly_rate_min" class="form-control" placeholder="Min">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_min || (contractor.hourly_rate_min && !checkNumber(contractor.hourly_rate_min))">
+                        {{hourly_rate_log}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_max" [(ngModel)]="contractor.hourly_rate_max" class="form-control" placeholder="Max">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_max || (contractor.hourly_rate_max && !checkNumber(contractor.hourly_rate_max))">
+                        {{max_hourly_rate_log}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(contractor.hourly_rate_min) > convertNumber(contractor.hourly_rate_max) ">
+                    Maximum rate should be greater the minimum rate
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02" class="invisible">Currency</label>
+                  <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
+                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                    {{hourly_currency_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
+                    {{contractor_location_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contract description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
+                    {{contract_desc_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="validationCustom02">Location</label>
+                  <input type="text" id="validationCustom02" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.location">
+                    {{volunteer_location_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Opportunity description</label>
+                  <ckeditor class="ckeditor_tab" [(ngModel)]="volunteer.opportunity_description" #myckeditor name="opportunity_description" [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description">
+                    {{volunteer_desc_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             <div class="row">
               <div class="col-md-12">
-                <L0-alerts alertClass="alert-danger" *ngIf="job_offer_log_erorr" [alertMsg]="job_offer_log_erorr" ></L0-alerts>
-                <L0-alerts alertClass="alert-success" *ngIf="job_offer_log_success" [alertMsg]="job_offer_log_success" ></L0-alerts>
 
+                <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
+                  {{job_offer_log_erorr}}
+                </div>
+                <div class = "alert alert-success" *ngIf="job_offer_log_success">
+                  {{job_offer_log_success}}
+                </div>
               </div>
             </div>
             <div class="modal-footer">
               <L0-buttons-others buttonClass="btn-secondary" buttonType="reset" label="Reset" ></L0-buttons-others>
               <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Send" ></L0-buttons-others>
             </div>
-            <div class = "invalid-feedback d-inline-block text-right">
-              {{job_offer_log}}
-            </div>
           </form>
-
         </div>
-
       </div>
     </div>
   </div>
@@ -372,11 +518,12 @@
         </div>
         <form  [formGroup]="preferncesForm" (ngSubmit)="savedNewSearch()">
           <div class="modal-body">
-
             <div class="row">
               <div class="col-md-6">
                 <input type="text" formControlName="name"  class="form-control" placeholder="Saved search name">
-
+                <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.name" >
+                  {{search_name_log}}
+                </div>
               </div>
             </div>
 
@@ -388,24 +535,34 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6 mt-2">
-                <div class="form-group">
-                  <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
-                    <option *ngFor='let job_type of job_types'  [value]="job_type" selected>{{job_type}}</option>
-                  </select>
 
+              <div class="col-md-12 mt-2">
+                <div class="form-group">
+                  <div class="form-check" *ngFor="let types of workTypes">
+                    <label class="form-check-label simple-radio-button" >
+                      <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                      {{types.name}}
+                    </label>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'employee'">
+                <div class="form-group">
+                  <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
+                    <option *ngFor='let job_type of job_type'  [value]="job_type" selected>{{job_type}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2" >
                 <div class="form-group">
                   <select multiple formControlName="position" title="Role" class="form-control selectpicker">
                     <option *ngFor='let role of rolesData'   [value]="role.value" selected>{{role.name}}</option>
-
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
-                    {{position_log}}
-                  </div>
                 </div>
               </div>
 
@@ -419,18 +576,15 @@
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
 
                     <div *ngIf="newSearchLocation.length > 0">
                       <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteNewLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
-
                     </div>
-
                   </div>
-
                 </div>
               </div>
 
@@ -440,12 +594,11 @@
                     <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" selected>{{blockchain.name}}</option>
                   </select>
                   <small class="text-secondary" >Only select this if essential for the job</small>
-
                 </div>
               </div>
 
-              <div class="col-md-12">
-                <div class = "form-group">
+              <div class="col-md-6">
+                <div class = "form-group" [ngClass]="preferncesForm.value.work_type !== 'employee'? 'mt-3': ''">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                     <label class="form-check-label" for="defaultCheck1">
@@ -455,17 +608,19 @@
                 </div>
               </div>
 
+              <div class="col-md-6" *ngIf="preferncesForm.value.work_type === 'employee'"></div>
+
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language">
+                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language" (change)="refreshSelectBox()">
                     <option class='option' *ngFor='let language of skillsData' [value]="language.value" selected>{{language.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select multiple class="form-control selectpicker" title="Residence/base country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
@@ -474,32 +629,50 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.skills && preferncesForm.value.skills.length > 0">
+                <div class = "form-group">
+                  <select title="Years experience" class="selectpicker form-control position-relative mt-3" formControlName = "years_exp_value" >
+                    <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.years_exp_value?true:null">{{years_exp_min.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'employee'">
                 <div class = "form-group w-auto">
 
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
-
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.current_currency?true:null">{{base_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.current_currency && preferncesForm.value.current_salary)|| (preferncesForm.value.current_currency && !preferncesForm.value.current_salary)" >
                     {{current_currency_log}}
                   </div>
-
-                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && checkNumber(preferncesForm.value.current_salary)  " >
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && !checkNumber(preferncesForm.value.current_salary)  " >
                     {{current_currency_log}}
                   </div>
 
                 </div>
               </div>
 
+              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'contractor'">
+                <div class = "form-group w-auto">
+                  <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
+                    <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.currency?true:null">{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.expected_hourly_rate && preferncesForm.value.currency) || (preferncesForm.value.expected_hourly_rate && !preferncesForm.value.currency)  " >
+                    {{expected_hourly_rate_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.currency && preferncesForm.value.expected_hourly_rate && !checkNumber(preferncesForm.value.expected_hourly_rate)  " >
+                    {{expected_hourly_rate_log}}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="row my-2">
               <div class="col-md-12">
                 <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
-                <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
-
               </div>
             </div>
 

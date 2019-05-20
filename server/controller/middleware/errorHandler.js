@@ -19,7 +19,6 @@ module.exports = function middleware(err, req, res, next) {
         if (req.body.password) delete req.body.password;
         bug.request.body = req.body;
     }
-
     if(err instanceof ApplicationError) {
         logger.warn(err.message, bug);
     } else {

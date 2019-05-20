@@ -6,7 +6,7 @@ import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 declare var $:any;
 import {constants} from "../../../constants/constants";
-import {getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
 
 @Component({
   selector: 'app-candidate-detail',
@@ -37,7 +37,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   platforms;
   github;
   stack;
-  roles;
   expected_salary;
   email;
   visaRequiredArray= [];
@@ -46,6 +45,35 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  job_offer_msg;
+  job_offer_msg_success;
+  full_name;
+  job_description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_erorr;
+  approach_work_type;
+  volunteer_desc_log;
+  hourly_rate_log;
+  hourly_currency_log;
+  contract_desc_log;
+  workTypes = constants.workTypes;
+  rolesData = constants.workRoles;
+  already_approached = 0;
+  country_code;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -103,20 +131,61 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
+      //checking already approached or not
+      this.authenticationService.get_user_messages_comp(this.user_id)
+        .subscribe(
+          data => {
+            if(data['messages'][0].message.approach) this.already_approached=1;
+          },
+          error => {
+            if (error.message === 500 || error.message === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+            if (error.message === 403) {
+            }
+          }
+        );
+
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
-            setTimeout(() => {
-              $('.selectpicker').selectpicker('refresh');
-            }, 900);
-            if(data && data['message']) {
-              let job_offer = data['message'].job_offer;
-              this.credentials.job_title = job_offer.title;
-              this.credentials.salary = job_offer.salary;
-              this.credentials.currency = job_offer.salary_currency;
-              this.credentials.location = job_offer.location;
-              this.credentials.job_type = job_offer.type;
-              this.credentials.job_desc = job_offer.description;
+            if(data && data['message'].approach) {
+              let approach = data['message'].approach;
+              if(approach.employee) {
+                this.approach_work_type = 'employee';
+                let employeeOffer = approach.employee;
+                this.employee.job_title = employeeOffer.job_title;
+                this.employee.min_salary = employeeOffer.annual_salary.min;
+                if(employeeOffer.annual_salary && employeeOffer.annual_salary.max) {
+                  this.employee.max_salary = employeeOffer.annual_salary.max;
+                }
+                this.employee.currency = employeeOffer.currency;
+                this.employee.location = employeeOffer.location;
+                this.employee.job_type = employeeOffer.employment_type;
+                this.employee.job_desc = employeeOffer.employment_description;
+              }
+              if(approach.contractor) {
+                this.approach_work_type = 'contractor';
+                let contractorOffer = approach.contractor;
+                this.contractor.hourly_rate_min = contractorOffer.hourly_rate.min ;
+                if(contractorOffer.hourly_rate && contractorOffer.hourly_rate.max) {
+                  this.contractor.hourly_rate_max = contractorOffer.hourly_rate.max;
+                }
+                this.contractor.currency = contractorOffer.currency;
+                this.contractor.location = contractorOffer.location
+                this.contractor.contract_description = contractorOffer.contract_description;
+              }
+
+              if(approach.volunteer) {
+                this.approach_work_type = 'volunteer';
+                let volunteerOffer = approach.volunteer;
+                this.volunteer.opportunity_description = volunteerOffer.opportunity_description ;
+                this.volunteer.location = volunteerOffer.location ;
+              }
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 300);
             }
 
           },
@@ -136,7 +205,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
           }
         );
-
       this.ckeConfig = {
         allowedContent: false,
         extraPlugins: 'divarea',
@@ -165,6 +233,71 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.education = dataa['candidate'].education_history;
                 this.education.sort(this.education_sort_desc);
               }
+
+              if(dataa['candidate'].employee) {
+                this.employee.value = dataa['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(dataa['candidate'].contractor) {
+                this.contractor.value = dataa['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue.sort();
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType;
+              }
+
+              if(dataa['candidate'].volunteer) {
+                this.volunteer.value = dataa['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
+
+              this.contact_number = '';
+              if(dataa['contact_number']) {
+                let contact_number = dataa['contact_number'];
+                contact_number = contact_number.replace(/^00/, '+');
+                contact_number = contact_number.split(" ");
+                if(contact_number.length>1) {
+                  for (let i = 0; i < contact_number.length; i++) {
+                    if (i === 0) this.country_code = '('+contact_number[i]+')';
+                    else this.contact_number = this.contact_number+''+contact_number[i];
+                  }
+                  this.contact_number = this.country_code+' '+this.contact_number
+                }
+                else this.contact_number = contact_number[0];
+
+                dataa['contact_number'] = this.contact_number;
+              }
+
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
@@ -234,15 +367,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               this.interest_area.sort();
               let new_roles = constants.workRoles;
               let filtered_array = [];
-
-              this.roles  = dataa['candidate'].roles;
-              for(let i=0;i<this.roles.length;i++){
-                const filteredArray = getNameFromValue(new_roles,this.roles[i]);
-                filtered_array.push(filteredArray.name);
-              }
-              this.roles = filtered_array;
-              this.roles.sort();
-
 
               this.languages= dataa['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -344,74 +468,150 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     }
   }
 
-  date_of_joining;
-  msg_tag;
-  is_company_reply = 0;
-  msg_body;
-  job_offer_msg;
-  job_offer_msg_success;
-  full_name;
-  job_description;
-  job_title_log;
-  location_log;
-  salary_log;
-  salary_currency_log;
-  employment_log;
-  job_desc_log;
-  job_offer_log_erorr;
+  volunteer_location_log;
+  contractor_location_log;
+  contractor_role_log;
+  max_salary_log;
+  max_hourly_rate_log;
+  work_log;
+  send_job_offer(msgForm: NgForm) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-  send_job_offer(msgForm : NgForm) {
-    this.job_title_log = '';
-    this.location_log = '';
-    this.salary_log = '';
-    this.salary_currency_log = '';
-    this.employment_log = '';
-    this.job_desc_log = '';
-    this.job_offer_log_erorr = '';
+    let errorCount = 0;
+    if (this.approach_work_type === 'employee') {
+      if (!this.employee.job_title) {
+        this.job_title_log = 'Please enter job title';
+        errorCount = 1;
+      }
+      if (!this.employee.location) {
+        this.location_log = 'Please enter location';
+        errorCount = 1;
+      }
+      if (!this.employee.min_salary) {
+        this.salary_log = 'Please enter minimum salary';
+        errorCount = 1;
+      }
+      if(this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
+        this.salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(this.employee.max_salary && !this.checkNumber(this.employee.max_salary)) {
+        this.max_salary_log = 'Salary should be a number';
+        errorCount = 1;
+      }
 
-    if(!this.credentials.job_title){
-      this.job_title_log = 'Please enter job title';
-    }
-    if(!this.credentials.location){
-      this.location_log = 'Please enter location';
-    }
-    if(!this.credentials.salary){
-      this.salary_log = 'Please enter salary';
-    }
-    if(!this.credentials.currency){
-      this.salary_currency_log = 'Please select currency';
-    }
-    if(!this.credentials.job_type){
-      this.employment_log = 'Please select employment type';
-    }
-    if(!this.credentials.job_desc){
-      this.job_desc_log = 'Please enter job description';
+      if(Number(this.employee.max_salary) < Number(this.employee.min_salary)) {
+        errorCount = 1;
+      }
+
+      if (!this.employee.currency) {
+        this.salary_currency_log = 'Please select currency';
+        errorCount = 1;
+      }
+      if (!this.employee.job_type) {
+        this.employment_log = 'Please select employment type';
+        errorCount = 1;
+      }
+      if (!this.employee.job_desc) {
+        this.job_desc_log = 'Please enter job description';
+        errorCount = 1;
+      }
     }
 
-    this.full_name = this.first_name;
-    if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
-      if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let job_offer : any = {};
-        job_offer.title = this.credentials.job_title;
-        job_offer.salary = this.credentials.salary;
-        job_offer.salary_currency = this.credentials.currency;
-        job_offer.type = this.credentials.job_type;
-        job_offer.location = this.credentials.location;
-        job_offer.description = this.credentials.job_desc;
-        let new_offer : any = {};
-        new_offer.job_offer = job_offer;
-        this.authenticationService.send_message(this.credentials.user_id, 'job_offer',new_offer)
+    if (this.approach_work_type === 'contractor') {
+      if (!this.contractor.location) {
+        this.contractor_location_log = 'Please enter location';
+        errorCount = 1;
+      }
+      if (!this.contractor.hourly_rate_min) {
+        this.hourly_rate_log = 'Please enter hourly rate';
+        errorCount = 1;
+      }
+
+      if(this.contractor.hourly_rate_min && !this.checkNumber(this.contractor.hourly_rate_min)) {
+        this.hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(this.contractor.hourly_rate_max && !this.checkNumber(this.contractor.hourly_rate_max)) {
+        this.max_hourly_rate_log = 'Salary should be a number';
+        errorCount = 1;
+      }
+      if(Number(this.contractor.hourly_rate_min) > Number(this.contractor.hourly_rate_max)) {
+        errorCount = 1;
+      }
+      if (!this.contractor.currency) {
+        this.hourly_currency_log = 'Please enter currency';
+        errorCount = 1;
+      }
+      if (!this.contractor.contract_description) {
+        this.contract_desc_log = 'Please enter contract description';
+        errorCount = 1;
+      }
+    }
+
+    if (this.approach_work_type === 'volunteer') {
+      if (!this.volunteer.location) {
+        this.volunteer_location_log = 'Please enter location';
+        errorCount = 1;
+      }
+      if (!this.volunteer.opportunity_description) {
+        this.volunteer_desc_log = 'Please enter opportunity description';
+        errorCount = 1;
+      }
+    }
+
+    if(!this.approach_work_type) {
+      this.work_log = "Please select work type";
+      errorCount = 1;
+    }
+    if (errorCount === 0) {
+      let job_offer: any = {};
+      let new_offer: any = {};
+      if(this.approach_work_type === 'employee') {
+        let salary:any = {};
+        job_offer.job_title = this.employee.job_title;
+        salary.min = Number(this.employee.min_salary);
+        if(this.employee.max_salary) salary.max = Number(this.employee.max_salary);
+        job_offer.annual_salary = salary;        job_offer.currency = this.employee.currency;
+        job_offer.employment_type = this.employee.job_type;
+        job_offer.location = this.employee.location;
+        job_offer.employment_description = this.employee.job_desc;
+        new_offer.approach  = {
+          employee : job_offer
+        }
+      }
+      if(this.approach_work_type === 'contractor') {
+        let hourly_rate : any = {};
+        job_offer.location = this.contractor.location;
+        hourly_rate.min = Number(this.contractor.hourly_rate_min);
+        if(this.contractor.hourly_rate_max) hourly_rate.max = Number(this.contractor.hourly_rate_max);
+        job_offer.hourly_rate = hourly_rate;        job_offer.currency = this.contractor.currency;
+        job_offer.contract_description = this.contractor.contract_description;
+        new_offer.approach  = {
+          contractor : job_offer
+        }
+      }
+
+      if(this.approach_work_type === 'volunteer') {
+        job_offer.location = this.volunteer.location;
+        job_offer.opportunity_description = this.volunteer.opportunity_description;
+        new_offer.approach  = {
+          volunteer : job_offer
+        }
+      }
+      this.authenticationService.send_message(this.credentials.user_id, 'approach', new_offer)
         .subscribe(
           data => {
-            this.job_offer_msg_success = 'Message has been successfully sent';
+            this.job_offer_msg_success = 'Message successfully sent';
+            this.employee = {};
+            $("#approachModal").modal("hide");
             this.router.navigate(['/chat']);
           },
           error => {
             if (error['status'] === 400) {
-              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+              this.job_offer_log_erorr = 'You have already approached this candidate';
             }
-            if(error['status'] === 500 || error['status'] === 401){
+            if (error['status'] === 500 || error['status'] === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -420,7 +620,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
             }
-            if(error['status'] === 404){
+            if (error['status'] === 404) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -431,17 +631,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             }
           }
         );
-      }
-      else {
-        //this.job_offer_msg = 'Salary should be a number';
-        this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
-      }
     }
-    else {
-      this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
+    else{
+      this.job_offer_log_erorr = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
-
   filter_array(arr)
   {
     var hashTable = {};
@@ -452,5 +646,33 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  checkNumber(salary) {
+    return /^[0-9]*$/.test(salary);
+  }
+
+  changeWorkTypes(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
+  }
+
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
+
+  convertNumber(string) {
+    return Number(string);
   }
 }

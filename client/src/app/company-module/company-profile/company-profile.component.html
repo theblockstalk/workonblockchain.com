@@ -169,7 +169,7 @@
           <div *ngFor="let searches of saved_searche; let i = index ">
           <div class="row">
             <div class="col-md-12">
-              <h3 class="pt-2 mb-3"> Job search {{i+1}}: {{searches.name}}</h3>
+              <h3 class="pt-2 mb-3"> Work search name: {{searches.name}}</h3>
             </div>
           </div>
 
@@ -181,7 +181,13 @@
 
 
           <div class="row mt-3">
-            <div class="col-md-6 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
+            <div class="col-md-12 mb-3" *ngIf="searches.work_type">
+              <div class="form-group">
+                <label>Work type:</label>
+               <p>{{searches.work_type}}</p>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
               <div class="form-group">
                 <label>Type:</label>
                 <div>
@@ -189,7 +195,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="searches.position && searches.position.length > 0">
+            <div class="col-md-12 mb-3" *ngIf="searches.position && searches.position.length > 0">
               <div class="form-group">
                 <label>Role:</label>
                 <div>
@@ -199,9 +205,9 @@
               </div>
             </div>
 
-            <div class = "col-md-6 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+            <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
               <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
-                <label>Location:</label>
+                <label>Work place (city/remote):</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
                     <div *ngIf="country.name === 'Remote'">
@@ -224,7 +230,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+            <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
               <div class="form-group">
                 <label>Commercial blockchain experience:</label>
                 <div>
@@ -236,30 +242,45 @@
               </div>
             </div>
 
-
-            <div class="col-md-6 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
+            <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
               <div class="form-group">
-                <label>Skills:</label>
+                <label>Languages:</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let lang of searches.skills"> {{lang}}</div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+
+            <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
               <div class="form-group">
-                <label>Residence country:</label>
+                <label>Years of experience:</label>
+                <p>{{searches.years_exp_min}}+ years</p>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+              <div class="form-group">
+                <label>Residence/base country:</label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let residence of searches.residence_country"> {{residence}}</div>
                 </div>
               </div>
             </div>
 
-
-            <div class="col-md-6 mb-3" *ngIf="searches.current_currency && searches.current_salary">
+            <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
               <div class="form-group">
-                <label>Salary:</label>
+                <label>Annual salary:</label>
                 <p>
                   {{searches.current_currency}} {{searches.current_salary}}
+                <p>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
+              <div class="form-group">
+                <label>Hourly rate:</label>
+                <p>
+                  {{searches.current_currency}} {{searches.expected_hourly_rate}}
                 <p>
               </div>
             </div>

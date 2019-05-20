@@ -30,7 +30,7 @@
       </div>
       <div class="col-md-4">
         <div class="wob-switch-toggle float-right">
-          <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
+          <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="account_setting('unreadMsgNotification' , $event)" >
           <label for="switch1">Toggle</label>
         </div>
       </div>

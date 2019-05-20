@@ -175,6 +175,14 @@ pre {
   border-top: none !important;
 }
 
+.my-style{
+  width: 45%;
+}
 
-
-
+.list-without-underline {
+  margin-bottom: -12px;
+  border: none;
+}
+.bootstrap-select.disabled, .bootstrap-select>.disabled {
+  background-color: #e9ecef !important;
+}

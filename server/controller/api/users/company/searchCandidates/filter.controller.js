@@ -8,8 +8,10 @@ module.exports = async  function (req,res)
     let userId = req.auth.user._id;
     let queryBody = req.body;
     let search = {}, order = {};
+    if (queryBody.work_type) search.work_type = queryBody.work_type;
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
+    if (queryBody.years_exp_min) search.years_exp_min = queryBody.years_exp_min;
     if (queryBody.locations) {
         if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
             const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
@@ -24,6 +26,13 @@ module.exports = async  function (req,res)
         search.salary = {
             current_currency: queryBody.current_currency,
             current_salary: queryBody.current_salary
+        }
+    }
+
+    if (queryBody.expected_hourly_rate && queryBody.current_currency) {
+        search.hourly_rate = {
+            expected_hourly_rate: queryBody.expected_hourly_rate,
+            current_currency: queryBody.current_currency
         }
     }
     if(queryBody.residence_country) search.residence_country = queryBody.residence_country;

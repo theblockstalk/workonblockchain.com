@@ -10,6 +10,7 @@ import { ChatPopupEditorComponent } from './chat-popup-editor/chat-popup-editor.
 import { PrivacyEditorComponent } from './privacy-editor/privacy-editor.component';
 import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
+import { EmailTemplatesComponent } from './email-templates/email-templates.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { AdminTermsConditionEditorComponent } from './admin-terms-condition-edit
     ChatPopupEditorComponent,
     PrivacyEditorComponent,
     AdminFaqEditorComponent,
-    AdminTermsConditionEditorComponent
+    AdminTermsConditionEditorComponent,
+    EmailTemplatesComponent
   ],
   providers : [ScriptService]
 })

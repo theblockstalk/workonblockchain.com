@@ -45,8 +45,8 @@
     </div>
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <form (submit)="about()" #aboutForm = ngForm>
-          <div class="row">
+          <form (submit)="about(aboutForm)" #aboutForm = ngForm>
+          <div class="row" *ngIf="!info.first_name && !info.last_name">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="first_name">First name</label>
@@ -111,21 +111,65 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="phone">Phone number (including country code)</label>
-                <input type="tel" class="form-control" id="phone" placeholder="(+1) 123 456 7890" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
-                <div class = "invalid-feedback d-inline"  *ngIf="!info.contact_number">
-                  {{contact_name_log}}
+                <label for="githubURL">Stackoverflow URL (optional)</label>
+                <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackoverflow.com/users/123345678/username" name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
+                <div class = "invalid-feedback d-inline"  *ngIf="stackoverflowaccount.errors">
+                  Enter url in proper format.
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                <label for="stackURL">Personal website URL (optional)</label>
+                <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                <div class = "invalid-feedback d-inline"  *ngIf="personalaccount.errors">
+                  Enter url in proper format.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+              <label for="phone"><b>Phone</b></label>
+              <div class="input-group">
+                <div class="input-group-prepend my-style">
+                  <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                    <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                  </select>
+                </div>
+                <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required [(ngModel)]="info.contact_number">
+                <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
+                  {{contact_name_log}}
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
+                  {{country_code_log}}
+                </div>
+                <ng-container *ngIf="info.contact_number;else no_contact_number">
+                  <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
+                    Please enter only numbers
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="info.contact_number.length < 4 || info.contact_number.length > 15 ">
+                    {{contact_number_log}}
+                  </div>
+                </ng-container>
+                <ng-template #no_contact_number>
+                </ng-template>
+              </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
                 <label>Nationality</label>
-                <select class="form-control selectpicker" title="(select one)" required name="nationality" [(ngModel)]='info.nationality'>
-                  <option *ngFor='let options of nationality' placeholder="Nationality"  [value]="options.value" [attr.selected]="options.value === info.nationality ? true : null">{{options.name}}</option>
+                <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality'>
+                  <option *ngFor='let options of nationality' placeholder="Nationality"  [value]="options.value">{{options.name}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!info.nationality">
-                  <span class = "error">{{nationality_log}}</span>
+                <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
+                  {{nationality_log}}
+                </div>
+                <div class = "invalid-feedback d-inline"  *ngIf="info.nationality && info.nationality.length > 4">
+                  {{nationality_log}}
                 </div>
               </div>
             </div>
@@ -159,13 +203,17 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Image (optional)</label>
-                <input id="aa" #Image type="file" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control-file" />
-                <label>
-                  <span *ngIf="img_src" >{{img_src}}</span>
-                </label>
-                <div class = "invalid-feedback d-inline" *ngIf="image_log">
-                  {{image_log}}
-                </div>
+                <p>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+                </p>
+                <span *ngIf="imageCropData.image;else prefil_image" >
+                  <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                </span>
+
+                <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                  <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200">
+                </span>
+
               </div>
             </div>
           </div>
@@ -183,4 +231,28 @@
     </div>
   </div>
   <!--candidate step completing End-->
+
+  <!-- Image crop popup -->
+  <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+        </div>
+        <div class="modal-body ">
+          <div class="file-upload mb-3">
+            <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+          </div>
+          <div class="text-center">
+            <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>

@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {unCheckCheckboxes} from "../../../services/object";
 
 @Component({
   selector: 'app-experience',
@@ -78,6 +79,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngOnInit()
   {
+    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
+
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
@@ -108,7 +111,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
 
@@ -122,11 +125,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
             {
               this.active_class='fa fa-check-circle text-success';
 
             }
+            if(data['candidate'].description) this.Intro = data['candidate'].description;
 
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
@@ -199,11 +203,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   }
                 }
               }
+
             }
             this.Intro =data['candidate'].description;
 
 
-            if(!data['candidate'].why_work)
+            if(!data['candidate'].why_work && data['candidate'].interest_areas)
             {
               this.router.navigate(['/resume']);
             }
@@ -318,8 +323,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       fieldname:[this.fieldname],
       eduyear:[]
     });
-
-
   }
 
 
@@ -514,9 +517,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.end_date_year_log = "Please fill end date year ";
         }
 
-
-
-
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
           this.ExperienceForm.value.ExpItems[key].startyear &&
@@ -654,8 +654,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     if(this.Intro) inputQuery.description =  this.Intro;
 
-    inputQuery.status = 'wizard completed';
-
+    inputQuery.wizardNum = 5;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {

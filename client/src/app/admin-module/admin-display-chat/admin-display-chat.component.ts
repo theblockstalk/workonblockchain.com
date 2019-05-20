@@ -161,7 +161,8 @@ export class AdminDisplayChatComponent implements OnInit {
     .subscribe(
       data =>{
         this.new_msgss = data['messages'];
-        this.job_desc = data['messages'][0].message.job_offer;
+
+        this.job_desc = data['messages'][0].message.approach;
         if(data['datas'][1]){
           if(data['datas'][1].is_company_reply==1){
             this.company_reply = 1;
@@ -233,7 +234,7 @@ export class AdminDisplayChatComponent implements OnInit {
 			);
 		}
 		else{
-			this.authenticationService.getById(this.user_id)
+			this.authenticationService.getCandidateProfileById(this.user_id, true)
 			.subscribe(
 				data =>{
 				  if(data['error']){
@@ -261,4 +262,5 @@ export class AdminDisplayChatComponent implements OnInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
 }

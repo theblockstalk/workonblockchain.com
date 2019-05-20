@@ -67,11 +67,13 @@
         <ng-template #no_section >
 
           <div class="col-md-9">
+            <div class = "alert alert-info mt-1" *ngIf="length > 0">
+              <span>{{length}}</span> candidates match your search
+            </div>
 
-            <L0-alerts *ngIf="length > 0" alertClass="alert-info" aligmentClass="mt-1" [alertMsg]="length + ' candidates match your search'" ></L0-alerts>
-            <L0-alerts *ngIf="log !== ''" alertClass="alert-info" aligmentClass="mt-1" [alertMsg]="log" ></L0-alerts>
-
-
+            <div class = "alert alert-info mt-1" *ngIf="log !== ''">
+              <span>{{log}}</span>
+            </div>
             <div *ngIf="info && info.length > 0 ">
               <div class="panel-group" *ngFor= "let data of pagedItems ">
 
@@ -87,9 +89,7 @@
 
                         <a  [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
 
-                        <h5 class="ml-5">
-                          <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.candidate.roles"> {{roles}} </span>
-                        </h5>
+
                       </div>
                     </div>
 

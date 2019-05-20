@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.message='';
     this.type='candidate';
     this.response = 'process';
-
     if(this.credentials.email && this.credentials.password)
     {
       this.authenticationService.candidate_login({email : this.credentials.email, password : this.credentials.password})

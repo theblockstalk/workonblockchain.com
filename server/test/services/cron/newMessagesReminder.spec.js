@@ -9,7 +9,7 @@ const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
 const newMessagesEmail = require('../../../controller/services/cron/newMessagesReminderEmail');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
-const companiesHelperV2 = require('../../api-v2/users/companyHelpers')
+const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
 const userHelper = require('../../api/users/usersHelpers');
 const messagesHelpers = require('../../api-v2/helpers');
 
@@ -41,7 +41,7 @@ describe('cron', function () {
             let candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             // send message to the candidate and check they are sent an email
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            const jobOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
             await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
             let startTime = new Date();
@@ -50,7 +50,7 @@ describe('cron', function () {
             expect(candidateuserDoc.last_message_reminder_email).to.be.within(startTime, new Date());
 
             // send message to the company and check they are sent an email
-            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const jobOfferAccepted = docGeneratorV2.messages.approach_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             startTime = new Date();
@@ -72,10 +72,10 @@ describe('cron', function () {
             let candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             // send message to compay and candidate and get the time that an email was sent to the company
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            const jobOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
             await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
-            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const jobOfferAccepted = docGeneratorV2.messages.approach_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             await newMessagesEmail();
@@ -144,10 +144,10 @@ describe('cron', function () {
             let candidateuserDoc1 = await users.findOneByEmail(candidate1.email);
 
             // send message to compay and candidate and get the time that an email was sent to the company
-            const jobOffer1 = docGeneratorV2.messages.job_offer(candidateuserDoc1._id);
+            const jobOffer1 = docGeneratorV2.messages.approach(candidateuserDoc1._id);
             await messagesHelpers.post(jobOffer1, companyUserDoc.jwt_token);
 
-            const jobOfferAccepted1 = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const jobOfferAccepted1 = docGeneratorV2.messages.approach_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted1, candidateuserDoc1.jwt_token);
 
             await newMessagesEmail();
@@ -160,10 +160,10 @@ describe('cron', function () {
             let candidateuserDoc2 = await users.findOneByEmail(candidate2.email);
 
             // send message to compay and candidate and get the time that an email was sent to the company
-            const jobOffer2 = docGeneratorV2.messages.job_offer(candidateuserDoc2._id);
+            const jobOffer2 = docGeneratorV2.messages.approach(candidateuserDoc2._id);
             await messagesHelpers.post(jobOffer2, companyUserDoc.jwt_token);
 
-            const jobOfferAccepted2 = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const jobOfferAccepted2 = docGeneratorV2.messages.approach_accepted(companyUserDoc._id);
             await messagesHelpers.post(jobOfferAccepted2, candidateuserDoc1.jwt_token);
 
             await newMessagesEmail();
