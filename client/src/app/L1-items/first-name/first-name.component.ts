@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {TextInputComponent} from '../../L0-components/forms-edit/text-input/text-input.component';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-i-forme-first-name',
@@ -8,9 +7,6 @@ import {TextInputComponent} from '../../L0-components/forms-edit/text-input/text
 })
 export class FirstNameComponent implements OnInit {
   @Input() first_name: string;
-  // @Output() updateFirstName: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild(TextInputComponent ) textInput: TextInputComponent;
-
   errMsg;
   constructor() { }
 
@@ -18,7 +14,6 @@ export class FirstNameComponent implements OnInit {
   }
 
   selfValidate(){
-    this.first_name = this.textInput.value;
     if(!this.first_name) {
       this.errMsg = "Please enter first name";
       return false;
