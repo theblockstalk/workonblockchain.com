@@ -107,22 +107,32 @@ export class WorkHistoryComponent implements OnInit {
     this.monthNumber = "0"  + (this.monthNumber);
     return this.monthNumber ?  this.monthNumber : 0;
   }
-  selfValidate() {
+  selfValidate(name) {
     if(this.ExperienceForm.value.ExpItems.length >=1)
     {
 
       for (var key in this.ExperienceForm.value.ExpItems)
       {
-
-        if(!this.ExperienceForm.value.ExpItems[key].companyname)
-        {
-          this.company_log = "Please fill company";
+        if(name === 'company') {
+          console.log('company name');
+          console.log(this.ExperienceForm.value.ExpItems[key].companyname);
+          if(!this.ExperienceForm.value.ExpItems[key].companyname)
+          {
+            this.company_log = "Please fill company";
+          }
+          else delete this.company_log;
+        }
+        if(name === 'position') {
+          console.log('position name');
+          console.log(this.ExperienceForm.value.ExpItems[key].positionname);
+          if(!this.ExperienceForm.value.ExpItems[key].positionname)
+          {
+            this.position_log = "Please fill position";
+          }
+          else delete this.position_log;
         }
 
-        if(!this.ExperienceForm.value.ExpItems[key].positionname)
-        {
-          this.position_log = "Please fill position";
-        }
+
 
         }
       }
@@ -167,5 +177,7 @@ export class WorkHistoryComponent implements OnInit {
       return false;
     }
   }
+
+
 
 }

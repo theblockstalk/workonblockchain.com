@@ -18,14 +18,12 @@ export class FirstNameComponent implements OnInit {
   }
 
   selfValidate(){
-    console.log(this.textInput.value);
     this.first_name = this.textInput.value;
     if(!this.first_name) {
       this.errMsg = "Please enter first name";
       return false;
     }
     delete this.errMsg;
-    // this.updateFirstName.emit(this.first_name);
     return true;
   }
 

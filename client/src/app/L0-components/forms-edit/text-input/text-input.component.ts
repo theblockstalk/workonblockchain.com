@@ -10,23 +10,15 @@ export class TextInputComponent implements OnInit {
   @Input() placeholder: string;
   @Input() value: string;
   @Input() errorMsg: string;
-  // @Input() validate;
-  // @Output() updatedValue: EventEmitter<string> = new EventEmitter<string>();
+  @Output() textInputChange: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.validate);
   }
 
-  // textChanged(value) {
-  //   this.updatedValue.emit(value);
-  //   // console.log("text changed");
-  //   // const valid = this.validate();
-  //   // console.log(valid);
-  //   // if(valid.error) {
-  //   //   this.errorMsg = valid.msg;
-  //   // }
-  //   // this.updatedValue.emit(event);
-  // }
+  valueChange() {
+    console.log("value change");
+    console.log(this.value);
+  }
 
 }

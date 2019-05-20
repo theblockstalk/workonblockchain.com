@@ -9,11 +9,11 @@
     <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
       <div class="row">
         <div class="col-md-4">
-          <app-c-forme-text placeholder="Google Inc." [errorMsg]="company_log" [value]="ExperienceForm.value.ExpItems[i].companyname" label="Company" (change)="selfValidate()"></app-c-forme-text>
+          <app-c-forme-text placeholder="Google Inc." [errorMsg]="company_log" (textInputChange) = "ExperienceForm.value.ExpItems[i].companyname = $event" [value]="ExperienceForm.value.ExpItems[i].companyname" label="Company" (change)="selfValidate('company')"></app-c-forme-text>
 
         </div>
         <div class="col-md-4">
-          <app-c-forme-text placeholder="Full stack developer" [errorMsg]="position_log" [value]="ExperienceForm.value.ExpItems[i].positionname" label="Position"></app-c-forme-text>
+          <app-c-forme-text placeholder="Full stack developer" [errorMsg]="position_log" (textInputChange)="ExperienceForm.value.ExpItems[i].positionname = $event" [(value)]="ExperienceForm.value.ExpItems[i].positionname" label="Position" (change)="selfValidate('position')"></app-c-forme-text>
         </div>
         <div class="col-md-4">
           <app-c-forme-text placeholder="London" [value]="ExperienceForm.value.ExpItems[i].locationname" label="Location"></app-c-forme-text>
