@@ -15,3 +15,11 @@ const authenticateUser = module.exports.authenticateUser = async function authen
     return res;
 }
 
+const destroyToken = module.exports.destroyToken  = async function destroyToken(jwtToken){
+    const res = await chai.request(server)
+        .delete('/v2/users/auth/')
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}

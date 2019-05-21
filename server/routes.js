@@ -12,7 +12,7 @@ const authForgotPassword = require('./controller/api/users/auth/forgotPassword.c
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
-const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
+const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller'); //will be deleted
 
 // Referrals
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
