@@ -50,7 +50,7 @@ const getStatistics = require('./controller/api/users/statistics.controller');
 router.get('/', healthCheck);
 
 // User authorization
-router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
+router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail)); //will be deleted
 router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword)); //will be deleted
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword)); //will be deleted
 router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword)); //will be deleted
