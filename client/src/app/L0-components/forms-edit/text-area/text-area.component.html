@@ -8,4 +8,10 @@
     (ngModelChange)="textareaInput.emit(value)"
   >
   </textarea>
+  <div
+    class = "invalid-feedback d-inline"
+    *ngIf="errorMsg"
+  >
+    {{errorMsg}}
+  </div>
 </div>

@@ -11,6 +11,7 @@ export class DropdownSingleComponent implements OnInit {
   @Input() label;
   @Input() value;
   @Input() checked;
+  @Input() errorMsg;
   @Output () selectedValue : EventEmitter<any> = new EventEmitter<any>();
   labelClass = '';
 

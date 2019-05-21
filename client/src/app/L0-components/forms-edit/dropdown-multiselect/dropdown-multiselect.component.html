@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label [ngClass]="labelClass" *ngIf="label">{{label}}</label>
+  <select class="selectpicker form-control" multiple title="(select multiple)" [(ngModel)]="value" (change)="selectedValue.emit(value)">
+    <option *ngFor="let opt of options" [value]="opt" >{{opt}}</option>
+  </select>
+  <div
+    class = "invalid-feedback d-inline"
+    *ngIf="errorMsg"
+  >
+    {{errorMsg}}
+  </div>
+</div>

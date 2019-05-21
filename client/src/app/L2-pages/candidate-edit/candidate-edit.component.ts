@@ -10,6 +10,7 @@ export class CandidateEditComponent implements OnInit {
   @Input() viewBy: string; // "admin", "candidate"
   first_name;
   work_history;
+  email_address;
   @ViewChild(FirstNameComponent) firstName : FirstNameComponent;
   constructor() { }
 
@@ -17,6 +18,7 @@ export class CandidateEditComponent implements OnInit {
     console.log(this.userDoc);
     this.first_name = this.userDoc['first_name'];
     this.work_history = this.userDoc['candidate'].work_history;
+    this.email_address = this.userDoc['email_address'];
   }
 
   submit(){

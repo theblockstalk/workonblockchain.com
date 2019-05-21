@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-linkedin-url',
+  selector: 'app-i-forme-linkedin-url',
   templateUrl: './linkedin-url.component.html',
   styleUrls: ['./linkedin-url.component.css']
 })

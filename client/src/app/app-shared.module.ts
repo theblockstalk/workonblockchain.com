@@ -9,7 +9,7 @@ import { TextValueComponent } from './L0-components/forms-view/text-value/text-v
 import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
-import { AutosuggestComponent } from './L0-components/forms-edit/dropdown-multiple/autosuggest/autosuggest.component';
+import { AutosuggestComponent } from './L0-components/forms-edit/multiselect/autosuggest/autosuggest.component';
 import { AutosugguestValueComponent } from './L1-items/autosugguest-selected-cities-value/autosugguest-value.component';
 import { ValidationTextComponent } from './L0-components/forms-edit/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
@@ -30,6 +30,16 @@ import { FirstNameComponent } from './L1-items/first-name/first-name.component';
 import { WorkHistoryComponent } from './L1-items/work-history/work-history.component';
 import { CandidateEditComponent } from './L2-pages/candidate-edit/candidate-edit.component';
 import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.component';
+import { BioComponent } from './L1-items/bio/bio.component';
+import { ContactNumberComponent } from './L1-items/contact-number/contact-number.component';
+import { EmailAddressComponent } from './L1-items/email-address/email-address.component';
+import { GithubUrlComponent } from './L1-items/github-url/github-url.component';
+import { LastNameComponent } from './L1-items/last-name/last-name.component';
+import { LinkedinUrlComponent } from './L1-items/linkedin-url/linkedin-url.component';
+import { MediumUrlComponent } from './L1-items/medium-url/medium-url.component';
+import { NationalityComponent } from './L1-items/nationality/nationality.component';
+import { StackexchangeUrlComponent } from './L1-items/stackexchange-url/stackexchange-url.component';
+import { DropdownMultiselectComponent } from './L0-components/forms-edit/dropdown-multiselect/dropdown-multiselect.component';
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
                   MatAutocompleteModule ],
@@ -37,12 +47,16 @@ import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
-                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent, CheckboxComponent],
+                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
+    CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
+    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
-                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent, CheckboxComponent]
+                  TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
+    CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
+    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent]
 })
 export class SharedModule { }

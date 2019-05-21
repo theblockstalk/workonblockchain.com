@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-medium-url',
+  selector: 'app-i-forme-medium-url',
   templateUrl: './medium-url.component.html',
   styleUrls: ['./medium-url.component.css']
 })

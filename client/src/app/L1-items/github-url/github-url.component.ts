@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-github-url',
+  selector: 'app-i-forme-github-url',
   templateUrl: './github-url.component.html',
   styleUrls: ['./github-url.component.css']
 })

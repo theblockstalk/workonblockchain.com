@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-email-address',
+  selector: 'app-i-forme-email-address',
   templateUrl: './email-address.component.html',
   styleUrls: ['./email-address.component.css']
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-stackexchange-url',
+  selector: 'app-i-forme-stackexchange-url',
   templateUrl: './stackexchange-url.component.html',
   styleUrls: ['./stackexchange-url.component.css']
 })
