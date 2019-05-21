@@ -21,3 +21,12 @@ const verifyEmail = module.exports.verifyEmail = async function verifyEmail(veri
     res.should.have.status(200);
     return res;
 }
+
+const verifyClient = module.exports.verifyClient = async function (jwtToken,email){
+    const res = await chai.request(server)
+        .post('/v2/users/email?email='+ email)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
