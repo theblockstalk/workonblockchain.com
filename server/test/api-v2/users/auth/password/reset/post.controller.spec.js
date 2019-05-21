@@ -1,11 +1,11 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const crypto = require('crypto');
-const server = require('../../../../../server');
-const mongo = require('../../../../helpers/mongo');
-const candidateHepler = require('../../../../../test/api/users/candidate/candidateHelpers');
-const authenticateHepler = require('../authHelper');
-const docGenerator = require('../../../../helpers/docGenerator');
+const server = require('../../../../../../server');
+const mongo = require('../../../../../helpers/mongo');
+const candidateHepler = require('../../../../../api/users/candidate/candidateHelpers');
+const authenticateHepler = require('../../authHelper');
+const docGenerator = require('../../../../../helpers/docGenerator');
 
 const assert = chai.assert;
 const expect = chai.expect;

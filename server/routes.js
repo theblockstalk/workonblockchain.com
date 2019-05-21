@@ -53,7 +53,7 @@ router.get('/', healthCheck);
 router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword)); //will be deleted
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword)); //will be deleted
-router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword));
+router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword)); //will be deleted
 router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient));
 router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
 

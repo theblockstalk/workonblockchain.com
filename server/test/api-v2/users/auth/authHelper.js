@@ -43,3 +43,11 @@ const forgotPasswordEmail = module.exports.forgotPassworsEmail = async function 
     res.should.have.status(200);
     return res;
 }
+
+const resetPassword = module.exports.resetPassword = async function(forgot_password_key , password){
+    const res = await chai.request(server)
+        .put('/v2/users/auth/password/reset?forgot_password_token=' + forgot_password_key+'&new_password='+password)
+        .send();
+    res.should.have.status(200);
+    return res;
+}

@@ -1,10 +1,10 @@
-const users = require('../../../../../model/mongoose/users');
-const jwtToken = require('../../../../services/jwtToken');
-const errors = require('../../../../services/errors');
-const forgotPasswordEmail = require('../../../../services/email/emails/forgotPassword');
-const companies = require('../../../../../model/mongoose/company');
+const users = require('../../../../../../model/mongoose/users');
+const jwtToken = require('../../../../../services/jwtToken');
+const errors = require('../../../../../services/errors');
+const forgotPasswordEmail = require('../../../../../services/email/emails/forgotPassword');
+const companies = require('../../../../../../model/mongoose/company');
 const Schema = require('mongoose').Schema;
-const regexes = require('../../../../../model/regexes');
+const regexes = require('../../../../../../model/regexes');
 
 module.exports.request = {
     type: 'post',
