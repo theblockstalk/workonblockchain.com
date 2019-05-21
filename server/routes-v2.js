@@ -29,7 +29,8 @@ const endpoints = [
     require('./controller/api-v2/pages/get.controller'),
     require('./controller/api-v2/statistics/get.controller'),
     require('./controller/api-v2/users/auth/delete.controller'),
-    require('./controller/api-v2/users/auth/password/put.controller')
+    require('./controller/api-v2/users/auth/password/put.controller'),
+    require('./controller/api-v2/users/auth/password/post.controller')
 ];
 
 function isEmpty(obj) {

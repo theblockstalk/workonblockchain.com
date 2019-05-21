@@ -32,3 +32,14 @@ const changeUserPassword = module.exports.changeUserPassword = async function(in
     res.should.have.status(200);
     return res;
 }
+
+const forgotPasswordEmail = module.exports.forgotPassworsEmail = async function forgotPassworsEmail(email){
+    const input = {
+        email:email
+    };
+    const res = await chai.request(server)
+        .post('/v2/users/auth/password/reset')
+        .send(input);
+    res.should.have.status(200);
+    return res;
+}
