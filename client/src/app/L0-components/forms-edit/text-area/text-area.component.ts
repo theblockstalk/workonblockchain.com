@@ -9,6 +9,7 @@ export class TextAreaComponent implements OnInit {
   @Input() rows: number;
   @Input() placeholder: string;
   @Input() label: string;
+  @Input() field_description: string;
   @Input() value: string;
   @Input() errorMsg: string;
   @Output() textareaInput: EventEmitter<string> = new EventEmitter<string>();

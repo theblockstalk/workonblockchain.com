@@ -1,0 +1,36 @@
+<div class="form-group" >
+  <label>Image (optional)</label>
+  <p>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
+  </p>
+  <span *ngIf="imageCropData.image;else prefil_image" >
+    <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+  </span>
+  <span #prefil_image *ngIf="image && !imageCropData.image" >
+    <img [src]="image" class="img-responsive border rounded-circle" width="200" height="200" >
+  </span>
+</div>
+
+
+<!--Image crop popup-->
+<div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>
+      </div>
+      <div class="modal-body ">
+        <div class="file-upload mb-3">
+          <input type="file" accept="image/*" (change)="fileChangeListener($event)">
+        </div>
+        <div class="text-center">
+          <img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

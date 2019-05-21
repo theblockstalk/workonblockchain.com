@@ -1,6 +1,6 @@
 <section class = "wob-bg-primary2 py-5 mt-5">
   <div class="container pt-2">
-    <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+    <form (submit)="update_candidate_profile(profileForm)" #profileForm = ngForm>
       <div class="row">
         <div class="col-md-12">
           <!--about us form-->
@@ -12,171 +12,62 @@
             </div>
             <div class="row mt-4">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Email</label>
                   <app-i-forme-email-address [email_address]="email_address" disabled></app-i-forme-email-address>
-                </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>First Name</label>
-                  <input type="text" class="form-control"  name="first_name" [(ngModel)]="info.first_name" required placeholder="John"  name="first_name" [(ngModel)]="info.first_name">
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.first_name">
-                    {{first_name_log}}
-                  </div>
-                </div>
-              </div>
+                  <app-i-forme-first-name [first_name]="first_name"></app-i-forme-first-name>
+            </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Last Name</label>
-                  <input type="text" class="form-control"   name="last_name" [(ngModel)]="info.last_name" required placeholder="Smith"  name="last_name" [(ngModel)]="info.last_name">
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.last_name">
-                    {{last_name_log}}
-                  </div>
-                </div>
+                  <app-i-forme-last-name [last_name]="last_name"></app-i-forme-last-name>
               </div>
               <div class="col-md-6">
-                <label><b>Phone</b></label>
-                <div class="input-group">
-                  <div class="input-group-prepend my-style">
-                    <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
-                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
-                    </select>
-                  </div>
-                  <input type="tel" class="form-control" required placeholder="1234567890" name="contact_number" [(ngModel)]="info.contact_number">
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
-                    {{contact_name_log}}
-                  </div>
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
-                    {{country_code_log}}
-                  </div>
-                  <ng-container *ngIf="info.contact_number;else no_phone">
-                    <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
-                      Please enter only numbers
-                    </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="info.contact_number.length < 4 || info.contact_number.length > 15 ">
-                      {{contact_number_log}}
-                    </div>
-                  </ng-container>
-                  <ng-template #no_phone>
-                  </ng-template>
-                </div>
+                <app-i-forme-contact-number [contact_number]="contact_number"></app-i-forme-contact-number>
               </div>
             </div>
 
             <div class = "row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Github account URL (optional)</label>
-                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
-                  <div class = "invalid-feedback d-inline" *ngIf="info.github_account && gitaccount.errors">
-                    Enter url in proper format
-                  </div>
-                </div>
+                <app-i-forme-github-url [github_account]="github_account" ></app-i-forme-github-url>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Stackexchange account URL (optional)</label>
-                  <input type="text" #stackaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="exchange_account" [(ngModel)]="info.exchange_account" placeholder="https://stackexchange.com/users/12345/username">
-                  <div class = "invalid-feedback d-inline" *ngIf="info.exchange_account && stackaccount.errors">
-                    Enter url in proper format
-                  </div>
-                </div>
+                  <app-i-forme-stackexchange-url [stackexchange_account]="stackexchange_account" ></app-i-forme-stackexchange-url>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label >Linkedin account URL (optional)</label>
-                  <input type="text" #linkedinaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://linkedin.com/in/username"  name="linkedin_account" [(ngModel)]="info.linkedin_account">
-                  <div class = "invalid-feedback d-inline"  *ngIf="info.linkedin_account && linkedinaccount.errors">
-                    Enter url in proper format.
-                  </div>
-                </div>
+               <app-i-forme-linkedin-url [linkedin_account]="linkedin_account"></app-i-forme-linkedin-url>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label >Medium account URL (optional)</label>
-                  <input type="text" #mediumaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://medium.com/username" name="medium_account" [(ngModel)]="info.medium_account">
-                  <div class = "invalid-feedback d-inline"  *ngIf="info.medium_account && mediumaccount.errors">
-                    Enter url in proper format.
-                  </div>
-                </div>
+               <app-i-forme-medium-url [medium_account]="medium_account" ></app-i-forme-medium-url>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label >Stackoverflow URL (optional)</label>
-                  <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackoverflow.com/users/123345678/username" name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
-                  <div class = "invalid-feedback d-inline"  *ngIf="info.stackoverflow_url && stackoverflowaccount.errors">
-                    Enter url in proper format.
-                  </div>
-                </div>
+                <app-i-forme-stackoverflow-url [stackoverflow_url]="stackoverflow_url"></app-i-forme-stackoverflow-url>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label >Personal website URL (optional)</label>
-                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
-                  <div class = "invalid-feedback d-inline"  *ngIf="info.personal_website_url && personalaccount.errors">
-                    Enter url in proper format.
-                  </div>
-                </div>
+               <app-i-forme-personal-website-url [personal_website_url]="personal_website_url"></app-i-forme-personal-website-url>
               </div>
             </div>
             <div class = "row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Nationality</label>
-                  <select class="form-control selectpicker" multiple title="(select multiple)" required name="nationality" [(ngModel)]='info.nationality' required>
-                    <option *ngFor='let options of nationality' [value]="options.value" >{{options.name}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.nationality || (info.nationality && info.nationality.length === 0)">
-                    {{nationality_log}}
-                  </div>
-                  <div class = "invalid-feedback d-inline"  *ngIf="info.nationality && info.nationality.length > 4">
-                    {{nationality_log}}
-                  </div>
-                </div>
+                <app-i-forme-nationality [nationality]="nationality" ></app-i-forme-nationality>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <!--<div class="form-group" >-->
-                  <!--<label>Image (optional)</label>-->
-                  <!--<p>-->
-                    <!--<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>-->
-                  <!--</p>-->
-                  <!--<span *ngIf="imageCropData.image;else prefil_image" >-->
-                  <!--<img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">-->
-                <!--</span>-->
-
-                  <!--<span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >-->
-                  <!--<img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200" >-->
-                <!--</span>-->
-                <!--</div>-->
+                <app-i-forme-profile-pic [image]="image" ></app-i-forme-profile-pic>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Bio</label>
-                  <ul>
-                    <li> 2-5 sentences </li>
-                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
-                    <li> What value do you add to a project? </li>
-                  </ul>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
-                  <div class = "invalid-feedback d-inline" *ngIf="!Intro">
-                    {{intro_log}}
-                  </div>
-                </div>
+               <app-i-forme-bio [description]="description" [field_description]="field_description"></app-i-forme-bio>
               </div>
             </div>
           </section>
@@ -1216,27 +1107,6 @@
       </div>
     </form>
   </div>
-  <!-- Image crop popup -->
-  <!--<div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">-->
-    <!--<div class="modal-dialog" role="document">-->
-      <!--<div class="modal-content">-->
-        <!--<div class="modal-header bg-primary">-->
-          <!--<h5 class="modal-title text-center" id="exampleModalLabel">Image upload</h5>-->
-        <!--</div>-->
-        <!--<div class="modal-body ">-->
-          <!--<div class="file-upload mb-3">-->
-            <!--<input type="file" accept="image/*" (change)="fileChangeListener($event)">-->
-          <!--</div>-->
-          <!--<div class="text-center">-->
-            <!--<img-cropper *ngIf="imageName" #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="modal-footer">-->
-          <!--<button type="button" class="btn btn-primary" (click)="imageCropped('cancel')">Cancel</button>-->
-          <!--<button type="button" class="btn btn-primary" (click)="imageCropped('crop')">Save</button>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
+
 
 </section>

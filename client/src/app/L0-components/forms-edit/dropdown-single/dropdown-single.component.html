@@ -1,7 +1,9 @@
 <div class="form-group">
   <label [ngClass]="labelClass" *ngIf="label">{{label}}</label>
   <select class="selectpicker form-control" title="(select one)" (change)="valueChanged($event)">
-    <option *ngFor="let opt of options" [value]="opt" [attr.selected]="opt===value?true: null">{{opt}}</option>
+    <!--<option *ngIf="optionsType === 'array'" *ngFor="let opt of options" [value]="opt" [attr.selected]="opt===value?true: null">{{opt}}</option>-->
+    <option *ngFor="let opt of options" [value]="opt.value" [attr.selected]="opt.value===value?true: null">{{opt.name}}</option>
+
   </select>
   <div
     class = "invalid-feedback d-inline"

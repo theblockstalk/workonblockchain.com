@@ -21,8 +21,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
-  @ViewChild('cropper', undefined)
-  cropper:ImageCropperComponent;
+  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
   currentUser: User;
   info: any = {}; log;
   selectedValue = [];

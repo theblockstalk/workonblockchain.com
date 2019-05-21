@@ -1,6 +1,8 @@
 <div class="form-group">
   <label>{{label}}</label>
+  <div class="p-2" [innerHTML] = " field_description | safeHtml " *ngIf="field_description"></div>
   <textarea
+    class="w-100"
     [rows]="rows"
     maxlength="2000"
     [placeholder]="placeholder"

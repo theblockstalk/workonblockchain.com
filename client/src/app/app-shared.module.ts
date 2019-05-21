@@ -4,6 +4,7 @@ import { SafeHtmlPipe } from './pipe.safehtml';
 import { RouterModule } from '@angular/router';
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {ImageCropperModule} from 'ng2-img-cropper/index';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { TextValueComponent } from './L0-components/forms-view/text-value/text-value.component';
 import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
@@ -26,37 +27,42 @@ import { AboutComponent } from './L2-groups/candidates/about/about.component';
 import { TextInputComponent } from './L0-components/forms-edit/text-input/text-input.component';
 import { TextAreaComponent } from './L0-components/forms-edit/text-area/text-area.component';
 import { RadioComponent } from './L0-components/forms-edit/radio/radio.component';
-import { FirstNameComponent } from './L1-items/first-name/first-name.component';
+import { FirstNameComponent } from './L1-items/users/first-name/first-name.component';
 import { WorkHistoryComponent } from './L1-items/work-history/work-history.component';
 import { CandidateEditComponent } from './L2-pages/candidate-edit/candidate-edit.component';
 import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.component';
-import { BioComponent } from './L1-items/bio/bio.component';
-import { ContactNumberComponent } from './L1-items/contact-number/contact-number.component';
-import { EmailAddressComponent } from './L1-items/email-address/email-address.component';
-import { GithubUrlComponent } from './L1-items/github-url/github-url.component';
-import { LastNameComponent } from './L1-items/last-name/last-name.component';
-import { LinkedinUrlComponent } from './L1-items/linkedin-url/linkedin-url.component';
-import { MediumUrlComponent } from './L1-items/medium-url/medium-url.component';
-import { NationalityComponent } from './L1-items/nationality/nationality.component';
-import { StackexchangeUrlComponent } from './L1-items/stackexchange-url/stackexchange-url.component';
+import { BioComponent } from './L1-items/users/bio/bio.component';
+import { ContactNumberComponent } from './L1-items/users/contact-number/contact-number.component';
+import { EmailAddressComponent } from './L1-items/users/email-address/email-address.component';
+import { GithubUrlComponent } from './L1-items/candidate/github-url/github-url.component';
+import { LastNameComponent } from './L1-items/users/last-name/last-name.component';
+import { LinkedinUrlComponent } from './L1-items/candidate/linkedin-url/linkedin-url.component';
+import { MediumUrlComponent } from './L1-items/candidate/medium-url/medium-url.component';
+import { NationalityComponent } from './L1-items/users/nationality/nationality.component';
+import { StackexchangeUrlComponent } from './L1-items/candidate/stackexchange-url/stackexchange-url.component';
 import { DropdownMultiselectComponent } from './L0-components/forms-edit/dropdown-multiselect/dropdown-multiselect.component';
+import { PersonalWebsiteUrlComponent } from './L1-items/candidate/personal-website-url/personal-website-url.component';
+import { StackoverflowUrlComponent } from './L1-items/candidate/stackoverflow-url/stackoverflow-url.component';
+import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.component';
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
-                  MatAutocompleteModule ],
+                  MatAutocompleteModule, ImageCropperModule ],
   declarations: [ SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
                   DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
-    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent],
-  exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
+    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent],
+  exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
                   OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
                   AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
-    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent]
+    LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent]
 })
 export class SharedModule { }

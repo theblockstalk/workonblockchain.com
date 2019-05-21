@@ -10,14 +10,19 @@ export class DropdownSingleComponent implements OnInit {
   @Input() options;
   @Input() label;
   @Input() value;
-  @Input() checked;
   @Input() errorMsg;
-  @Output () selectedValue : EventEmitter<any> = new EventEmitter<any>();
+  @Output () selectedValue: EventEmitter<any> = new EventEmitter<any>();
   labelClass = '';
-
-  constructor() { }
+  optionsType;
+  constructor() {
+    console.log(this.options);
+    if(this.options) {
+      // if(typeof this.options === 'array') this.optionsType = 'array';
+    }
+  }
 
   ngOnInit() {
+    console.log("dropdown single");
     console.log(this.value);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
