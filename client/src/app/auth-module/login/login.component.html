@@ -19,14 +19,12 @@
           </div>
           <div class = "row">
             <div class="col-md-12">
-              <L0-alerts *ngIf="error && !message" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
-              <L0-alerts *ngIf="log" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
-              <L0-alerts *ngIf="forgetMessage" alertClass="alert-success" [alertMsg]="forgetMessage" ></L0-alerts>
-              <L0-alerts *ngIf="message && !error" alertClass="alert-success" [alertMsg]="message" ></L0-alerts>
-              <L0-alerts *ngIf="password_message && !message " alertClass="alert-success" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
-              <!-- need to discuss -->
-              <L0-alerts *ngIf = "reset" alertClass="alert-danger" alertMsg="Your email or password is incorrect. If you don't remember your password, please click on <a (click)='reset_passsword()'>here</a> to reset it." ></L0-alerts>
-
+              <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
+              <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
+              <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
+              <div class="alert alert-danger" role="alert" *ngIf="error && !message ">{{error}}</div>
+              <h5 class="alert alert-danger" role="alert" *ngIf = "log">{{log}}</h5>
+              <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
             </div>
           </div>
           <form (submit)="login(loginForm)" #loginForm = ngForm>
@@ -54,21 +52,27 @@
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <L0-buttons-others [disabled]="!loginForm.valid? true: false " buttonClass="btn-secondary" alignmentClass="form-control" buttonType="submit" label="Login"></L0-buttons-others>
+                  <input type="submit" class="form-control btn btn-secondary" value = "Log in" [disabled]="!loginForm.valid ">
                 </div>
               </div>
             </div>
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <app-social-login label="Log in with LinkedIn" socialType="linkedin"></app-social-login>
+                  <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="loginWithLinkedin()" >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    Log in with LinkedIn
+                  </a>
                 </div>
               </div>
             </div>
             <div class = "row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <app-social-login label="Log in with Google" socialType="google"></app-social-login>
+                  <a  class = "btn btn-block btn-social btn-google text-center" (click)="signInWithGoogle()">
+                    <i class="fab fa-google" aria-hidden="true"></i>
+                    Log in with Google
+                  </a>
                 </div>
               </div>
             </div>

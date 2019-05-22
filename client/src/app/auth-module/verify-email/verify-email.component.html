@@ -2,11 +2,15 @@
   <div class="container pt-2">
     <div class="row" >
       <div class="col-md-12 bg-white p-5" *ngIf="succesMsg ==='' && errorMsg === ''">
-        <L0-alerts  alertClass="alert-info" aligmentClass="mb-0" alertMsg="We are verifying your account..." ></L0-alerts>
+        <div class="alert alert-info mb-0" role="alert" >
+          We are verifying your account...
+        </div>
       </div>
 
       <div class="col-md-12 bg-white p-5"  *ngIf = "errorMsg !==''">
-        <L0-alerts  alertClass="alert-danger" aligmentClass="mb-0" [alertMsg]="errorMsg" ></L0-alerts>
+        <div class="alert alert-danger mb-0" role="alert">
+          {{errorMsg}}
+        </div>
       </div>
     </div>
 

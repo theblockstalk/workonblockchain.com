@@ -4,17 +4,17 @@
 </div>-->
 <!--Profile-inner-->
 <ng-container *ngIf="infoo==='';else profile_section" >
-<div class=""></div>
+  <div class=""></div>
 </ng-container>
 
 <ng-template #profile_section >
   <section class = "wob-bg-primary2 py-5 mt-5">
-    <L0-alerts *ngIf="message" alertClass="alert-info" [alertMsg]="message" ></L0-alerts>
+    <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
 
     <div class="container pt-2">
       <div class="row">
         <div class="col-md-12">
-          <L0-buttons-others buttonClass="btn-secondary" data-toggle="modal" data-target="#popModal" alignmentClass="float-right text-white" buttonType="button" label="What happens next?"></L0-buttons-others>
+          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right text-white">What happens next?</button>
         </div>
       </div>
       <div class="row">
@@ -85,14 +85,12 @@
             </div>
             <div class="row mt-4">
               <div class = "col-md-6">
-                <L0-text-value label="Email address:" [textValue]="email"></L0-text-value>
-
-               <!-- <div class="form-group">
+                <div class="form-group">
                   <label> Email address:</label>
                   <p>
                     {{email}}
                   <p>
-                </div>-->
+                </div>
               </div>
             </div>
             <div class="row mt-4">
@@ -117,8 +115,8 @@
                 <div class="form-group">
                   <p>
                     <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(linkedin_account)" target="_blank">
-                      {{linkedin_account}}
-                    </a>
+                    {{linkedin_account}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -128,8 +126,8 @@
                 <div class="form-group">
                   <p>
                     <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(medium_account)" target="_blank">
-                      {{medium_account}}
-                    </a>
+                    {{medium_account}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -139,8 +137,8 @@
                 <div class="form-group">
                   <p>
                     <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(stack)" target="_blank">
-                      {{stack}}
-                    </a>
+                    {{stack}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -150,8 +148,8 @@
                 <div class="form-group">
                   <p>
                     <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(stackoverflow_url)" target="_blank">
-                      {{stackoverflow_url}}
-                    </a>
+                    {{stackoverflow_url}}
+                  </a>
                   <p>
                 </div>
               </div>
@@ -161,8 +159,8 @@
                 <div class="form-group">
                   <p>
                     <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(personal_website_url)" target="_blank">
-                      {{personal_website_url}}
-                    </a>
+                    {{personal_website_url}}
+                  </a>
                   <p>
                 </div>
               </div>
@@ -359,11 +357,11 @@
               </div>
 
               <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
-              <div class="form-group">
-                <label>Maximum hours per week (optional): </label>
-                <p>{{contractor.value.max_hour_per_week}}</p>
+                <div class="form-group">
+                  <label>Maximum hours per week (optional): </label>
+                  <p>{{contractor.value.max_hour_per_week}}</p>
+                </div>
               </div>
-            </div>
 
               <div class="col-md-12" *ngIf="contractor.value.contractor_type">
                 <div class="form-group">
@@ -557,9 +555,9 @@
                 <div class="form-group">
                   <label>Languages: </label>
                   <div>
-                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -638,10 +636,10 @@
           </h2>
         </div>
         <div class="modal-body">
-            <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+          <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
         </div>
         <div class="modal-footer">
-          <L0-buttons-others buttonClass="btn-primary" data-dismiss="modal" buttonType="reset" label="Got it"></L0-buttons-others>
+          <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
         </div>
       </div>
     </div>
@@ -664,31 +662,31 @@
       <h4 class = "text-center">{{first_name}} {{last_name}}</h4>
       <div class="modal-body">
         <div class = "">
-            <strong>
-              Where do you currently live, or where are you most frequently based?
-            </strong>
-            <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
-              <div class="form-group">
-                <label>Country</label>
-                <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
-                  <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
-                </select>
-                <div class = "invalid-feedback" *ngIf="information.country === -1">
-                  {{country_log}}
-                </div>
+          <strong>
+            Where do you currently live, or where are you most frequently based?
+          </strong>
+          <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
+                <option value="-1" disabled selected hidden >Please choose country</option>
+                <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
+              </select>
+              <div class = "invalid-feedback" *ngIf="information.country === -1">
+                {{country_log}}
               </div>
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
-                <div class = "invalid-feedback" *ngIf="!information.city">
-                  {{city_log}}
-                </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
+              <div class = "invalid-feedback" *ngIf="!information.city">
+                {{city_log}}
               </div>
-              <div class="form-group">
-                <L0-buttons-others buttonClass="btn-primary" alignmentClass="form-control" buttonType="submit" label="Update your profile"></L0-buttons-others>
-              </div>
-            </form>
+            </div>
+            <div class="form-group">
+              <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

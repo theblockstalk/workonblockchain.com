@@ -14,16 +14,13 @@ export class DropdownSingleComponent implements OnInit {
   @Output () selectedValue: EventEmitter<string> = new EventEmitter<string>();
   labelClass = '';
   optionsType;
-  constructor() {
-    console.log(typeof this.options);
-    if(this.options) {
-      // if(typeof this.options === 'array') this.optionsType = 'array';
-    }
-  }
+  constructor() { }
 
   ngOnInit() {
-    console.log("dropdown single");
-    console.log(this.value);
+    if(this.options) {
+      if(this.options[0].hasOwnProperty("name")) this.optionsType = 'paired-array';
+      else this.optionsType = 'array';
+    }
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
@@ -33,5 +30,14 @@ export class DropdownSingleComponent implements OnInit {
 
   valueChanged(event) {
     this.selectedValue.emit(event.target.value);
+  }
+
+  isEmptyObject(obj) {
+    for(let prop in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
