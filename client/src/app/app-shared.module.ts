@@ -40,7 +40,7 @@ import { LinkedinUrlComponent } from './L1-items/candidate/linkedin-url/linkedin
 import { MediumUrlComponent } from './L1-items/candidate/medium-url/medium-url.component';
 import { NationalityComponent } from './L1-items/users/nationality/nationality.component';
 import { StackexchangeUrlComponent } from './L1-items/candidate/stackexchange-url/stackexchange-url.component';
-import { DropdownMultiselectComponent } from './L0-components/forms-edit/dropdown-multiselect/dropdown-multiselect.component';
+import { DropdownMultiselectComponent } from './L0-components/forms-edit/dropdown-multiple/dropdown-multiple.component';
 import { PersonalWebsiteUrlComponent } from './L1-items/candidate/personal-website-url/personal-website-url.component';
 import { StackoverflowUrlComponent } from './L1-items/candidate/stackoverflow-url/stackoverflow-url.component';
 import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.component';
