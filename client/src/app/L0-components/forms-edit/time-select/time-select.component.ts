@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-time-select',
+  selector: 'app-c-forme-time-select',
   templateUrl: './time-select.component.html',
   styleUrls: ['./time-select.component.css']
 })
