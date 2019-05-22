@@ -52,6 +52,7 @@ import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown
 import { TimeSelectComponent } from './L0-components/forms-edit/time-select/time-select.component';
 import { DateSelectComponent } from './L0-components/forms-edit/date-select/date-select.component';
 import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/button-group.component';
+import { FileComponent } from './L0-components/forms-edit/file/file.component';
 
 @NgModule({
   imports: [
@@ -68,7 +69,7 @@ import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/bu
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent
+    ButtonGroupComponent, FileComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -81,7 +82,7 @@ import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/bu
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent
+    ButtonGroupComponent, FileComponent
   ]
 })
 export class SharedModule { }
