@@ -6,12 +6,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./text-area.component.css']
 })
 export class TextAreaComponent implements OnInit {
-  @Input() rows: number;
-  @Input() placeholder: string;
   @Input() label: string;
-  @Input() field_description: string;
-  @Input() value: string;
+  @Input() placeholder: string; //optional
+  @Input() rows: number; //"3", "4" , ....
   @Input() errorMsg: string;
+  @Input() value: string;
+  @Input() field_description: string; //optional
   @Output() textareaInput: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
