@@ -11,12 +11,6 @@ export class AutosuggestSelectedValueComponent implements OnInit {
   @Output() deleteItem: EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 
-  ngOnInit() {
-
-  }
-
-  deleteBadgeItem() {
-    this.deleteItem.emit();
-  }
+  ngOnInit() { }
 
 }
