@@ -2,8 +2,11 @@
   <label *ngIf="label">{{label}}</label>
   <div class="form-check" *ngFor="let opt of options">
     <label class="form-check-label">
-      <input type="checkbox" class="form-check-input" [(ngModel)]= "value" value="opt.value" (change)="selectedValue($event)" />
+      <input type="checkbox" class="form-check-input" [(ngModel)]= "value" value="opt.value" (ngModelChange)="selectedValues($event)" />
       {{opt.name}}
     </label>
+  </div>
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
   </div>
 </div>

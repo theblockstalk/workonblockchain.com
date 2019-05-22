@@ -1,7 +1,7 @@
 <div class="form-group">
   <label>{{label}}</label>
   <div class="form-check" *ngFor="let opt of options">
-    <input type="radio" id="{{opt}}" class="form-check-input" [(ngModel)]="value" (ngModelChange)="selectedOptions($event)">
+    <input type="radio" id="{{opt}}" class="form-check-input" [(ngModel)]="value" (ngModelChange)="selectedOption.emit($event.target.value)">
     <label class="form-check-label simple-radio-button" for="{{opt}}">
       {{opt}}
     </label>
