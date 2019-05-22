@@ -55,6 +55,7 @@ import { FileComponent } from './L0-components/forms-edit/file/file.component';
 import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-area.component';
 import { HtmlAreaViewComponent } from './L0-components/forms-view/html-area/html-area.component';
 import { BadgeViewComponent} from './L0-components/forms-view/badge/badge.component';
+import { ListComponent } from './L0-components/forms-view/list/list.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,7 @@ import { BadgeViewComponent} from './L0-components/forms-view/badge/badge.compon
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -84,7 +85,7 @@ import { BadgeViewComponent} from './L0-components/forms-view/badge/badge.compon
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent
   ]
 })
 export class SharedModule { }
