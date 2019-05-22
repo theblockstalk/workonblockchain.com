@@ -1,22 +1,24 @@
 import { Component, OnInit, Input} from '@angular/core';
 
 @Component({
-  selector: 'L0-html-area',
+  selector: 'app-c-forme-html-area',
   templateUrl: './html-area.component.html',
   styleUrls: ['./html-area.component.css']
 })
 export class HtmlAreaComponent implements OnInit {
-  @Input() label;
-  @Input() formattingBar;
-  @Input() height;
-  @Input() width;
+  @Input() label: string;
+  @Input() errorMsg: string;
+  @Input() placeholder: string; //optional
+  @Input() formattingBar: boolean; //true, false
+  @Input() height: number; //optional
+  @Input() width: number; //optional
   @Input() value;
   ckeEditorConfig;
   formattingClass;
   constructor() { }
 
   ngOnInit() {
-    if(this.formattingBar === 'true') this.formattingClass = 'ckeditor_tab';
+    if(this.formattingBar) this.formattingClass = 'ckeditor_tab';
     const ckeEditor =  {
       allowedContent: false,
       extraPlugins: 'divarea'

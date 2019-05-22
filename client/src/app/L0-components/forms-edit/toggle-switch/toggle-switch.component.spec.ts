@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AutosuggestComponent } from './autosuggest.component';
+import { ToggleSwitchComponent } from './toggle-switch.component';
 
-describe('AutosuggestComponent', () => {
-  let component: AutosuggestComponent;
-  let fixture: ComponentFixture<AutosuggestComponent>;
+describe('ToggleSwitchComponent', () => {
+  let component: ToggleSwitchComponent;
+  let fixture: ComponentFixture<ToggleSwitchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AutosuggestComponent ]
+      declarations: [ ToggleSwitchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AutosuggestComponent);
+    fixture = TestBed.createComponent(ToggleSwitchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

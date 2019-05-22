@@ -2,4 +2,7 @@
   <label>{{label}}</label>
   <ckeditor   #myckeditor [ngClass]="formattingClass" [(ngModel)]="value" [config]="ckeEditorConfig" debounce="500" >
   </ckeditor>
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
 </div>

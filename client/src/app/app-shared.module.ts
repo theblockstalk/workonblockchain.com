@@ -47,7 +47,8 @@ import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.co
 import { CountryComponent } from './L1-items/users/country/country.component';
 import { CityComponent } from './L1-items/users/city/city.component';
 import { CurrentSalaryComponent } from './L1-items/candidate/current-salary/current-salary.component';
-
+import { ToggleSwitchComponent } from './L0-components/forms-edit/toggle-switch/toggle-switch.component';
+import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown-autosuggest/dropdown-autosuggest.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
@@ -59,8 +60,8 @@ import { CurrentSalaryComponent } from './L1-items/candidate/current-salary/curr
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
-    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent
-  ],
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
+    ToggleSwitchComponent, DropdownAutosuggestComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
@@ -69,7 +70,7 @@ import { CurrentSalaryComponent } from './L1-items/candidate/current-salary/curr
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
-    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent
-  ]
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
+    ToggleSwitchComponent, DropdownAutosuggestComponent]
 })
 export class SharedModule { }

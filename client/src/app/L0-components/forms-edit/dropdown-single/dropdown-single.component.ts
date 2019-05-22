@@ -7,15 +7,15 @@ declare var $:any;
   styleUrls: ['./dropdown-single.component.css']
 })
 export class DropdownSingleComponent implements OnInit {
-  @Input() options;
-  @Input() label;
-  @Input() value;
-  @Input() errorMsg;
-  @Output () selectedValue: EventEmitter<any> = new EventEmitter<any>();
+  @Input() options: object;
+  @Input() label: string;
+  @Input() value: string;
+  @Input() errorMsg: string;
+  @Output () selectedValue: EventEmitter<string> = new EventEmitter<string>();
   labelClass = '';
   optionsType;
   constructor() {
-    console.log(this.options);
+    console.log(typeof this.options);
     if(this.options) {
       // if(typeof this.options === 'array') this.optionsType = 'array';
     }

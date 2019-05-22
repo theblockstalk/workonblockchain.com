@@ -1,23 +1,22 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {UserService} from '../../../../user.service';
-import {filter_array} from '../../../../../services/object'
+import { UserService} from '../../../user.service';
 import { Router } from '@angular/router';
 import { HttpClient  } from '@angular/common/http';
 
 @Component({
-  selector: 'L0-autosuggest',
-  templateUrl: './autosuggest.component.html',
-  styleUrls: ['./autosuggest.component.css']
+  selector: 'app-c-forme-dropdown-autosuggest',
+  templateUrl: './dropdown-autosuggest.component.html',
+  styleUrls: ['./dropdown-autosuggest.component.css']
 })
-export class AutosuggestComponent implements OnInit {
-  @Input() placeholder;
-  @Input() controllerOptions;
-  @Input() autoSuggestController;
-  @Input() resultItemDisplay;
-  @Input() selectedValue;
+export class DropdownAutosuggestComponent implements OnInit {
+  @Input() placeholder; //string
+  @Input() errorMsg; //string
+  @Input() controllerOptions: object; //optional
+  @Input() controller; // fn(text: string, options: {})
+  @Input() displayItems; //fn(item: {})
+  @Input() value;
   @Output() selectedItems : EventEmitter<any> = new EventEmitter<any>();
   selectedValueArray = [];
-  error;
   textValue;
   optionValues = [];
 
@@ -28,13 +27,12 @@ export class AutosuggestComponent implements OnInit {
 
   autoSuggest() {
     if(this.textValue !== '') {
-      this.error = '';
-      console.log(this.autoSuggestController);
-      this.autoSuggestController(this.textValue, this.controllerOptions)
+      console.log(this.controller);
+      this.controller(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
               console.log(data);
-              this.optionValues = this.resultItemDisplay(data);
+              this.optionValues = this.displayItems(data);
             }
           },
           error =>
@@ -59,8 +57,9 @@ export class AutosuggestComponent implements OnInit {
   }
 
   selectedValueAndData(inputValue) {
-    const data = this.selectedValue(inputValue, this.optionValues);
+    const data = this.value(inputValue, this.optionValues);
     this.selectedItems.emit(data);
   }
+
 
 }

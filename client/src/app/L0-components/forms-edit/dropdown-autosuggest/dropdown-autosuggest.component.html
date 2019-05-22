@@ -1,0 +1,20 @@
+<div class="form-group">
+  <!-- text box -->
+  <mat-form-field floatLabel="always">
+    <mat-label></mat-label>
+    <input matInput [matAutocomplete]="auto" placeholder="{{placeholder}}" [(ngModel)]="textValue" (input)="autoSuggest()" (ngModelChange)="selectedValueAndData($event)">
+  </mat-form-field>
+
+  <!-- dropdown options --->
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of optionValues" [value]="option.name">
+      <span>{{ option.name }}</span>
+    </mat-option>
+  </mat-autocomplete>
+
+  <!-- display error msg -->
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+
+</div>
