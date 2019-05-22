@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TextInputComponent implements OnInit {
   @Input() label: string;
-  @Input() placeholder: string;
+  @Input() placeholder: string; //optional
   @Input() value: string;
   @Input() errorMsg: string;
   @Input() disabled: boolean;

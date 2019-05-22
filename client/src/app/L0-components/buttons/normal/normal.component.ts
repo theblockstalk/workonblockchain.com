@@ -12,7 +12,7 @@ export class OthersComponent implements OnInit {
   @Input() buttonType: string; // "submit", "reset", "button"
   @Input() disabled: boolean; // true, false
   class;
-  
+
   constructor() { }
 
   ngOnInit() {

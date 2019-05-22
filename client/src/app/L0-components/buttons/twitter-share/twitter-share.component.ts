@@ -1,18 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'L0-twitter-share',
+  selector: 'app-c-button-twitter-share',
   templateUrl: './twitter-share.component.html',
   styleUrls: ['./twitter-share.component.css']
 })
 export class TwitterShareComponent implements OnInit {
-  @Input() text;
+  @Input() tweet: string;
   twitterLink;
 
   constructor() { }
 
   ngOnInit() {
-    this.twitterLink = 'https://twitter.com/intent/tweet?text=' + this.text;
+    this.twitterLink = 'https://twitter.com/intent/tweet?text=' + this.tweet;
   }
 
 }
