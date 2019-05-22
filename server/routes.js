@@ -71,7 +71,7 @@ router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddlewar
 
 // Companies
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
-router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
+router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent)); // will be deleted
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
 router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates));
