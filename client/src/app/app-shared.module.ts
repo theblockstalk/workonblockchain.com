@@ -56,6 +56,7 @@ import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-
 import { HtmlAreaViewComponent } from './L0-components/forms-view/html-area/html-area.component';
 import { BadgeViewComponent} from './L0-components/forms-view/badge/badge.component';
 import { ListComponent } from './L0-components/forms-view/list/list.component';
+import { DateComponent } from './L0-components/forms-view/date/date.component';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { ListComponent } from './L0-components/forms-view/list/list.component';
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
+    DateComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -85,7 +87,8 @@ import { ListComponent } from './L0-components/forms-view/list/list.component';
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
+    DateComponent
   ]
 })
 export class SharedModule { }

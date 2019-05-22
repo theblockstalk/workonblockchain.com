@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-c-formv-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })

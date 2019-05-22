@@ -1,21 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'L0-logos-items',
+  selector: 'app-c-icon-block-tech',
   templateUrl: './logos-items.component.html',
   styleUrls: ['./logos-items.component.css']
 })
 export class LogosItemsComponent implements OnInit {
-  @Input() name;
+  @Input() value: string; // "bitcoin", "ethereum", .......
   displayText;
   srcUrl;
   altText;
   constructor() { }
 
   ngOnInit() {
-    this.srcUrl = '/assets/images/all_icons/blockchain/' + this.name + '.png';
-    this.altText = this.name;
-    this.displayText = this.name;
+    this.srcUrl = '/assets/images/all_icons/blockchain/' + this.value + '.png';
+    this.altText = this.value;
+    this.displayText = this.value;
 
   }
 
