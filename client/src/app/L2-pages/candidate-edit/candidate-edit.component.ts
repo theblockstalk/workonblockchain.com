@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import {NgForm} from '@angular/forms';
 import { EmailAddressComponent } from '../../L1-items/users/email-address/email-address.component';
 import { FirstNameComponent } from '../../L1-items/users/first-name/first-name.component';
 import { LastNameComponent } from '../../L1-items/users/last-name/last-name.component';
