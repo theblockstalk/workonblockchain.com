@@ -12,3 +12,13 @@ const getRefCode = module.exports.getRefCode = async function getRefCode(email) 
     res.should.have.status(200);
     return res;
 }
+
+const getRefDetail = module.exports.getRefDetail = async function getRefDetail(email,isAdmin, jwtToken) {
+    const res = await chai.request(server)
+        .get('/v2/referral?email='+email+'&admin='+isAdmin)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
+
