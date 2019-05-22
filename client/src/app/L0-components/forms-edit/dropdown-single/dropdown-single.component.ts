@@ -25,7 +25,10 @@ export class DropdownSingleComponent implements OnInit {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 300);
-    if(!this.label) this.labelClass = 'invisible';
+    if(!this.label) {
+      this.labelClass = 'invisible';
+      this.label = "Don't show";
+    }
   }
 
   valueChanged(event) {

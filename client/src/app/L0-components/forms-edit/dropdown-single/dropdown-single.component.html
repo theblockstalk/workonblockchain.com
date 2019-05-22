@@ -1,5 +1,5 @@
 <div class="form-group">
-  <label [ngClass]="!label?labelClass:''" *ngIf="label">{{label}}</label>
+  <label [ngClass]="labelClass" >{{label}}</label>
   <select class="selectpicker form-control" title="(select one)" (change)="valueChanged($event)">
     <ng-container *ngIf="optionsType === 'array';else keyValue">
       <option
