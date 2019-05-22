@@ -33,7 +33,8 @@ const endpoints = [
     require('./controller/api-v2/users/auth/password/reset/post.controller'),
     require('./controller/api-v2/users/auth/password/reset/put.controller'),
     require('./controller/api-v2/users/email/patch.controller'),
-    require('./controller/api-v2/users/email/post.controller')
+    require('./controller/api-v2/users/email/post.controller'),
+    require('./controller/api-v2/referral/get.controller')
 ];
 
 function isEmpty(obj) {
