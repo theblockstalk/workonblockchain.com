@@ -13,7 +13,8 @@ module.exports.request = {
 
 const querySchema = new Schema({
     email: String,
-    admin: Boolean
+    admin: Boolean,
+    ref_code: String
 })
 
 module.exports.inputValidation = {
@@ -25,70 +26,104 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    if(req.auth) {
-        console.log('some user is calling');
-        const userId = req.auth.user;
+    if(req.query.ref_code){
+        console.log('code is here');
+        let discount;
+        let outputParams = {};
+        const refDoc = await mongooseReferral.findOne({
+            url_token:req.query.ref_code
+        });
 
-        if(userId.is_admin === 1){
-            const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
-            if(refDoc){
-                const userDoc = await users.findOneByEmail( refDoc.email );
-                if(userDoc){
-                    if(userDoc.type === 'candidate'){
-                        res.send({
-                            candidateDoc :  userDoc
-                        });
+        if(refDoc){
+            if(refDoc.discount) outputParams.discount = refDoc.discount;
+            outputParams.email = refDoc.email;
+            outputParams.referred_id = refDoc._id;
 
-                    }
-                    if(userDoc.type === 'company'){
-                        const employerDoc = await employerProfile.findOne({_creator : userDoc._id});
+            const userDoc = await users.findOneByEmail(refDoc.email);
 
-                        res.send({
-                            companyDoc : employerDoc,
-                        });
-                    }
+            if(userDoc){
+                if(userDoc.type === 'candidate'){
+                    if(userDoc.first_name) outputParams.name = userDoc.first_name;
                 }
-                else
-                {
-                    res.send({
-                        refDoc : refDoc
-                    });
+                if(userDoc.type === 'company'){
+                    const employerDoc = await employerProfile.findOne({_creator : userDoc._id});
+                    if(employerDoc.first_name) outputParams.name = employerDoc.first_name;
                 }
             }
-            else errors.throwError("Referral doc not found", 404);
-
+            res.send(outputParams);
         }
-        else errors.throwError("User is not authorized to access this detail", 401);
+        else{
+            errors.throwError("Referral doc not found", 404);
+        }
     }
     else {
-        console.log('in else');
-        const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
+        if (req.auth) {
+            console.log('some user is calling');
+            const userId = req.auth.user;
 
-        if (refDoc) {
-            res.send(refDoc);
+            if (userId.is_admin === 1) {
+                const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
+                if (refDoc) {
+                    const userDoc = await users.findOneByEmail(refDoc.email);
+                    if (userDoc) {
+                        if (userDoc.type === 'candidate') {
+                            res.send({
+                                candidateDoc: userDoc
+                            });
+
+                        }
+                        if (userDoc.type === 'company') {
+                            const employerDoc = await employerProfile.findOne({_creator: userDoc._id});
+
+                            res.send({
+                                companyDoc: employerDoc,
+                            });
+                        }
+                    }
+                    else {
+                        res.send({
+                            refDoc: refDoc
+                        });
+                    }
+                }
+                else errors.throwError("Referral doc not found", 404);
+
+            }
+            else errors.throwError("User is not authorized to access this detail", 401);
         }
         else {
-            let token = crypto.getRandomString(10);
-            token = token.replace('+', 1).replace('-', 2).replace('/', 3).replace('*', 4).replace('#', 5).replace('=', 6);
-            let newDoc, i = 0, newDocs;
-            newDoc = await mongooseReferral.findOne({url_token: token});
-            while (newDocs && i < 3) {
-                i++;
-                token = crypto.getRandomString(10);
-                token = token.replace('+', 1).replace('-', 2).replace('/', 3).replace('*', 4).replace('#', 5).replace('=', 6);
-                newDocs = await mongooseReferral.findOne({url_token: token});
-            }
+            if(req.query.email) {
+                console.log('in else');
+                const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
+                console.log(refDoc);
 
-            if (newDoc) {
-                errors.throwError("Unable to generate referral code", 400)
-            }
+                if (refDoc) {
+                    res.send(refDoc);
+                }
+                else {
+                    let token = crypto.getRandomString(10);
+                    token = token.replace('+', 1).replace('-', 2).replace('/', 3).replace('*', 4).replace('#', 5).replace('=', 6);
+                    let newDoc, i = 0, newDocs;
+                    newDoc = await mongooseReferral.findOne({url_token: token});
+                    while (newDocs && i < 3) {
+                        i++;
+                        token = crypto.getRandomString(10);
+                        token = token.replace('+', 1).replace('-', 2).replace('/', 3).replace('*', 4).replace('#', 5).replace('=', 6);
+                        newDocs = await mongooseReferral.findOne({url_token: token});
+                    }
 
-            const newInsertDoc = await mongooseReferral.insert({
-                email: req.query.email,
-                url_token: token,
-                date_created: new Date(),
-            });
-            res.send(newInsertDoc);
+                    if (newDoc) {
+                        errors.throwError("Unable to generate referral code", 400)
+                    }
+
+                    const newInsertDoc = await mongooseReferral.insert({
+                        email: req.query.email,
+                        url_token: token,
+                        date_created: new Date(),
+                    });
+                    res.send(newInsertDoc);
+                }
+            }
         }
     }
 }

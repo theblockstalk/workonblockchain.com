@@ -59,7 +59,7 @@ router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroy
 
 // Referrals
 router.post('/users/send_refreal',auth.isLoggedIn, asyncMiddleware(refReferral));
-router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
+router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode)); //will be deleted
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers)); //will be deleted
 router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getReferralDetailForAdmin)); //will be deleted
 

@@ -22,3 +22,11 @@ const getRefDetail = module.exports.getRefDetail = async function getRefDetail(e
     return res;
 }
 
+const getRefreeInfo = module.exports.getRefreeInfo = async function getRefreeInfo(code) {
+    const res = await chai.request(server)
+        .get('/v2/referral?ref_code='+code)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
+
