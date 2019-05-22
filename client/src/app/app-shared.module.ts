@@ -51,6 +51,7 @@ import { ToggleSwitchComponent } from './L0-components/forms-edit/toggle-switch/
 import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown-autosuggest/dropdown-autosuggest.component';
 import { TimeSelectComponent } from './L0-components/forms-edit/time-select/time-select.component';
 import { DateSelectComponent } from './L0-components/forms-edit/date-select/date-select.component';
+import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/button-group.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
@@ -63,7 +64,7 @@ import { DateSelectComponent } from './L0-components/forms-edit/date-select/date
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
-    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent],
+    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent, ButtonGroupComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
@@ -73,6 +74,6 @@ import { DateSelectComponent } from './L0-components/forms-edit/date-select/date
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
-    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent]
+    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent, ButtonGroupComponent]
 })
 export class SharedModule { }
