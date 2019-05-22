@@ -16,7 +16,7 @@ import { ValidationTextComponent } from './L0-components/forms-edit/validation-t
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
 import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
-import { OthersComponent } from './L0-components/buttons/others/others.component';
+import { OthersComponent } from './L0-components/buttons/normal/normal.component';
 import { AlertsComponent } from './L0-components/alerts/alerts/alerts.component';
 import { AutoSuggestCitiesComponent } from './L1-items/auto-suggest-cities/auto-suggest-cities.component';
 import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/autosuggest-selected-value/autosuggest-selected-value.component';
@@ -44,6 +44,11 @@ import { DropdownMultiselectComponent } from './L0-components/forms-edit/dropdow
 import { PersonalWebsiteUrlComponent } from './L1-items/candidate/personal-website-url/personal-website-url.component';
 import { StackoverflowUrlComponent } from './L1-items/candidate/stackoverflow-url/stackoverflow-url.component';
 import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.component';
+import { CountryComponent } from './L1-items/users/country/country.component';
+import { CityComponent } from './L1-items/users/city/city.component';
+import { CurrentSalaryComponent } from './L1-items/candidate/current-salary/current-salary.component';
+
+
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
                   MatAutocompleteModule, ImageCropperModule ],
@@ -54,7 +59,8 @@ import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.co
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
-    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent],
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent
+  ],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
@@ -63,6 +69,7 @@ import { ProfilePicComponent } from './L1-items/users/profile-pic/profile-pic.co
                   TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
-    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent]
+    PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent
+  ]
 })
 export class SharedModule { }

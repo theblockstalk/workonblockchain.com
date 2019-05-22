@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {constants} from '../../../../constants/constants';
+import { checkNumber} from '../../../../services/object';
 
 @Component({
   selector: 'app-i-forme-contact-number',
@@ -48,7 +49,7 @@ export class ContactNumberComponent implements OnInit {
     }
 
     if(this.phone_number) {
-      if(!this.checkNumber(this.phone_number)) {
+      if(!checkNumber(this.phone_number)) {
         this.phoneErrMsg = "Please enter only digits";
         return false;
       }
@@ -64,10 +65,6 @@ export class ContactNumberComponent implements OnInit {
     this.getContactNumber();
     delete this.phoneErrMsg;
     return true;
-  }
-
-  checkNumber(number) {
-    return /^[0-9]*$/.test(number);
   }
 
   getContactNumber() {

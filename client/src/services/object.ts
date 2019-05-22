@@ -161,3 +161,7 @@ export const unCheckCheckboxes = function(array) {
   }
   return array;
 }
+
+export const checkNumber = function(number) {
+  return /^[0-9]*$/.test(number);
+}

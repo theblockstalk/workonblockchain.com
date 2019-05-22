@@ -13,6 +13,9 @@ import { PersonalWebsiteUrlComponent } from '../../L1-items/candidate/personal-w
 import { NationalityComponent } from '../../L1-items/users/nationality/nationality.component';
 import { ProfilePicComponent } from '../../L1-items/users/profile-pic/profile-pic.component';
 import { BioComponent } from '../../L1-items/users/bio/bio.component';
+import { CountryComponent } from '../../L1-items/users/country/country.component';
+import { CityComponent} from '../../L1-items/users/city/city.component';
+import { CurrentSalaryComponent } from '../../L1-items/candidate/current-salary/current-salary.component';
 
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
@@ -34,6 +37,9 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(NationalityComponent) nationalities: NationalityComponent;
   @ViewChild(ProfilePicComponent) profileImage: ProfilePicComponent;
   @ViewChild(BioComponent) bioDescription: BioComponent;
+  @ViewChild(CountryComponent) baseCountry: CountryComponent;
+  @ViewChild(CityComponent) baseCity: CityComponent;
+  @ViewChild(CurrentSalaryComponent) currentSalary: CurrentSalaryComponent;
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
@@ -51,6 +57,10 @@ export class CandidateEditComponent implements OnInit {
   image;
   field_description = '<ul><li> 2-5 sentences </li><li> Quick overview of your current role and responsibilities and your principal development stack and skills </li><li> What value do you add to a project? </li></ul>';
   description;
+  country;
+  city;
+  current_salary;
+  current_currency;
   work_history;
   constructor() { }
 
@@ -69,10 +79,14 @@ export class CandidateEditComponent implements OnInit {
     this.nationality = this.userDoc['nationality'];
     if(this.userDoc['image']) this.image = this.userDoc['image'];
     this.description = this.userDoc['candidate'].description;
+    this.country = this.userDoc['candidate'].base_country;
+    this.city = this.userDoc['candidate'].base_city;
+    this.current_salary = this.userDoc['candidate'].current_salary;
+    this.current_currency = this.userDoc['candidate'].current_currency;
     this.work_history = this.userDoc['candidate'].work_history;
   }
 
-  update_candidate_profile(profileForm: NgForm){
+  update_candidate_profile(){
     console.log("submit");
     let errorCount = 0;
     let queryBody : any = {};
@@ -118,7 +132,19 @@ export class CandidateEditComponent implements OnInit {
     if(this.nationalities.selfValidate()) queryBody.nationality = this.nationalities.nationality;
     else errorCount++;
 
-    if(this.bioDescription) queryBody.description = this.bioDescription.description;
+    if(this.bioDescription.selfValidate()) queryBody.description = this.bioDescription.description;
+    else errorCount++;
+
+    if(this.baseCountry.selfValidate()) queryBody.base_country = this.baseCountry.country;
+    else errorCount++;
+
+    if(this.baseCity.selfValidate()) queryBody.base_city = this.baseCity.city;
+    else errorCount++;
+
+    if(this.currentSalary.selfValidate() && this.currentSalary.current_salary && this.currentSalary.current_currency) {
+      queryBody.current_currency = this.currentSalary.current_currency;
+      queryBody.current_salary = this.currentSalary.current_salary;
+    }
     else errorCount++;
 
     console.log(errorCount);
