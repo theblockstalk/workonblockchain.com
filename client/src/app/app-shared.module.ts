@@ -6,11 +6,10 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ImageCropperModule} from 'ng2-img-cropper/index';
 import { CKEditorModule } from 'ng2-ckeditor';
-import { TextValueComponent } from './L0-components/forms-view/text-value/text-value.component';
+import { TextValueComponent } from './L0-components/forms-view/text/text.component';
 import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
-import { AutosuggestComponent } from './L0-components/forms-edit/multiselect/autosuggest/autosuggest.component';
 import { AutosugguestValueComponent } from './L1-items/autosugguest-selected-cities-value/autosugguest-value.component';
 import { ValidationTextComponent } from './L0-components/forms-edit/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
@@ -53,6 +52,7 @@ import { TimeSelectComponent } from './L0-components/forms-edit/time-select/time
 import { DateSelectComponent } from './L0-components/forms-edit/date-select/date-select.component';
 import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/button-group.component';
 import { FileComponent } from './L0-components/forms-edit/file/file.component';
+import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-area.component';
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { FileComponent } from './L0-components/forms-edit/file/file.component';
   ],
   declarations: [
     SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
-    DropdownSingleComponent, WizardsComponent, AutosuggestComponent, AutosugguestValueComponent, SocialLoginComponent,
+    DropdownSingleComponent, WizardsComponent, AutosugguestValueComponent, SocialLoginComponent,
     OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
     AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
     TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
@@ -69,12 +69,12 @@ import { FileComponent } from './L0-components/forms-edit/file/file.component';
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
     MatAutocompleteModule, CommonModule, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent,
-    AutosuggestComponent, AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
+    AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
     SocialLoginComponent, OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent,
     AutosuggestBadgesComponent, AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent,
     TextInputComponent, TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
@@ -82,7 +82,7 @@ import { FileComponent } from './L0-components/forms-edit/file/file.component';
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent
   ]
 })
 export class SharedModule { }
