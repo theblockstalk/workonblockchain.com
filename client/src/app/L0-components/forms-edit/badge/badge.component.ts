@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'L0-autosuggest-selected-value',
-  templateUrl: './autosuggest-selected-value.component.html',
-  styleUrls: ['./autosuggest-selected-value.component.css']
+  selector: 'app-c-forme-badge',
+  templateUrl: './badge.component.html',
+  styleUrls: ['./badge.component.css']
 })
 export class AutosuggestSelectedValueComponent implements OnInit {
-  @Input() badgeText;
+  @Input() label: string;
+  @Input() class: string; //"badge-primary", "badge-secondary"....
   @Output() deleteItem: EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 

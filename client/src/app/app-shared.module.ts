@@ -19,7 +19,7 @@ import { SocialLoginComponent } from './L0-components/buttons/social-login/socia
 import { OthersComponent } from './L0-components/buttons/normal/normal.component';
 import { AlertsComponent } from './L0-components/alerts/alerts/alerts.component';
 import { AutoSuggestCitiesComponent } from './L1-items/auto-suggest-cities/auto-suggest-cities.component';
-import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/autosuggest-selected-value/autosuggest-selected-value.component';
+import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/badge/badge.component';
 import { AutosuggestBadgesComponent } from './L2-groups/autosuggest-badges/autosuggest-badges.component';
 import { AutosuggestCitiesSelectedValueComponent } from './L0-components/forms-edit/autosuggest-cities-selected-value/autosuggest-cities-selected-value.component';
 import { AutosuggestCitiesBadgesComponent } from './L2-groups/autosuggest-cities-badges/autosuggest-cities-badges.component';

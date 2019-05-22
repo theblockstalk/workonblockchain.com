@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AutosuggestSelectedValueComponent } from './autosuggest-selected-value.component';
+import { AutosuggestSelectedValueComponent } from './badge.component';
 
 describe('AutosuggestSelectedValueComponent', () => {
   let component: AutosuggestSelectedValueComponent;
