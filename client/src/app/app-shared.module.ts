@@ -53,6 +53,7 @@ import { DateSelectComponent } from './L0-components/forms-edit/date-select/date
 import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/button-group.component';
 import { FileComponent } from './L0-components/forms-edit/file/file.component';
 import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-area.component';
+import { HtmlAreaViewComponent } from './L0-components/forms-view/html-area/html-area.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,7 @@ import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -82,7 +83,7 @@ import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
-    ButtonGroupComponent, FileComponent, TextAreaViewComponent
+    ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent
   ]
 })
 export class SharedModule { }
