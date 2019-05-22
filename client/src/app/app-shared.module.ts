@@ -49,6 +49,7 @@ import { CityComponent } from './L1-items/users/city/city.component';
 import { CurrentSalaryComponent } from './L1-items/candidate/current-salary/current-salary.component';
 import { ToggleSwitchComponent } from './L0-components/forms-edit/toggle-switch/toggle-switch.component';
 import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown-autosuggest/dropdown-autosuggest.component';
+import { TimeSelectComponent } from './L0-components/forms-edit/time-select/time-select.component';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, CKEditorModule, ReactiveFormsModule, RouterModule, MatInputModule, MatSelectModule,
@@ -61,7 +62,7 @@ import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
-    ToggleSwitchComponent, DropdownAutosuggestComponent],
+    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent],
   exports:      [ SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule, MatAutocompleteModule, CommonModule,
                   TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent, AutosuggestComponent,
                   AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent,
@@ -71,6 +72,6 @@ import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent, CurrentSalaryComponent,
-    ToggleSwitchComponent, DropdownAutosuggestComponent]
+    ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent]
 })
 export class SharedModule { }
