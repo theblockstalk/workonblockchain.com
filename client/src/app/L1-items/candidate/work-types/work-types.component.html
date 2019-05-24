@@ -1,3 +1,22 @@
-<p>
-  work-types works!
-</p>
+<div class="form-group">
+  <label>Work type:</label>
+      <app-c-forme-checkbox
+        [options]="options"
+        column="col-md-4 text-center"
+        (change)="selfValidate()"
+        [errorMsg]="errMsg"
+        [value]="work_types"
+        (selectedItem)="selectedWorkType = $event"></app-c-forme-checkbox>
+    <!--<div class="col-md-4 text-center">-->
+      <!--<i class="fas fa-user-check fa-4x"></i><br/>-->
+      <!--<small>This can be a great way to get commercial experience</small>-->
+      <!--<br/>-->
+      <!--<div class="form-check">-->
+        <!--<label class="form-check-label">-->
+          <!--<input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">-->
+          <!--Temporary volunteer-->
+        <!--</label>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+

@@ -106,47 +106,11 @@
 
             <div class="row">
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Work type:</label>
-                  <div class="row mt-4">
-                    <div class="col-md-4 text-center">
-                      <i class="fas fa-user-secret fa-4x"></i><br/>
-                      <div class="form-check mt-4">
-                        <label class="form-check-label">
-                          <input class="form-check-input mt-2" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
-                          Employee (full/part time)
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                      <i class="fas fa-address-card fa-4x"></i><br/>
-                      <div class="form-check mt-4">
-                        <label class="form-check-label">
-                          <input class="form-check-input mt-2" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
-                          Contractor/Freelancer
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-4 text-center">
-                      <i class="fas fa-user-check fa-4x"></i><br/>
-                      <small>This can be a great way to get commercial experience</small>
-                      <br/>
-                      <div class="form-check">
-                        <label class="form-check-label">
-                          <input class="form-check-input mt-2" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
-                          Temporary volunteer
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
-                    {{work_type_log}}
-                  </div>
-                </div>
+                <app-i-forme-work-types [work_types]="work_types" (change)="checkWorkType()"></app-i-forme-work-types>
               </div>
             </div>
 
-            <div class="row mt-2" *ngIf="employeeCheck" >
+            <div class="row mt-2" *ngIf="employeeCheckk" >
               <div class="col-md-12">
                 <h4>Employee</h4>
               </div>
@@ -284,8 +248,8 @@
                 </div>
               </div>
             </div>
-            <hr *ngIf = "contractorCheck" />
-            <div class="row mt-2" *ngIf="contractorCheck" >
+            <hr *ngIf = "contractorCheckk" />
+            <div class="row mt-2" *ngIf="contractorCheckk" >
               <div class="col-md-12">
                 <h4>Contractor</h4>
               </div>
@@ -459,117 +423,14 @@
 
 
             </div>
-            <hr *ngIf="volunteerCheck" />
+            <hr *ngIf="volunteerCheckk" />
 
             <div class="row mt-2" *ngIf="volunteerCheck" >
               <div class="col-md-12">
                 <h4>Volunteer</h4>
               </div>
 
-
-              <div class="col-md-12 mt-4">
-                <div class="form-group">
-                  <label>Locations:</label>
-                  <div>
-                    <mat-autocomplete #volunteerAuto="matAutocomplete">
-                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
-                        <span>{{ loc.name }}</span>
-                      </mat-option>
-                    </mat-autocomplete>
-
-                    <mat-form-field floatLabel="always">
-                      <mat-label></mat-label>
-                      <input matInput [matAutocomplete]="volunteerAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
-                    </mat-form-field>
-                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
-                      {{error}}
-                    </div>
-                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!volunteer.selectedLocation || (volunteer.selectedLocation && volunteer.selectedLocation.length <= 0) ">
-                      {{volunteer_location_log}}
-                    </div>
-                    <div class="invalid-feedback d-inline" *ngIf="volunteer_remote_error">
-                      {{volunteer_remote_error}}
-                    </div>
-
-                    <div *ngIf="volunteer.selectedLocation && volunteer.selectedLocation.length > 0">
-                      <div class="row">
-                        <div  *ngFor="let value of volunteer.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
-                          <div class="border px-1 py-3 ml-2 row">
-                            <div class = "col-8">
-                              <label >{{value.name}}</label>
-                            </div>
-                            <div class = "col-4 text-right">
-                              <a (click)="volunteerDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label">
-                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="volunteerUpdateCitiesOptions($event)" > Work visa required
-                                </label>
-                              </div>
-
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                      <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(volunteer.selectedLocation)">
-                        {{volunteer_location_log}}
-                      </div>
-                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'volunteer_location_error' && remote_location_log">
-                        {{remote_location_log}}
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Role:</label>
-                  <div class="checkbox">
-                    <div class="row m-0">
-                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, volunteer.roles)" value="{{position_option.value}}" (change)="onJobSelected($event, 'volunteer')" required="" />
-                          {{position_option.name}}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class = "invalid-feedback d-inline"  *ngIf=" !volunteer.roles || (volunteer.roles && volunteer.roles.length<=0)">
-                    {{volunteer_roles_log}}
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Maximum hours per week (optional):</label>
-                  <select title="(select one)" [(ngModel)]="volunteer.max_hours_per_week" class="selectpicker form-control" required name="max_hour_per_week " >
-                    <option class='option' value="-1" >None</option>
-                    <option class='option' *ngFor='let hours of max_hours'   [attr.selected]="hours === volunteer.max_hours_per_week ? true : null" >{{hours}}</option>
-                  </select>
-                </div>
-
-              </div>
-
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Learning objectives:</label>
-                  <textarea class="form-control" rows="5"  maxlength="3000" placeholder="Learn more about P2P protocols and cryptocurrency exchange architectures." required name="learning_objectives" [(ngModel)]="volunteer.learning_objectives" ></textarea>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.learning_objectives">
-                    {{objective_log}}
-                  </div>
-                </div>
-
-              </div>
-
-
+              <app-i-forme-volunteer [volunteer]="volunteer" ></app-i-forme-volunteer>
             </div>
 
 

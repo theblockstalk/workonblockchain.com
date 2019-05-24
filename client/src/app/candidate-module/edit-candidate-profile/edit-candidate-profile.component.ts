@@ -1828,7 +1828,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     let objIndex = array.findIndex((obj => obj.name === input));
     array[objIndex].visa_needed = check;
     return array;
-
   }
 
   deleteLocationRow(array, index){

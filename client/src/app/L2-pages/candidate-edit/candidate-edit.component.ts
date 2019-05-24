@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { constants} from '../../../constants/constants';
+import { unCheckCheckboxes } from '../../../services/object';
 import { EmailAddressComponent } from '../../L1-items/users/email-address/email-address.component';
 import { FirstNameComponent } from '../../L1-items/users/first-name/first-name.component';
 import { LastNameComponent } from '../../L1-items/users/last-name/last-name.component';
@@ -15,7 +17,8 @@ import { BioComponent } from '../../L1-items/users/bio/bio.component';
 import { CountryComponent } from '../../L1-items/users/country/country.component';
 import { CityComponent} from '../../L1-items/users/city/city.component';
 import { CurrentSalaryComponent } from '../../L1-items/candidate/current-salary/current-salary.component';
-
+import { WorkTypesComponent } from '../../L1-items/candidate/work-types/work-types.component';
+import { VolunteerComponent } from '../../L1-items/candidate/volunteer/volunteer.component';
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
   selector: 'app-p-candidate-edit',
@@ -39,7 +42,8 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(CountryComponent) baseCountry: CountryComponent;
   @ViewChild(CityComponent) baseCity: CityComponent;
   @ViewChild(CurrentSalaryComponent) currentSalary: CurrentSalaryComponent;
-
+  @ViewChild(WorkTypesComponent) workTypes: WorkTypesComponent;
+  @ViewChild(VolunteerComponent) volunteerType: VolunteerComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -60,6 +64,11 @@ export class CandidateEditComponent implements OnInit {
   city;
   current_salary;
   current_currency;
+  work_types = [];
+  employeeCheck;
+  contractorCheck;
+  volunteerCheck;
+  volunteer;
   work_history;
   constructor() { }
 
@@ -82,6 +91,19 @@ export class CandidateEditComponent implements OnInit {
     this.city = this.userDoc['candidate'].base_city;
     this.current_salary = this.userDoc['candidate'].current_salary;
     this.current_currency = this.userDoc['candidate'].current_currency;
+    if(this.userDoc['candidate'].employee) {
+      this.employeeCheck = true;
+      this.work_types.push('employee');
+    }
+    if(this.userDoc['candidate'].contractor) {
+      this.contractorCheck = true;
+      this.work_types.push('contractor');
+    }
+    if(this.userDoc['candidate'].volunteer) {
+      this.volunteerCheck = true;
+      this.work_types.push('volunteer');
+      this.volunteer = this.userDoc['candidate'].volunteer;
+    }
     this.work_history = this.userDoc['candidate'].work_history;
   }
 
@@ -146,9 +168,48 @@ export class CandidateEditComponent implements OnInit {
     }
     else errorCount++;
 
+    if(this.workTypes.selfValidate()) {
+      this.checkWorkType();
+    }
+    console.log(this.volunteerType.selfValidate());
+    if(this.volunteerType.selfValidate()) {
+      // let validatedLocation=[];
+      // for(let location of this.volunteer.selectedLocation) {
+      //   if(location.name.includes('city')) {
+      //     validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+      //   }
+      //   if(location.name.includes('country')) {
+      //     validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+      //   }
+      //   if(location.name === 'Remote') {
+      //     validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+      //   }
+      //
+      // }
+      // this.volunteer.locations = validatedLocation;
+      console.log("ifffffffffffff")
+      queryBody.vounteer = this.volunteerType.volunteer;
+    }
+
     console.log(errorCount);
     console.log(queryBody);
 
+
+  }
+
+  checkWorkType() {
+    let value = this.workTypes.selectedWorkType
+    const employee = value.find(x => x === 'employee');
+    if(employee) this.employeeCheck = true;
+    else this.employeeCheck = false;
+
+    const contractor = value.find(x => x === 'contractor');
+    if(contractor) this.contractorCheck = true;
+    else this.contractorCheck = false;
+
+    const volunteer = value.find(x => x === 'volunteer');
+    if(volunteer) this.volunteerCheck = true;
+    else this.volunteerCheck = false;
 
   }
 

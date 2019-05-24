@@ -57,6 +57,10 @@ import { HtmlAreaViewComponent } from './L0-components/forms-view/html-area/html
 import { BadgeViewComponent} from './L0-components/forms-view/badge/badge.component';
 import { ListComponent } from './L0-components/forms-view/list/list.component';
 import { DateComponent } from './L0-components/forms-view/date/date.component';
+import { WorkTypesComponent } from './L1-items/candidate/work-types/work-types.component';
+import { RoleComponent } from './L1-items/candidate/role/role.component';
+import { VolunteerComponent } from './L1-items/candidate/volunteer/volunteer.component';
+import { LocationsComponent } from './L1-items/candidate/locations/locations.component';
 
 @NgModule({
   imports: [
@@ -74,7 +78,7 @@ import { DateComponent } from './L0-components/forms-view/date/date.component';
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -88,7 +92,7 @@ import { DateComponent } from './L0-components/forms-view/date/date.component';
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent
   ]
 })
 export class SharedModule { }

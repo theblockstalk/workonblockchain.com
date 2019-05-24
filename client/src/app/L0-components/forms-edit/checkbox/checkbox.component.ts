@@ -8,13 +8,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class CheckboxComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
-  @Input() options: object;
-  @Input() value: string;
+  @Input() options;
+  @Input() value;
+  @Input() iconClass: string; //for work types
+  @Input() column: string //"3", "4"
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   selectedOptions = [];
   constructor() { }
 
   ngOnInit() {
+    for (let val of this.value) {
+      const index = this.options.findIndex((obj => obj.value === val));
+      this.options[index].checked = true;
+      this.selectedOptions.push(val);
+    }
+
   }
 
   selectedValues(event) {

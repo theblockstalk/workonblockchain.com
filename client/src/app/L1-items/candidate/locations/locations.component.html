@@ -1,0 +1,38 @@
+<div class="form-group">
+  <label>Locations:</label>
+  <div>
+    <app-c-forme-dropdown-autosuggest
+      label="Locations"
+      (change)="selfValidate()"
+      placeholder="Locations"
+      [controllerOptions]="controllerOptions"
+      [controller]="autoSuggestController"
+      [displayItems]="resultItemDisplay"
+      (selectedItems)="itemSelected($event)"
+      [errorMsg]="errorMsg"
+    ></app-c-forme-dropdown-autosuggest>
+    <div *ngIf="selectedLocation && selectedLocation.length > 0">
+      <div class="row">
+        <div  *ngFor="let value of selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
+          <div class="border px-1 py-3 ml-2 row">
+            <div class = "col-8">
+              <label >{{value.name}}</label>
+            </div>
+            <div class = "col-4 text-right">
+              <a (click)="deleteRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+            </div>
+            <div class="col-12">
+              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                <label class="form-check-label">
+                  <input class="form-check-input"  placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

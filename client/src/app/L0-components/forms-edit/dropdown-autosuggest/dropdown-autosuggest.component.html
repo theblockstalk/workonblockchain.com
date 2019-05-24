@@ -1,6 +1,6 @@
 <div class="form-group">
   <!-- text box -->
-  <mat-form-field floatLabel="always">
+  <mat-form-field floatLabel="always" class="w-100">
     <mat-label></mat-label>
     <input matInput [matAutocomplete]="auto" placeholder="{{placeholder}}" [(ngModel)]="textValue" (input)="autoSuggest()" (ngModelChange)="selectedValueAndData($event)">
   </mat-form-field>
