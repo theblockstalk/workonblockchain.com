@@ -49,3 +49,12 @@ const getAll = module.exports.getAll = async function getAll(isAdmin,jwtToken) {
     res.should.have.status(200);
     return res;
 }
+
+const candidateFilter = module.exports.candidateFilter = async function candidateFilter(isAdmin,filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search?is_admin='+isAdmin)
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}

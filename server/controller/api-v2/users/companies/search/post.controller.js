@@ -47,7 +47,7 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
-    if(queryBody.disable_account === true || queryBody.disable_account === true) queryBody.disable_account = true;
+    if(queryBody.disable_account === true) queryBody.disable_account = true;
     else queryBody.disable_account = false;
 
     let userIds= [];
