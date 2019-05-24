@@ -32,5 +32,22 @@ describe('get current company detail', function () {
             getCurrentCompany.body.last_name.should.equal(company.last_name);
 
         })
+    });
+
+    describe('GET /v2/users/companies?is_admin', () => {
+
+        it('it should get all companies profile', async () => {
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupAdminCompany(company);
+
+            const userDoc = await Users.findOne({email: company.email});
+
+            const isAdmin = false;
+            const getAllCompanies = await companyHelper.getCompanies(isAdmin,userDoc.jwt_token);
+
+            getAllCompanies.body[0]._creator.email.should.equal(company.email);
+            getAllCompanies.body[0].first_name.should.equal(company.first_name);
+            getAllCompanies.body[0].last_name.should.equal(company.last_name);
+        })
     })
 });
