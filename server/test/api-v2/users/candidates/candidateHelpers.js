@@ -40,3 +40,12 @@ const changeCandidateStatus = module.exports.changeCandidateStatus = async funct
     res.should.have.status(200);
     return res;
 }
+
+const getAll = module.exports.getAll = async function getAll(isAdmin,jwtToken) {
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search?is_admin='+isAdmin)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
