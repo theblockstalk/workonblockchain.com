@@ -4,27 +4,38 @@ const EmployerProfile = require('../../../../../model/employer_profile');
 const messages = require('../../../../../model/mongoose/messages');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../../../api/users/filterReturnData');
+const enumerations = require('../../../../../model/enumerations');
 
 module.exports.request = {
-    type: 'get',
+    type: 'post',
     path: '/users/companies/search'
 };
 
-const querySchema = new Schema({
-    is_approved: Boolean,
-    disable_account: Boolean,
-    is_verify: Boolean,
+const bodySchema = new Schema({
+    is_approved: {
+        type:Boolean
+    },
+
+    disable_account: {
+        type:Boolean
+    },
+    is_verify: {
+        type:Boolean
+    },
     msg_tags: {
         type: [{
             type: String,
+            enum: enumerations.chatMsgTypes
         }]
     },
-    search_word: String
+    search_word: {
+        type:String
+    }
 });
 
 module.exports.inputValidation = {
-    query: querySchema
-}
+    body: bodySchema
+};
 
 const filterData = async function filterData(companyDetail) {
     return filterReturnData.removeSensativeData(companyDetail);
@@ -35,15 +46,14 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    let queryBody = req.query;
-    console.log(typeof queryBody.msg_tags);
-    if(queryBody.disable_account === 'true' || queryBody.disable_account === true) queryBody.disable_account = true;
+    let queryBody = req.body;
+    if(queryBody.disable_account === true || queryBody.disable_account === true) queryBody.disable_account = true;
     else queryBody.disable_account = false;
 
     let userIds= [];
     let queryString = [];
     if(queryBody.msg_tags) {
-        const messageDoc = await messages.find({msg_tag : {$in: queryBody.msg_tags}}, {sender_id: 1, receiver_id: 1});
+        const messageDoc = await messages.findMany({msg_tag : {$in: queryBody.msg_tags}}, {sender_id: 1, receiver_id: 1});
         if(messageDoc && messageDoc.length > 0) {
             for (detail of messageDoc) {
                 userIds.push(detail.sender_id);
@@ -52,16 +62,16 @@ module.exports.endpoint = async function (req, res) {
             const msgTagFilter = {"_creator" : {$in : userIds}};
             queryString.push(msgTagFilter);
             if(queryBody.is_approved) {
-                const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approved)};
+                const isApproveFilter = {"users.is_approved" : 1};
                 queryString.push(isApproveFilter);
             }
             if(queryBody.is_verify) {
-                const isApproveFilter = {"users.is_verify" : parseInt(queryBody.is_verify)};
+                const isApproveFilter = {"users.is_verify" : 1};
                 queryString.push(isApproveFilter);
             }
 
             if(queryBody.disable_account) {
-                const isApproveFilter = {"users.disable_account" : parseInt(queryBody.disable_account)};
+                const isApproveFilter = {"users.disable_account" : queryBody.disable_account};
                 queryString.push(isApproveFilter);
             }
 
@@ -102,16 +112,16 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         if(queryBody.is_approved) {
-            const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approved)};
+            const isApproveFilter = {"users.is_approved" : 1};
             queryString.push(isApproveFilter);
         }
         if(queryBody.is_verify) {
-            const isApproveFilter = {"users.is_verify" : parseInt(queryBody.is_verify)};
+            const isApproveFilter = {"users.is_verify" : 1};
             queryString.push(isApproveFilter);
         }
 
         if(queryBody.disable_account) {
-            const isApproveFilter = {"users.disable_account" : parseInt(queryBody.disable_account)};
+            const isApproveFilter = {"users.disable_account" : queryBody.disable_account};
             queryString.push(isApproveFilter);
         }
 

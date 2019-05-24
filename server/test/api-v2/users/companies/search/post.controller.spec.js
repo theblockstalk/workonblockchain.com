@@ -51,13 +51,13 @@ describe('admin search company by filter', function () {
 
         const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id});
         const data = {
-            msg_tags : [messageDoc.msg_tag,'reject'],
-            is_approved : 1,
+            msg_tags : [messageDoc.msg_tag],
+            is_approved : true,
             search_word : updatedData.company_name
         };
         const companyFilterRes = await companyHelper.companyFilter(data , companyUserDoc.jwt_token);
         companyFilterRes.body[0].company_name.should.equal(updatedData.company_name);
-        companyUserDoc.is_approved.should.equal(data.is_approved);
+        companyUserDoc.is_approved.should.equal(1);
         messageDoc.msg_tag.should.valueOf(data.msg_tags);
 
     })
