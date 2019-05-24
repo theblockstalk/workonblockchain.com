@@ -56,10 +56,15 @@ const getCurrentCompany = module.exports.getCurrentCompany = async function getC
 const getCompanies = module.exports.getCompanies = async function getCompanies(isAdmin,jwtToken){
     const res = await chai.request(server)
         .get('/v2/users/companies?is_admin=' + isAdmin)
-        .set('Authorization', jwtToken)
+        .set('Authorization', jwtToken);
     res.should.have.status(200);
     return res;
 }
 
-
-
+const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken) {
+    const res = await chai.request(server)
+        .get('/v2/users/companies/search?msg_tags='+filterData.msg_tags+'&is_approved='+filterData.is_approved+'&search_word='+filterData.search_word)
+        .set('Authorization', jwtToken);
+    res.should.have.status(200);
+    return res;
+}
