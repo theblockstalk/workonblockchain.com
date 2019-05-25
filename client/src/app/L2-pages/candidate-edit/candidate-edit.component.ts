@@ -18,6 +18,7 @@ import { CountryComponent } from '../../L1-items/users/country/country.component
 import { CityComponent} from '../../L1-items/users/city/city.component';
 import { CurrentSalaryComponent } from '../../L1-items/candidate/current-salary/current-salary.component';
 import { WorkTypesComponent } from '../../L1-items/candidate/work-types/work-types.component';
+import {ContractorComponent} from '../../L1-items/candidate/contractor/contractor.component';
 import { VolunteerComponent } from '../../L1-items/candidate/volunteer/volunteer.component';
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
@@ -44,6 +45,7 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(CurrentSalaryComponent) currentSalary: CurrentSalaryComponent;
   @ViewChild(WorkTypesComponent) workTypes: WorkTypesComponent;
   @ViewChild(VolunteerComponent) volunteerType: VolunteerComponent;
+  @ViewChild(ContractorComponent) contractorType: ContractorComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -68,6 +70,7 @@ export class CandidateEditComponent implements OnInit {
   employeeCheck;
   contractorCheck;
   volunteerCheck;
+  contractor;
   volunteer;
   work_history;
   constructor() { }
@@ -98,6 +101,7 @@ export class CandidateEditComponent implements OnInit {
     if(this.userDoc['candidate'].contractor) {
       this.contractorCheck = true;
       this.work_types.push('contractor');
+      this.contractor = this.userDoc['candidate'].contractor;
     }
     if(this.userDoc['candidate'].volunteer) {
       this.volunteerCheck = true;
@@ -168,9 +172,9 @@ export class CandidateEditComponent implements OnInit {
     }
     else errorCount++;
 
-    if(this.workTypes.selfValidate()) {
-      this.checkWorkType();
-    }
+    if(this.workTypes.selfValidate()) this.checkWorkType();
+    else errorCount++;
+
     console.log(this.volunteerType.selfValidate());
     if(this.volunteerType.selfValidate()) {
       // let validatedLocation=[];
@@ -190,6 +194,12 @@ export class CandidateEditComponent implements OnInit {
       console.log("ifffffffffffff")
       queryBody.vounteer = this.volunteerType.volunteer;
     }
+    else errorCount++;
+
+    if(this.contractorType.selfValidate()) {
+      queryBody.contractor = this.contractorType.contractor;
+    }
+    else errorCount++;
 
     console.log(errorCount);
     console.log(queryBody);

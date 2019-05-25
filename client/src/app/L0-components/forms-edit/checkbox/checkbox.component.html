@@ -5,7 +5,7 @@
       <i class="{{opt.iconClass}}" *ngIf="opt.iconClass"></i><br *ngIf="opt.iconClass" />
       <div class="form-check" >
         <label class="form-check-label">
-          <input type="checkbox" class="form-check-input" [checked]= "opt.checked" [value]="opt.value" (change)="selectedValues($event)" />
+          <input type="checkbox" class="form-check-input" [checked]= "selectedCheckboxes(opt.value)" [value]="opt.value" (change)="selectedValues($event)" />
           {{opt.name}}
         </label>
       </div>

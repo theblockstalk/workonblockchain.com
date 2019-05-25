@@ -1,3 +1,108 @@
-<p>
-  contractor works!
-</p>
+<div class="col-md-12 mt-4">
+  <app-i-forme-locations
+    [selectedLocation] = "contractor.location"
+    (selectedItems)="contractor.location = $event"
+  ></app-i-forme-locations>
+</div>
+
+<div class="col-md-12">
+  <app-i-forme-role
+    [roles]="contractor.roles"
+    (selectedItems)="contractor.roles = $event"
+  ></app-i-forme-role>
+</div>
+
+<div class="col-md-6">
+  <app-c-forme-text
+    label="Hourly rate:"
+    [errorMsg]="hourlyErrMsg"
+    [value]="contractor.expected_hourly_rate"
+    (change)="hourlyValidate()"
+    (textInputValue)="contractor.expected_hourly_rate = $event"
+  ></app-c-forme-text>
+
+  <!--<div class="form-group">-->
+    <!--<label>Hourly rate:</label>-->
+    <!--<input type="text" #hourly_rate="ngModel" pattern="^[0-9]*$" class="form-control" required name="hourly_rate" placeholder="" [(ngModel)]="contractor.hourly_rate">-->
+    <!--<div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate; else expected_validation">-->
+      <!--{{contractor_hourly_log}}-->
+    <!--</div>-->
+    <!--<div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="hourly_rate.errors && contractor.hourly_rate">-->
+      <!--Hourly rate should be a number.-->
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+
+<div class="col-md-6">
+  <app-c-forme-dropdown-single
+    [options]="currencies"
+    [value]="contractor.currency"
+    [errorMsg]="currencyErrMsg"
+    (selectedValue)="contractor.currency = $event"
+    (change)="currencyValidate()"
+  ></app-c-forme-dropdown-single>
+
+  <!--<div class="form-group">-->
+    <!--<label class="invisible">Currency</label>-->
+    <!--<select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="contractor_currency" >-->
+      <!--<option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === contractor.currency ? true : null" >{{baseCurrency}}</option>-->
+    <!--</select>-->
+    <!--<div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">-->
+      <!--{{contractor_currency_log}}-->
+    <!--</div>-->
+  <!--</div>-->
+
+</div>
+
+
+<div class="col-md-6">
+  <app-c-forme-dropdown-single
+    label="Maximum hours per week (optional):"
+    [options]="max_hours"
+    [value]="contractor.max_hour_per_week"
+    (selectedValue) = "contractor.max_hour_per_week = $event"
+  ></app-c-forme-dropdown-single>
+</div>
+
+<div class="col-md-12">
+  <app-c-forme-checkbox
+    [options]="contractor_types"
+    label="Contractor type:"
+    [errorMsg]="typeErrMsg"
+    (selectedItem)="contractor.contractor_type = $event"
+    column="col-md-3 mb-3"
+    [value]="contractor.contractor_type"
+    (change)="typeValidate()"
+  ></app-c-forme-checkbox>
+
+</div>
+
+<!--<div class="col-md-6" *ngIf="contractor.contractor_type && checkContractValue(contractor.contractor_type)">-->
+  <!--<div class="form-group">-->
+    <!--<label>Agency website:</label>-->
+    <!--<input type="text" class="form-control" #agencyUrl="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">-->
+    <!--<div class = "invalid-feedback d-inline"  *ngIf="checkContractValue(contractor.contractor_type) && !contractor.agency_website ;else validateUrl  ">-->
+      <!--{{agency_website_log}}-->
+    <!--</div>-->
+    <!--<div class = "invalid-feedback d-inline" #validateUrl *ngIf="contractor.agency_website && agencyUrl.errors">-->
+      <!--Enter url in proper format-->
+
+    <!--</div>-->
+  <!--</div>-->
+
+
+<!--</div>-->
+
+
+<div class="col-md-12">
+  <app-c-forme-text-area
+    label="Service description:"
+    [value]="contractor.service_description"
+    placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis."
+    rows="5"
+    [errorMsg]="descErrMsg"
+    (change)="descValidation()"
+    (textareaInput)="contractor.service_description = $event"
+  ></app-c-forme-text-area>
+</div>

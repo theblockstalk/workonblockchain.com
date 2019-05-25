@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { unCheckCheckboxes } from '../../../../services/object';
 
 @Component({
   selector: 'app-c-forme-checkbox',
@@ -17,11 +18,11 @@ export class CheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.options = unCheckCheckboxes(this.options);
     for (let val of this.value) {
-      const index = this.options.findIndex((obj => obj.value === val));
-      this.options[index].checked = true;
       this.selectedOptions.push(val);
     }
+    console.log(this.selectedOptions);
 
   }
 
@@ -36,6 +37,11 @@ export class CheckboxComponent implements OnInit {
       this.selectedOptions.splice(index, 1);
     }
     this.selectedItem.emit(this.selectedOptions);
+  }
+
+  selectedCheckboxes(value) {
+    if(this.selectedOptions.find(x => x === value)) return true;
+    return false;
   }
 
 }

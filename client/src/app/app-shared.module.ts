@@ -61,6 +61,7 @@ import { WorkTypesComponent } from './L1-items/candidate/work-types/work-types.c
 import { RoleComponent } from './L1-items/candidate/role/role.component';
 import { VolunteerComponent } from './L1-items/candidate/volunteer/volunteer.component';
 import { LocationsComponent } from './L1-items/candidate/locations/locations.component';
+import { ContractorComponent } from './L1-items/candidate/contractor/contractor.component';
 
 @NgModule({
   imports: [
@@ -78,7 +79,7 @@ import { LocationsComponent } from './L1-items/candidate/locations/locations.com
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -92,7 +93,7 @@ import { LocationsComponent } from './L1-items/candidate/locations/locations.com
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent
   ]
 })
 export class SharedModule { }

@@ -15,8 +15,7 @@ export class TextInputComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("text input");
-    console.log(this.value);
+
   }
 
 }

@@ -113,7 +113,6 @@ export class LocationsComponent implements OnInit {
         locationArray = removeDuplication(locationArray);
       }
       this.selectedLocation = locationArray;
-      this.selectedItems.emit(this.selectedLocation);
     }
 
   }

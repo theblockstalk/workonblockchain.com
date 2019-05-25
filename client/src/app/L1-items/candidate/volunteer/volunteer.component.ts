@@ -47,10 +47,4 @@ export class VolunteerComponent implements OnInit {
     return true;
   }
 
-
-
-
-
-
-
 }
