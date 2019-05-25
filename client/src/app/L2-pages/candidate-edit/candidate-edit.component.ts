@@ -70,8 +70,8 @@ export class CandidateEditComponent implements OnInit {
   employeeCheck;
   contractorCheck;
   volunteerCheck;
-  contractor;
-  volunteer;
+  contractor: any = {};
+  volunteer: any = {};
   work_history;
   constructor() { }
 
@@ -175,7 +175,6 @@ export class CandidateEditComponent implements OnInit {
     if(this.workTypes.selfValidate()) this.checkWorkType();
     else errorCount++;
 
-    console.log(this.volunteerType.selfValidate());
     if(this.volunteerType.selfValidate()) {
       // let validatedLocation=[];
       // for(let location of this.volunteer.selectedLocation) {

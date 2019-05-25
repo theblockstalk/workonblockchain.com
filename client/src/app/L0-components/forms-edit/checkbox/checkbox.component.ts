@@ -19,11 +19,12 @@ export class CheckboxComponent implements OnInit {
 
   ngOnInit() {
     this.options = unCheckCheckboxes(this.options);
-    for (let val of this.value) {
-      this.selectedOptions.push(val);
+    if(this.value) {
+      for (let val of this.value) {
+        this.selectedOptions.push(val);
+      }
     }
     console.log(this.selectedOptions);
-
   }
 
   selectedValues(event) {

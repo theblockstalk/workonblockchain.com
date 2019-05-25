@@ -23,6 +23,10 @@ export class RoleComponent implements OnInit {
   }
 
   selfValidate() {
+    if(!this.selectedRole) {
+      this.errMsg = "Please select atleast one role";
+      return false;
+    }
     if(this.selectedRole && this.selectedRole.length <= 0) {
       this.errMsg = "Please select atleast one role";
       return false;

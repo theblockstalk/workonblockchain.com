@@ -28,14 +28,11 @@ export class VolunteerComponent implements OnInit {
   }
 
   selfValidate() {
-    if(!this.location.selfValidate()) return false;
-
-    if(!this.role.selfValidate()) return false;
-
-    if(!this.objectiveValidation()) return false;
-
-    return true;
-
+    const locationValid = this.location.selfValidate();
+    const roleValid = this.role.selfValidate();
+    const objectValid = this.objectiveValidation();
+    if(locationValid && roleValid && objectValid) return true;
+    else return false;
   }
 
   objectiveValidation() {

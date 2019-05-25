@@ -78,21 +78,14 @@
 
 </div>
 
-<!--<div class="col-md-6" *ngIf="contractor.contractor_type && checkContractValue(contractor.contractor_type)">-->
-  <!--<div class="form-group">-->
-    <!--<label>Agency website:</label>-->
-    <!--<input type="text" class="form-control" #agencyUrl="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" required name="agency_website" placeholder="" [(ngModel)]="contractor.agency_website">-->
-    <!--<div class = "invalid-feedback d-inline"  *ngIf="checkContractValue(contractor.contractor_type) && !contractor.agency_website ;else validateUrl  ">-->
-      <!--{{agency_website_log}}-->
-    <!--</div>-->
-    <!--<div class = "invalid-feedback d-inline" #validateUrl *ngIf="contractor.agency_website && agencyUrl.errors">-->
-      <!--Enter url in proper format-->
-
-    <!--</div>-->
-  <!--</div>-->
-
-
-<!--</div>-->
+<div class="col-md-6" *ngIf="agencyCheck">
+  <app-c-forme-text
+    label="Agency website:"
+    [value]="contractor.agency_website"
+    [errorMsg]="agencyErrMsg"
+    (change) = websiteValidate()
+    (textInputValue)="contractor.agency_website = $event" ></app-c-forme-text>
+</div>
 
 
 <div class="col-md-12">

@@ -25,15 +25,10 @@ export class ContractorComponent implements OnInit {
   currencyErrMsg;
   hourlyErrMsg;
   typeErrMsg;
+  agencyCheck;
+  agencyErrMsg;
 
   constructor() {
-    if(this.contractor) {
-      this.location = this.contractor['location'];
-      this.roles = this.contractor['roles'];
-      this.hourly_rate = this.contractor['hourly_rate'];
-      this.currency = this.contractor['currency'];
-      this.max_hour_per_week = this.contractor['max_hour_per_week'];
-    }
   }
 
   ngOnInit() {
@@ -43,15 +38,17 @@ export class ContractorComponent implements OnInit {
   }
 
   selfValidate() {
-    if(!this.locationComp.selfValidate()) return false;
-    if(!this.role.selfValidate()) return false;
-    if(!this.descValidation()) return false;
-    if(!this.hourlyValidate()) return false;
-    if(!this.currencyValidate()) return false;
-    if(!this.descValidation()) return false;
-
-    return true;
-
+    const locValid = this.locationComp.selfValidate()
+    const roleValid = this.role.selfValidate();
+    const descValid = this.descValidation();
+    const hourlyValid = this.hourlyValidate();
+    const currencyValid = this.currencyValidate();
+    const typeValid = this.typeValidate();
+    const webValid = this.websiteValidate();
+    if(locValid && roleValid && descValid && hourlyValid && currencyValid && typeValid && webValid) {
+      return true;
+    }
+    else return false;
   }
 
   descValidation() {
@@ -92,11 +89,39 @@ export class ContractorComponent implements OnInit {
       this.typeErrMsg = 'Please select atleast one contractor type';
       return false;
     }
-    if(this.contractor['contractor_type'] && this.contractor['contractor_type'].length === 0) {
-      this.typeErrMsg = 'Please select atleast one contractor type';
-      return false;
+    if(this.contractor['contractor_type']){
+      if(this.contractor['contractor_type'].length === 0) {
+        this.typeErrMsg = 'Please select atleast one contractor type';
+        return false;
+      }
+      else {
+        if(this.contractor['contractor_type'].find(x => x === 'agency')) {
+          this.agencyCheck = true;
+        }
+        else this.agencyCheck = false;
+      }
     }
     delete this.typeErrMsg;
+    return true;
+  }
+
+  websiteValidate() {
+    if(this.agencyCheck) {
+      if(!this.contractor['agency_website']) {
+        this.agencyErrMsg = 'Please enter agency website';
+        return false;
+      }
+      if(this.contractor['agency_website']) {
+        const regex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,10}(:[0-9]{1,5})?(\\/.*)?$");
+        if (!regex.test(this.contractor['agency_website'])) {
+          this.agencyErrMsg = 'Enter url in proper format';
+          return false;
+        }
+        delete this.agencyErrMsg;
+        return true;
+      }
+    }
+    delete this.agencyErrMsg;
     return true;
   }
 }

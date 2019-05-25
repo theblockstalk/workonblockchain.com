@@ -8,7 +8,7 @@ import {filter_array, removeDuplication} from '../../../../services/object';
   styleUrls: ['./locations.component.css']
 })
 export class LocationsComponent implements OnInit {
-  @Input() selectedLocation;
+  @Input() selectedLocation = [];
   errorMsg: string;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
   controllerOptions: any = {};
@@ -17,9 +17,12 @@ export class LocationsComponent implements OnInit {
   constructor(public authenticationService: UserService) { }
 
   ngOnInit() {
+    console.log("selected location")
+    console.log(this.selectedLocation);
     if(this.selectedLocation) {
       this.changeLocationDisplayFormat(this.selectedLocation);
     }
+    else this.selectedLocation = [];
     this.controllerOptions = {countries : true};
     this.autoSuggestController = function (textValue, controllerOptions) {
       return this.authenticationService.autoSuggestOptions(textValue, controllerOptions);
@@ -47,6 +50,10 @@ export class LocationsComponent implements OnInit {
 
   selfValidate() {
     if(this.selectedLocation && this.selectedLocation.length <= 0) {
+      this.errorMsg = "Please select atleast one location";
+      return false;
+    }
+    if(!this.selectedLocation) {
       this.errorMsg = "Please select atleast one location";
       return false;
     }
