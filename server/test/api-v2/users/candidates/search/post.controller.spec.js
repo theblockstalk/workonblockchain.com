@@ -25,9 +25,9 @@ describe('get all users', function () {
         await mongo.drop();
     })
 
-    describe('POST /v2/users/candidates/search?is_admin', () => {
+    describe('POST /v2/users/candidates/search', () => {
 
-        it('it should get all users', async () => {
+        it('it should get all users for admin', async () => {
 
             const candidate = docGenerator.candidate();
             const profileData = docGenerator.profileData();
@@ -47,10 +47,7 @@ describe('get all users', function () {
             getAllCandidates.body[0].email.should.equal(userDoc.email);
             getAllCandidates.body[0].first_name.should.equal(userDoc.first_name);
             getAllCandidates.body[0].last_name.should.equal(userDoc.last_name);
-        })
-    });
-
-    describe('POST /v2/users/candidates/search', () => {
+        });
 
         it('it should search candidate by filter', async () => {
             const company = docGeneratorV2.company();
@@ -88,11 +85,7 @@ describe('get all users', function () {
             candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
             candidateUserDoc.candidate.history[0].status.status.should.equal('approved');
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
-
-        })
-    });
-
-    describe('POST /v2/users/candidates/search?all_cand', () => {
+        });
 
         it('it should return verified candidate', async () => {
 
@@ -110,6 +103,159 @@ describe('get all users', function () {
             filterRes.body[0].is_verify.should.equal(1);
             filterRes.body[0].disable_account.should.equal(false);
             filterRes.body[0].type.should.equal("candidate");
+        });
+
+        it('it should return the candidate with position and location ', async function () {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+            console.log(candidateUserDoc.candidate);
+            const locations = [{name : 'Remote' , visa_needed: false},
+                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }];
+            const params = {
+                positions: candidateUserDoc.candidate.roles,
+                locations: locations,
+            }
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+
+            let userDoc = await Users.findOne({email: candidate.email});
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
+
+        })
+
+        it('it should return the candidate with currency search', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+
+            const params = {
+                current_currency: candidateUserDoc.candidate.expected_salary_currency,
+                current_salary: candidateUserDoc.candidate.expected_salary*2
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+
+            let userDoc = await Users.findOne({email: candidate.email});
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
+
+        })
+
+        it('it should not return the candidate with half currency search', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+
+            const params = {
+                current_currency: candidateUserDoc.candidate.employee.currency,
+                current_salary: candidateUserDoc.candidate.employee.expected_annual_salary*0.5
+            }
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404)
+        })
+
+        it('it should return the candidate with half different-currency search', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
+            console.log(gbp);
+            const params = {
+                current_currency: "£ GBP",
+                current_salary: gbp/1.11
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404)
+        })
+
+        it('it should not return the candidate with half different-currency search', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+
+            let gbp = currency.convert(candidateUserDoc.candidate.employee.currency, "£ GBP", candidateUserDoc.candidate.employee.expected_annual_salary);
+            console.log(gbp);
+            const params = {
+                current_currency: "£ GBP",
+                current_salary: gbp/1.09
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200)
+        })
+
+        it('it should return the candidate with language expr', async function () {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileLanguageExprData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email});
+            const params = {
+                years_exp_min: 1
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+
+            let userDoc = await Users.findOne({email: candidate.email});
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
         })
     })
 });

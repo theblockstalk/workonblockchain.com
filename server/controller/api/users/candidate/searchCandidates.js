@@ -68,9 +68,9 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 {last_name : {'$regex' : search.name, $options: 'i'}}] };
             userQuery.push(nameSearch);
         }
-        if(search.word) {
-            const wordSearch = { $or: [{ 'candidate.why_work': {'$regex' : search.word, $options: 'i'}},
-                {description : {'$regex' : search.word, $options: 'i'}}] };
+        if(search.why_work) {
+            const wordSearch = { $or: [{ 'candidate.why_work': {'$regex' : search.why_work, $options: 'i'}},
+                {description : {'$regex' : search.why_work, $options: 'i'}}] };
             userQuery.push(wordSearch);
         }
         if (search.locations && search.locations.length > 0 ) {
@@ -199,10 +199,10 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
         }
 
-        if (search.positions && search.positions.length > 0  ) {
+        if (search.roles && search.roles.length > 0  ) {
             let rolesQuery =[];
             const setRoleQuery = function (roleQuery){
-                const rolesFilter = {[roleQuery]: {$in: search.positions}};
+                const rolesFilter = {[roleQuery]: {$in: search.roles}};
                 rolesQuery.push(rolesFilter);
             };
             if(roleQuery) setRoleQuery(roleQuery);
@@ -255,11 +255,11 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(hourlyRateFilter);
         }
 
-        if (search.skills && search.skills.length > 0) {
+        if (search.programming_languages && search.programming_languages.length > 0) {
             let skillsFilterNew;
             if (search.years_exp_min) {
                 let skillsAndExpFilter = [];
-                for (let skills of search.skills) {
+                for (let skills of search.programming_languages) {
                     skillsAndExpFilter = {
                         "candidate.programming_languages": {
                             $elemMatch: {
@@ -282,8 +282,8 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
 
 
-        if (search.residence_country && search.residence_country.length > 0) {
-            const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
+        if (search.base_country && search.base_country.length > 0) {
+            const residenceCountryFilter = {"candidate.base_country": {$in: search.base_country}};
             userQuery.push(residenceCountryFilter);
         }
 
