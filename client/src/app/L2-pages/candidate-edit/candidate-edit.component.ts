@@ -20,6 +20,7 @@ import { CurrentSalaryComponent } from '../../L1-items/candidate/current-salary/
 import { WorkTypesComponent } from '../../L1-items/candidate/work-types/work-types.component';
 import {ContractorComponent} from '../../L1-items/candidate/contractor/contractor.component';
 import { VolunteerComponent } from '../../L1-items/candidate/volunteer/volunteer.component';
+import {EmployeeComponent} from '../../L1-items/candidate/employee/employee.component';
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
   selector: 'app-p-candidate-edit',
@@ -46,6 +47,7 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(WorkTypesComponent) workTypes: WorkTypesComponent;
   @ViewChild(VolunteerComponent) volunteerType: VolunteerComponent;
   @ViewChild(ContractorComponent) contractorType: ContractorComponent;
+  @ViewChild(EmployeeComponent) employeeType: EmployeeComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -72,6 +74,7 @@ export class CandidateEditComponent implements OnInit {
   volunteerCheck;
   contractor: any = {};
   volunteer: any = {};
+  employee: any = {};
   work_history;
   constructor() { }
 
@@ -175,30 +178,43 @@ export class CandidateEditComponent implements OnInit {
     if(this.workTypes.selfValidate()) this.checkWorkType();
     else errorCount++;
 
-    if(this.volunteerType.selfValidate()) {
-      // let validatedLocation=[];
-      // for(let location of this.volunteer.selectedLocation) {
-      //   if(location.name.includes('city')) {
-      //     validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
-      //   }
-      //   if(location.name.includes('country')) {
-      //     validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
-      //   }
-      //   if(location.name === 'Remote') {
-      //     validatedLocation.push({remote: true, visa_needed : location.visa_needed });
-      //   }
-      //
-      // }
-      // this.volunteer.locations = validatedLocation;
-      console.log("ifffffffffffff")
-      queryBody.vounteer = this.volunteerType.volunteer;
+    if(this.volunteerCheck) {
+      if(this.volunteerType.selfValidate()) {
+        // let validatedLocation=[];
+        // for(let location of this.volunteer.selectedLocation) {
+        //   if(location.name.includes('city')) {
+        //     validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+        //   }
+        //   if(location.name.includes('country')) {
+        //     validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+        //   }
+        //   if(location.name === 'Remote') {
+        //     validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+        //   }
+        //
+        // }
+        // this.volunteer.locations = validatedLocation;
+        console.log("ifffffffffffff")
+        queryBody.vounteer = this.volunteerType.volunteer;
+      }
+      else errorCount++;
     }
-    else errorCount++;
 
-    if(this.contractorType.selfValidate()) {
-      queryBody.contractor = this.contractorType.contractor;
+
+    if( this.contractorCheck) {
+      if(this.contractorType.selfValidate()) {
+        queryBody.contractor = this.contractorType.contractor;
+      }
+      else errorCount++;
     }
-    else errorCount++;
+
+    if(this.employeeCheck) {
+      if(this.employeeType.selfValidate()) {
+        queryBody.employee = this.employeeType.employee;
+      }
+      else errorCount++;
+    }
+
 
     console.log(errorCount);
     console.log(queryBody);

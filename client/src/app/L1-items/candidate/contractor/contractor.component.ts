@@ -11,15 +11,10 @@ import { constants } from '../../../../constants/constants';
 })
 export class ContractorComponent implements OnInit {
   @Input() contractor: any = {};
-  currencies = constants.currencies;
-  contractor_types = constants.contractorTypes;
   @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
-  location;
-  roles;
-  hourly_rate;
-  currency;
-  max_hour_per_week;
+  currencies = constants.currencies;
+  contractor_types = constants.contractorTypes;
   max_hours = [];
   descErrMsg;
   currencyErrMsg;

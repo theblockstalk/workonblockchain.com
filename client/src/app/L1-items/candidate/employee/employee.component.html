@@ -1,3 +1,58 @@
-<p>
-  employee works!
-</p>
+<div class="row">
+  <div class="col-md-6 mt-4">
+    <app-c-forme-dropdown-multiple
+      label ="Position type:"
+      [value]="employee.employment_type"
+      [errorMsg]="typeErrMsg"
+      [options]="positionTypes"
+      (selectedValue)= "employee.employment_type = $event"
+      (change) = "typeValidate()"
+    ></app-c-forme-dropdown-multiple>
+  </div>
+
+  <div class="col-md-12">
+    <app-i-forme-locations
+      [selectedLocation] = "employee.location"
+      (selectedItems)="employee.location = $event"
+    ></app-i-forme-locations>
+  </div>
+
+  <div class="col-md-12">
+    <app-i-forme-role
+      [roles]="employee.roles"
+      (selectedItems)="employee.roles = $event"
+    ></app-i-forme-role></div>
+
+  <div class="col-md-6">
+    <app-c-forme-text
+      label="Expected annual salary:"
+      placeholder="1000"
+      [value]="employee.expected_annual_salary"
+      [errorMsg]="salaryErrMsg"
+      (change)="salaryValidate()"
+      (textInputValue)="employee.expected_annual_salary = $event"
+    ></app-c-forme-text>
+  </div>
+
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      [options]="currencies"
+      [value]="employee.currency"
+      [errorMsg]="currencyErrMsg"
+      (selectedValue)="employee.currency = $event"
+      (change)="currencyValidate()"
+    ></app-c-forme-dropdown-single>
+  </div>
+
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      label="Availability:"
+      [options]="employement_availability"
+      [value]="employee.employment_availability"
+      [errorMsg]="availErrMsg"
+      (selectedValue)="employee.employment_availability = $event"
+      (change)="availabilityValidate()"
+    ></app-c-forme-dropdown-single>
+  </div>
+
+</div>

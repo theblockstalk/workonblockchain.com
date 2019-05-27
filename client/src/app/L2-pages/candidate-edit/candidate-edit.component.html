@@ -110,167 +110,33 @@
               </div>
             </div>
 
-            <div class="row mt-2" *ngIf="employeeCheckk" >
+            <div class="row mt-2" *ngIf="employeeCheck" >
               <div class="col-md-12">
                 <h4>Employee</h4>
               </div>
-
-              <div class="col-md-6 mt-4">
-                <div class="form-group">
-                  <label>Position type:</label>
-                  <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
-                    <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="!employee.employment_type">
-                    {{employment_type_log}}
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Locations:</label>
-                  <div>
-
-                    <mat-autocomplete #employeeAuto="matAutocomplete">
-                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
-                        <span>{{ loc.name }}</span>
-                      </mat-option>
-                    </mat-autocomplete>
-
-                    <mat-form-field floatLabel="always">
-                      <mat-label></mat-label>
-                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
-                    </mat-form-field>
-                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
-                      {{error}}
-                    </div>
-                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!employee.selectedLocation || (employee.selectedLocation && employee.selectedLocation.length <= 0) ">
-                      {{employment_location_log}}
-                    </div>
-                    <div class="invalid-feedback d-inline" *ngIf="employment_remote_error">
-                      {{employment_remote_error}}
-                    </div>
-
-                    <div *ngIf="employee.selectedLocation && employee.selectedLocation.length > 0">
-                      <div class="row">
-                        <div  *ngFor="let value of employee.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
-                          <div class="border px-1 py-3 ml-2 row">
-                            <div class = "col-8">
-                              <label >{{value.name}}</label>
-                            </div>
-                            <div class = "col-4 text-right">
-                              <a (click)="employeeDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
-                            </div>
-                            <div class="col-12">
-                              <div class="form-check" *ngIf="value.name !== 'Remote'">
-                                <label class="form-check-label">
-                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
-                                </label>
-                              </div>
-
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                      <div class = "invalid-feedback d-inline"  *ngIf="checkValidation(employee.selectedLocation)">
-                        {{employment_location_log}}
-                      </div>
-                      <div class="invalid-feedback d-inline" *ngIf="display_error && display_error === 'employment_location_error' && remote_location_log">
-                        {{remote_location_log}}
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Role:</label>
-                  <div class="checkbox">
-                    <div class="row m-0">
-                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" [checked]="populateRoles(position_option.value, employee.roles) === true" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
-                          {{position_option.name}}
-                        </label>
-                      </div>
-                      <div class="invalid-feedback d-inline" *ngIf="!employee.roles">
-                        {{employee_roles_log}}
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Expected annual salary:</label>
-                  <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" 10000" [(ngModel)]="employee.expected_annual_salary">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.expected_annual_salary; else expected_validation">
-                    {{salary_log}}
-                  </div>
-                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="expect_salary.errors && employee.expected_annual_salary">
-                    Yearly expected base salary should be a number.
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="invisible">Expected annual salary currency</label>
-                  <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
-                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
-                    {{currency_log}}
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Availability:</label>
-
-                  <select title="(select one)" [(ngModel)]="employee.employment_availability" class="selectpicker" id="month" required name="availability_day" >
-                    <option class='option' *ngFor='let month of employement_availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.employment_availability">
-                    {{avail_log}}
-                  </div>
-
-                </div>
-              </div>
+              <app-i-forme-employee [employee]="employee"></app-i-forme-employee>
             </div>
+
             <hr *ngIf = "contractorCheck" />
             <div class="row mt-2" *ngIf="contractorCheck" >
               <div class="col-md-12">
                 <h4>Contractor</h4>
               </div>
-              <app-i-forme-contractor [contractor]="contractor" class="w-100"></app-i-forme-contractor>
-
+              <app-i-forme-contractor [contractor]="contractor" ></app-i-forme-contractor>
             </div>
-            <hr *ngIf="volunteerCheck" />
 
+            <hr *ngIf="volunteerCheck" />
             <div class="row mt-2" *ngIf="volunteerCheck" >
               <div class="col-md-12">
                 <h4>Volunteer</h4>
               </div>
-
               <app-i-forme-volunteer [volunteer]="volunteer" ></app-i-forme-volunteer>
             </div>
 
-
           </section>
-          <!--&lt;!&ndash;job information form end here&ndash;&gt;-->
+          <!--job information form end here-->
 
-          <!--&lt;!&ndash;resume job form start here&ndash;&gt;-->
+          <!--resume job form start here-->
           <!--<section class="border rounded bg-white mt-4 py-3 px-5" id="resume_candidate">-->
             <!--<div class="row">-->
               <!--<div class="col-md-6">-->

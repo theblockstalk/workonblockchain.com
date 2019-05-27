@@ -62,6 +62,7 @@ import { RoleComponent } from './L1-items/candidate/role/role.component';
 import { VolunteerComponent } from './L1-items/candidate/volunteer/volunteer.component';
 import { LocationsComponent } from './L1-items/candidate/locations/locations.component';
 import { ContractorComponent } from './L1-items/candidate/contractor/contractor.component';
+import { EmployeeComponent} from './L1-items/candidate/employee/employee.component';
 
 @NgModule({
   imports: [
@@ -79,7 +80,8 @@ import { ContractorComponent } from './L1-items/candidate/contractor/contractor.
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
+    EmployeeComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -93,7 +95,8 @@ import { ContractorComponent } from './L1-items/candidate/contractor/contractor.
     PersonalWebsiteUrlComponent, StackoverflowUrlComponent, ProfilePicComponent, CountryComponent, CityComponent,
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
-    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent
+    DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
+    EmployeeComponent
   ]
 })
 export class SharedModule { }
