@@ -125,8 +125,7 @@ export class UserService {
   }
 
   getByRefrenceCode(code: string){
-
-    return this.http.post(URL+'users/get_refrence_code', {code:code} )
+    return this.http.get(URL+'v2/referral?ref_code='+code)
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -154,8 +153,8 @@ export class UserService {
   }
 
   getReferenceDetail(email: string){
-
-    return this.http.post(URL + 'users/get_refrence_detail',  {email:email},{
+    const isAdmin = true;
+    return this.http.get(URL+'v2/referral?email=' +email+'&admin='+isAdmin, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1010,7 +1009,7 @@ export class UserService {
 
   pages_content(info:any )
   {
-    return this.http.put(URL+'users/add_privacy_content/', info,  {
+    return this.http.post(URL+'v2/pages', {title:info.page_title, name:info.page_name, content: info.html_text}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1040,7 +1039,7 @@ export class UserService {
 
   get_page_content(title :string)
   {
-    return this.http.get(URL+'users/get_pages_content/'+ title);
+    return this.http.get(URL+'v2/pages?name='+ title);
 
   }
 
@@ -1194,7 +1193,7 @@ export class UserService {
   }
 
   add_new_pages_content(info:any ) {
-    return this.http.put(URL + 'users/add_terms_and_conditions_content/', info, {
+    return this.http.post(URL+'v2/pages', {title:info.page_title, name:info.page_name, content: info.html_text}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {
@@ -1266,7 +1265,7 @@ export class UserService {
   }
 
   getRefCode(email:any) {
-    return this.http.post(URL+'users/get_ref_code', {email:email} )
+    return this.http.get(URL+'v2/referral?email='+email)
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -1317,8 +1316,7 @@ export class UserService {
 
   //will be changed to new rest API call
   autoSuggestOptions(queryInput:any, country : boolean) {
-    let input = {'autosuggest' :queryInput , 'countries' : country };
-    return this.http.post(URL+'users/auto_suggest/'+{}, input ,{
+    return this.http.get(URL+'v2/locations?autosuggest='+queryInput+'&countries='+country, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

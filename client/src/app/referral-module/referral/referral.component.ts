@@ -84,7 +84,7 @@ export class ReferralComponent implements OnInit {
               this.authenticationService.getRefCode(data['email'])
                 .subscribe(
                   data => {
-                    this.ref_link = this.email_ref_link + data['url_token'];
+                    this.ref_link = this.email_ref_link + data['referral']['url_token'];
                     this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nCompanies looking to hire are able to search and directly contact the professionals that they want through the platform! \n \nThanks, \nWork on Blockchain team!';
                     this.email_subject = this.first_name+this.email_subject;
                     this.share_url = this.ref_link;
@@ -114,7 +114,7 @@ export class ReferralComponent implements OnInit {
               this.authenticationService.getRefCode(data['_creator']['email'])
                 .subscribe(
                   refLink => {
-                    this.ref_link = this.email_ref_link + refLink['url_token'];
+                    this.ref_link = this.email_ref_link + refLink['referral']['url_token'];
                     this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nCompanies looking to hire are able to search and directly contact the professionals that they want through the platform! \n \nThanks, \nWork on Blockchain team!';
                     this.email_subject = this.first_name+this.email_subject;
                     this.share_url = this.ref_link;
@@ -181,7 +181,7 @@ export class ReferralComponent implements OnInit {
       .subscribe(
         data => {
           if(data) {
-            this.ref_link_for_not_logged_user = this.email_ref_link + data['url_token'];
+            this.ref_link_for_not_logged_user = this.email_ref_link + data['referral']['url_token'];
             this.share_url = this.ref_link_for_not_logged_user;
             this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
             window.scrollTo(0, 180);

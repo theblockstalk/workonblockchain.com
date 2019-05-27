@@ -56,38 +56,33 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
-        if (req.auth) {
+        if ((req.query.admin === 'true' || req.query.admin === true)  && req.auth.user.is_admin === 1) {
             const userId = req.auth.user;
-
-            if (userId.is_admin === 1) {
-                const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
-                if (refDoc) {
-                    const userDoc = await users.findOneByEmail(refDoc.email);
-                    if (userDoc) {
-                        if (userDoc.type === 'candidate') {
-                            res.send({
-                                candidateDoc: userDoc
-                            });
-
-                        }
-                        if (userDoc.type === 'company') {
-                            const employerDoc = await employerProfile.findOne({_creator: userDoc._id});
-
-                            res.send({
-                                companyDoc: employerDoc,
-                            });
-                        }
-                    }
-                    else {
+            const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
+            if (refDoc) {
+                const userDoc = await users.findOneByEmail(refDoc.email);
+                if (userDoc) {
+                    if (userDoc.type === 'candidate') {
                         res.send({
-                            referral: refDoc
+                            candidateDoc: userDoc
+                        });
+
+                    }
+                    if (userDoc.type === 'company') {
+                        const employerDoc = await employerProfile.findOne({_creator: userDoc._id});
+
+                        res.send({
+                            companyDoc: employerDoc,
                         });
                     }
                 }
-                else errors.throwError("Referral doc not found", 404);
-
+                else {
+                    res.send({
+                        referral: refDoc
+                    });
+                }
             }
-            else errors.throwError("User is not authorized to access this detail", 401);
+            else errors.throwError("Referral doc not found", 404);
         }
         else {
             if(req.query.email) {

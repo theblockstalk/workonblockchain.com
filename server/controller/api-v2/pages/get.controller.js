@@ -1,4 +1,3 @@
-const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const errors = require('../../services/errors');
 const enumerations = require('../../../model/enumerations');
@@ -16,10 +15,6 @@ const querySchema = new Schema({
 module.exports.inputValidation = {
     query: querySchema
 };
-
-module.exports.auth = async function (req) {
-    await auth.isValidUser(req);
-}
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.query;
