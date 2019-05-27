@@ -21,26 +21,36 @@ module.exports.inputValidation = {
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
 
-    if (req.query.admin) {
-        await auth.isAdmin(req);
-    }
+    if (req.query.admin === true || req.query.admin === 'true') await auth.isAdmin(req);
 }
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    if (req.query.admin || req.auth.user.type === 'company') userId = req.query.user_id;
-    else userId = req.auth.user._id;
-
-    const userDoc = await users.findByIdAndPopulate(userId);
-    if(userDoc) {
-        let password = true;
-        if (!userDoc.password_hash) password = false;
-        const filterData = filterReturnData.removeSensativeData(userDoc);
-        filterData.password = password;
-        //if(req.auth.user.type === 'company') res.send(await filterReturnData.candidateAsCompany(userDoc, userId)); will do later
-        res.send(filterData);
+    if ((req.query.admin === true || req.query.admin === 'true') || req.auth.user.type === 'company') {
+        userId = req.query.user_id;
+        const userDoc = await users.findByIdAndPopulate(userId);
+        if(userDoc) {
+            let password = true;
+            if (!userDoc.password_hash) password = false;
+            const filterData = filterReturnData.removeSensativeData(userDoc);
+            filterData.password = password;
+            //if(req.auth.user.type === 'company') res.send(await filterReturnData.candidateAsCompany(userDoc, userId)); will do later
+            res.send(filterData);
+        }
+        else {
+            errors.throwError("User not found", 404);
+        }
     }
     else {
-        errors.throwError("User not found", 404);
+        userId = req.auth.user._id;
+
+        const candidateDoc = await users.findByIdAndPopulate(req.query.user_id);
+        if(candidateDoc ) {
+            const filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
+            res.send(filterData);
+        }
+        else {
+            errors.throwError("Candidate account not found", 404);
+        }
     }
 }

@@ -1346,7 +1346,7 @@ export class UserService {
 
   get_users_statistics()
   {
-    return this.http.get(URL+'users/statistics');
+    return this.http.get(URL+'v2/statistics');
 
   }
 

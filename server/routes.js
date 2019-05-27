@@ -55,7 +55,7 @@ router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword))
 router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword)); //will be deleted
 router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword)); //will be deleted
 router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient)); //will be deleted
-router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
+router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout)); //will be deleted
 
 // Referrals
 router.post('/users/send_refreal',auth.isLoggedIn, asyncMiddleware(refReferral));
@@ -75,7 +75,7 @@ router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(compan
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter)); // will be deleted
 router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates)); // will be deleted
-router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
+router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail)); // will be deleted
 
 // Chat
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));

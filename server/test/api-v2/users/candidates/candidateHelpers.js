@@ -75,3 +75,11 @@ const companyFilter = module.exports.companyFilter = async function companyFilte
         .send(filterData)
     return res;
 }
+
+const getVerifiedCandidateDetail = module.exports.getVerifiedCandidateDetail = async function getVerifiedCandidateDetail(userId,jwtToken){
+    const res = await chai.request(server)
+        .get('/v2/users/candidates?user_id='+userId)
+        .set('Authorization', jwtToken);
+    res.should.have.status(200);
+    return res;
+}
