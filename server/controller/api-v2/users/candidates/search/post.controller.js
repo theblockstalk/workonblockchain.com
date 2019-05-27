@@ -45,6 +45,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     if(req.query.is_admin === 'true' || req.query.is_admin === true) await auth.isAdmin(req);
+    else await auth.isValidCompany(req);
 }
 
 const filterData = async function filterData(candidateDetail) {
@@ -92,7 +93,26 @@ module.exports.endpoint = async function (req, res) {
             }
         }
     }
-    else {
-        errors.throwError("Authentication failed", 400);
+    if(req.auth.user.type === 'company'){
+        console.log('comp is calling');
+        let userId = req.auth.user._id;
+
+        const candidateDocs = await candidateSearch.candidateSearch({
+            is_verify: 1,
+            status: 'approved',
+            disable_account: false
+        }, {});
+        let filterArray = [];
+        for(let candidateDetail of candidateDocs.candidates) {
+            const filterDataRes = await filterData(candidateDetail , userId);
+            filterArray.push(filterDataRes);
+        }
+
+        if(filterArray.length > 0) {
+            res.send(filterArray);
+        }
+        else {
+            errors.throwError("No candidates matched the search", 404);
+        }
     }
 }

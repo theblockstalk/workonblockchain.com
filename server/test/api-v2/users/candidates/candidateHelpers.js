@@ -58,3 +58,12 @@ const candidateFilter = module.exports.candidateFilter = async function candidat
     res.should.have.status(200);
     return res;
 }
+
+const verifiedCandidate = module.exports.verifiedCandidate = async function verifiedCandidate(jwtToken){
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search')
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}

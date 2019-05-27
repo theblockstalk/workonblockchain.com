@@ -11,6 +11,7 @@ const messagesHelpers = require('../../../../../test/api-v2/helpers');
 const companiesHelperV2 = require('../../../../api-v2/users/companies/companyHelpers');
 const candidateHelperV2 = require('../../../../api-v2/users/candidates/candidateHelpers');
 const messages = require('../../../../../model/mongoose/messages');
+const companyHelper = require('../../../../../../server/test/api/users/company/companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -88,6 +89,27 @@ describe('get all users', function () {
             candidateUserDoc.candidate.history[0].status.status.should.equal('approved');
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
 
+        })
+    });
+
+    describe('POST /v2/users/candidates/search?all_cand', () => {
+
+        it('it should return verified candidate', async () => {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            let userDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.verifiedCandidate(userDoc.jwt_token);
+            filterRes.body[0].is_verify.should.equal(1);
+            filterRes.body[0].disable_account.should.equal(false);
+            filterRes.body[0].type.should.equal("candidate");
         })
     })
 });
