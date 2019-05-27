@@ -30,7 +30,7 @@ import { FirstNameComponent } from './L1-items/users/first-name/first-name.compo
 import { WorkHistoryComponent } from './L1-items/work-history/work-history.component';
 import { CandidateEditComponent } from './L2-pages/candidate-edit/candidate-edit.component';
 import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.component';
-import { BioComponent } from './L1-items/users/bio/bio.component';
+import { BioComponent } from './L1-items/candidate/bio/bio.component';
 import { ContactNumberComponent } from './L1-items/users/contact-number/contact-number.component';
 import { EmailAddressComponent } from './L1-items/users/email-address/email-address.component';
 import { GithubUrlComponent } from './L1-items/candidate/github-url/github-url.component';
@@ -63,6 +63,13 @@ import { VolunteerComponent } from './L1-items/candidate/volunteer/volunteer.com
 import { LocationsComponent } from './L1-items/candidate/locations/locations.component';
 import { ContractorComponent } from './L1-items/candidate/contractor/contractor.component';
 import { EmployeeComponent} from './L1-items/candidate/employee/employee.component';
+import {WhyWorkComponent} from './L1-items/candidate/why-work/why-work.component';
+import { InterestsComponent } from './L1-items/candidate/interests/interests.component';
+import { CommercialExperienceComponent } from './L1-items/candidate/commercial-experience/commercial-experience.component';
+import { LogosItemsComponent } from './L0-components/icons/blockchain-technologies/logos-items.component';
+import { YearOfExperienceComponent } from './L1-items/candidate/year-of-experience/year-of-experience.component';
+import { ExperimentedWithComponent } from './L1-items/candidate/experimented-with/experimented-with.component';
+import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skills/commercial-skills.component';
 
 @NgModule({
   imports: [
@@ -81,7 +88,8 @@ import { EmployeeComponent} from './L1-items/candidate/employee/employee.compone
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
-    EmployeeComponent
+    EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
+    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -96,7 +104,8 @@ import { EmployeeComponent} from './L1-items/candidate/employee/employee.compone
     CurrentSalaryComponent, ToggleSwitchComponent, DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent,
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
-    EmployeeComponent
+    EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
+    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent
   ]
 })
 export class SharedModule { }

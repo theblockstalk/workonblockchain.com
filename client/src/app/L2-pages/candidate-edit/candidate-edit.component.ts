@@ -13,7 +13,7 @@ import { StackoverflowUrlComponent } from '../../L1-items/candidate/stackoverflo
 import { PersonalWebsiteUrlComponent } from '../../L1-items/candidate/personal-website-url/personal-website-url.component';
 import { NationalityComponent } from '../../L1-items/users/nationality/nationality.component';
 import { ProfilePicComponent } from '../../L1-items/users/profile-pic/profile-pic.component';
-import { BioComponent } from '../../L1-items/users/bio/bio.component';
+import { BioComponent } from '../../L1-items/candidate/bio/bio.component';
 import { CountryComponent } from '../../L1-items/users/country/country.component';
 import { CityComponent} from '../../L1-items/users/city/city.component';
 import { CurrentSalaryComponent } from '../../L1-items/candidate/current-salary/current-salary.component';
@@ -21,6 +21,11 @@ import { WorkTypesComponent } from '../../L1-items/candidate/work-types/work-typ
 import {ContractorComponent} from '../../L1-items/candidate/contractor/contractor.component';
 import { VolunteerComponent } from '../../L1-items/candidate/volunteer/volunteer.component';
 import {EmployeeComponent} from '../../L1-items/candidate/employee/employee.component';
+import { WhyWorkComponent } from '../../L1-items/candidate/why-work/why-work.component';
+import { InterestsComponent } from '../../L1-items/candidate/interests/interests.component';
+import { CommercialExperienceComponent } from '../../L1-items/candidate/commercial-experience/commercial-experience.component';
+import { ExperimentedWithComponent } from '../../L1-items/candidate/experimented-with/experimented-with.component';
+import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-skills/commercial-skills.component';
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
   selector: 'app-p-candidate-edit',
@@ -48,6 +53,11 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(VolunteerComponent) volunteerType: VolunteerComponent;
   @ViewChild(ContractorComponent) contractorType: ContractorComponent;
   @ViewChild(EmployeeComponent) employeeType: EmployeeComponent;
+  @ViewChild(WhyWorkComponent) whyWork: WhyWorkComponent;
+  @ViewChild(InterestsComponent) interestType: InterestsComponent;
+  @ViewChild(CommercialExperienceComponent) commercialExp: CommercialExperienceComponent;
+  @ViewChild(ExperimentedWithComponent) experimentedWith: ExperimentedWithComponent;
+  @ViewChild(CommercialSkillsComponent) commercialSkills: CommercialSkillsComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -75,6 +85,14 @@ export class CandidateEditComponent implements OnInit {
   contractor: any = {};
   volunteer: any = {};
   employee: any = {};
+  why_work;
+  interest_areas;
+  commercial_platforms: any = {};
+  description_commercial_platforms;
+  experimented_platforms = [];
+  description_experimented_platforms;
+  commercial_skills= [];
+  description_commercial_skills;
   work_history;
   constructor() { }
 
@@ -111,6 +129,23 @@ export class CandidateEditComponent implements OnInit {
       this.work_types.push('volunteer');
       this.volunteer = this.userDoc['candidate'].volunteer;
     }
+    this.why_work = this.userDoc['candidate'].why_work;
+    this.interest_areas = this.userDoc['candidate'].interest_areas;
+    if(this.userDoc['candidate'] && this.userDoc['candidate'].blockchain) {
+      if(this.userDoc['candidate'].blockchain.commercial_platforms) {
+        this.commercial_platforms = this.userDoc['candidate'].blockchain.commercial_platforms;
+        this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
+      }
+      if(this.userDoc['candidate'].blockchain.experimented_platforms) {
+        this.experimented_platforms = this.userDoc['candidate'].blockchain.experimented_platforms;
+        this.description_experimented_platforms = this.userDoc['candidate'].blockchain.description_experimented_platforms;
+      }
+      if(this.userDoc['candidate'].blockchain.commercial_skills) {
+        this.commercial_skills = this.userDoc['candidate'].blockchain.commercial_skills;
+        this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
+      }
+
+    }
     this.work_history = this.userDoc['candidate'].work_history;
   }
 
@@ -119,64 +154,110 @@ export class CandidateEditComponent implements OnInit {
     let errorCount = 0;
     let queryBody : any = {};
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.lastName.selfValidate()) queryBody.last_name = this.lastName.last_name;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.contactNumber.selfValidateCode() && this.contactNumber.selfValidateNumber()) queryBody.contact_number = this.contactNumber.contact_number;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.githubUrl.selfValidate()) {
       if(this.githubUrl.github_account) queryBody.github_account = this.githubUrl.github_account;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.stackexchangeUrl.selfValidate()) {
       if(this.stackexchangeUrl.stackexchange_account) queryBody.stackexchange_account = this.stackexchangeUrl.stackexchange_account;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.linkedinUrl.selfValidate()) {
       if(this.linkedinUrl.linkedin_account) queryBody.linkedin_account = this.linkedinUrl.linkedin_account;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.mediumUrl.selfValidate()) {
       if(this.mediumUrl.medium_account) queryBody.medium_account = this.mediumUrl.medium_account;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.stackoverflowUrl.selfValidate()) {
       if(this.stackoverflowUrl.stackoverflow_url) queryBody.stackoverflow_url = this.stackoverflowUrl.stackoverflow_url;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.personalWebsiteUrl.selfValidate()) {
       if(this.personalWebsiteUrl.personal_website_url) queryBody.personal_website_url = this.personalWebsiteUrl.personal_website_url;
     }
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.nationalities.selfValidate()) queryBody.nationality = this.nationalities.nationality;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.bioDescription.selfValidate()) queryBody.description = this.bioDescription.description;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.baseCountry.selfValidate()) queryBody.base_country = this.baseCountry.country;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
     if(this.baseCity.selfValidate()) queryBody.base_city = this.baseCity.city;
-    else errorCount++;
+    else {
+      console.log("why work9");
+      errorCount++;
+    }
 
-    if(this.currentSalary.selfValidate() && this.currentSalary.current_salary && this.currentSalary.current_currency) {
-      queryBody.current_currency = this.currentSalary.current_currency;
-      queryBody.current_salary = this.currentSalary.current_salary;
+    if(this.currentSalary.selfValidate()) {
+      if(this.currentSalary.current_salary && this.currentSalary.current_currency) {
+        queryBody.current_currency = this.currentSalary.current_currency;
+        queryBody.current_salary = this.currentSalary.current_salary;
+      }
     }
     else errorCount++;
 
+
     if(this.workTypes.selfValidate()) this.checkWorkType();
-    else errorCount++;
+    else {
+      console.log("why work9");
+
+      errorCount++;
+    }
 
     if(this.volunteerCheck) {
       if(this.volunteerType.selfValidate()) {
@@ -197,23 +278,76 @@ export class CandidateEditComponent implements OnInit {
         console.log("ifffffffffffff")
         queryBody.vounteer = this.volunteerType.volunteer;
       }
-      else errorCount++;
+      else {
+        console.log("why work9");
+
+        errorCount++;
+      }
     }
 
 
     if( this.contractorCheck) {
       if(this.contractorType.selfValidate()) {
+
         queryBody.contractor = this.contractorType.contractor;
       }
-      else errorCount++;
+      else {
+        console.log("why work7");
+
+        errorCount++;
+      }
     }
 
     if(this.employeeCheck) {
       if(this.employeeType.selfValidate()) {
         queryBody.employee = this.employeeType.employee;
       }
+      else {
+        console.log("why work8");
+
+        errorCount++;
+      }
+    }
+    if(this.whyWork.selfValidate()) queryBody.why_work = this.whyWork.why_work;
+    else {
+      console.log("why work");
+      errorCount++;
+    }
+
+    if(this.interestType.selfValidate()) queryBody.interest_areas = this.interestType.interest_areas;
+    else {
+      console.log("why work1");
+
+      errorCount++;
+    }
+
+    if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
+      if(this.commercialExp.selfValidate()) {
+        queryBody.commercial_platforms = this.commercialExp.commercial_platforms;
+        queryBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
+      }
+      else {
+        console.log("why work2");
+
+        errorCount++;
+      }
+    }
+    if(this.experimentedWith.experimented_platforms && this.experimentedWith.experimented_platforms.length > 0) {
+      if(this.experimentedWith.selfValidate()) {
+        queryBody.experimented_platforms = this.experimentedWith.experimented_platforms;
+        queryBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
+      }
       else errorCount++;
     }
+
+    if(this.commercialSkills.commercial_skills && this.commercialSkills.commercial_skills.length >0){
+      if(this.commercialSkills.selfValidate()) {
+        queryBody.commercial_skills = this.commercialSkills.commercial_skills;
+        queryBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
+      }
+      else errorCount++;
+    }
+
 
 
     console.log(errorCount);

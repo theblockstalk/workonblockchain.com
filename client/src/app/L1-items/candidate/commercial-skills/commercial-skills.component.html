@@ -1,0 +1,42 @@
+<!-- commercial skills -->
+<div class="row">
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="otherSkills"
+      label="Commercial experience (optional)"
+      (selectedItem)="oncommerciallyOptions($event)"
+      column="col-md-3 mb-3"
+      [value]="platform"
+    ></app-c-forme-checkbox>
+  </div>
+</div>
+<div class="row" *ngIf="platform?.length > 0">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Years of experience</label>
+    </div>
+  </div>
+  <div class = "col-md-12">
+    <app-c-forme-button-group *ngFor = "let obj of commercial_skills"
+      [value]="obj" [label]="obj.skill"
+      (selectedValue)="selectedPlatform($event)"
+      [options]="experienceYears"
+      [errorMsg]="yearErrMsg"
+      (change)="yearValidate()"
+    ></app-c-forme-button-group>
+  </div>
+</div>
+<!-- description for commercial skills -->
+<div class="row" *ngIf="platform?.length > 0">
+  <div class="col-md-12">
+    <app-c-forme-text-area
+      rows="5"
+      placeholder=""
+      label="Description of commercial experience"
+      [value]="description_commercial_skills"
+      [errorMsg]="desErrMsg"
+      (textareaInput)="description_commercial_skills = $event"
+      (change)="desValidate()"
+    ></app-c-forme-text-area>
+  </div>
+</div>

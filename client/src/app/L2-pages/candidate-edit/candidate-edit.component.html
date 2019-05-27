@@ -137,198 +137,43 @@
           <!--job information form end here-->
 
           <!--resume job form start here-->
-          <!--<section class="border rounded bg-white mt-4 py-3 px-5" id="resume_candidate">-->
-            <!--<div class="row">-->
-              <!--<div class="col-md-6">-->
-                <!--<h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row mt-4">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Why do you want to work on blockchain?</label>-->
-                  <!--<ul>-->
-                    <!--<li> Let companies know what excites you about this space. </li>-->
-                    <!--<li> This is the first field that a company sees! </li>-->
-                  <!--</ul>-->
-                  <!--<input type="text" class="form-control" required placeholder="I want to work on blockchain because ..."  #whywork name="why_work" [(ngModel)]="why_work">-->
-                  <!--<div class = "invalid-feedback d-inline" *ngIf="!why_work">-->
-                    <!--{{why_work_log}}-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+          <section class="border rounded bg-white mt-4 py-3 px-5" id="resume_candidate">
+            <div class="row">
+              <div class="col-md-6">
+                <h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <app-i-forme-why-work [why_work]="why_work"></app-i-forme-why-work>
+              </div>
+            </div>
 
-            <!--<div class="row">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Interests</label>-->
-                  <!--<div class="checkbox">-->
-                    <!--<div class="row m-0">-->
-                      <!--<div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">-->
-                        <!--<label class="form-check-label">-->
-                          <!--<input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />-->
-                          <!--{{position_option.name}}-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">-->
-                  <!--<div class = "invalid-feedback d-inline"  *ngIf="selectedValue && selectedValue.length <=0">-->
-                    <!--{{interest_log}}-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
+            <div class="row">
+              <div class="col-md-12">
+                <app-i-forme-interests [interest_areas]="interest_areas"></app-i-forme-interests>
+              </div>
+            </div>
 
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Technologies</h4>
+              </div>
+            </div>
 
-            <!--<div class="row">-->
-              <!--<div class="col-md-12">-->
-                <!--<h4>Technologies</h4>-->
-                <!--<div class="form-group mt-4">-->
-                  <!--<label>Commercial experience</label>-->
-                  <!--<div class="checkbox">-->
-                    <!--<div class="row m-0">-->
-                      <!--<div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">-->
-                        <!--<label class="form-check-label">-->
-                          <!--<input type="checkbox" class="form-check-input"  value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />-->
-                          <!--<img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">-->
-                          <!--{{option.name}}-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" [(ngModel)]='commercially_worked' name="commercially_worked" >-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row" *ngIf="commercially_worked?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Years of experience</label>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "col-md-12" *ngFor="let option of commercially_worked; let i = index ">-->
-                <!--<p>{{option.value}}</p>-->
-                <!--<div class = "form-group">-->
-                  <!--<div class="form-check form-check-inline">-->
-                    <!--<div *ngFor="let exp of exp_year; let i_ind =index">-->
-                      <!--<input type="radio" class="d-none" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >-->
-                      <!--<label  for="rg{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">-->
-                        <!--{{exp.name}}-->
-                      <!--</label>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" name="commercial_platforms" [(ngModel)]='commercial_expYear' >-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "invalid-feedback d-inline ml-3" *ngIf="commercially_worked.length !== commercial_expYear.length">-->
-                <!--{{commercial_log}}-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; description for commercial exp &ndash;&gt;-->
-            <!--<div class="row" *ngIf="commercially_worked?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Description of experience</label>-->
-                  <!--<text-area rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </text-area>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && !description_commercial_platforms">-->
-              <!--{{commercial_desc_log}}-->
-            <!--</div>-->
+            <app-i-forme-commercial-experience [commercial_platforms]="commercial_platforms" [description_commercial_platforms]="description_commercial_platforms"></app-i-forme-commercial-experience>
+            <app-i-forme-experimented-with [experimented_platforms]="experimented_platforms" [description_experimented_platforms]="description_experimented_platforms"></app-i-forme-experimented-with>
 
-            <!--<div class="row">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Experimented with </label>-->
-                  <!--<div class="checkbox">-->
-                    <!--<div class="row m-0">-->
-                      <!--<div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">-->
-                        <!--<label class="form-check-label">-->
-                          <!--<input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions($event)" required  />-->
-                          <!--<img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">-->
-                          <!--{{option.value}}-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" [(ngModel)]='experimented_platform' name="experimented_platforms">-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; description for experimented with &ndash;&gt;-->
-            <!--<div class="row" *ngIf="experimented_platform?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Description of experimentation</label>-->
-                  <!--<text-area rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </text-area>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && !description_experimented_platforms">-->
-              <!--{{experimented_desc_log}}-->
-            <!--</div>-->
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Skills</h4>
+              </div>
+            </div>
 
-            <!--&lt;!&ndash; commercial skills &ndash;&gt;-->
-            <!--<div class="row">-->
-              <!--<div class="col-md-12">-->
-                <!--<h4>Skills</h4>-->
-                <!--<div class="form-group">-->
-                  <!--<label>Commercial experience (optional) </label>-->
-                  <!--<div class="checkbox">-->
-                    <!--<div class="row m-0">-->
-                      <!--<div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">-->
-                        <!--<label class="form-check-label">-->
-                          <!--<input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />-->
-                          <!--{{option.name}}-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" [(ngModel)]='commercialSkills' name="commercial_skills_name" >-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row" *ngIf="commercialSkills?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Years of experience</label>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "col-md-12" *ngFor="let option of commercialSkills; let i = index ">-->
-                <!--<p>{{option.value}}</p>-->
-                <!--<div class = "form-group">-->
-                  <!--<div class="form-check form-check-inline">-->
-                    <!--<div *ngFor="let exp of exp_year; let i_ind =index">-->
-                      <!--<input type="radio" class="d-none" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">-->
-                      <!--<label  for="skill{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">-->
-                        <!--{{exp.name}}-->
-                      <!--</label>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear'>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "invalid-feedback d-inline ml-3" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">-->
-                <!--{{commercial_skill_log}}-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; description for commercial skills &ndash;&gt;-->
-            <!--<div class="row" *ngIf="commercialSkills?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Description of commercial experience</label>-->
-                  <!--<text-area rows="4" maxlength="3000" cols="100" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </text-area>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && !description_commercial_skills">-->
-              <!--{{commercialSkills_desc_log}}-->
-            <!--</div>-->
-          <!--</section>-->
-          <!--&lt;!&ndash;resume job form end here&ndash;&gt;-->
+            <app-i-forme-commercial-skills [commercial_skills]="commercial_skills" [description_commercial_skills]="description_commercial_skills"></app-i-forme-commercial-skills>
+
+          </section>
+          <!--resume job form end here-->
 
           <!--&lt;!&ndash;experience form start here&ndash;&gt;-->
           <!--<section class="border rounded bg-white mt-4 py-3 px-5" id="experience_candidate">-->

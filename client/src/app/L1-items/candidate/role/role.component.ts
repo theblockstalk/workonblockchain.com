@@ -16,22 +16,19 @@ export class RoleComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("roless");
-    console.log(this.roles);
-    this.selectedRole = this.roles;
     this.options = unCheckCheckboxes(this.options);
   }
 
   selfValidate() {
-    if(!this.selectedRole) {
+    if(!this.roles) {
       this.errMsg = "Please select atleast one role";
       return false;
     }
-    if(this.selectedRole && this.selectedRole.length <= 0) {
+    if(this.roles && this.roles.length <= 0) {
       this.errMsg = "Please select atleast one role";
       return false;
     }
-    this.selectedItems.emit(this.selectedRole);
+    this.selectedItems.emit(this.roles);
     delete this.errMsg;
     return true;
   }

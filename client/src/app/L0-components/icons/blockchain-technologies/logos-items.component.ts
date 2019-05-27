@@ -15,7 +15,7 @@ export class LogosItemsComponent implements OnInit {
   ngOnInit() {
     this.srcUrl = '/assets/images/all_icons/blockchain/' + this.value + '.png';
     this.altText = this.value;
-    this.displayText = this.value;
+    // this.displayText = this.value;
 
   }
 

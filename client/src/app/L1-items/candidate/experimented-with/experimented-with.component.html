@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="experimented"
+      label="Experimented with"
+      (selectedItem)="experimented_platforms = $event"
+      column="col-md-3 mb-3"
+      [value]="experimented_platforms"
+      icon="true"
+    ></app-c-forme-checkbox>
+  </div>
+</div>
+<!-- description for experimented with -->
+<div class="row" *ngIf="experimented?.length > 0">
+  <div class="col-md-12">
+    <app-c-forme-text-area
+      rows="5"
+      placeholder=""
+      label="Description of experimentation"
+      [value]="description_experimented_platforms"
+      [errorMsg]="errMsg"
+      (textareaInput)="description_experimented_platforms = $event"
+      (change)="selfValidate()"
+    ></app-c-forme-text-area>
+  </div>
+</div>

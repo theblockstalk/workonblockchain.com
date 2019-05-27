@@ -13,6 +13,7 @@ export class CheckboxComponent implements OnInit {
   @Input() value;
   @Input() iconClass: string; //for work types
   @Input() column: string //"3", "4"
+  @Input() icon: boolean; // for blockchain listing
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   selectedOptions = [];
   constructor() { }
@@ -22,7 +23,7 @@ export class CheckboxComponent implements OnInit {
     if(this.value) {
         this.selectedOptions = this.value;
     }
-    console.log(this.selectedOptions);
+    console.log(this.selectedOptions)
   }
 
   selectedValues(event) {
@@ -39,8 +40,10 @@ export class CheckboxComponent implements OnInit {
   }
 
   selectedCheckboxes(value) {
-    if(this.selectedOptions.find(x => x === value)) return true;
-    return false;
+    if(this.selectedOptions && this.selectedOptions.length > 0) {
+      if(this.selectedOptions.find(x => x === value)) return true;
+      else return false;
+    }
   }
 
 }

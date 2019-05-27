@@ -11,6 +11,7 @@ export class TextInputComponent implements OnInit {
   @Input() value: string;
   @Input() errorMsg: string;
   @Input() disabled: boolean;
+  @Input() field_description: string; //optional
   @Output() textInputValue: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 

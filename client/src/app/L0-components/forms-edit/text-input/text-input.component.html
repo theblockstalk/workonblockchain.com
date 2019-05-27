@@ -1,5 +1,6 @@
 <div class="form-group">
   <label [ngClass]="!label?'invisible':''">{{label}}</label>
+  <div [innerHTML] = " field_description | safeHtml " *ngIf="field_description"></div>
   <input
     type="text"
     class="form-control"

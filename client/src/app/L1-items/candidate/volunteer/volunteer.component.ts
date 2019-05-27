@@ -19,12 +19,9 @@ export class VolunteerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("volunteer");
-    console.log(this.volunteer);
     for(let i =5; i<=60; i=i+5) {
       this.max_hours.push(i);
     }
-
   }
 
   selfValidate() {

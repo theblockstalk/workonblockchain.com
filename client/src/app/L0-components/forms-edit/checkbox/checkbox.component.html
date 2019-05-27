@@ -6,6 +6,7 @@
       <div class="form-check" >
         <label class="form-check-label">
           <input type="checkbox" class="form-check-input" [checked]= "selectedCheckboxes(opt.value)" [value]="opt.value" (change)="selectedValues($event)" />
+          <app-c-icon-block-tech [value]="opt.value" *ngIf="icon"></app-c-icon-block-tech>
           {{opt.name}}
         </label>
       </div>
