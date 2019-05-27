@@ -27,7 +27,6 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     if(req.query.ref_code){
-        console.log('code is here');
         let discount;
         let outputParams = {};
         const refDoc = await mongooseReferral.findOne({
@@ -58,7 +57,6 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         if (req.auth) {
-            console.log('some user is calling');
             const userId = req.auth.user;
 
             if (userId.is_admin === 1) {
@@ -82,7 +80,7 @@ module.exports.endpoint = async function (req, res) {
                     }
                     else {
                         res.send({
-                            refDoc: refDoc
+                            referral: refDoc
                         });
                     }
                 }
@@ -93,12 +91,12 @@ module.exports.endpoint = async function (req, res) {
         }
         else {
             if(req.query.email) {
-                console.log('in else');
                 const refDoc = await mongooseReferral.findOneByEmail(req.query.email);
-                console.log(refDoc);
 
                 if (refDoc) {
-                    res.send(refDoc);
+                    res.send({
+                        referral: refDoc
+                    });
                 }
                 else {
                     let token = crypto.getRandomString(10);
@@ -121,7 +119,9 @@ module.exports.endpoint = async function (req, res) {
                         url_token: token,
                         date_created: new Date(),
                     });
-                    res.send(newInsertDoc);
+                    res.send({
+                        referral: newInsertDoc
+                    });
                 }
             }
         }

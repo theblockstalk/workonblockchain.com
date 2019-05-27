@@ -77,10 +77,7 @@ module.exports.endpoint = async function (req, res) {
         }
         else {
             const pageData = await insertNewPage(queryBody.name, sanitizedHtml, queryBody.title,userId);
-            res.send({
-                success : true,
-                information : pageData
-            })
+            res.send(pageData);
         }
     }
 }
