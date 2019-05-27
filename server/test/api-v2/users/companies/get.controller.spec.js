@@ -17,7 +17,7 @@ describe('get current company detail', function () {
         await mongo.drop();
     })
 
-    describe('GET /v2/users/companies?user_id', () => {
+    describe('GET /v2/users/companies', () => {
 
         it('it should get only current company profile detail', async () => {
 
@@ -32,9 +32,6 @@ describe('get current company detail', function () {
             getCurrentCompany.body.last_name.should.equal(company.last_name);
 
         })
-    });
-
-    describe('GET /v2/users/companies?is_admin', () => {
 
         it('it should get all companies profile', async () => {
             const company = docGenerator.company();
