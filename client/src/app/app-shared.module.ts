@@ -27,7 +27,7 @@ import { TextInputComponent } from './L0-components/forms-edit/text-input/text-i
 import { TextAreaComponent } from './L0-components/forms-edit/text-area/text-area.component';
 import { RadioComponent } from './L0-components/forms-edit/radio/radio.component';
 import { FirstNameComponent } from './L1-items/users/first-name/first-name.component';
-import { WorkHistoryComponent } from './L1-items/work-history/work-history.component';
+import { WorkHistoryComponent } from './L1-items/candidate/work-history/work-history.component';
 import { CandidateEditComponent } from './L2-pages/candidate-edit/candidate-edit.component';
 import { CheckboxComponent } from './L0-components/forms-edit/checkbox/checkbox.component';
 import { BioComponent } from './L1-items/candidate/bio/bio.component';

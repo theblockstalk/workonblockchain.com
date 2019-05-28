@@ -27,7 +27,7 @@ import { CommercialExperienceComponent } from '../../L1-items/candidate/commerci
 import { ExperimentedWithComponent } from '../../L1-items/candidate/experimented-with/experimented-with.component';
 import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-skills/commercial-skills.component';
 import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
-import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
+import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work-history.component';
 @Component({
   selector: 'app-p-candidate-edit',
   templateUrl: './candidate-edit.component.html',
@@ -96,7 +96,7 @@ export class CandidateEditComponent implements OnInit {
   commercial_skills = [];
   description_commercial_skills;
   programming_languages = [];
-  work_history;
+  work_history = [];
   constructor() { }
 
   ngOnInit() {
@@ -152,7 +152,7 @@ export class CandidateEditComponent implements OnInit {
     if(this.userDoc['candidate'].programming_languages) {
       this.programming_languages = this.userDoc['candidate'].programming_languages;
     }
-    this.work_history = this.userDoc['candidate'].work_history;
+    if(this.userDoc['candidate'].work_history) this.work_history = this.userDoc['candidate'].work_history;
   }
 
   update_candidate_profile(){
