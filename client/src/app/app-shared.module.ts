@@ -70,6 +70,7 @@ import { LogosItemsComponent } from './L0-components/icons/blockchain-technologi
 import { YearOfExperienceComponent } from './L1-items/candidate/year-of-experience/year-of-experience.component';
 import { ExperimentedWithComponent } from './L1-items/candidate/experimented-with/experimented-with.component';
 import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skills/commercial-skills.component';
+import {LanguagesComponent} from './L1-items/candidate/languages/languages.component';
 
 @NgModule({
   imports: [
@@ -89,7 +90,7 @@ import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skill
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
-    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent
+    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent, LanguagesComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -105,7 +106,7 @@ import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skill
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
-    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent
+    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent, LanguagesComponent
   ]
 })
 export class SharedModule { }

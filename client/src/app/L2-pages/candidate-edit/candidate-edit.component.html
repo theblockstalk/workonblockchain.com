@@ -175,60 +175,17 @@
           </section>
           <!--resume job form end here-->
 
-          <!--&lt;!&ndash;experience form start here&ndash;&gt;-->
-          <!--<section class="border rounded bg-white mt-4 py-3 px-5" id="experience_candidate">-->
-            <!--<div class="row">-->
-              <!--<div class="col-md-12">-->
-                <!--<h2><i class="fas fa-briefcase"></i> Experience</h2>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row mt-4">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class = "form-group">-->
-                  <!--<label>Languages</label>-->
-                  <!--<div class="checkbox">-->
-                    <!--<div class="row m-0">-->
-                      <!--<div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">-->
-                        <!--<label class="form-check-label">-->
-                          <!--<input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onLangExpOptions(option)" required  />-->
-                          <!--{{option.name}}-->
-                        <!--</label>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "invalid-feedback d-inline" *ngIf="LangexpYear.length !==  language.length ">-->
-                      <!--{{lang_log}}-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" [(ngModel)]='language' name="language" >-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row" *ngIf="language?.length > 0">-->
-              <!--<div class="col-md-12">-->
-                <!--<div class="form-group">-->
-                  <!--<label>Years of experience</label>-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">-->
-                <!--<div class = "form-group">-->
-                  <!--<p>{{lang_value.value}}</p>-->
-                  <!--<div class="form-check form-check-inline">-->
-                    <!--<div *ngFor="let exp of exp_year; let i_ind =index">-->
-                      <!--<input type="radio" class="d-none" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >-->
-                      <!--<label  for="radiogrop{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">-->
-                        <!--{{exp.name}}-->
-                      <!--</label>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<input type="text" class="form-control d-none" name="language_experience_year" [(ngModel)]='LangexpYear' >-->
-                <!--</div>-->
-              <!--</div>-->
-              <!--<div class = "invalid-feedback d-inline ml-3" *ngIf="LangexpYear.length !== language.length ">-->
-                <!--{{exp_lang_log}}-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</section>-->
-          <!--&lt;!&ndash;experience form end here&ndash;&gt;-->
+          <!--experience form start here-->
+          <section class="border rounded bg-white mt-4 py-3 px-5" id="experience_candidate">
+            <div class="row">
+              <div class="col-md-12">
+                <h2><i class="fas fa-briefcase"></i> Experience</h2>
+              </div>
+            </div>
+            <app-i-forme-languages [programming_languages]="programming_languages"></app-i-forme-languages>
+
+          </section>
+          <!--experience form end here-->
 
           <!--<section class="border rounded bg-white mt-4 py-3 px-5" id="work_candidate">-->
             <!--<div class="row">-->

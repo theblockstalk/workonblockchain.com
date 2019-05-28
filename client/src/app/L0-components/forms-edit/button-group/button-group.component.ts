@@ -25,6 +25,7 @@ export class ButtonGroupComponent implements OnInit {
   selectedOption(item) {
     if(this.value['name'] === this.label && this.value['exp_year'] === item) return true;
     if(this.value['skill'] === this.label && this.value['exp_year'] === item) return true;
+    if(this.value['language'] === this.label && this.value['exp_year'] === item) return true;
     return false;
   }
 }

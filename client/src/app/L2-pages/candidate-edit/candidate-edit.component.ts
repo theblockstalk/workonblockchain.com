@@ -26,6 +26,7 @@ import { InterestsComponent } from '../../L1-items/candidate/interests/interests
 import { CommercialExperienceComponent } from '../../L1-items/candidate/commercial-experience/commercial-experience.component';
 import { ExperimentedWithComponent } from '../../L1-items/candidate/experimented-with/experimented-with.component';
 import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-skills/commercial-skills.component';
+import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
 import { WorkHistoryComponent } from '../../L1-items/work-history/work-history.component';
 @Component({
   selector: 'app-p-candidate-edit',
@@ -58,6 +59,7 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(CommercialExperienceComponent) commercialExp: CommercialExperienceComponent;
   @ViewChild(ExperimentedWithComponent) experimentedWith: ExperimentedWithComponent;
   @ViewChild(CommercialSkillsComponent) commercialSkills: CommercialSkillsComponent;
+  @ViewChild(LanguagesComponent) languageExp: LanguagesComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -91,8 +93,9 @@ export class CandidateEditComponent implements OnInit {
   description_commercial_platforms;
   experimented_platforms = [];
   description_experimented_platforms;
-  commercial_skills= [];
+  commercial_skills = [];
   description_commercial_skills;
+  programming_languages = [];
   work_history;
   constructor() { }
 
@@ -145,6 +148,9 @@ export class CandidateEditComponent implements OnInit {
         this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
       }
 
+    }
+    if(this.userDoc['candidate'].programming_languages) {
+      this.programming_languages = this.userDoc['candidate'].programming_languages;
     }
     this.work_history = this.userDoc['candidate'].work_history;
   }
@@ -348,7 +354,12 @@ export class CandidateEditComponent implements OnInit {
       else errorCount++;
     }
 
-
+    if(this.languageExp.programming_languages && this.languageExp.programming_languages.length > 0){
+      if(this.languageExp.selfValidate()) {
+        queryBody.programming_languages = this.languageExp.programming_languages;
+      }
+      else errorCount++;
+    }
 
     console.log(errorCount);
     console.log(queryBody);

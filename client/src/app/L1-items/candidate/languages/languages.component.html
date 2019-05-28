@@ -1,0 +1,27 @@
+<div class="row mt-4">
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="languages"
+      label="Languages"
+      (selectedItem)="onlanguagesOptions($event)"
+      column="col-md-3 mb-3"
+      [value]="platform"
+    ></app-c-forme-checkbox>
+  </div>
+</div>
+<div class="row" *ngIf="platform?.length > 0">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Years of experience</label>
+    </div>
+  </div>
+  <div class = "col-md-12">
+    <app-c-forme-button-group *ngFor = "let obj of programming_languages"
+                              [value]="obj" [label]="obj.language"
+                              (selectedValue)="selectedPlatform($event)"
+                              [options]="experienceYears"
+                              [errorMsg]="yearErrMsg"
+                              (change)="selfValidate()"
+    ></app-c-forme-button-group>
+  </div>
+</div>
