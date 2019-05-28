@@ -312,7 +312,8 @@ export class UserService {
 
   verify_email(email_hash: string)
   {
-    return this.http.put(URL+'users/emailVerify/'+ email_hash , '').pipe(map((res: Response) =>
+    return this.http.patch(URL+'v2/users/email?verify_email_token='+email_hash, {})
+      .pipe(map((res: Response) =>
     {
       if (res)
       {
