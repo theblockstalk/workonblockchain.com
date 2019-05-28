@@ -26,11 +26,10 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    await auth.isValidUser(req);
+    await auth.isLoggedIn(req);
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in ftn');
     let userId = req.auth.user._id;
     await users.update({ _id: userId},{ $unset: {'jwt_token': 1} });
     res.send({

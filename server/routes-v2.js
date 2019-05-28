@@ -29,8 +29,8 @@ const endpoints = [
     require('./controller/api-v2/pages/post.controller'), //done (on BE & FE)
     require('./controller/api-v2/pages/get.controller'), //done (on BE & FE)
     require('./controller/api-v2/statistics/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/auth/delete.controller'),
-    require('./controller/api-v2/users/auth/password/put.controller'),
+    require('./controller/api-v2/users/auth/delete.controller'), //done (on BE & FE)
+    require('./controller/api-v2/users/auth/password/put.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/auth/password/reset/post.controller'),
     require('./controller/api-v2/users/auth/password/reset/put.controller'),
     require('./controller/api-v2/users/email/patch.controller'),

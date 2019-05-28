@@ -222,7 +222,6 @@ export class UserService {
 
   forgot_password(email: string)
   {
-    //return this.http.put('http://localhost:4000/users/forgot_password/' + email , '');
     return this.http.put(URL+'users/forgot_password/' + email , '')
       .pipe(map((res: Response) =>
       {
@@ -371,8 +370,7 @@ export class UserService {
 
   change_password(params : any)
   {
-
-    return this.http.put(URL+'users/change_password' , params, {
+    return this.http.put(URL+'v2/users/auth/password?current_password=' + params.current_password+'&new_password='+params.confirm_password  ,'', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1134,7 +1132,7 @@ export class UserService {
 
   destroyToken(_id:string)
   {
-    return this.http.post(URL+'users/destroy_token', {id:_id} , {
+    return this.http.delete(URL+'v2/users/auth' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
