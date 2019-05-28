@@ -35,14 +35,8 @@ const bodySchema = new Schema({
     },
     programming_languages: {
         type:[{
-            language: {
-                type: String,
-                enum: enumerations.programmingLanguages
-            },
-            exp_year: {
-                type: String,
-                enum: enumerations.experienceYears
-            }
+            type: String,
+            enum: enumerations.programmingLanguages
         }]
     },
     years_exp_min: {
@@ -54,6 +48,16 @@ const bodySchema = new Schema({
         type: [{
             type: String,
             enum: enumerations.workRoles
+        }]
+    },
+    locations: {
+        type:[{
+            city: {
+                type: String
+            },
+            name: {
+                type: String
+            }
         }]
     },
     current_currency: {
@@ -69,9 +73,15 @@ const bodySchema = new Schema({
         min:0,
     },
     base_country: {
-        type: String,
-        enum: enumerations.countries
+        type:[{
+            type: String,
+            enum: enumerations.countries
+        }]
     },
+    work_type: {
+        type: String,
+        enum: enumerations.workTypes
+    }
 });
 
 const querySchema = new Schema({

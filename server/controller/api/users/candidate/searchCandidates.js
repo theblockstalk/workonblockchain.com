@@ -272,7 +272,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
                 }
             }
             else{
-                const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
+                const skillsFilter = {"candidate.programming_languages.language": {$in: search.programming_languages}};
                 userQuery.push(skillsFilter);
             }
             if(skillsFilterNew){

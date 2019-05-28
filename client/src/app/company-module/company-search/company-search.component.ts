@@ -480,14 +480,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.not_found = '';
       let queryBody: any = {};
       if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
-      if (this.searchWord) queryBody.word = this.searchWord;
-      if (this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
+      if (this.searchWord) queryBody.why_work = this.searchWord;
+      if (this.skill_value && this.skill_value.length > 0) queryBody.programming_languages = this.skill_value;
       if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
-      if (this.role_value && this.role_value.length > 0) queryBody.positions = this.role_value;
+      if (this.role_value && this.role_value.length > 0) queryBody.roles = this.role_value;
       if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if (this.visa_check) queryBody.visa_needed = this.visa_check;
       if (this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
-      if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
+      if (this.residence_country && this.residence_country.length > 0) queryBody.base_country = this.residence_country;
       if (this.years_exp_value) queryBody.years_exp_min = parseInt(this.years_exp_value);
 
       if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
