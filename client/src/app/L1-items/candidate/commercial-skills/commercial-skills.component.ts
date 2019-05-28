@@ -14,6 +14,7 @@ export class CommercialSkillsComponent implements OnInit {
   desErrMsg;
   platform = [];
   yearErrMsg;
+  platformsYear;
 
   constructor() {
   }
@@ -23,6 +24,7 @@ export class CommercialSkillsComponent implements OnInit {
       for (let commercial of this.commercial_skills) {
         this.platform.push(commercial.skill);
       }
+      this.platformsYear = this.commercial_skills;
     }
   }
 
@@ -31,7 +33,6 @@ export class CommercialSkillsComponent implements OnInit {
       const desValid = this.desValidate();
       const yearValid = this.yearValidate();
       if (desValid && yearValid) {
-        console.log(this.commercial_skills);
         return true;
       }
       else return false;
@@ -39,8 +40,6 @@ export class CommercialSkillsComponent implements OnInit {
   }
 
   yearValidate() {
-    console.log(this.commercial_skills.filter(i => i.exp_year).length);
-    console.log(this.platform.length);
     if (this.platform.length !== this.commercial_skills.filter(i => i.exp_year).length) {
       this.yearErrMsg = 'Please select all year of experince';
       return false;
@@ -50,11 +49,17 @@ export class CommercialSkillsComponent implements OnInit {
   }
 
   oncommerciallyOptions(array) {
-    this.platform = array;
-    for (let val of array) {
-      if (this.commercial_skills && this.commercial_skills.find(x => x.skill === val)) {
+    this.commercial_skills = [];
+    for(let val of array) {
+      this.commercial_skills.push({skill: val});
+    }
+
+    for(let platform of this.commercial_skills) {
+      if(this.platformsYear.find(x=> x.skill === platform.skill)) {
+        let object = this.platformsYear.find(x=> x.skill === platform.skill);
+        let index = this.commercial_skills.findIndex(x => x.skill === platform.skill);
+        this.commercial_skills[index].exp_year = object.exp_year;
       }
-      else this.commercial_skills.push({skill: val});
     }
   }
 

@@ -41,7 +41,7 @@ export class CommercialExperienceComponent implements OnInit {
   }
 
   yearValidate() {
-    if(this.platform.length !== this.commercial_platforms.filter(i => i.visa_needed === true).length ) {
+    if(this.platform.length !== this.commercial_platforms.filter(i => i.exp_year).length ) {
       this.yearErrMsg = 'Please select all year of experince';
       return false;
     }
@@ -66,37 +66,12 @@ export class CommercialExperienceComponent implements OnInit {
         this.commercial_platforms[index].exp_year = object.exp_year;
       }
     }
-
     console.log(this.commercial_platforms);
-
-    // if(e.target.checked)
-    // {
-    //   this.selectedValue.push(e.target.value);
-    // }
-    // else{
-    //   let updateItem = this.selectedValue.find(x => x === e.target.value);
-    //   let index = this.selectedValue.indexOf(updateItem);
-    //   this.selectedValue.splice(index, 1);
-    // }
-
   }
 
-    findObjectByKey(array, key, value)
-    {
-      for (var i = 0; i < array.length; i++)
-      {
-        if (array[i][key] !== value)
-        {
-          return array[i];
-        }
-
-      }
-      return null;
-    }
-
   selectedPlatform(obj) {
-    if(this.commercial_platforms && this.commercial_platforms.find(x => x.name === obj.name)) {
-      const index = this.commercial_platforms.findIndex((x => x.name === obj.name));
+    if(this.commercial_platforms && this.commercial_platforms.find(x => x.name === obj.label)) {
+      const index = this.commercial_platforms.findIndex((x => x.name === obj.label));
       this.commercial_platforms[index].exp_year = obj.exp_year;
     }
     else this.commercial_platforms.push(obj);
