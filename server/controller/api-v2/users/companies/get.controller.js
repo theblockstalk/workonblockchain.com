@@ -26,36 +26,26 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     const myUserDoc = req.auth.user;
-    if(req.query.is_admin === true && myUserDoc.is_admin === 1){
-        console.log('you can call');
+    if((req.query.is_admin === true || req.query.is_admin === 'true') && myUserDoc.is_admin === 1){
         let filteredUsers = [];
-        const userDoc =await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
+        const userDoc = await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
             const empoyerProfile = await companies.findOne({_creator : companyUserDoc._id});
             if(empoyerProfile) filterReturnData.removeSensativeData(empoyerProfile._creator);
             filteredUsers.push(empoyerProfile);
         });
 
-        if(filteredUsers && filteredUsers.length > 0) {
-            res.send(filteredUsers);
-        }
-
-        else {
-            errors.throwError("No company exists", 404)
-        }
-    }
-
-    if(myUserDoc._id.toString() === req.query.user_id || myUserDoc.is_admin === 1) {
-        const employerProfile =  await companies.findOneAndPopulate(req.query.user_id);
-        if(employerProfile){
-            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
-            res.send(employerCreatorRes);
-        }
-        else
-        {
-            errors.throwError("User not found", 404)
-        }
+        if(filteredUsers && filteredUsers.length > 0) res.send(filteredUsers);
+        else errors.throwError("No company exists", 404);
     }
     else {
-        errors.throwError("Authentication failed", 400);
+        if (myUserDoc._id.toString() === req.query.user_id) {
+            const employerProfile = await
+            companies.findOneAndPopulate(req.query.user_id);
+            if (employerProfile) {
+                const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
+                res.send(employerCreatorRes);
+            }
+            else errors.throwError("User not found", 404);
+        }
     }
 }

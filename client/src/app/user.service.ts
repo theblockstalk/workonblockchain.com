@@ -251,7 +251,7 @@ export class UserService {
 
   verify_client(email: string)
   {
-    return this.http.put(URL+'users/verify_client/' + email , '') .pipe(map(data => {
+    return this.http.post(URL+'v2/users/email?email='+email, '') .pipe(map(data => {
       return data;
     }));
 
@@ -435,7 +435,7 @@ export class UserService {
 
     }
     else {
-      return this.http.get(URL+'users/current_company/' +_id, {
+      return this.http.get(URL+'v2/users/companies?user_id=' +_id, {
         headers: new HttpHeaders().set('Authorization', this.token)
       }).pipe(map((res: Response) =>
       {
@@ -885,7 +885,8 @@ export class UserService {
   }
   allCompanies()
   {
-    return this.http.get(URL+'users/company', {
+    const admin = true;
+    return this.http.get(URL+'v2/users/companies?user_id='+this.currentUser._id+'&is_admin='+admin, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

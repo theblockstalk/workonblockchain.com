@@ -1,8 +1,6 @@
 const users = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
-const logger = require('../../../services/logger');
-const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const verify_send_email = require('../../../../controller/api/users/auth/verify_send_email');
 
@@ -18,10 +16,6 @@ const querySchema = new Schema({
 module.exports.inputValidation = {
     query: querySchema
 };
-
-module.exports.auth = async function (req) {
-    await auth.isLoggedIn(req);
-}
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.query;
