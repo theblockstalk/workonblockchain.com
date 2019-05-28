@@ -5,6 +5,7 @@ const errors = require('../../../../services/errors');
 const filterReturnData = require('../../../../../../server/controller/api/users/filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
 const candidateSearch = require('../../../../../../server/controller/api/users/candidate/searchCandidates');
+const objects = require('../../../../services/objects');
 
 module.exports.request = {
     type: 'post',
@@ -93,7 +94,7 @@ const filterData = async function filterData(candidateDetail) {
 
 module.exports.endpoint = async function (req, res) {
     if(req.query.is_admin === 'true' || req.query.is_admin === true && req.auth.user.is_admin === 1) {
-        if(req.body){
+        if(!objects.isEmpty(req.body)){
             let queryBody = req.body;
 
             let filter = {};
@@ -133,7 +134,7 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     if(req.auth.user.type === 'company'){
-        if(req.body){
+        if(!objects.isEmpty(req.body)){
             let userId = req.auth.user._id;
             let queryBody = req.body;
             let search = {}, order = {};
@@ -188,9 +189,7 @@ module.exports.endpoint = async function (req, res) {
             }
         }
         else {
-            console.log('comp is calling');
             let userId = req.auth.user._id;
-
             const candidateDocs = await
             candidateSearch.candidateSearch({
                 is_verify: 1,
@@ -199,6 +198,8 @@ module.exports.endpoint = async function (req, res) {
             }, {});
             let filterArray = [];
             for (let candidateDetail of candidateDocs.candidates) {
+                if(req.auth.user.type === 'company')
+                   candidateDetail = await filterReturnData.candidateAsCompany(candidateDetail,userId);
                 const filterDataRes = await
                 filterData(candidateDetail, userId);
                 filterArray.push(filterDataRes);

@@ -46,8 +46,11 @@ module.exports.endpoint = async function (req, res) {
 
         const candidateDoc = await users.findByIdAndPopulate(req.query.user_id);
         if(candidateDoc ) {
-            const filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
-            res.send(filterData);
+            if(req.auth.user.type === 'company'){
+                const filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
+                res.send(filterData);
+            }
+            else res.send(candidateDoc);
         }
         else {
             errors.throwError("Candidate account not found", 404);

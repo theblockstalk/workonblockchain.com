@@ -668,7 +668,7 @@ export class UserService {
   //////////////filters function call////////////////////////////////
   getVerrifiedCandidate(current : string)
   {
-    return this.http.post(URL+'users/verified_candidate' , {_id : current} , {
+    return this.http.post(URL+'v2/users/candidates/search' , '' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     })
       .pipe(map((res: Response) =>
@@ -825,7 +825,8 @@ export class UserService {
 
   admin_candidate_filter(queryBody:any)
   {
-    return this.http.post(URL+'users/admin_candidate_filter', queryBody, {
+    const admin = true;
+    return this.http.post(URL+'v2/users/candidates/search?is_admin='+admin, queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
