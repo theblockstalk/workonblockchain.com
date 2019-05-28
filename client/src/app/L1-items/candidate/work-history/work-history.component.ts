@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../../constants/constants';
@@ -15,15 +15,6 @@ export class WorkHistoryComponent implements OnInit {
   jobData;
   monthNumber;
   timestamp = Date.now();
-  company_log;
-  position_log;
-  location_log;
-  start_date_log;
-  start_date_year_log;
-  end_date_log;
-  end_date_year_log;
-  dateValidation;
-  exp_count;
   years = constants.year;
   month = constants.calen_month;
   current_work = constants.current_work;
@@ -34,6 +25,7 @@ export class WorkHistoryComponent implements OnInit {
   startYearErrMsg;
   endMonthErrMsg;
   endYearErrMsg;
+  experiencearray = [];
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -42,8 +34,6 @@ export class WorkHistoryComponent implements OnInit {
     });
 
     if(this.historyData && this.historyData.length > 0) {
-      console.log("history data");
-      console.log(this.historyData);
       this.jobData = this.historyData;
       this.ExperienceForm = this._fb.group({
         ExpItems: this._fb.array(
@@ -51,11 +41,6 @@ export class WorkHistoryComponent implements OnInit {
         )
       });
     }
-    // this.ExperienceForm = this._fb.group({
-    //   ExpItems: this._fb.array([this.initExpRows()])
-    // });
-
-    // console.log(this.ExperienceForm.value);
   }
 
   private history_data(): FormGroup[]
@@ -65,7 +50,6 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   monthNumToName(monthnum) {
-    console.log(this.month[monthnum-1]);
     return this.month[monthnum-1] || '';
   }
 
@@ -150,6 +134,10 @@ export class WorkHistoryComponent implements OnInit {
       this.startMonthErrMsg = 'Please select start date month';
       return false;
     }
+    if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
+      this.startMonthErrMsg = 'Date must be in the past';
+      return false;
+    }
     delete this.startMonthErrMsg;
     return true;
   }
@@ -160,14 +148,23 @@ export class WorkHistoryComponent implements OnInit {
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
       this.startMonthErrMsg = 'Date must be in the past';
+      return false;
     }
-    delete this.startMonthErrMsg;
     delete this.startYearErrMsg;
     return true;
   }
   endMonthValidate(index) {
+
     if(!this.ExperienceForm.value.ExpItems[index].end_date) {
       this.endMonthErrMsg = 'Please select end date month';
+      return false;
+    }
+    if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
+      this.startMonthErrMsg = 'Date must be greater than previous date';
+      return false;
+    }
+    if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
+      this.endMonthErrMsg = 'Date must be in the past';
       return false;
     }
     delete this.endMonthErrMsg;
@@ -180,14 +177,16 @@ export class WorkHistoryComponent implements OnInit {
     }
     if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
       this.startMonthErrMsg = 'Date must be greater than previous date';
+      delete this.endMonthErrMsg;
+      delete this.endYearErrMsg;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
       this.endMonthErrMsg = 'Date must be in the past';
+      delete this.startMonthErrMsg;
+      delete this.endYearErrMsg;
       return false;
     }
-    delete this.endMonthErrMsg;
-    delete this.startMonthErrMsg;
     delete this.endYearErrMsg;
     return true;
   }
@@ -210,11 +209,30 @@ export class WorkHistoryComponent implements OnInit {
           if(!endMonthValid) errorCount++;
           const endYearValid = this.endYearValidate(key);
           if(!endYearValid) errorCount++;
-          if(errorCount === 0 ) return true;
-          else return false;
+          if(errorCount === 0 ) {
+            let today = Date.now();
+            let end_date_format;
+            const startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+            const endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+            const start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, startmonthIndex);
+            if(this.ExperienceForm.value.ExpItems[key].currentwork === true) {
+              end_date_format = today;
+            }
+            else {
+              end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, endmonthIndex);
+
+            }
+            const experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : start_date_format,enddate : end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
+            this.experiencearray.push(experiencejson);
+          }
+
       }
+      if(errorCount === 0) {
+        return true;
+      }
+      else return false;
     }
-    else return true;
+    return true;
 
   }
 
@@ -230,7 +248,6 @@ export class WorkHistoryComponent implements OnInit {
     }
     else {
       if(startDateFormat > endDateFormat) {
-        this.dateValidation = 'Date must be greater than previous date';
         return true;
       }
       else {
@@ -253,6 +270,10 @@ export class WorkHistoryComponent implements OnInit {
     else {
       return false;
     }
+  }
+
+  checkDatesValidation(){
+
   }
 
 

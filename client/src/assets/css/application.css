@@ -186,3 +186,8 @@ pre {
 .bootstrap-select.disabled, .bootstrap-select>.disabled {
   background-color: #e9ecef !important;
 }
+
+.dropdown-toggle.btn-light{
+  background-color: #fff!important;
+  border-color: #ced4da!important;
+}

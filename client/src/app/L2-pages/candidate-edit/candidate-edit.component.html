@@ -191,75 +191,9 @@
             <app-i-forme-work-history [historyData]="work_history"></app-i-forme-work-history>
           </section>
 
-          <!--<section class="border rounded bg-white mt-4 py-3 px-5 mb-5" id="education_candidate">-->
-            <!--<div class="row">-->
-              <!--<div class="col-md-6">-->
-                <!--<h2><i class="fas fa-university"></i> Education</h2>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row mt-4">-->
-              <!--<div class="col-md-12">-->
-                <!--<h4></h4>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--<div class = "work-form" [formGroup]="EducationForm">-->
-              <!--<div formArrayName="itemRows">-->
-                <!--<div *ngFor="let itemrow of DynamicEduFormControls.controls ; let i=index" [formGroupName]="i">-->
-                  <!--<div class="row">-->
-                    <!--<div class="col-md-3">-->
-                      <!--<div class="form-group">-->
-                        <!--<label>University</label>-->
-                        <!--<input placeholder="Cambridge" formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required>-->
-                        <!--<div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].uniname">-->
-                          <!--{{uni_name_log}}-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-3">-->
-                      <!--<div class="form-group">-->
-                        <!--<label>Degree</label>-->
-                        <!--<input placeholder="Bachelors" formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required>-->
-                        <!--<div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].degreename">-->
-                          <!--{{degree_log}}-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-3">-->
-                      <!--<div class="form-group">-->
-                        <!--<label>Field of study</label>-->
-                        <!--<input placeholder="Computer Science" formControlName="fieldname" class="form-control" type="text" #study_field name="study" required>-->
-                        <!--<div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].fieldname">-->
-                          <!--{{field_log}}-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-3">-->
-                      <!--<div class="form-group">-->
-                        <!--<label>Graduation</label>-->
-                        <!--<select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >-->
-                          <!--<option class='option' *ngFor='let graduation_year of graduation_year'  [value]="graduation_year" selected>{{graduation_year}}</option>-->
-                        <!--</select>-->
-                        <!--<div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">-->
-                          <!--{{eduYear_log}}-->
-                        <!--</div>-->
-
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-12">-->
-                      <!--<div class = "form-group text-right">-->
-                        <!--<a  (click)="deleteRow(i)" class = "btn btn-danger text-white">Remove</a>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-md-12 p-0">-->
-                  <!--<div class = "form-group">-->
-                    <!--<a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</section>-->
+          <section class="border rounded bg-white mt-4 py-3 px-5 mb-5" id="education_candidate">
+            <app-i-forme-education-history [education_history]="education_history"></app-i-forme-education-history>
+          </section>
 
           <div class = "form-group text-right">
             <a [routerLink]="['/candidate_profile']"  class = "btn btn-secondary text-white mr-2">Cancel</a>

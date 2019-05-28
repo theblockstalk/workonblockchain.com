@@ -28,6 +28,8 @@ import { ExperimentedWithComponent } from '../../L1-items/candidate/experimented
 import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-skills/commercial-skills.component';
 import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
 import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work-history.component';
+import { EducationHistoryComponent } from '../../L1-items/candidate/education-history/education-history.component';
+
 @Component({
   selector: 'app-p-candidate-edit',
   templateUrl: './candidate-edit.component.html',
@@ -60,6 +62,8 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(ExperimentedWithComponent) experimentedWith: ExperimentedWithComponent;
   @ViewChild(CommercialSkillsComponent) commercialSkills: CommercialSkillsComponent;
   @ViewChild(LanguagesComponent) languageExp: LanguagesComponent;
+  @ViewChild(WorkHistoryComponent) workHistoryComp: WorkHistoryComponent;
+  @ViewChild(EducationHistoryComponent) educationHistoryComp: EducationHistoryComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -97,6 +101,7 @@ export class CandidateEditComponent implements OnInit {
   description_commercial_skills;
   programming_languages = [];
   work_history = [];
+  education_history = [];
   constructor() { }
 
   ngOnInit() {
@@ -153,6 +158,7 @@ export class CandidateEditComponent implements OnInit {
       this.programming_languages = this.userDoc['candidate'].programming_languages;
     }
     if(this.userDoc['candidate'].work_history) this.work_history = this.userDoc['candidate'].work_history;
+    if(this.userDoc['candidate'].education_history) this.education_history = this.userDoc['candidate'].education_history;
   }
 
   update_candidate_profile(){
@@ -361,6 +367,19 @@ export class CandidateEditComponent implements OnInit {
       else errorCount++;
     }
 
+    if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
+      if(this.workHistoryComp.selfValidate()) {
+        queryBody.work_history = this.workHistoryComp.experiencearray;
+      }
+      else errorCount++;
+    }
+
+    if(this.educationHistoryComp.EducationForm.value.itemRows && this.educationHistoryComp.EducationForm.value.itemRows.length >0) {
+      if(this.educationHistoryComp.selfValidate()) {
+        queryBody.education_history = this.educationHistoryComp.education_array;
+      }
+      else errorCount++;
+    }
     console.log(errorCount);
     console.log(queryBody);
 
