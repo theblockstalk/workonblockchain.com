@@ -919,7 +919,7 @@ export class UserService {
 
   admin_company_filter(queryBody : any)
   {
-    return this.http.post(URL+'users/admin_company_filter', queryBody, {
+    return this.http.post(URL+'v2/users/companies/search', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
