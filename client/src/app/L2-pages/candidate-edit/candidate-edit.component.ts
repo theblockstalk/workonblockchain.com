@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { constants} from '../../../constants/constants';
-import { unCheckCheckboxes } from '../../../services/object';
+import { Router } from '@angular/router';
+import { UserService } from '../../user.service';
 import { EmailAddressComponent } from '../../L1-items/users/email-address/email-address.component';
 import { FirstNameComponent } from '../../L1-items/users/first-name/first-name.component';
 import { LastNameComponent } from '../../L1-items/users/last-name/last-name.component';
@@ -102,7 +102,8 @@ export class CandidateEditComponent implements OnInit {
   programming_languages = [];
   work_history = [];
   education_history = [];
-  constructor() { }
+  error_msg;
+  constructor(private authenticationService: UserService, private router: Router) { }
 
   ngOnInit() {
     console.log(this.userDoc);
@@ -273,21 +274,6 @@ export class CandidateEditComponent implements OnInit {
 
     if(this.volunteerCheck) {
       if(this.volunteerType.selfValidate()) {
-        // let validatedLocation=[];
-        // for(let location of this.volunteer.selectedLocation) {
-        //   if(location.name.includes('city')) {
-        //     validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
-        //   }
-        //   if(location.name.includes('country')) {
-        //     validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
-        //   }
-        //   if(location.name === 'Remote') {
-        //     validatedLocation.push({remote: true, visa_needed : location.visa_needed });
-        //   }
-        //
-        // }
-        // this.volunteer.locations = validatedLocation;
-        console.log("ifffffffffffff")
         queryBody.vounteer = this.volunteerType.volunteer;
       }
       else {
@@ -300,7 +286,6 @@ export class CandidateEditComponent implements OnInit {
 
     if( this.contractorCheck) {
       if(this.contractorType.selfValidate()) {
-
         queryBody.contractor = this.contractorType.contractor;
       }
       else {
@@ -380,6 +365,38 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+
+    if(errorCount === 0) {
+      if(this.viewBy === 'candidate') {
+        this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)
+          .subscribe(
+            data => {
+              if(data )
+              {
+                this.router.navigate(['/candidate_profile']);
+              }
+            },
+            error => {
+
+            });
+      }
+      if(this.viewBy === 'admin') {
+        this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, true)
+          .subscribe(
+            data => {
+              if(data )
+              {
+                this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.userDoc['_id'] } });
+              }
+            },
+            error => {
+
+            });
+      }
+    }
+    else {
+      this.error_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
+    }
     console.log(errorCount);
     console.log(queryBody);
 
@@ -389,17 +406,16 @@ export class CandidateEditComponent implements OnInit {
   checkWorkType() {
     let value = this.workTypes.selectedWorkType
     const employee = value.find(x => x === 'employee');
-    if(employee) this.employeeCheck = true;
+    if (employee) this.employeeCheck = true;
     else this.employeeCheck = false;
 
     const contractor = value.find(x => x === 'contractor');
-    if(contractor) this.contractorCheck = true;
+    if (contractor) this.contractorCheck = true;
     else this.contractorCheck = false;
 
     const volunteer = value.find(x => x === 'volunteer');
-    if(volunteer) this.volunteerCheck = true;
+    if (volunteer) this.volunteerCheck = true;
     else this.volunteerCheck = false;
-
   }
 
 }
