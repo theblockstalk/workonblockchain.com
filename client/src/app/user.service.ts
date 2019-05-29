@@ -701,7 +701,6 @@ export class UserService {
 
   filterSearch(queryBody : any)
   {
-    console.log(queryBody);
     return this.http.post(URL+'v2/users/candidates/search', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>

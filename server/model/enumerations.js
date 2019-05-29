@@ -33,4 +33,4 @@ module.exports.contractorTypes = ['freelance', 'agency'];
 
 module.exports.workTypes = ['employee', 'contractor', 'volunteer'];
 
-module.exports.pages = ['Privacy Notice', 'FAQ', 'Terms and Condition for company', 'Terms and Condition for candidate', 'Company welcome popup message', 'Candidate welcome popup message', 'Chat popup message for company', 'Chat popup message for candidate'];
+module.exports.pages = ['Privacy Notice', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ','Candidate popup message', 'Company popup message', 'Candidate chat popup message', 'Company chat popup message']

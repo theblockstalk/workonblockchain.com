@@ -35,6 +35,10 @@ module.exports.auth = async function (req) {
 }
 
 const insertNewPage = async function (name, content, title, user_id) {
+    console.log('in ftn');
+    console.log(name);
+    console.log(content);
+    console.log(title);
     let addNewPage = new Pages
     ({
         page_name : name,
@@ -60,8 +64,10 @@ module.exports.endpoint = async function (req, res) {
         })
     }
     else{
+        console.log('in else');
         const pagesDoc = await Pages.findOne({ page_name: queryBody.name}).lean();
         if(pagesDoc) {
+            console.log('in of of pagesDoc');
             let updatePage =
                 {
                     page_content : sanitizedHtml,
@@ -71,11 +77,10 @@ module.exports.endpoint = async function (req, res) {
                 };
 
             await Pages.update({ _id: pagesDoc._id },{ $set: updatePage });
-            res.send({
-                success : true
-            })
+            res.send(updatePage);
         }
         else {
+            console.log('in 2nd else');
             const pageData = await insertNewPage(queryBody.name, sanitizedHtml, queryBody.title,userId);
             res.send(pageData);
         }

@@ -28,7 +28,7 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
-        const pagesDoc = await Pages.find({page_name: queryBody.name}).lean();
+        const pagesDoc = await Pages.findOne({page_name: queryBody.name}).lean();
         if(pagesDoc) {
             res.send(pagesDoc);
         }

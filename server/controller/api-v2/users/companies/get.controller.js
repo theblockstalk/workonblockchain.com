@@ -38,14 +38,12 @@ module.exports.endpoint = async function (req, res) {
         else errors.throwError("No company exists", 404);
     }
     else {
-        if (myUserDoc._id.toString() === req.query.user_id) {
-            const employerProfile = await
-            companies.findOneAndPopulate(req.query.user_id);
-            if (employerProfile) {
-                const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
-                res.send(employerCreatorRes);
-            }
-            else errors.throwError("User not found", 404);
+        const employerProfile = await
+        companies.findOneAndPopulate(req.query.user_id);
+        if (employerProfile) {
+            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
+            res.send(employerCreatorRes);
         }
+        else errors.throwError("User not found", 404);
     }
 }
