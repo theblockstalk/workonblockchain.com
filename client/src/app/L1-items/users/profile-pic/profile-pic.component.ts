@@ -33,10 +33,10 @@ export class ProfilePicComponent implements OnInit {
   }
 
   fileChangeListener($event) {
-    var image:any = new Image();
-    var file:File = $event.target.files[0];
-    var myReader:FileReader = new FileReader();
-    var that = this;
+    const image:any = new Image();
+    const file:File = $event.target.files[0];
+    const myReader:FileReader = new FileReader();
+    const that = this;
     myReader.onloadend = function (loadEvent:any) {
       image.src = loadEvent.target.result;
       that.cropper.setImage(image);
@@ -47,7 +47,7 @@ export class ProfilePicComponent implements OnInit {
 
 
   dataURLtoFile(dataurl, filename) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);

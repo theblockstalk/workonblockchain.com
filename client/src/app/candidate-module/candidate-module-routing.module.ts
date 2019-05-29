@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, CanActivate } from '@angular/router';
-
+import { CandidateEditComponent } from '../L2-pages/candidate-edit/candidate-edit.component';
+import { urls } from '../URLS/routes';
 import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component';
 import { LinkedinImportComponent } from './linkedin-import/linkedin-import.component';
 import { AboutComponent } from './about/about.component';
@@ -30,3 +31,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class CandidateModuleRoutingModule { }
+
+

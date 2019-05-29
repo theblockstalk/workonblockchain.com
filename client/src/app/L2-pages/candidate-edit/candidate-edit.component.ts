@@ -166,121 +166,82 @@ export class CandidateEditComponent implements OnInit {
     console.log("submit");
     let errorCount = 0;
     let queryBody : any = {};
+
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.lastName.selfValidate()) queryBody.last_name = this.lastName.last_name;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.contactNumber.selfValidateCode() && this.contactNumber.selfValidateNumber()) queryBody.contact_number = this.contactNumber.contact_number;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
-    if(this.githubUrl.selfValidate()) {
-      if(this.githubUrl.github_account) queryBody.github_account = this.githubUrl.github_account;
+    if(this.githubUrl.github_account) {
+      if(this.githubUrl.selfValidate()) queryBody.github_account = this.githubUrl.github_account;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_github_account = true;
 
-    if(this.stackexchangeUrl.selfValidate()) {
-      if(this.stackexchangeUrl.stackexchange_account) queryBody.stackexchange_account = this.stackexchangeUrl.stackexchange_account;
+    if(this.stackexchangeUrl.stackexchange_account) {
+      if(this.stackexchangeUrl.selfValidate()) queryBody.stackexchange_account = this.stackexchangeUrl.stackexchange_account;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_exchange_account = true;
 
-    if(this.linkedinUrl.selfValidate()) {
-      if(this.linkedinUrl.linkedin_account) queryBody.linkedin_account = this.linkedinUrl.linkedin_account;
+    if(this.linkedinUrl.linkedin_account) {
+      if(this.linkedinUrl.selfValidate()) queryBody.linkedin_account = this.linkedinUrl.linkedin_account;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_linkedin_account = true;
 
-    if(this.mediumUrl.selfValidate()) {
-      if(this.mediumUrl.medium_account) queryBody.medium_account = this.mediumUrl.medium_account;
+    if(this.mediumUrl.medium_account) {
+      if(this.mediumUrl.selfValidate()) queryBody.medium_account = this.mediumUrl.medium_account;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_medium_account = true;
 
-    if(this.stackoverflowUrl.selfValidate()) {
-      if(this.stackoverflowUrl.stackoverflow_url) queryBody.stackoverflow_url = this.stackoverflowUrl.stackoverflow_url;
+    if(this.stackoverflowUrl.stackoverflow_url) {
+      if(this.stackoverflowUrl.selfValidate()) queryBody.stackoverflow_url = this.stackoverflowUrl.stackoverflow_url;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_stackoverflow_url = true;
 
-    if(this.personalWebsiteUrl.selfValidate()) {
-      if(this.personalWebsiteUrl.personal_website_url) queryBody.personal_website_url = this.personalWebsiteUrl.personal_website_url;
+    if(this.personalWebsiteUrl.personal_website_url) {
+      if(this.personalWebsiteUrl.selfValidate()) queryBody.personal_website_url = this.personalWebsiteUrl.personal_website_url;
+      else errorCount++;
     }
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else queryBody.unset_personal_website_url = true;
 
     if(this.nationalities.selfValidate()) queryBody.nationality = this.nationalities.nationality;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.bioDescription.selfValidate()) queryBody.description = this.bioDescription.description;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.baseCountry.selfValidate()) queryBody.base_country = this.baseCountry.country;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.baseCity.selfValidate()) queryBody.base_city = this.baseCity.city;
-    else {
-      console.log("why work9");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.currentSalary.selfValidate()) {
       if(this.currentSalary.current_salary && this.currentSalary.current_currency) {
         queryBody.current_currency = this.currentSalary.current_currency;
         queryBody.current_salary = this.currentSalary.current_salary;
       }
+      else queryBody.unset_curret_currency = true;
     }
     else errorCount++;
 
 
     if(this.workTypes.selfValidate()) this.checkWorkType();
-    else {
-      console.log("why work9");
-
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.volunteerCheck) {
       if(this.volunteerType.selfValidate()) {
         queryBody.vounteer = this.volunteerType.volunteer;
       }
-      else {
-        console.log("why work9");
-
-        errorCount++;
-      }
+      else errorCount++;
     }
 
 
@@ -288,47 +249,31 @@ export class CandidateEditComponent implements OnInit {
       if(this.contractorType.selfValidate()) {
         queryBody.contractor = this.contractorType.contractor;
       }
-      else {
-        console.log("why work7");
-
-        errorCount++;
-      }
+      else errorCount++;
     }
 
     if(this.employeeCheck) {
       if(this.employeeType.selfValidate()) {
         queryBody.employee = this.employeeType.employee;
       }
-      else {
-        console.log("why work8");
+      else errorCount++;
+    }
 
-        errorCount++;
-      }
-    }
     if(this.whyWork.selfValidate()) queryBody.why_work = this.whyWork.why_work;
-    else {
-      console.log("why work");
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.interestType.selfValidate()) queryBody.interest_areas = this.interestType.interest_areas;
-    else {
-      console.log("why work1");
-
-      errorCount++;
-    }
+    else errorCount++;
 
     if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
       if(this.commercialExp.selfValidate()) {
         queryBody.commercial_platforms = this.commercialExp.commercial_platforms;
         queryBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
       }
-      else {
-        console.log("why work2");
-
-        errorCount++;
-      }
+      else errorCount++;
     }
+    else queryBody.unset_commercial_platforms = true;
+
     if(this.experimentedWith.experimented_platforms && this.experimentedWith.experimented_platforms.length > 0) {
       if(this.experimentedWith.selfValidate()) {
         queryBody.experimented_platforms = this.experimentedWith.experimented_platforms;
@@ -336,6 +281,7 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+    else queryBody.unset_experimented_platforms = true;
 
     if(this.commercialSkills.commercial_skills && this.commercialSkills.commercial_skills.length >0){
       if(this.commercialSkills.selfValidate()) {
@@ -344,6 +290,7 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+    else queryBody.unset_commercial_skills = true;
 
     if(this.languageExp.programming_languages && this.languageExp.programming_languages.length > 0){
       if(this.languageExp.selfValidate()) {
@@ -351,6 +298,7 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+    else queryBody.unset_language = true;
 
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {
@@ -358,12 +306,29 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+    else queryBody.unset_work_history = true;
 
     if(this.educationHistoryComp.EducationForm.value.itemRows && this.educationHistoryComp.EducationForm.value.itemRows.length >0) {
       if(this.educationHistoryComp.selfValidate()) {
         queryBody.education_history = this.educationHistoryComp.education_array;
       }
       else errorCount++;
+    }
+    else queryBody.unset_education_history = true;
+
+    console.log(errorCount);
+    console.log(queryBody);
+
+    if(this.profileImage.imageCropData.image) {
+      const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
+      const formData = new FormData();
+      formData.append('image', file);
+      this.authenticationService.edit_candidate_profile(this.userDoc['_id'] , formData , false)
+        .subscribe(
+          data => {
+          },
+          error => {
+          });
     }
 
     if(errorCount === 0) {
