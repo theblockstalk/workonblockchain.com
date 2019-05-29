@@ -30,7 +30,7 @@ export class UserService {
 
   getAll()
   {
-    return this.http.post(URL+'v2/users/candidates/search' , '' , {
+    return this.http.post(URL+'v2/users/candidates/search?is_admin=true' , '' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
