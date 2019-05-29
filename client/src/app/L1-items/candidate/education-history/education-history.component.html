@@ -11,7 +11,7 @@
         <div class="col-md-3">
           <app-c-forme-text
             placeholder="Cambridge"
-            [errorMsg]="uniErrMsg"
+            [errorMsg]="uniErrMsg[i]"
             (textInputValue) = "EducationForm.value.itemRows[i].uniname = $event"
             [value]="EducationForm.value.itemRows[i].uniname"
             label="University"
@@ -21,7 +21,7 @@
         <div class="col-md-3">
           <app-c-forme-text
             placeholder="Bachelors"
-            [errorMsg]="degreeErrMsg"
+            [errorMsg]="degreeErrMsg[i]"
             (textInputValue) = "EducationForm.value.itemRows[i].degreename = $event"
             [value]="EducationForm.value.itemRows[i].degreename"
             label="Degree"
@@ -31,7 +31,7 @@
         <div class="col-md-3">
           <app-c-forme-text
             placeholder="Computer Science"
-            [errorMsg]="fieldErrMsg"
+            [errorMsg]="fieldErrMsg[i]"
             (textInputValue) = "EducationForm.value.itemRows[i].fieldname = $event"
             [value]="EducationForm.value.itemRows[i].fieldname"
             label="Field of study"
@@ -43,7 +43,7 @@
             label="Graduation"
             [value]="EducationForm.value.itemRows[i].eduyear"
             [options]="years"
-            [errorMsg]="gradErrMsg"
+            [errorMsg]="gradErrMsg[i]"
             (selectedValue)="EducationForm.value.itemRows[i].eduyear = $event"
             (change)="graduationValidate(i)"
           ></app-c-forme-dropdown-single>

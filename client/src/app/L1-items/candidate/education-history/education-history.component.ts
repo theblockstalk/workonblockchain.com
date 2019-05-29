@@ -14,10 +14,10 @@ export class EducationHistoryComponent implements OnInit {
   EducationForm: FormGroup;
   eduData;
   years = constants.year;
-  uniErrMsg;
-  degreeErrMsg;
-  fieldErrMsg;
-  gradErrMsg;
+  uniErrMsg = [];
+  degreeErrMsg = [];
+  fieldErrMsg = [];
+  gradErrMsg = [];
   education_array = [];
   constructor(private _fb: FormBuilder,private datePipe: DatePipe) { }
 
@@ -79,28 +79,28 @@ export class EducationHistoryComponent implements OnInit {
 
   uniValidate(index) {
     if(!this.EducationForm.value.itemRows[index].uniname) {
-      this.uniErrMsg = 'Please fill university';
+      this.uniErrMsg[index] = 'Please fill university';
       return false;
     }
-    delete this.uniErrMsg;
+    delete this.uniErrMsg[index];
     return true;
   }
 
   degreeValidate(index) {
     if(!this.EducationForm.value.itemRows[index].degreename) {
-      this.degreeErrMsg = 'Please fill degree';
+      this.degreeErrMsg[index] = 'Please fill degree';
       return false;
     }
-    delete this.degreeErrMsg;
+    delete this.degreeErrMsg[index];
     return true;
   }
 
   fieldValidate(index) {
     if(!this.EducationForm.value.itemRows[index].fieldname) {
-      this.fieldErrMsg = 'Please fill field of study';
+      this.fieldErrMsg[index] = 'Please fill field of study';
       return false;
     }
-    delete this.fieldErrMsg;
+    delete this.fieldErrMsg[index];
     return true;
   }
 
@@ -108,14 +108,14 @@ export class EducationHistoryComponent implements OnInit {
     const currentTime = new Date();
     const year = currentTime.getFullYear()
     if(!this.EducationForm.value.itemRows[index].eduyear) {
-      this.gradErrMsg = 'Please fill graduation year';
+      this.gradErrMsg[index] = 'Please fill graduation year';
       return false;
     }
     if(this.EducationForm.value.itemRows[index].eduyear > year) {
-      this.gradErrMsg = 'Year should be in past';
+      this.gradErrMsg[index] = 'Year should be in past';
       return false;
     }
-    delete this.gradErrMsg;
+    delete this.gradErrMsg[index];
     return true;
   }
 
