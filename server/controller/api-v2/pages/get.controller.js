@@ -23,7 +23,6 @@ module.exports.endpoint = async function (req, res) {
         pagesDoc = await pages.findOneAndSort({page_name: queryBody.name});
     else pagesDoc = await pages.findOne({page_name: queryBody.name});
 
-    console.log(pagesDoc);
     if(pagesDoc) {
         res.send(pagesDoc);
     }

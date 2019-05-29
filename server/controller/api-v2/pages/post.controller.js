@@ -57,7 +57,7 @@ module.exports.endpoint = async function (req, res) {
     else{
         const pagesDoc = await pages.findOne({ page_name: queryBody.name});
         if(pagesDoc) {
-            let pageData = {
+            pageData = {
                 page_content : sanitizedHtml,
                 page_title : queryBody.title,
                 updated_by : userId,
