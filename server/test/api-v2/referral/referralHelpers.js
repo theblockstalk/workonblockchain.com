@@ -30,3 +30,16 @@ const getRefreeInfo = module.exports.getRefreeInfo = async function getRefreeInf
     return res;
 }
 
+const sendReferralEmail = module.exports.sendReferralEmail = async function sendReferralEmail(email,subject,body,jwtToken) {
+    const data = {
+        'email': email,
+        'subject': subject,
+        'body': body
+    };
+    const res = await chai.request(server)
+        .post('/v2/referral/email')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
