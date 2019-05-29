@@ -446,7 +446,9 @@
         </div><!--end col here-->
         <div class = "row py-5 mb-5 mt-5 justify-content-center social-icons my-4">
           <div class="col-md-6">
-            <L0-alerts *ngIf="length === 0" alertClass="alert-danger" aligmentClass="text-center" alertMsg="Didn't chat with any one yet" ></L0-alerts>
+            <div *ngIf = "length === 0" class="alert alert-danger text-center">
+              Didn't chat with any one yet
+            </div>
           </div>
         </div>
       </div>

@@ -53,9 +53,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <form (click)="reset()">
-              <L0-buttons-others buttonClass="btn-secondary" buttonType="reset" label="Reset"></L0-buttons-others>
-            </form>
+            <button (click)="reset()" type="button" class="btn btn-secondary">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="response === '';else no_section" >

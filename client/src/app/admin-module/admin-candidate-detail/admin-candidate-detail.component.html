@@ -116,7 +116,7 @@
             </div>
           </div>
 
-          <form #approve_form="ngForm" (submit) = "approveClick(approve_form)" >
+          <form #approve_form="ngForm" >
 
           <div class="row">
             <div class="col-md-12">
@@ -240,8 +240,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div class = "form-group">
-                  <L0-buttons-others *ngIf="!email_text" buttonClass="btn-primary" alignmentClass="float-right" buttonType="submit" label="Done"></L0-buttons-others>
-                  <L0-buttons-others *ngIf="email_text" buttonClass="btn-primary" alignmentClass="float-right" buttonType="submit" label="Send"></L0-buttons-others>
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
                 </div>
 
               </div>

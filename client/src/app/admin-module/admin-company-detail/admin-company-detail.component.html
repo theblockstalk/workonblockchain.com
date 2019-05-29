@@ -21,7 +21,7 @@
 				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Candidates</a>
 				 		    </span>
                 <span>
-                  <form #approve_form="ngForm" (submit) = "approveClick($event , approve_form)">
+                  <form #approve_form="ngForm" >
                     <input type="hidden" name="email"  [ngModel]="data._creator.email">
                     <input type="hidden" name="name"  [ngModel]="data.first_name">
                     <input type="hidden" name="type"  [ngModel]="data._creator.type">
@@ -30,9 +30,10 @@
                     <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
                     <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
 								    <div class="my-3">
-                      <L0-buttons-others *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" [disabled]="data._creator.is_verify ===0? true: false" buttonClass="btn-primary" buttonType="submit" label="Approve"></L0-buttons-others>
-                      <L0-buttons-others *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" buttonClass="btn-primary" buttonType="submit" label="Disapprove"></L0-buttons-others>
-							    	</div>
+                      <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Approve</button>
+                      <button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn-primary" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Disapprove</button>
+                      <button type="submit" class = "btn btn-primary" *ngIf = "data._creator.is_verify ===0" disabled>Approve</button>
+                    </div>
 							    </form>
                 </span>
               </div>
