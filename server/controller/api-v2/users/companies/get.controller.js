@@ -25,8 +25,8 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    const myUserDoc = req.auth.user;
-    if((req.query.is_admin === true || req.query.is_admin === 'true') && myUserDoc.is_admin === 1){
+    const userDoc = req.auth.user;
+    if((req.query.is_admin === true || req.query.is_admin === 'true') && userDoc.is_admin === 1){
         let filteredUsers = [];
         const userDoc = await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
             const empoyerProfile = await companies.findOne({_creator : companyUserDoc._id});
