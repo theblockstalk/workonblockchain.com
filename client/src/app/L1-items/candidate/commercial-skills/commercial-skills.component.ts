@@ -13,7 +13,7 @@ export class CommercialSkillsComponent implements OnInit {
   experienceYears = constants.experienceYears;
   desErrMsg;
   platform = [];
-  yearErrMsg;
+  yearErrMsg = [];
   platformsYear;
 
   constructor() {
@@ -40,11 +40,17 @@ export class CommercialSkillsComponent implements OnInit {
   }
 
   yearValidate() {
-    if (this.platform.length !== this.commercial_skills.filter(i => i.exp_year).length) {
-      this.yearErrMsg = 'Please select all year of experince';
-      return false;
+    this.yearErrMsg = [];
+    if(this.platform.length !== this.commercial_skills.filter(i => i.exp_year).length ) {
+      for(let i=0 ; i< this.commercial_skills.length; i++) {
+        if(!this.commercial_skills[i].exp_year) {
+          this.yearErrMsg[i] = 'Please select year of experience';
+          return false;
+        }
+      }
     }
-    delete this.yearErrMsg;
+
+    this.yearErrMsg = [];
     return true;
   }
 

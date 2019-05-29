@@ -17,11 +17,11 @@
     </div>
   </div>
   <div class = "col-md-12">
-    <app-c-forme-button-group *ngFor = "let obj of commercial_skills"
+    <app-c-forme-button-group *ngFor = "let obj of commercial_skills; let i = index"
       [value]="obj" [label]="obj.skill"
       (selectedValue)="selectedPlatform($event)"
       [options]="experienceYears"
-      [errorMsg]="yearErrMsg"
+      [errorMsg]="yearErrMsg[i]"
       (change)="yearValidate()"
     ></app-c-forme-button-group>
   </div>

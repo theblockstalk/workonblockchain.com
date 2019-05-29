@@ -11,7 +11,7 @@ export class LanguagesComponent implements OnInit {
   languages = constants.programmingLanguages;
   experienceYears = constants.experienceYears;
   platform = [];
-  yearErrMsg;
+  yearErrMsg = [];
   platformsYear;
   constructor() { }
 
@@ -26,11 +26,16 @@ export class LanguagesComponent implements OnInit {
   }
 
   selfValidate() {
+    this.yearErrMsg = [];
     if(this.platform.length !== this.programming_languages.filter(i => i.exp_year).length ) {
-      this.yearErrMsg = 'Please select all year of experince';
-      return false;
+      for(let i=0 ; i< this.programming_languages.length; i++) {
+        if(!this.programming_languages[i].exp_year) {
+          this.yearErrMsg[i] = 'Please select year of experience';
+          return false;
+        }
+      }
     }
-    delete this.yearErrMsg;
+    this.yearErrMsg = [];
     return true;
   }
 

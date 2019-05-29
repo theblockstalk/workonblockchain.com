@@ -15,8 +15,9 @@ export class CommercialExperienceComponent implements OnInit {
   experienceYears = constants.experienceYears;
   desErrMsg;
   platform = [];
-  yearErrMsg;
+  // yearErrMsg;
   platformsYear;
+  yearErrMsg = [];
   constructor() { }
 
   ngOnInit() {
@@ -41,11 +42,17 @@ export class CommercialExperienceComponent implements OnInit {
   }
 
   yearValidate() {
+    this.yearErrMsg = [];
     if(this.platform.length !== this.commercial_platforms.filter(i => i.exp_year).length ) {
-      this.yearErrMsg = 'Please select all year of experince';
-      return false;
+      for(let i=0 ; i< this.commercial_platforms.length; i++) {
+        if(!this.commercial_platforms[i].exp_year) {
+          this.yearErrMsg[i] = 'Please select year of experience';
+          return false;
+        }
+      }
     }
-    delete this.yearErrMsg;
+
+    this.yearErrMsg = [];
     return true;
   }
 
