@@ -23,7 +23,9 @@ export class CheckboxComponent implements OnInit {
     if(this.value) {
         this.selectedOptions = this.value;
     }
-    console.log(this.selectedOptions)
+    console.log("selected options");
+    console.log(this.options);
+    console.log(this.selectedOptions);
   }
 
   selectedValues(event) {

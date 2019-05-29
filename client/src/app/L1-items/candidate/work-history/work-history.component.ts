@@ -18,6 +18,7 @@ export class WorkHistoryComponent implements OnInit {
   years = constants.year;
   month = constants.calen_month;
   current_work = constants.current_work;
+  // currentWorking = [false];
   companyErrMsg;
   positionErrMsg;
   locationErrMsg;
@@ -41,6 +42,11 @@ export class WorkHistoryComponent implements OnInit {
         )
       });
     }
+
+    console.log("ng on init");
+    console.log(this.ExperienceForm.value.ExpItems);
+    console.log(this.ExperienceForm.value.ExpItems[0].current_work_value)
+
   }
 
   private history_data(): FormGroup[]
@@ -53,11 +59,15 @@ export class WorkHistoryComponent implements OnInit {
     return this.month[monthnum-1] || '';
   }
 
-  currentWork(){
+  currentWork(value, index ){
     setTimeout(() => {
-      $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 100);
+    // if(value && value.length > 0) {
+    //   this.currentWorking[index] = true;
+    // }
+    // else this.currentWorking[index] = false;
+    // console.log(this.currentWorking);
   }
 
   initExpRows()
@@ -74,17 +84,15 @@ export class WorkHistoryComponent implements OnInit {
       start_date:[],
       enddate:[],
       currentwork:[false],
-
+      // current_work_value:[]
     });
   }
 
   addNewExpRow()
   {
     setTimeout(() => {
-      $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 100);
-
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
   }
@@ -111,7 +119,6 @@ export class WorkHistoryComponent implements OnInit {
     }
     delete this.companyErrMsg;
     return true;
-
   }
   positionValidate(index) {
     if(!this.ExperienceForm.value.ExpItems[index].positionname) {
@@ -193,6 +200,7 @@ export class WorkHistoryComponent implements OnInit {
 
   selfValidate() {
     let errorCount = 0;
+    this.experiencearray = [];
     if(this.ExperienceForm.value.ExpItems.length > 0 ) {
       for (let key in this.ExperienceForm.value.ExpItems) {
           const companyValid = this.companyValidate(key);
@@ -205,17 +213,22 @@ export class WorkHistoryComponent implements OnInit {
           if(!startMonthValid) errorCount++;
           const startYearValid = this.startYearValidate(key);
           if(!startYearValid) errorCount++;
-          const endMonthValid = this.endMonthValidate(key);
-          if(!endMonthValid) errorCount++;
-          const endYearValid = this.endYearValidate(key);
-          if(!endYearValid) errorCount++;
+          if(!this.ExperienceForm.value.ExpItems[key].currentwork) {
+            const endMonthValid = this.endMonthValidate(key);
+            if(!endMonthValid) errorCount++;
+            const endYearValid = this.endYearValidate(key);
+            if(!endYearValid) errorCount++;
+          }
+
           if(errorCount === 0 ) {
             let today = Date.now();
             let end_date_format;
+
             const startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
             const endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
             const start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, startmonthIndex);
-            if(this.ExperienceForm.value.ExpItems[key].currentwork === true) {
+
+            if(this.ExperienceForm.value.ExpItems[key].currentwork) {
               end_date_format = today;
             }
             else {
@@ -271,11 +284,5 @@ export class WorkHistoryComponent implements OnInit {
       return false;
     }
   }
-
-  checkDatesValidation(){
-
-  }
-
-
 
 }

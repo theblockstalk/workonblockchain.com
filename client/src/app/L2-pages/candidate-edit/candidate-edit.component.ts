@@ -303,6 +303,7 @@ export class CandidateEditComponent implements OnInit {
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {
         queryBody.work_history = this.workHistoryComp.experiencearray;
+        console.log(this.workHistoryComp.experiencearray);
       }
       else errorCount++;
     }
