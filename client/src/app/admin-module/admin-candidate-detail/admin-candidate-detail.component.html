@@ -7,7 +7,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <button [disabled]="data.is_verify === 0 ? true : false" [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._id }" class = "btn btn-primary float-right">Edit Profile</button>
+            <button [routerLink]="['/admins/talent/edit', data._id]"  class = "btn btn-primary float-right">Edit Profile</button>
           </div>
         </div>
 

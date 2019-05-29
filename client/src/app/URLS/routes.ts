@@ -8,5 +8,6 @@
 
 
 export const urls = {
-  talent_edit: 'users/talent/edit'
+  users_talent_edit: 'users/talent/edit',
+  admins_talent_edit: 'admins/talent/edit/:user_id'
 };
