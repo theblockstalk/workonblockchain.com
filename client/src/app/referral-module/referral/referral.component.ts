@@ -140,7 +140,7 @@ export class ReferralComponent implements OnInit {
     if(emailForm.valid === true && this.credentials.email && this.email_subject && this.mail_body){
       this.log = '';
       this.log_success = 'Sending your Email';
-      this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
+      this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body)
       .subscribe(
         data => {
           this.log_success = data['msg'];

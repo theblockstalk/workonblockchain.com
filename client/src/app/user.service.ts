@@ -394,8 +394,8 @@ export class UserService {
     }));
   }
 
-  send_refreal(email: string, subject: string, body: string,share_url: string, first_name: string, last_name: string){
-    return this.http.post(URL+'users/send_refreal/', { email: email, subject: subject, body: body,share_url:share_url,first_name:first_name,last_name:last_name }, {
+  send_refreal(email: string, subject: string, body: string){
+    return this.http.post(URL+'v2/referral/email', { email: email, subject: subject, body: body}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
