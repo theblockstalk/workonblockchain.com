@@ -9,7 +9,7 @@ import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
-import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
+import { EditCandidateProfileComponent } from '../URLS/users/talent/edit/edit-candidate-profile/edit-candidate-profile.component';
 import {ProfileResolver} from '../incomplete-profile.resolver';
 import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
 import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'resume', component: ResumeComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'experience', component: ExperienceComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'candidate_profile', component: CandidateProfileComponent ,  canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
-  { path: 'edit_profile' , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
+  // { path: urls.talent_edit , component: CandidateEditComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
   { path: 'candidate-verify-email' , component: CandidateVerifyEmailComponent}
 ];
 
