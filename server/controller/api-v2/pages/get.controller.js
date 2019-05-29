@@ -1,7 +1,7 @@
 const Schema = require('mongoose').Schema;
 const errors = require('../../services/errors');
 const enumerations = require('../../../model/enumerations');
-const Pages = require('../../../model/pages_content');
+const pages = require('../../../model/mongoose/pages');
 
 module.exports.request = {
     type: 'get',
@@ -18,22 +18,15 @@ module.exports.inputValidation = {
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.query;
-    if(queryBody.name === 'Privacy Notice' || queryBody.name === 'Terms and Condition for candidate' || queryBody.name === 'Terms and Condition for company'){
-        const pagesDoc = await Pages.findOne({page_name: queryBody.name}).sort({updated_date: 'descending'}).lean();
-        if(pagesDoc) {
-            res.send(pagesDoc);
-        }
-        else {
-            errors.throwError("Pages doc not found", 404);
-        }
+    let pagesDoc;
+    if(queryBody.name === 'Privacy Notice' || queryBody.name === 'Terms and Condition for candidate' || queryBody.name === 'Terms and Condition for company')
+        pagesDoc = await pages.findOneAndSort({page_name: queryBody.name});
+    else pagesDoc = await pages.findOne({page_name: queryBody.name});
+
+    if(pagesDoc) {
+        res.send(pagesDoc);
     }
     else {
-        const pagesDoc = await Pages.findOne({page_name: queryBody.name}).lean();
-        if(pagesDoc) {
-            res.send(pagesDoc);
-        }
-        else {
-            errors.throwError("Pages doc not found", 404);
-        }
+        errors.throwError("Pages doc not found", 404);
     }
 }

@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const Users = require('../../../model/mongoose/users');
-const Pages = require('../../../model/pages_content');
+const pages = require('../../../model/mongoose/pages');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../../api/users/company/companyHelpers');
 const pagesHelper = require('./pagesHelpers');
@@ -29,7 +29,7 @@ describe('POST /pages', function () {
             const info = docGenerator.cmsContent();
             const cmsRes = await pagesHelper.addPages(info , companyDoc.jwt_token);
 
-            const pageContent = await Pages.findOne({page_name : info.name});
+            const pageContent = await pages.findOne({page_name : info.name});
             pageContent.page_title.should.equal(info.title);
             pageContent.page_content.should.equal(info.content);
         })
