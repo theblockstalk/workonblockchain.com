@@ -282,7 +282,7 @@
               <div class="form-group">
                 <div class = "text-right mt-3">
                   <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
-                  <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Done" ></L0-buttons-others>
+                  <button type="submit" class = "btn btn-primary ml-1">Done</button>
                 </div>
               </div>
             </div>
@@ -319,9 +319,7 @@
         <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
       </div>
       <div class="modal-footer">
-        <form (click) = redirectToCompany() >
-          <L0-buttons-others data-dismiss="modal" buttonClass="btn-primary" alignmentClass="btn-mo model-btn" buttonType="button" label="Got it" ></L0-buttons-others>
-        </form>
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
       </div>
     </div>
   </div>

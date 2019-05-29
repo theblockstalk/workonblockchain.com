@@ -164,10 +164,9 @@
           <ng-template  #candidateInfo>
 
             <div class="col-md-9">
-              <L0-alerts alertClass="alert-danger" *ngIf="msg !== ''" [alertMsg]="msg" ></L0-alerts>
+              <p *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</p>
 
               <div  *ngIf="msg === '' && verify_msg === ''">
-
                 <div *ngIf="searchData === true && candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
                   <span>{{candidate_data.length}}</span> candidates match your search
                 </div>
@@ -221,7 +220,6 @@
                           <input type="hidden" name="id" [ngModel]="data._id">
                           <input type="hidden" name="name" [ngModel]="data.initials">
                           <div class="float-right">
-
                             <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach</button>
                           </div>
                         </form>
@@ -485,7 +483,6 @@
 
             <div class="row">
               <div class="col-md-12">
-
                 <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
                   {{job_offer_log_erorr}}
                 </div>
@@ -495,8 +492,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <L0-buttons-others buttonClass="btn-secondary" buttonType="reset" label="Reset" ></L0-buttons-others>
-              <L0-buttons-others buttonClass="btn-primary" buttonType="submit" label="Send" ></L0-buttons-others>
+              <button type="reset" class="btn btn-secondary">Reset</button>
+              <button type="submit" class="btn btn-primary">Send</button>
             </div>
           </form>
         </div>
@@ -688,7 +685,7 @@
           </div>
           <div class="modal-footer row">
             <div class="col-md-12">
-              <L0-buttons-others buttonClass="btn-primary" alignmentClass="btn-mo float-right" buttonType="submit" label="Save" ></L0-buttons-others>
+              <button type="submit" class="btn btn-mo btn-primary float-right" >Save</button>
             </div>
             <div class="col-md-12 invalid-feedback d-inline mt-1 text-right" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
               {{new_error_msg}}
