@@ -12,7 +12,7 @@
         <div class="col-md-4">
           <app-c-forme-text
             placeholder="Google Inc."
-            [errorMsg]="companyErrMsg"
+            [errorMsg]="companyErrMsg[i]"
             (textInputValue) = "ExperienceForm.value.ExpItems[i].companyname = $event"
             [value]="ExperienceForm.value.ExpItems[i].companyname"
             label="Company"
@@ -22,7 +22,7 @@
         <div class="col-md-4">
           <app-c-forme-text
             placeholder="Full stack developer"
-            [errorMsg]="positionErrMsg"
+            [errorMsg]="positionErrMsg[i]"
             (textInputValue)="ExperienceForm.value.ExpItems[i].positionname = $event"
             [value]="ExperienceForm.value.ExpItems[i].positionname"
             label="Position"
@@ -32,7 +32,7 @@
         <div class="col-md-4">
           <app-c-forme-text
             placeholder="London"
-            [errorMsg]="locationErrMsg"
+            [errorMsg]="locationErrMsg[i]"
             (textInputValue)="ExperienceForm.value.ExpItems[i].locationname = $event"
             [value]="ExperienceForm.value.ExpItems[i].locationname"
             label="Location"
@@ -50,7 +50,7 @@
                     label="Start date"
                     [value]="ExperienceForm.value.ExpItems[i].start_date"
                     [options]="month"
-                    [errorMsg]="startMonthErrMsg"
+                    [errorMsg]="startMonthErrMsg[i]"
                     (selectedValue)="ExperienceForm.value.ExpItems[i].start_date = $event"
                     (change)="startMonthValidate(i)"
                   ></app-c-forme-dropdown-single>
@@ -60,7 +60,7 @@
                     label=""
                     [value]="ExperienceForm.value.ExpItems[i].startyear"
                     [options]="years"
-                    [errorMsg]="startYearErrMsg"
+                    [errorMsg]="startYearErrMsg[i]"
                     (selectedValue)="ExperienceForm.value.ExpItems[i].startyear = $event"
                     (change)="startYearValidate(i)"
                   ></app-c-forme-dropdown-single>
@@ -74,21 +74,25 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-6">
+                  <!--[errorMsg]="endMonthErrMsg[i]"-->
+
                   <app-c-forme-dropdown-single
                     label="End date"
                     [value]="ExperienceForm.value.ExpItems[i].end_date"
                     [options]="month"
-                    [errorMsg]="endMonthErrMsg"
+                    [errorMsg]="endMonthErrMsg[i]"
                     (selectedValue)="ExperienceForm.value.ExpItems[i].end_date = $event"
                     (change)="endMonthValidate(i)"
                   ></app-c-forme-dropdown-single>
                 </div>
                 <div class="col-md-6">
+                  <!--[errorMsg]="endYearErrMsg[i]"-->
+
                   <app-c-forme-dropdown-single
                     label=""
                     [value]="ExperienceForm.value.ExpItems[i].endyear"
                     [options]="years"
-                    [errorMsg]="endYearErrMsg"
+                    [errorMsg]="endYearErrMsg[i]"
                     (selectedValue)="ExperienceForm.value.ExpItems[i].endyear = $event"
                     (change)="endYearValidate(i)"
                   ></app-c-forme-dropdown-single>

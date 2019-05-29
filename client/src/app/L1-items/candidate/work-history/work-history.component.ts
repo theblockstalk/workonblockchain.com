@@ -19,13 +19,13 @@ export class WorkHistoryComponent implements OnInit {
   month = constants.calen_month;
   current_work = constants.current_work;
   // currentWorking = [false];
-  companyErrMsg;
-  positionErrMsg;
-  locationErrMsg;
-  startMonthErrMsg;
-  startYearErrMsg;
-  endMonthErrMsg;
-  endYearErrMsg;
+  companyErrMsg = [];
+  positionErrMsg = [];
+  locationErrMsg = [];
+  startMonthErrMsg = [];
+  startYearErrMsg = [];
+  endMonthErrMsg = [];
+  endYearErrMsg = [];
   experiencearray = [];
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
@@ -114,88 +114,124 @@ export class WorkHistoryComponent implements OnInit {
   }
   companyValidate(index) {
     if(!this.ExperienceForm.value.ExpItems[index].companyname) {
-      this.companyErrMsg = 'Please fill company';
+      this.companyErrMsg[index] = 'Please fill company';
       return false;
     }
-    delete this.companyErrMsg;
+    delete this.companyErrMsg[index];
     return true;
   }
   positionValidate(index) {
     if(!this.ExperienceForm.value.ExpItems[index].positionname) {
-      this.positionErrMsg = 'Please fill position';
+      this.positionErrMsg[index] = 'Please fill position';
       return false;
     }
-    delete this.positionErrMsg;
+    delete this.positionErrMsg[index];
     return true;
   }
   locationValidate(index) {
     if(!this.ExperienceForm.value.ExpItems[index].locationname) {
-      this.locationErrMsg = 'Please fill location';
+      this.locationErrMsg[index] = 'Please fill location';
       return false;
     }
-    delete this.locationErrMsg;
+    delete this.locationErrMsg[index];
     return true;
   }
   startMonthValidate(index) {
+    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].start_date) {
-      this.startMonthErrMsg = 'Please select start date month';
+      this.startMonthErrMsg[index] = 'Please select start date month';
+      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
-      this.startMonthErrMsg = 'Date must be in the past';
+      this.startMonthErrMsg[index] = 'Date must be in the past';
+      errorCount++;
       return false;
     }
-    delete this.startMonthErrMsg;
-    return true;
+    if(!this.startYearValidate(index)) {
+      errorCount++;
+      return false;
+    }
+    if(errorCount === 0) {
+      delete this.startMonthErrMsg[index];
+      return true;
+    }
+
   }
   startYearValidate(index) {
+    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].startyear) {
-      this.startYearErrMsg = 'Please select start date year';
+      this.startYearErrMsg[index] = 'Please select start date year';
+      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
-      this.startMonthErrMsg = 'Date must be in the past';
+      this.startMonthErrMsg[index] = 'Date must be in the past';
+      errorCount++;
       return false;
     }
-    delete this.startYearErrMsg;
-    return true;
+
+    if(errorCount === 0) {
+      delete this.startMonthErrMsg[index];
+      delete this.startYearErrMsg[index];
+      return true;
+    }
   }
   endMonthValidate(index) {
-
+    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].end_date) {
-      this.endMonthErrMsg = 'Please select end date month';
+      this.endMonthErrMsg[index] = 'Please select end date month';
+      errorCount++;
       return false;
     }
     if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
-      this.startMonthErrMsg = 'Date must be greater than previous date';
+      this.startMonthErrMsg[index] = 'Date must be greater than previous date';
+      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
-      this.endMonthErrMsg = 'Date must be in the past';
+      this.endMonthErrMsg[index] = 'Date must be in the past';
+      errorCount++;
       return false;
     }
-    delete this.endMonthErrMsg;
-    return true;
+    if(!this.endYearValidate(index)) return false;
+    if(errorCount === 0) {
+      delete this.endMonthErrMsg[index];
+      return true;
+    }
+
   }
   endYearValidate(index) {
+    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].endyear) {
-      this.endYearErrMsg = 'Please select end date year';
+      this.endYearErrMsg[index] = 'Please select end date year';
+      errorCount++;
       return false;
     }
     if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
-      this.startMonthErrMsg = 'Date must be greater than previous date';
-      delete this.endMonthErrMsg;
-      delete this.endYearErrMsg;
+      this.startMonthErrMsg[index] = 'Date must be greater than previous date';
+      delete this.endMonthErrMsg[index];
+      delete this.endYearErrMsg[index];
+      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
-      this.endMonthErrMsg = 'Date must be in the past';
-      delete this.startMonthErrMsg;
-      delete this.endYearErrMsg;
+      this.endMonthErrMsg[index] = 'Date must be in the past';
+      delete this.startMonthErrMsg[index];
+      delete this.endYearErrMsg[index];
+      errorCount++;
       return false;
     }
-    delete this.endYearErrMsg;
-    return true;
+    if(!this.endMonthValidate(index)) {
+      errorCount++;
+      return false;
+    }
+    if(errorCount === 0) {
+      delete this.endMonthErrMsg[index];
+      delete this.endYearErrMsg[index];
+      return true;
+    }
+
   }
 
   selfValidate() {
