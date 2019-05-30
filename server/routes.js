@@ -66,13 +66,13 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll)); // will be deleted
-router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
+router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage)); // will be deleted
 router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations)); // will be deleted
 
 // Companies
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet)); // will be deleted
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent)); // will be deleted
-router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
+router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage)); // will be deleted
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter)); // will be deleted
 router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates)); // will be deleted
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail)); // will be deleted
