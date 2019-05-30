@@ -15,7 +15,6 @@ export class WhyWorkComponent implements OnInit {
   }
 
   selfValidate() {
-    console.log(this.why_work)
     if(!this.why_work) {
       this.errMsg = 'Please enter why work';
       return false;

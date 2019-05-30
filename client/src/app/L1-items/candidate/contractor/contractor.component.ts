@@ -3,7 +3,7 @@ import {LocationsComponent} from '../locations/locations.component';
 import { RoleComponent} from '../role/role.component';
 import { checkNumber } from '../../../../services/object';
 import { constants } from '../../../../constants/constants';
-
+import { regexs } from '../../../../constants/regex';
 @Component({
   selector: 'app-i-forme-contractor',
   templateUrl: './contractor.component.html',
@@ -107,7 +107,7 @@ export class ContractorComponent implements OnInit {
         return false;
       }
       if(this.contractor['agency_website']) {
-        const regex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,10}(:[0-9]{1,5})?(\\/.*)?$");
+        const regex = new RegExp(regexs.url_regex);
         if (!regex.test(this.contractor['agency_website'])) {
           this.agencyErrMsg = 'Enter url in proper format';
           return false;

@@ -26,6 +26,7 @@ export class DropdownMultiselectComponent implements OnInit {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 300);
+
     if(!this.label) {
       this.labelClass = 'invisible';
       this.label = "Don't show";

@@ -29,6 +29,7 @@ import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-s
 import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
 import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work-history.component';
 import { EducationHistoryComponent } from '../../L1-items/candidate/education-history/education-history.component';
+import { LocationsComponent } from '../../L1-items/candidate/locations/locations.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -64,6 +65,7 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(LanguagesComponent) languageExp: LanguagesComponent;
   @ViewChild(WorkHistoryComponent) workHistoryComp: WorkHistoryComponent;
   @ViewChild(EducationHistoryComponent) educationHistoryComp: EducationHistoryComponent;
+  @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -165,6 +167,7 @@ export class CandidateEditComponent implements OnInit {
   update_candidate_profile(){
     console.log("submit");
     let errorCount = 0;
+    let visaRequired = 0;
     let queryBody : any = {};
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
@@ -238,22 +241,43 @@ export class CandidateEditComponent implements OnInit {
     else errorCount++;
 
     if(this.volunteerCheck) {
+      visaRequired = 0;
       if(this.volunteerType.selfValidate()) {
+        if(this.volunteerType.volunteer['location']) {
+          let location = this.volunteerType.volunteer['location'];
+          if(location.filter(i => i.visa_needed === true).length === location.length) {
+            visaRequired = 1;
+          }
+        }
         queryBody.vounteer = this.volunteerType.volunteer;
       }
       else errorCount++;
     }
 
-
     if( this.contractorCheck) {
+      visaRequired = 0;
       if(this.contractorType.selfValidate()) {
+        if(this.contractorType.contractor['location']) {
+          let location = this.contractorType.contractor['location'];
+          if(location.filter(i => i.visa_needed === true).length === location.length) {
+            visaRequired = 1;
+          }
+        }
         queryBody.contractor = this.contractorType.contractor;
       }
       else errorCount++;
     }
 
     if(this.employeeCheck) {
+      visaRequired=0;
       if(this.employeeType.selfValidate()) {
+        if(this.employeeType.employee['location']) {
+          let location = this.employeeType.employee['location'];
+          if(location.filter(i => i.visa_needed === true).length === location.length) {
+            visaRequired=0;
+          }
+        }
+
         queryBody.employee = this.employeeType.employee;
       }
       else errorCount++;
@@ -332,6 +356,12 @@ export class CandidateEditComponent implements OnInit {
           });
     }
 
+    if(visaRequired === 1) {
+      console.log('error msg');
+      // this.locationComp.errorMsg = 'Please select at least one location which you can work in without needing a visa';
+      errorCount++;
+    }
+
     if(errorCount === 0) {
       if(this.viewBy === 'candidate') {
         this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)
@@ -363,10 +393,6 @@ export class CandidateEditComponent implements OnInit {
     else {
       this.error_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
-    console.log(errorCount);
-    console.log(queryBody);
-
-
   }
 
   checkWorkType() {

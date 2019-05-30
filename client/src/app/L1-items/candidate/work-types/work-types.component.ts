@@ -16,7 +16,6 @@ export class WorkTypesComponent implements OnInit {
 
   ngOnInit() {
     this.selectedWorkType = this.work_types;
-    console.log(this.work_types);
   }
 
   selfValidate() {
@@ -26,12 +25,6 @@ export class WorkTypesComponent implements OnInit {
     }
     delete this.errMsg;
     return true;
-  }
-
-  workTypesChange(value) {
-    console.log(value);
-    this.selectedWorkType = value;
-
   }
 
 }

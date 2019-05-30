@@ -19,7 +19,7 @@
   <div class = "col-md-12" >
     <!--<app-i-forme-year-of-experience [platforms]="commercial_platforms" (change)="yearValidate()" [errMsg]="yearErrMsg"></app-i-forme-year-of-experience>-->
     <app-c-forme-button-group *ngFor = "let obj of commercial_platforms; let i=index"
-                              [value]="obj" [label]="obj.name"
+                              [value]="obj.exp_year" [label]="obj.name"
                               (selectedValue)="selectedPlatform($event)"
                               [options]="experienceYears"
                               [errorMsg]="yearErrMsg[i]"

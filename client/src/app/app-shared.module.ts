@@ -11,7 +11,6 @@ import { DashboardComponent } from './L1-items/dashboard/dashboard.component';
 import { DropdownSingleComponent } from './L0-components/forms-edit/dropdown-single/dropdown-single.component';
 import { WizardsComponent } from './L0-components/navbars/wizards/wizards.component';
 import { AutosugguestValueComponent } from './L1-items/autosugguest-selected-cities-value/autosugguest-value.component';
-import { ValidationTextComponent } from './L0-components/forms-edit/validation-text/validation-text.component';
 import { HtmlAreaComponent } from './L0-components/forms-edit/html-area/html-area.component';
 import { TwitterShareComponent } from './L0-components/buttons/twitter-share/twitter-share.component';
 import { SocialLoginComponent } from './L0-components/buttons/social-login/social-login.component';
@@ -79,7 +78,7 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
     MatAutocompleteModule, ImageCropperModule
   ],
   declarations: [
-    SafeHtmlPipe, TextValueComponent, DashboardComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
+    SafeHtmlPipe, TextValueComponent, DashboardComponent, HtmlAreaComponent, TwitterShareComponent,
     DropdownSingleComponent, WizardsComponent, AutosugguestValueComponent, SocialLoginComponent,
     OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent, AutosuggestBadgesComponent,
     AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent, TextInputComponent,
@@ -97,7 +96,7 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
     MatAutocompleteModule, CommonModule, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent,
-    AutosugguestValueComponent, ValidationTextComponent, HtmlAreaComponent, TwitterShareComponent,
+    AutosugguestValueComponent, HtmlAreaComponent, TwitterShareComponent,
     SocialLoginComponent, OthersComponent, AlertsComponent, AutoSuggestCitiesComponent, AutosuggestSelectedValueComponent,
     AutosuggestBadgesComponent, AutosuggestCitiesSelectedValueComponent, AutosuggestCitiesBadgesComponent, AboutComponent,
     TextInputComponent, TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,

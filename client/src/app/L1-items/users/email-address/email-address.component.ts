@@ -11,7 +11,6 @@ export class EmailAddressComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.email_address);
   }
 
 }

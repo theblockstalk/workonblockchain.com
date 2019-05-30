@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { regexs } from '../../../../constants/regex';
 
 @Component({
   selector: 'app-i-forme-linkedin-url',
@@ -15,7 +16,7 @@ export class LinkedinUrlComponent implements OnInit {
 
   selfValidate() {
     if (this.linkedin_account) {
-      const regex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,10}(:[0-9]{1,5})?(\\/.*)?$");
+      const regex = new RegExp(regexs.url_regex);
       if (!regex.test(this.linkedin_account)) {
         this.errMsg = 'Enter url in proper format';
         return false;

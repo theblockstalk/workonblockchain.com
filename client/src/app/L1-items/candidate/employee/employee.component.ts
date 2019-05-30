@@ -3,6 +3,7 @@ import { constants } from '../../../../constants/constants';
 import {LocationsComponent} from '../locations/locations.component';
 import { RoleComponent} from '../role/role.component';
 import { checkNumber } from '../../../../services/object';
+
 @Component({
   selector: 'app-i-forme-employee',
   templateUrl: './employee.component.html',
@@ -12,6 +13,7 @@ export class EmployeeComponent implements OnInit {
   @Input() employee: object;
   @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
+
   positionTypes = constants.job_type;
   employement_availability = constants.workAvailability;
   currencies = constants.currencies;

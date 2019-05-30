@@ -14,11 +14,8 @@ export class FirstNameComponent implements OnInit {
   }
 
   selfValidate(){
-    console.log("self validate");
-    console.log(this.first_name);
     if(!this.first_name) {
       this.errMsg = "Please enter first name";
-      console.log("iffff error");
       return false;
     }
     delete this.errMsg;

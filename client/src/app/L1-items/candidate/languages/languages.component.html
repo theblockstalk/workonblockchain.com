@@ -17,7 +17,7 @@
   </div>
   <div class = "col-md-12">
     <app-c-forme-button-group *ngFor = "let obj of programming_languages; let i = index"
-                              [value]="obj" [label]="obj.language"
+                              [value]="obj.exp_year" [label]="obj.language"
                               (selectedValue)="selectedPlatform($event)"
                               [options]="experienceYears"
                               [errorMsg]="yearErrMsg[i]"

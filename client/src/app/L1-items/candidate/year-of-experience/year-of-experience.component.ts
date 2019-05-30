@@ -16,7 +16,7 @@ export class YearOfExperienceComponent implements OnInit {
   }
 
   yearValidate() {
-    console.log(this.errorMsg)
+    console.log(this.errorMsg);
   }
 
 
