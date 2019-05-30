@@ -5,7 +5,6 @@ const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const candidateHepler = require('../../../../test/api/users/candidate/candidateHelpers');
-const authenticateHepler = require('../../../../test/api/users/auth/authenticateHelpers');
 const docGenerator = require('../../../helpers/docGenerator');
 const userHelpers = require('../usersHelpers');
 
@@ -27,8 +26,6 @@ describe('verify email of candidate or company', function () {
         {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
-
-            await authenticateHepler.verifyClient(candidate.email);
             
             let candidateUserDoc = await Users.findOne({email: candidate.email});
             candidateUserDoc.is_verify.should.equal(0);

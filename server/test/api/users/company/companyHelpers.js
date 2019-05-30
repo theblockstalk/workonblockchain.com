@@ -3,7 +3,6 @@ const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const Users = require('../../../../model/users');
 const userHelpers = require('../usersHelpers');
-const companyWizardHelpers = require('./wizard/companyWizardHelpers');
 const should = chai.should();
 const fs = require('fs');
 
@@ -38,8 +37,6 @@ module.exports.signupCompanyAndCompleteProfile = async function signupCompanyAnd
     const res = await signupCompany(company);
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
-    await companyWizardHelpers.SummaryTnC(companyTnCWizard.termsID,companyTnCWizard, res.body.jwt_token);
-    await companyWizardHelpers.companyAboutWizard(aboutData, res.body.jwt_token);
 }
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){

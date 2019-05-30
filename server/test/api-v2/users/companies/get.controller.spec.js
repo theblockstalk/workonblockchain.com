@@ -39,7 +39,7 @@ describe('get current company detail', function () {
 
             const userDoc = await Users.findOne({email: company.email});
 
-            const isAdmin = false;
+            const isAdmin = true;
             const getAllCompanies = await companyHelper.getCompanies(isAdmin,userDoc.jwt_token);
 
             getAllCompanies.body[0]._creator.email.should.equal(company.email);

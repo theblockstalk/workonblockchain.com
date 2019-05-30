@@ -27,7 +27,7 @@ describe('create ref code for a user', function () {
             const candidate = docGenerator.candidate();
 
             const referralInfo = await referralsHelper.getRefCode(candidate.email);
-            const res = referralInfo.body;
+            const res = referralInfo.body.referral;
             res.email.should.equal(candidate.email);
         })
     })
@@ -44,7 +44,7 @@ describe('create ref code for a user', function () {
                 password: "Password1",
                 type: "candidate",
                 social_type : "",
-                referred_email : refDoc.body.email,
+                referred_email : refDoc.body.referral.email,
             }
             const profileData = docGenerator.profileData();
             const job = docGenerator.job();
@@ -57,8 +57,8 @@ describe('create ref code for a user', function () {
 
             const isAdmin = true;
             const referralDoc = await referralsHelper.getRefDetail(candidateUserDoc.referred_email, isAdmin,candidateUserDoc.jwt_token);
-            referralDoc.body.refDoc.email.should.equal(candidate.email);
-            referralDoc.body.refDoc.url_token.should.equal(refDoc.body.url_token);
+            referralDoc.body.referral.email.should.equal(candidate.email);
+            referralDoc.body.referral.url_token.should.equal(refDoc.body.referral.url_token);
 
         })
     })
@@ -72,9 +72,9 @@ describe('create ref code for a user', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const referreInfo = await referralsHelper.getRefCode(candidate.email);
 
-            const referralInfo = await referralsHelper.getRefreeInfo(referreInfo.body.url_token);
-            const res = referralInfo.body;
-            res.email.should.equal(referreInfo.body.email);
+            const referralInfo = await referralsHelper.getRefreeInfo(referreInfo.body.referral.url_token);
+            const res = referralInfo.body.email;
+            res.should.equal(referreInfo.body.referral.email);
         })
     })
 });

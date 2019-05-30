@@ -12,6 +12,7 @@ const companiesHelperV2 = require('../../../../api-v2/users/companies/companyHel
 const candidateHelperV2 = require('../../../../api-v2/users/candidates/candidateHelpers');
 const messages = require('../../../../../model/mongoose/messages');
 const companyHelper = require('../../../../../../server/test/api/users/company/companyHelpers');
+const currency = require('../../../../../controller/services/currency');
 
 const assert = chai.assert;
 const expect = chai.expect;
