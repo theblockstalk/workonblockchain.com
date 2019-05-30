@@ -448,7 +448,8 @@ export class CandidateEditComponent implements OnInit {
         }
       }
       else {
-        if(location.city) validatedLocation.push({city : location.city._id});
+        if(location.city) validatedLocation.push({city: location.city._id, visa_needed: location.visa_needed});
+        if(location.country) validatedLocation.push({country: location.country, visa_needed: location.visa_needed});
       }
     }
     return validatedLocation;
