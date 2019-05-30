@@ -18,7 +18,6 @@ export class WorkHistoryComponent implements OnInit {
   years = constants.year;
   month = constants.calen_month;
   current_work = constants.current_work;
-  // currentWorking = [false];
   companyErrMsg = [];
   positionErrMsg = [];
   locationErrMsg = [];
@@ -42,11 +41,6 @@ export class WorkHistoryComponent implements OnInit {
         )
       });
     }
-
-    console.log("ng on init");
-    console.log(this.ExperienceForm.value.ExpItems);
-    console.log(this.ExperienceForm.value.ExpItems[0].current_work_value)
-
   }
 
   private history_data(): FormGroup[]
@@ -63,11 +57,6 @@ export class WorkHistoryComponent implements OnInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 100);
-    // if(value && value.length > 0) {
-    //   this.currentWorking[index] = true;
-    // }
-    // else this.currentWorking[index] = false;
-    // console.log(this.currentWorking);
   }
 
   initExpRows()
@@ -84,7 +73,6 @@ export class WorkHistoryComponent implements OnInit {
       start_date:[],
       enddate:[],
       currentwork:[false],
-      // current_work_value:[]
     });
   }
 
@@ -137,100 +125,74 @@ export class WorkHistoryComponent implements OnInit {
     return true;
   }
   startMonthValidate(index) {
-    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].start_date) {
       this.startMonthErrMsg[index] = 'Please select start date month';
-      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
       this.startMonthErrMsg[index] = 'Date must be in the past';
-      errorCount++;
       return false;
     }
-    if(!this.startYearValidate(index)) {
-      errorCount++;
-      return false;
-    }
-    if(errorCount === 0) {
-      delete this.startMonthErrMsg[index];
-      return true;
-    }
+    delete this.startMonthErrMsg[index];
+    return true;
+
 
   }
   startYearValidate(index) {
-    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].startyear) {
       this.startYearErrMsg[index] = 'Please select start date year';
-      errorCount++;
       return false;
     }
     if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear)) {
-      this.startMonthErrMsg[index] = 'Date must be in the past';
-      errorCount++;
+      this.startYearErrMsg[index] = 'Date must be in the past';
       return false;
     }
 
-    if(errorCount === 0) {
-      delete this.startMonthErrMsg[index];
-      delete this.startYearErrMsg[index];
-      return true;
-    }
+    delete this.startYearErrMsg[index];
+    return true;
   }
   endMonthValidate(index) {
-    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].end_date) {
       this.endMonthErrMsg[index] = 'Please select end date month';
-      errorCount++;
       return false;
     }
-    if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
-      this.startMonthErrMsg[index] = 'Date must be greater than previous date';
-      errorCount++;
-      return false;
+    if(this.ExperienceForm.value.ExpItems[index].currentwork === false) {
+      if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
+        this.endMonthErrMsg[index] = 'Date must be in the past';
+        return false;
+      }
+      if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
+        this.startMonthErrMsg[index] = 'Date must be greater than previous date';
+        return false;
+      }
+
     }
-    if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
-      this.endMonthErrMsg[index] = 'Date must be in the past';
-      errorCount++;
-      return false;
-    }
-    if(!this.endYearValidate(index)) return false;
-    if(errorCount === 0) {
-      delete this.endMonthErrMsg[index];
-      return true;
-    }
+
+    delete this.endMonthErrMsg[index];
+    return true;
+
 
   }
   endYearValidate(index) {
-    let errorCount = 0;
     if(!this.ExperienceForm.value.ExpItems[index].endyear) {
       this.endYearErrMsg[index] = 'Please select end date year';
-      errorCount++;
       return false;
     }
-    if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
-      this.startMonthErrMsg[index] = 'Date must be greater than previous date';
-      delete this.endMonthErrMsg[index];
-      delete this.endYearErrMsg[index];
-      errorCount++;
-      return false;
+    if(this.ExperienceForm.value.ExpItems[index].currentwork === false) {
+      if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
+        this.endYearErrMsg[index] = 'Date must be in the past';
+        return false;
+      }
+      if(this.compareDates(this.ExperienceForm.value.ExpItems[index].start_date , this.ExperienceForm.value.ExpItems[index].startyear,this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear , this.ExperienceForm.value.ExpItems[index].currentwork)) {
+        this.startMonthErrMsg[index] = 'Date must be greater than previous date';
+        return false;
+      }
+
     }
-    if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[index].end_date , this.ExperienceForm.value.ExpItems[index].endyear)) {
-      this.endMonthErrMsg[index] = 'Date must be in the past';
-      delete this.startMonthErrMsg[index];
-      delete this.endYearErrMsg[index];
-      errorCount++;
-      return false;
-    }
-    if(!this.endMonthValidate(index)) {
-      errorCount++;
-      return false;
-    }
-    if(errorCount === 0) {
-      delete this.endMonthErrMsg[index];
-      delete this.endYearErrMsg[index];
-      return true;
-    }
+
+    delete this.startMonthErrMsg[index];
+    delete this.endYearErrMsg[index];
+    return true;
 
   }
 
@@ -239,41 +201,43 @@ export class WorkHistoryComponent implements OnInit {
     this.experiencearray = [];
     if(this.ExperienceForm.value.ExpItems.length > 0 ) {
       for (let key in this.ExperienceForm.value.ExpItems) {
-          const companyValid = this.companyValidate(key);
-          if(!companyValid) errorCount++;
-          const positionValid = this.positionValidate(key);
-          if(!positionValid) errorCount++;
-          const locationValid = this.locationValidate(key);
-          if(!locationValid) errorCount++;
-          const startMonthValid = this.startMonthValidate(key);
-          if(!startMonthValid) errorCount++;
-          const startYearValid = this.startYearValidate(key);
-          if(!startYearValid) errorCount++;
-          if(!this.ExperienceForm.value.ExpItems[key].currentwork) {
-            const endMonthValid = this.endMonthValidate(key);
-            if(!endMonthValid) errorCount++;
-            const endYearValid = this.endYearValidate(key);
-            if(!endYearValid) errorCount++;
+        const companyValid = this.companyValidate(key);
+        if(!companyValid) errorCount++;
+        const positionValid = this.positionValidate(key);
+        if(!positionValid) errorCount++;
+        const locationValid = this.locationValidate(key);
+        if(!locationValid) errorCount++;
+        const startMonthValid = this.startMonthValidate(key);
+        if(!startMonthValid) errorCount++;
+        const startYearValid = this.startYearValidate(key);
+        if(!startYearValid) errorCount++;
+        if(!this.ExperienceForm.value.ExpItems[key].currentwork) {
+          const endMonthValid = this.endMonthValidate(key);
+          if(!endMonthValid) errorCount++;
+          const endYearValid = this.endYearValidate(key);
+          if(!endYearValid) errorCount++;
+          if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
           }
+        }
 
-          if(errorCount === 0 ) {
-            let today = Date.now();
-            let end_date_format;
+        if(errorCount === 0 ) {
+          let today = Date.now();
+          let end_date_format;
 
-            const startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
-            const endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
-            const start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, startmonthIndex);
+          const startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+          const endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+          const start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, startmonthIndex);
 
-            if(this.ExperienceForm.value.ExpItems[key].currentwork) {
-              end_date_format = today;
-            }
-            else {
-              end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, endmonthIndex);
-
-            }
-            const experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : start_date_format,enddate : end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
-            this.experiencearray.push(experiencejson);
+          if(this.ExperienceForm.value.ExpItems[key].currentwork) {
+            end_date_format = today;
           }
+          else {
+            end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, endmonthIndex);
+
+          }
+          const experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : start_date_format,enddate : end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
+          this.experiencearray.push(experiencejson);
+        }
 
       }
       if(errorCount === 0) {
@@ -296,7 +260,7 @@ export class WorkHistoryComponent implements OnInit {
       return false;
     }
     else {
-      if(startDateFormat > endDateFormat) {
+      if(startmonth && startyear && startDateFormat > endDateFormat) {
         return true;
       }
       else {
