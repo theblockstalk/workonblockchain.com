@@ -60,7 +60,7 @@ export class UserService {
 
   candidate_detail(_id :any )
   {
-    return this.http.post(URL+'users/candidate_detail', {_id:_id}, {
+    return this.http.get(URL+'v2/users/candidates?user_id='+_id, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -191,32 +191,11 @@ export class UserService {
 
   }
 
-  create(user: User)
-  {
-    return this.http.post(URL+'users/candidates', user) .pipe(map(user => {
-      return user
-    }));
-
-  }
-
   create_employer(employer: any)
   {
     return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
       return employer
     }));
-
-  }
-
-  upload(image: string)
-  {
-    return this.http.post(URL+'/about', image) .pipe(map(user => {
-      return image;
-    }));
-  }
-
-  update(user: User)
-  {
-    return this.http.put(URL+'users/' + user._id, user);
 
   }
 
@@ -257,11 +236,6 @@ export class UserService {
 
   }
 
-  delete(_id: string)
-  {
-    return this.http.delete(URL+'users/' + _id);
-  }
-
   candidate_login(queryInput : any)
   {
     return this.http.post(URL+'v2/users/auth', queryInput)
@@ -277,37 +251,6 @@ export class UserService {
         }
 
       }));
-  }
-
-
-  company_terms(user_id: string, detail: any)
-  {
-
-    return this.http.put(URL+'users/company_wizard' , detail, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error));                }
-
-    }));
   }
 
   verify_email(email_hash: string)
@@ -505,7 +448,6 @@ export class UserService {
   get_user_messages(receiver_id: string, sender_id: any)
   {
     let queryString = '?user_id='+sender_id+'&admin=true';
-    //return this.http.get(URL+'v2/conversations/'+queryString, {
     return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -760,36 +702,6 @@ export class UserService {
     }));
   }
 
-  refered_id(_id: number , data : number)
-  {
-    return this.http.put(URL+'users/refered_id/' + _id, {info : data} ,  {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map(data => {
-
-      if (data)
-      {
-        return data;
-      }
-
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
@@ -854,36 +766,6 @@ export class UserService {
     }));
   }
 
-  update_candidate_profile(user_id: string, detail: any,  edu :any , history:any )
-  {
-
-    return this.http.post(URL+'users/update_candidate_profile' , { user_id : user_id ,detail: detail, education: edu  , work : history} , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
   allCompanies()
   {
     const admin = true;
@@ -977,35 +859,6 @@ export class UserService {
     }));
   }
 
-  update_chat_msg_status(receiver_id: string,status:number){
-    return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
   pages_content(info:any )
   {
     return this.http.post(URL+'v2/pages', {title:info.page_title, name:info.page_name, content: info.html_text}, {
@@ -1066,36 +919,6 @@ export class UserService {
           window.location.href = '/login';
         }
         else return throwError(error);
-      }
-
-    }));
-  }
-
-  set_unread_msgs_emails_status(status: any)
-  {
-    return this.http.post(URL+'users/set_unread_msgs_emails_status', {status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error )
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error.status));
       }
 
     }));
@@ -1289,28 +1112,6 @@ export class UserService {
         }
 
       }));
-  }
-  uploadCandImage(detail: any) {
-    return this.http.post(URL + 'users/image', detail, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) => {
-      if (res) {
-        return res;
-      }
-    }), catchError((error: any) => {
-      if (error) {
-        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-    }));
   }
 
   //will be changed to new rest API call

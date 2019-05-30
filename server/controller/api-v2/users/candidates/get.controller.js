@@ -20,13 +20,12 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-
     if (req.query.admin === true || req.query.admin === 'true') await auth.isAdmin(req);
 }
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    if ((req.query.admin === true || req.query.admin === 'true') || req.auth.user.type === 'company') {
+    if (req.query.admin === true || req.query.admin === 'true') {
         userId = req.query.user_id;
         const userDoc = await users.findByIdAndPopulate(userId);
         if(userDoc) {

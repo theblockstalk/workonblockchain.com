@@ -101,7 +101,7 @@
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id === currentUser._id;else second">
                         <li class="sent mb-3 col-md-12">
-                          <br><br>
+                          <br><br><br>
                           <p class = "p-2 send_p job-description rounded d-inline-block">
                             <!-- msg.message.approach.employee starts-->
                             <ng-container *ngIf="msg.message.approach && msg.message.approach.employee">
@@ -296,7 +296,7 @@
                       </ng-container>
                       <ng-template #second>
                         <li class="replies mb-3 col-md-12">
-                          <br><br>
+                          <br><br><br>
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
                             <!-- msg.message.approach.employee starts-->
