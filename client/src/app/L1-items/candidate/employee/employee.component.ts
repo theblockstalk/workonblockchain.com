@@ -11,6 +11,7 @@ import { checkNumber } from '../../../../services/object';
 })
 export class EmployeeComponent implements OnInit {
   @Input() employee: object;
+  @Input() errorMsg: string;
   @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
 

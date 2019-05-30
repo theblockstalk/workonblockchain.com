@@ -5,6 +5,9 @@
       (selectedItems)="contractor.location = $event"
     ></app-i-forme-locations>
   </div>
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
 
   <div class="col-md-12">
     <app-i-forme-role

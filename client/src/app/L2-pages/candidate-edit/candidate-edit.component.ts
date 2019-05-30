@@ -105,6 +105,7 @@ export class CandidateEditComponent implements OnInit {
   work_history = [];
   education_history = [];
   error_msg;
+  errMsg;
   constructor(private authenticationService: UserService, private router: Router) { }
 
   ngOnInit() {
@@ -249,8 +250,7 @@ export class CandidateEditComponent implements OnInit {
           if(location.filter(i => i.visa_needed === true).length === location.length) {
             visaRequired = 1;
           }
-          const locations = this.changeLocationToBEFormat(this.volunteerType.volunteer['location']);
-          this.volunteerType.volunteer['location'] = locations;
+
         }
         queryBody.volunteer = this.volunteerType.volunteer;
       }
@@ -266,8 +266,7 @@ export class CandidateEditComponent implements OnInit {
           if(location.filter(i => i.visa_needed === true).length === location.length) {
             visaRequired = 1;
           }
-          const locations = this.changeLocationToBEFormat(this.contractorType.contractor['location']);
-          this.contractorType.contractor['location'] = locations;
+
         }
         queryBody.contractor = this.contractorType.contractor;
       }
@@ -275,15 +274,13 @@ export class CandidateEditComponent implements OnInit {
     }
 
     if(this.employeeCheck) {
-      visaRequired=0;
+      visaRequired = 0;
       if(this.employeeType.selfValidate()) {
         if(this.employeeType.employee['location']) {
           let location = this.employeeType.employee['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
-            visaRequired=0;
+            visaRequired = 1;
           }
-          const locations = this.changeLocationToBEFormat(this.employeeType.employee['location']);
-          this.employeeType.employee['location'] = locations;
         }
 
         queryBody.employee = this.employeeType.employee;
@@ -366,11 +363,24 @@ export class CandidateEditComponent implements OnInit {
 
     if(visaRequired === 1) {
       console.log('error msg');
-      // this.locationComp.errorMsg = 'Please select at least one location which you can work in without needing a visa';
+      this.errMsg = 'Please select at least one location which you can work in without needing a visa';
       errorCount++;
     }
 
+
     if(errorCount === 0) {
+      if(this.employeeCheck) {
+        const locations = this.changeLocationToBEFormat(this.employeeType.employee['location']);
+        this.employeeType.employee['location'] = locations;
+      }
+      if(this.contractorCheck) {
+        const locations = this.changeLocationToBEFormat(this.contractorType.contractor['location']);
+        this.contractorType.contractor['location'] = locations;
+      }
+      if(this.volunteerCheck) {
+        const locations = this.changeLocationToBEFormat(this.volunteerType.volunteer['location']);
+        this.volunteerType.volunteer['location'] = locations;
+      }
       if(this.viewBy === 'candidate') {
         this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)
           .subscribe(

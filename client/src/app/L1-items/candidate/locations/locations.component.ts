@@ -58,8 +58,7 @@ export class LocationsComponent implements OnInit {
       this.errorMsg = "Please select atleast one location";
       return false;
     }
-    console.log("lococococ");
-    console.log(this.selectedLocation);
+
     delete this.errorMsg;
     return true;
   }

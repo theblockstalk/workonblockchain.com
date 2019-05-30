@@ -12,6 +12,7 @@ import { RoleComponent} from '../role/role.component';
 })
 export class VolunteerComponent implements OnInit {
   @Input() volunteer: object;
+  @Input() errorMsg: string;
   @ViewChild(LocationsComponent) location: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
   errMsg;

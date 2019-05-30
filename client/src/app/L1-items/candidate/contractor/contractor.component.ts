@@ -11,6 +11,7 @@ import { regexs } from '../../../../constants/regex';
 })
 export class ContractorComponent implements OnInit {
   @Input() contractor: any = {};
+  @Input() errorMsg: string;
   @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
   currencies = constants.currencies;

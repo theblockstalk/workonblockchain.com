@@ -25,7 +25,7 @@ module.exports = async function (req, res) {
         }
 
     }
-    if(queryInput.options && queryInput.options.countries === 'true') {
+    if(queryInput.options && queryInput.options.countries) {
         const countriesEnum = enumerations.countries;
         let count = 0;
         for(let countryEnum of countriesEnum) {

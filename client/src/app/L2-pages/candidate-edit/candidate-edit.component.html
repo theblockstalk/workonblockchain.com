@@ -114,7 +114,7 @@
               <div class="col-md-12">
                 <h4>Employee</h4>
               </div>
-              <app-i-forme-employee [employee]="employee"></app-i-forme-employee>
+              <app-i-forme-employee [employee]="employee" [errorMsg]="errMsg"></app-i-forme-employee>
             </div>
 
             <hr *ngIf = "contractorCheck" />
@@ -122,7 +122,7 @@
               <div class="col-md-12">
                 <h4>Contractor</h4>
               </div>
-              <app-i-forme-contractor [contractor]="contractor" ></app-i-forme-contractor>
+              <app-i-forme-contractor [contractor]="contractor" [errorMsg]="errMsg" ></app-i-forme-contractor>
             </div>
 
             <hr *ngIf="volunteerCheck" />
@@ -130,7 +130,7 @@
               <div class="col-md-12">
                 <h4>Volunteer</h4>
               </div>
-              <app-i-forme-volunteer [volunteer]="volunteer" ></app-i-forme-volunteer>
+              <app-i-forme-volunteer [volunteer]="volunteer" [errorMsg]="errMsg" ></app-i-forme-volunteer>
             </div>
 
           </section>
