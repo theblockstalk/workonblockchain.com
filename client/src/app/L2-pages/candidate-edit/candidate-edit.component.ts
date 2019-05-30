@@ -243,13 +243,16 @@ export class CandidateEditComponent implements OnInit {
     if(this.volunteerCheck) {
       visaRequired = 0;
       if(this.volunteerType.selfValidate()) {
+        console.log(this.volunteerType.volunteer['location']);
         if(this.volunteerType.volunteer['location']) {
           let location = this.volunteerType.volunteer['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
             visaRequired = 1;
           }
+          const locations = this.changeLocationToBEFormat(this.volunteerType.volunteer['location']);
+          this.volunteerType.volunteer['location'] = locations;
         }
-        queryBody.vounteer = this.volunteerType.volunteer;
+        queryBody.volunteer = this.volunteerType.volunteer;
       }
       else errorCount++;
     }
@@ -257,11 +260,14 @@ export class CandidateEditComponent implements OnInit {
     if( this.contractorCheck) {
       visaRequired = 0;
       if(this.contractorType.selfValidate()) {
+        console.log(this.contractorType.contractor['location']);
         if(this.contractorType.contractor['location']) {
           let location = this.contractorType.contractor['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
             visaRequired = 1;
           }
+          const locations = this.changeLocationToBEFormat(this.contractorType.contractor['location']);
+          this.contractorType.contractor['location'] = locations;
         }
         queryBody.contractor = this.contractorType.contractor;
       }
@@ -276,6 +282,8 @@ export class CandidateEditComponent implements OnInit {
           if(location.filter(i => i.visa_needed === true).length === location.length) {
             visaRequired=0;
           }
+          const locations = this.changeLocationToBEFormat(this.employeeType.employee['location']);
+          this.employeeType.employee['location'] = locations;
         }
 
         queryBody.employee = this.employeeType.employee;
@@ -408,6 +416,34 @@ export class CandidateEditComponent implements OnInit {
     const volunteer = value.find(x => x === 'volunteer');
     if (volunteer) this.volunteerCheck = true;
     else this.volunteerCheck = false;
+  }
+
+  changeLocationToBEFormat(array){
+    let validatedLocation = [];
+    let objExist = false;
+    console.log(array)
+    for(let location of array) {
+      if(location.name) {
+        if(location.name.includes('city')) {
+          objExist = true;
+          validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
+        }
+        if(location.name.includes('country')) {
+          objExist = true;
+          validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
+        }
+        if(location.name === 'Remote') {
+          objExist = true;
+          validatedLocation.push({remote: true, visa_needed : location.visa_needed });
+        }
+      }
+      else {
+        if(location.city) validatedLocation.push({city : location.city._id});
+      }
+    }
+    return validatedLocation;
+
+
   }
 
 }

@@ -14,6 +14,7 @@ export class LocationsComponent implements OnInit {
   controllerOptions: any = {};
   autoSuggestController;
   resultItemDisplay;
+  object;
   constructor(public authenticationService: UserService) { }
 
   ngOnInit() {
@@ -57,24 +58,48 @@ export class LocationsComponent implements OnInit {
       this.errorMsg = "Please select atleast one location";
       return false;
     }
+    console.log("lococococ");
+    console.log(this.selectedLocation);
     delete this.errorMsg;
     return true;
   }
 
   itemSelected(locationObj) {
+    this.object = locationObj;
     if(this.selectedLocation.length > 9) {
       this.errorMsg = 'You can select maximum 10 locations';
+      return false;
+      setInterval(() => {
+        delete this.errorMsg;
+        return true;
+      }, 3000);
     }
     else {
       if(this.selectedLocation.find(x => x.name === locationObj.name)) {
         this.errorMsg = 'This location has already been selected';
+        return false;
+
         setInterval(() => {
-          this.errorMsg = "" ;
-        }, 4000);
+          delete this.errorMsg;
+          return true;
+        }, 3000);
+
       }
       else {
-        if(locationObj) this.selectedLocation.push({_id:locationObj._id ,  name: locationObj.name});
-        else this.selectedLocation.push({ name: locationObj.name});
+        if(locationObj) this.selectedLocation.push({_id:locationObj._id ,  name: locationObj.name, visa_needed: false});
+        else this.selectedLocation.push({ name: locationObj.name, visa_needed: false});
+      }
+    }
+    if(this.selectedLocation.length > 0) {
+      this.selectedLocation.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      if(this.selectedLocation.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.selectedLocation.find((obj => obj.name === 'Remote'));
+        this.selectedLocation.splice(0, 0, remoteValue);
+        this.selectedLocation = filter_array(this.selectedLocation);
       }
     }
     this.selectedItems.emit(this.selectedLocation);
@@ -120,6 +145,7 @@ export class LocationsComponent implements OnInit {
         locationArray = removeDuplication(locationArray);
       }
       this.selectedLocation = locationArray;
+      this.object = this.selectedLocation;
     }
 
   }

@@ -64,7 +64,8 @@ export class EmployeeComponent implements OnInit {
   }
 
   availabilityValidate() {
-    if(!this.employee['employement_availability']) {
+    console.log(this.employee['employment_availability']);
+    if(!this.employee['employment_availability']) {
       this.availErrMsg = 'Please select employment availability';
       return false;
     }
