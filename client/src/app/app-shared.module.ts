@@ -43,7 +43,7 @@ import { ToggleSwitchComponent } from './L0-components/forms-edit/toggle-switch/
 import { DropdownAutosuggestComponent} from './L0-components/forms-edit/dropdown-autosuggest/dropdown-autosuggest.component';
 import { TimeSelectComponent } from './L0-components/forms-edit/time-select/time-select.component';
 import { DateSelectComponent } from './L0-components/forms-edit/date-select/date-select.component';
-import { ButtonGroupComponent } from './L0-components/forms-edit/button-group/button-group.component';
+import { ButtonGroupComponent } from './L1-items/candidate/button-group/button-group.component';
 import { FileComponent } from './L0-components/forms-edit/file/file.component';
 import { TextAreaViewComponent} from './L0-components/forms-view/text-area/text-area.component';
 import { HtmlAreaViewComponent } from './L0-components/forms-view/html-area/html-area.component';
