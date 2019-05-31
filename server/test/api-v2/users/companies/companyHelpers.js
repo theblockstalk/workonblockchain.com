@@ -53,10 +53,11 @@ const getCurrentCompany = module.exports.getCurrentCompany = async function getC
     return res;
 }
 
-const getCompanies = module.exports.getCompanies = async function getCompanies(isAdmin,jwtToken){
+const getCompanies = module.exports.getCompanies = async function getCompanies(data,jwtToken){
     const res = await chai.request(server)
-        .get('/v2/users/companies?is_admin=' + isAdmin)
-        .set('Authorization', jwtToken);
+        .post('/v2/users/companies/search?admin=true')
+        .set('Authorization', jwtToken)
+        .send(data);
     res.should.have.status(200);
     return res;
 }

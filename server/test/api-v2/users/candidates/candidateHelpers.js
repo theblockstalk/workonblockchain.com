@@ -43,7 +43,7 @@ const changeCandidateStatus = module.exports.changeCandidateStatus = async funct
 
 const getAll = module.exports.getAll = async function getAll(isAdmin,jwtToken) {
     const res = await chai.request(server)
-        .post('/v2/users/candidates/search?is_admin='+isAdmin)
+        .post('/v2/users/candidates/search?admin='+isAdmin)
         .set('Authorization', jwtToken)
         .send();
     res.should.have.status(200);
@@ -52,7 +52,7 @@ const getAll = module.exports.getAll = async function getAll(isAdmin,jwtToken) {
 
 const candidateFilter = module.exports.candidateFilter = async function candidateFilter(isAdmin,filterData,jwtToken) {
     const res = await chai.request(server)
-        .post('/v2/users/candidates/search?is_admin='+isAdmin)
+        .post('/v2/users/candidates/search?admin='+isAdmin)
         .set('Authorization', jwtToken)
         .send(filterData);
     res.should.have.status(200);
