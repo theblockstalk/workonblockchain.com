@@ -10,7 +10,10 @@ module.exports.request = {
 };
 
 const querySchema = new Schema({
-    admin: Boolean,
+    admin: {
+        type: String,
+        enum: ['true']
+    },
     user_id: String
 });
 
@@ -20,12 +23,12 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-    if (req.query.admin === true || req.query.admin === 'true') await auth.isAdmin(req);
+    if (req.query.admin) await auth.isAdmin(req);
 }
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    if (req.query.admin === true || req.query.admin === 'true') {
+    if (req.query.admin) {
         userId = req.query.user_id;
         const userDoc = await users.findByIdAndPopulate(userId);
         if(userDoc) {
@@ -33,7 +36,6 @@ module.exports.endpoint = async function (req, res) {
             if (!userDoc.password_hash) password = false;
             const filterData = filterReturnData.removeSensativeData(userDoc);
             filterData.password = password;
-            //if(req.auth.user.type === 'company') res.send(await filterReturnData.candidateAsCompany(userDoc, userId)); will do later
             res.send(filterData);
         }
         else {

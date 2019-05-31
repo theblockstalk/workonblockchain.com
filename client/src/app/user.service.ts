@@ -30,7 +30,7 @@ export class UserService {
 
   getAll()
   {
-    return this.http.post(URL+'v2/users/candidates/search?is_admin=true' , '' , {
+    return this.http.post(URL+'v2/users/candidates/search?admin=true' , '' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -738,7 +738,7 @@ export class UserService {
   admin_candidate_filter(queryBody:any)
   {
     const admin = true;
-    return this.http.post(URL+'v2/users/candidates/search?is_admin='+admin, queryBody, {
+    return this.http.post(URL+'v2/users/candidates/search?admin='+admin, queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -769,7 +769,7 @@ export class UserService {
   allCompanies()
   {
     const admin = true;
-    return this.http.get(URL+'v2/users/companies?user_id='+this.currentUser._id+'&is_admin='+admin, {
+    return this.http.get(URL+'v2/users/companies?user_id='+this.currentUser._id+'&admin='+admin, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

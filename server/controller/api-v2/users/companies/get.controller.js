@@ -12,7 +12,10 @@ module.exports.request = {
 
 const querySchema = new Schema({
     user_id: String,
-    is_admin: Boolean
+    admin: {
+        type: String,
+        enum: ['true']
+    }
 });
 
 module.exports.inputValidation = {
@@ -21,12 +24,12 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-    if(req.query.is_admin) await auth.isAdmin(req);
+    if(req.query.admin) await auth.isAdmin(req);
 }
 
 module.exports.endpoint = async function (req, res) {
     const userDoc = req.auth.user;
-    if((req.query.is_admin === true || req.query.is_admin === 'true') && userDoc.is_admin === 1){
+    if(req.query.admin  && userDoc.is_admin === 1){
         let filteredUsers = [];
         const userDoc = await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
             const empoyerProfile = await companies.findOne({_creator : companyUserDoc._id});

@@ -188,7 +188,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       let queryBody : any = {};
       if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
-      if(this.searchWord && this.searchWord.length > 0) queryBody.why_work = this.searchWord;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
       if(this.candidate_status) queryBody.is_verify = this.candidate_status;
       if(this.candidate_status_account) queryBody.disable_account = this.candidate_status_account;
       this.authenticationService.admin_candidate_filter(queryBody)

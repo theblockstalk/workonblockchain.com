@@ -81,11 +81,17 @@ const bodySchema = new Schema({
     work_type: {
         type: String,
         enum: enumerations.workTypes
+    },
+    name: {
+        type: String
     }
 });
 
 const querySchema = new Schema({
-    is_admin: Boolean
+    admin: {
+        type: String,
+        enum: ['true']
+    }
 });
 
 module.exports.inputValidation = {
@@ -94,133 +100,96 @@ module.exports.inputValidation = {
 }
 
 module.exports.auth = async function (req) {
-    if(req.query.is_admin === 'true' || req.query.is_admin === true) await auth.isAdmin(req);
+    if(req.query.admin) await auth.isAdmin(req);
     else await auth.isValidCompany(req);
 }
 
-const filterData = async function filterData(candidateDetail) {
-    return filterReturnData.removeSensativeData(candidateDetail);
-}
-
 module.exports.endpoint = async function (req, res) {
-    if(req.query.is_admin === 'true' || req.query.is_admin === true && req.auth.user.is_admin === 1) {
-        if(!objects.isEmpty(req.body)){
-            let queryBody = req.body;
+    if(req.query.admin && req.auth.user.is_admin === 1) {
+        let queryBody = req.body;
 
-            let filter = {};
-            if (queryBody.is_verify) filter.is_verify = 1;
-            if (queryBody.status) filter.status = queryBody.status;
-            if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
-            if (queryBody.disable_account) filter.disable_account = true;
-            else filter.disable_account = false;
+        let filter = {};
+        if (queryBody.is_verify) filter.is_verify = 1;
+        if (queryBody.status) filter.status = queryBody.status;
+        if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
+        if (queryBody.disable_account || queryBody.disable_account === false) filter.disable_account = queryBody.disable_account;
 
-            let search = {};
-            if (queryBody.why_work) {
-                search.name = queryBody.why_work
-            }
+        let search = {};
+        if (queryBody.name) {
+            search.name = queryBody.name
+        }
 
-            let candidateDocs = await candidateSearch.candidateSearch(filter, search);
+        if(!objects.isEmpty(filter) || !objects.isEmpty(search)) {
+            let candidateDocs = await
+            candidateSearch.candidateSearch(filter, search);
 
             for (let candidateDoc of candidateDocs.candidates) {
-                await filterData(candidateDoc);
+                filterReturnData.removeSensativeData(candidateDoc);
             }
 
             res.send(candidateDocs.candidates);
         }
-        else {
+        else{
             let filteredUsers = [];
             await users.findAndIterate({type: 'candidate'}, async function (userDoc) {
                 filterReturnData.removeSensativeData(userDoc);
                 filteredUsers.push(userDoc);
             });
 
-            if (filteredUsers && filteredUsers.length > 0) {
-                res.send(filteredUsers);
-            }
+            if (filteredUsers && filteredUsers.length > 0) res.send(filteredUsers);
 
-            else {
-                errors.throwError("No candidate exists", 404)
-            }
+            else errors.throwError("No candidate exists", 404);
         }
     }
-    if(req.auth.user.type === 'company'){
-        if(!objects.isEmpty(req.body)){
-            let userId = req.auth.user._id;
-            let queryBody = req.body;
-            let search = {}, order = {};
-            if (queryBody.work_type) search.work_type = queryBody.work_type;
-            if (queryBody.why_work) search.why_work = queryBody.why_work;
-            if (queryBody.programming_languages) search.programming_languages = queryBody.programming_languages;
-            if (queryBody.years_exp_min) search.years_exp_min = queryBody.years_exp_min;
-            if (queryBody.locations) {
-                if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
-                    const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
-                    queryBody.locations[index] = {remote : true};
-                }
-                search.locations = queryBody.locations;
+    else{
+        let userId = req.auth.user._id;
+        let queryBody = req.body;
+        let search = {}, order = {};
+        if (queryBody.work_type) search.work_type = queryBody.work_type;
+        if (queryBody.why_work) search.why_work = queryBody.why_work;
+        if (queryBody.programming_languages) search.programming_languages = queryBody.programming_languages;
+        if (queryBody.years_exp_min) search.years_exp_min = queryBody.years_exp_min;
+        if (queryBody.locations) {
+            if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
+                const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
+                queryBody.locations[index] = {remote : true};
             }
-            if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
-            if (queryBody.roles) search.roles = queryBody.roles;
-            if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
-            if (queryBody.current_currency && queryBody.current_salary) {
-                search.salary = {
-                    current_currency: queryBody.current_currency,
-                    current_salary: queryBody.current_salary
-                }
-            }
-
-            if (queryBody.expected_hourly_rate && queryBody.current_currency) {
-                search.hourly_rate = {
-                    expected_hourly_rate: queryBody.expected_hourly_rate,
-                    current_currency: queryBody.current_currency
-                }
-            }
-            if(queryBody.base_country) search.base_country = queryBody.base_country;
-
-            if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
-
-            let candidateDocs = await candidateSearch.candidateSearch({
-                is_verify: 1,
-                status: 'approved',
-                disable_account: false
-            }, search, order);
-
-            let filterArray = [];
-            for(let candidateDetail of candidateDocs.candidates) {
-                const filterDataRes = await filterData(candidateDetail , userId);
-                filterArray.push(filterDataRes);
-            }
-
-            if(filterArray.length > 0) {
-                res.send(filterArray);
-            }
-            else {
-                errors.throwError("No candidates matched this search criteria", 404);
+            search.locations = queryBody.locations;
+        }
+        if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
+        if (queryBody.roles) search.roles = queryBody.roles;
+        if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
+        if (queryBody.current_currency && queryBody.current_salary) {
+            search.salary = {
+                current_currency: queryBody.current_currency,
+                current_salary: queryBody.current_salary
             }
         }
-        else {
-            let userId = req.auth.user._id;
-            const candidateDocs = await
-            candidateSearch.candidateSearch({
-                is_verify: 1,
-                status: 'approved',
-                disable_account: false
-            }, {});
-            let filterArray = [];
-            for (let candidateDetail of candidateDocs.candidates) {
-                if(req.auth.user.type === 'company')
-                   candidateDetail = await filterReturnData.candidateAsCompany(candidateDetail,userId);
-                const filterDataRes = await
-                filterData(candidateDetail, userId);
-                filterArray.push(filterDataRes);
-            }
 
-            if (filterArray.length > 0) {
-                res.send(filterArray);
-            }
-            else {
-                errors.throwError("No candidates matched the search", 404);
+        if (queryBody.expected_hourly_rate && queryBody.current_currency) {
+            search.hourly_rate = {
+                expected_hourly_rate: queryBody.expected_hourly_rate,
+                current_currency: queryBody.current_currency
             }
         }
+        if(queryBody.base_country) search.base_country = queryBody.base_country;
+
+        if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
+
+        let candidateDocs = await candidateSearch.candidateSearch({
+            is_verify: 1,
+            status: 'approved',
+            disable_account: false
+        }, search, order);
+
+        let filterArray = [];
+        for(let candidateDetail of candidateDocs.candidates) {
+            candidateDetail = await filterReturnData.candidateAsCompany(candidateDetail,userId);
+            const filterDataRes = filterReturnData.removeSensativeData(candidateDetail);
+            filterArray.push(filterDataRes);
+        }
+
+        if(filterArray.length > 0) res.send(filterArray);
+        else errors.throwError("No candidates matched this search criteria", 404);
     }
 }

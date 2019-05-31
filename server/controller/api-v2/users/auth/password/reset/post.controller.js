@@ -21,7 +21,6 @@ module.exports.inputValidation = {
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
-    console.log(queryBody.email);
     let name;
 
     const userDoc  = await users.findOneByEmail( queryBody.email );
