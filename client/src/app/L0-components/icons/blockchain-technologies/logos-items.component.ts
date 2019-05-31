@@ -7,7 +7,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class LogosItemsComponent implements OnInit {
   @Input() value: string; // "bitcoin", "ethereum", .......
-  displayText;
   srcUrl;
   altText;
   constructor() { }
@@ -15,8 +14,6 @@ export class LogosItemsComponent implements OnInit {
   ngOnInit() {
     this.srcUrl = '/assets/images/all_icons/blockchain/' + this.value + '.png';
     this.altText = this.value;
-    // this.displayText = this.value;
-
   }
 
 }

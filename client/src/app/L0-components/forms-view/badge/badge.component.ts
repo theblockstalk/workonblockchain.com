@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BadgeViewComponent implements OnInit {
   @Input() class: string;
-  @Input() rounded = true; //optional
+  @Input() rounded = true; //optional true, false
   constructor() { }
 
   ngOnInit() {

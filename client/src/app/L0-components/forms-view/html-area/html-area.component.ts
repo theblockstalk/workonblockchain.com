@@ -6,7 +6,6 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./html-area.component.css']
 })
 export class HtmlAreaViewComponent implements OnInit {
-  // @Input() label: string;
   @Input() value: string;
   constructor() { }
 
