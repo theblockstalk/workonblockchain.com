@@ -3,7 +3,7 @@ const Schema = require('mongoose').Schema;
 const EmployerProfile = require('../../../../../model/employer_profile');
 const messages = require('../../../../../model/mongoose/messages');
 const errors = require('../../../../services/errors');
-const filterReturnData = require('../../../../api/users/filterReturnData');
+const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
 
 module.exports.request = {

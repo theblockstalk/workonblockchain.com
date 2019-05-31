@@ -3,7 +3,7 @@ const Schema = require('mongoose').Schema;
 const companies = require('../../../../model/mongoose/company');
 const Users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
-const filterReturnData = require('../../../api/users/filterReturnData');
+const filterReturnData = require('../filterReturnData');
 
 module.exports.request = {
     type: 'get',

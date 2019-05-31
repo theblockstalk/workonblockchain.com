@@ -2,7 +2,7 @@ const users = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const Schema = require('mongoose').Schema;
-const verify_send_email = require('../../../../controller/api/users/auth/verify_send_email');
+const verify_send_email = require('../auth/verify_send_email');
 
 module.exports.request = {
     type: 'post',

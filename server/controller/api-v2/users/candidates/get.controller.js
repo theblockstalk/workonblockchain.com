@@ -2,7 +2,7 @@ const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
-const filterReturnData = require('../../../api/users/filterReturnData');
+const filterReturnData = require('../filterReturnData');
 
 module.exports.request = {
     type: 'get',

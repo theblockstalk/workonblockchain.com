@@ -27,7 +27,7 @@ try {
     app.use(bodyParser.json());
 
     app.use("/users",sanitizer.middleware);
-    
+
     app.use(routesV2);
     app.use(requestLogger);
 

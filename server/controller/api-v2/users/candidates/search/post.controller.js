@@ -2,9 +2,9 @@ const auth = require('../../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
-const filterReturnData = require('../../../../../../server/controller/api/users/filterReturnData');
+const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
-const candidateSearch = require('../../../../../../server/controller/api/users/candidate/searchCandidates');
+const candidateSearch = require('../../candidate/searchCandidates');
 const objects = require('../../../../services/objects');
 
 module.exports.request = {

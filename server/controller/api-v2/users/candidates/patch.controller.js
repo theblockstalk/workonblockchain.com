@@ -7,7 +7,7 @@ const multer = require('../../../../controller/middleware/multer');
 const errors = require('../../../services/errors');
 
 const users = require('../../../../model/mongoose/users');
-const filterReturnData = require('../../../api/users/filterReturnData');
+const filterReturnData = require('../filterReturnData');
 const objects = require('../../../services/objects');
 
 module.exports.request = {
