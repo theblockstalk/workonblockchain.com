@@ -366,7 +366,7 @@ export class UserService {
     }));
   }
 
-  getCurrentCompany(_id: string)
+  getCurrentCompany(_id: string, admin: boolean)
   {
     if(!_id) {
       localStorage.removeItem('currentUser');
@@ -378,7 +378,10 @@ export class UserService {
 
     }
     else {
-      return this.http.get(URL+'v2/users/companies?user_id=' +_id, {
+      let queryString = '?user_id='+_id;
+      if(admin) queryString = '?user_id='+_id+'&admin=true';
+
+      return this.http.get(URL+'v2/users/companies'+ queryString, {
         headers: new HttpHeaders().set('Authorization', this.token)
       }).pipe(map((res: Response) =>
       {
@@ -766,10 +769,9 @@ export class UserService {
     }));
   }
 
-  allCompanies()
+  allCompanies(queryBody:any)
   {
-    const admin = true;
-    return this.http.get(URL+'v2/users/companies?user_id='+this.currentUser._id+'&admin='+admin, {
+    return this.http.post(URL+'v2/users/companies/search?admin=true', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -802,7 +804,7 @@ export class UserService {
 
   admin_company_filter(queryBody : any)
   {
-    return this.http.post(URL+'v2/users/companies/search', queryBody, {
+    return this.http.post(URL+'v2/users/companies/search?admin=true', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

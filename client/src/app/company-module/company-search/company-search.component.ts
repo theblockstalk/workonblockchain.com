@@ -278,7 +278,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       })
 
 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data => {
             if (data['terms'] === false) {
@@ -897,7 +897,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         });
 
 
-    this.authenticationService.getCurrentCompany(this.currentUser._id)
+    this.authenticationService.getCurrentCompany(this.currentUser._id, false)
       .subscribe(
         data => {
           this.company_name = data['company_name'];

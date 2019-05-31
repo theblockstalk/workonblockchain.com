@@ -33,8 +33,16 @@ const bodySchema = new Schema({
     }
 });
 
+const querySchema = new Schema({
+    admin: {
+        type: String,
+        enum: ['true']
+    }
+});
+
 module.exports.inputValidation = {
-    body: bodySchema
+    body: bodySchema,
+    query: querySchema
 };
 
 const filterData = async function filterData(companyDetail) {
@@ -43,12 +51,11 @@ const filterData = async function filterData(companyDetail) {
 
 module.exports.auth = async function (req) {
     await auth.isAdmin(req);
+    if(!req.query.admin) throw new Error("User is not an admin", 403);
 }
 
 module.exports.endpoint = async function (req, res) {
     let queryBody = req.body;
-    if(queryBody.disable_account === true) queryBody.disable_account = true;
-    else queryBody.disable_account = false;
 
     let userIds= [];
     let queryString = [];
@@ -72,7 +79,7 @@ module.exports.endpoint = async function (req, res) {
         queryString.push(isApproveFilter);
     }
 
-    if(queryBody.disable_account) {
+    if(queryBody.disable_account || queryBody.disable_account === false){
         const isApproveFilter = {"users.disable_account" : queryBody.disable_account};
         queryString.push(isApproveFilter);
     }

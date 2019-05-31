@@ -55,7 +55,7 @@ export class AdminCompanyDetailComponent implements OnInit {
 
     if(this.user_id && this.admin_log.is_admin === 1 && this.currentUser)
     {
-      this.authenticationService.getCurrentCompany(this.user_id)
+      this.authenticationService.getCurrentCompany(this.user_id, true)
         .subscribe(
           data =>
           {

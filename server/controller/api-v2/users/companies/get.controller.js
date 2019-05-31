@@ -28,25 +28,11 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    const userDoc = req.auth.user;
-    if(req.query.admin  && userDoc.is_admin === 1){
-        let filteredUsers = [];
-        const userDoc = await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
-            const empoyerProfile = await companies.findOne({_creator : companyUserDoc._id});
-            if(empoyerProfile) filterReturnData.removeSensativeData(empoyerProfile._creator);
-            filteredUsers.push(empoyerProfile);
-        });
-
-        if(filteredUsers && filteredUsers.length > 0) res.send(filteredUsers);
-        else errors.throwError("No company exists", 404);
+    const employerProfile = await
+    companies.findOneAndPopulate(req.query.user_id);
+    if (employerProfile) {
+        const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
+        res.send(employerCreatorRes);
     }
-    else {
-        const employerProfile = await
-        companies.findOneAndPopulate(req.query.user_id);
-        if (employerProfile) {
-            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
-            res.send(employerCreatorRes);
-        }
-        else errors.throwError("User not found", 404);
-    }
+    else errors.throwError("Company doc not found", 404);
 }

@@ -193,7 +193,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         prefItems: this._fb.array([this.initPrefRows()])
       });
 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {

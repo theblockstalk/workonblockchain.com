@@ -84,7 +84,9 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.length=0;
     this.info=[];
     this.response = "";
-    this.authenticationService.allCompanies()
+    let queryBody : any = {};
+    queryBody.is_approved = 1;
+    this.authenticationService.allCompanies(queryBody)
       .subscribe(
         data =>
         {

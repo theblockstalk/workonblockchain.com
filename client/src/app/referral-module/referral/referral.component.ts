@@ -103,7 +103,7 @@ export class ReferralComponent implements OnInit {
 
     if(this.currentUser && this.currentUser.type === 'company'){
       this.show_refreal = 10;
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data => {
             if(data) {

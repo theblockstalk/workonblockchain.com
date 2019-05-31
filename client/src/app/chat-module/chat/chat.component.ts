@@ -197,7 +197,7 @@ export class ChatComponent implements OnInit {
           );
       }
       else{
-        this.authenticationService.getCurrentCompany(this.currentUser._id)
+        this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data => {
               this.profile_pic = data['company_logo'];
