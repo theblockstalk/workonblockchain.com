@@ -48,7 +48,8 @@ module.exports.endpoint = async function (req, res) {
         const candidateDoc = await users.findByIdAndPopulate(req.query.user_id);
         if(candidateDoc ) {
             if(req.auth.user.type === 'company'){
-                const filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
+                let filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
+                filterData = filterReturnData.removeSensativeData(filterData);
                 res.send(filterData);
             }
             else res.send(candidateDoc);
