@@ -39,7 +39,9 @@ const endpoints = [
     require('./controller/api-v2/users/companies/get.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/companies/search/post.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/candidates/search/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/referral/email/post.controller') //done (on BE & FE)
+    require('./controller/api-v2/referral/email/post.controller'), //done (on BE & FE)
+    require('./controller/api-v2/users/patch.controller'), //done (on BE & FE)
+    require('./controller/api-v2/get.controller')
 ];
 
 function isEmpty(obj) {

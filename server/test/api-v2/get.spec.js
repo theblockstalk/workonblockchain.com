@@ -15,12 +15,12 @@ describe('healthCheck', function () {
         //await mongo.drop();
     })
 
-    describe('GET /', () => {
+    describe('GET /v2/healthCheck', () => {
 
         it('it should get a successful page', async () => {
 
             let res = await chai.request(server)
-                .get('/')
+                .get('/v2/healthCheck')
                 .send();
 
             res.should.have.status(200);
@@ -33,7 +33,7 @@ describe('healthCheck', function () {
 
         it('it should throw an Application error', async function () {
         let res = await chai.request(server)
-            .get('/?error=true')
+            .get('/v2/healthCheck?error=true')
             .send();
 
         res.should.have.status(400);
@@ -47,7 +47,7 @@ describe('healthCheck', function () {
         it('it should throw a normal error', async function()  {
 
             let res = await chai.request(server)
-                .get('/?error=true&raw=true')
+                .get('/v2/healthCheck?error=true&raw=true')
                 .send();
 
             res.should.have.status(500);

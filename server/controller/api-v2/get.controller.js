@@ -1,8 +1,22 @@
+const Schema = require('mongoose').Schema;
 const version = require('../../config/version.json').version;
 const errors = require('../services/errors');
 const logger = require('../services/logger');
 
-module.exports = function healthCheck(req, res) {
+module.exports.request = {
+    type: 'get',
+    path: '/healthCheck'
+};
+
+const querySchema = new Schema({
+    error: String
+})
+
+module.exports.inputValidation = {
+    query: querySchema
+};
+
+module.exports.endpoint = async function (req, res) {
     logger.debug("Health check request: ", req);
     if (req.query && req.query.error) {
         if (req.query.raw) {
@@ -16,4 +30,4 @@ module.exports = function healthCheck(req, res) {
         message: "this is a health check for the API",
         version: version
     });
-};
+}

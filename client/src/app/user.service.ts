@@ -988,7 +988,8 @@ export class UserService {
   }
 
   updateExplanationPopupStatus(status:any){
-    return this.http.post(URL+'users/updatePopupStatus', {status:status}, {
+    return this.http.patch(URL+'v2/users/', {},{
+    //return this.http.post(URL+'users/updatePopupStatus', {status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
