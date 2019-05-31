@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../../../user.service' ;
+import {UserService} from '../../../../user.service' ;
 
 @Component({
-  selector: 'app-edit-candidate-profile',
+  selector: 'app-u-users-talent-edit',
   templateUrl: './edit-candidate-profile.component.html',
   styleUrls: ['./edit-candidate-profile.component.css']
 })
@@ -20,8 +20,6 @@ export class EditCandidateProfileComponent implements OnInit {
         .subscribe(data =>
           {
             if(data) {
-              console.log("user doc");
-              console.log(this.userDoc);
               this.userDoc = data;
             }
 

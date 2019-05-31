@@ -197,7 +197,11 @@
 
           <div class = "form-group text-right">
             <a [routerLink]="['/candidate_profile']"  class = "btn btn-secondary text-white mr-2">Cancel</a>
-            <button type="submit" class = "btn btn-primary">Save</button>
+            <app-c-button-normal
+              level="primary"
+              buttonType="submit"
+              label="Save"
+            ></app-c-button-normal>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}

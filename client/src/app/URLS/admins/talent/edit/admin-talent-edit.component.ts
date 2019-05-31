@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
-import {UserService} from '../../../../../user.service' ;
+import {UserService} from '../../../../user.service' ;
 
 @Component({
-  selector: 'app-admin-talent-edit',
+  selector: 'app-u-admin-talent-edit',
   templateUrl: './admin-talent-edit.component.html',
   styleUrls: ['./admin-talent-edit.component.css']
 })
