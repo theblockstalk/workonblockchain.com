@@ -1,6 +1,5 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import { constants } from '../../../../constants/constants';
-// import { YearOfExperienceComponent } from '../year-of-experience/year-of-experience.component';
 
 @Component({
   selector: 'app-i-forme-commercial-experience',
@@ -10,12 +9,10 @@ import { constants } from '../../../../constants/constants';
 export class CommercialExperienceComponent implements OnInit {
   @Input() commercial_platforms;
   @Input() description_commercial_platforms: string;
-  // @ViewChild(YearOfExperienceComponent) yearExp: YearOfExperienceComponent;
   blockchainPlatforms = constants.blockchainPlatforms;
   experienceYears = constants.experienceYears;
   desErrMsg;
   platform = [];
-  // yearErrMsg;
   platformsYear;
   yearErrMsg = [];
   constructor() { }
@@ -58,7 +55,6 @@ export class CommercialExperienceComponent implements OnInit {
 
   oncommerciallyOptions(array)
   {
-    console.log(this.platform);
     this.commercial_platforms = [];
     for(let val of array) {
      this.commercial_platforms.push({name: val});
@@ -66,14 +62,11 @@ export class CommercialExperienceComponent implements OnInit {
 
     for(let platform of this.commercial_platforms) {
       if(this.platformsYear.find(x=> x.name === platform.name)) {
-        console.log("if");
         let object = this.platformsYear.find(x=> x.name === platform.name);
-        console.log(object)
         let index = this.commercial_platforms.findIndex(x => x.name === platform.name);
         this.commercial_platforms[index].exp_year = object.exp_year;
       }
     }
-    console.log(this.commercial_platforms);
   }
 
   selectedPlatform(obj) {
@@ -82,7 +75,6 @@ export class CommercialExperienceComponent implements OnInit {
       this.commercial_platforms[index].exp_year = obj.exp_year;
     }
     else this.commercial_platforms.push(obj);
-    console.log(this.commercial_platforms);
   }
 
 

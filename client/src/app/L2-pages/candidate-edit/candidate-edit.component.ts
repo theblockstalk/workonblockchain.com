@@ -80,7 +80,7 @@ export class CandidateEditComponent implements OnInit {
   personal_website_url;
   nationality;
   image;
-  field_description = '<ul><li> 2-5 sentences </li><li> Quick overview of your current role and responsibilities and your principal development stack and skills </li><li> What value do you add to a project? </li></ul>';
+  bio_description = '<ul><li> 2-5 sentences </li><li> Quick overview of your current role and responsibilities and your principal development stack and skills </li><li> What value do you add to a project? </li></ul>';
   description;
   country;
   city;
@@ -110,60 +110,61 @@ export class CandidateEditComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.userDoc);
+    const candidateSubDoc = this.userDoc['candidate'];
     this.email_address = this.userDoc['email'];
     this.first_name = this.userDoc['first_name'];
     this.last_name = this.userDoc['last_name'];
     this.contact_number = this.userDoc['contact_number'];
-    if(this.userDoc['candidate'].github_account) this.github_account = this.userDoc['candidate'].github_account;
-    if(this.userDoc['candidate'].stackexchange_account) this.stackexchange_account = this.userDoc['candidate'].stackexchange_account;
-    if(this.userDoc['candidate'].linkedin_account) this.linkedin_account = this.userDoc['candidate'].linkedin_account;
-    if(this.userDoc['candidate'].medium_account) this.medium_account = this.userDoc['candidate'].medium_account;
-    if(this.userDoc['candidate'].stackoverflow_url) this.stackoverflow_url = this.userDoc['candidate'].stackoverflow_url;
-    if(this.userDoc['candidate'].personal_website_url)  this.personal_website_url = this.userDoc['candidate'].personal_website_url;
+    if(candidateSubDoc.github_account) this.github_account = candidateSubDoc.github_account;
+    if(candidateSubDoc.stackexchange_account) this.stackexchange_account = candidateSubDoc.stackexchange_account;
+    if(candidateSubDoc.linkedin_account) this.linkedin_account = candidateSubDoc.linkedin_account;
+    if(candidateSubDoc.medium_account) this.medium_account = candidateSubDoc.medium_account;
+    if(candidateSubDoc.stackoverflow_url) this.stackoverflow_url = candidateSubDoc.stackoverflow_url;
+    if(candidateSubDoc.personal_website_url)  this.personal_website_url = candidateSubDoc.personal_website_url;
     this.nationality = this.userDoc['nationality'];
     if(this.userDoc['image']) this.image = this.userDoc['image'];
-    this.description = this.userDoc['candidate'].description;
-    this.country = this.userDoc['candidate'].base_country;
-    this.city = this.userDoc['candidate'].base_city;
-    this.current_salary = this.userDoc['candidate'].current_salary;
-    this.current_currency = this.userDoc['candidate'].current_currency;
-    if(this.userDoc['candidate'].employee) {
+    this.description = candidateSubDoc.description;
+    this.country = candidateSubDoc.base_country;
+    this.city = candidateSubDoc.base_city;
+    this.current_salary = candidateSubDoc.current_salary;
+    this.current_currency = candidateSubDoc.current_currency;
+    if(candidateSubDoc.employee) {
       this.employeeCheck = true;
       this.work_types.push('employee');
-      this.employee = this.userDoc['candidate'].employee;
+      this.employee = candidateSubDoc.employee;
     }
-    if(this.userDoc['candidate'].contractor) {
+    if(candidateSubDoc.contractor) {
       this.contractorCheck = true;
       this.work_types.push('contractor');
-      this.contractor = this.userDoc['candidate'].contractor;
+      this.contractor = candidateSubDoc.contractor;
     }
-    if(this.userDoc['candidate'].volunteer) {
+    if(candidateSubDoc.volunteer) {
       this.volunteerCheck = true;
       this.work_types.push('volunteer');
-      this.volunteer = this.userDoc['candidate'].volunteer;
+      this.volunteer = candidateSubDoc.volunteer;
     }
-    this.why_work = this.userDoc['candidate'].why_work;
-    this.interest_areas = this.userDoc['candidate'].interest_areas;
-    if(this.userDoc['candidate'] && this.userDoc['candidate'].blockchain) {
-      if(this.userDoc['candidate'].blockchain.commercial_platforms) {
-        this.commercial_platforms = this.userDoc['candidate'].blockchain.commercial_platforms;
-        this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
+    this.why_work = candidateSubDoc.why_work;
+    this.interest_areas = candidateSubDoc.interest_areas;
+    if(candidateSubDoc && candidateSubDoc.blockchain) {
+      if(candidateSubDoc.blockchain.commercial_platforms) {
+        this.commercial_platforms = candidateSubDoc.blockchain.commercial_platforms;
+        this.description_commercial_platforms = candidateSubDoc.blockchain.description_commercial_platforms;
       }
-      if(this.userDoc['candidate'].blockchain.experimented_platforms) {
-        this.experimented_platforms = this.userDoc['candidate'].blockchain.experimented_platforms;
-        this.description_experimented_platforms = this.userDoc['candidate'].blockchain.description_experimented_platforms;
+      if(candidateSubDoc.blockchain.experimented_platforms) {
+        this.experimented_platforms = candidateSubDoc.blockchain.experimented_platforms;
+        this.description_experimented_platforms = candidateSubDoc.blockchain.description_experimented_platforms;
       }
-      if(this.userDoc['candidate'].blockchain.commercial_skills) {
-        this.commercial_skills = this.userDoc['candidate'].blockchain.commercial_skills;
-        this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
+      if(candidateSubDoc.blockchain.commercial_skills) {
+        this.commercial_skills = candidateSubDoc.blockchain.commercial_skills;
+        this.description_commercial_skills = candidateSubDoc.blockchain.description_commercial_skills;
       }
 
     }
-    if(this.userDoc['candidate'].programming_languages) {
-      this.programming_languages = this.userDoc['candidate'].programming_languages;
+    if(candidateSubDoc.programming_languages) {
+      this.programming_languages = candidateSubDoc.programming_languages;
     }
-    if(this.userDoc['candidate'].work_history) this.work_history = this.userDoc['candidate'].work_history;
-    if(this.userDoc['candidate'].education_history) this.education_history = this.userDoc['candidate'].education_history;
+    if(candidateSubDoc.work_history) this.work_history = candidateSubDoc.work_history;
+    if(candidateSubDoc.education_history) this.education_history = candidateSubDoc.education_history;
   }
 
   update_candidate_profile(){
