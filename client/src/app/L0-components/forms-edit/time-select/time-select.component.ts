@@ -9,7 +9,7 @@ export class TimeSelectComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
   @Input() placeholder = '00:00'; //optional
-  @Input() value: string;
+  @Input() value: string; // date format
   constructor() { }
 
   ngOnInit() {

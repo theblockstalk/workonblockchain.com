@@ -7,8 +7,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AutosuggestSelectedValueComponent implements OnInit {
   @Input() label: string;
-  @Input() class: string; //"badge-primary", "badge-secondary"....
-  @Output() deleteItem: EventEmitter<any> = new EventEmitter<any>();
+  @Input() class: string; //"primary", "secondary", "danger", "warning"
+  @Output() deleteItem: EventEmitter<''> = new EventEmitter<''>();
   constructor() { }
 
   ngOnInit() { }

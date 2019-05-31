@@ -16,7 +16,6 @@ import { SocialLoginComponent } from './L0-components/buttons/social-login/socia
 import { OthersComponent } from './L0-components/buttons/normal/normal.component';
 import { AlertsComponent } from './L0-components/alerts/alerts/alerts.component';
 import { AutosuggestSelectedValueComponent } from './L0-components/forms-edit/badge/badge.component';
-import { AutosuggestCitiesSelectedValueComponent } from './L0-components/forms-edit/autosuggest-cities-selected-value/autosuggest-cities-selected-value.component';
 import { TextInputComponent } from './L0-components/forms-edit/text-input/text-input.component';
 import { TextAreaComponent } from './L0-components/forms-edit/text-area/text-area.component';
 import { RadioComponent } from './L0-components/forms-edit/radio/radio.component';
@@ -75,8 +74,7 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
   declarations: [
     SafeHtmlPipe, TextValueComponent, DashboardComponent, HtmlAreaComponent, TwitterShareComponent,
     DropdownSingleComponent, WizardsComponent, SocialLoginComponent,
-    OthersComponent, AlertsComponent, AutosuggestSelectedValueComponent,
-    AutosuggestCitiesSelectedValueComponent, TextInputComponent,
+    OthersComponent, AlertsComponent, AutosuggestSelectedValueComponent, TextInputComponent,
     TextAreaComponent, RadioComponent, FirstNameComponent, WorkHistoryComponent, CandidateEditComponent,
     CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent, GithubUrlComponent, LastNameComponent,
     LinkedinUrlComponent, MediumUrlComponent, NationalityComponent, StackexchangeUrlComponent, DropdownMultiselectComponent,
@@ -92,7 +90,7 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
     MatAutocompleteModule, CommonModule, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent,
     HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent, OthersComponent, AlertsComponent,
-    AutosuggestSelectedValueComponent, AutosuggestCitiesSelectedValueComponent, TextInputComponent, TextAreaComponent,
+    AutosuggestSelectedValueComponent, TextInputComponent, TextAreaComponent,
     RadioComponent, FirstNameComponent,
     WorkHistoryComponent, CandidateEditComponent, CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent,
     GithubUrlComponent, LastNameComponent, LinkedinUrlComponent, MediumUrlComponent, NationalityComponent,

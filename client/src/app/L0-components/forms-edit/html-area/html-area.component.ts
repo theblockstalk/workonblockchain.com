@@ -9,10 +9,10 @@ export class HtmlAreaComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
   @Input() placeholder: string; //optional
-  @Input() formattingBar: boolean; //true, false
+  @Input() formattingBar: boolean = false; //true, false optional
   @Input() height: number; //optional
   @Input() width: number; //optional
-  @Input() value;
+  @Input() value: string;
   ckeEditorConfig;
   formattingClass;
   constructor() { }

@@ -7,7 +7,7 @@ declare var $:any;
   styleUrls: ['./dropdown-single.component.css']
 })
 export class DropdownSingleComponent implements OnInit {
-  @Input() options: object;
+  @Input() options: string[];
   @Input() label: string;
   @Input() value: string;
   @Input() errorMsg: string;

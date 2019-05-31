@@ -9,12 +9,12 @@ import { unCheckCheckboxes } from '../../../../services/object';
 export class CheckboxComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
-  @Input() options;
-  @Input() value;
-  @Input() iconClass: string; //for work types
-  @Input() column: string //"3", "4"
-  @Input() icon: boolean; // for blockchain listing
-  @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Input() options: Array<object>;
+  @Input() value: Array<string>;
+  @Input() iconClass: string; //for work types optional
+  @Input() column: number; //3, 4
+  @Input() icon: boolean; // for blockchain listing optional
+  @Output() selectedItem: EventEmitter<Array<string>> = new EventEmitter<Array<string>>(); // ['bitcoin', 'ethereum'.....]
   selectedOptions = [];
   constructor() { }
 

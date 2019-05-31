@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class TextAreaComponent implements OnInit {
   @Input() label: string;
   @Input() placeholder: string; //optional
-  @Input() rows: number; //"3", "4" , ....
+  @Input() rows: number; //3, 4 , ....
   @Input() errorMsg: string;
   @Input() value: string;
   @Input() field_description: string; //optional

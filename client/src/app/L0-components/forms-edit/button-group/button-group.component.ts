@@ -7,10 +7,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonGroupComponent implements OnInit {
   @Input() label: string;
-  @Input() options: object;
+  @Input() options: Array<object>; // [{name: '1-2', value:'1-2', checked: true}, ................]
   @Input() errorMsg: string;
-  @Input() value: string;
-  @Output() selectedValue: EventEmitter<object> = new EventEmitter<object>();
+  @Input() value: string; // '1-2', '2-4', '4-6', '6+'
+  @Output() selectedValue: EventEmitter<object> = new EventEmitter<object>(); // {label: 'bitcoin', exp_year: '1-2'}
   platforms;
   constructor() { }
 

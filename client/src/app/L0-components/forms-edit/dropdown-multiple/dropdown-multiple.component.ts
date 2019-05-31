@@ -7,12 +7,11 @@ declare var $:any;
   styleUrls: ['./dropdown-multiple.component.css']
 })
 export class DropdownMultiselectComponent implements OnInit {
-  @Input() options;
-  @Input() label;
-  @Input() value;
-  @Input() checked;
-  @Input() errorMsg;
-  @Output () selectedValue: EventEmitter<any> = new EventEmitter<any>();
+  @Input() options: string[];
+  @Input() label: string;
+  @Input() value: Array<string>; //['Albanian', 'Algerian' ...........]
+  @Input() errorMsg: string;
+  @Output () selectedValue: EventEmitter<Array<string>> = new EventEmitter<Array<string>>(); //['Albanian', 'Algerian' ..........]
   optionsType;
   labelClass;
   constructor() { }

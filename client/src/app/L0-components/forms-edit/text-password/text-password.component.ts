@@ -6,7 +6,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./text-password.component.css']
 })
 export class TextPasswordComponent implements OnInit {
-  @Input() label: string;
   @Input() placeholder: string; //optional
   @Input() errorMsg: string;
   @Output() textPasswordValue: EventEmitter<string> = new EventEmitter<string>();

@@ -11,12 +11,10 @@ export class OthersComponent implements OnInit {
   @Input() alignment: string; // "left", "center", "right"
   @Input() buttonType: string; // "submit", "reset", "button"
   @Input() disabled: boolean; // true, false
-  class;
 
   constructor() { }
 
   ngOnInit() {
-    this.class = this.level + ' ' + this.alignment;
   }
 
 }

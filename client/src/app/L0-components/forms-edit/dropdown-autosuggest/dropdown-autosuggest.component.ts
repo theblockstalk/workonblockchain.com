@@ -15,7 +15,7 @@ export class DropdownAutosuggestComponent implements OnInit {
   @Input() controllerOptions: object; //optional
   @Input() controller; // fn(text: string, options: {})
   @Input() displayItems; //fn(item: {})
-  @Output() selectedItems : EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedItems : EventEmitter<Array<object>> = new EventEmitter<Array<object>>();
   selectedValueArray = [];
   textValue;
   optionValues = [];
@@ -27,17 +27,14 @@ export class DropdownAutosuggestComponent implements OnInit {
 
   autoSuggest() {
     if(this.textValue !== '') {
-      console.log(this.controller);
       this.controller(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
-              console.log(data);
               this.optionValues = this.displayItems(data);
             }
           },
           error =>
           {
-
           });
     }
   }
