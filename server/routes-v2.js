@@ -52,23 +52,25 @@ function isEmpty(obj) {
 }
 
 const validateInputs = function(request, inputSchemas) {
-    console.log('in validating inputs');
-    const validationTypes = ['query', 'params', 'body'];
-    const modelName = request.type.toUpperCase() + request.path;
-    const models = {
-        'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
-        'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
-        'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
-    };
+    if (inputSchemas) {
+        console.log('in validating inputs');
+        const validationTypes = ['query', 'params', 'body'];
+        const modelName = request.type.toUpperCase() + request.path;
+        const models = {
+            'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
+            'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
+            'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
+        };
 
-    return function (req) {
-        for (const type of validationTypes) {
-            const input = req[type];
-            if (input && !isEmpty(input)) {
-                console.log('validating ' + type, input);
-                const doc = new models[type](input);
-                const error = doc.validateSync();
-                if (error) throw new Error(error);
+        return function (req) {
+            for (const type of validationTypes) {
+                const input = req[type];
+                if (input && !isEmpty(input)) {
+                    console.log('validating ' + type, input);
+                    const doc = new models[type](input);
+                    const error = doc.validateSync();
+                    if (error) throw new Error(error);
+                }
             }
         }
     }

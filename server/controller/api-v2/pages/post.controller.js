@@ -52,7 +52,7 @@ module.exports.endpoint = async function (req, res) {
     logger.info(req.body);
     const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.content, true);
     let pageData;
-    if(queryBody.name === 'Terms and Condition for company' || queryBody.name === 'Terms and Condition for candidate')
+    if(queryBody.name === 'Terms and Condition for company' || queryBody.name === 'Terms and Condition for candidate' || queryBody.name === 'Privacy Notice')
         pageData = await insertNewPage(queryBody.name, sanitizedHtml, queryBody.title,userId);
     else{
         const pagesDoc = await pages.findOne({ page_name: queryBody.name});

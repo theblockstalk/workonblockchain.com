@@ -17,14 +17,6 @@ module.exports.request = {
     path: '/users/auth/'
 };
 
-const querySchema = new Schema({
-    name: String
-})
-
-module.exports.inputValidation = {
-    query: querySchema
-};
-
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
 }

@@ -19,12 +19,12 @@ module.exports.inputValidation = {
 };
 
 module.exports.endpoint = async function (req, res) {
-    let passwordHash = req.query.forgot_password_token;
+    let passwordToken = req.query.forgot_password_token;
     let queryBody = req.query;
 
-    let payloaddata = jwtToken.verifyJwtToken(passwordHash);
+    let payloaddata = jwtToken.verifyJwtToken(passwordToken);
     if((payloaddata.exp - payloaddata.iat) === 3600) {
-        const userDoc = await users.findOne({ forgot_password_key : passwordHash});
+        const userDoc = await users.findOne({ forgot_password_key : passwordToken});
         if(userDoc) {
             const salt = crypto.getRandomString(128);
             const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.new_password, salt);

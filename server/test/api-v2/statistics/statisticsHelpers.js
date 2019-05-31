@@ -12,3 +12,12 @@ module.exports.getStatistics = async function getStatistics() {
     res.should.have.status(200);
     return res;
 }
+
+const getMetrics = module.exports.getMetrics = async function getMetrics(admin,jwtToken) {
+    const res = await chai.request(server)
+        .get('/v2/statistics?admin='+admin)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
