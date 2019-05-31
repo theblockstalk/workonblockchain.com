@@ -7,9 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class DashboardComponent implements OnInit {
-  @Input() linkText;
-  @Input() routeLink;
-  @Input() iconClass;
+  @Input() linkText: string;
+  @Input() routeLink: string;
+  @Input() iconClass: string;
 
   constructor() { }
 

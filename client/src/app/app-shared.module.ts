@@ -60,7 +60,6 @@ import {WhyWorkComponent} from './L1-items/candidate/why-work/why-work.component
 import { InterestsComponent } from './L1-items/candidate/interests/interests.component';
 import { CommercialExperienceComponent } from './L1-items/candidate/commercial-experience/commercial-experience.component';
 import { LogosItemsComponent } from './L0-components/icons/blockchain-technologies/logos-items.component';
-import { YearOfExperienceComponent } from './L1-items/candidate/year-of-experience/year-of-experience.component';
 import { ExperimentedWithComponent } from './L1-items/candidate/experimented-with/experimented-with.component';
 import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skills/commercial-skills.component';
 import { LanguagesComponent } from './L1-items/candidate/languages/languages.component';
@@ -83,15 +82,13 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
     ButtonGroupComponent, FileComponent, TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent,
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
-    CommercialSkillsComponent, YearOfExperienceComponent, ExperimentedWithComponent, LanguagesComponent,
-    EducationHistoryComponent
+    CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
     MatAutocompleteModule, CommonModule, TextValueComponent, DashboardComponent, DropdownSingleComponent, WizardsComponent,
     HtmlAreaComponent, TwitterShareComponent, SocialLoginComponent, OthersComponent, AlertsComponent,
-    AutosuggestSelectedValueComponent, TextInputComponent, TextAreaComponent,
-    RadioComponent, FirstNameComponent,
+    AutosuggestSelectedValueComponent, TextInputComponent, TextAreaComponent, RadioComponent, FirstNameComponent,
     WorkHistoryComponent, CandidateEditComponent, CheckboxComponent, BioComponent, ContactNumberComponent, EmailAddressComponent,
     GithubUrlComponent, LastNameComponent, LinkedinUrlComponent, MediumUrlComponent, NationalityComponent,
     StackexchangeUrlComponent, DropdownMultiselectComponent, PersonalWebsiteUrlComponent, StackoverflowUrlComponent,
@@ -99,7 +96,7 @@ import { EducationHistoryComponent } from './L1-items/candidate/education-histor
     DropdownAutosuggestComponent, TimeSelectComponent, DateSelectComponent, ButtonGroupComponent, FileComponent,
     TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent, DateComponent, WorkTypesComponent,
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
-    InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent, YearOfExperienceComponent,
+    InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent
   ]
 })

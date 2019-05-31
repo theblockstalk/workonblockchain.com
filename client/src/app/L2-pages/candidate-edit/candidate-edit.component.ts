@@ -114,20 +114,20 @@ export class CandidateEditComponent implements OnInit {
     this.email_address = this.userDoc['email'];
     this.first_name = this.userDoc['first_name'];
     this.last_name = this.userDoc['last_name'];
-    this.contact_number = this.userDoc['contact_number'];
+    if(this.userDoc['contact_number']) this.contact_number = this.userDoc['contact_number'];
     if(candidateSubDoc.github_account) this.github_account = candidateSubDoc.github_account;
     if(candidateSubDoc.stackexchange_account) this.stackexchange_account = candidateSubDoc.stackexchange_account;
     if(candidateSubDoc.linkedin_account) this.linkedin_account = candidateSubDoc.linkedin_account;
     if(candidateSubDoc.medium_account) this.medium_account = candidateSubDoc.medium_account;
     if(candidateSubDoc.stackoverflow_url) this.stackoverflow_url = candidateSubDoc.stackoverflow_url;
     if(candidateSubDoc.personal_website_url)  this.personal_website_url = candidateSubDoc.personal_website_url;
-    this.nationality = this.userDoc['nationality'];
+    if(this.userDoc['nationality']) this.nationality = this.userDoc['nationality'];
     if(this.userDoc['image']) this.image = this.userDoc['image'];
-    this.description = candidateSubDoc.description;
-    this.country = candidateSubDoc.base_country;
-    this.city = candidateSubDoc.base_city;
-    this.current_salary = candidateSubDoc.current_salary;
-    this.current_currency = candidateSubDoc.current_currency;
+    if(candidateSubDoc.description) this.description = candidateSubDoc.description;
+    if(candidateSubDoc.base_country) this.country = candidateSubDoc.base_country;
+    if(candidateSubDoc.base_city) this.city = candidateSubDoc.base_city;
+    if(candidateSubDoc.current_salary) this.current_salary = candidateSubDoc.current_salary;
+    if(candidateSubDoc.current_currency) this.current_currency = candidateSubDoc.current_currency;
     if(candidateSubDoc.employee) {
       this.employeeCheck = true;
       this.work_types.push('employee');
@@ -143,8 +143,8 @@ export class CandidateEditComponent implements OnInit {
       this.work_types.push('volunteer');
       this.volunteer = candidateSubDoc.volunteer;
     }
-    this.why_work = candidateSubDoc.why_work;
-    this.interest_areas = candidateSubDoc.interest_areas;
+    if(candidateSubDoc.why_work) this.why_work = candidateSubDoc.why_work;
+    if(candidateSubDoc.interest_areas) this.interest_areas = candidateSubDoc.interest_areas;
     if(candidateSubDoc && candidateSubDoc.blockchain) {
       if(candidateSubDoc.blockchain.commercial_platforms) {
         this.commercial_platforms = candidateSubDoc.blockchain.commercial_platforms;
@@ -168,7 +168,6 @@ export class CandidateEditComponent implements OnInit {
   }
 
   update_candidate_profile(){
-    console.log("submit");
     let errorCount = 0;
     let visaRequired = 0;
     let workTypeCount = 0;
@@ -263,7 +262,6 @@ export class CandidateEditComponent implements OnInit {
 
     if( this.contractorCheck) {
       if(this.contractorType.selfValidate()) {
-        console.log(this.contractorType.contractor['location']);
         if(this.contractorType.contractor['location']) {
           let location = this.contractorType.contractor['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
@@ -278,7 +276,6 @@ export class CandidateEditComponent implements OnInit {
 
     if(this.volunteerCheck) {
       if(this.volunteerType.selfValidate()) {
-        console.log(this.volunteerType.volunteer['location']);
         if(this.volunteerType.volunteer['location']) {
           let location = this.volunteerType.volunteer['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
@@ -341,7 +338,6 @@ export class CandidateEditComponent implements OnInit {
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {
         queryBody.work_history = this.workHistoryComp.experiencearray;
-        console.log(this.workHistoryComp.experiencearray);
       }
       else errorCount++;
     }
@@ -432,7 +428,6 @@ export class CandidateEditComponent implements OnInit {
 
   changeLocationToBEFormat(array){
     let validatedLocation = [];
-    console.log(array)
     for(let location of array) {
       if(location.name) {
         if(location.name.includes('city')) {
