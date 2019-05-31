@@ -8,3 +8,10 @@ export interface Options {
   value: string;
   checked: boolean;
 }
+
+export interface wizardObject {
+  name: string;
+  routerLink: string;
+  disabled: boolean;
+  active: boolean;
+}

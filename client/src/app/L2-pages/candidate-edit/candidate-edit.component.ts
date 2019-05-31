@@ -29,7 +29,6 @@ import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-s
 import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
 import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work-history.component';
 import { EducationHistoryComponent } from '../../L1-items/candidate/education-history/education-history.component';
-import { LocationsComponent } from '../../L1-items/candidate/locations/locations.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -65,7 +64,6 @@ export class CandidateEditComponent implements OnInit {
   @ViewChild(LanguagesComponent) languageExp: LanguagesComponent;
   @ViewChild(WorkHistoryComponent) workHistoryComp: WorkHistoryComponent;
   @ViewChild(EducationHistoryComponent) educationHistoryComp: EducationHistoryComponent;
-  @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
