@@ -20,6 +20,7 @@ export class VolunteerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.max_hours[0] = -1;
     for(let i =5; i<=60; i=i+5) {
       this.max_hours.push(i);
     }
@@ -29,7 +30,12 @@ export class VolunteerComponent implements OnInit {
     const locationValid = this.location.selfValidate();
     const roleValid = this.role.selfValidate();
     const objectValid = this.objectiveValidation();
-    if(locationValid && roleValid && objectValid) return true;
+    if(locationValid && roleValid && objectValid) {
+      if(this.volunteer['max_hours_per_week'] === -1) {
+        delete this.volunteer['max_hours_per_week'];
+      }
+      return true;
+    }
     else return false;
   }
 

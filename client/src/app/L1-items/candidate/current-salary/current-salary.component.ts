@@ -38,6 +38,7 @@ export class CurrentSalaryComponent implements OnInit {
         this.salaryErrMsg = 'Please enter salary';
       }
     }
+    this.current_salary = parseInt(this.current_salary);
     delete this.salaryErrMsg;
     delete this.currencyErrMsg;
     return true;

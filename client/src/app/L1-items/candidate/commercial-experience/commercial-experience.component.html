@@ -17,7 +17,6 @@
     </div>
   </div>
   <div class = "col-md-12" >
-    <!--<app-i-forme-year-of-experience [platforms]="commercial_platforms" (change)="yearValidate()" [errMsg]="yearErrMsg"></app-i-forme-year-of-experience>-->
     <app-c-forme-button-group *ngFor = "let obj of commercial_platforms; let i=index"
                               [value]="obj.exp_year" [label]="obj.name"
                               (selectedValue)="selectedPlatform($event)"
@@ -25,13 +24,7 @@
                               [errorMsg]="yearErrMsg[i]"
                               (change)="yearValidate()"
     ></app-c-forme-button-group>
-    <!--<app-c-forme-button-group-->
-      <!--[value]="commercial_platforms"-->
-      <!--(selectedValue)="selectedPlatform($event)"-->
-      <!--[options]="experienceYears"-->
-      <!--[errorMsg]="yearErrMsg"-->
-      <!--(change)="yearValidate()"-->
-    <!--&gt;</app-c-forme-button-group>-->
+
   </div>
 </div>
 <!-- description for commercial exp -->

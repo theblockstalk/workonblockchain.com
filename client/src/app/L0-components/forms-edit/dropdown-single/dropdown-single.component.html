@@ -6,7 +6,10 @@
         *ngFor="let opt of options"
         [value]="opt"
         [attr.selected]="opt===value?true: null"
-      >{{opt}}</option>
+      >
+        <span *ngIf="opt === -1">None</span>
+        <span *ngIf="opt !== -1">{{opt}}</span>
+      </option>
     </ng-container>
     <ng-template #keyValue>
       <option
