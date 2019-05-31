@@ -230,7 +230,7 @@ export class CandidateEditComponent implements OnInit {
     else errorCount++;
 
     if(this.currentSalary.selfValidate()) {
-      if(this.currentSalary.current_salary && this.currentSalary.current_currency) {
+      if(this.currentSalary.current_salary && this.currentSalary.current_currency && this.currentSalary.current_currency !== 'Currency') {
         queryBody.current_currency = this.currentSalary.current_currency;
         queryBody.current_salary = this.currentSalary.current_salary;
       }

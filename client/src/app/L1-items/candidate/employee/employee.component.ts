@@ -61,6 +61,10 @@ export class EmployeeComponent implements OnInit {
       this.currencyErrMsg = 'Please select currency';
       return false;
     }
+    if(this.employee['currency'] === 'Currency') {
+      this.currencyErrMsg = 'Please select currency';
+      return false;
+    }
     delete this.currencyErrMsg;
     return true;
   }

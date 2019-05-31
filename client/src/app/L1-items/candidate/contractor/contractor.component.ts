@@ -61,6 +61,10 @@ export class ContractorComponent implements OnInit {
       this.currencyErrMsg = 'Please select currency';
       return false;
     }
+    if(this.contractor['currency'] === 'Currency') {
+      this.currencyErrMsg = 'Please select currency';
+      return false;
+    }
     delete this.currencyErrMsg;
     return true;
   }

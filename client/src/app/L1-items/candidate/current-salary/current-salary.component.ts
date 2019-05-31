@@ -28,6 +28,10 @@ export class CurrentSalaryComponent implements OnInit {
         this.currencyErrMsg = 'Please choose currency';
         return false;
       }
+      if(this.current_currency === 'Currency') {
+        this.currencyErrMsg = 'Please choose currency';
+        return false;
+      }
     }
     if(this.current_currency) {
       if(!this.current_salary) {

@@ -114,7 +114,7 @@ export const constants = {
 
   ],
   currencies: [
-    "£ GBP" ,"€ EUR" , "$ USD"
+    "Currency", "£ GBP" ,"€ EUR" , "$ USD"
   ],
   nationalities: [
     {name:'Afghan' ,value:'Afghan'},{name:'Albanian' ,value:'Albanian'},{name:'Algerian' ,value:'Algerian'},
