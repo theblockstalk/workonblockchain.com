@@ -130,6 +130,7 @@ export class CandidateEditComponent implements OnInit {
     if(this.userDoc['candidate'].employee) {
       this.employeeCheck = true;
       this.work_types.push('employee');
+      this.employee = this.userDoc['candidate'].employee;
     }
     if(this.userDoc['candidate'].contractor) {
       this.contractorCheck = true;
@@ -169,6 +170,8 @@ export class CandidateEditComponent implements OnInit {
     console.log("submit");
     let errorCount = 0;
     let visaRequired = 0;
+    let workTypeCount = 0;
+    this.errMsg = '';
     let queryBody : any = {};
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
@@ -237,18 +240,48 @@ export class CandidateEditComponent implements OnInit {
     }
     else errorCount++;
 
-
-    if(this.workTypes.selfValidate()) this.checkWorkType();
+    if(this.workTypes.selfValidate()) {
+      workTypeCount = this.workTypes.selectedWorkType.length;
+      this.checkWorkType();
+    }
     else errorCount++;
 
+    if(this.employeeCheck) {
+      if(this.employeeType.selfValidate()) {
+        if(this.employeeType.employee['location']) {
+          let location = this.employeeType.employee['location'];
+          if(location.filter(i => i.visa_needed === true).length === location.length) {
+            visaRequired++;
+          }
+        }
+        queryBody.employee = this.employeeType.employee;
+      }
+      else errorCount++;
+    }
+    else queryBody.unset_employee = true;
+
+    if( this.contractorCheck) {
+      if(this.contractorType.selfValidate()) {
+        console.log(this.contractorType.contractor['location']);
+        if(this.contractorType.contractor['location']) {
+          let location = this.contractorType.contractor['location'];
+          if(location.filter(i => i.visa_needed === true).length === location.length) {
+            visaRequired++;
+          }
+        }
+        queryBody.contractor = this.contractorType.contractor;
+      }
+      else errorCount++;
+    }
+    else queryBody.unset_contractor = true;
+
     if(this.volunteerCheck) {
-      visaRequired = 0;
       if(this.volunteerType.selfValidate()) {
         console.log(this.volunteerType.volunteer['location']);
         if(this.volunteerType.volunteer['location']) {
           let location = this.volunteerType.volunteer['location'];
           if(location.filter(i => i.visa_needed === true).length === location.length) {
-            visaRequired = 1;
+            visaRequired++;
           }
 
         }
@@ -256,36 +289,11 @@ export class CandidateEditComponent implements OnInit {
       }
       else errorCount++;
     }
+    else queryBody.unset_volunteer = true;
 
-    if( this.contractorCheck) {
-      visaRequired = 0;
-      if(this.contractorType.selfValidate()) {
-        console.log(this.contractorType.contractor['location']);
-        if(this.contractorType.contractor['location']) {
-          let location = this.contractorType.contractor['location'];
-          if(location.filter(i => i.visa_needed === true).length === location.length) {
-            visaRequired = 1;
-          }
-
-        }
-        queryBody.contractor = this.contractorType.contractor;
-      }
-      else errorCount++;
-    }
-
-    if(this.employeeCheck) {
-      visaRequired = 0;
-      if(this.employeeType.selfValidate()) {
-        if(this.employeeType.employee['location']) {
-          let location = this.employeeType.employee['location'];
-          if(location.filter(i => i.visa_needed === true).length === location.length) {
-            visaRequired = 1;
-          }
-        }
-
-        queryBody.employee = this.employeeType.employee;
-      }
-      else errorCount++;
+    if(visaRequired === workTypeCount) {
+      this.errMsg = 'Please select at least one location which you can work in without needing a visa';
+      errorCount++;
     }
 
     if(this.whyWork.selfValidate()) queryBody.why_work = this.whyWork.why_work;
@@ -361,13 +369,6 @@ export class CandidateEditComponent implements OnInit {
           });
     }
 
-    if(visaRequired === 1) {
-      console.log('error msg');
-      this.errMsg = 'Please select at least one location which you can work in without needing a visa';
-      errorCount++;
-    }
-
-
     if(errorCount === 0) {
       if(this.employeeCheck) {
         const locations = this.changeLocationToBEFormat(this.employeeType.employee['location']);
@@ -430,31 +431,25 @@ export class CandidateEditComponent implements OnInit {
 
   changeLocationToBEFormat(array){
     let validatedLocation = [];
-    let objExist = false;
     console.log(array)
     for(let location of array) {
       if(location.name) {
         if(location.name.includes('city')) {
-          objExist = true;
           validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
         }
         if(location.name.includes('country')) {
-          objExist = true;
           validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
         }
         if(location.name === 'Remote') {
-          objExist = true;
           validatedLocation.push({remote: true, visa_needed : location.visa_needed });
         }
       }
       else {
         if(location.city) validatedLocation.push({city: location.city._id, visa_needed: location.visa_needed});
         if(location.country) validatedLocation.push({country: location.country, visa_needed: location.visa_needed});
+        if(location.remote) validatedLocation.push({remote: true, visa_needed: false});
       }
     }
     return validatedLocation;
-
-
   }
-
 }

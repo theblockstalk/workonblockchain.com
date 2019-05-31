@@ -20,7 +20,8 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-
+    console.log("adminnnnnn")
+        console.log(typeof req.query.admin)
     if (req.query.admin) {
         await auth.isAdmin(req);
     }
