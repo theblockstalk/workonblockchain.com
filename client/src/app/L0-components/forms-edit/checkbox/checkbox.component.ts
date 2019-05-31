@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { unCheckCheckboxes } from '../../../../services/object';
+import { Options} from '../../../../constants/interface';
 
 @Component({
   selector: 'app-c-forme-checkbox',
@@ -9,8 +10,8 @@ import { unCheckCheckboxes } from '../../../../services/object';
 export class CheckboxComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
-  @Input() options: Array<object>;
-  @Input() value: Array<string>;
+  @Input() options: Options[];
+  @Input() value: Array<string>; // ['bitcoin', 'ethereum'.....]
   @Input() iconClass: string; //for work types optional
   @Input() column: number; //3, 4
   @Input() icon: boolean; // for blockchain listing optional
