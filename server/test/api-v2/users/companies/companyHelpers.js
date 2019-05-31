@@ -64,7 +64,7 @@ const getCompanies = module.exports.getCompanies = async function getCompanies(d
 
 const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken) {
     const res = await chai.request(server)
-        .post('/v2/users/companies/search')
+        .post('/v2/users/companies/search?admin=true')
         .set('Authorization', jwtToken)
         .send(filterData);
     res.should.have.status(200);
