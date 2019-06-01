@@ -19,6 +19,9 @@
 	align: "left;"
 }
 
+.btn-social .fab {
+  color: #fff
+}
 /*Use with bootstrap-social.css*/
 
 

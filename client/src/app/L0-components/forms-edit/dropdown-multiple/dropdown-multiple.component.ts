@@ -7,7 +7,7 @@ declare var $:any;
   styleUrls: ['./dropdown-multiple.component.css']
 })
 export class DropdownMultiselectComponent implements OnInit {
-  @Input() options: string[];
+  @Input() options: string[]; //['USD', 'EUR',...] or [{name:'bitcoin', value:'bitcoin', checked: false}.....]
   @Input() label: string;
   @Input() value: Array<string>; //['Albanian', 'Algerian' ...........]
   @Input() errorMsg: string;

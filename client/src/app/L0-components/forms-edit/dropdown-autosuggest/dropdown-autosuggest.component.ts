@@ -12,7 +12,7 @@ import {filter_array} from '../../../../services/object';
 export class DropdownAutosuggestComponent implements OnInit {
   @Input() placeholder: string;
   @Input() errorMsg: string;
-  @Input() controllerOptions: object; //optional {countries: true}
+  @Input() controllerOptions: object; //{countries: true/false}
   @Input() controller; // fn(text: string, options: {})
   @Input() displayItems; //fn(item: {})
   @Output() selectedItems : EventEmitter<Array<object>> = new EventEmitter<Array<object>>();
