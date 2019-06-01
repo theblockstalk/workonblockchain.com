@@ -24,24 +24,23 @@ const endpoints = [
     require('./controller/api-v2/email_template/post.controller'),
     require('./controller/api-v2/email_template/patch.controller'),
     require('./controller/api-v2/email_template/search/get.controller'),
-    //from here i done code
-    require('./controller/api-v2/locations/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/pages/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/pages/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/statistics/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/auth/delete.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/auth/password/put.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/auth/password/reset/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/auth/password/reset/put.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/email/patch.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/email/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/referral/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/referral/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/companies/get.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/companies/search/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/candidates/search/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/referral/email/post.controller'), //done (on BE & FE)
-    require('./controller/api-v2/users/patch.controller'), //done (on BE & FE)
+    require('./controller/api-v2/locations/get.controller'),
+    require('./controller/api-v2/pages/post.controller'),
+    require('./controller/api-v2/pages/get.controller'),
+    require('./controller/api-v2/statistics/get.controller'),
+    require('./controller/api-v2/users/auth/delete.controller'),
+    require('./controller/api-v2/users/auth/password/put.controller'),
+    require('./controller/api-v2/users/auth/password/reset/post.controller'),
+    require('./controller/api-v2/users/auth/password/reset/put.controller'),
+    require('./controller/api-v2/users/email/patch.controller'),
+    require('./controller/api-v2/users/email/post.controller'),
+    require('./controller/api-v2/referral/get.controller'),
+    require('./controller/api-v2/referral/post.controller'),
+    require('./controller/api-v2/users/companies/get.controller'),
+    require('./controller/api-v2/users/companies/search/post.controller'),
+    require('./controller/api-v2/users/candidates/search/post.controller'),
+    require('./controller/api-v2/referral/email/post.controller'),
+    require('./controller/api-v2/users/patch.controller'),
     require('./controller/api-v2/get.controller')
 ];
 
