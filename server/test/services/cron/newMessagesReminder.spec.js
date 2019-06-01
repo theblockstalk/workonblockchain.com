@@ -5,12 +5,12 @@ const companies = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
-const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../../api-v2/otherHelpers/companyHelpers');
+const candidateHelper = require('../../api-v2/otherHelpers/candidateHelpers');
 const newMessagesEmail = require('../../../controller/services/cron/newMessagesReminderEmail');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
-const userHelper = require('../../api/users/usersHelpers');
+const userHelper = require('../../api-v2/otherHelpers/usersHelpers');
 const messagesHelpers = require('../../api-v2/helpers');
 
 const assert = chai.assert;

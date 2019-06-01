@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
-const userHelpers = require('../../../api/users/usersHelpers');
+const userHelpers = require('../../otherHelpers/usersHelpers');
 chai.use(chaiHttp);
 
 const signupCompany = module.exports.signupCompany = async function signupCompany(company) {

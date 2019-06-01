@@ -4,7 +4,7 @@ const mongo = require('../../helpers/mongo');
 const Users = require('../../../model/mongoose/users');
 const pages = require('../../../model/mongoose/pages');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
+const companyHelper = require('../otherHelpers/companyHelpers');
 const pagesHelper = require('./pagesHelpers');
 
 const assert = chai.assert;

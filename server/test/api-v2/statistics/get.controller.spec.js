@@ -3,9 +3,9 @@ const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const Users = require('../../../model/mongoose/users');
 const docGenerator = require('../../helpers/docGenerator');
-const candidateHelper = require('../../../test/api/users/candidate/candidateHelpers');
+const candidateHelper = require('../otherHelpers/candidateHelpers');
 const statisticsHelpers = require('./statisticsHelpers');
-const userHelper = require('../../../test/api/users/usersHelpers');
+const userHelper = require('../otherHelpers/usersHelpers');
 const settings = require('../../../settings');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 

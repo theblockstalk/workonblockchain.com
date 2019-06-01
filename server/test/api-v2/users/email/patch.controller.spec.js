@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
-const candidateHepler = require('../../../../test/api/users/candidate/candidateHelpers');
+const candidateHepler = require('../../otherHelpers/candidateHelpers');
 const docGenerator = require('../../../helpers/docGenerator');
 const userHelpers = require('../usersHelpers');
 

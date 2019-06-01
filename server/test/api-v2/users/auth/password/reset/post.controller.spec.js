@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const crypto = require('crypto');
 const server = require('../../../../../../server');
 const mongo = require('../../../../../helpers/mongo');
-const candidateHepler = require('../../../../../api/users/candidate/candidateHelpers');
+const candidateHepler = require('../../../../otherHelpers/candidateHelpers');
 const authenticateHepler = require('../../authHelper');
 const docGenerator = require('../../../../../helpers/docGenerator');
 

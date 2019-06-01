@@ -3,10 +3,10 @@ const chaiHttp = require('chai-http');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const docGenerator = require('../../../helpers/docGenerator-v2');
-const companyHelper = require('../../../api/users/company/companyHelpers');
-const candidateHelper = require('../../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../../otherHelpers/companyHelpers');
+const candidateHelper = require('../../otherHelpers/candidateHelpers');
 const docGeneratorV2 = require('../../../../test/helpers/docGenerator-v2');
-const userHelper = require('../../../api/users/usersHelpers');
+const userHelper = require('../../otherHelpers/usersHelpers');
 const candidateHelpers = require('./candidateHelpers');
 
 const assert = chai.assert;
