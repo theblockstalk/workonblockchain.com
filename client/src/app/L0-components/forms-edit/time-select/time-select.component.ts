@@ -8,8 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TimeSelectComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
-  @Input() placeholder = '00:00'; //optional
-  @Input() value: string; // date format
+  @Input() placeholder; //optional
+  @Input() value: Date;
   constructor() { }
 
   ngOnInit() {

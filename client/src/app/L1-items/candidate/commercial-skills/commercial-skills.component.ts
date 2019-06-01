@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { constants } from '../../../../constants/constants';
+import { CommercialSkill} from '../../../../constants/interface';
 
 @Component({
   selector: 'app-i-forme-commercial-skills',
@@ -7,7 +8,7 @@ import { constants } from '../../../../constants/constants';
   styleUrls: ['./commercial-skills.component.css']
 })
 export class CommercialSkillsComponent implements OnInit {
-  @Input() commercial_skills = []; //[{name:'security', exp_year: '2-4'}......]
+  @Input() commercial_skills: CommercialSkill[];
   @Input() description_commercial_skills: string;
   otherSkills = constants.otherSkills;
   experienceYears = constants.experienceYears;
@@ -57,7 +58,7 @@ export class CommercialSkillsComponent implements OnInit {
   oncommerciallyOptions(array) {
     this.commercial_skills = [];
     for(let val of array) {
-      this.commercial_skills.push({skill: val});
+      this.commercial_skills.push({skill: val, exp_year: ''});
     }
 
     for(let platform of this.commercial_skills) {

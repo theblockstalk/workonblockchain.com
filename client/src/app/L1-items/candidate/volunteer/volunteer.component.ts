@@ -9,7 +9,7 @@ import { Volunteer } from '../../../../constants/interface';
   styleUrls: ['./volunteer.component.css']
 })
 export class VolunteerComponent implements OnInit {
-  @Input() volunteer: object;
+  @Input() volunteer: Volunteer;
   @Input() errorMsg: string;
   @ViewChild(LocationsComponent) location: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
@@ -29,10 +29,10 @@ export class VolunteerComponent implements OnInit {
     const roleValid = this.role.selfValidate();
     const objectValid = this.objectiveValidation();
     if(locationValid && roleValid && objectValid) {
-      if(this.volunteer['max_hours_per_week'] === '-1') {
+      if(this.volunteer['max_hours_per_week'] === Number('-1')) {
         delete this.volunteer['max_hours_per_week'];
       }
-      else this.volunteer['max_hours_per_week'] = parseInt(this.volunteer['max_hours_per_week']);
+      else this.volunteer['max_hours_per_week'] = Number(this.volunteer['max_hours_per_week']);
       return true;
     }
     else return false;

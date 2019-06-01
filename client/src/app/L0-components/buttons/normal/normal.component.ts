@@ -10,7 +10,7 @@ export class OthersComponent implements OnInit {
   @Input() level: string; // "primary", "secondary", ... , "danger"
   @Input() alignment: string; // "left", "center", "right"
   @Input() buttonType: string; // "submit", "reset", "button"
-  @Input() disabled: boolean; // true, false
+  @Input() disabled: boolean;
 
   constructor() { }
 

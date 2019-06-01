@@ -9,10 +9,10 @@ import { ButtonGroupObject, Options} from '../../../../constants/interface';
 
 export class ButtonGroupComponent implements OnInit {
   @Input() label: string;
-  @Input() options: Options[]; // [{name: '1-2', value:'1-2', checked: true}, ................]
+  @Input() options: Options[];
   @Input() errorMsg: string;
   @Input() value: string; // '1-2', '2-4', '4-6', '6+'
-  @Output() selectedValue: EventEmitter<ButtonGroupObject> = new EventEmitter<ButtonGroupObject>(); // {label: 'bitcoin', exp_year: '1-2'}
+  @Output() selectedValue: EventEmitter<ButtonGroupObject> = new EventEmitter<ButtonGroupObject>();
   platforms;
   constructor() { }
 

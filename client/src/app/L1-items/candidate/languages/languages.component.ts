@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { constants } from '../../../../constants/constants';
+import { Language } from '../../../../constants/interface';
 
 @Component({
   selector: 'app-i-forme-languages',
@@ -7,7 +8,7 @@ import { constants } from '../../../../constants/constants';
   styleUrls: ['./languages.component.css']
 })
 export class LanguagesComponent implements OnInit {
-  @Input() programming_languages: Array<object>; //[{langugae: 'Angular', exp_year: '1-2'}....]
+  @Input() programming_languages: Language[];
   languages = constants.programmingLanguages;
   experienceYears = constants.experienceYears;
   platform = [];
@@ -43,7 +44,7 @@ export class LanguagesComponent implements OnInit {
   {
     this.programming_languages = [];
     for(let val of array) {
-      this.programming_languages.push({language: val});
+      this.programming_languages.push({language: val, exp_year: ''});
     }
 
     for(let platform of this.programming_languages) {

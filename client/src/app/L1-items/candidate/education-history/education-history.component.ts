@@ -21,7 +21,7 @@ export class EducationHistoryComponent implements OnInit {
   fieldErrMsg = [];
   gradErrMsg = [];
   education_array = [];
-  constructor(private _fb: FormBuilder,private datePipe: DatePipe) { }
+  constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
 
   ngOnInit() {

@@ -14,8 +14,8 @@ export class CheckboxComponent implements OnInit {
   @Input() value: Array<string>; // ['bitcoin', 'ethereum'.....]
   @Input() iconClass: string; //for work types optional
   @Input() column: number; //3, 4
-  @Input() icon: boolean; // for blockchain listing optional
-  @Output() selectedItem: EventEmitter<Array<string>> = new EventEmitter<Array<string>>(); // ['bitcoin', 'ethereum'.....]
+  @Input() icon: string; //optional  'blockchain'
+  @Output() selectedItem: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
   selectedOptions = [];
   constructor() { }
 

@@ -7,18 +7,18 @@ declare var $:any;
   styleUrls: ['./dropdown-multiple.component.css']
 })
 export class DropdownMultiselectComponent implements OnInit {
-  @Input() options: string[]; //['USD', 'EUR',...] or [{name:'bitcoin', value:'bitcoin', checked: false}.....]
+  @Input() options: string[];
   @Input() label: string;
-  @Input() value: Array<string>; //['Albanian', 'Algerian' ...........]
+  @Input() value: Array<string>;
   @Input() errorMsg: string;
-  @Output () selectedValue: EventEmitter<Array<string>> = new EventEmitter<Array<string>>(); //['Albanian', 'Algerian' ..........]
+  @Output () selectedValue: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
   optionsType;
   labelClass;
   constructor() { }
 
   ngOnInit() {
     if(this.options) {
-      if(this.options[0].hasOwnProperty("name")) this.optionsType = 'paired-array';
+      if(this.options[0].hasOwnProperty('name')) this.optionsType = 'paired-array';
       else this.optionsType = 'array';
     }
     setTimeout(() => {

@@ -7,7 +7,7 @@ declare var $:any;
   styleUrls: ['./dropdown-single.component.css']
 })
 export class DropdownSingleComponent implements OnInit {
-  @Input() options: string[]; //['USD', 'EUR',...] or [{name:'bitcoin', value:'bitcoin', checked: false}.....]
+  @Input() options: string[];
   @Input() label: string;
   @Input() value: string;
   @Input() errorMsg: string;

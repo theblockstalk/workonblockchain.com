@@ -8,8 +8,8 @@ import { checkNumber} from '../../../../services/object';
   styleUrls: ['./contact-number.component.css']
 })
 export class ContactNumberComponent implements OnInit {
-  country_codes = constants.country_codes;
   @Input() contact_number: string;
+  country_codes = constants.country_codes;
   phone_number: string;
   country_code: string;
   codeErrMsg;

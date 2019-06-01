@@ -3,6 +3,7 @@ import { UserService} from '../../../user.service';
 import { Router } from '@angular/router';
 import { HttpClient  } from '@angular/common/http';
 import {filter_array} from '../../../../services/object';
+import {ControllerOptions} from '../../../../constants/interface';
 
 @Component({
   selector: 'app-c-forme-dropdown-autosuggest',
@@ -12,9 +13,9 @@ import {filter_array} from '../../../../services/object';
 export class DropdownAutosuggestComponent implements OnInit {
   @Input() placeholder: string;
   @Input() errorMsg: string;
-  @Input() controllerOptions: object; //{countries: true/false}
-  @Input() controller; // fn(text: string, options: {})
-  @Input() displayItems; //fn(item: {})
+  @Input() controllerOptions: object;
+  @Input() controller; // fn(text: string, options: object)
+  @Input() displayItems; //fn(item: object)
   @Output() selectedItems : EventEmitter<Array<object>> = new EventEmitter<Array<object>>();
   selectedValueArray = [];
   textValue;

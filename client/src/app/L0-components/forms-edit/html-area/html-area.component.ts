@@ -9,7 +9,7 @@ export class HtmlAreaComponent implements OnInit {
   @Input() label: string;
   @Input() errorMsg: string;
   @Input() placeholder: string; //optional
-  @Input() formattingBar: boolean = false; //true, false optional
+  @Input() formattingBar: boolean = false; //optional
   @Input() height: number; //optional
   @Input() width: number; //optional
   @Input() value: string;

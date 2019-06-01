@@ -1,13 +1,16 @@
 import {Component, OnInit, Input} from '@angular/core';
 import { constants } from '../../../../constants/constants';
+import {CommercialPlatform} from '../../../../constants/interface';
 
 @Component({
   selector: 'app-i-forme-commercial-experience',
   templateUrl: './commercial-experience.component.html',
   styleUrls: ['./commercial-experience.component.css']
 })
+
 export class CommercialExperienceComponent implements OnInit {
-  @Input() commercial_platforms = []; //[{name:'Bitcoin', exp_year: '1-2'}....]
+  @Input() commercial_platforms: CommercialPlatform[];
+  // @Input() commercial_platforms;
   @Input() description_commercial_platforms: string;
   blockchainPlatforms = constants.blockchainPlatforms;
   experienceYears = constants.experienceYears;
@@ -31,7 +34,6 @@ export class CommercialExperienceComponent implements OnInit {
       const desValid = this.desValidate();
       const yearValid = this.yearValidate();
       if(desValid && yearValid) {
-        console.log(this.commercial_platforms);
         return true;
       }
       else return false;
@@ -57,12 +59,12 @@ export class CommercialExperienceComponent implements OnInit {
   {
     this.commercial_platforms = [];
     for(let val of array) {
-     this.commercial_platforms.push({name: val});
+     this.commercial_platforms.push({name: val, exp_year: ''});
     }
 
     for(let platform of this.commercial_platforms) {
-      if(this.platformsYear.find(x=> x.name === platform.name)) {
-        let object = this.platformsYear.find(x=> x.name === platform.name);
+      if(this.platformsYear.find(x=> x['name'] === platform.name)) {
+        let object = this.platformsYear.find(x=> x['name'] === platform.name);
         let index = this.commercial_platforms.findIndex(x => x.name === platform.name);
         this.commercial_platforms[index].exp_year = object.exp_year;
       }
@@ -70,8 +72,8 @@ export class CommercialExperienceComponent implements OnInit {
   }
 
   selectedPlatform(obj) {
-    if(this.commercial_platforms && this.commercial_platforms.find(x => x.name === obj.label)) {
-      const index = this.commercial_platforms.findIndex((x => x.name === obj.label));
+    if(this.commercial_platforms && this.commercial_platforms.find(x => x['name'] === obj.label)) {
+      const index = this.commercial_platforms.findIndex((x => x['name'] === obj.label));
       this.commercial_platforms[index].exp_year = obj.exp_year;
     }
     else this.commercial_platforms.push(obj);

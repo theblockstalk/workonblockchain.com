@@ -9,7 +9,7 @@ import { checkNumber } from '../../../../services/object';
 })
 export class CurrentSalaryComponent implements OnInit {
   @Input() current_salary: number;
-  @Input() current_currency: string;
+  @Input() current_currency: string; //"USD", "EUR", "GBP"
   currencies = constants.currencies;
   salaryErrMsg;
   currencyErrMsg;
