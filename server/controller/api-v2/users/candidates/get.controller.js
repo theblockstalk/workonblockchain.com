@@ -58,12 +58,17 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
-        userId = req.auth.user._id;
+        let userId;
+        if(req.auth.user.type === 'company') userId = req.query.user_id;
+        else {
+            const userDoc = req.auth.user;
+            userId = userDoc._id;
+        }
 
-        const candidateDoc = await users.findByIdAndPopulate(req.query.user_id);
+        const candidateDoc = await users.findByIdAndPopulate(userId);
         if(candidateDoc ) {
             if(req.auth.user.type === 'company'){
-                let filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
+                let filterData = await filterReturnData.candidateAsCompany(candidateDoc,req.auth.user._id);
                 filterData = filterReturnData.removeSensativeData(filterData);
                 res.send(filterData);
             }

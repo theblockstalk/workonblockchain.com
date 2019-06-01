@@ -28,7 +28,11 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    const employerProfile = await companies.findOneAndPopulate(req.query.user_id);
+    let userId;
+    if(req.query.admin) userId = req.query.user_id;
+    else userId = req.auth.user._id;
+
+    const employerProfile = await companies.findOneAndPopulate(userId);
     if (employerProfile) {
         const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
         if(employerCreatorRes._creator.referred_email) {
