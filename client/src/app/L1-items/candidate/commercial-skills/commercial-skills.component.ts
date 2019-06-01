@@ -7,7 +7,7 @@ import { constants } from '../../../../constants/constants';
   styleUrls: ['./commercial-skills.component.css']
 })
 export class CommercialSkillsComponent implements OnInit {
-  @Input() commercial_skills = [];
+  @Input() commercial_skills = []; //[{name:'security', exp_year: '2-4'}......]
   @Input() description_commercial_skills: string;
   otherSkills = constants.otherSkills;
   experienceYears = constants.experienceYears;

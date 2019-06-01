@@ -8,7 +8,7 @@ import {filter_array, removeDuplication} from '../../../../services/object';
   styleUrls: ['./locations.component.css']
 })
 export class LocationsComponent implements OnInit {
-  @Input() selectedLocation = [];
+  @Input() selectedLocation: Array<object>;
   errorMsg: string;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
   controllerOptions: any = {};
@@ -74,7 +74,7 @@ export class LocationsComponent implements OnInit {
       }, 3000);
     }
     else {
-      if(this.selectedLocation.find(x => x.name === locationObj.name)) {
+      if(this.selectedLocation.find(x => x['name'] === locationObj.name)) {
         this.errorMsg = 'This location has already been selected';
         return false;
 
@@ -91,12 +91,12 @@ export class LocationsComponent implements OnInit {
     }
     if(this.selectedLocation.length > 0) {
       this.selectedLocation.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
+        if(a['name'] < b['name']) { return -1; }
+        if(a['name'] > b['name']) { return 1; }
         return 0;
       })
-      if(this.selectedLocation.find((obj => obj.name === 'Remote'))) {
-        let remoteValue = this.selectedLocation.find((obj => obj.name === 'Remote'));
+      if(this.selectedLocation.find((obj => obj['name'] === 'Remote'))) {
+        let remoteValue = this.selectedLocation.find((obj => obj['name'] === 'Remote'));
         this.selectedLocation.splice(0, 0, remoteValue);
         this.selectedLocation = filter_array(this.selectedLocation);
       }
@@ -112,8 +112,8 @@ export class LocationsComponent implements OnInit {
   }
 
   updateCitiesOptions(event) {
-    let objIndex = this.selectedLocation.findIndex((obj => obj.name === event.target.value));
-    this.selectedLocation[objIndex].visa_needed = event.target.checked;
+    let objIndex = this.selectedLocation.findIndex((obj => obj['name'] === event.target.value));
+    this.selectedLocation[objIndex]['visa_needed'] = event.target.checked;
     this.selectedItems.emit(this.selectedLocation);
   }
 

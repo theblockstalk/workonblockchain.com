@@ -8,7 +8,7 @@ import {constants} from '../../../../constants/constants';
   styleUrls: ['./role.component.css']
 })
 export class RoleComponent implements OnInit {
-  @Input() roles;
+  @Input() roles: Array<string>; //['Backend developer', 'Blockchain developer', .....]
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
   options = constants.workRoles;
   selectedRole= [];

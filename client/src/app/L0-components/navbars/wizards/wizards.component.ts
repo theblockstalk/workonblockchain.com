@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { wizardObject } from '../../../../constants/interface';
+import { WizardObject } from '../../../../constants/interface';
 
 @Component({
   selector: 'app-c-nav-wizard',
@@ -7,7 +7,7 @@ import { wizardObject } from '../../../../constants/interface';
   styleUrls: ['./wizards.component.css']
 })
 export class WizardsComponent implements OnInit {
-  @Input() items: wizardObject[];
+  @Input() items: WizardObject[];
   constructor() { }
 
   ngOnInit() {

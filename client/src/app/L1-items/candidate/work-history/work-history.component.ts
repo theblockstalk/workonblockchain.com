@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../../constants/constants';
+import { WorkHistory } from '../../../../constants/interface';
+
 declare var $:any;
 
 @Component({
@@ -10,7 +12,7 @@ declare var $:any;
   styleUrls: ['./work-history.component.css']
 })
 export class WorkHistoryComponent implements OnInit {
-  @Input() historyData = [];
+  @Input() historyData: WorkHistory[];
   ExperienceForm: FormGroup;
   jobData;
   monthNumber;

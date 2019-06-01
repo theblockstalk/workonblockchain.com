@@ -248,7 +248,7 @@ export class CandidateEditComponent implements OnInit {
       if(this.employeeType.selfValidate()) {
         if(this.employeeType.employee['location']) {
           let location = this.employeeType.employee['location'];
-          if(location.filter(i => i.visa_needed === true).length === location.length) {
+          if(location.filter(i => i['visa_needed'] === true).length === location.length) {
             visaRequired++;
           }
         }
@@ -262,7 +262,7 @@ export class CandidateEditComponent implements OnInit {
       if(this.contractorType.selfValidate()) {
         if(this.contractorType.contractor['location']) {
           let location = this.contractorType.contractor['location'];
-          if(location.filter(i => i.visa_needed === true).length === location.length) {
+          if(location.filter(i => i['visa_needed'] === true).length === location.length) {
             visaRequired++;
           }
         }
@@ -276,7 +276,7 @@ export class CandidateEditComponent implements OnInit {
       if(this.volunteerType.selfValidate()) {
         if(this.volunteerType.volunteer['location']) {
           let location = this.volunteerType.volunteer['location'];
-          if(location.filter(i => i.visa_needed === true).length === location.length) {
+          if(location.filter(i => i['visa_needed'] === true).length === location.length) {
             visaRequired++;
           }
 

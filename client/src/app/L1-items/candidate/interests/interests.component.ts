@@ -8,7 +8,7 @@ import {constants} from '../../../../constants/constants';
   styleUrls: ['./interests.component.css']
 })
 export class InterestsComponent implements OnInit {
-  @Input() interest_areas = [];
+  @Input() interest_areas: Array<string>;
   options = constants.workBlockchainInterests;
   errMsg;
   constructor() { }

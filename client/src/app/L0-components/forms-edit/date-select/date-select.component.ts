@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DateSelectComponent implements OnInit {
   @Input() label: string;
-  @Input() value: string; //date value
+  @Input() value: string; //date format value
   @Input() placeholder: string; //optional
   @Input() errorMsg: string;
   constructor() { }

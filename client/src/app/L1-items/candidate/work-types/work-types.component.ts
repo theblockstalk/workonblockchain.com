@@ -7,7 +7,7 @@ import {constants} from '../../../../constants/constants';
   styleUrls: ['./work-types.component.css']
 })
 export class WorkTypesComponent implements OnInit {
-  @Input() work_types;
+  @Input() work_types: Array<string>; //'employee', 'contractor', 'volunteer'
   options = constants.work_types;
   selectedWorkType = [];
   errMsg;

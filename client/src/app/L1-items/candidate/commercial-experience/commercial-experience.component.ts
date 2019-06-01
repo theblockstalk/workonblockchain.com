@@ -7,7 +7,7 @@ import { constants } from '../../../../constants/constants';
   styleUrls: ['./commercial-experience.component.css']
 })
 export class CommercialExperienceComponent implements OnInit {
-  @Input() commercial_platforms;
+  @Input() commercial_platforms = []; //[{name:'Bitcoin', exp_year: '1-2'}....]
   @Input() description_commercial_platforms: string;
   blockchainPlatforms = constants.blockchainPlatforms;
   experienceYears = constants.experienceYears;

@@ -7,7 +7,7 @@ import {constants} from '../../../../constants/constants';
   styleUrls: ['./nationality.component.css']
 })
 export class NationalityComponent implements OnInit {
-  @Input() nationality: any;
+  @Input() nationality: Array<string>;
   nationalities = constants.nationalities;
   errMsg;
   constructor() { }

@@ -7,7 +7,7 @@ import { constants } from '../../../../constants/constants';
   styleUrls: ['./experimented-with.component.css']
 })
 export class ExperimentedWithComponent implements OnInit {
-  @Input() experimented_platforms = [];
+  @Input() experimented_platforms: Array<string>; //['bitcoin', 'ethereum', ..............]
   @Input() description_experimented_platforms: string;
   experimented = constants.experimented;
   errMsg;

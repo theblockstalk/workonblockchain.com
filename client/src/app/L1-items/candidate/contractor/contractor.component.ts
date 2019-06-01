@@ -4,13 +4,15 @@ import { RoleComponent} from '../role/role.component';
 import { checkNumber } from '../../../../services/object';
 import { constants } from '../../../../constants/constants';
 import { regexs } from '../../../../constants/regex';
+import { Contractor } from '../../../../constants/interface';
+
 @Component({
   selector: 'app-i-forme-contractor',
   templateUrl: './contractor.component.html',
   styleUrls: ['./contractor.component.css']
 })
 export class ContractorComponent implements OnInit {
-  @Input() contractor: any = {};
+  @Input() contractor: Contractor;
   @Input() errorMsg: string;
   @ViewChild(LocationsComponent) locationComp: LocationsComponent;
   @ViewChild(RoleComponent) role: RoleComponent;
@@ -43,11 +45,11 @@ export class ContractorComponent implements OnInit {
     const typeValid = this.typeValidate();
     const webValid = this.websiteValidate();
     if(locValid && roleValid && descValid && hourlyValid && currencyValid && typeValid && webValid) {
-      if(this.contractor['max_hour_per_week'] === '-1') {
+      if(this.contractor['max_hour_per_week'] === Number('-1')) {
         delete this.contractor['max_hour_per_week'];
       }
-      else this.contractor['max_hour_per_week'] = parseInt(this.contractor['max_hour_per_week']);
-      this.contractor['expected_hourly_rate'] = parseInt(this.contractor['expected_hourly_rate']);
+      else this.contractor['max_hour_per_week'] = Number(this.contractor['max_hour_per_week']);
+      this.contractor['expected_hourly_rate'] = Number(this.contractor['expected_hourly_rate']);
       return true;
     }
     else return false;

@@ -7,7 +7,7 @@ declare var $:any;
   styleUrls: ['./dropdown-single.component.css']
 })
 export class DropdownSingleComponent implements OnInit {
-  @Input() options: string[];
+  @Input() options: string[]; //['USD', 'EUR',...] or [{name:'bitcoin', value:'bitcoin', checked: false}.....]
   @Input() label: string;
   @Input() value: string;
   @Input() errorMsg: string;
@@ -18,7 +18,7 @@ export class DropdownSingleComponent implements OnInit {
 
   ngOnInit() {
     if(this.options) {
-      if(this.options[0].hasOwnProperty("name")) this.optionsType = 'paired-array';
+      if(this.options[0].hasOwnProperty('name')) this.optionsType = 'paired-array';
       else this.optionsType = 'array';
     }
     setTimeout(() => {

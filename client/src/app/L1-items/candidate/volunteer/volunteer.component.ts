@@ -1,9 +1,7 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import { UserService} from '../../../user.service';
-import {filter_array, unCheckCheckboxes, removeDuplication} from '../../../../services/object';
-import {constants} from '../../../../constants/constants';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {LocationsComponent} from '../locations/locations.component';
 import { RoleComponent} from '../role/role.component';
+import { Volunteer } from '../../../../constants/interface';
 
 @Component({
   selector: 'app-i-forme-volunteer',

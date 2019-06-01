@@ -6,7 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./badge.component.css']
 })
 export class BadgeViewComponent implements OnInit {
-  @Input() class: string;
+  @Input() value: string;
+  @Input() class: string; //'primary', 'secondary', 'success', 'warning', 'danger'
   @Input() rounded = true; //optional true, false
   constructor() { }
 

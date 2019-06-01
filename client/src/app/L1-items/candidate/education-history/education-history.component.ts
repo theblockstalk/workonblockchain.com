@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {constants} from '../../../../constants/constants';
+import { EducationHistory } from '../../../../constants/interface';
+
 declare var $:any;
 
 @Component({
@@ -10,7 +12,7 @@ declare var $:any;
   styleUrls: ['./education-history.component.css']
 })
 export class EducationHistoryComponent implements OnInit {
-  @Input() education_history = [];
+  @Input() education_history: EducationHistory[];
   EducationForm: FormGroup;
   eduData;
   years = constants.year;
