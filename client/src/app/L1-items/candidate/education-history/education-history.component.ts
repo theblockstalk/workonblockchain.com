@@ -133,9 +133,8 @@ export class EducationHistoryComponent implements OnInit {
         const gradValid = this.graduationValidate(key);
         if(!gradValid) errorCount++;
         if(errorCount === 0) {
-          this.EducationForm.value.itemRows[key].eduyear =  parseInt(this.EducationForm.value.itemRows[key].eduyear);
           const educationjson = {uniname : this.EducationForm.value.itemRows[key].uniname , degreename :  this.EducationForm.value.itemRows[key].degreename
-            ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
+            ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : Number(this.EducationForm.value.itemRows[key].eduyear)  };
           this.education_array.push(educationjson) ;
         }
 

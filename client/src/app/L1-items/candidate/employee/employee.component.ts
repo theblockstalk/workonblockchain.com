@@ -51,6 +51,7 @@ export class EmployeeComponent implements OnInit {
         this.salaryErrMsg = 'Please enter only digits';
         return false;
       }
+      this.employee['expected_annual_salary'] = Number(this.employee['expected_annual_salary']);
     }
     delete this.salaryErrMsg;
     return true;

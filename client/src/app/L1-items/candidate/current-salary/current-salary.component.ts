@@ -32,13 +32,13 @@ export class CurrentSalaryComponent implements OnInit {
         this.currencyErrMsg = 'Please choose currency';
         return false;
       }
+      this.current_salary = Number(this.current_salary);
     }
     if(this.current_currency) {
       if(!this.current_salary) {
         this.salaryErrMsg = 'Please enter salary';
       }
     }
-    this.current_salary = parseInt(this.current_salary);
     delete this.salaryErrMsg;
     delete this.currencyErrMsg;
     return true;
