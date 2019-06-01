@@ -10,7 +10,6 @@ import {CommercialPlatform} from '../../../../constants/interface';
 
 export class CommercialExperienceComponent implements OnInit {
   @Input() commercial_platforms: CommercialPlatform[];
-  // @Input() commercial_platforms;
   @Input() description_commercial_platforms: string;
   blockchainPlatforms = constants.blockchainPlatforms;
   experienceYears = constants.experienceYears;
