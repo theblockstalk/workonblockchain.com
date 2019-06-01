@@ -1090,7 +1090,7 @@ export class UserService {
   }
 
   getRefCode(email:any) {
-    return this.http.get(URL+'v2/referral?email='+email)
+    return this.http.post(URL+'v2/referral/', {email: email})
       .pipe(map((res: Response) =>
       {
         if (res)

@@ -86,7 +86,7 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.referred_link = data['user_id'];
             }
             else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
-              
+
               if(data['company_logo'] != null )
               {
                 this.imgPath = data['company_logo'];

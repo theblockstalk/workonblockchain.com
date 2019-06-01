@@ -7,8 +7,8 @@ chai.use(chaiHttp);
 
 const getRefCode = module.exports.getRefCode = async function getRefCode(email) {
     const res = await chai.request(server)
-        .get('/v2/referral?email='+email)
-        .send();
+        .post('/v2/referral')
+        .send({email: email});
     res.should.have.status(200);
     return res;
 }

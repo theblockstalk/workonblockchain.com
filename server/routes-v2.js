@@ -36,6 +36,7 @@ const endpoints = [
     require('./controller/api-v2/users/email/patch.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/email/post.controller'), //done (on BE & FE)
     require('./controller/api-v2/referral/get.controller'), //done (on BE & FE)
+    require('./controller/api-v2/referral/post.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/companies/get.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/companies/search/post.controller'), //done (on BE & FE)
     require('./controller/api-v2/users/candidates/search/post.controller'), //done (on BE & FE)
