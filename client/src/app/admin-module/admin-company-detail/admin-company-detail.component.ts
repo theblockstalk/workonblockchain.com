@@ -75,44 +75,18 @@ export class AdminCompanyDetailComponent implements OnInit {
 
             data['company_phone'] = company_phone;
 
-              this.info.push(data);
-              this.approve = data['_creator'].is_approved;
-              this.verify =data['_creator'].is_verify;
-              if(data['_creator'].referred_email) {
-                this.authenticationService.getReferenceDetail(data['_creator'].referred_email)
-                  .subscribe(
-                    refData => {
-                      if (refData['candidateDoc']) {
-                        this.referred_name = refData['candidateDoc'].first_name + " " + refData['candidateDoc'].last_name;
-                        this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._id;
-                      }
-                      else if (refData['companyDoc']) {
-                        this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
-                        this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator._id;
-                      }
-                      else {
-                        this.referred_name = refData['refDoc'].email;
-                      }
+            this.info.push(data);
+            this.approve = data['_creator'].is_approved;
+            this.verify =data['_creator'].is_verify;
+            if(data['user_type'] === 'company') this.detail_link = '/admin-company-detail';
+            if(data['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
 
-                    },
-                    error => {
-                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else
-                      {
-                        this.error = error['error']['message'];
-                      }
-                    }
-                  );
-              }
+            if (data['name']) {
+              this.referred_name = data['name'];
+              this.referred_link = data['user_id'];
+            }
+            else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
+              
               if(data['company_logo'] != null )
               {
                 this.imgPath = data['company_logo'];
