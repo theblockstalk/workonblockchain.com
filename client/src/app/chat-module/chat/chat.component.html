@@ -843,21 +843,23 @@
                   <p>{{job_desc.employee.job_title}}</p>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Job type:</label>
                   <p>{{job_desc.employee.employment_type}}</p>
                 </div>
               </div>
-            </div>
-
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Salary:</label>
                   <p>{{job_desc.employee.currency}} {{job_desc.employee.annual_salary.min}} <span *ngIf="job_desc.employee.annual_salary.max">- {{job_desc.employee.annual_salary.max}}</span></p>
                 </div>
               </div>
+            </div>
+
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Location:</label>
