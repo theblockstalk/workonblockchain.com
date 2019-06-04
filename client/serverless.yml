@@ -9,7 +9,7 @@ provider:
   runtime: nodejs8.10
   memorySize: 2000
   timeout: 15
-  stage: production
+  stage: live
   region: eu-west-1
 
 package:

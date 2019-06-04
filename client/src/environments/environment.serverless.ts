@@ -7,6 +7,6 @@ export const environment = {
   linkedin_redirect_url : 'https://workonblockchain.com/linkedin-auth',
   google_redirect_url : 'https://workonblockchain.com/google-auth'
 ,
-	baseHref: '/production/'
+	baseHref: '/'
 };
 //console.log(environment);
