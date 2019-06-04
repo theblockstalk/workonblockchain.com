@@ -122,10 +122,20 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "user:build:production"
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "staging": {
-              "browserTarget": "user:build:staging"
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ]
             }
           }
         }
