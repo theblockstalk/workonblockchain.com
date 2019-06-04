@@ -105,7 +105,7 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    if(req.query.admin && req.auth.user.is_admin === 1) {
+    if(req.query.admin) {
         let queryBody = req.body;
 
         let filter = {};

@@ -60,9 +60,9 @@ describe('admin get metrics', function () {
             aggregrated.programmingLanguages[profileData.programming_languages[0].language].aggregate[profileData.programming_languages[0].exp_year].should.equal(1);
             aggregrated.programmingLanguages[profileData.programming_languages[1].language].count.should.equal(1);
             aggregrated.programmingLanguages[profileData.programming_languages[1].language].aggregate[profileData.programming_languages[1].exp_year].should.equal(1);
-            aggregrated.blockchain.experimented[profileData.experimented_platforms[0]].should.equal(1);
-            aggregrated.blockchain.experimented[profileData.experimented_platforms[1]].should.equal(1);
-            should.not.exist(aggregrated.blockchain.experimented["EOOS"]);
+            aggregrated.blockchain.experimented_platforms[profileData.experimented_platforms[0]].should.equal(1);
+            aggregrated.blockchain.experimented_platforms[profileData.experimented_platforms[1]].should.equal(1);
+            should.not.exist(aggregrated.blockchain.experimented_platforms["EOOS"]);
         });
 
         it('it should return statistics of active users', async () => {

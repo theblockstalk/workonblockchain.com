@@ -2,6 +2,7 @@ const users = require('../../../model/mongoose/users');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../model/enumerations');
 const curr = require('../../services/currency');
+const auth = require('../../middleware/auth-v2');
 
 module.exports.request = {
     type: 'get',
@@ -13,11 +14,15 @@ const querySchema = new Schema({
         type: String,
         enum: ['true']
     }
-})
+});
 
 module.exports.inputValidation = {
     query: querySchema
 };
+
+module.exports.auth = async function (req) {
+    if(req.query.admin) auth.isAdmin(req);
+}
 
 module.exports.endpoint = async function (req, res) {
     if(req.query.admin){
@@ -43,9 +48,9 @@ module.exports.endpoint = async function (req, res) {
             },
             interestAreas: {},
             blockchain: {
-                commercial: {},
-                smartContract: {},
-                experimented: {}
+                commercial_platforms: {},
+                experimented_platforms: {},
+                commercial_skills: {}
             },
             programmingLanguages: {},
         };
@@ -94,7 +99,7 @@ module.exports.endpoint = async function (req, res) {
                 aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
                 if(candidate.interest_areas)aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
                 if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
-                    aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
+                    aggregateArray(aggregatedData.blockchain.experimented_platforms, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
                 }
                 if(candidate.programming_languages) {
                     aggregateObjArray(programmingLanguagesCount, candidate.programming_languages, enumerations.programmingLanguages, "language");
@@ -104,9 +109,9 @@ module.exports.endpoint = async function (req, res) {
                     aggregateObjArray(blockchainCommercialCount, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
                     aggregateObjArrayAggregate(blockchainCommercialAggregate, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
                 }
-                if(candidate.blockchain && candidate.blockchain.smart_contract_platforms) {
-                    aggregateObjArray(blockchainSmartCount, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name");
-                    aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
+                if(candidate.blockchain && candidate.blockchain.commercial_skills) {
+                    aggregateObjArray(blockchainSmartCount, candidate.blockchain.commercial_skills, enumerations.blockchainPlatforms, "name");
+                    aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.blockchain.commercial_skills, enumerations.blockchainPlatforms, "name", "exp_year");
                 }
             }
             if (userDoc.terms) agreedTerms++;
@@ -120,8 +125,8 @@ module.exports.endpoint = async function (req, res) {
         if(volunteerLocationsCount) countAndAggregate(aggregatedData.volunteer.location, volunteerLocationsCount, volunteerLocationAggregate);
 
         countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
-        countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
-        countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);
+        countAndAggregate(aggregatedData.blockchain.commercial_skills, blockchainCommercialCount, blockchainCommercialAggregate);
+        countAndAggregate(aggregatedData.blockchain.experimented_platforms, blockchainSmartCount, blockchainSmartAggregate);
 
         aggregatedData.expectedSalaryUSD = {
             min: Math.min.apply(null, salaryArray),
@@ -155,10 +160,21 @@ module.exports.endpoint = async function (req, res) {
             'candidate.blockchain.commercial_platforms': {$exists: true, $ne: []}
         });
 
-        res.send({
+        /*res.send({
             approvedUsers: approvedUserCount,
             blockchainExperienceUsers: blockchainExperienceCount
-        });
+        });*/
+
+        res.send({
+            approvedEnabled: {
+                count: approvedUserCount,
+                aggregated: {
+                    blockchain: {
+                        commercial: blockchainExperienceCount
+                    }
+                }
+            }
+        })
     }
 }
 
