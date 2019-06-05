@@ -10,11 +10,13 @@ const mkdirp = require('mkdirp');
 
 ncp.limit = 16;
 
-aws.config.update({
+const awsConfig = {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: "eu-west-1"
-});
+}
+
+aws.config.update(awsConfig);
 
 const awsS3 = new aws.S3();
 const awsEb = new aws.ElasticBeanstalk();
@@ -107,7 +109,22 @@ async function copyDir(from, to, options) {
     });
 }
 
-function copyFile(source, target) {
+const execCommand = async function (command) {
+  return new Promise((resolve, reject) => {
+      exec(command, (err, stdout, stderr) => {
+          if (err) {
+              reject(err);
+          }
+
+          console.log(`stdout: `, stdout);
+          console.log(`stderr: `, stderr);
+          resolve();
+      });
+  });
+}
+
+
+const copyFile = function (source, target) {
     let readStream = fs.createReadStream(source);
 
     return new Promise((resolve, reject) => {
@@ -124,14 +141,14 @@ function copyFile(source, target) {
     });
 }
 
-module.exports.addVersionFile = async function addVersionFile(tempFileName, versonName) {
+module.exports.addVersionFile = async function (tempFileName, versonName) {
     const versionObj = {
         version: versonName
     };
     fs.writeFileSync(tempFileName, JSON.stringify(versionObj));
 };
 
-module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, zipName) {
+module.exports.zipServerDir = async function (tempDirName, directoryToZip, zipName) {
     const zipPath = tempDirName;
     const zipFile = zipPath + '/' + zipName + '.zip';
     // create a file to stream archive data to.
@@ -186,7 +203,7 @@ module.exports.zipServerDir = async function zipServerDir(tempDirName, directory
     });
 };
 
-module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, zipFileName) {
+module.exports.uploadZipfileToS3 = async function (envName, s3bucket, zipFileName) {
     const s3Key = 'versions/' + envName + '/' + zipFileName.name + '.zip';
 
     return await awsS3.upload({
@@ -196,7 +213,7 @@ module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, 
     }).promise();
 };
 
-module.exports.addElasticEnvironmentVersion = async function addElisticEnvironmentVersion(s3bucket, appName, zipFileName, distributionS3File) {
+module.exports.addElasticEnvironmentVersion = async function (s3bucket, appName, zipFileName, distributionS3File) {
     try {
         const ebVersion = await awsEb.createApplicationVersion({
             ApplicationName: appName,
@@ -215,7 +232,7 @@ module.exports.addElasticEnvironmentVersion = async function addElisticEnvironme
     }
 };
 
-module.exports.updateElisticEnvironment = async function updateElisticEnvironment(appName, envName, zipFileName) {
+module.exports.updateElisticEnvironment = async function (appName, envName, zipFileName) {
     return awsEb.updateEnvironment({
         ApplicationName: appName,
         EnvironmentName: envName,
@@ -228,81 +245,27 @@ module.exports.updateElisticEnvironment = async function updateElisticEnvironmen
     }).promise();
 };
 
-module.exports.buildAngularDistribution = async function buildAngularDistribution(buildCommand) {
+module.exports.buildAngularAndServer = async function (buildCommand) {
     let command = 'cd ./client && npm install && ' + buildCommand;
     console.log('Running command: ' + command);
 
-    return new Promise((resolve, reject) => {
-        exec(command, (err, stdout, stderr) => {
-            if (err) {
-                reject(err);
-            }
-
-            console.log(`stdout: `, stdout);
-            console.log(`stderr: `, stderr);
-            resolve();
-        });
-    });
+    await execCommand(command);
 };
 
-module.exports.syncDirwithS3 = async function syncDirwithS3(s3bucket, tempClientDirName) {
-    const s3Client = s3.createClient({
-        // maxAsyncS3: 20,     // this is the default
-        // s3RetryCount: 3,    // this is the default
-        // s3RetryDelay: 1000, // this is the default
-        // multipartUploadThreshold: 20971520, // this is the default (20 MB)
-        // multipartUploadSize: 15728640, // this is the default (15 MB)
-        s3Options: {
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            region: "eu-west-1",
-            // endpoint: s3bucket,
-            // sslEnabled: true
-            // any other options are passed to new AWS.S3()
-            // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
-        },
-    });
+module.exports.deployLambda = async function (environment) {
+    let command = 'sudo npm install -g serverless';
+    console.log('Running command: ' + command);
+    await execCommand(command);
 
-    const params = {
-        localDir: tempClientDirName,
-        deleteRemoved: true, // default false, whether to remove s3 objects
-                             // that have no corresponding local file.
+    command = 'serverless config credentials --provider aws --key ' + awsConfig.accessKeyId + ' --secret ' + awsConfig.secretAccessKey;
+    await execCommand(command);
 
-        s3Params: {
-            Bucket: s3bucket,
-            // Prefix: "some/remote/dir/",
-            // other options supported by putObject, except Body and ContentLength.
-            // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
-        },
-    };
-
-    console.log(params)
-
-    await new Promise((resolve, reject) => {
-        let uploader = s3Client.uploadDir(params);
-        uploader.on('error', function(err) {
-            console.error("unable to sync:", err.stack);
-            reject(err);
-        });
-
-        let counter = 0, counterLimit = 100;
-        uploader.on('progress', function() {
-            counter++;
-            if (counter === counterLimit) {
-                console.log(uploader.progressAmount/ 1000000 + ' Mb of ' + uploader.progressTotal / 1000000 + ' Mb completed');
-                counter = 0;
-            }
-
-        });
-        uploader.on('end', function() {
-            console.log("done uploading");
-            resolve();
-        });
-    })
-
+    command = 'serverless deploy --stage ' + environment;
+    console.log('Running command: ' + command);
+    await execCommand(command);
 };
 
-module.exports.invalidateCloudfronntCache = async function invalidateCloudfronntCache(cloudFrontId) {
+module.exports.invalidateCloudfronntCache = async function (cloudFrontId) {
     const params = {
         DistributionId: cloudFrontId,
         InvalidationBatch: {

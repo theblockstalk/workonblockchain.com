@@ -2,19 +2,17 @@ const config = require('./config');
 const scriptHelpers = require('./helpers');
 
 const tempClientDirName = './temp/client/dist/';
-let s3bucket, buildCommand, cloudFrontId;
+let  buildCommand, cloudFrontId;
 
 (async function run() {
     try {
         const environmentName = process.argv[2];
         console.log('deploying the frontend to S3 bucket');
         if (environmentName === 'production') {
-            s3bucket = config.s3.frontendBucket.production;
-            buildCommand = 'npm run-script build-prod';
+            buildCommand = 'npm run build:serverless:prod';
             cloudFrontId = config.cloudFrontId.production;
         } else if (environmentName === 'staging') {
-            s3bucket = config.s3.frontendBucket.staging;
-            buildCommand = 'npm run-script build-staging';
+            buildCommand = 'npm run build:serverless:staging';
             cloudFrontId = config.cloudFrontId.staging;
         } else {
             throw new Error("Need to provide argument for the environment: staging or production");
@@ -45,7 +43,7 @@ async function deployFrontend(environmentName) {
 
     console.log();
     console.log('(2/5) building distribution in client/dist/');
-    await scriptHelpers.buildAngularDistribution(buildCommand);
+    await scriptHelpers.buildAngularAndServer(buildCommand);
 
     console.log();
     console.log('(3/5) moving to temporary directory temp/client/dist');
@@ -54,8 +52,8 @@ async function deployFrontend(environmentName) {
     await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
 
     console.log();
-    console.log('(4/5) syncing to S3 bucket');
-    await scriptHelpers.syncDirwithS3(s3bucket, tempClientDirName);
+    console.log('(4/5) Deploy to AWS');
+    await scriptHelpers.deployLambda(environmentName)
 
     console.log('(5/5) clearing CloudFront CDN cache (production only)');
     if (environmentName === 'production') {
