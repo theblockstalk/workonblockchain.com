@@ -70,7 +70,7 @@ describe('admin get metrics', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
             const result = await statisticsHelpers.getStatistics();
-            result.body.approvedUsers.should.equal(1);
+            result.body.approvedEnabled.count.should.equal(1);
         })
     })
 });
