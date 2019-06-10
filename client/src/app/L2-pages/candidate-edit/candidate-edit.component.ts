@@ -187,7 +187,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.lastName.selfValidate()) queryBody.last_name = this.lastName.last_name;
     else errorCount++;
 
-    if(this.contactNumber.selfValidate) queryBody.contact_number = this.contactNumber.contact_number;
+    if(this.contactNumber.selfValidate()) queryBody.contact_number = this.contactNumber.contact_number;
     else errorCount++;
 
     if(this.githubUrl.github_account) {
