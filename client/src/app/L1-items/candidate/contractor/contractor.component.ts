@@ -30,7 +30,7 @@ export class ContractorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.max_hours[0] = -1;
+    this.max_hours[0] = '-1';
     for(let i =5; i<=60; i=i+5) {
       this.max_hours.push(i);
     }
@@ -45,7 +45,9 @@ export class ContractorComponent implements OnInit {
     const typeValid = this.typeValidate();
     const webValid = this.websiteValidate();
     if(locValid && roleValid && descValid && hourlyValid && currencyValid && typeValid && webValid) {
-      if(this.contractor['max_hour_per_week'] === Number('-1')) {
+      console.log(this.contractor['max_hour_per_week']);
+      console.log(typeof this.contractor['max_hour_per_week']);
+      if(Number(this.contractor['max_hour_per_week']) === Number('-1')) {
         delete this.contractor['max_hour_per_week'];
       }
       else this.contractor['max_hour_per_week'] = Number(this.contractor['max_hour_per_week']);
