@@ -3,7 +3,7 @@
   <p>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
   </p>
-  <span *ngIf="imageCropData.image;else prefil_image" >
+  <span *ngIf="imageCropData.image" >
     <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
   </span>
   <span #prefil_image *ngIf="image && !imageCropData.image" >
