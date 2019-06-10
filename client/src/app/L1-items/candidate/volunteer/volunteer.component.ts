@@ -29,7 +29,6 @@ export class VolunteerComponent implements OnInit {
     const roleValid = this.role.selfValidate();
     const objectValid = this.objectiveValidation();
     if(locationValid && roleValid && objectValid) {
-      console.log(this.volunteer['max_hours_per_week']);
       if(this.volunteer['max_hours_per_week'] === Number('-1')) {
         delete this.volunteer['max_hours_per_week'];
       }

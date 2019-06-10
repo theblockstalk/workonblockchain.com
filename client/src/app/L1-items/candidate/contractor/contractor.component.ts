@@ -45,8 +45,6 @@ export class ContractorComponent implements OnInit {
     const typeValid = this.typeValidate();
     const webValid = this.websiteValidate();
     if(locValid && roleValid && descValid && hourlyValid && currencyValid && typeValid && webValid) {
-      console.log(this.contractor['max_hour_per_week']);
-      console.log(typeof this.contractor['max_hour_per_week']);
       if(Number(this.contractor['max_hour_per_week']) === Number('-1')) {
         delete this.contractor['max_hour_per_week'];
       }
