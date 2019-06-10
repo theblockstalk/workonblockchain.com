@@ -1,0 +1,7 @@
+<app-c-forme-text
+  label="City"
+  [value]="city"
+  [errorMsg]="errMsg"
+  (textInputValue)="city=$event"
+  (change)="selfValidate()"
+></app-c-forme-text>

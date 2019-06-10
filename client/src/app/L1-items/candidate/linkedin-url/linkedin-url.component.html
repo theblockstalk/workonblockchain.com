@@ -1,0 +1,10 @@
+<app-c-forme-text
+  placeholder="https://linkedin.com/in/username"
+  [errorMsg]="errMsg"
+  [value]="linkedin_account"
+  label="Linkedin account URL (optional)"
+  (change)= selfValidate()
+  (textInputValue)="linkedin_account = $event"
+>
+</app-c-forme-text>
+

@@ -1,0 +1,10 @@
+<app-c-forme-text
+  placeholder="https://mywebsite.com"
+  [errorMsg]="errMsg"
+  [value]="personal_website_url"
+  label="Personal website URL (optional)"
+  (change)= selfValidate()
+  (textInputValue)="personal_website_url = $event"
+>
+</app-c-forme-text>
+

@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      [options]="country_codes"
+      [value]="country_code"
+      [errorMsg]="codeErrMsg"
+      label = "Phone"
+      (change)= selfValidateCode()
+    ></app-c-forme-dropdown-single>
+  </div>
+  <div class="col-md-6 mt-2">
+    <app-c-forme-text
+      placeholder="1234567890"
+      [errorMsg]="phoneErrMsg"
+      [(value)]="phone_number"
+      (change)= selfValidateNumber()
+      (textInputValue)="phone_number = $event"
+    ></app-c-forme-text>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-12 mt-4">
+    <app-i-forme-locations
+      [selectedLocation] = "volunteer.location"
+      (selectedItems)="volunteer.location = $event"
+    ></app-i-forme-locations>
+  </div>
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+
+  <div class="col-md-12">
+    <app-i-forme-role
+      [roles]="volunteer.roles"
+      (selectedItems)="volunteer.roles = $event"
+    ></app-i-forme-role>
+  </div>
+
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      label="Maximum hours per week (optional):"
+      [options]="max_hours"
+      [value]="volunteer.max_hours_per_week"
+      (selectedValue) = "volunteer.max_hours_per_week = $event"
+    ></app-c-forme-dropdown-single>
+  </div>
+
+  <div class="col-md-12">
+    <app-c-forme-text-area
+      label="Learning objectives:"
+      [value]="volunteer.learning_objectives"
+      placeholder="Learn more about P2P protocols and cryptocurrency exchange architectures."
+      rows="5"
+      [errorMsg]="errMsg"
+      (change)="objectiveValidation()"
+      (textareaInput)="volunteer.learning_objectives = $event"
+    ></app-c-forme-text-area>
+  </div>
+</div>
+
