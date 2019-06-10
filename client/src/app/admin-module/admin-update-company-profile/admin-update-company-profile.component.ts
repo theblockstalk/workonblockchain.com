@@ -241,7 +241,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.company_id)
+      this.authenticationService.getCurrentCompany(this.company_id, true)
         .subscribe(
           data =>
           {

@@ -193,7 +193,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         prefItems: this._fb.array([this.initPrefRows()])
       });
 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -245,10 +245,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.authenticationService.get_page_content('Company popup message')
         .subscribe(
           data => {
-            if(data && data[0])
+            if(data)
             {
-              this.companyMsgTitle= data[0]['page_title'];
-              this.companyMsgBody = data[0]['page_content'];
+              this.companyMsgTitle= data['page_title'];
+              this.companyMsgBody = data['page_content'];
             }
           });
     }

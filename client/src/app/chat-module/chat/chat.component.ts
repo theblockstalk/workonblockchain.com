@@ -175,8 +175,8 @@ export class ChatComponent implements OnInit {
                   .subscribe(
                     data => {
                       if(data){
-                        this.candidateMsgTitle = data[0]['page_title'];
-                        this.candidateMsgContent = data[0]['page_content'];
+                        this.candidateMsgTitle = data['page_title'];
+                        this.candidateMsgContent = data['page_content'];
                       }
                     }
                   );
@@ -197,7 +197,7 @@ export class ChatComponent implements OnInit {
           );
       }
       else{
-        this.authenticationService.getCurrentCompany(this.currentUser._id)
+        this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data => {
               this.profile_pic = data['company_logo'];
@@ -218,9 +218,9 @@ export class ChatComponent implements OnInit {
                 this.authenticationService.get_page_content('Company chat popup message')
                   .subscribe(
                     data => {
-                      if (data && data[0]) {
-                        this.companyMsgTitle = data[0]['page_title'];
-                        this.companyMsgContent = data[0]['page_content'];
+                      if (data) {
+                        this.companyMsgTitle = data['page_title'];
+                        this.companyMsgContent = data['page_content'];
                       }
                     }
                   );

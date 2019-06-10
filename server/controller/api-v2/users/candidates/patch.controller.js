@@ -7,7 +7,7 @@ const multer = require('../../../../controller/middleware/multer');
 const errors = require('../../../services/errors');
 
 const users = require('../../../../model/mongoose/users');
-const filterReturnData = require('../../../api/users/filterReturnData');
+const filterReturnData = require('../filterReturnData');
 const objects = require('../../../services/objects');
 
 module.exports.request = {
@@ -385,11 +385,11 @@ module.exports.endpoint = async function (req, res) {
         if(queryBody.unset_employee) unset['candidate.employee'] = 1;
         else {
             if(queryBody.employee) {
+                console.log(queryBody.employee.location);
                 for(let loc of queryBody.employee.location) {
                     if(loc.city) {
                         const index = queryBody.employee.location.findIndex((obj => obj.city === loc.city));
                         queryBody.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
-
                     }
                 }
                 updateCandidateUser['candidate.employee'] = queryBody.employee;

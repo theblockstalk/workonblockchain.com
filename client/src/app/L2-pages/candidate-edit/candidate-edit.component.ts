@@ -35,6 +35,7 @@ import { EducationHistoryComponent } from '../../L1-items/candidate/education-hi
   templateUrl: './candidate-edit.component.html',
   styleUrls: ['./candidate-edit.component.css']
 })
+
 export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(EmailAddressComponent) emailAddress: EmailAddressComponent;
   @ViewChild(FirstNameComponent) firstName: FirstNameComponent;
@@ -104,6 +105,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   education_history = [];
   error_msg;
   errMsg;
+
   constructor(private authenticationService: UserService, private router: Router) {}
 
   ngAfterViewInit(): void {
