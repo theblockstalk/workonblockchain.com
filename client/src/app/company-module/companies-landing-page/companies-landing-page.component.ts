@@ -47,7 +47,6 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
         data => {
           if(data)
           {
-            console.log(data);
             this.approvedUsers = data['approvedEnabled']['count'];
             this.blockchainExperienceUsers = Math.floor((data['approvedEnabled']['aggregated']['blockchain']['commercial'] / data['approvedEnabled']['count'])*100) + "%";
           }
