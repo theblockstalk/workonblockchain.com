@@ -5,6 +5,7 @@
       [value]="country_code"
       [errorMsg]="codeErrMsg"
       label = "Phone"
+      (selectedValue)="country_code = $event"
       (change)= selfValidateCode()
     ></app-c-forme-dropdown-single>
   </div>
