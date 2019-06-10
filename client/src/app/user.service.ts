@@ -1305,7 +1305,7 @@ export class UserService {
 
   update_terms_and_privacy(queryBody :any)
   {
-    return this.http.patch(URL+'v2/users/'+ this.currentUser._creator, queryBody , {
+    return this.http.patch(URL+'v2/users/', queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
