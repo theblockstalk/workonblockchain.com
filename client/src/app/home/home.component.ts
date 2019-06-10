@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor( private route: ActivatedRoute,
                private router: Router,
                private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
-    this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');
+    this.titleService.setTitle('Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers');
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
       if(ref_code) {
@@ -37,13 +37,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngOnInit()
   {
-    this.newMeta.updateTag({ name: 'description', content: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.' });
-    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
+    this.newMeta.updateTag({ name: 'description', content: 'Work and jobs for blockchain, cryptocurrency and DLT. Work for freelancers, volunteers, developers, CTOs and more with or without blockchain experience.' });
+    this.newMeta.updateTag({ name: 'keywords', content: 'Jobs work blockchain technology, Developers freelance cryptocurrency, Hiring projects companies' });
+    this.newMeta.updateTag({ name: 'title', content: 'Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers' });
     $('#text').html($('.active > .carousel-caption').html());
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
     });
-
   }
 
   internalRoute(page,dst){
@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.log_error = error['error']['message'];
           }
           else {
-            this.log_error = 'Something getting wrong';
+            this.log_error = 'Something went wrong';
           }
         }
       );

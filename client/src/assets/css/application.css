@@ -19,30 +19,14 @@
 	align: "left;"
 }
 
-/*Use with bootstrap-social.css*/
 .btn-social .fab {
-	color: #fff
+  color: #fff
 }
+/*Use with bootstrap-social.css*/
+
 
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
 	width: 100% !important;
-}
-
-.btn-light {
-    background-color: #ffffff !important;
-    border-color: #ced4da !important;
-}
-
-.btn-light:hover {
-    color: #495057;
-    background-color: #ffffff;
-    border-color: #ced4da;
-}
-
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
 }
 
 .dropdown-item.active, .dropdown-item:active {
@@ -162,4 +146,51 @@ pre {
   display:none !important;
 }
 
+/* angular auto suggest material css */ DELETE ME
+.mat-form-field {
+  width: 100% !important;
+}
 
+.mat-form-field-flex {
+  width: 100% !important;
+  padding: 0px !important;
+  border-top: none !important;
+}
+
+.mat-input-element{
+  height: calc(2.25rem + 2px) !important;
+  width: 100% !important;
+  border: 1px solid #ced4da !important;
+  border-radius: .25rem !important;
+  padding: .375rem .75rem !important;
+  background: #ffffff !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline  {
+  display: none;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-infix{
+  border-top: none !important;
+}
+
+.my-style{
+  width: 45%;
+}
+
+.list-without-underline {
+  margin-bottom: -12px;
+  border: none;
+}
+.bootstrap-select.disabled, .bootstrap-select>.disabled {
+  background-color: #e9ecef !important;
+}
+
+.dropdown-toggle.btn-light{
+  background-color: #fff!important;
+  border-color: #ced4da!important;
+}

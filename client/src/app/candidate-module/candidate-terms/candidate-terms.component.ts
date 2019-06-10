@@ -62,7 +62,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       if(this.currentUser && this.currentUser.type=='candidate')
        {
 
-           this.authenticationService.getById(this.currentUser._id)
+           this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
             .subscribe(
                 data =>
                 {
@@ -115,7 +115,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.link="/job";
                   }
 
-                  if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
+                  if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -125,7 +125,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   }
 
 
-                    if(data['candidate'].why_work )
+                    if(data['candidate'].why_work && data['candidate'].interest_areas )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";
@@ -173,22 +173,29 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_log;
   terms_and_condition(termsForm: NgForm)
   {
-    if(this.termscondition == false)
-    {
-        this.terms_log = "Please accept terms and conditions";
-    }
-    else
-    {
-      let inputQuery : any = {};
-      inputQuery.marketing_emails = termsForm.value.marketing;
-      inputQuery.terms_id = this.terms_id;
-      inputQuery.privacy_id = this.privacy_id;
+      if(this.termscondition === false)
+      {
+          this.terms_log = "Please accept terms and conditions";
+      }
+      else
+      {
+        let queryBody: any = {};
+        inputQuery.marketing_emails = termsForm.value.marketing;
+        inputQuery.terms_id = this.terms_id;
+        inputQuery.privacy_id = this.privacy_id;
 
-      this.authenticationService.update_terms_and_privacy(inputQuery)
-      .subscribe(
-        data =>
-        {
-            if(data)
+        this.authenticationService.account_settings(queryBody)
+        .subscribe(
+          data =>
+          {
+              if(data)
+              {
+                  this.router.navigate(['/prefill-profile']);
+              }
+          },
+          error=>
+          {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
                 this.router.navigate(['/prefill-profile']);
             }

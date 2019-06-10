@@ -17,6 +17,8 @@ import {PagerService} from '../pager.service';
 import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
 import { CompaniesLandingPageComponent } from './companies-landing-page/companies-landing-page.component';
 
+import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
+
 
 @NgModule({
   imports: [
@@ -28,6 +30,9 @@ import { CompaniesLandingPageComponent } from './companies-landing-page/companie
     SharedModule,
     Select2Module,
     NgxPaginationModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule
   ],
   declarations: [
     AboutCompanyComponent,

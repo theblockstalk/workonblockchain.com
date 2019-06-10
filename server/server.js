@@ -10,7 +10,6 @@ const logger = require('./controller/services/logger');
 const sanitizer = require('./controller/middleware/sanitizer');
 const requestLogger = require('./controller/middleware/requestLogger');
 const errorHandler = require('./controller/middleware/errorHandler');
-const routes = require('./routes');
 const routesV2 = require('./routes-v2');
 const cron = require('./cron');
 
@@ -27,9 +26,8 @@ try {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.use(sanitizer.middleware);
+    app.use("/users",sanitizer.middleware);
 
-    app.use(routes);
     app.use(routesV2);
     app.use(requestLogger);
 

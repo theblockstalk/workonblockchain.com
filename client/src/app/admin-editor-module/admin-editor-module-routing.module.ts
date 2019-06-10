@@ -6,6 +6,7 @@ import { ChatPopupEditorComponent } from './chat-popup-editor/chat-popup-editor.
 import { PrivacyEditorComponent } from './privacy-editor/privacy-editor.component';
 import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
+import { EmailTemplatesComponent } from './email-templates/email-templates.component';
 
 const routes: Routes = [
   {path : 'admin-welcome-msg-editor' , component: WelcomePopupEditorComponent},
@@ -13,6 +14,8 @@ const routes: Routes = [
   {path : 'admin-privacy-notice-editor' , component: PrivacyEditorComponent},
   {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
   {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
+  {path : 'admin-email-template-editor' , component: EmailTemplatesComponent},
+
 ];
 
 @NgModule({

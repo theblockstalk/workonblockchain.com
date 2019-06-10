@@ -17,7 +17,7 @@ export class VerifyEmailMiddleware implements CanActivate {
   canActivate(): boolean{
     if(this.currentUser) {
       if(this.currentUser.type === 'candidate') {
-        this.authenticationService.getById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
             {
@@ -37,7 +37,7 @@ export class VerifyEmailMiddleware implements CanActivate {
             });
       }
       else if(this.currentUser.type === 'company') {
-        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data =>
             {

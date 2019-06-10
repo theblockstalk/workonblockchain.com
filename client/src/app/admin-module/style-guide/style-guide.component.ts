@@ -1,5 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
 declare var $:any;
+import {constants} from "../../../constants/constants";
+import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 @Component({
   selector: 'app-style-guide',
@@ -7,14 +9,37 @@ declare var $:any;
   styleUrls: ['./style-guide.component.css']
 })
 export class StyleGuideComponent implements OnInit ,AfterViewInit {
-
+  @Input() name: string;
+  cropperSettings: CropperSettings;
+  imageCropData:any;
+  @ViewChild('cropper', undefined)
+  cropper:ImageCropperComponent;
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
   ckeEditorConfig: any;
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
-  constructor() { }
+
+  country_codes = constants.country_codes;
+  imageName;
+
+  constructor() {
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.noFileInput = true;
+    this.cropperSettings.width = 200;
+    this.cropperSettings.height = 200;
+    this.cropperSettings.minWidth = 180;
+    this.cropperSettings.minHeight = 180;
+    this.cropperSettings.croppedWidth = 200;
+    this.cropperSettings.croppedHeight = 200;
+    this.cropperSettings.canvasWidth = 300;
+    this.cropperSettings.canvasHeight = 300;
+    this.cropperSettings.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings.cropperDrawSettings.strokeColor = 'black';
+    this.cropperSettings.rounded = true;
+    this.imageCropData = {};
+  }
 
   ngOnInit() {
     this.when_receive_email_notitfications = 'Daily';
@@ -36,7 +61,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
 
     };
     this.tweet = 'http://localhost:4200/refer?code=f4ca5a5443';
-
+    this.selectedValueArray= [];
   }
 
   ngAfterViewInit() {
@@ -56,16 +81,66 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   countriesModel;
   error;
   selectedValue(e) {
-    this.countriesModel= '';
-    this.countries = [];
-    if(this.selectedValueArray.find(x => x === e)) {
-      this.error = 'You selected this already';
-      setInterval(() => {
-        this.error = "" ;
-      }, 2500);
+
+   if(this.countries && this.countries.find(x=> x === e)) {
+     if(this.selectedValueArray.find(x => x === e)) {
+       this.error = 'You selected this already';
+       setInterval(() => {
+         this.error = "" ;
+       }, 2500);
+     }
+     else {
+       this.countriesModel= '';
+       this.countries = [];
+
+       return this.selectedValueArray.push(e);
+     }
+   }
+
+  }
+  getOutput(data) {
+    console.log(data);
+  }
+
+  selectedLocations;
+  getSelectedLocations(data) {
+    console.log(data);
+
+  }
+
+  itemSelected(data) {
+    console.log("item selected");
+    this.selectedLocations = data;
+  }
+
+  fileChangeListener($event) {
+    var image:any = new Image();
+    var file:File = $event.target.files[0];
+    var myReader:FileReader = new FileReader();
+    var that = this;
+    myReader.onloadend = function (loadEvent:any) {
+      image.src = loadEvent.target.result;
+      that.cropper.setImage(image);
+    };
+    this.imageName = file.name;
+    myReader.readAsDataURL(file);
+  }
+
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    else {
-      this.selectedValueArray.push(e);
+
+    return new File([u8arr], filename, {type:mime});
+  }
+
+  imageCropped(key) {
+    if(key === 'cancel') {
+      this.imageCropData = {};
     }
+    $('#imageModal').modal('hide');
   }
 }

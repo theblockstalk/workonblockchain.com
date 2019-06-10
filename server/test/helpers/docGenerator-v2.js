@@ -2,39 +2,41 @@ const enumerations = require('../../model/enumerations');
 const random = require('./random');
 
 module.exports.messages = {
-    job_offer: function(user_id) {
+    approach: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer',
+            msg_tag: 'approach',
             message: {
-                job_offer: {
-                    title: random.string(),
-                    salary: random.integer(1),
-                    salary_currency: random.enum(enumerations.currencies),
-                    type: random.enum(enumerations.jobTypes),
-                    location : "PWD Islamabad",
-                    description: random.string(100)
+                approach: {
+                    employee: {
+                        job_title: random.string(),
+                        annual_salary: random.integer(1),
+                        currency: random.enum(enumerations.currencies),
+                        employment_type: random.enum(enumerations.employmentTypes),
+                        location : "PWD Islamabad",
+                        employment_description: random.string(100)
+                    }
                 }
             }
         }
     },
-    job_offer_accepted: function(user_id) {
+    approach_accepted: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer_accepted',
+            msg_tag: 'approach_accepted',
             message: {
-                job_offer_accepted: {
+                approach_accepted: {
                     message: 'I am interested, lets chat!'
                 }
             }
         }
     },
-    job_offer_rejected: function(user_id) {
+    approach_rejected: function(user_id) {
         return {
             receiver_id: user_id,
-            msg_tag: 'job_offer_rejected',
+            msg_tag: 'approach_rejected',
             message: {
-                job_offer_rejected: {
+                approach_rejected: {
                     message: 'I am not interested'
                 }
             }
@@ -73,7 +75,7 @@ module.exports.messages = {
                     title: random.string(),
                     salary: random.integer(1),
                     salary_currency: random.enum(enumerations.currencies),
-                    type: random.enum(enumerations.jobTypes),
+                    type: random.enum(enumerations.employmentTypes),
                     start_date: Date.now(),
                     description: random.string(100)
                 }
@@ -177,12 +179,10 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
 module.exports.candidate = function candidate() {
     return {
-        first_name: "Tayyab",
-        last_name: "Hussain",
+        first_name: random.string(5),
+        last_name: random.string(5),
         email: random.email(),
-        password: "Password1",
-        type: "candidate",
-        social_type : ""
+        password: 'Sadia1234'
     };
 };
 
@@ -193,35 +193,35 @@ module.exports.candidateProfile = function candidateProfile(){
         github_account: 'fb.com',
         linkedin_account : 'http://linkedin.com/in/sadia_abbas',
         medium_account : 'http://medium.com/sadia_abbas',
-        nationality: random.enum(enumerations.nationalities),
+        nationality: [random.enum(enumerations.nationalities)],
         base_country : random.enum(enumerations.countries),
         base_city : 'Islamabad',
-        expected_salary: random.integer(10, 100000),
-        expected_salary_currency: random.enum(enumerations.currencies),
+
         current_salary: random.integer(10000, 100000),
         current_currency: random.enum(enumerations.currencies),
-        availability_day: random.enum(enumerations.workAvailability),
         why_work: random.string(10),
         description: random.string(10),
-        locations: [
-            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
-            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
-        ],
-        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        employee: {
+            location: [
+                {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+                {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+            ],
+            roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+            expected_annual_salary: random.integer(10, 100000),
+            currency: random.enum(enumerations.currencies),
+            employment_availability: random.enum(enumerations.workAvailability),
+        },
         interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
-
-        smart_contract_platforms:[
+        commercial_platforms : [
             {
-                _id: '5bbc37432997bf00408501b7',
-                name: 'Bitcoin',
-                exp_year: '0-1'
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "4-6"
             },
             {
-                _id: '5bbc37432997bf00408501b6',
-                platform_name: 'Hyperledger Sawtooth',
-                exp_year: '1-2'
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "1-2"
             }
         ],
         programming_languages: [
@@ -235,24 +235,17 @@ module.exports.candidateProfile = function candidateProfile(){
 
         commercial_skills : [
             {
-                skill: 'Formal verification',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '0-1'
             },
             {
-                skill: 'Distributed computing and networks',
+                skill: random.enum(enumerations.otherSkills),
                 exp_year: '2-4'
             }
         ],
-        formal_skills : [
-            {
-                skill: 'P2P protocols',
-                exp_year: '1-2'
-            },
-            {
-                skill: 'Economics',
-                exp_year: '0-1'
-            }
-        ],
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
         education_history : [{
             uniname: 'CUST',
             degreename: 'BSCS',
@@ -280,14 +273,114 @@ module.exports.changeCandidateStatus = function changeCandidateStatus(){
     }
 }
 
+module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
+    return {
+        contact_number: '+926246524',
+        exchange_account: 'sadia_exchange_1234.com',
+        github_account: 'fb12.com',
+        base_city : 'Islamabad',
+
+        employee: {
+            location: [
+                {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+                {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+            ],
+            roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        },
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
+
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
+        commercial_platforms : [
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "4-6"
+            },
+            {
+                name : random.enum(enumerations.blockchainPlatforms),
+                exp_year : "1-2"
+            }
+        ],
+        programming_languages: [
+            {
+                language: 'Java',
+                exp_year: '1-2'
+            },
+            {
+                language: 'C#',
+                exp_year: '0-1'
+            }
+        ],
+
+        commercial_skills : [
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '0-1'
+            },
+            {
+                skill: random.enum(enumerations.otherSkills),
+                exp_year: '2-4'
+            }
+        ],
+        description_commercial_platforms : random.string(10),
+        description_commercial_skills : random.string(10),
+        description_experimented_platforms : random.string(10),
+        education_history : [{
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        }],
+        work_history:[{
+            companyname: 'MWAN',
+            positionname: 'Team Lead',
+            locationname: 'Tokyo Japan',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }]
+    }
+}
+
+module.exports.accountSetting = function accountSetting(){
+    return {
+        marketing_emails : true,
+        is_unread_msgs_to_send : false
+    }
+}
+
 module.exports.termsAndConditions = function termsAndConditions(){
     return {
         marketing_emails: true
     }
 }
 
-module.exports.companyTnCWizard = function companyTnCWizard(){
+module.exports.companyTnCWizard = function companyTnCWizard() {
     return {
         marketing_emails: true
+    }
+}
+
+module.exports.cmsContentFroTC = function cmsContentFroTC() {
+    return {
+        page_title: "T&C for Company",
+        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        page_name: "Terms and Condition for company"
+    }
+}
+
+module.exports.newEmailTemplate = function newEmailTemplate() {
+    return {
+        name: "Template 1",
+        subject: "Template subject",
+        body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>",
+    }
+}
+
+module.exports.updateEmailTemplate = function updateEmailTemplate() {
+    return {
+        name: "Template 1 update",
+        subject: "Template subject update",
+        body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry update.</p>",
     }
 }

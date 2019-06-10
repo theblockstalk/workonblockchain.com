@@ -94,31 +94,6 @@ module.exports.changePassword = function changePassword(){
     }
 }
 
-module.exports.accountSetting = function accountSetting(){
-    return {
-            statusName : 'disabledAccount',
-            statusValue : true
-    }
-}
-
-
-module.exports.companyTnCWizard = function companyTnCWizard(){
-    return {
-        terms:true,
-        marketing: true
-    }
-}
-
-module.exports.companyAbout = function companyAbout(){
-    return {
-        company_founded:2015,
-        no_of_employees:10,
-        company_funded:"i don't know",
-        company_description:"Global blockchain agnostic hiring platform for developers, designers, product managers, CTO's and interns who are passionate about public and enterprise blockchain technology and cryptocurrencies."
-    }
-}
-
-
 
 module.exports.referredEmailDocs = function referredEmailDocs(){
     return {
@@ -345,9 +320,9 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
 
 module.exports.cmsContent = function cmsContent() {
     return {
-        page_title: "Privacy Notice",
-        html_text: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
-        page_name: "Privacy Notice"
+        title: "Privacy Notice",
+        content: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
+        name: "Privacy Notice"
     }
 }
 
@@ -360,9 +335,9 @@ module.exports.image = function image(){
 
 module.exports.cmsContentFroTC = function cmsContentFroTC() {
     return {
-        page_title: "T&C for Company",
-        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
-        page_name: "Terms and Condition for company"
+        title: "T&C for Company",
+        content: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        name: "Terms and Condition for company"
     }
 }
 

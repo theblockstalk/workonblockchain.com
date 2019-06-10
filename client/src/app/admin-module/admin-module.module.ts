@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
 import { SharedModule } from '../app-shared.module';
-import { CKEditorModule } from 'ng2-ckeditor';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component';
@@ -14,15 +12,17 @@ import { AdminCompanyDetailComponent } from './admin-company-detail/admin-compan
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
 import { StyleGuideComponent } from './style-guide/style-guide.component';
 import {PagerService} from '../pager.service';
+import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
+import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profile/admin-update-company-profile.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AdminModuleRoutingModule,
-    FormsModule,
     SharedModule,
-    ReactiveFormsModule,
-    CKEditorModule
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule
   ],
   declarations: [
     AdminDashboardComponent,
@@ -32,7 +32,8 @@ import {PagerService} from '../pager.service';
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
-    StyleGuideComponent
+    StyleGuideComponent,
+    AdminUpdateCompanyProfileComponent
   ],
   providers : [PagerService]
 

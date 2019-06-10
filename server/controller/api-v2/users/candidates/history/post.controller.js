@@ -6,18 +6,17 @@ const errors = require('../../../../services/errors');
 const sanitizer = require('../../../../services/sanitize');
 const objects = require('../../../../services/objects');
 const candidateHistoryEmail = require('../../../../services/email/emails/candidateHistory');
-const filterReturnData = require('../../../../api/users/filterReturnData');
+const filterReturnData = require('../../filterReturnData');
 
 
 module.exports.request = {
     type: 'post',
-    path: '/users/:user_id/candidates/history'
+    path: '/users/candidates/history'
 };
-const paramSchema = new Schema({
-    user_id: String
-});
+
 const querySchema = new Schema({
-    admin: Boolean
+    admin: Boolean,
+    user_id: String
 });
 const bodySchema = new Schema({
     status: {
@@ -34,22 +33,17 @@ const bodySchema = new Schema({
 });
 
 module.exports.inputValidation = {
-    params: paramSchema,
     query: querySchema,
     body: bodySchema
 };
 
 module.exports.auth = async function (req) {
-    if (req.query.admin) {
-        await auth.isAdmin(req);
-    }
-    else {
-        errors.throwError("Unauthorize user", 401)
-    }
+    await auth.isAdmin(req);
+    if(!req.query.admin) throw new Error("User is not an admin");
 }
 
 module.exports.endpoint = async function (req, res) {
-    let userId = req.params.user_id;
+    let userId = req.query.user_id;
     let userDoc = await users.findOneById(userId);
     let sanitizedEmailHtml;
     if(userDoc) {
@@ -63,7 +57,7 @@ module.exports.endpoint = async function (req, res) {
 
 
         if(queryInput.email_html) {
-            sanitizedEmailHtml = sanitizer.sanitizeHtml(req.unsanitizedBody.email_html);
+            sanitizedEmailHtml = sanitizer.sanitizeHtml(req.unsanitizedBody.email_html, true);
             history.email_html = sanitizedEmailHtml;
         }
         if(queryInput.email_subject) history.email_subject = queryInput.email_subject;

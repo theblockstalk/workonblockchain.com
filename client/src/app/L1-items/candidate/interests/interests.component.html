@@ -1,0 +1,9 @@
+<app-c-forme-checkbox
+  [options]="options"
+  label="Interests"
+  [errorMsg]="errMsg"
+  (selectedItem)="interest_areas = $event"
+  column="col-md-4 mb-3"
+  [value]="interest_areas"
+  (change)="selfValidate()"
+></app-c-forme-checkbox>

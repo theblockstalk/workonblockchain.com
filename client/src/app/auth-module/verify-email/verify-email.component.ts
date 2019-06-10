@@ -66,7 +66,7 @@ export class VerifyEmailComponent implements OnInit {
                     this.errorMsg = error['error']['message'];
                   }
                   else {
-                    this.errorMsg  = "Something getting wrong";
+                    this.errorMsg  = "Something went wrong";
                   }
 
                 });

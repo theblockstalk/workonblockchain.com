@@ -30,7 +30,7 @@
       </div>
       <div class="col-md-4">
         <div class="wob-switch-toggle float-right">
-          <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
+          <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="account_setting('unreadMsgNotification' , $event)" >
           <label for="switch1">Toggle</label>
         </div>
       </div>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom">
+    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom" *ngIf="password === true">
       <div class="col-md-12">
         <div class="form-group">
           <a routerLink="/change-password" >Change Password</a>
@@ -64,7 +64,6 @@
           <div class="alert alert-info" role="alert">
               <a href="#" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
           </div>
-
         </div>
       </div>
     </div>
@@ -75,7 +74,6 @@
           <div class="alert alert-danger" role="alert">
               <a href="#"  data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
           </div>
-
         </div>
       </div>
     </div>

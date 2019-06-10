@@ -72,6 +72,10 @@ const CompanyProfileSchema = new Schema({
                 type: String,
                 required: true
             },
+            work_type : {
+                type: String,
+                enum: enumerations.workTypes
+            },
             location: {
                 type: [{
                     city: {
@@ -89,8 +93,7 @@ const CompanyProfileSchema = new Schema({
             job_type: {
                 type: [{
                     type: String,
-                    required : true,
-                    enum: enumerations.jobTypes
+                    enum: enumerations.employmentTypes
                 }]
 
             },
@@ -101,15 +104,20 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.workRoles
                 }]
             },
-            current_currency: {
-                type: String,
-                required : true,
-                enum: enumerations.currencies
-            },
             current_salary: {
                 type:Number,
                 required : true,
                 min: 0
+            },
+            expected_hourly_rate: {
+                type:Number,
+                required : true,
+                min: 0
+            },
+            current_currency: {
+                type: String,
+                required : true,
+                enum: enumerations.currencies
             },
             blockchain: {
                 type: [{
@@ -122,6 +130,11 @@ const CompanyProfileSchema = new Schema({
                     type: String,
                     enum: enumerations.programmingLanguages
                 }]
+            },
+            years_exp_min: {
+                type: Number,
+                min: 1,
+                max: 20
             },
             residence_country: {
                 type: [{

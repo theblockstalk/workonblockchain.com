@@ -1,12 +1,12 @@
 import { Component, OnInit , AfterViewInit} from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
-import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
-
+import {constants} from '../../../constants/constants';
+import {getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -28,24 +28,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = [
-    {value:'created', name:'Created'},
-    {value:'wizard completed', name:'Wizard Completed'},
-    {value:'approved', name:'Approved'},
-    {value: 'updated', name: 'Updated'},
-    {value : 'updated by admin' , name: 'Updated by admin'},
-    {value:'rejected', name:'Rejected'},
-    {value:'deferred', name:'Deferred'},
-    {value:'other', name:'Other'}
-  ];
-  admin_checks_email_verify = [
-    {value:1, name:'Verified'},
-    {value:0, name:'Not Verified'}
-  ];
-  admin_checks_candidate_account = [
-    {value:false, name:'Enabled'},
-    {value:true, name:'Disabled'}
-  ];
+  admin_check = constants.candidateStatus;
+  admin_checks_email_verify = constants.admin_checks_email_verify;
+  admin_checks_candidate_account = constants.admin_checks_candidate_account;
   information;
   admin_log;
   response;
@@ -53,17 +38,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   candidate_status_account;
   pager: any = {};
   pagedItems: any[];
-  msgTagsOptions =
-    [
-      {value:'normal', name:'Normal' , checked:false},
-      {value:'job_offer', name:'Job offer sent' , checked:false},
-      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
-      {value:'interview_offer', name:'Interview offer sent' , checked:false},
-      {value:'employment_offer', name:'Employment offer sent' , checked:false},
-      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
-      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
-    ];
+  msgTagsOptions = constants.chatMsgTypes;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -75,7 +50,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
-    this.length='';
+    this.length=0;
     this.log='';
     this.response='';
     this.candidate_status = 1;
@@ -114,7 +89,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         {
           this.information = this.filter_array(data);
           this.info=[];
-          this.length='';
+          this.length=0;
 
           for(let res of this.information)
           {
@@ -131,10 +106,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
-
           }
           this.setPage(1);
-          this.length='';
+          this.length=0;
 
         },
         error =>
@@ -212,11 +186,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.approve) queryBody.is_approve = this.approve;
+      if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
-      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
-      if(this.candidate_status) queryBody.verify_status = this.candidate_status;
-      if(this.candidate_status_account) queryBody.account_status = this.candidate_status_account;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
+      if(this.candidate_status) queryBody.is_verify = this.candidate_status;
+      if(this.candidate_status_account) queryBody.disable_account = this.candidate_status_account;
       this.authenticationService.admin_candidate_filter(queryBody)
         .subscribe(
           data =>
@@ -270,7 +244,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
 
@@ -304,5 +278,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
+
+  }
+
+  rolesData = constants.workRoles;
+  filterAndSort(roles) {
+    return getFilteredNames(roles, this.rolesData);
   }
 }

@@ -5,6 +5,8 @@ import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
+import {constants} from '../../../constants/constants';
+import {changeLocationDisplayFormat, getNameFromValue, getFilteredNames} from "../../../services/object";
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -27,34 +29,30 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   set_status;
   status_reason_rejected;
   status_reason_deferred;
-  set_candidate_status = [
-    {value:'approved', name:'Approved'},
-    {value:'rejected', name:'Rejected'},
-    {value:'deferred', name:'Deferred'},
-    {value:'other', name:'Other'}
-  ];
+  set_candidate_status = constants.set_candidate_status;
+  set_candidate_status_rejected = constants.statusReasons_rejected;
+  set_candidate_status_deferred = constants.statusReasons_deferred;
+  email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
-  set_candidate_status_rejected = [
-    {value:'garbage', name:'Garbage'},
-    {value:'recruiter', name:'Recruiter'},
-    {value:'not technical', name:'Not Technical'},
-    {value:'other', name:'Other'}
-  ];
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
-  set_candidate_status_deferred = [
-    {value:'profile incomplete', name:'Profile Incomplete'},
-    {value:'not looking for job', name:'Not Looking for Job'},
-    {value:'job found', name:'Job Found'},
-    {value:'not responded', name:'Not Responded'},
-    {value:'other', name:'Other'}
-  ];
-  email_subject;
-
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
+  roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
+  country_code;
+  templates;
+  routerUrl;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+
+    this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
 
 
   }
@@ -77,7 +75,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   };
 
   commercial;
-  roles;
   platforms;
   email;
   response;
@@ -92,6 +89,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   noVisaArray = [];
   candidateHistory;
   _id;
+  send_email;
+  templateDoc;
 
   ngAfterViewInit(): void
   {
@@ -101,7 +100,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 600);
     window.scrollTo(0, 0);
 
   }
@@ -109,17 +108,21 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '12rem',
       minHeight: '10rem',
-      // removePlugins :'elementspath,save,image,flash,iframe,link,smiley,tabletools,find,pagebreak,templates,about,maximize,showblocks,newpage,language',
-      // removeButtons : 'Subscript,Superscript,Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField',
     };
 
     this.credentials.user_id = this.user_id;
@@ -134,34 +137,81 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {
       if(this.admin_log.is_admin == 1)
       {
-        this.authenticationService.getById(this.user_id)
+        this.getTemplateOptions();
+        this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(
             data => {
               this._id  = data['_id'];
+              if(data['candidate'].employee) {
+                this.employee.value = data['candidate'].employee;
+                const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+                this.employee.noVisaArray = locationArray.noVisaArray;
+                this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.employee.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.employee.value.roles = rolesValue.sort();
+                let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+                this.employee.value.employment_availability = availability.name;
+              }
+
+              if(data['candidate'].contractor) {
+                this.contractor.value = data['candidate'].contractor;
+                const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+                this.contractor.noVisaArray = locationArray.noVisaArray;
+                this.contractor.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.contractor.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.contractor.value.roles = rolesValue;
+                let contractorType = [];
+                for(let type of this.contractor.value.contractor_type) {
+                  const filteredArray = getNameFromValue(this.contractorTypes , type);
+                  contractorType.push(filteredArray.name);
+                }
+                this.contractor.value.contractor_type = contractorType.sort();
+              }
+
+              if(data['candidate'].volunteer) {
+                this.volunteer.value = data['candidate'].volunteer;
+                const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+                this.volunteer.noVisaArray = locationArray.noVisaArray;
+                this.volunteer.visaRequiredArray = locationArray.visaRequiredArray;
+                let rolesValue = [];
+                for(let role of this.volunteer.value.roles){
+                  const filteredArray = getNameFromValue(this.roles,role);
+                  rolesValue.push(filteredArray.name);
+                }
+                this.volunteer.value.roles = rolesValue.sort();
+              }
               this.candidateHistory = data['candidate'].history;
               this.candidate_status = data['candidate'].latest_status;
               this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 200);
 
-              /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
+              this.contact_number = '';
+              let contact_number = data['contact_number'];
+              contact_number = contact_number.replace(/^00/, '+');
+              contact_number = contact_number.split(" ");
+              if(contact_number.length>1) {
+                for (let i = 0; i < contact_number.length; i++) {
+                  if (i === 0) this.country_code = '('+contact_number[i]+')';
+                  else this.contact_number = this.contact_number+''+contact_number[i];
+                }
+                this.contact_number = this.country_code+' '+this.contact_number
               }
-              else{
-                this.set_status = this.candidate_status.status;
-              }
-              if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
-                this.status_reason_rejected = this.candidate_status.reason;
-                $("#sel1-reason-rejected").css("display", "block");
-              }
-              if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
-                this.status_reason_deferred = this.candidate_status.reason;
-                $("#status_reason_deferred").css("display", "block");
-              }*/
+              else this.contact_number = contact_number[0];
+
+              data['contact_number'] = this.contact_number;
+
               this.info.push(data);
               this.verify =data['is_verify'];
-              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
-              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
-              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
-              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
-              else this.availability_day =data['candidate'].availability_day;
 
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -236,8 +286,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               this.interest_area =data['candidate'].interest_areas;
               if(this.interest_area) this.interest_area.sort();
-              this.roles  = data['candidate'].roles;
-              if(this.roles) this.roles.sort();
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -283,16 +331,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                     })
                   }
                 }
-                if(data['candidate'].blockchain.smart_contract_platforms) {
-                  this.platforms=data['candidate'].blockchain.smart_contract_platforms;
-                  if(this.platforms && this.platforms.length>0){
-                    this.platforms.sort(function(a, b){
-                      if(a.platform_name < b.platform_name) { return -1; }
-                      if(a.platform_name > b.platform_name) { return 1; }
-                      return 0;
-                    })
-                  }
-                }
                 if(data['candidate'].blockchain.commercial_skills) {
                   this.commercial_skills = data['candidate'].blockchain.commercial_skills;
                   this.commercial_skills.sort(function(a, b){
@@ -301,13 +339,17 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                     return 0;
                   })
                 }
-                if(data['candidate'].blockchain.formal_skills){
-                  this.formal_skills = data['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
+
+                if(data['candidate'].blockchain.description_commercial_platforms) {
+                  this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
+                }
+
+                if(data['candidate'].blockchain.description_experimented_platforms) {
+                  this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
+                }
+
+                if(data['candidate'].blockchain.description_commercial_skills) {
+                  this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
                 }
 
               }
@@ -330,54 +372,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 this.is_approved = "";
               }
 
-              if(data['referred_email'])
-              {
-                this.authenticationService.getReferenceDetail(data['referred_email'])
-                  .subscribe(
-                    refData => {
-                      if(refData['candidateDoc']){
-                        if(refData['candidateDoc']['first_name'] && refData['candidateDoc']['last_name'])
-                          this.referred_name = refData['candidateDoc']['first_name'] + " " + refData['candidateDoc']['last_name'];
-                        else
-                          this.referred_name = refData['candidateDoc']._id ;
+              if(data['user_type'] === 'company') this.detail_link = '/admin-company-detail';
+              if(data['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
 
-
-                        this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._id;
-                      }
-                      else if(refData['companyDoc']){
-                        if(refData['companyDoc'].first_name && refData['companyDoc'].last_name)
-                          this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
-                        else
-                          this.referred_name = refData['companyDoc']._id ;
-
-                        this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator._id;
-                      }
-                      else
-                      {
-                        this.referred_name = refData['refDoc'].email;
-                      }
-
-                    },
-                    error => {
-                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else
-                      {
-                        this.error = error['error']['message'];
-                      }
-
-                    }
-                  );
+              if(data['name']) {
+                this.referred_name = data['name'];
+                this.referred_link = data['user_id'];
               }
-
+              else if(data['referred_email']) this.referred_name = data['referred_email'];
             },
 
             error =>
@@ -387,6 +389,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               }
 
             });
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 200);
       }
       else
       {
@@ -401,7 +406,28 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     }
   }
 
-
+  getTemplateOptions()  {
+    this.templates = [];
+    this.authenticationService.email_templates_get()
+      .subscribe(
+        data =>
+        {
+          this.templateDoc = data;
+          for(let i = 0; i < data['length']; i++) {
+              this.templates.push(data[i].name);
+          }
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
+        },
+        error =>
+        {
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+        });
+  }
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
@@ -424,9 +450,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    console.log(this.email_text);
-    console.log(approveForm.value);
-    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text && !approveForm.value.email_subject) {
+    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
 
@@ -449,12 +473,12 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
-      else if(approveForm.value.email_text && !approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && approveForm.value.email_text && !approveForm.value.email_subject) {
         this.error = 'Please enter email subject too.';
 
       }
 
-      else if(!approveForm.value.email_text && approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && !approveForm.value.email_text && approveForm.value.email_subject) {
         this.error = 'Please enter email body too.';
 
       }
@@ -492,7 +516,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               statusCount = 1;
             }
           }
-
+          this.reset();
+          this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
@@ -509,9 +534,18 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = error['error']['message'];
           }
           else {
-            this.error = "Something getting wrong";
+            this.error = "Something went wrong";
           }
         });
+  }
+
+  reset() {
+    this.set_status = '';
+    this.status_reason_rejected = '';
+    this.status_reason_deferred = '';
+    this.note = '';
+    this.email_text = '';
+    this.send_email = false;
   }
 
   filter_array(arr) {
@@ -521,5 +555,39 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       var match = Boolean(hashTable[key]);
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  website_url;
+  websiteUrl(link) {
+    let loc = link;
+    let x = loc.split("/");
+    if (x[0] === 'http:' || x[0] === 'https:') {
+      this.website_url = link;
+      return this.website_url;
+    }
+    else {
+      this.website_url = 'http://' + link;
+      return this.website_url;
+    }
+  }
+
+  refreshSelect(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
+  }
+
+  selectTemplate(event, name){
+    let template = this.templateDoc.find(x => x.name === event.target.value);
+    if(name === 'note') {
+      this.note = template.body;
+    }
+    else  {
+      if('subject' in template) this.email_subject = template.subject;
+      this.email_text = template.body;
+    }
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 }

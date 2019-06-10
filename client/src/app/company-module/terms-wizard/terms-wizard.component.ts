@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class TermsWizardComponent implements OnInit {
   info : any;
-  currentUser: User;log;
+  currentUser: any;log;
   about_company;
   terms_active_class;about_active_class;
   termscondition;
@@ -63,7 +63,7 @@ export class TermsWizardComponent implements OnInit {
         }
       );
 
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -82,8 +82,6 @@ export class TermsWizardComponent implements OnInit {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';
               this.about_company = '/about_comp';
-              this.preference  = '/preferences';
-
             }
 
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
@@ -131,30 +129,29 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      let inputQuery : any = {};
+      let queryBody: any = {};
       inputQuery.marketing_emails = termsForm.value.marketing;
       inputQuery.terms_id = this.terms_id;
       inputQuery.privacy_id = this.privacy_id;
 
-      this.authenticationService.update_terms_and_privacy(inputQuery)
-      .subscribe(
-        data => {
-          if(data && this.currentUser)
-          {
-            this.router.navigate(['/about_comp']);
-          }
-        },
-        error => {
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            this.log = error['error']['message'];
-          }
-          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            this.log = error['error']['message'];
-          }
-          else {
-            this.log = "Something getting wrong";
-          }
-
+      this.authenticationService.account_settings(queryBody)
+        .subscribe(
+          data => {
+            if(data && this.currentUser)
+            {
+              this.router.navigate(['/about_comp']);
+            }
+          },
+          error => {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something went wrong";
+            }
         }
       );
     }

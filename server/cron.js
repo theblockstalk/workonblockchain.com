@@ -4,11 +4,26 @@ const autoNotification = require('./controller/services/cron/companyAutomaticEma
 const synchronizeSendGrid = require('./controller/services/cron/synchronizeSendGrid');
 const logger = require('./controller/services/logger');
 const cron = require('cron');
+const newMessagesEmail = require('./controller/services/cron/newMessagesReminderEmail');
 
 const CronJob = cron.CronJob;
 
 module.exports.startCron = function startCron() {
     if (settings.isLiveApplication()) {
+        const newMessagesJob = new CronJob({
+            cronTime: settings.CRON.NEW_MESSAGES_EMAIL,
+            onTick: function() {
+                Promise.resolve(newMessagesEmail()).catch(function (error) {
+                    logger.error(error.message, {
+                        stack: error.stack,
+                        name: error.name
+                    });
+                });
+            },
+            start: true,
+            timeZone: 'CET'
+        });
+
         const unreadMessagesJob = new CronJob({
             cronTime: settings.CRON.UNREAD_MESSAGES_TICK,
             onTick: function() {
@@ -37,24 +52,24 @@ module.exports.startCron = function startCron() {
             timeZone: 'CET'
         });
 
-         // const autoNotificationEmail = new CronJob({
-         //     cronTime: settings.CRON.AUTO_NOTIFICATION,
-         //     onTick: function() {
-         //         Promise.resolve(autoNotification()).catch(function (error) {
-         //             logger.error(error.message, {
-         //                 stack: error.stack,
-         //                 name: error.name
-         //             });
-         //         });
-         //     },
-         //     start: true,
-         //     timeZone: 'CET'
-         // });
+         const autoNotificationEmail = new CronJob({
+             cronTime: settings.CRON.AUTO_NOTIFICATION,
+             onTick: function() {
+                 Promise.resolve(autoNotification()).catch(function (error) {
+                     logger.error(error.message, {
+                         stack: error.stack,
+                         name: error.name
+                     });
+                 });
+             },
+             start: true,
+             timeZone: 'CET'
+         });
 
         logger.debug('Cron jobs', {
             unreadMessagesJob: unreadMessagesJob,
             syncSendgridJob: syncSendgrid,
-            // autoNotification : autoNotificationEmail
+            autoNotification : autoNotificationEmail
         });
 
         logger.info('Cron jobs started');
