@@ -7,8 +7,8 @@
         [value]="opt"
         [attr.selected]="opt===value?true: null"
       >
-        <span *ngIf="opt === -1">None</span>
-        <span *ngIf="opt !== -1">{{opt}}</span>
+        <span *ngIf="opt === '-1'">None</span>
+        <span *ngIf="opt !== '-1'">{{opt}}</span>
       </option>
     </ng-container>
     <ng-template #keyValue>
@@ -16,7 +16,10 @@
         *ngFor="let opt of options"
         [value]="opt.value"
         [attr.selected]="opt.value===value?true: null"
-      >{{opt.name}}</option>
+      >
+        <span *ngIf="opt.value === '-1'">None</span>
+        <span *ngIf="opt.value !== '-1'">{{opt.name}}</span>
+      </option>
     </ng-template>
   </select>
   <div class = "invalid-feedback d-inline" *ngIf="errorMsg">

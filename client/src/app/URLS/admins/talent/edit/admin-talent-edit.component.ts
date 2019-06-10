@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../user.service' ;
 
 @Component({
@@ -12,7 +12,7 @@ export class AdminTalentEditComponent implements OnInit {
   currentUser;
   user_id;
   userDoc;
-  constructor(private route: ActivatedRoute, private authenticationService: UserService) {
+  constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
     this.route.params.subscribe(params => {
       this.user_id = params['user_id'];
     });
@@ -26,14 +26,17 @@ export class AdminTalentEditComponent implements OnInit {
         .subscribe(data =>
           {
             if(data) {
-              console.log("user doc");
-              console.log(this.user_id);
               this.userDoc = data;
+            }
+            else {
+              this.router.navigate(['/not_found']);
             }
 
           },
           error =>
           {
+            this.router.navigate(['/not_found']);
+
           });
     }
 

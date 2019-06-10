@@ -67,6 +67,15 @@ export class ContactNumberComponent implements OnInit {
     return true;
   }
 
+  selfValidate() {
+    const numValid = this.selfValidateNumber();
+    const codeValid =  this.selfValidateCode();
+    if(numValid && codeValid) {
+      return true;
+    }
+    else return false;
+  }
+
   getContactNumber() {
     if(this.country_code && this.phone_number) {
       this.contact_number = this.country_code +' '+ this.phone_number;

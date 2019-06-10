@@ -18,8 +18,6 @@ export class LocationsComponent implements OnInit {
   constructor(public authenticationService: UserService) { }
 
   ngOnInit() {
-    console.log("selected location")
-    console.log(this.selectedLocation);
     if(this.selectedLocation) {
       this.changeLocationDisplayFormat(this.selectedLocation);
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../../../../user.service' ;
+import { UserService } from '../../../../user.service' ;
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-u-users-talent-edit',
@@ -9,7 +10,7 @@ import {UserService} from '../../../../user.service' ;
 export class EditCandidateProfileComponent implements OnInit {
   currentUser;
   userDoc;
-  constructor(private authenticationService: UserService) {}
+  constructor(private authenticationService: UserService, private router: Router) {}
 
   ngOnInit()
   {
@@ -22,10 +23,14 @@ export class EditCandidateProfileComponent implements OnInit {
             if(data) {
               this.userDoc = data;
             }
+            else {
+              this.router.navigate(['/not_found']);
+            }
 
           },
           error =>
           {
+            this.router.navigate(['/not_found']);
           });
     }
   }
