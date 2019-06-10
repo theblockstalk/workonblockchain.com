@@ -5,6 +5,7 @@ const messages = require('../../../../../model/mongoose/messages');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
+const company = require('../../../../../model/mongoose/company');
 
 module.exports.request = {
     type: 'post',
@@ -93,15 +94,7 @@ module.exports.endpoint = async function (req, res) {
 
         const searchQuery = {$match: object};
 
-        const companyDoc = await EmployerProfile.aggregate([{
-            $lookup:
-                {
-                    from: "users",
-                    localField: "_creator",
-                    foreignField: "_id",
-                    as: "users"
-                }
-        }, searchQuery]);
+        const companyDoc = await company.aggregate(searchQuery);
         if (companyDoc && companyDoc.length > 0) {
             for (companyDetail of companyDoc) {
                 let query_result = companyDetail.users[0];

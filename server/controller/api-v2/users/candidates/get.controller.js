@@ -58,24 +58,17 @@ module.exports.endpoint = async function (req, res) {
         }
     }
     else {
-        let userId;
-        if(req.auth.user.type === 'company') userId = req.query.user_id;
-        else {
-            const userDoc = req.auth.user;
-            userId = userDoc._id;
-        }
-
-        const candidateDoc = await users.findByIdAndPopulate(userId);
-        if(candidateDoc ) {
-            if(req.auth.user.type === 'company'){
-                let filterData = await filterReturnData.candidateAsCompany(candidateDoc,req.auth.user._id);
-                filterData = filterReturnData.removeSensativeData(filterData);
-                res.send(filterData);
-            }
-            else res.send(candidateDoc);
-        }
-        else {
-            errors.throwError("Candidate account not found", 404);
+        let candidateDoc, filterData;
+        if(req.auth.user.type === 'company') {
+            let userId = req.query.user_id;
+            candidateDoc = await users.findByIdAndPopulate(userId);
+            filterData = await filterReturnData.candidateAsCompany(candidateDoc,req.auth.user._id);
+            filterData = filterReturnData.removeSensativeData(filterData);
+            res.send(filterData);
+        } else {
+            candidateDoc = req.auth.user;
+            filterData = filterReturnData.removeSensativeData(candidateDoc);
+            res.send(filterData);
         }
     }
 }
