@@ -1,8 +1,13 @@
-<app-p-candidate-edit
-  *ngIf="userDoc"
-  viewBy="admin"
-  [userDoc]="userDoc"
->
-</app-p-candidate-edit>
-
-
+<ng-container *ngIf="userDoc ; else loader"  >
+  <app-p-candidate-edit
+    *ngIf="userDoc"
+    viewBy="admin"
+    [userDoc]="userDoc"
+  >
+  </app-p-candidate-edit>
+</ng-container>
+<ng-template #loader>
+  <div class="col-md-12 text-center" >
+    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+  </div>
+</ng-template>

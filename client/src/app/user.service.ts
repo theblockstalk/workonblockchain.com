@@ -1119,7 +1119,7 @@ export class UserService {
 
   //will be changed to new rest API call
   autoSuggestOptions(queryInput:any, country : boolean) {
-    return this.http.get(URL+'v2/locations?autosuggest='+queryInput+'&countries='+country, {
+    return this.http.get(URL+'v2/locations?autosuggest='+queryInput+'&options='+country, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

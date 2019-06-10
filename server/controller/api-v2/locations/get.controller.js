@@ -10,7 +10,9 @@ module.exports.request = {
 
 const querySchema = new Schema({
     autosuggest: String,
-    countries: Boolean
+    options: {
+        countries: Boolean
+    }
 })
 
 module.exports.inputValidation = {
@@ -37,14 +39,14 @@ module.exports.endpoint = async function (req, res) {
             outputOptions.push({city : cityLoc});
         }
 
-        if(queryInput.countries === true) {
+        if(queryInput.options && queryInput.options.countries) {
             for(let countryLoc of citiesDoc) {
                 outputOptions.push({country : countryLoc.country});
             }
         }
 
     }
-    if(queryInput.countries === true) {
+    if(queryInput.options && queryInput.options.countries) {
         const countriesEnum = enumerations.countries;
         let count = 0;
         for(let countryEnum of countriesEnum) {

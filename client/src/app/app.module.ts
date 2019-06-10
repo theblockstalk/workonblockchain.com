@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
+import { SharedModule } from './app-shared.module';
 import { UserService } from './user.service';
 import { HttpClientModule} from '@angular/common/http';
 import { DataService } from './data.service';
 import { DatePipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import {HomeComponent} from './home/home.component';
 import { HeaderComponent } from './header/header.component';
@@ -26,11 +26,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SharedModule
   ],
-  providers: [UserService, DataService, DatePipe, CookieService,FormsModule],
-  bootstrap: [AppComponent]
+  providers: [UserService, DataService, DatePipe, CookieService],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
 

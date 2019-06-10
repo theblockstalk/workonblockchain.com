@@ -33,7 +33,7 @@
                       <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Approve</button>
                       <button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn-primary" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Disapprove</button>
                       <button type="submit" class = "btn btn-primary" *ngIf = "data._creator.is_verify ===0" disabled>Approve</button>
-							    	</div>
+                    </div>
 							    </form>
                 </span>
               </div>
