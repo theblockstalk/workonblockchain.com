@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../../user.service';
 import { EmailAddressComponent } from '../../L1-items/users/email-address/email-address.component';
 import { FirstNameComponent } from '../../L1-items/users/first-name/first-name.component';
@@ -35,7 +35,7 @@ import { EducationHistoryComponent } from '../../L1-items/candidate/education-hi
   templateUrl: './candidate-edit.component.html',
   styleUrls: ['./candidate-edit.component.css']
 })
-export class CandidateEditComponent implements OnInit {
+export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(EmailAddressComponent) emailAddress: EmailAddressComponent;
   @ViewChild(FirstNameComponent) firstName: FirstNameComponent;
   @ViewChild(LastNameComponent) lastName: LastNameComponent;
@@ -104,10 +104,19 @@ export class CandidateEditComponent implements OnInit {
   education_history = [];
   error_msg;
   errMsg;
-  constructor(private authenticationService: UserService, private router: Router) { }
+  constructor(private authenticationService: UserService, private router: Router) {}
+
+  ngAfterViewInit(): void {
+    const tree = this.router.parseUrl(this.router.url);
+    if (tree.fragment) {
+      const element = document.querySelector('#' + tree.fragment);
+      if (element) {
+        element.scrollIntoView();
+      }
+    }
+  }
 
   ngOnInit() {
-    console.log(this.userDoc);
     const candidateSubDoc = this.userDoc['candidate'];
     this.email_address = this.userDoc['email'];
     this.first_name = this.userDoc['first_name'];
