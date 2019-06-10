@@ -1,1 +1,7 @@
-<input type="file" accept="{{accepts}}/*" (change)="selectedFile.emit($event)">
+<div class="form-group">
+  <label *ngIf="label">{{label}}</label>
+  <input type="file" accept="{{accepts}}/*" (change)="selectedFile.emit($event)">
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+</div>

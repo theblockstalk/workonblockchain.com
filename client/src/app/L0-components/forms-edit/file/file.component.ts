@@ -6,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./file.component.css']
 })
 export class FileComponent implements OnInit {
+  @Input() label;
   @Input() accepts: string; //'file', 'image'
   @Input() errorMsg: string;
   @Output() selectedFile: EventEmitter<object> = new EventEmitter<object>();
