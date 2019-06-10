@@ -45,11 +45,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   contractorTypes = constants.contractorTypes;
   country_code;
   templates;
+  routerUrl;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+
+    this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
 
 
   }

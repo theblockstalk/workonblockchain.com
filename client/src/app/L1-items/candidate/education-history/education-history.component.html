@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-6">
+    <h2><i class="fas fa-university"></i> Education</h2>
+  </div>
+</div>
+
+<div class = "work-form" [formGroup]="EducationForm">
+  <div formArrayName="itemRows">
+    <div *ngFor="let itemrow of DynamicEduFormControls.controls ; let i=index" [formGroupName]="i">
+      <div class="row">
+        <div class="col-md-3">
+          <app-c-forme-text
+            placeholder="Cambridge"
+            [errorMsg]="uniErrMsg[i]"
+            (textInputValue) = "EducationForm.value.itemRows[i].uniname = $event"
+            [value]="EducationForm.value.itemRows[i].uniname"
+            label="University"
+            (change)="uniValidate(i)"
+          ></app-c-forme-text>
+        </div>
+        <div class="col-md-3">
+          <app-c-forme-text
+            placeholder="Bachelors"
+            [errorMsg]="degreeErrMsg[i]"
+            (textInputValue) = "EducationForm.value.itemRows[i].degreename = $event"
+            [value]="EducationForm.value.itemRows[i].degreename"
+            label="Degree"
+            (change)="degreeValidate(i)"
+          ></app-c-forme-text>
+        </div>
+        <div class="col-md-3">
+          <app-c-forme-text
+            placeholder="Computer Science"
+            [errorMsg]="fieldErrMsg[i]"
+            (textInputValue) = "EducationForm.value.itemRows[i].fieldname = $event"
+            [value]="EducationForm.value.itemRows[i].fieldname"
+            label="Field of study"
+            (change)="fieldValidate(i)"
+          ></app-c-forme-text>
+        </div>
+        <div class="col-md-3">
+          <app-c-forme-dropdown-single
+            label="Graduation"
+            [value]="EducationForm.value.itemRows[i].eduyear"
+            [options]="years"
+            [errorMsg]="gradErrMsg[i]"
+            (selectedValue)="EducationForm.value.itemRows[i].eduyear = $event"
+            (change)="graduationValidate(i)"
+          ></app-c-forme-dropdown-single>
+        </div>
+        <div class="col-md-12">
+          <div class = "form-group text-right">
+            <app-c-button-normal
+              (click)="deleteRow(i)"
+              level="danger"
+              alignment="text-white"
+              buttonType="submit"
+              label="Remove"
+            ></app-c-button-normal>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class = "form-group">
+        <app-c-button-normal
+          (click)="addNewRow(i)"
+          level="primary"
+          alignment="text-white"
+          buttonType="submit"
+          label="Add Education"
+        ></app-c-button-normal>
+      </div>
+    </div>
+  </div>
+</div>

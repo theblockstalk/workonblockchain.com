@@ -471,7 +471,7 @@
                 <label>Commercial experience: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data.name}}.png" alt="{{data.name}} Logo">
                     {{data.name}}: {{data.exp_year}} years
                   </div>
                 </div>
@@ -484,7 +484,7 @@
                 <label>Experimented with: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data}}.png" alt="{{data}} Logo">
                     {{data}}
                   </div>
                 </div>
@@ -753,6 +753,7 @@
               </div>
 
             </div>
+
 
             <div class="row" *ngIf="approach_work_type === 'volunteer'">
 

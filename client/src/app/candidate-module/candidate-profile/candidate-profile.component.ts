@@ -77,7 +77,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   }
 
   doScroll() {
-
     if (!this.sectionScroll) {
       return;
     }
