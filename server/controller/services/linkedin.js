@@ -44,29 +44,55 @@ async function getLinkedinAccessToken(linkedinCode) {
 });
 }
 
-
-
 async function getLinkedinAccountFromCode(code) {
-    const linkedin = Linkedin.init(code);
-    return new Promise((resolve, reject) => {
-        try {
-            linkedin.people.me(['id', 'first-name', 'last-name','email-address'], function(error, res) {
-                if(error) reject(error);
-                const userData = res;
-                resolve({
-                    email: userData.emailAddress,
-                    linkedin_id: userData.id,
-                    first_name: userData.firstName,
-                    last_name: userData.lastName
-                });
-            });
-        }
-        catch (error) {
-            if(error.message === "Cannot read property 'version' of undefined") {
-                errors.throwError("This authorization code has already been used, please log in or sign up again.", 400);
-            }
-            else throw new Error(error);
-        }
+    const profile = await getLinkedinLiteProfile(code);
+    const email = await getLinkedinEmailAddress(code);
+    const response = {
+        linkedin_id: profile.id,
+        first_name: profile.localizedFirstName,
+        last_name: profile.localizedLastName,
+        email: email.elements[0]['handle~'].emailAddress
+    }
+    console.log(response);
+    return response;
+}
 
+async function getLinkedinLiteProfile(code) {
+    return new Promise((resolve, reject) => {
+        var options = {
+            url: "https://api.linkedin.com/v2/me",
+            method: 'GET',
+            headers: {
+                'Host': "api.linkedin.com",
+                'Connection': "Keep-Alive",
+                'Authorization': 'Bearer ' + code
+            },
+            json: true
+        };
+
+    request.get(options, function(error, res, body) {
+        if(error) reject(error);
+        resolve(body);
     });
+});
+}
+
+async function getLinkedinEmailAddress(code) {
+    return new Promise((resolve, reject) => {
+        var options = {
+            url: "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
+            method: 'GET',
+            headers: {
+                'Host': "api.linkedin.com",
+                'Connection': "Keep-Alive",
+                'Authorization': 'Bearer ' + code
+            },
+            json: true
+        };
+
+    request.get(options, function(error, res, body) {
+        if(error) reject(error);
+        resolve(body);
+    });
+});
 }
