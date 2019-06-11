@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="blockchainPlatforms"
+      label="Commercial experience"
+      (selectedItem)="oncommerciallyOptions($event)"
+      column="col-md-3 mb-3"
+      [value]="platform"
+      icon="blockchain"
+    ></app-c-forme-checkbox>
+  </div>
+</div>
+<div class="row" *ngIf="platform?.length > 0">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Years of experience</label>
+    </div>
+  </div>
+  <div class = "col-md-12" >
+    <app-c-forme-button-group *ngFor = "let obj of commercial_platforms; let i=index"
+                              [value]="obj.exp_year" [label]="obj.name"
+                              (selectedValue)="selectedPlatform($event)"
+                              [options]="experienceYears"
+                              [errorMsg]="yearErrMsg[i]"
+                              (change)="yearValidate()"
+    ></app-c-forme-button-group>
+
+  </div>
+</div>
+<!-- description for commercial exp -->
+<div class="row" *ngIf="platform?.length > 0">
+  <div class="col-md-12">
+    <app-c-forme-text-area
+      rows="5"
+      placeholder=""
+      label="Description of experience"
+      [value]="description_commercial_platforms"
+      [errorMsg]="desErrMsg"
+      (textareaInput)="description_commercial_platforms = $event"
+      (change)="desValidate()"
+    ></app-c-forme-text-area>
+  </div>
+</div>

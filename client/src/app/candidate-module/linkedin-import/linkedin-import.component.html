@@ -47,10 +47,10 @@
     <div class="row border p-4 bg-white">
       <div class="col-md-12">
         <form class="needs-validation" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-          <h4 class = "text-center">Pre-fill your profile with LinkedIn import?</h4>
-          <p class = "text-center">
-            If you would like your profile data such as work history to be pre-filled please follow the steps below.
-          </p>
+          <h4 class = "text-center">Save time and import from Linkedin</h4>
+          <div class="text-center mb-3">
+            <a class = "btn btn-secondary text-white" (click) = "skipbutton()">Skip</a>
+          </div>
           <div class="row">
             <div class = "col-md-6">
               <p>
@@ -83,14 +83,13 @@
               </div>
             </div>
             <div class = "col-md-6">
-              <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive  w-100"/>
+              <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive border border-grey"/>
             </div>
           </div>
           <div class = "col-md-12 text-right mt-3">
             <a routerLink="/terms-and-condition" class = "btn btn-warning text-white">Back</a>
             <span class="ml-1">
               <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
-              <a class = "btn btn-primary text-white" (click) = "skipbutton()">Skip</a>
             </span>
             <button type="submit" class = "btn btn-primary ml-1">Next</button>
           </div>

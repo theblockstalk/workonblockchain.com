@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const Companies = require('../../../../model/mongoose/company');
 const docGenerator = require('../../../helpers/docGenerator-v2');
-const companyHelper = require('./../companyHelpers');
+const companyHelper = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;

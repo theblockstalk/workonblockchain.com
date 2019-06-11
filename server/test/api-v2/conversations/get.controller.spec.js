@@ -3,8 +3,8 @@ const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const messagesHelpers = require('../helpers');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
-const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../otherHelpers/companyHelpers');
+const candidateHelper = require('../otherHelpers/candidateHelpers');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const users = require('../../../model/mongoose/users');
 
@@ -31,8 +31,8 @@ describe('GET /conversations', function () {
             await candidateHelper.signupCandidateAndCompleteProfile(candidate,profileData,job,resume,experience);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            const approachOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);
+            await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
 
             const res = await messagesHelpers.getConversations(companyUserDoc.jwt_token);
             const conversation =  res.body['conversations'][0];

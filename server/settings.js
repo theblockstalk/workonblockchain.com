@@ -23,6 +23,9 @@ const isLiveApplication = settings.isLiveApplication = function () {
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
     config.mongo.password = process.env.MONGO_DATABASE_PASSWORD;
+    config.googleConfig.clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    config.linkedinConfig.clientSecret = process.env.LINKEDIN_CLIENT_SECRET ;
+
     config.expressJwt = {
         secret: process.env.EXPRESS_JWT_SECRET
     };
@@ -45,7 +48,9 @@ if (isLiveApplication()) {
     settings.SENDGRID = {
         FROM_ADDRESS: config.sendGrid.fromAddress,
         FROM_NAME: config.sendGrid.fromName,
-        API_KEY: config.sendGrid.apiKey
+        API_KEY: config.sendGrid.apiKey,
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
     };
 
     settings.throttleTime = config.sendGrid.throttleTime;
@@ -66,18 +71,29 @@ if (isLiveApplication()) {
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 } else {
+    if(settings.ENVIRONMENT === 'default') {
+        config.mongo.databaseName = config.mongo.databaseName + '-default';
+    }
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
+    settings.SENDGRID = {
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
+    };
 }
 
 settings.CRON = {
     UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
     AUTO_NOTIFICATION: config.cron.autoNotification,
-    SYNC_SENDGRID: config.cron.syncSendgrid
+    SYNC_SENDGRID: config.cron.syncSendgrid,
+    NEW_MESSAGES_EMAIL: config.cron.newMessagesEmail
 };
 
+settings.googleCredentials = config.googleConfig;
+
+settings.linkedinCredentials = config.linkedinConfig;
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 

@@ -1,0 +1,10 @@
+<app-c-forme-text
+  label="Why do you want to work on blockchain?"
+  placeholder="I want to work on blockchain because ..."
+  [value]="why_work"
+  [errorMsg]="errMsg"
+  (textInputValue)="why_work = $event"
+  [field_description] = "work_description"
+  (change)="selfValidate()"
+></app-c-forme-text>
+

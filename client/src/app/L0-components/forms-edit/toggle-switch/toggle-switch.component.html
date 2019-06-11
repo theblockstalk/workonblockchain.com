@@ -1,0 +1,7 @@
+<div class="wob-switch-toggle float-right">
+  <input id="switch"
+         type="checkbox"
+         [(ngModel)]="value"
+         (ngModelChange)="selectedValue.emit($event)" >
+  <label for="switch">Toggle</label>
+</div>

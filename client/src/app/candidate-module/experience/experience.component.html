@@ -78,16 +78,16 @@
             </div>
             <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
               <div class="form-group">
-              <p>{{lang_value.value}}</p>
-              <div class="form-check form-check-inline">
-                <div *ngFor="let exp of exp_year; let i_ind =index">
-                  <input type="radio" class="d-none" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
-                  <label  for="{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                    {{exp.name}}
-                  </label>
+                <p>{{lang_value.value}}</p>
+                <div class="form-check form-check-inline">
+                  <div *ngFor="let exp of exp_year; let i_ind =index">
+                    <input type="radio" class="d-none" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
+                    <label  for="{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
+                      {{exp.name}}
+                    </label>
+                  </div>
+                  <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
                 </div>
-                <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
-              </div>
               </div>
             </div>
           </div>
@@ -232,7 +232,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label>Job description (optional)</label>
-                      <textarea rows="5" id="comment" maxlength="2000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+                      <textarea rows="5" id="comment" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                     </div>
                   </div>
                 </div>
@@ -297,7 +297,7 @@
                     <div class="form-group">
                       <label>Graduation</label>
                       <select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
-                        <option class='option' *ngFor='let graduationYear of graduation_year'  [value]="graduationYear" selected>{{graduationYear}}</option>
+                        <option class='option' *ngFor='let graduationYear of year'  [value]="graduationYear" selected>{{graduationYear}}</option>
                       </select>
                       <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                         {{eduYear_log}}
@@ -328,8 +328,9 @@
                 <ul>
                   <li> 2-5 sentences </li>
                   <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                  <li> What value do you add to a project? </li>
                 </ul>
-                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                <textarea class="form-control" rows="5" maxlength="3000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                 <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                   {{intro_log}}
                 </div>

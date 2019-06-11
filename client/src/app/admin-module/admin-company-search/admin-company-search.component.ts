@@ -5,6 +5,7 @@ import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-admin-company-search',
@@ -33,27 +34,12 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   candidate_status;
   candidate_status_account;
-  msgTagsOptions =
-    [
-      {value:'normal', name:'Normal' , checked:false},
-      {value:'job_offer', name:'Job offer sent' , checked:false},
-      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
-      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
-      {value:'interview_offer', name:'Interview offer sent' , checked:false},
-      {value:'employment_offer', name:'Employment offer sent' , checked:false},
-      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
-      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
-    ];
 
-  admin_checks_email_verify = [
-    {value:1, name:'Verified'},
-    {value:0, name:'Not Verified'}
-  ];
+  msgTagsOptions = constants.chatMsgTypes;
 
-  admin_checks_candidate_account = [
-    {value:false, name:'Enabled'},
-    {value:true, name:'Disabled'}
-  ];
+  admin_checks_email_verify = constants.admin_checks_email_verify
+
+  admin_checks_candidate_account = constants.admin_checks_candidate_account;
 
   constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -98,7 +84,9 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.length=0;
     this.info=[];
     this.response = "";
-    this.authenticationService.allCompanies()
+    let queryBody : any = {};
+    queryBody.is_approved = 1;
+    this.authenticationService.allCompanies(queryBody)
       .subscribe(
         data =>
         {
@@ -138,7 +126,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
             this.response = "data";
           }
           else {
-            this.log = "Something getting wrong";
+            this.log = "Something went wrong";
           }
         });
   }
@@ -203,11 +191,11 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.approve) queryBody.is_approve = this.approve;
+      if(this.approve) queryBody.is_approved = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
-      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
-      if(this.candidate_status) queryBody.verify_status = this.candidate_status;
-      if(this.candidate_status_account) queryBody.account_status = this.candidate_status_account;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.search_word = this.searchWord;
+      if(this.candidate_status) queryBody.is_verify = this.candidate_status;
+      if(this.candidate_status_account) queryBody.disable_account = this.candidate_status_account;
 
       this.authenticationService.admin_company_filter(queryBody)
         .subscribe(
@@ -256,7 +244,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
             }
             else {
-              this.log = "Something getting wrong";
+              this.log = "Something went wrong";
             }
           });
     }

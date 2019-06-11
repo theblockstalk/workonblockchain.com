@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
       if(this.user_type === 'candidate')
       {
 
-        this.authenticationService.getById(this.currentUser._id)
+        this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
             {
@@ -78,10 +78,11 @@ export class HeaderComponent implements OnInit {
                 this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
-                  //this.admin_route = '/admin';
+                  localStorage.setItem('admin_log', JSON.stringify(data));
                 }
                 else
                 {
+                  localStorage.removeItem('admin_log');
                   this.admin_route = '';
                 }
               }
@@ -90,7 +91,7 @@ export class HeaderComponent implements OnInit {
       else if(this.user_type === 'company')
       {
 
-        this.authenticationService.getCurrentCompany(this.currentUser['_creator'])
+        this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data =>
             {
@@ -109,10 +110,11 @@ export class HeaderComponent implements OnInit {
                 this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
-                  //this.admin_route = '/admin';
+                  localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
                 }
                 else
                 {
+                  localStorage.removeItem('admin_log');
                   this.admin_route = '';
                 }
               }
@@ -146,48 +148,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  verify_client()
-  {
-    this.success_msg='';
-    this.msg='';
 
-    localStorage.setItem('close_notify', JSON.stringify(this.close));
-    if(this.currentUser.email)
-    {
-      this.authenticationService.verify_client(this.currentUser.email)
-        .subscribe(
-          data => {
-            if(data['success'] === true)
-            {
-              this.success_msg = "Please check your email to verify your account" ;
-
-              setInterval(() => {
-                this.success_msg = "not verify" ;
-
-              }, 12000);
-
-            }
-
-            else
-            {
-              this.dataservice.changeMessage(data['error']);
-              this.log= data['error'];
-
-
-            }
-
-          },
-          error => {
-            this.dataservice.changeMessage(error);
-
-          });
-
-    }
-    else
-    {
-
-    }
-  }
   close;
   close_notify()
   {

@@ -4,12 +4,12 @@
 </div>-->
 <!--Profile-inner-->
 <ng-container *ngIf="infoo==='';else profile_section" >
-<div class=""></div>
+  <div class=""></div>
 </ng-container>
 
 <ng-template #profile_section >
   <section class = "wob-bg-primary2 py-5 mt-5">
-     <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
+    <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
 
     <div class="container pt-2">
       <div class="row">
@@ -29,35 +29,45 @@
                   <span>
                     <h2 class="text-capitalize">{{first_name}} {{last_name}}</h2>
                   </span>
-                  <span>
-                    <pre>{{description}}</pre>
-                  </span>
                 </div>
               </div>
               <div class="col-md-5 mt-3">
                 <ul class="list-group list-group-flush float-right">
-                  <li class="list-group-item">
-                    <span><i class="fas fa-landmark mr-2"></i></span>
-                    <span>Nationality: {{nationality}}</span>
+                  <li class="list-group-item list-without-underline">
+                    <span><i class="fas fa-flag mr-2"></i></span>
+                    <span *ngFor="let nation of nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < nationality.length"/></span>
                   </li>
-                  <li class="list-group-item">
+                  <li class="list-group-item list-without-underline">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> Phone: {{contact_number}}</span>
+                    <span>{{contact_number}}</span>
                   </li>
                   <li class="list-group-item">
-                    <i class="fas fa-user mr-2"></i>
-                    Candidate status: <span class = "text-capitalize">{{candidate_status.status}}</span>
+                    <i class="fas fa-user mr-2"></i>Status:
+                    <span *ngIf="candidate_status.status === 'created'">Created</span>
+                    <span *ngIf="candidate_status.status === 'other'">Other</span>
+                    <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
+                    <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
+                    <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                    <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                    <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
+                    <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                    <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
                   </li>
                   <li class="list-group-item">
-                    <i class="fas fa-clock mr-2"></i>
-                    <span>Date created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>Created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
                 </ul>
               </div>
               <div class="col-md-1">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','about')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <pre>{{description}}</pre>
               </div>
             </div>
           </section>
@@ -68,7 +78,7 @@
                 <h2> <i class="fas fa-user"></i> About</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','about')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -82,42 +92,78 @@
                   <p>
                 </div>
               </div>
-              <div class = "col-md-6" *ngIf="github">
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <h4>Links</h4>
+              </div>
+            </div>
+            <div class="row mt-2" *ngIf="github">
+              <div class = "col-md-12">
                 <div class="form-group">
-                  <label> Github account URL:</label>
                   <p>
-                    {{github}}
-                  <p>
+                    <i class="fab fa-github fa-2x"></i>
+                    <a class="ml-2" [href]="websiteUrl(github)" target="_blank">
+                      {{github}}
+                    </a>
+                  </p>
                 </div>
               </div>
-
-              <div class = "col-md-6" *ngIf="linkedin_account">
+            </div>
+            <div class="row mt-2" *ngIf="linkedin_account">
+              <div class = "col-md-12">
                 <div class="form-group">
-                  <label> Linkedin account URL:</label>
                   <p>
+                    <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(linkedin_account)" target="_blank">
                     {{linkedin_account}}
-                  <p>
+                  </a>
+                  </p>
                 </div>
               </div>
-
-              <div class = "col-md-6" *ngIf="medium_account">
+            </div>
+            <div class="row mt-2" *ngIf="medium_account">
+              <div class = "col-md-12">
                 <div class="form-group">
-                  <label> Medium account URL:</label>
                   <p>
+                    <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(medium_account)" target="_blank">
                     {{medium_account}}
-                  <p>
+                  </a>
+                  </p>
                 </div>
               </div>
-
-              <div class = "col-md-6" *ngIf="stack">
+            </div>
+            <div class="row mt-2" *ngIf="stack">
+              <div class = "col-md-12">
                 <div class="form-group">
-                  <label> Stackexchange account URL:</label>
                   <p>
+                    <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(stack)" target="_blank">
                     {{stack}}
+                  </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2" *ngIf="stackoverflow_url">
+              <div class = "col-md-12">
+                <div class="form-group">
+                  <p>
+                    <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(stackoverflow_url)" target="_blank">
+                    {{stackoverflow_url}}
+                  </a>
                   <p>
                 </div>
               </div>
-
+            </div>
+            <div class="row mt-2" *ngIf="personal_website_url">
+              <div class = "col-md-12">
+                <div class="form-group">
+                  <p>
+                    <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(personal_website_url)" target="_blank">
+                    {{personal_website_url}}
+                  </a>
+                  <p>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -127,7 +173,7 @@
                 <h2><i class="fas fa-map-marker-alt"></i> Residence/base location</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','residence')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','residence')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -156,89 +202,12 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h2><i class="fas fa-briefcase"></i> Desired job</h2>
+                <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','job_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','work_preferences')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12" >
-                <div class="form-group" *ngIf="noVisaArray && noVisaArray.length > 0">
-                  <label>Desired location:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of noVisaArray'>
-                      <div *ngIf="country.name === 'Remote'">
-                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-                     <div *ngIf="country.type === 'country' ">
-                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-                    <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group" *ngIf="visaRequiredArray && visaRequiredArray.length > 0" >
-                  <label>Desired locations (work visa required):</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of visaRequiredArray'>
-                      <div *ngIf="country.type === 'country'" >
-                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'city'">
-                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12">
-                <div class="form-group ">
-                  <label> Area of interest:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'>
-                      {{interest_area}}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12">
-                <div class="form-group">
-                  <label> Desired roles:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'>
-                      {{roles_data}}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row mt-4">
-              <div class = "col-md-12" *ngIf="expected_salary">
-                <div class="form-group">
-                  <label> Expected annual salary:</label>
-                  <p class="mr-2">
-                    {{expected_currency}} {{expected_salary}}
-                  <p>
-                </div>
               </div>
             </div>
 
@@ -254,16 +223,238 @@
               </div>
             </div>
 
-            <div class="row mt-4">
-              <div class = "col-md-12" *ngIf="availability_day">
+            <div class="row mt-2" *ngIf="employee.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-user-secret"></i> Employee</h4>
+              </div>
+
+              <div class="col-md-12 mt-4">
                 <div class="form-group">
-                  <label> Your availablity:</label>
-                  <p class="mr-2">
-                    {{availability_day}}
-                  <p>
+                  <label>Position type: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let type of employee.value.employment_type;'> {{type}} </div>
+                  </div>
                 </div>
               </div>
+
+              <div class = "col-md-12" >
+                <div class="form-group" *ngIf="employee.noVisaArray && employee.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="employee.visaRequiredArray && employee.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of employee.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of employee.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Expected annual salary: </label>
+                  <p>{{employee.value.currency}} {{employee.value.expected_annual_salary}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Availability: </label>
+                  <p>{{employee.value.employment_availability}}</p>
+                </div>
+              </div>
+
             </div>
+
+            <div class="row mt-2" *ngIf="contractor.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-address-card"></i> Contractor</h4>
+              </div>
+
+
+              <div class = "col-md-12 mt-4" >
+                <div class="form-group" *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of contractor.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of contractor.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Hourly rate: </label>
+                  <p>{{contractor.value.currency}} {{contractor.value.expected_hourly_rate}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
+                <div class="form-group">
+                  <label>Maximum hours per week (optional): </label>
+                  <p>{{contractor.value.max_hour_per_week}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.contractor_type">
+                <div class="form-group">
+                  <label>Contractor type: </label>
+                  <p *ngFor="let contractorType of contractor.value.contractor_type">{{contractorType}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.agency_website">
+                <div class="form-group">
+                  <label>Agency website: </label>
+                  <p >{{contractor.value.agency_website}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="contractor.value.service_description">
+                <div class="form-group">
+                  <label>Service description: </label>
+                  <pre >{{contractor.value.service_description}}</pre>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-2" *ngIf="volunteer.value">
+              <div class="col-md-6">
+                <h4><i class="fas fa-user-check"></i> Volunteer</h4>
+              </div>
+
+
+              <div class = "col-md-12 mt-4" >
+                <div class="form-group" *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
+                  <label>Locations:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.noVisaArray'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'country' ">
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0" >
+                  <label>Locations (work visa required):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of volunteer.visaRequiredArray'>
+                      <div *ngIf="country.type === 'country'" >
+                        <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Roles: </label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let role of volunteer.value.roles;'> {{role}} </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
+                <div class="form-group">
+                  <label>Maximum hours per week: </label>
+                  <p >{{volunteer.value.max_hours_per_week}}</p>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
+                <div class="form-group">
+                  <label>Learning objectives: </label>
+                  <pre >{{volunteer.value.learning_objectives}}</pre>
+                </div>
+              </div>
+
+            </div>
+
+
           </section>
 
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
@@ -272,7 +463,7 @@
                 <h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','resume_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','blockchain_experience')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -281,81 +472,69 @@
             <div class = "row mt-4" *ngIf="why_work">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Why do you want to work on blockchain?</label>
+                  <label>Why do work on blockchain?</label>
                   <p>
                     {{why_work}}
                   </p>
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class = "col-md-12">
+                <div class="form-group ">
+                  <label>Interests:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'>
+                      {{interest_area}}
+                    </div>
+                  </div>
+                </div>
 
-            <div class="row" *ngIf = "commercial && commercial.length > 0">
-              <div class="col-md-12">
+              </div>
+            </div>
+
+            <div class="row" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
+              <div class="col-md-12 mb-2">
+                <h4>Technologies</h4>
+              </div>
+              <div class="col-md-12" *ngIf = "commercial && commercial.length > 0">
                 <div class="form-group">
-                  <label>Platforms commercially worked with and developed on:</label>
+                  <label>Commercial experience:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data.name}}.png" alt="{{data.name}} Logo">
                       {{data.name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
-
+                <pre *ngIf = "description_commercial_platforms">{{description_commercial_platforms}}</pre>
               </div>
             </div>
 
-            <div class="row" *ngIf = "platforms && platforms.length > 0">
+            <div class="row" *ngIf = "experimented && experimented.length > 0 ">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Platforms commercially designed and developed smart contracts on:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
-
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
-                      {{data.name}}: {{data.exp_year}} years
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12" *ngIf = "experimented && experimented.length > 0 ">
-                <div class="form-group">
-                  <label>Platform experimented with:</label>
+                  <label>Experimented with:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data}}.png" alt="{{data}} Logo">
                       {{data}}
                     </div>
                   </div>
                 </div>
-
+                <pre *ngIf = "description_experimented_platforms">{{description_experimented_platforms}}</pre>
               </div>
             </div>
 
             <div class="row" *ngIf = "commercial_skills && commercial_skills.length > 0">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Commercial experience in these areas:</label>
+                  <label>Skills:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
-
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="row" *ngIf = "formal_skills && formal_skills.length > 0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Formal (university) education in these areas:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
-
-                  </div>
-                </div>
+                <pre *ngIf = "description_commercial_skills">{{description_commercial_skills}}</pre>
               </div>
             </div>
           </section>
@@ -363,10 +542,10 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="languages && languages.length>0">
             <div class="row">
               <div class="col-md-6">
-                <h2><i class="fas fa-briefcase"></i> Experience</h2>
+                <h2><i class="fas fa-code"></i> Experience</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','experience')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -376,9 +555,9 @@
                 <div class="form-group">
                   <label>Languages: </label>
                   <div>
-                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -389,7 +568,7 @@
                 <h2><i class="fas fa-wrench"></i> Work history</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','work_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','work_history')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -421,7 +600,7 @@
                 <h2><i class="fas fa-university"></i> Education</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','education_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','education_history')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -457,7 +636,7 @@
           </h2>
         </div>
         <div class="modal-body">
-            <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+          <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
         </div>
         <div class="modal-footer">
           <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
@@ -483,31 +662,31 @@
       <h4 class = "text-center">{{first_name}} {{last_name}}</h4>
       <div class="modal-body">
         <div class = "">
-            <strong>
-              Where do you currently live, or where are you most frequently based?
-            </strong>
-            <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
-              <div class="form-group">
-                <label>Country</label>
-                <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
-                  <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
-                </select>
-                <div class = "invalid-feedback" *ngIf="information.country === -1">
-                  {{country_log}}
-                </div>
+          <strong>
+            Where do you currently live, or where are you most frequently based?
+          </strong>
+          <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
+                <option value="-1" disabled selected hidden >Please choose country</option>
+                <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
+              </select>
+              <div class = "invalid-feedback" *ngIf="information.country === -1">
+                {{country_log}}
               </div>
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
-                <div class = "invalid-feedback" *ngIf="!information.city">
-                  {{city_log}}
-                </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
+              <div class = "invalid-feedback" *ngIf="!information.city">
+                {{city_log}}
               </div>
-              <div class="form-group">
-                <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
-              </div>
-            </form>
+            </div>
+            <div class="form-group">
+              <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

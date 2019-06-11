@@ -47,7 +47,6 @@ export class WelcomePopupEditorComponent implements OnInit {
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
       height: '35rem',
       minHeight: '10rem',
     };
@@ -67,8 +66,8 @@ export class WelcomePopupEditorComponent implements OnInit {
             data => {
               if(data)
               {
-                this.candidateMsgTitle = data[0].page_title;
-                this.candidateMsgContent = data[0].page_content;
+                this.candidateMsgTitle = data['page_title'];
+                this.candidateMsgContent = data['page_content'];
 
               }
             });
@@ -77,8 +76,8 @@ export class WelcomePopupEditorComponent implements OnInit {
             data => {
               if(data)
               {
-                this.companyMsgTitle = data[0].page_title;
-                this.companyMsgContent = data[0].page_content;
+                this.companyMsgTitle = data['page_title'];
+                this.companyMsgContent = data['page_content'];
 
               }
             },

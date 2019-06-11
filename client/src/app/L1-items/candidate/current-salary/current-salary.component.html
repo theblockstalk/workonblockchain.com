@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-6">
+    <app-c-forme-text
+      label="Current annual salary (optional)"
+      [value]="current_salary"
+      [errorMsg]="salaryErrMsg"
+      (textInputValue)="current_salary= $event"
+      (change)="selfValidate()"
+    ></app-c-forme-text>
+  </div>
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      [options]="currencies"
+      [errorMsg]="currencyErrMsg"
+      [value]="current_currency"
+      (selectedValue)="current_currency = $event"
+      (change)="selfValidate()"
+    ></app-c-forme-dropdown-single>
+  </div>
+</div>

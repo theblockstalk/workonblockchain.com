@@ -1,13 +1,13 @@
 const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
-const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
+const candidateSearch = require('../../api-v2/users/candidate/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const objects = require('../objects');
 const logger = require('../logger');
-const filterReturnData = require('../../api/users/filterReturnData');
+const filterReturnData = require('../../api-v2/users/filterReturnData');
 
 module.exports = async function (companyId) {
     logger.debug('Running candidate auto-notification for company cron');
@@ -62,7 +62,13 @@ module.exports = async function (companyId) {
                             salary: {
                                 current_currency: savedSearch.current_currency,
                                 current_salary: savedSearch.current_salary
-                            }
+                            },
+                            work_type : savedSearch.work_type,
+                            hourly_rate : {
+                                expected_hourly_rate: savedSearch.expected_hourly_rate,
+                                current_currency: savedSearch.current_currency
+                            },
+                            years_exp_min: savedSearch.years_exp_min
                         }, {
                             blockchainOrder: savedSearch.order_preferences
                         });

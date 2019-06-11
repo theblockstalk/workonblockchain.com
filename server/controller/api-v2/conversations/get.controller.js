@@ -2,7 +2,7 @@ const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const users = require('../../../model/mongoose/users');
 const messages = require('../../../model/mongoose/messages');
-const filterReturnData = require('../../../controller/api/users/filterReturnData');
+const filterReturnData = require('../users/filterReturnData');
 const company = require('../../../model/mongoose/company');
 const errors = require('../../services/errors');
 const logger = require('../../services/logger');
@@ -43,11 +43,12 @@ module.exports.endpoint = async function (req, res) {
 
     let conversations = userDoc.conversations;
     if (conversations && conversations.length > 0) {
-        conversations.sort(function (a, b) {
-            return a.last_message < b.last_message;
+        conversations.sort(function(a, b) {
+            return (a.last_message > b.last_message) ? -1 : ((a.last_message < b.last_message) ? 1 : 0);
         });
         logger.debug('converstaions', {conversations:conversations,'userID':userDoc._id});
         logger.debug("length", {length: conversations.length});
+
         for (let i = 0; i < conversations.length; i++) {
             const conversationUser = await users.findOneById(conversations[i].user_id);
             if (conversationUser.type === 'candidate') {
@@ -59,7 +60,7 @@ module.exports.endpoint = async function (req, res) {
                     const acceptedJobOffer = await messages.findOne({
                         sender_id: conversations[i].user_id,
                         receiver_id: userId,
-                        msg_tag: 'job_offer_accepted'
+                        msg_tag: 'approach_accepted'
                     });
                     if (acceptedJobOffer) {
                         conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;

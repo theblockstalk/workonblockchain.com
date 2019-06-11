@@ -42,7 +42,6 @@ export class AdminFaqEditorComponent implements OnInit {
        this.ckeConfig = {
             allowedContent: false,
             extraPlugins: 'divarea',
-            forcePasteAsPlainText: true,
             height: '35rem',
             minHeight: '10rem',
             //removePlugins: 'resize,elementspath',
@@ -66,8 +65,8 @@ export class AdminFaqEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                        this.page_title = data[0]['page_title'];
-                       this.editor_content = data[0]['page_content'];
+                        this.page_title = data['page_title'];
+                       this.editor_content = data['page_content'];
                    }
                  },
 
