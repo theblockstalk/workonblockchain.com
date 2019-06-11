@@ -53,7 +53,6 @@ async function getLinkedinAccountFromCode(code) {
         last_name: profile.localizedLastName,
         email: email.elements[0]['handle~'].emailAddress
     }
-    console.log(response);
     return response;
 }
 
