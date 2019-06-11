@@ -130,9 +130,9 @@ export class TermsWizardComponent implements OnInit {
     else
     {
       let queryBody: any = {};
-      inputQuery.marketing_emails = termsForm.value.marketing;
-      inputQuery.terms_id = this.terms_id;
-      inputQuery.privacy_id = this.privacy_id;
+      queryBody.marketing_emails = termsForm.value.marketing;
+      queryBody.terms_id = this.terms_id;
+      queryBody.privacy_id = this.privacy_id;
 
       this.authenticationService.account_settings(queryBody)
         .subscribe(

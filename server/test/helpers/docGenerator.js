@@ -343,9 +343,9 @@ module.exports.cmsContentFroTC = function cmsContentFroTC() {
 
 module.exports.cmsContentForTCCandidate = function cmsContentForTCCandidate() {
     return {
-        page_title: "T&C for Candidate",
-        html_text: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
-        page_name: "Terms and Condition for candidate"
+        title: "T&C for Candidate",
+        content: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
+        name: "Terms and Condition for candidate"
     }
 }
 

@@ -2,15 +2,16 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
-const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../../../test/api-v2/otherHelpers/companyHelpers');
+const candidateHelper = require('../../../test/api-v2/otherHelpers/candidateHelpers');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
-const imageInitialize = require('../../helpers/imageInitialize');
 const Users = require('../../../model/mongoose/users');
 const Pages = require('../../../model/mongoose/pages');
 const termsHelpers = require('../helpers');
-const adminHelper = require('../../api/users/admins/adminHelpers');
 const Companies = require('../../../model/mongoose/company');
+const pageHelper = require('../../../test/api-v2/pages/pagesHelpers');
+const usersHelpers = require('../../../test/api-v2/users/usersHelpers');
+const helpers = require('../../../test/api-v2/helpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -18,10 +19,6 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('POST /messages', function () {
-
-    beforeEach(async function () {
-        await imageInitialize.initialize();
-    })
 
     afterEach(async function () {
         console.log('dropping database');
@@ -38,27 +35,27 @@ describe('POST /messages', function () {
 
             //terms page
             const info = docGenerator.cmsContentForTCCandidate();
-            const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
-            const cmsDoc = await Pages.findOne({page_name: info.page_name});
+            const cmsRes = await pageHelper.addPages(info , companyDoc.jwt_token);
+            const cmsDoc = await Pages.findOne({page_name: info.name});
 
             //privacy page
             const privacyInfo = docGenerator.cmsContent();
-            const cmsPrivacyRes = await adminHelper.addTermsContent(privacyInfo , companyDoc.jwt_token);
-            const privacyDoc = await Pages.findOne({page_name: privacyInfo.page_name});
+            const cmsPrivacyRes = await pageHelper.addPages(privacyInfo , companyDoc.jwt_token);
+            const privacyDoc = await Pages.findOne({page_name: privacyInfo.name});
 
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
             let userDoc = await Users.findOne({email: candidate.email});
             const candTerms = docGeneratorV2.termsAndConditions();
-            let inputQuery = {};
-            inputQuery.terms_id = cmsDoc._id;
-            inputQuery.privacy_id = privacyDoc._id;
-            inputQuery.marketing_emails = candTerms.marketing_emails;
-            const res = await termsHelpers.termsAndPrivacy(inputQuery,userDoc._id,userDoc.jwt_token);
-            userDoc = await Users.findOne({email: candidate.email});
+            let termsQuery = {};
+            termsQuery.terms_id = cmsDoc._id;
+            const accountSetting = await usersHelpers.accountSetting(userDoc._id, termsQuery, userDoc.jwt_token);
 
-            userDoc.marketing_emails.should.equal(candTerms.marketing_emails);
+            let privacyQuery = {};
+            privacyQuery.privacy_id = privacyDoc._id;
+            const res = await helpers.termsAndPrivacy(privacyQuery,userDoc._id,userDoc.jwt_token);
+            userDoc = await Users.findOne({email: candidate.email});
 
             const cmsID = userDoc.candidate.terms_id.toString();
             cmsID.should.equal(cmsDoc._id.toString());
@@ -77,46 +74,28 @@ describe('POST /messages', function () {
 
             //terms page
             const info = docGenerator.cmsContentFroTC();
-            const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
-            const cmsDoc = await Pages.findOne({page_name: info.page_name});
+            const cmsRes = await pageHelper.addPages(info , companyDoc.jwt_token);
+            const cmsDoc = await Pages.findOne({page_name: info.name});
 
             //privacy page
             const privacyInfo = docGenerator.cmsContent();
-            const cmsPrivacyRes = await adminHelper.addTermsContent(privacyInfo , companyDoc.jwt_token);
-            const privacyDoc = await Pages.findOne({page_name: privacyInfo.page_name});
+            const cmsPrivacyRes = await pageHelper.addPages(privacyInfo , companyDoc.jwt_token);
+            const privacyDoc = await Pages.findOne({page_name: privacyInfo.name});
 
             const companyTnCWizard = docGeneratorV2.companyTnCWizard();
-            let inputQuery = {};
-            inputQuery.terms_id = cmsDoc._id;
-            inputQuery.privacy_id = privacyDoc._id;
-            inputQuery.marketing_emails = companyTnCWizard.marketing_emails;
-            const SummaryTnC = await termsHelpers.termsAndPrivacy(inputQuery,companyDoc._id,companyDoc.jwt_token);
+            let termsQuery = {};
+            termsQuery.terms_id = cmsDoc._id;
+            const accountSetting = await usersHelpers.accountSetting(companyDoc._id, termsQuery, companyDoc.jwt_token);
+
+            let privacyQuery = {};
+            privacyQuery.privacy_id = privacyDoc._id;
+            const SummaryTnC = await helpers.termsAndPrivacy(privacyQuery,companyDoc._id,companyDoc.jwt_token);
 
             const newCompanyDoc = await Companies.findOne({_creator: companyDoc._id});
             const cmsID = newCompanyDoc.terms_id.toString();
             cmsID.should.equal(cmsDoc._id.toString());
             const privacyID = newCompanyDoc.privacy_id.toString();
             privacyID.should.equal(privacyDoc._id.toString());
-            newCompanyDoc.marketing_emails.should.equal(companyTnCWizard.marketing_emails);
-        })
-    });
-
-    describe('user account setting' , () => {
-
-        it('it should enable or disbale the account setting' , async() => {
-
-            const company = docGenerator.company();
-            const companyRes = await companyHelper.signupCompany(company);
-
-            let userDoc = await Users.findOne({email: company.email});
-            userDoc.disable_account.should.equal(false);
-
-            let inputQuery = {};
-            inputQuery.disable_account = true;
-            const accountSetting = await termsHelpers.termsAndPrivacy(inputQuery,userDoc._id,userDoc.jwt_token);
-
-            userDoc = await Users.findOne({email: company.email});
-            userDoc.disable_account.should.equal(true);
         })
     });
 });

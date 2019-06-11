@@ -1,4 +1,4 @@
-let Page = require('../pages_content');
+let Pages = require('../pages_content');
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Page(data);
@@ -7,15 +7,15 @@ module.exports.insert = async function insert(data) {
 }
 
 module.exports.findOne = async function findOne(selector) {
-    return await Page.findOne(selector).lean();
+    return await Pages.findOne(selector).lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {
-    return await Page.findById(id).lean();
+    return await Pages.findById(id).lean();
 }
 
 module.exports.findByDescDate = async function findByDescDate(selector) {
-    return await Page.findOne(selector).sort({updated_date: 'descending'}).lean();
+    return await Pages.findOne(selector).sort({updated_date: 'descending'}).lean();
 }
 
 module.exports.insert = async function insert(data) {

@@ -59,7 +59,7 @@ const validateInputs = function(request, inputSchemas) {
         return function (req) {
             for (const type of validationTypes) {
                 const input = req[type];
-                if (input && !isEmpty(input)) {
+                if (input && !objects.isEmpty(input)) {
                     console.log('validating ' + type, input);
                     const doc = new models[type](input);
                     const error = doc.validateSync();

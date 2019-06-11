@@ -17,6 +17,9 @@ const paramSchema = new Schema({
 const bodySchema = new Schema({
     privacy_id: {
         type : String
+    },
+    terms_id: {
+        type : String
     }
 });
 
