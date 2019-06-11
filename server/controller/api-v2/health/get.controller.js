@@ -1,11 +1,11 @@
 const Schema = require('mongoose').Schema;
-const version = require('../../config/version.json').version;
-const errors = require('../services/errors');
-const logger = require('../services/logger');
+const version = require('../../../config/version.json').version;
+const errors = require('../../services/errors');
+const logger = require('../../services/logger');
 
 module.exports.request = {
     type: 'get',
-    path: '/healthCheck'
+    path: '/health'
 };
 
 const querySchema = new Schema({
