@@ -48,56 +48,58 @@ const endpoints = [
 ];
 
 const validateInputs = function(request, inputSchemas) {
-    console.log('in validating inputs');
-    const validationTypes = ['query', 'params', 'body'];
-    const modelName = request.type.toUpperCase() + request.path;
-    const models = {
-        'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
-        'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
-        'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
-    };
+    if (inputSchemas) {
+        console.log('in validating inputs');
+        const validationTypes = ['query', 'params', 'body'];
+        const modelName = request.type.toUpperCase() + request.path;
+        const models = {
+            'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
+            'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
+            'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
+        };
 
-    const checkForUnwantedProperties = function (obj, schema) {
-        let schemaObj;
-        if (obj instanceof Array) {
-            schemaObj = schema.type[0];
-            for (let val of obj) {
-                checkForUnwantedProperties(val, schemaObj)
-            }
-        } else if (obj instanceof  Object) {
-            if (schema instanceof Schema) {
-                schemaObj = schema.obj;
-
-                for (let key in obj) {
-                    if (key !== '_id' && !schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
-                    checkForUnwantedProperties(obj[key], schemaObj[key]);
+        const checkForUnwantedProperties = function (obj, schema) {
+            let schemaObj;
+            if (obj instanceof Array) {
+                schemaObj = schema.type[0];
+                for (let val of obj) {
+                    checkForUnwantedProperties(val, schemaObj)
                 }
-            } else {
-                schemaObj = schema;
+            } else if (obj instanceof Object) {
+                if (schema instanceof Schema) {
+                    schemaObj = schema.obj;
 
-                for (let key in obj) {
-                    if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
-                    checkForUnwantedProperties(obj[key], schemaObj[key].type);
+                    for (let key in obj) {
+                        if (key !== '_id' && !schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                        checkForUnwantedProperties(obj[key], schemaObj[key]);
+                    }
+                } else {
+                    schemaObj = schema;
+
+                    for (let key in obj) {
+                        if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                        checkForUnwantedProperties(obj[key], schemaObj[key].type);
+                    }
                 }
             }
-        }
-    };
+        };
 
-    const validateObject = function (input, type) {
-        // check object matches schema
-        const doc = new models[type](input);
-        const error = doc.validateSync();
-        if (error) throw new Error(error);
+        const validateObject = function (input, type) {
+            // check object matches schema
+            const doc = new models[type](input);
+            const error = doc.validateSync();
+            if (error) throw new Error(error);
 
-        // check object does not contain any other properties
-        checkForUnwantedProperties(input, inputSchemas[type]);
-    };
+            // check object does not contain any other properties
+            checkForUnwantedProperties(input, inputSchemas[type]);
+        };
 
-    return function (req) {
-        for (const type of validationTypes) {
-            const input = req[type];
-            if (input && !objects.isEmpty(input)) {
-                validateObject(input, type)
+        return function (req) {
+            for (const type of validationTypes) {
+                const input = req[type];
+                if (input && !objects.isEmpty(input)) {
+                    validateObject(input, type)
+                }
             }
         }
     }
@@ -105,13 +107,11 @@ const validateInputs = function(request, inputSchemas) {
 
 const amplitudeTrack = function (request) {
     let data = {
-        event_type: request.type.toUpperCase() + ' ' + request.path,
+        event_type: request.path + ' - ' + request.type.toUpperCase(),
         event_properties: {}
     };
 
-    const blacklist = ['/'];
-
-    if (blacklist.includes(request.path)) {
+    if (request.path === '/') {
         return function (req) {
             return;
         }
@@ -119,8 +119,7 @@ const amplitudeTrack = function (request) {
         return function (req) {
             if (req.auth && req.auth.user) {
                 data.user_id = req.auth.user._id.toString();
-                // data.session_id = req.auth.user.session.timestamp; // TODO
-                data.session_id = 1000; // TODO
+                data.session_id = req.auth.user.session_started.getTime();
             } else {
                 data.user_id = "anonimous"
                 data.session_id = -1;

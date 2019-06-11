@@ -60,7 +60,7 @@ if (isLiveApplication()) {
         WEBHOOK: process.env.SLACK_WEBHOOK,
         USERNAME: config.slack.username,
         CHANNEL: config.slack.channel
-    }
+    };
 
     settings.AMPLITUDE = {
         API_KEY: process.env.AMPLITUDE_API_KEY,
@@ -112,11 +112,6 @@ settings.SERVER = {
 
 settings.CLIENT = {
     URL: config.client.url
-};
-
-settings.AMPLITUDE = {
-    API_KEY: "dce05e7fdcdfbd082060c9bfc12a9a87",
-    SECRET_API_KEY: "36e8cc024dd21da247e5459b99c7611e"
 };
 
 module.exports = settings;

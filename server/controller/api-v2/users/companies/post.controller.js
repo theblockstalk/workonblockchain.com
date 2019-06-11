@@ -107,7 +107,8 @@ module.exports.endpoint = async function (req, res) {
 
             var set = {
                 verify_email_key: verifyEmailToken,
-                jwt_token: jwtUserToken
+                jwt_token: jwtUserToken,
+                session_started: new Date()
             };
 
             await Users.update({ _id: companyUserCreated._id },{ $set: set });

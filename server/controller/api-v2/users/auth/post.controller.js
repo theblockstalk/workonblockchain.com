@@ -124,6 +124,7 @@ module.exports.endpoint = async function (req, res) {
         }
         const jwtUserToken = jwtToken.createJwtToken(userDoc);
         set.jwt_token = jwtUserToken;
+        set.session_started = new Date();
         await users.update({_id: userDoc._id}, {$set: set});
         response.jwt_token = jwtUserToken;
         res.send(response);

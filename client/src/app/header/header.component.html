@@ -52,4 +52,40 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="popModalForTerms" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header bg-primary">
+        <h3>Our Privacy Notice has Changed</h3>
+      </div>
+      <div class = "col-md-12">
+        <form (submit)="update_terms_status(newTermsForm)" #newTermsForm = ngForm>
+          <div class="modal-body mo_body">
+            <p>
+              We have recently made a change to our Privacy Notice. This document contains important
+              information about how we manage data for the platform. Please  take some time to review
+              it before continuing.
+            </p>
+            <a routerLink="/privacy-notice" target="_blank" class="btn btn-primary">Review</a>
+          </div>
+          <div class="checkbox ml-3">
+            <label>
+              <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+              I have read and accepted the <a routerLink="/privacy-notice" target="_blank">Privacy notice</a>.
+            </label>
+          </div>
+          <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "invalid-feedback d-inline ml-3">
+            {{terms_log}}
+          </div>
+          <div class="modal-footer mo_footer">
+            <button type="submit" class="btn btn-primary model-btn">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
+  </div>
+</div>
+<!-- end model -->

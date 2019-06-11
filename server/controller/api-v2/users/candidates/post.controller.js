@@ -135,7 +135,7 @@ module.exports.endpoint = async function (req, res) {
     updateCandidate['jwt_token'] = jwtUserToken;
     updateCandidate['verify_email_key'] = verifyEmailToken;
 
-    await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate});
+    await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate,session_started: new Date()});
 
 
     if(candidateUserCreated.google_id || candidateUserCreated.linkedin_id) {

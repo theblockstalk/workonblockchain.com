@@ -349,6 +349,18 @@ module.exports.accountSetting = function accountSetting(){
     }
 }
 
+module.exports.termsAndConditions = function termsAndConditions(){
+    return {
+        marketing_emails: true
+    }
+}
+
+module.exports.companyTnCWizard = function companyTnCWizard() {
+    return {
+        marketing_emails: true
+    }
+}
+
 module.exports.cmsContentFroTC = function cmsContentFroTC() {
     return {
         page_title: "T&C for Company",

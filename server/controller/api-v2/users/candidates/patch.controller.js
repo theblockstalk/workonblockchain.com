@@ -4,8 +4,6 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
-const errors = require('../../../services/errors');
-
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../filterReturnData');
 const objects = require('../../../services/objects');

@@ -253,6 +253,7 @@ export class UserService {
       }));
   }
 
+
   verify_email(email_hash: string)
   {
     return this.http.patch(URL+'v2/users/email?verify_email_token='+email_hash, {})
@@ -575,7 +576,7 @@ export class UserService {
     }));
   }
 
-  edit_company_profile(company_id : any ,queryBody :any, admin: boolean   )
+  edit_company_profile(company_id : any ,queryBody :any, admin: boolean)
   {
     let urlString;
     let queryParam;
@@ -1299,6 +1300,25 @@ export class UserService {
         else return throwError(error);
       }
 
+    }));
+  }
+
+  update_terms_and_privacy(queryBody :any)
+  {
+    return this.http.patch(URL+'v2/users/', queryBody , {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status)
+      {
+        return throwError(error);
+      }
     }));
   }
 

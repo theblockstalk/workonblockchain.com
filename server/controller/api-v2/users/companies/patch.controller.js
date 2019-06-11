@@ -156,7 +156,7 @@ const bodySchema = new Schema({
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
-    },
+    }
 });
 
 module.exports.inputValidation = {
