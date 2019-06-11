@@ -4,7 +4,7 @@ const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
-const candidateSearch = require('../../candidate/searchCandidates');
+const candidateSearch = require('./searchCandidates');
 const objects = require('../../../../services/objects');
 
 module.exports.request = {
