@@ -21,9 +21,9 @@ describe('admin get metrics', function () {
         await mongo.drop();
     })
 
-    describe('GET /statistics', () => {
+    describe('GET /statistics', function () {
 
-        it('it should get the application metrics', async () => {
+        it('it should get the application metrics', async function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
@@ -65,7 +65,7 @@ describe('admin get metrics', function () {
             should.not.exist(aggregrated.blockchain.experimented_platforms["EOOS"]);
         });
 
-        it('it should return statistics of active users', async () => {
+        it('it should return statistics of active users', async function () {
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
