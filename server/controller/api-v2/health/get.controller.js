@@ -1,5 +1,5 @@
 const Schema = require('mongoose').Schema;
-const amplitude = require('../services/amplitude');
+const amplitude = require('../../services/amplitude');
 const version = require('../../../config/version.json').version;
 const errors = require('../../services/errors');
 const logger = require('../../services/logger');

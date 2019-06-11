@@ -32,8 +32,8 @@ export class HeaderComponent implements OnInit {
   terms_id;
   termscondition = false;
   terms_log;
-  show_popup;
-  new_privacy_id;
+  page_name;
+  new_terms_id;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
 
       if(this.user_type === 'candidate')
       {
-
+        this.page_name = 'Terms and Condition for candidate';
         this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit {
       }
       else if(this.user_type === 'company')
       {
-
+        this.page_name = 'Terms and Condition for company';
         this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data =>
@@ -198,7 +198,7 @@ export class HeaderComponent implements OnInit {
   update_terms_status(newTermsForm : NgForm){
     if(newTermsForm.valid === true && newTermsForm.value.terms) {
       let inputQuery : any = {};
-      inputQuery.privacy_id = this.new_privacy_id;
+      inputQuery.terms_id = this.new_terms_id;
       this.authenticationService.update_terms_and_privacy(inputQuery)
       .subscribe(
         data => {
@@ -220,23 +220,17 @@ export class HeaderComponent implements OnInit {
   }
 
   privacy_pop_show(){
-    this.authenticationService.get_page_content('Privacy Notice')
+    console.log(this.terms_id);
+    this.authenticationService.get_page_content(this.page_name)
       .subscribe(
         data => {
           if (data) {
-            this.new_privacy_id = data['_id'];
-            if(this.terms_id && !this.privacy_id){
-              $("#popModalForTerms").modal("show");
+            console.log(data);
+            this.new_terms_id = data['_id'];
+            if(this.new_terms_id && this.new_terms_id === this.terms_id) {
+              //console.log('new terms_id');
             }
-            else if(this.privacy_id && this.privacy_id === this.new_privacy_id) {
-              //console.log('new privacy_id');
-            }
-            else {
-              if(!this.terms_id && !this.privacy_id) {
-                //console.log('new user');
-              }
-              else $("#popModalForTerms").modal("show");
-            }
+            else $("#popModalForTerms").modal("show");
           }
         }
       );
