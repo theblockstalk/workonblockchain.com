@@ -10,7 +10,8 @@ module.exports.request = {
 };
 
 const querySchema = new Schema({
-    error: String
+    error: String,
+    raw: Boolean
 })
 
 module.exports.inputValidation = {
