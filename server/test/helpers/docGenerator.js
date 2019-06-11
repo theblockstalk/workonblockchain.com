@@ -7,8 +7,7 @@ module.exports.candidate = function candidate() {
         last_name: "Hussain",
         email: random.email(),
         password: "Password1",
-        type: "candidate",
-        social_type : ""
+        type: "candidate"
     };
 };
 
@@ -20,10 +19,10 @@ module.exports.company = function company() {
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
-        phone_number: "926546456",
-        country: "Pakistan",
-        postal_code: "25000",
-        city: "RWP",
+        company_phone: "926546456",
+        company_country: "Pakistan",
+        company_postcode: "25000",
+        company_city: "RWP",
         password: "Password1",
         type: "company"
     };

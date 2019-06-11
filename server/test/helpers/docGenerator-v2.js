@@ -364,7 +364,7 @@ module.exports.companyTnCWizard = function companyTnCWizard() {
 module.exports.cmsContentFroTC = function cmsContentFroTC() {
     return {
         page_title: "T&C for Company",
-        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        page_content: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
         page_name: "Terms and Condition for company"
     }
 }

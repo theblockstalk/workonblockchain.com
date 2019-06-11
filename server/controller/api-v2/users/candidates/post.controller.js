@@ -9,6 +9,7 @@ const users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const google = require('../../../services/google');
 const linkedin = require('../../../services/linkedin');
+const enumerations = require('../../../../model/enumerations');
 
 module.exports.request = {
     type: 'post',
@@ -42,6 +43,10 @@ const bodySchema = new Schema({
         validate: regexes.email,
         lowercase: true,
     },
+    type:{
+        type: String,
+        enum: enumerations.userTypes
+    }
 });
 
 module.exports.inputValidation = {

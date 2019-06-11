@@ -57,9 +57,6 @@ const bodySchema = new Schema({
                             type: String,
                             enum: enumerations.employmentTypes,
                         },
-                        location: {
-                            type: String,
-                        },
                         employment_description: {
                             type: String,
                             maxlength: 3000,

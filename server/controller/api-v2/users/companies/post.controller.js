@@ -54,6 +54,10 @@ const bodySchema = new Schema({
     },
     company_postcode: {
         type:String
+    },
+    type:{
+        type: String,
+        enum: enumerations.userTypes
     }
 });
 
