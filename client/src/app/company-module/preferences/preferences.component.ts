@@ -275,7 +275,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     this.error_msg = "";
     this.validatedLocation = [];
     let count = 0;
-    console.log(this.locationArray);
     if(!this.locationArray[0] || this.locationArray[0].length <= 0) {
       this.country_input_log = "Please select at least one location";
       count=1;
