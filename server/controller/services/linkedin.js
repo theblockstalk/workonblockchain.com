@@ -2,7 +2,7 @@ const request = require('request');
 const querystring = require('querystring');
 const settings = require('../../settings');
 const errors = require('./errors');
-
+const logger = require('./logger');
 const linkedinOAuth = settings.linkedinCredentials;
 const Linkedin = require('node-linkedin')(linkedinOAuth.clientId, linkedinOAuth.clientSecret, linkedinOAuth.redirectUrl);
 
@@ -45,14 +45,21 @@ async function getLinkedinAccessToken(linkedinCode) {
 }
 
 async function getLinkedinAccountFromCode(code) {
+    logger.debug("Access token", code);
     const profile = await getLinkedinLiteProfile(code);
+    logger.debug("Linkedin profile data" , profile);
+
     const email = await getLinkedinEmailAddress(code);
+    logger.debug("Linkedin email" , email);
+
     const response = {
         linkedin_id: profile.id,
         first_name: profile.localizedFirstName,
         last_name: profile.localizedLastName,
         email: email.elements[0]['handle~'].emailAddress
     }
+
+    logger.debug("Response data" , response);
     return response;
 }
 
