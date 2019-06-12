@@ -615,6 +615,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
+
   suggestedOptions(inputParam) {
     if(inputParam !== '') {
       this.error='';

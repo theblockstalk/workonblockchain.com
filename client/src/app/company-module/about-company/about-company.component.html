@@ -29,82 +29,82 @@
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
         <form (submit)="about_company(aboutForm)"  #aboutForm = ngForm>
-            <section class = "p-2" id = "information">
-              <div class="row">
+          <section class = "p-2" id = "information">
+            <div class="row">
 
-                <div class="col-md-6">
-                    <div class="form-group w-100">
-                      <label>When was the company founded?</label>
-                      <input type="text" class="form-control" #companyFounded="ngModel"  pattern="^[0-9]*$" required name="company_founded" placeholder="1997" [(ngModel)]="company_founded">
-                      <div class="invalid-feedback d-inline" *ngIf="!company_founded">
-                        {{founded_log}}
-                      </div>
-
-                      <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded;else yearVerification">
-                        Input data should be a number.
-                      </div>
-
-                      <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear || company_founded < 1800">
-                        {{yearValidation}}
-                      </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group w-100">
-                    <label>How is the company funded?</label>
-                    <input type="text" class="form-control" required placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
-                    <div class="invalid-feedback d-inline" *ngIf="!company_funded">
-                      {{funded_log}}
-                    </div>
+              <div class="col-md-6">
+                <div class="form-group w-100">
+                  <label>When was the company founded?</label>
+                  <input type="text" class="form-control" #companyFounded="ngModel"  pattern="^[0-9]*$" required name="company_founded" placeholder="1997" [(ngModel)]="company_founded">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_founded">
+                    {{founded_log}}
                   </div>
-                </div>
 
-              </div>
+                  <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded;else yearVerification">
+                    Input data should be a number.
+                  </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group w-100">
-                    <label>Number of employees?</label>
-                    <input type="number" class="form-control" required placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
-                    <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
-                      {{employee_log}}
-                    </div>
+                  <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear || company_founded < 1800">
+                    {{yearValidation}}
                   </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group w-100">
-                    <label>Logo (optional)</label>
-                    <p>
-                      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload company logo</button>
-                    </p>
-                    <span *ngIf="imageCropData.image;else prefil_image" >
+              <div class="col-md-6">
+                <div class="form-group w-100">
+                  <label>How is the company funded?</label>
+                  <input type="text" class="form-control" required placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                    {{funded_log}}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group w-100">
+                  <label>Number of employees?</label>
+                  <input type="number" class="form-control" required placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
+                  <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
+                    {{employee_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group w-100">
+                  <label>Logo (optional)</label>
+                  <p>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload company logo</button>
+                  </p>
+                  <span *ngIf="imageCropData.image;else prefil_image" >
                       <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
                     </span>
-                    <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
+                  <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
                       <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200" >
                     </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Company description</label>
+                  <textarea name="company_description" maxlength="3000" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                  <div class="invalid-feedback d-inline" *ngIf="!company_description">
+                    {{des_log}}
                   </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                      <label>Company description</label>
-                      <textarea name="company_description" maxlength="3000" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
-                      <div class="invalid-feedback d-inline" *ngIf="!company_description">
-                        {{des_log}}
-                      </div>
-                  </div>
-                </div>
+            </div>
 
-              </div>
-
-            </section >
+          </section >
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -128,7 +128,7 @@
         </form>
       </div>
     </div>
-    </div>
+  </div>
 
   <!-- Image crop popup -->
   <div id="imageModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">

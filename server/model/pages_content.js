@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const enumerations = require('./enumerations');
 
 const Schema = mongoose.Schema;
 
@@ -6,7 +7,7 @@ const PagesSchema = new Schema({
 	page_name: 
 	{
 		type:String,
-		enum: ['Privacy Notice', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ','Candidate popup message', 'Company popup message', 'Candidate chat popup message', 'Company chat popup message'],
+		enum: enumerations.pages,
 		required:true,
 	},
 	page_title: 

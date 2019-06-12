@@ -8,7 +8,7 @@ const jwtToken = require('../../../services/jwtToken');
 const companies = require('../../../../model/mongoose/company');
 const Users = require('../../../../model/mongoose/users');
 const referral = require('../../../../model/mongoose/referral');
-const verify_send_email = require('../../../api/users/auth/verify_send_email');
+const verify_send_email = require('../auth/verify_send_email');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
 
 module.exports.request = {

@@ -120,17 +120,17 @@
             </div>
             <div class = "col-md-12" *ngFor="let option of commercially_worked; let i = index ">
               <div class="form-group">
-              <p>{{option.value}}</p>
-              <div class="form-check form-check-inline">
-                <div *ngFor="let exp of exp_year; let i_ind =index">
-                  <input type="radio" class="d-none" id = "rg{{option.value}}{{i_ind}}" name="radiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
-                  <label  for="rg{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                    {{exp.name}}
-                  </label>
-                </div>
-                <input type="text" class="form-control d-none" name="commercial_platforms" [(ngModel)]='commercial_expYear' >
+                <p>{{option.value}}</p>
+                <div class="form-check form-check-inline">
+                  <div *ngFor="let exp of exp_year; let i_ind =index">
+                    <input type="radio" class="d-none" id = "rg{{option.value}}{{i_ind}}" name="radiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
+                    <label  for="rg{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
+                      {{exp.name}}
+                    </label>
+                  </div>
+                  <input type="text" class="form-control d-none" name="commercial_platforms" [(ngModel)]='commercial_expYear' >
 
-              </div>
+                </div>
               </div>
             </div>
           </div>
@@ -212,16 +212,16 @@
             </div>
             <div class = "col-md-12" *ngFor="let option of commercialSkills; let i = index ">
               <div class="form-group">
-              <p>{{option.value}}</p>
-              <div class="form-check form-check-inline">
-                <div *ngFor="let exp of exp_year; let i_ind =index">
-                  <input type="radio" class="d-none" id = "skill{{option.value}}{{i_ind}}" name="commercialradiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value" >
-                  <label  for="skill{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                    {{exp.name}}
-                  </label>
+                <p>{{option.value}}</p>
+                <div class="form-check form-check-inline">
+                  <div *ngFor="let exp of exp_year; let i_ind =index">
+                    <input type="radio" class="d-none" id = "skill{{option.value}}{{i_ind}}" name="commercialradiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value" >
+                    <label  for="skill{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
+                      {{exp.name}}
+                    </label>
+                  </div>
+                  <input type="text" class="form-control d-none" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' >
                 </div>
-                <input type="text" class="form-control d-none" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' >
-              </div>
               </div>
             </div>
           </div>

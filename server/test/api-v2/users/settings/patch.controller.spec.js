@@ -5,13 +5,14 @@ const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const Pages = require('../../../../model/mongoose/pages');
-
 const Companies = require('../../../../model/employer_profile');
 const companyHepler = require('../companies/companyHelpers');
 const candidateHepler = require('../candidates/candidateHelpers');
 const usersHelpers = require('../usersHelpers');
-const docGenerator = require('../../../helpers/docGenerator-v2');
-const adminHelper = require('../../../api/users/admins/adminHelpers');
+const docGeneratorV2 = require('../../../helpers/docGenerator-v2');
+const pagesHelper = require('../../../../../server/test/api-v2/pages/pagesHelpers');
+const docGenerator = require('../../../helpers/docGenerator');
+
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
@@ -28,7 +29,7 @@ describe('account setting' , function () {
 
         it('it should enable or disbale the account setting' , async() => {
 
-        const company = docGenerator.company();
+        const company = docGeneratorV2.company();
         await companyHepler.signupVerifiedApprovedCompany(company);
 
 
@@ -36,7 +37,7 @@ describe('account setting' , function () {
         userDoc.disable_account.should.equal(false);
         let userId = userDoc._id;
 
-        const accountSettingObject = docGenerator.accountSetting();
+        const accountSettingObject = docGeneratorV2.accountSetting();
         const accountSetting = await usersHelpers.accountSetting(userId, accountSettingObject, userDoc.jwt_token);
 
         userDoc = await Users.findOne({email: company.email});
@@ -49,13 +50,13 @@ describe('account setting' , function () {
 
     it('it should update company terms id' , async() => {
 
-        const company = docGenerator.company();
+        const company = docGeneratorV2.company();
         const companyRes = await companyHepler.signupAdminCompany(company);
         const companyDoc = await Users.findOne({email: company.email});
 
         const info = docGenerator.cmsContentFroTC();
-        const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
-        const cmsDoc = await Pages.findOne({page_name: info.page_name});
+        const cmsRes = await pagesHelper.addPages(info , companyDoc.jwt_token);
+        const cmsDoc = await Pages.findOne({page_name: info.name});
         let userId = companyDoc._id;
 
         await usersHelpers.accountSetting(userId, {terms_id : cmsDoc._id} ,companyDoc.jwt_token);

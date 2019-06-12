@@ -1,0 +1,8 @@
+<app-c-forme-dropdown-single
+  [options]="countries"
+  label="Country"
+  [value]="country"
+  [errorMsg]="errMsg"
+  (change)="selfValidate()"
+  (selectedValue)="country=$event"
+></app-c-forme-dropdown-single>

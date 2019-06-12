@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
-const userHelpers = require('../../../api/users/usersHelpers');
+const userHelpers = require('../../otherHelpers/usersHelpers');
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -37,6 +37,49 @@ const changeCandidateStatus = module.exports.changeCandidateStatus = async funct
         .post('/v2/users/candidates/history?admin='+true+ '&user_id='+user_id)
         .set('Authorization', jwtToken)
         .send(inputQuery);
+    res.should.have.status(200);
+    return res;
+}
+
+const getAll = module.exports.getAll = async function getAll(isAdmin,jwtToken) {
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search?admin='+isAdmin)
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
+
+const candidateFilter = module.exports.candidateFilter = async function candidateFilter(isAdmin,filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search?admin='+isAdmin)
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}
+
+const verifiedCandidate = module.exports.verifiedCandidate = async function verifiedCandidate(jwtToken){
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search')
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
+
+const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken){
+    const res = await chai.request(server)
+        .post('/v2/users/candidates/search')
+        .set('Authorization', jwtToken)
+        .send(filterData)
+    return res;
+}
+
+const getVerifiedCandidateDetail = module.exports.getVerifiedCandidateDetail = async function getVerifiedCandidateDetail(userId,jwtToken){
+    const res = await chai.request(server)
+        .get('/v2/users/candidates?user_id='+userId)
+        .set('Authorization', jwtToken);
     res.should.have.status(200);
     return res;
 }

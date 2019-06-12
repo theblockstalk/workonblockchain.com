@@ -1,0 +1,20 @@
+<div class="form-group">
+  <label *ngIf="label">{{label}}</label>
+  <div class="row">
+    <div class="{{column}}" *ngFor="let opt of options">
+      <i class="{{opt.iconClass}}" *ngIf="opt.iconClass"></i><br *ngIf="opt.iconClass" />
+      <div class="form-check" >
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" [checked]= "selectedCheckboxes(opt.value)" [value]="opt.value" (change)="selectedValues($event)" />
+          <app-c-icon [value]="opt.value" [type]="icon" *ngIf="icon"></app-c-icon>
+          {{opt.name}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+</div>
+

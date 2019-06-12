@@ -78,16 +78,16 @@
             </div>
             <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
               <div class="form-group">
-              <p>{{lang_value.value}}</p>
-              <div class="form-check form-check-inline">
-                <div *ngFor="let exp of exp_year; let i_ind =index">
-                  <input type="radio" class="d-none" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
-                  <label  for="{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                    {{exp.name}}
-                  </label>
+                <p>{{lang_value.value}}</p>
+                <div class="form-check form-check-inline">
+                  <div *ngFor="let exp of exp_year; let i_ind =index">
+                    <input type="radio" class="d-none" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
+                    <label  for="{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
+                      {{exp.name}}
+                    </label>
+                  </div>
+                  <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
                 </div>
-                <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
-              </div>
               </div>
             </div>
           </div>

@@ -1,78 +1,78 @@
 <ng-container *ngIf="show_refreal == 10 ;else no_show">
-<section class="wob-bg-primary2 py-5 mt-5">
-  <div class = "container pt-2">
-    <div class="row">
-      <div class="col"></div>
-      <div class="col-8 bg-white">
-        <div class="row">
-          <div class="col-md-12 referral_banner mb-4">
-            <div class = "row mt-3">
-              <div class="col-md-8 wob-bg-secondary4 p-3">
-                <b>Earn £1000 when you invite a candidate (a technical professional) who gets hired.</b>
+  <section class="wob-bg-primary2 py-5 mt-5">
+    <div class = "container pt-2">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-8 bg-white">
+          <div class="row">
+            <div class="col-md-12 referral_banner mb-4">
+              <div class = "row mt-3">
+                <div class="col-md-8 wob-bg-secondary4 p-3">
+                  <b>Earn £1000 when you invite a candidate (a technical professional) who gets hired.</b>
+                </div>
+              </div>
+              <div class="row mt-3 float-right">
+                <div class="col-md-12 wob-bg-secondary2 p-3 text-right">
+                  <b>Earn £1,000 when you invite a company that makes a hire</b>
+                </div>
+              </div>
+              <div class = "col-md-12 mt-5 float-left text-left">
+                <p>
+                  Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
+                </p>
+                <p>
+                  *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
+                </p>
               </div>
             </div>
-            <div class="row mt-3 float-right">
-              <div class="col-md-12 wob-bg-secondary2 p-3 text-right">
-                <b>Earn £1,000 when you invite a company that makes a hire</b>
-              </div>
-            </div>
-            <div class = "col-md-12 mt-5 float-left text-left">
-              <p>
-                Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
-              </p>
-              <p>
-                *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
-              </p>
-            </div>
-          </div>
 
-          <div class="col-md-12 p-0">
-            <div class = "wob-bg-secondary3 px-4 py-4">
-              <h3 class = "text-white">Your Invite link</h3>
-              <div class = "form-group bg-white">
+            <div class="col-md-12 p-0">
+              <div class = "wob-bg-secondary3 px-4 py-4">
+                <h3 class = "text-white">Your Invite link</h3>
+                <div class = "form-group bg-white">
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
-              </div>
-              <div>
-                <a href="https://twitter.com/intent/tweet?text={{text}}" [attr.data-text]="text" class="btn bg-primary text-white pt-0 pb-1 px-1"><small>	<i class="fab fa-twitter text-white mr-1"></i>Tweet</small></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-12 p-4">
-            <form (submit)="send_email(emailForm)" #emailForm = ngForm>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="credentials.email" #emailname="ngModel" required pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
-                <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
-                  Enter email in correct format like myemail@gmail.com.
+                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
+                </div>
+                <div>
+                  <a href="https://twitter.com/intent/tweet?text={{text}}" [attr.data-text]="text" class="btn bg-primary text-white pt-0 pb-1 px-1"><small>	<i class="fab fa-twitter text-white mr-1"></i>Tweet</small></a>
                 </div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label>Subject</label>
-                <input type="text" class="form-control" placeholder="Some thing text here about you email subject" name="subject" id="subject" [(ngModel)]="email_subject">
-              </div>
+            <div class="col-md-12 p-4">
+              <form (submit)="send_email(emailForm)" #emailForm = ngForm>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="credentials.email" #emailname="ngModel" required pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+                  <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+                    Enter email in correct format like myemail@gmail.com.
+                  </div>
+                </div>
 
-              <div class="form-group">
-                <label>Body</label>
-                <textarea class="form-control" placeholder="your message here" rows="14" name="mail_body" id="comment" [(ngModel)]="mail_body">{{mail_body}}</textarea>
-              </div>
-              <div *ngIf="log_success" class="alert alert-success">{{log_success}}</div>
-              <div *ngIf="log" class="alert alert-danger">{{log}}</div>
-              <div class="form-group">
-                <button type="submit" class = "btn btn-primary">Send</button>
-              </div>
-            </form>
+                <div class="form-group">
+                  <label>Subject</label>
+                  <input type="text" class="form-control" placeholder="Some thing text here about you email subject" name="subject" id="subject" [(ngModel)]="email_subject">
+                </div>
+
+                <div class="form-group">
+                  <label>Body</label>
+                  <textarea class="form-control" placeholder="your message here" rows="14" name="mail_body" id="comment" [(ngModel)]="mail_body">{{mail_body}}</textarea>
+                </div>
+                <div *ngIf="log_success" class="alert alert-success">{{log_success}}</div>
+                <div *ngIf="log" class="alert alert-danger">{{log}}</div>
+                <div class="form-group">
+                  <button type="submit" class = "btn btn-primary">Send</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
+        <div class="col"></div>
       </div>
-      <div class="col"></div>
     </div>
-  </div>
-</section>
+  </section>
 </ng-container>
 <ng-template #no_show>
   <section class="wob-bg-primary2 py-5 mt-5">

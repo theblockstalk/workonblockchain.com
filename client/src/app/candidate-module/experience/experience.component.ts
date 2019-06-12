@@ -24,7 +24,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   today = Date.now();
   currentdate;currentyear;currentUser: User;language_checked;language_exp=[];expYear_db=[];expYearRole_db=[];
   value;referringData;expYear=[];expYearRole=[];start_month;start_year;salary;db_lang;
-  companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
+  companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;
+  currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
   exp_active_class;active_class;current_currency;
   term_active_class;term_link;
   candidateMsgTitle;
@@ -244,10 +245,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.authenticationService.get_page_content('Candidate popup message')
         .subscribe(
           data => {
-            if(data && data[0])
+            if(data)
             {
-              this.candidateMsgTitle= data[0]['page_title'];
-              this.candidateMsgBody = data[0]['page_content'];
+              this.candidateMsgTitle= data['page_title'];
+              this.candidateMsgBody = data['page_content'];
             }
           });
     }
