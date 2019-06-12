@@ -3,7 +3,7 @@ import { ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../user.service' ;
 
 @Component({
-  selector: 'app-pages',
+  selector: 'app-u-admin-pages',
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.css']
 })
