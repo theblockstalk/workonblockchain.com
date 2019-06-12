@@ -1,0 +1,47 @@
+<section class = "wob-bg-primary2 py-5 mt-5">
+  <div class="container pt-2">
+    <div class="row bg-white p-3">
+      <div class="col-md-12">
+        <form (submit)="update_page(editorForm)" #editorForm = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>{{pageName}} page</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-i-forme-title [title]="page_title"></app-i-forme-title>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-i-forme-content [content]="page_content"></app-i-forme-content>
+            </div>
+           </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <app-c-button-normal
+                level="primary"
+                buttonType="submit"
+                label="Save"
+              ></app-c-button-normal>
+            </div>
+            <div class="col-md-12 mt-3">
+              <app-c-alert
+                message="success"
+                level="success"
+              >
+              </app-c-alert>
+              <app-c-alert
+                message="error"
+                level="warn"
+              >
+              </app-c-alert>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

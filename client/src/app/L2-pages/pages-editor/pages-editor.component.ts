@@ -1,0 +1,58 @@
+import { Component, OnInit, Input, ViewChild  } from '@angular/core';
+import { UserService } from '../../user.service';
+import { ContentComponent } from '../../L1-items/pages/content/content.component';
+import { TitleComponent } from '../../L1-items/pages/title/title.component';
+
+@Component({
+  selector: 'app-p-pages-editor',
+  templateUrl: './pages-editor.component.html',
+  styleUrls: ['./pages-editor.component.css']
+})
+export class PagesEditorComponent implements OnInit {
+  @ViewChild(ContentComponent) pageContent: ContentComponent;
+  @ViewChild(TitleComponent) pageTitle: TitleComponent;
+  @Input() pageDoc: object;
+
+  page_content;
+  page_title;
+  page_name;
+  success;
+  error;
+
+  constructor(private authenticationService: UserService) { }
+
+  ngOnInit() {
+    console.log(this.pageDoc);
+    this.page_name = this.pageDoc['page_name'];
+    this.page_content = this.pageDoc['page_content'];
+    this.page_title = this.pageDoc['page_title'];
+  }
+
+  update_page(){
+    let queryBody : any = {};
+    if(this.pageContent.selfValidate() && this.pageTitle.selfValidate()){
+      queryBody.html_text = this.pageContent.content;
+      queryBody.page_title = this.pageTitle.title;
+      queryBody.page_name = this.page_name;
+      this.authenticationService.pages_content(queryBody)
+        .subscribe(
+          data =>
+          {
+            if(data)
+            {
+              this.success = "Content Successfully Updated";
+            }
+            else
+            {
+              this.error="Something went wrong";
+
+            }
+          },
+          error =>
+          {
+
+          });
+    }
+  }
+
+}
