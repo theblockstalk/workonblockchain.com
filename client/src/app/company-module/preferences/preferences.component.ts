@@ -264,7 +264,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   country_log;
   residence_country_log;
   name_log;
-
+  language_log;
+  exp_year_log;
   checkNumber(salary) {
     return /^[0-9]*$/.test(salary);
   }
@@ -274,6 +275,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     this.error_msg = "";
     this.validatedLocation = [];
     let count = 0;
+    console.log(this.locationArray);
     if(!this.locationArray[0] || this.locationArray[0].length <= 0) {
       this.country_input_log = "Please select at least one location";
       count=1;
@@ -301,6 +303,15 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
         if(!this.preferncesForm.value.prefItems[i].name) {
           this.name_log = "Please enter saved search name";
+          count=1;
+        }
+        if(!this.preferncesForm.value.prefItems[i].skills || (this.preferncesForm.value.prefItems[i].skills && this.preferncesForm.value.prefItems[i].skills.length<=0)) {
+          this.language_log = "Please select languages";
+          count=1;
+        }
+
+        if(this.preferncesForm.value.prefItems[i].skills && this.preferncesForm.value.prefItems[i].skills.length > 0 && !this.preferncesForm.value.prefItems[i].years_exp_min) {
+          this.exp_year_log = "Please select years experience";
           count=1;
         }
 
@@ -347,6 +358,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
         if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
           this.residence_country_log = "Please select maximum 50 countries";
+          count=1;
+        }
+        if(!this.preferncesForm.value.prefItems[i].residence_country || (this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length <= 0)) {
+          this.residence_country_log = "Please select residence country";
           count=1;
         }
       }
