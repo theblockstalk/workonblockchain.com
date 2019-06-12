@@ -65,6 +65,8 @@ import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skill
 import { LanguagesComponent } from './L1-items/candidate/languages/languages.component';
 import { EducationHistoryComponent } from './L1-items/candidate/education-history/education-history.component';
 import { TextPasswordComponent } from './L0-components/forms-edit/text-password/text-password.component';
+import { contentComponent } from './L1-items/pages/content/content.component';
+import { titleComponent } from './L1-items/pages/title/title.component';
 
 @NgModule({
   imports: [
@@ -84,7 +86,7 @@ import { TextPasswordComponent } from './L0-components/forms-edit/text-password/
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent
+    TextPasswordComponent, contentComponent, titleComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -99,7 +101,8 @@ import { TextPasswordComponent } from './L0-components/forms-edit/text-password/
     TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent, DateComponent, WorkTypesComponent,
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
-    ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent
+    ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, contentComponent,
+    titleComponent
   ]
 })
 export class SharedModule { }

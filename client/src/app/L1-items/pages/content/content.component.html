@@ -1,0 +1,7 @@
+<app-c-forme-html-area
+  label="Page content"
+  [value]="content"
+  [errorMsg]="errMsg"
+  (change)="selfValidate()"
+  (htmlAreaValue) = "content= $event"
+></app-c-forme-html-area>
