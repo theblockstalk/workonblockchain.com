@@ -35,23 +35,19 @@ export class PagesEditorComponent implements OnInit {
       queryBody.page_title = this.pageTitle.title;
       queryBody.page_name = this.page_name;
       this.authenticationService.pages_content(queryBody)
-        .subscribe(
-          data =>
-          {
-            if(data)
-            {
+      .subscribe(
+        data =>
+        {
+          if(data){
               this.success = "Content Successfully Updated";
             }
-            else
-            {
+            else{
               this.error="Something went wrong";
-
             }
-          },
-          error =>
-          {
-
-          });
+        },
+        error =>
+        {}
+      );
     }
   }
 
