@@ -16,8 +16,8 @@ export class PagesEditorComponent implements OnInit {
   page_content;
   page_title;
   page_name;
-  success;
-  error;
+  successMsg;
+  errorMsg;
 
   constructor(private authenticationService: UserService) { }
 
@@ -39,10 +39,10 @@ export class PagesEditorComponent implements OnInit {
         data =>
         {
           if(data){
-              this.success = "Content Successfully Updated";
+              this.successMsg = "Content Successfully Updated";
             }
             else{
-              this.error="Something went wrong";
+              this.errorMsg="Something went wrong";
             }
         },
         error =>
