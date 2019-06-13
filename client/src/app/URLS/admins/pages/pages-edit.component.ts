@@ -31,12 +31,12 @@ export class PagesEditComponent implements OnInit {
           this.queryPageName = "Terms and Condition for candidate";
           break;
         case "talent-terms":
-          this.queryPageName = "Terms and conditions for Company";
+          this.queryPageName = "Terms and Condition for company";
           break;
         case "faq":
           this.queryPageName = "FAQ";
           break;
-        case "privacy_notice":
+        case "privacy-notice":
           this.queryPageName = "Privacy Notice";
           break;
         case "candidate-popup-message":
