@@ -52,7 +52,7 @@ export class PagesEditComponent implements OnInit {
           this.queryPageName = "Company chat popup message";
           break;
         default:
-          // this.router.navigate(['/not_found']);
+          this.router.navigate(['/not_found']);
       }
 
       this.authenticationService.get_page_content(this.queryPageName)
