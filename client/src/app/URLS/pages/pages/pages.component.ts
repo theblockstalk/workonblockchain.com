@@ -17,10 +17,11 @@ export class PagesComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.page_name = params['page_name'];
       console.log(params['page_name']);
+      this.getPages();
     });
   }
 
-  ngAfterViewInit(): void {
+  getPages() {
     console.log(this.page_name);
     this.queryPageName = '';
     switch (this.page_name) {
@@ -35,18 +36,6 @@ export class PagesComponent implements OnInit {
         break;
       case "privacy-notice":
         this.queryPageName = "Privacy Notice";
-        break;
-      case "candidate-popup-message":
-        this.queryPageName = "Candidate popup message";
-        break;
-      case "company-popup-message":
-        this.queryPageName = "Company popup message";
-        break;
-      case "candidate-chat-popup-message":
-        this.queryPageName = "Candidate chat popup message";
-        break;
-      case "company-chat-popup-message":
-        this.queryPageName = "Company chat popup message";
         break;
       default:
         this.router.navigate(['/not_found']);
@@ -68,7 +57,6 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
   }
 
 }
