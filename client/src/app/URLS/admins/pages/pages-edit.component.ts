@@ -4,10 +4,10 @@ import {UserService} from '../../../user.service' ;
 
 @Component({
   selector: 'app-u-admin-pages',
-  templateUrl: './pages.component.html',
-  styleUrls: ['./pages.component.css']
+  templateUrl: './pages-edit.component.html',
+  styleUrls: ['./pages-edit.component.css']
 })
-export class PagesComponent implements OnInit {
+export class PagesEditComponent implements OnInit {
   pageDoc;
   page_name;
   queryPageName;
