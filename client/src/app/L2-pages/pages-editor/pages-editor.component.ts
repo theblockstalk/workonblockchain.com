@@ -32,28 +32,33 @@ export class PagesEditorComponent implements OnInit {
 
   update_page(){
     let queryBody : any = {};
-    if(this.pageContent.selfValidate() && this.pageTitle.selfValidate()){
-      queryBody.html_text = this.pageContent.content;
-      queryBody.page_title = this.pageTitle.title;
+    let errorCount = 0;
+    if(this.pageContent.selfValidate()) queryBody.html_text = this.pageContent.content;
+    else errorCount++;
+
+    if(this.pageTitle.selfValidate()) queryBody.page_title = this.pageTitle.title;
+    else errorCount++;
+
+    if(errorCount === 0) {
       queryBody.page_name = this.page_name;
       console.log(queryBody)
       this.authenticationService.pages_content(queryBody)
-      .subscribe(
-        data =>
-        {
-          if(data){
-              this.successMsg = "Content Successfully Updated";
+        .subscribe(
+          data =>
+          {
+            if(data) {
+              this.successMsg = 'Content Successfully Updated';
             }
-            else{
-              this.errorMsg="Something went wrong";
+            else {
+              this.errorMsg = 'Something went wrong';
             }
-        },
-        error =>
-        {}
-      );
+          },
+          error =>
+          {}
+        );
     }
-    else{
-      this.errorMsg="One or more fields need to be completed. Please scroll up to see which ones.";
+    else {
+      this.errorMsg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
 

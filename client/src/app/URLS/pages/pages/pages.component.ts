@@ -68,6 +68,7 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("ngOnInit");
   }
 
 }
