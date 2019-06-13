@@ -25,6 +25,7 @@ export class HtmlAreaComponent implements OnInit {
       extraPlugins: 'divarea'
     };
 
+    console.log(this.height);
     if(this.height) ckeEditor['height'] = this.height + 'rem';
     if(this.width) ckeEditor['width'] = this.width + 'rem';
     this.ckeEditorConfig = ckeEditor;

@@ -17,6 +17,7 @@ export class PagesComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
     this.route.params.subscribe(params => {
       this.page_name = params['page_name'];
+      console.log(params['page_name']);
     });
   }
 
@@ -24,6 +25,7 @@ export class PagesComponent implements OnInit {
     this.admin = JSON.parse(localStorage.getItem('admin_log'));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.admin && this.currentUser) {
+      console.log(this.page_name);
       switch (this.page_name) {
         case "candidate-terms":
           this.queryPageName = "Terms and Condition for candidate";
@@ -50,10 +52,10 @@ export class PagesComponent implements OnInit {
           this.queryPageName = "Company chat popup message";
           break;
         default:
-          this.router.navigate(['/not_found']);
+          // this.router.navigate(['/not_found']);
       }
 
-      this.authenticationService.get_page_content(this.page_name)
+      this.authenticationService.get_page_content(this.queryPageName)
       .subscribe(
         data => {
           if(data){
@@ -62,7 +64,7 @@ export class PagesComponent implements OnInit {
           }
         },
         error => {
-          this.router.navigate(['/not_found']);
+         // this.router.navigate(['/not_found']);
         }
       );
     }

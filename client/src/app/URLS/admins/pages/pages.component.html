@@ -1,12 +1,7 @@
-<ng-container *ngIf="pageDoc ; else loader">
-  <app-p-pages-editor
-    *ngIf="pageDoc"
+<ng-container >
+  <app-p-pages-editor *ngIf="pageDoc"
     [pageDoc]="pageDoc"
   >
   </app-p-pages-editor>
 </ng-container>
-<ng-template #loader>
-  <div class="col-md-12 text-center" >
-    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
-  </div>
-</ng-template>
+

@@ -10,7 +10,7 @@ import { PagesComponent } from './admins/pages/pages.component';
 const routes: Routes = [
   { path: urls.users_talent_edit , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
   { path: urls.admins_talent_edit , component: AdminTalentEditComponent},
-  {path: urls.admins_pages_edit, component: PagesComponent},
+  { path: urls.admins_pages_edit, component: PagesComponent},
 ];
 
 @NgModule({

@@ -23,9 +23,11 @@ export class PagesEditorComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.pageDoc);
-    this.page_name = this.pageDoc['page_name'];
-    this.page_content = this.pageDoc['page_content'];
-    this.page_title = this.pageDoc['page_title'];
+    if(this.pageDoc) {
+      this.page_name = this.pageDoc['page_name'];
+      this.page_content = this.pageDoc['page_content'];
+      this.page_title = this.pageDoc['page_title'];
+    }
   }
 
   update_page(){
@@ -34,6 +36,7 @@ export class PagesEditorComponent implements OnInit {
       queryBody.html_text = this.pageContent.content;
       queryBody.page_title = this.pageTitle.title;
       queryBody.page_name = this.page_name;
+      console.log(queryBody)
       this.authenticationService.pages_content(queryBody)
       .subscribe(
         data =>
@@ -48,6 +51,9 @@ export class PagesEditorComponent implements OnInit {
         error =>
         {}
       );
+    }
+    else{
+      this.errorMsg="One or more fields need to be completed. Please scroll up to see which ones.";
     }
   }
 
