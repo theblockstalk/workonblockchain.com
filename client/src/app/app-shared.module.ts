@@ -68,6 +68,7 @@ import { TextPasswordComponent } from './L0-components/forms-edit/text-password/
 import { ContentComponent } from './L1-items/pages/content/content.component';
 import { TitleComponent } from './L1-items/pages/title/title.component';
 import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.component';
+import { PagesComponent } from './L2-pages/pages/pages.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,7 @@ import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.compo
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent
+    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -103,7 +104,7 @@ import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.compo
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent
+    TitleComponent, PagesEditorComponent, PagesComponent
   ]
 })
 export class SharedModule { }
