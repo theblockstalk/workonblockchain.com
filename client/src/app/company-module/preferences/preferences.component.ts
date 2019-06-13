@@ -325,20 +325,25 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             this.expected_hourly_rate_log = "Hourly rate should be a number "
           }
         }
-        if(this.preferncesForm.value.prefItems[i].work_type === 'employee' && this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
-          this.current_currency_log = "Please choose currency ";
-          count = 1;
+        if(this.preferncesForm.value.prefItems[i].work_type === 'employee') {
+          if(this.preferncesForm.value.prefItems[i].current_salary){
+            if(this.preferncesForm.value.prefItems[i].current_currency === 'Currency' || !this.preferncesForm.value.prefItems[i].current_currency){
+              this.current_currency_log = "Please choose currency ";
+              count = 1;
+            }
+          }
+
         }
 
-        if(this.preferncesForm.value.prefItems[i].work_type === 'employee' && !this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-          this.current_currency_log = "Please enter expected hours ";
-          count = 1;
+        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor'){
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate){
+            if(!this.preferncesForm.value.prefItems[i].currency || this.preferncesForm.value.prefItems[i].currency === 'Currency') {
+              this.expected_hourly_rate_log = "Please choose currency ";
+              count = 1;
+            }
+          }
         }
 
-        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor' && this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
-          this.expected_hourly_rate_log = "Please choose currency ";
-          count = 1;
-        }
 
         if(this.preferncesForm.value.prefItems[i].work_type === 'contractor' && !this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
           this.expected_hourly_rate_log = "Please enter expected hours ";
