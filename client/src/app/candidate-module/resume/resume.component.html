@@ -101,7 +101,7 @@
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
                       <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/blockchain/{{option.name}}.png" alt="{{option.name}} Logo">
                         {{option.name}}
                       </label>
                     </div>
@@ -160,7 +160,7 @@
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
                       <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions($event)"  />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/blockchain/{{option.name}}.png" alt="{{option.value}} Logo">
                         {{option.value}}
                       </label>
                     </div>

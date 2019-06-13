@@ -178,11 +178,12 @@ export class AboutComponent implements OnInit,AfterViewInit
               if(data['candidate'] && data['candidate'].base_city){
                 this.info.city = data['candidate'].base_city;
               }
-
               if(data['image'] != null ) {
                 this.imagePreviewLink = data['image'];
               }
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 300);
             }
 
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])

@@ -150,7 +150,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
                   </mat-form-field>
@@ -275,7 +275,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="contractorAuto" placeholder="Remote, Canada, London..." [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
                   </mat-form-field>
@@ -446,7 +446,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="volunteerAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
                   </mat-form-field>
