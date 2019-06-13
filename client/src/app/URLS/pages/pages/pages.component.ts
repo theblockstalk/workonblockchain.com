@@ -13,14 +13,16 @@ export class PagesComponent implements OnInit {
   queryPageName;
 
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
+    this.page_name = '';
     this.route.params.subscribe(params => {
       this.page_name = params['page_name'];
       console.log(params['page_name']);
     });
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
     console.log(this.page_name);
+    this.queryPageName = '';
     switch (this.page_name) {
       case "candidate-terms":
         this.queryPageName = "Terms and Condition for candidate";
@@ -50,6 +52,7 @@ export class PagesComponent implements OnInit {
         this.router.navigate(['/not_found']);
     }
 
+    console.log(this.queryPageName);
     this.authenticationService.get_page_content(this.queryPageName)
       .subscribe(
         data => {
@@ -62,6 +65,9 @@ export class PagesComponent implements OnInit {
           // this.router.navigate(['/not_found']);
         }
       );
+  }
+
+  ngOnInit() {
   }
 
 }
