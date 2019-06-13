@@ -137,31 +137,32 @@
                 <div class="form-group">
                   <span><i class="fas fa-phone mr-1" aria-hidden="true"></i></span>
                   <label>Phone</label>
-                </div>
-                <div class="input-group">
-                  <div class="input-group-prepend my-style">
-                    <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="credentials.country_code" name="country_code">
-                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
-                    </select>
-                  </div>
-                  <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
-                  <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
-                    {{companyPhoneLog}}
-                  </div>
-                  <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
-                    {{country_code_log}}
-                  </div>
-                  <ng-container *ngIf="credentials.phone_number;else no_contact_number">
-                    <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
-                      Please enter only numbers
+                  <div class="input-group">
+                    <div class="input-group-prepend my-style">
+                      <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="credentials.country_code" name="country_code">
+                        <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
+                      </select>
                     </div>
-                    <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
-                      {{contact_number_log}}
+                    <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
+                    <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
+                      {{companyPhoneLog}}
                     </div>
-                  </ng-container>
-                  <ng-template #no_contact_number>
-                  </ng-template>
+                    <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
+                      {{country_code_log}}
+                    </div>
+                    <ng-container *ngIf="credentials.phone_number;else no_contact_number">
+                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
+                        Please enter only numbers
+                      </div>
+                      <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
+                        {{contact_number_log}}
+                      </div>
+                    </ng-container>
+                    <ng-template #no_contact_number>
+                    </ng-template>
+                  </div>
                 </div>
+
                 <div class="form-group">
                   <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
                   <label>Country</label>
