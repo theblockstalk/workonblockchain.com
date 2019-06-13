@@ -99,7 +99,6 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
 
   }
   getOutput(data) {
-    console.log(data);
   }
 
   selectedLocations;
@@ -109,7 +108,6 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   }
 
   itemSelected(data) {
-    console.log("item selected");
     this.selectedLocations = data;
   }
 

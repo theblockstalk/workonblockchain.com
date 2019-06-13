@@ -13,7 +13,7 @@ export class AlertsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.class = this.level + ' ' + this.alignment;
+    this.class = 'alert-' + this.level + ' ' + this.alignment;
   }
 
 }

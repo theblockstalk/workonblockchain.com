@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminFaqEditorComponent } from './admin-faq-editor.component';
+import { PagesComponent } from './pages.component';
 
-describe('AdminFaqEditorComponent', () => {
-  let component: AdminFaqEditorComponent;
-  let fixture: ComponentFixture<AdminFaqEditorComponent>;
+describe('PagesComponent', () => {
+  let component: PagesComponent;
+  let fixture: ComponentFixture<PagesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminFaqEditorComponent ]
+      declarations: [ PagesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminFaqEditorComponent);
+    fixture = TestBed.createComponent(PagesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
