@@ -360,9 +360,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
     else queryBody.unset_education_history = true;
 
-    console.log(errorCount);
-    console.log(queryBody);
-
     if(this.profileImage.imageCropData.image) {
       const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
       const formData = new FormData();

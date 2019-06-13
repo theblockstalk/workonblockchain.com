@@ -22,7 +22,6 @@ export class PagesEditorComponent implements OnInit {
   constructor(private authenticationService: UserService) { }
 
   ngOnInit() {
-    console.log(this.pageDoc);
     if(this.pageDoc) {
       this.page_name = this.pageDoc['page_name'];
       this.page_content = this.pageDoc['page_content'];
@@ -41,7 +40,6 @@ export class PagesEditorComponent implements OnInit {
 
     if(errorCount === 0) {
       queryBody.page_name = this.page_name;
-      console.log(queryBody)
       this.authenticationService.pages_content(queryBody)
         .subscribe(
           data =>

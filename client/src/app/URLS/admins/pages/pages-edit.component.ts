@@ -17,7 +17,6 @@ export class PagesEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
     this.route.params.subscribe(params => {
       this.page_name = params['page_name'];
-      console.log(params['page_name']);
     });
   }
 
@@ -25,7 +24,6 @@ export class PagesEditComponent implements OnInit {
     this.admin = JSON.parse(localStorage.getItem('admin_log'));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.admin && this.currentUser) {
-      console.log(this.page_name);
       switch (this.page_name) {
         case "candidate-terms":
           this.queryPageName = "Terms and Condition for candidate";
@@ -59,7 +57,6 @@ export class PagesEditComponent implements OnInit {
       .subscribe(
         data => {
           if(data){
-            console.log(data);
             this.pageDoc = data;
           }
         },

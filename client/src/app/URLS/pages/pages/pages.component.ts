@@ -16,13 +16,11 @@ export class PagesComponent implements OnInit {
     this.page_name = '';
     this.route.params.subscribe(params => {
       this.page_name = params['page_name'];
-      console.log(params['page_name']);
       this.getPages();
     });
   }
 
   getPages() {
-    console.log(this.page_name);
     this.queryPageName = '';
     switch (this.page_name) {
       case "candidate-terms":
@@ -41,12 +39,10 @@ export class PagesComponent implements OnInit {
         this.router.navigate(['/not_found']);
     }
 
-    console.log(this.queryPageName);
     this.authenticationService.get_page_content(this.queryPageName)
       .subscribe(
         data => {
           if(data){
-            console.log(data);
             this.pageDoc = data;
           }
         },

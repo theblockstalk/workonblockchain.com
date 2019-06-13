@@ -76,7 +76,6 @@ export class CommercialSkillsComponent implements OnInit {
       this.commercial_skills[index].exp_year = obj.exp_year;
     }
     else this.commercial_skills.push({skill: obj.label, exp_year: obj.exp_year});
-    console.log(this.commercial_skills);
   }
 
 
