@@ -227,6 +227,9 @@
                       <div class = "form-group">
                         <label>Hourly rate:</label>
                         <input type="text" formControlName="expected_hourly_rate" [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate" class="form-control" placeholder="100">
+                        <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.prefItems[i].expected_hourly_rate || !checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
+                          {{hourly_log}}
+                        </div>
                       </div>
                     </div>
 
@@ -236,15 +239,10 @@
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "currency" >
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].currency?true:null">{{base_currency}}</option>
                         </select>
-                        <div class = "invalid-feedback d-inline float-left" *ngIf="((!preferncesForm.value.prefItems[i].expected_hourly_rate) && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
-                          {{expected_hourly_rate_log}}
-                        </div>
-                        <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].currency && preferncesForm.value.prefItems[i].expected_hourly_rate && !checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
-                          {{expected_hourly_rate_log}}
-                        </div>
                         <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.prefItems[i].currency || preferncesForm.value.prefItems[i].currency === 'Currency' " >
                           {{expected_hourly_rate_log}}
                         </div>
+
                       </div>
                     </div>
 
