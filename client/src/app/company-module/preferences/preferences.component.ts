@@ -349,7 +349,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             this.annual_salary_log = "Please enter current salary";
             count=1;
           }
-          if(!this.preferncesForm.value.prefItems[i].current_currency) {
+          if(!this.preferncesForm.value.prefItems[i].current_currency || this.preferncesForm.value.prefItems[i].current_currency === 'Currency' ) {
             this.current_currency_log = "Please choose currency";
             count=1;
           }

@@ -217,7 +217,7 @@
                           <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].current_currency?true:null">{{base_currency}}</option>
                         </select>
-                        <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.prefItems[i].current_currency" >
+                        <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.prefItems[i].current_currency || preferncesForm.value.prefItems[i].current_currency === 'Currency'" >
                           {{current_currency_log}}
                         </div>
 
@@ -235,13 +235,15 @@
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "currency" >
-                          <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].currency?true:null">{{base_currency}}</option>
                         </select>
-                        <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].expected_hourly_rate && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
+                        <div class = "invalid-feedback d-inline float-left" *ngIf="((!preferncesForm.value.prefItems[i].expected_hourly_rate) && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
                           {{expected_hourly_rate_log}}
                         </div>
                         <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].currency && preferncesForm.value.prefItems[i].expected_hourly_rate && !checkNumber(preferncesForm.value.prefItems[i].expected_hourly_rate)  " >
+                          {{expected_hourly_rate_log}}
+                        </div>
+                        <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.prefItems[i].currency || preferncesForm.value.prefItems[i].currency === 'Currency' " >
                           {{expected_hourly_rate_log}}
                         </div>
                       </div>
