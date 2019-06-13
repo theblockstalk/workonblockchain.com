@@ -61,7 +61,9 @@ const validateInputs = function(request, inputSchemas) {
         const checkForUnwantedProperties = function (obj, schema) {
             let schemaObj;
             if (obj instanceof Array) {
-                schemaObj = schema.type[0];
+                // schemaObj = schema.type[0];
+                if(schema.type) schemaObj = schema.type[0];
+                else schemaObj = schema[0];
                 for (let val of obj) {
                     checkForUnwantedProperties(val, schemaObj)
                 }

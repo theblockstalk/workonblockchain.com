@@ -22,285 +22,254 @@ const bodySchema = new Schema({
     first_name: String,
     last_name: String,
     contact_number: String,
-    nationality: {
-        type: [{
-            type: String,
-            enum: enumerations.nationalities
-        }]
-    },
+    nationality: [{
+        type: String,
+        enum: enumerations.nationalities
+    }],
     image: {
         type: String,
         validate: regexes.url
     },
     candidate: {
-        type: {
-            base_city: String,
-            base_country: {
-                type: String,
-                enum: enumerations.countries
+        base_city: String,
+        base_country: {
+            type: String,
+            enum: enumerations.countries
+        },
+        github_account: {
+            type:String,
+            //validate: regexes.url
+        },
+        stackexchange_account: {
+            type:String,
+            //validate: regexes.url
+        },
+        linkedin_account: {
+            type:String,
+            //validate: regexes.url
+        },
+        medium_account: {
+            type:String,
+            //validate: regexes.url
+        },
+        stackoverflow_url: {
+            type:String,
+            validate: regexes.url
+        },
+        personal_website_url: {
+            type:String,
+            validate: regexes.url
+        },
+        employee: {
+            employment_type :  {
+                type : String,
+                enum: enumerations.employmentTypes
             },
-            github_account: {
-                type:String,
-                validate: regexes.url
+            expected_annual_salary: {
+                type: Number,
+                min:0
             },
-            stackexchange_account: {
-                type:String,
-                validate: regexes.url
-            },
-            linkedin_account: {
-                type:String,
-                validate: regexes.url
-            },
-            medium_account: {
-                type:String,
-                validate: regexes.url
-            },
-            stackoverflow_url: {
-                type:String,
-                validate: regexes.url
-            },
-            personal_website_url: {
-                type:String,
-                validate: regexes.url
-            },
-            employee: {
-                type: {
-                    employment_type :  {
-                        type : String,
-                        enum: enumerations.employmentTypes
-                    },
-                    expected_annual_salary: {
-                        type: Number,
-                        min:0
-                    },
-                    currency : {
-                        type: String,
-                        enum: enumerations.currencies
-                    },
-                    location: {
-                        type: [{
-                            city: {
-                                type : Schema.Types.ObjectId,
-                                ref: 'Cities'
-                            },
-                            country: enumerations.countries,
-                            remote: Boolean,
-                            visa_needed: {
-                                type: Boolean,
-                                required: true,
-                            }
-                        }
-                        ]
-                    },
-                    roles: {
-                        type: [{
-                            type: String,
-                            enum: enumerations.workRoles
-                        }]
-                    },
-                    employment_availability: {
-                        type:String,
-                        enum: enumerations.workAvailability
-                    }
-                }
-            },
-            contractor: {
-                type: {
-                    expected_hourly_rate:  {
-                        type : Number,
-                        min:0,
-                    },
-                    currency: {
-                        type: String,
-                        enum: enumerations.currencies
-                    },
-                    max_hour_per_week : {
-                        type : Number,
-                        min:0,
-                    },
-                    location: {
-                        type: [{
-                            city: {
-                                type : Schema.Types.ObjectId,
-                                ref: 'Cities'
-                            },
-                            country: enumerations.countries,
-                            remote: Boolean,
-                            visa_needed: {
-                                type: Boolean,
-                                required: true,
-                            }
-                        }]
-                    },
-                    roles: {
-                        type: [{
-                            type: String,
-                            enum: enumerations.workRoles
-                        }]
-                    },
-                    contractor_type: {
-                        type: String,
-                        enum: enumerations.contractorTypes
-                    },
-                    agency_website: {
-                        type: String,
-                        validate: regexes.url
-                    },
-                    service_description: {
-                        type: String,
-                        maxlength: 3000
-                    }
-                }
-            },
-            volunteer: {
-                type: {
-                    location: {
-                        type: [{
-                            city: {
-                                type : Schema.Types.ObjectId,
-                                ref: 'Cities'
-                            },
-                            country: enumerations.countries,
-                            remote: Boolean,
-                            visa_needed: {
-                                type: Boolean,
-                                required: true,
-                            }
-                        }]
-                    },
-                    roles: {
-                        type: [{
-                            type: String,
-                            enum: enumerations.workRoles
-                        }]
-                    },
-                    max_hours_per_week: {
-                        type: Number,
-                        min: 0
-                    },
-                    learning_objectives: {
-                        type: String,
-                        maxlength: 3000
-
-                    }
-                }
-            },
-            current_currency: {
+            currency : {
                 type: String,
                 enum: enumerations.currencies
             },
-            current_salary: {
-                type:Number,
+            location: [{
+                city: {
+                    type : String,
+                    // ref: 'Cities'
+                },
+                country: enumerations.countries,
+                remote: Boolean,
+                visa_needed: {
+                    type: Boolean,
+                    required: true,
+                }
+            }],
+            roles: [{
+                type: String,
+                enum: enumerations.workRoles
+            }],
+            employment_availability: {
+                type:String,
+                enum: enumerations.workAvailability
+            }
+        },
+        contractor: {
+            expected_hourly_rate:  {
+                type : Number,
+                min:0,
+            },
+            currency: {
+                type: String,
+                enum: enumerations.currencies
+            },
+            max_hour_per_week : {
+                type : Number,
+                min:0,
+            },
+            location: [{
+                city: {
+                    type : Schema.Types.ObjectId,
+                    ref: 'Cities'
+                },
+                country: enumerations.countries,
+                remote: Boolean,
+                visa_needed: {
+                    type: Boolean,
+                    required: true,
+                }
+            }],
+            roles: [{
+                type: String,
+                enum: enumerations.workRoles
+
+            }],
+            contractor_type: {
+                type: String,
+                enum: enumerations.contractorTypes
+            },
+            agency_website: {
+                type: String,
+                validate: regexes.url
+            },
+            service_description: {
+                type: String,
+                maxlength: 3000
+            }
+
+        },
+        volunteer: {
+            location: [{
+                city: {
+                    type : Schema.Types.ObjectId,
+                    ref: 'Cities'
+                },
+                country: enumerations.countries,
+                remote: Boolean,
+                visa_needed: {
+                    type: Boolean,
+                    required: true,
+                }
+            }],
+            roles: [{
+                type: String,
+                enum: enumerations.workRoles
+            }],
+            max_hours_per_week: {
+                type: Number,
                 min: 0
             },
-            why_work: String,
-            programming_languages: {
-                type:[{
-                    language: {
-                        type: String,
-                        enum: enumerations.programmingLanguages
-                    },
-                    exp_year: {
-                        type: String,
-                        enum: enumerations.experienceYears
-                    }
-                }]
+            learning_objectives: {
+                type: String,
+                maxlength: 3000
+
+            }
+
+        },
+        current_currency: {
+            type: String,
+            enum: enumerations.currencies
+        },
+        current_salary: {
+            type:Number,
+            min: 0
+        },
+        why_work: String,
+        programming_languages: [{
+            language: {
+                type: String,
+                enum: enumerations.programmingLanguages
+            },
+            exp_year: {
+                type: String,
+                enum: enumerations.experienceYears
+            }
+        }],
+        description: {
+            type:String,
+            maxlength: 3000
+        },
+        education_history: [{
+            uniname: {
+                type: String,
+                required: true
+            },
+            degreename: {
+                type: String,
+                required: true
+            },
+            fieldname: {
+                type: String,
+                required: true
+            },
+            eduyear: Number
+        }],
+        work_history: [{
+            companyname: {
+                type: String,
+                required: true
+            },
+            positionname: {
+                type: String,
+                required: true
+            },
+            locationname: {
+                type: String,
+                required: true
             },
             description: {
-                type:String,
+                type: String,
                 maxlength: 3000
             },
-            education_history: {
-                type:[new Schema({
-                    uniname: {
-                        type: String,
-                        required: true
-                    },
-                    degreename: {
-                        type: String,
-                        required: true
-                    },
-                    fieldname: {
-                        type: String,
-                        required: true
-                    },
-                    eduyear: Number
-                })]
-            },
-            work_history: {
-                type:[new Schema({
-                    companyname: {
-                        type: String,
-                        required: true
-                    },
-                    positionname: {
-                        type: String,
-                        required: true
-                    },
-                    locationname: {
-                        type: String,
-                        required: true
-                    },
-                    description: {
-                        type: String,
-                        maxlength: 3000
-                    },
-                    startdate: Date,
-                    enddate: Date,
-                    currentwork: {
-                        type: Boolean,
-                        required: true
-                    }
-                })],
-            },
-            interest_areas: {
-                type:[{
-                    type: String,
-                    enum: enumerations.workBlockchainInterests
-                }]
-            },
-            blockchain: {
-                type: {
-                    commercial_platforms: {
-                        type: [{
-                            name: {
-                                type: String,
-                                enum: enumerations.blockchainPlatforms
-                            },
-                            exp_year: {
-                                type: String,
-                                enum: enumerations.experienceYears
-                            }
-                        }]
-                    },
-                    description_commercial_platforms:{
-                        type: String
-                    },
-                    experimented_platforms: {
-                        type: [{
-                            type: String,
-                            enum: enumerations.blockchainPlatforms
-                        }]
-                    },
-                    description_experimented_platforms:{
-                        type: String
-                    },
-                    commercial_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
-                    description_commercial_skills:{
-                        type: String
-                    },
-                }
+            startdate: Date,
+            enddate: Date,
+            currentwork: {
+                type: Boolean,
+                required: true
             }
+        }],
+        interest_areas: [{
+            type: String,
+            enum: enumerations.workBlockchainInterests
+        }],
+        blockchain: {
+            commercial_platforms: [{
+                name: {
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                },
+                exp_year: {
+                    type: String,
+                    enum: enumerations.experienceYears
+                }
+
+            }],
+            description_commercial_platforms:{
+                type: String
+            },
+            experimented_platforms: [{
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            }],
+            description_experimented_platforms:{
+                type: String
+            },
+            commercial_skills : [new Schema({
+                skill: {
+                    type: String,
+                    enum: enumerations.otherSkills
+                },
+                exp_year: {
+                    type: String,
+                    enum: enumerations.exp_years
+                }
+            })],
+            description_commercial_skills:{
+                type: String
+            },
+
         }
+
     },
     unset_commercial_platforms: Boolean,
     unset_experimented_platforms: Boolean,
