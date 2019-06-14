@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrivacyEditorComponent } from './privacy-editor.component';
+import { PagesEditorComponent } from './pages-editor.component';
 
-describe('PrivacyEditorComponent', () => {
-  let component: PrivacyEditorComponent;
-  let fixture: ComponentFixture<PrivacyEditorComponent>;
+describe('PagesEditorComponent', () => {
+  let component: PagesEditorComponent;
+  let fixture: ComponentFixture<PagesEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrivacyEditorComponent ]
+      declarations: [ PagesEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivacyEditorComponent);
+    fixture = TestBed.createComponent(PagesEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

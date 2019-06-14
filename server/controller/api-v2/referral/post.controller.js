@@ -1,7 +1,7 @@
 const Schema = require('mongoose').Schema;
 const mongooseReferral = require('../../../model/mongoose/referral');
 const errors = require('../../services/errors');
-const crypto = require('../../../../server/controller/services/crypto');
+const crypto = require('../../services/crypto');
 const regexes = require('../../../model/regexes');
 
 module.exports.request = {

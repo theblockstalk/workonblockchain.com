@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WelcomePopupEditorComponent } from './welcome-popup-editor.component';
+import { PagesEditComponent } from './pages-edit.component';
 
-describe('WelcomePopupEditorComponent', () => {
-  let component: WelcomePopupEditorComponent;
-  let fixture: ComponentFixture<WelcomePopupEditorComponent>;
+describe('PagesEditComponent', () => {
+  let component: PagesEditComponent;
+  let fixture: ComponentFixture<PagesEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WelcomePopupEditorComponent ]
+      declarations: [ PagesEditComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WelcomePopupEditorComponent);
+    fixture = TestBed.createComponent(PagesEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

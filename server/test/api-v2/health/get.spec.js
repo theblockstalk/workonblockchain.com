@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../../server');
-const mongo = require('../helpers/mongo');
+const server = require('../../../server');
+const mongo = require('../../helpers/mongo');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -20,7 +20,7 @@ describe('healthCheck', function () {
         it('it should get a successful page', async () => {
 
             let res = await chai.request(server)
-                .get('/v2/healthCheck')
+                .get('/v2/health')
                 .send();
 
             res.should.have.status(200);
@@ -33,7 +33,7 @@ describe('healthCheck', function () {
 
         it('it should throw an Application error', async function () {
         let res = await chai.request(server)
-            .get('/v2/healthCheck?error=true')
+            .get('/v2/health?error=true')
             .send();
 
         res.should.have.status(400);
@@ -47,7 +47,7 @@ describe('healthCheck', function () {
         it('it should throw a normal error', async function()  {
 
             let res = await chai.request(server)
-                .get('/v2/healthCheck?error=true&raw=true')
+                .get('/v2/health?error=true&raw=true')
                 .send();
 
             res.should.have.status(500);

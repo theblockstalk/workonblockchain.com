@@ -15,7 +15,7 @@ export class LastNameComponent implements OnInit {
 
   selfValidate(){
     if(!this.last_name) {
-      this.errMsg = "Please enter first name";
+      this.errMsg = 'Please enter last name';
       return false;
     }
     delete this.errMsg;

@@ -372,6 +372,7 @@ export const constants = {
     {name: 'Guatemala +502', value:'+502'},{name: 'Guinea-Bissau +245', value:'+245'},
     {name: 'Guinea +224', value:'+224'},{name: 'Guyana +592', value:'+592'},
     {name: 'Haiti +509', value:'+509'},{name: 'Honduras +504', value:'504'},
+    {name: 'Hong Kong +852', value:'852'},
     {name: 'Hungary +36', value:'+36'},{name: 'Iceland +354', value:'+354'},
     {name: 'India +91', value:'+91'},{name: 'Indonesia +62', value:'+62'},
     {name: 'Iran +98', value:'+98'},{name: 'Iraq +964', value:'+964'},

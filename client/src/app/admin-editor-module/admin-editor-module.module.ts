@@ -5,11 +5,6 @@ import { SharedModule } from '../app-shared.module';
 
 import { AdminEditorModuleRoutingModule } from './admin-editor-module-routing.module';
 
-import { WelcomePopupEditorComponent } from './welcome-popup-editor/welcome-popup-editor.component';
-import { ChatPopupEditorComponent } from './chat-popup-editor/chat-popup-editor.component';
-import { PrivacyEditorComponent } from './privacy-editor/privacy-editor.component';
-import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.component';
-import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { EmailTemplatesComponent } from './email-templates/email-templates.component';
 
 @NgModule({
@@ -19,11 +14,6 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     SharedModule
   ],
   declarations: [
-    WelcomePopupEditorComponent,
-    ChatPopupEditorComponent,
-    PrivacyEditorComponent,
-    AdminFaqEditorComponent,
-    AdminTermsConditionEditorComponent,
     EmailTemplatesComponent
   ],
   providers : [ScriptService]

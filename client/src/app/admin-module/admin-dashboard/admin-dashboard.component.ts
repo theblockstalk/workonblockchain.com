@@ -13,9 +13,12 @@ export class AdminDashboardComponent implements OnInit {
   is_admin;
   user_type;
   admin_log;
+  routerUrl;
   constructor(private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
+    // this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
