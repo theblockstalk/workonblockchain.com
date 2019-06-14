@@ -113,10 +113,6 @@ export class EducationHistoryComponent implements OnInit {
       this.gradErrMsg[index] = 'Please fill graduation year';
       return false;
     }
-    if(this.EducationForm.value.itemRows[index].eduyear > year) {
-      this.gradErrMsg[index] = 'Year should be in past';
-      return false;
-    }
     delete this.gradErrMsg[index];
     return true;
   }
