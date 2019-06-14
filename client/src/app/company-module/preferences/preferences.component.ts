@@ -317,7 +317,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           this.language_log = "Please select languages";
           count=1;
         }
-        
+
         if(!this.preferncesForm.value.prefItems[i].position || this.preferncesForm.value.prefItems[i].position.length === 0) {
           this.position_log = "Please select roles";
           count=1;

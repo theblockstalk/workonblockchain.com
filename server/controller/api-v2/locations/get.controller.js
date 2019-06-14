@@ -10,9 +10,10 @@ module.exports.request = {
 
 const querySchema = new Schema({
     autosuggest: String,
-    options: {
-        countries: Boolean
-    }
+    // options: {
+    //     countries: Boolean
+    // } i changed this because on queryschema object is not working as expected sadia
+    countries: Boolean
 })
 
 module.exports.inputValidation = {
@@ -39,14 +40,14 @@ module.exports.endpoint = async function (req, res) {
             outputOptions.push({city : cityLoc});
         }
 
-        if(queryInput.options && queryInput.options.countries) {
+        if(queryInput.countries === 'true') {
             for(let countryLoc of citiesDoc) {
                 outputOptions.push({country : countryLoc.country});
             }
         }
 
     }
-    if(queryInput.options && queryInput.options.countries) {
+    if(queryInput.countries === 'true') {
         const countriesEnum = enumerations.countries;
         let count = 0;
         for(let countryEnum of countriesEnum) {
