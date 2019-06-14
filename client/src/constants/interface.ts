@@ -84,3 +84,9 @@ export interface Language {
   language: string;
   exp_year: string;
 }
+
+export interface Page {
+  page_name: string,
+  page_title: string,
+  page_content: string,
+}
