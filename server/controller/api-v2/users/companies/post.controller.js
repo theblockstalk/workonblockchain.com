@@ -95,10 +95,10 @@ module.exports.endpoint = async function (req, res) {
                 job_title:queryBody.job_title,
                 company_name: queryBody.company_name,
                 company_website:queryBody.company_website,
-                company_phone:queryBody.phone_number,
-                company_country:queryBody.country,
-                company_city:queryBody.city,
-                company_postcode:queryBody.postal_code,
+                company_phone:queryBody.company_phone,
+                company_country:queryBody.company_country,
+                company_city:queryBody.company_city,
+                company_postcode:queryBody.company_postcode,
             };
 
             let employerDoc = await companies.insert(employerDetail);

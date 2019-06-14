@@ -106,14 +106,17 @@ module.exports.profileData = function profileData(){
     return {
         first_name : 'Tayyab',
         last_name : 'Hussain',
-        github_account : 'fb.com',
-        exchange_account : 'fb.com',
-        linkedin_account : 'http://linkedin.com/in/sadia',
-        medium_account : 'http://medium.com/sadia',
+        nationality : ['Pakistani'],
         contact_number : '65464655',
-        nationality : 'Pakistani',
-        country : 'Pakistan',
-        city : 'Islamabad'
+        candidate: {
+            github_account : 'fb.com',
+            exchange_account : 'fb.com',
+            linkedin_account : 'http://linkedin.com/in/sadia',
+            medium_account : 'http://medium.com/sadia',
+            base_country : 'Pakistan',
+            base_city : 'Islamabad'
+        }
+
     }
 }
 

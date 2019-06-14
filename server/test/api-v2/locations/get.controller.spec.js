@@ -24,8 +24,8 @@ describe('Auto suggest cities options', function () {
             const candidateRes = await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidatDoc = await users.findOneByEmail(candidate.email);
             const autosuggest= 'rem';
-            const countries = true;
-            const autoSuggestOptions = await locationsHelpers.getLocations(autosuggest,countries , candidatDoc.jwt_token );
+            const options = {countries: true};
+            const autoSuggestOptions = await locationsHelpers.getLocations(autosuggest, options , candidatDoc.jwt_token );
             console.log(autoSuggestOptions.body)
         })
     })

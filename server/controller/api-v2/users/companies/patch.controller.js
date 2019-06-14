@@ -78,7 +78,6 @@ const bodySchema = new Schema({
                 type: [new Schema({
                     city: {
                         type : Schema.Types.ObjectId,
-                        ref: 'Cities'
                     },
                     remote: Boolean,
                 })]

@@ -29,144 +29,119 @@ const bodySchema = new Schema({
     },
     message: {
         normal: {
-            type: new Schema({
-                message: {
-                    type: String,
-                    required: true
-                }
-            }),
-            required: false
+            required: false,
+            message: {
+                type: String,
+            }
         },
 
         approach: {
-            type: new Schema({
-                employee: {
-                    type: {
-                        job_title: {
-                            type: String,
-                        },
-                        annual_salary: {
-                            min: Number,
-                            max: Number
-                        },
-                        currency: {
-                            type: String,
-                            enum: enumerations.currencies,
-                        },
-                        employment_type: {
-                            type: String,
-                            enum: enumerations.employmentTypes,
-                        },
-                        employment_description: {
-                            type: String,
-                            maxlength: 3000,
-                        },
-                        location: {
-                            type: String
-                        }
-                    }
+            required: false,
+            employee: {
+                job_title: {
+                    type: String,
                 },
-                contractor: {
-                    type: {
-                        hourly_rate: {
-                            min: Number,
-                            max: Number
-                        },
-                        currency: {
-                            type: String,
-                            enum: enumerations.currencies,
-                        },
-                        role: {
-                            type: String,
-                            enum: enumerations.workRoles
-                        },
-                        contract_description: {
-                            type: String,
-                            maxlength: 3000,
-                        },
-                        location: {
-                            type: String
-                        }
-                    }
+                annual_salary: {
+                    min: Number,
+                    max: Number
                 },
-                volunteer: {
-                    type: {
-                        opportunity_description: {
-                            type: String,
-                            maxlength: 3000,
-                        },
-                        location: {
-                            type: String
-                        }
-                    }
+                currency: {
+                    type: String,
+                    enum: enumerations.currencies,
+                },
+                employment_type: {
+                    type: String,
+                    enum: enumerations.employmentTypes,
+                },
+                employment_description: {
+                    type: String,
+                    maxlength: 3000,
+                },
+                location: {
+                    type: String
                 }
-            }),
-            required: false
+
+            },
+            contractor: {
+                hourly_rate: {
+                    min: Number,
+                    max: Number
+                },
+                currency: {
+                    type: String,
+                    enum: enumerations.currencies,
+                },
+                role: {
+                    type: String,
+                    enum: enumerations.workRoles
+                },
+                contract_description: {
+                    type: String,
+                    maxlength: 3000,
+                },
+                location: {
+                    type: String
+                }
+
+            },
+            volunteer: {
+                opportunity_description: {
+                    type: String,
+                    maxlength: 3000,
+                },
+                location: {
+                    type: String
+                }
+
+            }
         },
 
         approach_accepted: {
-            type: new Schema({
-                message: {
-                    type: String,
-                    required: true
-                }
-            }),
-            required: false
+            required: false,
+            message: {
+                type: String,
+            }
         },
 
         approach_rejected: {
-            type: new Schema({
-                message: {
-                    type: String,
-                    required: true
-                }
-            }),
-            required: false
+            required: false,
+            message: {
+                type: String,
+            }
         },
         interview_offer: {
-            type: new Schema({
-                location: {
-                    type: String,
-                    required: true
-                },
-                description: {
-                    type: String,
-                    required: true
-                },
-                date_time: {
-                    type: Date,
-                    required: true
-                }
-            }),
-            required: false
+            required: false,
+            location: {
+                type: String,
+            },
+            description: {
+                type: String,
+            },
+            date_time: {
+                type: Date,
+            }
         },
         employment_offer_accepted: {
-            type: new Schema({
-                employment_offer_message_id: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Messages',
-                    required: false
-                },
-                message: {
-                    type: String,
-                    required: false
-                }
-            }),
-            required: false
+            required: false,
+            employment_offer_message_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'Messages',
+                required: false
+            },
+            message: {
+                type: String,
+                required: false
+            }
         },
         employment_offer_rejected: {
-            type: new Schema({
-                employment_offer_message_id: {
-                    type: Schema.Types.ObjectId,
-                    required: true,
-                    ref: 'Messages'
-                },
-                message: {
-                    type: String,
-                    required: true
-                }
-            }),
-            required: false
+            required: false,
+            employment_offer_message_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'Messages'
+            },
+            message: {
+                type: String
+            }
         }
     }
 });

@@ -130,10 +130,10 @@ module.exports.company = function company() {
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
-        phone_number: "926546456",
-        country: "Pakistan",
-        postal_code: "25000",
-        city: "RWP",
+        company_phone: "926546456",
+        company_country: "Pakistan",
+        company_postcode: "25000",
+        company_city: "RWP",
         password: "Password1",
         type: "company"
     };
@@ -147,10 +147,10 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         job_title: "Developer",
         company_name: "Mwan Mobile",
         company_website: "www.mwanmobile.com",
-        phone_number: "090078601",
-        country: "Pakistan",
-        postal_code: "44000",
-        city: "rawalpindi",
+        company_phone: "090078601",
+        company_country: "Pakistan",
+        company_postcode: "44000",
+        company_city: "rawalpindi",
         company_founded:2013,
         no_of_employees:8,
         company_funded:"i have no idea",
@@ -160,8 +160,8 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
         saved_searches : [{
             location: [
-                {remote:true , visa_needed: false},
-                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
+                {remote:true },
+                {_id : '5c4aa17468cc293450c14c04'}
             ],
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
@@ -169,7 +169,6 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
             current_salary : random.integer(1),
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
-            availability_day : '1 month' ,
             residence_country : ['Pakistan']
         }]
 

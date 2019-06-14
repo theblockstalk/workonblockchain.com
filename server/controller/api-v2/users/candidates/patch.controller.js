@@ -38,19 +38,19 @@ const bodySchema = new Schema({
         },
         github_account: {
             type:String,
-            //validate: regexes.url
+            // validate: regexes.url
         },
         stackexchange_account: {
             type:String,
-            //validate: regexes.url
+            // validate: regexes.url
         },
         linkedin_account: {
             type:String,
-            //validate: regexes.url
+            validate: regexes.url
         },
         medium_account: {
             type:String,
-            //validate: regexes.url
+            validate: regexes.url
         },
         stackoverflow_url: {
             type:String,
@@ -317,6 +317,8 @@ module.exports.auth = async function (req) {
 module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody = req.body;
+    let candidateQuery = queryBody.candidate;
+    let blockchainQuery = queryBody.candidate.blockchain;
     let updateCandidateUser = {};
     let userDoc;
     let unset = {};
@@ -340,76 +342,78 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.last_name) updateCandidateUser.last_name = queryBody.last_name;
         if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
-        if (queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
-        if (queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
+        if (candidateQuery.base_city) updateCandidateUser['candidate.base_city'] = candidateQuery.base_city;
+        if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
 
-        if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+        if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
+            updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
+        }
         else unset['candidate.current_currency'] = 1;
 
-        if (queryBody.current_salary) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+        if (candidateQuery.current_salary) updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
         else unset['candidate.current_salary'] = 1;
 
         if(queryBody.unset_employee) unset['candidate.employee'] = 1;
         else {
-            if(queryBody.employee) {
-                console.log(queryBody.employee.location);
-                for(let loc of queryBody.employee.location) {
+            if(candidateQuery.employee) {
+                console.log(candidateQuery.employee.location);
+                for(let loc of candidateQuery.employee.location) {
                     if(loc.city) {
-                        const index = queryBody.employee.location.findIndex((obj => obj.city === loc.city));
-                        queryBody.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        const index = candidateQuery.employee.location.findIndex((obj => obj.city === loc.city));
+                        candidateQuery.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
                     }
                 }
-                updateCandidateUser['candidate.employee'] = queryBody.employee;
+                updateCandidateUser['candidate.employee'] = candidateQuery.employee;
             }
         }
 
         if(queryBody.unset_contractor) unset['candidate.contractor'] = 1;
         else {
-            if(queryBody.contractor) {
-                for(let loc of queryBody.contractor.location) {
+            if(candidateQuery.contractor) {
+                for(let loc of candidateQuery.contractor.location) {
                     if(loc.city) {
-                        const index = queryBody.contractor.location.findIndex((obj => obj.city === loc.city));
-                        queryBody.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        const index = candidateQuery.contractor.location.findIndex((obj => obj.city === loc.city));
+                        candidateQuery.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
                     }
                 }
-                updateCandidateUser['candidate.contractor'] = queryBody.contractor;
+                updateCandidateUser['candidate.contractor'] = candidateQuery.contractor;
             }
         }
 
         if(queryBody.unset_volunteer) unset['candidate.volunteer'] = 1;
         else {
-            if(queryBody.volunteer) {
-                for(let loc of queryBody.volunteer.location) {
+            if(candidateQuery.volunteer) {
+                for(let loc of candidateQuery.volunteer.location) {
                     if(loc.city) {
-                        const index = queryBody.volunteer.location.findIndex((obj => obj.city === loc.city));
-                        queryBody.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        const index = candidateQuery.volunteer.location.findIndex((obj => obj.city === loc.city));
+                        candidateQuery.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
                     }
                 }
-                updateCandidateUser['candidate.volunteer'] = queryBody.volunteer;
+                updateCandidateUser['candidate.volunteer'] = candidateQuery.volunteer;
             }
         }
 
-        if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
-        if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
-        if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
-        if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
-        if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
-        if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
-        if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
+        if (candidateQuery.why_work) updateCandidateUser['candidate.why_work'] = candidateQuery.why_work;
+        if (candidateQuery.description) updateCandidateUser['candidate.description'] = candidateQuery.description;
+        if (candidateQuery.education_history && candidateQuery.education_history.length > 0) {
+            updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
+        }
         else unset['candidate.education_history'] = 1;
 
-        if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
+        if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
+            updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+        }
         else unset['candidate.work_history'] = 1;
-        if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
+        if (candidateQuery.interest_areas) updateCandidateUser['candidate.interest_areas'] = candidateQuery.interest_areas;
 
         if (queryBody.unset_curret_currency) {
             unset['candidate.current_currency'] = 1;
             unset['candidate.current_salary'] = 1;
         }
         else{
-            if (queryBody.current_currency && queryBody.current_salary) {
-                updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
-                updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+            if (candidateQuery.current_currency && candidateQuery.current_salary) {
+                updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
+                updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
             }
         }
 
@@ -417,9 +421,9 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.commercial_platforms'] = 1;
             unset['candidate.blockchain.description_commercial_platforms'] = 1;
         } else {
-            if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) {
-                updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
-                if(queryBody.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
+            if (blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
+                updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
+                if(blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
             }
         }
 
@@ -427,9 +431,9 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.experimented_platforms'] = 1;
             unset['candidate.blockchain.description_experimented_platforms'] = 1;
         } else {
-            if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) {
-                updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
-                if(queryBody.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
+            if (blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
+                updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
+                if(blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
             }
         }
 
@@ -437,63 +441,62 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.commercial_skills'] = 1;
             unset['candidate.blockchain.description_commercial_skills'] = 1;
         } else {
-            if (queryBody.commercial_skills && queryBody.commercial_skills.length > 0) {
-                updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-                if(queryBody.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
+            if (blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
+                updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
+                if(blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
             }
         }
-
         if (queryBody.unset_language) {
             unset['candidate.programming_languages'] = 1;
         } else {
-            if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
+            if (candidateQuery.programming_languages && candidateQuery.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = candidateQuery.programming_languages;
         }
 
         if (queryBody.unset_education_history) {
             unset['candidate.education_history'] = 1;
         } else {
-            if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
+            if (candidateQuery.education_history && candidateQuery.education_history.length > 0) updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
         }
 
         if (queryBody.unset_work_history) {
             unset['candidate.work_history'] = 1;
         } else {
-            if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
+            if (candidateQuery.work_history && candidateQuery.work_history.length > 0) updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
         }
 
         if (queryBody.unset_github_account) {
             unset['candidate.github_account'] = 1;
         } else {
-            if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
+            if (candidateQuery.github_account) updateCandidateUser['candidate.github_account'] = candidateQuery.github_account;
         }
 
         if (queryBody.unset_exchange_account) {
             unset['candidate.stackexchange_account'] = 1;
         } else {
-            if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
+            if (candidateQuery.stackexchange_account) updateCandidateUser['candidate.stackexchange_account'] = candidateQuery.stackexchange_account;
         }
 
         if (queryBody.unset_linkedin_account) {
             unset['candidate.linkedin_account'] = 1;
         } else {
-            if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+            if (candidateQuery.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = candidateQuery.linkedin_account;
         }
 
         if (queryBody.unset_medium_account) {
             unset['candidate.medium_account'] = 1;
         } else {
-            if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+            if (candidateQuery.medium_account) updateCandidateUser['candidate.medium_account'] = candidateQuery.medium_account;
         }
         if (queryBody.unset_stackoverflow_url) {
             unset['candidate.stackoverflow_url'] = 1;
         } else {
-            if (queryBody.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = queryBody.stackoverflow_url;
+            if (candidateQuery.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = candidateQuery.stackoverflow_url;
         }
 
         if (queryBody.unset_personal_website_url) {
             unset['candidate.personal_website_url'] = 1;
         } else {
-            if (queryBody.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = queryBody.personal_website_url;
+            if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
         }
     }
 

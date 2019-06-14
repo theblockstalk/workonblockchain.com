@@ -9,11 +9,10 @@ const userHelpers = require('../../../otherHelpers/usersHelpers');
 const docGeneratorV2 = require('../../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../../test/api-v2/helpers');
 const companiesHelperV2 = require('../../../../api-v2/users/companies/companyHelpers');
-const candidateHelperV2 = require('../../../../api-v2/users/candidates/candidateHelpers');
 const messages = require('../../../../../model/mongoose/messages');
 const companyHelper = require('../../../otherHelpers/companyHelpers');
 const currency = require('../../../../../controller/services/currency');
-
+const candidateHelperV2 = require('../../../../api-v2/users/candidates/candidateHelpers');
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
@@ -23,22 +22,22 @@ describe('get all users', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        await mongo.drop();
-    })
+    await mongo.drop();
+})
 
-    describe('POST /v2/users/candidates/search', () => {
+    describe('POST /v2/users/candidates/search', function() {
 
-        it('it should get all users for admin', async () => {
+        it('it should get all users for admin', async function() {
+            const candidate = docGeneratorV2.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelperV2.candidateProfile(candidate, profileData);
             await userHelpers.makeAdmin(candidate.email);
 
+            let  candidateUserDoc = await Users.findOne({email: candidate.email});
+            const candidateEditProfileData = docGeneratorV2.candidateProfileUpdate();
+
+            const res = await candidateHelperV2.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
             let userDoc = await Users.findOne({email: candidate.email});
 
             const isAdmin = true;
@@ -50,7 +49,7 @@ describe('get all users', function () {
             getAllCandidates.body[0].last_name.should.equal(userDoc.last_name);
         });
 
-        it('it should search candidate by filter', async () => {
+        it('it should search candidate by filter', async function() {
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             const companyDoc = await Users.findOneByEmail(company.email);
@@ -63,13 +62,18 @@ describe('get all users', function () {
             await userHelpers.makeAdmin(company.email);
             const companyUserDoc = await Users.findOneByEmail(company.email);
 
+            const candidate = docGeneratorV2.candidate();
             const profileData = docGeneratorV2.candidateProfile();
-            const candidate = docGenerator.candidate();
 
-            const candidateRes = await candidateHelperV2.candidateProfile(candidate,profileData);
+            await candidateHelperV2.candidateProfile(candidate, profileData);
             await userHelpers.makeAdmin(candidate.email);
+
+            let  candidateUserDoc = await Users.findOne({email: candidate.email});
+            const candidateEditProfileData = docGeneratorV2.candidateProfileUpdate();
+
+            await candidateHelperV2.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
             await userHelpers.approveCandidate(candidate.email);
-            const candidateUserDoc = await Users.findOneByEmail(candidate.email);
+            candidateUserDoc = await Users.findOne({email: candidate.email});
 
             const approachOffer = docGeneratorV2.messages.approach(candidateUserDoc._id);
             const res = await messagesHelpers.post(approachOffer, companyUserDoc.jwt_token);
@@ -88,23 +92,23 @@ describe('get all users', function () {
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
         });
 
-        it('it should return verified candidate', async () => {
+        it('it should return verified candidate', async function() {
 
             const company = docGenerator.company();
-            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+        const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
-            const candidate = docGenerator.candidate();
-            const profileData = docGeneratorV2.candidateProfile();
+        const candidate = docGenerator.candidate();
+        const profileData = docGeneratorV2.candidateProfile();
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
-            await userHelpers.approveCandidate(candidate.email);
+        await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+        await userHelpers.approveCandidate(candidate.email);
 
-            let userDoc = await Users.findOne({email: company.email});
-            const filterRes = await candidateHelpers.verifiedCandidate(userDoc.jwt_token);
-            filterRes.body[0].is_verify.should.equal(1);
-            filterRes.body[0].disable_account.should.equal(false);
-            filterRes.body[0].type.should.equal("candidate");
-        });
+        let userDoc = await Users.findOne({email: company.email});
+        const filterRes = await candidateHelpers.verifiedCandidate(userDoc.jwt_token);
+        filterRes.body[0].is_verify.should.equal(1);
+        filterRes.body[0].disable_account.should.equal(false);
+        filterRes.body[0].type.should.equal("candidate");
+    });
 
         it('it should return the candidate with position and location ', async function () {
 
@@ -119,10 +123,10 @@ describe('get all users', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email});
             console.log(candidateUserDoc.candidate);
-            const locations = [{name : 'Remote' , visa_needed: false},
-                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }];
+            const locations = [{name : 'Remote'},
+                {city : '5c4aa17468cc293450c14c04' }];
             const params = {
-                positions: candidateUserDoc.candidate.roles,
+                roles: candidateUserDoc.candidate.roles,
                 locations: locations,
             }
 

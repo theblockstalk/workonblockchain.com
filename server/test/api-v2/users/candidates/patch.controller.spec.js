@@ -35,7 +35,7 @@ describe('update candidate profile', function () {
             const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
             candidateUserDoc = await users.findOne({email: candidate.email}).lean();
             const blockchainSkills = candidateUserDoc.candidate.blockchain;
-
+            console.log(candidateUserDoc);
             candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.candidate.github_account);
             candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.candidate.stackexchange_account);
             candidateUserDoc.contact_number.should.equal(candidateEditProfileData.contact_number);
@@ -46,7 +46,7 @@ describe('update candidate profile', function () {
             candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.candidate.programming_languages);
             candidateUserDoc.candidate.education_history.should.valueOf(candidateEditProfileData.candidate.education_history);
             candidateUserDoc.candidate.work_history.should.valueOf(candidateEditProfileData.candidate.work_history);
-            candidateUserDoc.candidate.base_city.should.equal(candidateEditProfileData.base_city);
+            candidateUserDoc.candidate.base_city.should.equal(candidateEditProfileData.candidate.base_city);
             blockchainSkills.commercial_skills[0].skill.should.equal(candidateEditProfileData.candidate.blockchain.commercial_skills[0].skill);
             blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.candidate.blockchain.commercial_skills[0].exp_year);
             blockchainSkills.commercial_platforms[0].name.should.equal(candidateEditProfileData.candidate.blockchain.commercial_platforms[0].name);

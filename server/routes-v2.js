@@ -77,10 +77,12 @@ const validateInputs = function(request, inputSchemas) {
                     }
                 } else {
                     schemaObj = schema;
-
+                    let schemaObject;
                     for (let key in obj) {
+                        if(schemaObj[key] && schemaObj[key].type) schemaObject = schemaObj[key].type;
+                        else schemaObject = schemaObj[key];
                         if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
-                        checkForUnwantedProperties(obj[key], schemaObj[key].type);
+                        checkForUnwantedProperties(obj[key], schemaObject);
                     }
                 }
             }
