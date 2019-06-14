@@ -73,7 +73,7 @@
                     <span>{{ loc.name }}</span>
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field floatLabel="always">
+                <mat-form-field floatLabel="always" class="w-100">
                   <mat-label></mat-label>
                   <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
