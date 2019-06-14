@@ -230,7 +230,7 @@ export class UserService {
 
   verify_client(email: string)
   {
-    return this.http.post(URL+'v2/users/email?email='+email, '') .pipe(map(data => {
+    return this.http.post(URL+'v2/users/email', {email: email}) .pipe(map(data => {
       return data;
     }));
 
