@@ -28,7 +28,7 @@ export class PagesEditComponent implements OnInit {
         case "candidate-terms":
           this.queryPageName = "Terms and Condition for candidate";
           break;
-        case "talent-terms":
+        case "company-terms":
           this.queryPageName = "Terms and Condition for company";
           break;
         case "faq":
