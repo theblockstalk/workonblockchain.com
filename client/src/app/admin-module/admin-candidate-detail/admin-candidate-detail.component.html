@@ -351,7 +351,7 @@
               </div>
             </div>
           </div>
-          <div class="row mt-3">
+          <div class="row mt-3" *ngIf="data.candidate.github_account || data.candidate.stackexchange_account || data.candidate.linkedin_account || data.candidate.medium_account || data.candidate.stackoverflow_url || data.candidate.personal_website_url">
             <div class="col-md-6">
               <h4>Links</h4>
             </div>
