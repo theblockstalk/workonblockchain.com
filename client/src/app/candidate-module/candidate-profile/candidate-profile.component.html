@@ -4,12 +4,12 @@
 </div>-->
 <!--Profile-inner-->
 <ng-container *ngIf="infoo==='';else profile_section" >
-<div class=""></div>
+  <div class=""></div>
 </ng-container>
 
 <ng-template #profile_section >
   <section class = "wob-bg-primary2 py-5 mt-5">
-     <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
+    <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
 
     <div class="container pt-2">
       <div class="row">
@@ -60,7 +60,7 @@
                 </ul>
               </div>
               <div class="col-md-1">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','about')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -78,7 +78,7 @@
                 <h2> <i class="fas fa-user"></i> About</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','about')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -93,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-4" *ngIf="github || linkedin_account || medium_account || stack || stackoverflow_url ||personal_website_url">
               <div class="col-md-6">
                 <h4>Links</h4>
               </div>
@@ -101,7 +101,7 @@
             <div class="row mt-2" *ngIf="github">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-github fa-2x"></i>
                     <a class="ml-2" [href]="websiteUrl(github)" target="_blank">
                       {{github}}
@@ -113,10 +113,10 @@
             <div class="row mt-2" *ngIf="linkedin_account">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(linkedin_account)" target="_blank">
-                      {{linkedin_account}}
-                    </a>
+                    {{linkedin_account}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -124,10 +124,10 @@
             <div class="row mt-2" *ngIf="medium_account">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(medium_account)" target="_blank">
-                      {{medium_account}}
-                    </a>
+                    {{medium_account}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -135,10 +135,10 @@
             <div class="row mt-2" *ngIf="stack">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(stack)" target="_blank">
-                      {{stack}}
-                    </a>
+                    {{stack}}
+                  </a>
                   </p>
                 </div>
               </div>
@@ -146,10 +146,10 @@
             <div class="row mt-2" *ngIf="stackoverflow_url">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(stackoverflow_url)" target="_blank">
-                      {{stackoverflow_url}}
-                    </a>
+                    {{stackoverflow_url}}
+                  </a>
                   <p>
                 </div>
               </div>
@@ -157,10 +157,10 @@
             <div class="row mt-2" *ngIf="personal_website_url">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(personal_website_url)" target="_blank">
-                      {{personal_website_url}}
-                    </a>
+                    {{personal_website_url}}
+                  </a>
                   <p>
                 </div>
               </div>
@@ -173,7 +173,7 @@
                 <h2><i class="fas fa-map-marker-alt"></i> Residence/base location</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','residence')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','residence')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -205,7 +205,7 @@
                 <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','job_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','work_preferences')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -357,11 +357,11 @@
               </div>
 
               <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
-              <div class="form-group">
-                <label>Maximum hours per week (optional): </label>
-                <p>{{contractor.value.max_hour_per_week}}</p>
+                <div class="form-group">
+                  <label>Maximum hours per week (optional): </label>
+                  <p>{{contractor.value.max_hour_per_week}}</p>
+                </div>
               </div>
-            </div>
 
               <div class="col-md-12" *ngIf="contractor.value.contractor_type">
                 <div class="form-group">
@@ -463,7 +463,7 @@
                 <h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','resume_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','blockchain_experience')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -502,7 +502,7 @@
                   <label>Commercial experience:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data.name}}.png" alt="{{data.name}} Logo">
                       {{data.name}}: {{data.exp_year}} years
                     </div>
                   </div>
@@ -517,7 +517,7 @@
                   <label>Experimented with:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data}}.png" alt="{{data}} Logo">
                       {{data}}
                     </div>
                   </div>
@@ -545,7 +545,7 @@
                 <h2><i class="fas fa-code"></i> Experience</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','experience')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -555,9 +555,9 @@
                 <div class="form-group">
                   <label>Languages: </label>
                   <div>
-                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -568,7 +568,7 @@
                 <h2><i class="fas fa-wrench"></i> Work history</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','work_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','work_history')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -600,7 +600,7 @@
                 <h2><i class="fas fa-university"></i> Education</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','education_candidate')">
+                <a class="float-right" (click)="internalRoute('users/talent/edit','education_history')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -636,7 +636,7 @@
           </h2>
         </div>
         <div class="modal-body">
-            <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+          <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
         </div>
         <div class="modal-footer">
           <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
@@ -662,31 +662,31 @@
       <h4 class = "text-center">{{first_name}} {{last_name}}</h4>
       <div class="modal-body">
         <div class = "">
-            <strong>
-              Where do you currently live, or where are you most frequently based?
-            </strong>
-            <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
-              <div class="form-group">
-                <label>Country</label>
-                <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
-                  <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
-                </select>
-                <div class = "invalid-feedback" *ngIf="information.country === -1">
-                  {{country_log}}
-                </div>
+          <strong>
+            Where do you currently live, or where are you most frequently based?
+          </strong>
+          <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
+                <option value="-1" disabled selected hidden >Please choose country</option>
+                <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
+              </select>
+              <div class = "invalid-feedback" *ngIf="information.country === -1">
+                {{country_log}}
               </div>
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
-                <div class = "invalid-feedback" *ngIf="!information.city">
-                  {{city_log}}
-                </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
+              <div class = "invalid-feedback" *ngIf="!information.city">
+                {{city_log}}
               </div>
-              <div class="form-group">
-                <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
-              </div>
-            </form>
+            </div>
+            <div class="form-group">
+              <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -12,211 +12,212 @@
           </nav>
         </div>
         <div class = "row p-4">
-      <div class="tab-content col-md-12" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="nav-home-tab">
-          <div *ngIf="ref_msg" class="alert alert-success">{{ref_msg}}</div>
-          <div *ngIf = "log" class="alert alert-danger error-alert" >{{log}}</div>
-          <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
-            <div class = "form-group">
-              <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
-              <label>Email address</label>
-              <input type="email" class="form-control" placeholder = "email@example.com" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="name" required  [(ngModel)]="credentials.email">
-              <div *ngIf="email_log" class="invalid-feedback d-inline">{{email_log}}</div>
-              <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
-                Enter email in correct format like myemail@gmail.com.
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
-              <label for="firstName">First name</label>
-              <input type="text" class="form-control" required id="firstName" placeholder="John" name="first_name" [(ngModel)]="credentials.first_name">
-              <div class = "invalid-feedback d-inline"  *ngIf="!credentials.first_name">
-                {{first_name_log}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
-              <label for="lastName">Last name</label>
-              <input type="text" class="form-control" required id="lastName" placeholder="Smith"  name="last_name" [(ngModel)]="credentials.last_name">
-              <div class = "invalid-feedback d-inline"  *ngIf="!credentials.last_name">
-                {{last_name_log}}
-              </div>
-            </div>
-            <div class = "form-group">
-              <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
-              <label>Password</label>
-              <input type="password" class="form-control" #uname="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control"  id="password-field" name="password"  [(ngModel)]="credentials.password">
-              <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
-              <div *ngIf="pass_log" class="invalid-feedback d-inline">{{pass_log}}</div>
-              <div *ngIf="uname.errors && button_status" class="invalid-feedback d-inline">
-                Password must contain a minimum of 8 characters including a number and lower and upper case letter.
-              </div>
-            </div>
-            <div class = "form-group">
-              <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
-              <label> Confirm password</label>
-              <input type="password" class="form-control" id="conf_pwd" name="confirm_password" [(ngModel)]="credentials.confirm_password">
-              <div *ngIf="password_log" class="invalid-feedback d-inline">{{password_log}}</div>
-            </div>
-            <div class = "form-group">
-              <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
-            </div>
-            <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-linkedin text-center" href="{{linkedin_url}}">
-                <i class="fab fa-linkedin" aria-hidden="true"></i>
-                Sign up with LinkedIn
-              </a>
-            </div>
-
-            <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-google text-center"  href="{{google_url}}">
-                <i class="fab fa-google" aria-hidden="true"></i>
-                Sign up with Google
-              </a>
-            </div>
-          </form>
-        </div>
-        <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="nav-profile-tab">
-          <form (submit)="company_signup(signupForm)" #signupForm = ngForm>
-            <div *ngIf="ref_msg" class="alert alert-success">{{ref_msg}} {{ref_discount_msg}}</div>
-            <div class="alert alert-danger" *ngIf = "company_log" >{{company_log}}</div>
-            <div class = "form-group">
-              <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
-              <label>Email address</label>
-              <input type="email" class="form-control" placeholder = "email@example.com" #comp_email="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="email" [(ngModel)]="credentials.email" email required>
-              <div *ngIf="comp_email.errors && credentials.email!='' && companySignup" class="invalid-feedback d-inline">
-                Enter email in correct format like myemail@gmail.com.
-              </div>
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.email">
-                {{companyEmailLog}}
-              </div>
-            </div>
-            <div class = "form-group">
-              <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
-              <label>First name</label>
-              <input type="text" class="form-control" placeholder="John" id="user" required name="first_name" [(ngModel)]="credentials.first_name">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.first_name">
-                {{companyFirstNameLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
-              <label>Last name</label>
-              <input type="text" class="form-control" placeholder="Smith" required name="last_name" [(ngModel)]="credentials.last_name">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.last_name">
-                {{companyLastNameLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
-              <label>Job title</label>
-              <input type="text" class="form-control" placeholder="Director" required name="job_title" [(ngModel)]="credentials.job_title">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.job_title">
-                {{companyJobTitleLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
-              <label>Company name</label>
-              <input type="text" class="form-control" placeholder="Google Inc." id="com_name" required name="company_name" [(ngModel)]="credentials.company_name">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.company_name">
-                {{companyNameLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
-              <label>Company website</label>
-              <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" name="company_website" [(ngModel)]="credentials.company_website">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.company_website">
-                {{companyWebsiteLog}}
-              </div>
-              <div class="invalid-feedback d-inline" *ngIf="website.errors && credentials.company_website!=='' && companySignup">
-                Enter url in proper format.
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-phone mr-1" aria-hidden="true"></i></span>
-              <label>Phone</label>
-            </div>
-            <div class="input-group">
-              <div class="input-group-prepend my-style">
-                <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="credentials.country_code" name="country_code">
-                  <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
-                </select>
-              </div>
-              <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
-                {{companyPhoneLog}}
-              </div>
-              <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
-                {{country_code_log}}
-              </div>
-              <ng-container *ngIf="credentials.phone_number;else no_contact_number">
-                <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
-                  Please enter only numbers
+          <div class="tab-content col-md-12" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="nav-home-tab">
+              <div *ngIf="ref_msg" class="alert alert-success">{{ref_msg}}</div>
+              <div *ngIf = "log" class="alert alert-danger error-alert" >{{log}}</div>
+              <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
+                <div class = "form-group">
+                  <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
+                  <label>Email address</label>
+                  <input type="email" class="form-control" placeholder = "email@example.com" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="name" required  [(ngModel)]="credentials.email">
+                  <div *ngIf="email_log" class="invalid-feedback d-inline">{{email_log}}</div>
+                  <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+                    Enter email in correct format like myemail@gmail.com.
+                  </div>
                 </div>
-                <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
-                  {{contact_number_log}}
+                <div class="form-group">
+                  <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
+                  <label for="firstName">First name</label>
+                  <input type="text" class="form-control" required id="firstName" placeholder="John" name="first_name" [(ngModel)]="credentials.first_name">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!credentials.first_name">
+                    {{first_name_log}}
+                  </div>
                 </div>
-              </ng-container>
-              <ng-template #no_contact_number>
-              </ng-template>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
-              <label>Country</label>
-              <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
-                <option *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
-              </select>
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
-                {{companyCountryLog}}
-              </div>
-             </div>
-            <div class="form-group">
-              <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
-              <label>City</label>
-              <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="credentials.city">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.city">
-                {{companyCityLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-podcast mr-1" aria-hidden="true"></i></span>
-              <label>Postal code</label>
-              <input type="text" class="form-control right-input" placeholder="SW1 7XL" id="post_no" required name="postal_code" [(ngModel)]="credentials.postal_code">
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.postal_code">
-                {{companyPostalCodeLog}}
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
-              <label>Password</label>
-              <div class = "show_pass"><i toggle="#password-field1" class="" aria-hidden="true" ></i></div>
-              <input type="password" #upass="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" id="password-field1" name="password" [(ngModel)]="credentials.password">
-              <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
-              <div class="invalid-feedback d-inline" *ngIf="!credentials.password">
-                {{companyPasswordLog}}
-              </div>
-              <div *ngIf="upass.errors && companySignup" class="invalid-feedback d-inline">
-                Password must contain a minimum of 8 characters including a number and lower and upper case letter.
-              </div>
-            </div>
-            <div class="form-group">
-              <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
-              <label>Confirm password</label>
-              <div class = "show_pass"><i toggle="#conff_pwd" class="" aria-hidden="true"></i></div>
-              <input type="password" class="form-control" id="conff_pwd" required name="confirm_password" [(ngModel)]="credentials.confirm_password">
-              <div *ngIf="password_log && companySignup" class="invalid-feedback d-inline">{{password_log}}</div>
-            </div>
+                <div class="form-group">
+                  <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
+                  <label for="lastName">Last name</label>
+                  <input type="text" class="form-control" required id="lastName" placeholder="Smith"  name="last_name" [(ngModel)]="credentials.last_name">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!credentials.last_name">
+                    {{last_name_log}}
+                  </div>
+                </div>
+                <div class = "form-group">
+                  <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
+                  <label>Password</label>
+                  <input type="password" class="form-control" #uname="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control"  id="password-field" name="password"  [(ngModel)]="credentials.password">
+                  <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
+                  <div *ngIf="pass_log" class="invalid-feedback d-inline">{{pass_log}}</div>
+                  <div *ngIf="uname.errors && button_status" class="invalid-feedback d-inline">
+                    Password must contain a minimum of 8 characters including a number and lower and upper case letter.
+                  </div>
+                </div>
+                <div class = "form-group">
+                  <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
+                  <label> Confirm password</label>
+                  <input type="password" class="form-control" id="conf_pwd" name="confirm_password" [(ngModel)]="credentials.confirm_password">
+                  <div *ngIf="password_log" class="invalid-feedback d-inline">{{password_log}}</div>
+                </div>
+                <div class = "form-group">
+                  <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
+                </div>
+                <div class="form-group">
+                  <a  class = "btn btn-block btn-social btn-linkedin text-center" href="{{linkedin_url}}">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    Sign up with LinkedIn
+                  </a>
+                </div>
 
-            <div class = "form-group">
-              <input type="submit" class="form-control btn btn-secondary" value = "Sign up">
+                <div class="form-group">
+                  <a  class = "btn btn-block btn-social btn-google text-center"  href="{{google_url}}">
+                    <i class="fab fa-google" aria-hidden="true"></i>
+                    Sign up with Google
+                  </a>
+                </div>
+              </form>
             </div>
-          </form>
+            <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="nav-profile-tab">
+              <form (submit)="company_signup(signupForm)" #signupForm = ngForm>
+                <div *ngIf="ref_msg" class="alert alert-success">{{ref_msg}} {{ref_discount_msg}}</div>
+                <div class="alert alert-danger" *ngIf = "company_log" >{{company_log}}</div>
+                <div class = "form-group">
+                  <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
+                  <label>Email address</label>
+                  <input type="email" class="form-control" placeholder = "email@example.com" #comp_email="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="email" [(ngModel)]="credentials.email" email required>
+                  <div *ngIf="comp_email.errors && credentials.email!='' && companySignup" class="invalid-feedback d-inline">
+                    Enter email in correct format like myemail@gmail.com.
+                  </div>
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.email">
+                    {{companyEmailLog}}
+                  </div>
+                </div>
+                <div class = "form-group">
+                  <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
+                  <label>First name</label>
+                  <input type="text" class="form-control" placeholder="John" id="user" required name="first_name" [(ngModel)]="credentials.first_name">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.first_name">
+                    {{companyFirstNameLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-user mr-1" aria-hidden="true"></i></span>
+                  <label>Last name</label>
+                  <input type="text" class="form-control" placeholder="Smith" required name="last_name" [(ngModel)]="credentials.last_name">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.last_name">
+                    {{companyLastNameLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
+                  <label>Job title</label>
+                  <input type="text" class="form-control" placeholder="Director" required name="job_title" [(ngModel)]="credentials.job_title">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.job_title">
+                    {{companyJobTitleLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
+                  <label>Company name</label>
+                  <input type="text" class="form-control" placeholder="Google Inc." id="com_name" required name="company_name" [(ngModel)]="credentials.company_name">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.company_name">
+                    {{companyNameLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
+                  <label>Company website</label>
+                  <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" name="company_website" [(ngModel)]="credentials.company_website">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.company_website">
+                    {{companyWebsiteLog}}
+                  </div>
+                  <div class="invalid-feedback d-inline" *ngIf="website.errors && credentials.company_website!=='' && companySignup">
+                    Enter url in proper format.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-phone mr-1" aria-hidden="true"></i></span>
+                  <label>Phone</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend my-style">
+                      <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="credentials.country_code" name="country_code">
+                        <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
+                      </select>
+                    </div>
+                    <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
+                    <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
+                      {{companyPhoneLog}}
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
+                      {{country_code_log}}
+                    </div>
+                    <ng-container *ngIf="credentials.phone_number;else no_contact_number">
+                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
+                        Please enter only numbers
+                      </div>
+                      <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
+                        {{contact_number_log}}
+                      </div>
+                    </ng-container>
+                    <ng-template #no_contact_number>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
+                  <label>Country</label>
+                  <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
+                    <option *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
+                  </select>
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
+                    {{companyCountryLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
+                  <label>City</label>
+                  <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="credentials.city">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.city">
+                    {{companyCityLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-podcast mr-1" aria-hidden="true"></i></span>
+                  <label>Postal code</label>
+                  <input type="text" class="form-control right-input" placeholder="SW1 7XL" id="post_no" required name="postal_code" [(ngModel)]="credentials.postal_code">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.postal_code">
+                    {{companyPostalCodeLog}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
+                  <label>Password</label>
+                  <div class = "show_pass"><i toggle="#password-field1" class="" aria-hidden="true" ></i></div>
+                  <input type="password" #upass="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" id="password-field1" name="password" [(ngModel)]="credentials.password">
+                  <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.password">
+                    {{companyPasswordLog}}
+                  </div>
+                  <div *ngIf="upass.errors && companySignup" class="invalid-feedback d-inline">
+                    Password must contain a minimum of 8 characters including a number and lower and upper case letter.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
+                  <label>Confirm password</label>
+                  <div class = "show_pass"><i toggle="#conff_pwd" class="" aria-hidden="true"></i></div>
+                  <input type="password" class="form-control" id="conff_pwd" required name="confirm_password" [(ngModel)]="credentials.confirm_password">
+                  <div *ngIf="password_log && companySignup" class="invalid-feedback d-inline">{{password_log}}</div>
+                </div>
+
+                <div class = "form-group">
+                  <input type="submit" class="form-control btn btn-secondary" value = "Sign up">
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-      </div>
-    </div>
       <div class="col"></div>
     </div>
   </div>

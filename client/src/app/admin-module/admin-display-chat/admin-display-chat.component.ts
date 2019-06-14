@@ -214,7 +214,7 @@ export class AdminDisplayChatComponent implements OnInit {
 
   get_user_type() {
     if(this.user_type == 'company'){
-      this.authenticationService.getCurrentCompany(this.user_id)
+      this.authenticationService.getCurrentCompany(this.user_id, true)
 			.subscribe(
 			  data =>{
 			    if(data['company_logo']!=''){

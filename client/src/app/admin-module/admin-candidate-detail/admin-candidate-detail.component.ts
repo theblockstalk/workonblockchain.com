@@ -45,11 +45,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   contractorTypes = constants.contractorTypes;
   country_code;
   templates;
+  routerUrl;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+
+    this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
 
 
   }
@@ -371,54 +374,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 this.is_approved = "";
               }
 
-              if(data['referred_email'])
-              {
-                this.authenticationService.getReferenceDetail(data['referred_email'])
-                  .subscribe(
-                    refData => {
-                      if(refData['candidateDoc']){
-                        if(refData['candidateDoc']['first_name'] && refData['candidateDoc']['last_name'])
-                          this.referred_name = refData['candidateDoc']['first_name'] + " " + refData['candidateDoc']['last_name'];
-                        else
-                          this.referred_name = refData['candidateDoc']._id ;
+              if(data['user_type'] === 'company') this.detail_link = '/admin-company-detail';
+              if(data['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
 
-
-                        this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._id;
-                      }
-                      else if(refData['companyDoc']){
-                        if(refData['companyDoc'].first_name && refData['companyDoc'].last_name)
-                          this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
-                        else
-                          this.referred_name = refData['companyDoc']._id ;
-
-                        this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator._id;
-                      }
-                      else
-                      {
-                        this.referred_name = refData['refDoc'].email;
-                      }
-
-                    },
-                    error => {
-                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        this.error = error['error']['message'];
-                      }
-                      else
-                      {
-                        this.error = error['error']['message'];
-                      }
-
-                    }
-                  );
+              if(data['name']) {
+                this.referred_name = data['name'];
+                this.referred_link = data['user_id'];
               }
-
+              else if(data['referred_email']) this.referred_name = data['referred_email'];
             },
 
             error =>

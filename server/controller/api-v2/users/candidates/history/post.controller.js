@@ -6,7 +6,7 @@ const errors = require('../../../../services/errors');
 const sanitizer = require('../../../../services/sanitize');
 const objects = require('../../../../services/objects');
 const candidateHistoryEmail = require('../../../../services/email/emails/candidateHistory');
-const filterReturnData = require('../../../../api/users/filterReturnData');
+const filterReturnData = require('../../filterReturnData');
 
 
 module.exports.request = {

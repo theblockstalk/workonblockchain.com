@@ -1,0 +1,18 @@
+<div class="form-group">
+  <label [ngClass]="!label?'invisible':''">{{label}}</label>
+  <div [innerHTML] = " field_description | safeHtml " *ngIf="field_description"></div>
+  <input
+    type="text"
+    class="form-control"
+    placeholder="{{placeholder}}"
+    [(ngModel)]="value"
+    (ngModelChange) = "textInputValue.emit(value)"
+    [attr.disabled]="disabled ?  '' : null"
+  >
+  <div
+    class = "invalid-feedback d-inline"
+    *ngIf="errorMsg"
+  >
+    {{errorMsg}}
+  </div>
+</div>

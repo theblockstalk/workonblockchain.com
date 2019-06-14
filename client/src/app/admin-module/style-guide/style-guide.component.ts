@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
-import {constants} from '../../../constants/constants';
 declare var $:any;
+import {constants} from "../../../constants/constants";
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 
 @Component({
@@ -20,6 +20,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
+
   country_codes = constants.country_codes;
   imageName;
 
@@ -97,10 +98,17 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
    }
 
   }
+  getOutput(data) {
+  }
 
-  displayFn(value) {
-    //this.countriesModel = value;
-    //return this.selectedValue(value);
+  selectedLocations;
+  getSelectedLocations(data) {
+    console.log(data);
+
+  }
+
+  itemSelected(data) {
+    this.selectedLocations = data;
   }
 
   fileChangeListener($event) {

@@ -7,8 +7,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <button [disabled]="data.is_verify === 0 ? true : false" [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._id }" class = "btn btn-primary float-right">Edit Profile</button>
-
+            <button [routerLink]="[routerUrl]"  class = "btn btn-primary float-right">Edit Profile</button>
           </div>
         </div>
 
@@ -243,7 +242,6 @@
                 <div class = "form-group">
                   <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
                   <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
-
                 </div>
 
               </div>
@@ -353,7 +351,7 @@
               </div>
             </div>
           </div>
-          <div class="row mt-3">
+          <div class="row mt-3" *ngIf="data.candidate.github_account || data.candidate.stackexchange_account || data.candidate.linkedin_account || data.candidate.medium_account || data.candidate.stackoverflow_url || data.candidate.personal_website_url">
             <div class="col-md-6">
               <h4>Links</h4>
             </div>
@@ -361,7 +359,7 @@
           <div class="row mt-2" *ngIf="data.candidate.github_account">
             <div class="col-md-6">
               <div class="form-group" >
-                <p>
+                <p class="break-class">
                   <i class="fab fa-github fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.github_account)" target="_blank">
                     {{data.candidate.github_account}}
                   </a>
@@ -372,7 +370,7 @@
           <div class="row mt-2" *ngIf="data.candidate.stackexchange_account">
             <div class="col-md-6">
               <div class="form-group">
-                <p>
+                <p class="break-class">
                   <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
                     {{data.candidate.stackexchange_account}}
                   </a>
@@ -383,7 +381,7 @@
           <div class="row mt-2" *ngIf="data.candidate.linkedin_account">
             <div class="col-md-6">
               <div class="form-group" >
-                <p>
+                <p class="break-class">
                   <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
                     {{data.candidate.linkedin_account}}
                   </a>
@@ -394,7 +392,7 @@
           <div class="row mt-2" *ngIf="data.candidate.medium_account">
             <div class="col-md-6">
               <div class="form-group" >
-                <p>
+                <p class="break-class">
                   <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
                     {{data.candidate.medium_account}}
                   </a>
@@ -405,7 +403,7 @@
           <div class="row mt-2" *ngIf="data.candidate.stackoverflow_url">
             <div class = "col-md-6">
               <div class="form-group">
-                <p>
+                <p class="break-class">
                   <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
                     {{data.candidate.stackoverflow_url}}
                   </a>
@@ -416,7 +414,7 @@
           <div class="row mt-2" *ngIf="data.candidate.personal_website_url">
             <div class = "col-md-6">
               <div class="form-group">
-                <p>
+                <p class="break-class">
                   <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
                     {{data.candidate.personal_website_url}}
                   </a>
@@ -740,7 +738,7 @@
                 <label>Commercial experience: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data.name}}.png" alt="{{data.name}} Logo">
                     {{data.name}}: {{data.exp_year}} years
                   </div>
                 </div>
@@ -753,7 +751,7 @@
                 <label>Experimented with: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{data}}.png" alt="{{data}} Logo">
                     {{data}}
                   </div>
                 </div>

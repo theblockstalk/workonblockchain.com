@@ -23,7 +23,25 @@ const endpoints = [
     require('./controller/api-v2/users/settings/patch.controller'),
     require('./controller/api-v2/email_template/post.controller'),
     require('./controller/api-v2/email_template/patch.controller'),
-    require('./controller/api-v2/email_template/search/get.controller')
+    require('./controller/api-v2/email_template/search/get.controller'),
+    require('./controller/api-v2/locations/get.controller'),
+    require('./controller/api-v2/pages/post.controller'),
+    require('./controller/api-v2/pages/get.controller'),
+    require('./controller/api-v2/statistics/get.controller'),
+    require('./controller/api-v2/users/auth/delete.controller'),
+    require('./controller/api-v2/users/auth/password/put.controller'),
+    require('./controller/api-v2/users/auth/password/reset/post.controller'),
+    require('./controller/api-v2/users/auth/password/reset/put.controller'),
+    require('./controller/api-v2/users/email/patch.controller'),
+    require('./controller/api-v2/users/email/post.controller'),
+    require('./controller/api-v2/referral/get.controller'),
+    require('./controller/api-v2/referral/post.controller'),
+    require('./controller/api-v2/users/companies/get.controller'),
+    require('./controller/api-v2/users/companies/search/post.controller'),
+    require('./controller/api-v2/users/candidates/search/post.controller'),
+    require('./controller/api-v2/referral/email/post.controller'),
+    require('./controller/api-v2/users/patch.controller'),
+    require('./controller/api-v2/health/get.controller')
 ];
 
 function isEmpty(obj) {
@@ -36,23 +54,25 @@ function isEmpty(obj) {
 }
 
 const validateInputs = function(request, inputSchemas) {
-    console.log('in validating inputs');
-    const validationTypes = ['query', 'params', 'body'];
-    const modelName = request.type.toUpperCase() + request.path;
-    const models = {
-        'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
-        'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
-        'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
-    };
+    if (inputSchemas) {
+        console.log('in validating inputs');
+        const validationTypes = ['query', 'params', 'body'];
+        const modelName = request.type.toUpperCase() + request.path;
+        const models = {
+            'query': inputSchemas.query ? mongoose.model(modelName + "-query", inputSchemas.query) : null,
+            'params': inputSchemas.params ? mongoose.model(modelName + "-params", inputSchemas.params) : null,
+            'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
+        };
 
-    return function (req) {
-        for (const type of validationTypes) {
-            const input = req[type];
-            if (input && !isEmpty(input)) {
-                console.log('validating ' + type, input);
-                const doc = new models[type](input);
-                const error = doc.validateSync();
-                if (error) throw new Error(error);
+        return function (req) {
+            for (const type of validationTypes) {
+                const input = req[type];
+                if (input && !isEmpty(input)) {
+                    console.log('validating ' + type, input);
+                    const doc = new models[type](input);
+                    const error = doc.validateSync();
+                    if (error) throw new Error(error);
+                }
             }
         }
     }

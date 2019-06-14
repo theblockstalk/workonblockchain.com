@@ -25,7 +25,7 @@
 
             <a routerLink="{{link}}" class="nav-link btn {{job_disable}}">
               <i class="{{job_active_class}}"></i>
-              Jobs
+              Work
             </a>
           </li>
           <li class="nav-item px-2">
@@ -45,7 +45,7 @@
     </div>
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-          <form (submit)="about(aboutForm)" #aboutForm = ngForm>
+        <form (submit)="about(aboutForm)" #aboutForm = ngForm>
           <div class="row" *ngIf="!info.first_name && !info.last_name">
             <div class="col-md-6">
               <div class="form-group">
@@ -131,31 +131,31 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-              <label for="phone"><b>Phone</b></label>
-              <div class="input-group">
-                <div class="input-group-prepend my-style">
-                  <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
-                    <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
-                  </select>
-                </div>
-                <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required [(ngModel)]="info.contact_number">
-                <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
-                  {{contact_name_log}}
-                </div>
-                <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
-                  {{country_code_log}}
-                </div>
-                <ng-container *ngIf="info.contact_number;else no_contact_number">
-                  <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
-                    Please enter only numbers
+                <label for="phone"><b>Phone</b></label>
+                <div class="input-group">
+                  <div class="input-group-prepend my-style">
+                    <select class="form-control selectpicker" title="(Country code)" [(ngModel)]="info.country_code" name="country_code">
+                      <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === info.country_code ? true : null">{{country_code.name}}</option>
+                    </select>
                   </div>
-                  <div class = "invalid-feedback d-inline" *ngIf="info.contact_number.length < 4 || info.contact_number.length > 15 ">
-                    {{contact_number_log}}
+                  <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required [(ngModel)]="info.contact_number">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
+                    {{contact_name_log}}
                   </div>
-                </ng-container>
-                <ng-template #no_contact_number>
-                </ng-template>
-              </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
+                    {{country_code_log}}
+                  </div>
+                  <ng-container *ngIf="info.contact_number;else no_contact_number">
+                    <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
+                      Please enter only numbers
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="info.contact_number.length < 4 || info.contact_number.length > 15 ">
+                      {{contact_number_log}}
+                    </div>
+                  </ng-container>
+                  <ng-template #no_contact_number>
+                  </ng-template>
+                </div>
               </div>
             </div>
 

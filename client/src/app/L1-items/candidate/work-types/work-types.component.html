@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label>Work type:</label>
+      <app-c-forme-checkbox
+        [options]="options"
+        column="col-md-4 text-center"
+        (change)="selfValidate()"
+        [errorMsg]="errMsg"
+        [value]="work_types"
+        (selectedItem)="selectedWorkType = $event"></app-c-forme-checkbox>
+  </div>
+

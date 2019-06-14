@@ -73,7 +73,7 @@
                     <span>{{ loc.name }}</span>
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field floatLabel="always">
+                <mat-form-field floatLabel="always" class="w-100">
                   <mat-label></mat-label>
                   <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
@@ -127,7 +127,6 @@
                 <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Annual salary">
 
                 <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
-                  <option value="-1" >Currency</option>
                   <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
                 </select>
 

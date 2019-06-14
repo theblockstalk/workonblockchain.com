@@ -30,7 +30,7 @@ export class UserService {
 
   getAll()
   {
-    return this.http.get(URL+'users', {
+    return this.http.post(URL+'v2/users/candidates/search?admin=true' , '' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -60,7 +60,7 @@ export class UserService {
 
   candidate_detail(_id :any )
   {
-    return this.http.post(URL+'users/candidate_detail', {_id:_id}, {
+    return this.http.get(URL+'v2/users/candidates?user_id='+_id, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -125,8 +125,7 @@ export class UserService {
   }
 
   getByRefrenceCode(code: string){
-
-    return this.http.post(URL+'users/get_refrence_code', {code:code} )
+    return this.http.get(URL+'v2/referral?ref_code='+code)
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -154,8 +153,8 @@ export class UserService {
   }
 
   getReferenceDetail(email: string){
-
-    return this.http.post(URL + 'users/get_refrence_detail',  {email:email},{
+    const isAdmin = true;
+    return this.http.get(URL+'v2/referral?email=' +email+'&admin='+isAdmin, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -192,14 +191,6 @@ export class UserService {
 
   }
 
-  create(user: User)
-  {
-    return this.http.post(URL+'users/candidates', user) .pipe(map(user => {
-      return user
-    }));
-
-  }
-
   create_employer(employer: any)
   {
     return this.http.post(URL+'v2/users/companies', employer) .pipe(map(employer => {
@@ -208,23 +199,9 @@ export class UserService {
 
   }
 
-  upload(image: string)
-  {
-    return this.http.post(URL+'/about', image) .pipe(map(user => {
-      return image;
-    }));
-  }
-
-  update(user: User)
-  {
-    return this.http.put(URL+'users/' + user._id, user);
-
-  }
-
   forgot_password(email: string)
   {
-    //return this.http.put('http://localhost:4000/users/forgot_password/' + email , '');
-    return this.http.put(URL+'users/forgot_password/' + email , '')
+    return this.http.post(URL+'v2/users/auth/password/reset', {email:email})
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -253,16 +230,10 @@ export class UserService {
 
   verify_client(email: string)
   {
-    //return this.http.put('http://localhost:4000/users/forgot_password/' + email , '');
-    return this.http.put(URL+'users/verify_client/' + email , '') .pipe(map(data => {
+    return this.http.post(URL+'v2/users/email', {email: email}) .pipe(map(data => {
       return data;
     }));
 
-  }
-
-  delete(_id: string)
-  {
-    return this.http.delete(URL+'users/' + _id);
   }
 
   candidate_login(queryInput : any)
@@ -282,40 +253,10 @@ export class UserService {
       }));
   }
 
-
-  company_terms(user_id: string, detail: any)
-  {
-
-    return this.http.put(URL+'users/company_wizard' , detail, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error));                }
-
-    }));
-  }
-
   verify_email(email_hash: string)
   {
-    return this.http.put(URL+'users/emailVerify/'+ email_hash , '').pipe(map((res: Response) =>
+    return this.http.patch(URL+'v2/users/email?verify_email_token='+email_hash, {})
+      .pipe(map((res: Response) =>
     {
       if (res)
       {
@@ -342,8 +283,7 @@ export class UserService {
 
   reset_password(hash: string, data: User)
   {
-
-    return this.http.put(URL+'users/reset_password/' + hash, data)
+    return this.http.put(URL+'v2/users/auth/password/reset?forgot_password_token=' + hash+'&new_password='+data.password,'')
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -372,8 +312,7 @@ export class UserService {
 
   change_password(params : any)
   {
-
-    return this.http.put(URL+'users/change_password' , params, {
+    return this.http.put(URL+'v2/users/auth/password?current_password=' + params.current_password+'&new_password='+params.confirm_password  ,'', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -398,8 +337,8 @@ export class UserService {
     }));
   }
 
-  send_refreal(email: string, subject: string, body: string,share_url: string, first_name: string, last_name: string){
-    return this.http.post(URL+'users/send_refreal/', { email: email, subject: subject, body: body,share_url:share_url,first_name:first_name,last_name:last_name }, {
+  send_refreal(email: string, subject: string, body: string){
+    return this.http.post(URL+'v2/referral/email', { email: email, subject: subject, body: body}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -427,7 +366,7 @@ export class UserService {
     }));
   }
 
-  getCurrentCompany(_id: string)
+  getCurrentCompany(_id: string, admin: boolean)
   {
     if(!_id) {
       localStorage.removeItem('currentUser');
@@ -439,7 +378,10 @@ export class UserService {
 
     }
     else {
-      return this.http.get(URL+'users/current_company/' +_id, {
+      let queryString = '?user_id='+_id;
+      if(admin) queryString = '?user_id='+_id+'&admin=true';
+
+      return this.http.get(URL+'v2/users/companies'+ queryString, {
         headers: new HttpHeaders().set('Authorization', this.token)
       }).pipe(map((res: Response) =>
       {
@@ -509,7 +451,6 @@ export class UserService {
   get_user_messages(receiver_id: string, sender_id: any)
   {
     let queryString = '?user_id='+sender_id+'&admin=true';
-    //return this.http.get(URL+'v2/conversations/'+queryString, {
     return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -672,7 +613,7 @@ export class UserService {
   //////////////filters function call////////////////////////////////
   getVerrifiedCandidate(current : string)
   {
-    return this.http.post(URL+'users/verified_candidate' , {_id : current} , {
+    return this.http.post(URL+'v2/users/candidates/search' , '' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     })
       .pipe(map((res: Response) =>
@@ -705,7 +646,7 @@ export class UserService {
 
   filterSearch(queryBody : any)
   {
-    return this.http.post(URL+'users/filter', queryBody, {
+    return this.http.post(URL+'v2/users/candidates/search', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -764,36 +705,6 @@ export class UserService {
     }));
   }
 
-  refered_id(_id: number , data : number)
-  {
-    return this.http.put(URL+'users/refered_id/' + _id, {info : data} ,  {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map(data => {
-
-      if (data)
-      {
-        return data;
-      }
-
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
@@ -829,7 +740,8 @@ export class UserService {
 
   admin_candidate_filter(queryBody:any)
   {
-    return this.http.post(URL+'users/admin_candidate_filter', queryBody, {
+    const admin = true;
+    return this.http.post(URL+'v2/users/candidates/search?admin='+admin, queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -857,39 +769,9 @@ export class UserService {
     }));
   }
 
-  update_candidate_profile(user_id: string, detail: any,  edu :any , history:any )
+  allCompanies(queryBody:any)
   {
-
-    return this.http.post(URL+'users/update_candidate_profile' , { user_id : user_id ,detail: detail, education: edu  , work : history} , {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
-  allCompanies()
-  {
-    return this.http.get(URL+'users/company', {
+    return this.http.post(URL+'v2/users/companies/search?admin=true', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -922,7 +804,7 @@ export class UserService {
 
   admin_company_filter(queryBody : any)
   {
-    return this.http.post(URL+'users/admin_company_filter', queryBody, {
+    return this.http.post(URL+'v2/users/companies/search?admin=true', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -979,38 +861,9 @@ export class UserService {
     }));
   }
 
-  update_chat_msg_status(receiver_id: string,status:number){
-    return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
   pages_content(info:any )
   {
-    return this.http.put(URL+'users/add_privacy_content/', info,  {
+    return this.http.post(URL+'v2/pages', {title:info.page_title, name:info.page_name, content: info.html_text}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1040,7 +893,7 @@ export class UserService {
 
   get_page_content(title :string)
   {
-    return this.http.get(URL+'users/get_pages_content/'+ title);
+    return this.http.get(URL+'v2/pages?name='+ title);
 
   }
 
@@ -1068,36 +921,6 @@ export class UserService {
           window.location.href = '/login';
         }
         else return throwError(error);
-      }
-
-    }));
-  }
-
-  set_unread_msgs_emails_status(status: any)
-  {
-    return this.http.post(URL+'users/set_unread_msgs_emails_status', {status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error )
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(new Error(error.status));
       }
 
     }));
@@ -1135,7 +958,7 @@ export class UserService {
 
   destroyToken(_id:string)
   {
-    return this.http.post(URL+'users/destroy_token', {id:_id} , {
+    return this.http.delete(URL+'v2/users/auth' , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1165,7 +988,8 @@ export class UserService {
   }
 
   updateExplanationPopupStatus(status:any){
-    return this.http.post(URL+'users/updatePopupStatus', {status:status}, {
+    return this.http.patch(URL+'v2/users/', {},{
+    //return this.http.post(URL+'users/updatePopupStatus', {status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1194,7 +1018,7 @@ export class UserService {
   }
 
   add_new_pages_content(info:any ) {
-    return this.http.put(URL + 'users/add_terms_and_conditions_content/', info, {
+    return this.http.post(URL+'v2/pages', {title:info.page_title, name:info.page_name, content: info.html_text}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {
@@ -1266,7 +1090,7 @@ export class UserService {
   }
 
   getRefCode(email:any) {
-    return this.http.post(URL+'users/get_ref_code', {email:email} )
+    return this.http.post(URL+'v2/referral/', {email: email})
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -1292,32 +1116,10 @@ export class UserService {
 
       }));
   }
-  uploadCandImage(detail: any) {
-    return this.http.post(URL + 'users/image', detail, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) => {
-      if (res) {
-        return res;
-      }
-    }), catchError((error: any) => {
-      if (error) {
-        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-    }));
-  }
 
+  //will be changed to new rest API call
   autoSuggestOptions(queryInput:any, country : boolean) {
-    let input = {'autosuggest' :queryInput , 'countries' : country };
-    return this.http.post(URL+'users/auto_suggest/'+{}, input ,{
+    return this.http.get(URL+'v2/locations?autosuggest='+queryInput+'&countries='+country, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1347,7 +1149,7 @@ export class UserService {
 
   get_users_statistics()
   {
-    return this.http.get(URL+'users/statistics');
+    return this.http.get(URL+'v2/statistics');
 
   }
 

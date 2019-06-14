@@ -77,7 +77,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   }
 
   doScroll() {
-
     if (!this.sectionScroll) {
       return;
     }
@@ -373,10 +372,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
         this.authenticationService.get_page_content('Candidate popup message')
           .subscribe(
             data => {
-              if(data && data[0])
+              if(data)
               {
-                this.candidateMsgTitle = data[0]['page_title'];
-                this.candidateMsgBody = data[0]['page_content'];
+                this.candidateMsgTitle = data['page_title'];
+                this.candidateMsgBody = data['page_content'];
               }
             });
       }
