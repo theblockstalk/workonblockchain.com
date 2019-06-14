@@ -11,7 +11,7 @@
         <div class="col-md-3">
           <app-c-forme-text
             placeholder="Cambridge"
-            [errorMsg]="uniErrMsg[i]? uniErrMsg[i] : ''"
+            [errorMsg]="uniErrMsg[i]"
             (textInputValue) = "EducationForm.value.itemRows[i].uniname = $event"
             [value]="EducationForm.value.itemRows[i].uniname"
             label="University"
@@ -54,7 +54,7 @@
               (click)="deleteRow(i)"
               level="danger"
               alignment="text-white"
-              buttonType="submit"
+              buttonType="button"
               label="Remove"
             ></app-c-button-normal>
           </div>
@@ -67,7 +67,7 @@
           (click)="addNewRow()"
           level="primary"
           alignment="text-white"
-          buttonType="submit"
+          buttonType="button"
           label="Add Education"
         ></app-c-button-normal>
       </div>
