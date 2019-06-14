@@ -22,7 +22,8 @@ export class LocationsComponent implements OnInit {
       this.changeLocationDisplayFormat(this.selectedLocation);
     }
     else this.selectedLocation = [];
-    this.controllerOptions = {countries : true};
+    // this.controllerOptions = {countries : true}; i changed it due to endpoint issue
+    this.controllerOptions = true;
     this.autoSuggestController = function (textValue, controllerOptions) {
       return this.authenticationService.autoSuggestOptions(textValue, controllerOptions);
     }

@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'terms-and-condition', component: CandidateTermsComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'prefill-profile', component: LinkedinImportComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'about', component: AboutComponent, canActivate : [VerifyEmailMiddleware]},
-  { path: 'job', component: JobComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'work', component: JobComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'resume', component: ResumeComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'experience', component: ExperienceComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'candidate_profile', component: CandidateProfileComponent ,  canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},

@@ -191,9 +191,6 @@
                         <select title="1" class="selectpicker form-control position-relative" formControlName = "years_exp_min" >
                           <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.prefItems[i].years_exp_min?true:null">{{years_exp_min.name}}</option>
                         </select>
-                        <div class="invalid-feedback d-inline" #emptyInput *ngIf="(preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length > 0) && !preferncesForm.value.prefItems[i].years_exp_min ">
-                          {{exp_year_log}}
-                        </div>
                       </div>
                     </div>
 

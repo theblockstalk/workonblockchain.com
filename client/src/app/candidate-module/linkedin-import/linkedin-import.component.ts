@@ -64,7 +64,7 @@ export class LinkedinImportComponent implements OnInit {
             {
               this.about_active_class = 'fa fa-check-circle text-success';
               this.job_disable = '';
-              this.link= "/job";
+              this.link= "/work";
             }
 
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].current_salary )

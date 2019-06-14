@@ -34,6 +34,12 @@ export class ContractorComponent implements OnInit {
     for(let i =5; i<=60; i=i+5) {
       this.max_hours.push(i);
     }
+    if(this.contractor) {
+      if(this.contractor['contractor_type'].find(x => x === 'agency')) {
+        this.agencyCheck = true;
+      }
+      else this.agencyCheck = false;
+    }
   }
 
   selfValidate() {
