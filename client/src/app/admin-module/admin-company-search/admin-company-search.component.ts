@@ -191,7 +191,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.approve) queryBody.is_approved = this.approve;
+      if(this.approve || this.approve === '0') queryBody.is_approved = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.search_word = this.searchWord;
       if(this.candidate_status) queryBody.is_verify = this.candidate_status;
