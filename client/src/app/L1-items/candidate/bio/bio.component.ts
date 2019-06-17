@@ -19,8 +19,8 @@ export class BioComponent implements OnInit {
       this.errMsg = "Please enter bio description";
       return false;
     }
-    else if(this.description.length > 2000) {
-      this.errMsg = "Please enter max 2000 characters";
+    else if(this.description.length > 3000) {
+      this.errMsg = "Please enter max 3000 characters";
       return false;
     }
     delete this.errMsg;
