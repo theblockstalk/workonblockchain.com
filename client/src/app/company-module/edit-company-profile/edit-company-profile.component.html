@@ -55,7 +55,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Country name</label>
-                    <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
+                    <select title="Please choose country" class="selectpicker form-control"  required name="company_country" [(ngModel)]="company_country">
                       <option class='option' *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
                     </select>
                     <div class="invalid-feedback d-inline" *ngIf="!company_country">
@@ -103,7 +103,7 @@
                         <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === country_code ? true : null">{{country_code.name}}</option>
                       </select>
                     </div>
-                    <input name="phone_number" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
+                    <input name="company_phone" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                       {{company_phone_log}}
                     </div>

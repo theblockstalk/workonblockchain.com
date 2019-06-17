@@ -34,6 +34,9 @@ const bodySchema = new Schema({
         type:String,
         validate: regexes.url
     },
+    country_code: {
+        type:String
+    },
     company_phone: {
         type:String
     },
@@ -69,7 +72,6 @@ const bodySchema = new Schema({
 
     saved_searches: {
         type:[new Schema({
-            search_name: String,
             work_type : {
                 type: String,
                 enum: enumerations.workTypes
@@ -200,7 +202,7 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
             if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
             if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
-            if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number;
+            if (queryBody.company_phone) employerUpdate.company_phone = queryBody.company_phone;
             if (queryBody.company_country) employerUpdate.company_country = queryBody.company_country;
             if (queryBody.company_city) employerUpdate.company_city = queryBody.company_city;
             if (queryBody.company_postcode) employerUpdate.company_postcode = queryBody.company_postcode;
