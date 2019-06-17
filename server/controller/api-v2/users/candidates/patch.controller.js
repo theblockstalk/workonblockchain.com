@@ -124,10 +124,10 @@ const bodySchema = new Schema({
                 enum: enumerations.workRoles
 
             }],
-            contractor_type: {
+            contractor_type: [{
                 type: String,
                 enum: enumerations.contractorTypes
-            },
+            }],
             agency_website: {
                 type: String,
                 validate: regexes.url
