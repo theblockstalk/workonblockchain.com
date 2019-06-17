@@ -192,10 +192,10 @@ module.exports.candidateProfile = function candidateProfile(){
         candidate: {
             base_country : random.enum(enumerations.countries),
             base_city : 'Islamabad',
-            stackexchange_account: 'https://www.sadia_exchange.com',
+            stackexchange_account: 'https://www.exchange.com',
             github_account: 'https://www.fb.com',
             linkedin_account : 'https://linkedin.com/in/sadia_abbas',
-            medium_account : 'https://medium.com/sadia_abbas',
+            medium_account : 'https://medium.com/sadiaAbbas',
             current_salary: random.integer(10000, 100000),
             current_currency: random.enum(enumerations.currencies),
             why_work: random.string(10),
@@ -280,7 +280,7 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
         contact_number: '+926246524',
         nationality: [random.enum(enumerations.nationalities)],
         candidate: {
-            stackexchange_account: 'https://www.sadia_exchange_1234.com',
+            stackexchange_account: 'stackexchange.com',
             github_account: 'https://fb12.com',
             base_city : 'Islamabad',
 

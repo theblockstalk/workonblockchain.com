@@ -38,11 +38,11 @@ const bodySchema = new Schema({
         },
         github_account: {
             type:String,
-            // validate: regexes.url
+            validate: regexes.url
         },
         stackexchange_account: {
             type:String,
-            // validate: regexes.url
+            validate: regexes.url
         },
         linkedin_account: {
             type:String,
