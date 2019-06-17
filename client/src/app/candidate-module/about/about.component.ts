@@ -178,18 +178,19 @@ export class AboutComponent implements OnInit,AfterViewInit
               if(data['candidate'] && data['candidate'].base_city){
                 this.info.city = data['candidate'].base_city;
               }
-
               if(data['image'] != null ) {
                 this.imagePreviewLink = data['image'];
               }
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 300);
             }
 
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.active_class='fa fa-check-circle text-success';
               this.job_disable = '';
-              this.link= "/job";
+              this.link= "/work";
             }
 
             if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
@@ -357,7 +358,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           data => {
             if(data)
             {
-              this.router.navigate(['/job']);
+              this.router.navigate(['/work']);
             }
 
           },

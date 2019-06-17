@@ -411,7 +411,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.salary_log = "Please enter expected yearly salary";
         employeeCount = 1;
       }
-      if(!this.employee.currency) {
+      if(!this.employee.currency || this.employee.currency === 'Currency') {
         this.currency_log = "Please choose currency";
         employeeCount = 1;
       }
@@ -463,7 +463,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.contractor_hourly_log = "Please enter hourly rate";
         contractorCount = 1;
       }
-      if(!this.contractor.currency) {
+      if(!this.contractor.currency || this.contractor.currency === 'Currency' ) {
         this.contractor_currency_log = "Please choose currency";
         contractorCount = 1;
       }
@@ -528,17 +528,17 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
-    if(this.current_salary && this.current_currency === "-1" ) {
+    if(this.current_salary && this.current_currency === "Currency" ) {
       this.current_currency_log = "Please choose currency";
       this.count++;
     }
 
-    if(!this.current_salary && this.current_currency !== "-1") {
+    if(!this.current_salary && this.current_currency !== "Currency") {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
 
-    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
+    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "Currency")){
       this.count = 0;
     }
 
@@ -587,6 +587,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) candidateQuery.current_currency = this.current_currency;
       inputQuery.candidate = candidateQuery;
+
       inputQuery.wizardNum = 3;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)

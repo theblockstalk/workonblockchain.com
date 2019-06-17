@@ -362,7 +362,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
     else queryBody.unset_education_history = true;
 
-
     candidateBody.blockchain = blockchainBody;
     queryBody.candidate = candidateBody;
     console.log(errorCount);

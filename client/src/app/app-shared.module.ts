@@ -65,6 +65,10 @@ import { CommercialSkillsComponent } from './L1-items/candidate/commercial-skill
 import { LanguagesComponent } from './L1-items/candidate/languages/languages.component';
 import { EducationHistoryComponent } from './L1-items/candidate/education-history/education-history.component';
 import { TextPasswordComponent } from './L0-components/forms-edit/text-password/text-password.component';
+import { ContentComponent } from './L1-items/pages/content/content.component';
+import { TitleComponent } from './L1-items/pages/title/title.component';
+import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.component';
+import { PagesComponent } from './L2-pages/pages/pages.component';
 
 @NgModule({
   imports: [
@@ -84,7 +88,7 @@ import { TextPasswordComponent } from './L0-components/forms-edit/text-password/
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent
+    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -99,7 +103,8 @@ import { TextPasswordComponent } from './L0-components/forms-edit/text-password/
     TextAreaViewComponent, HtmlAreaViewComponent, BadgeViewComponent, ListComponent, DateComponent, WorkTypesComponent,
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
-    ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent
+    ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
+    TitleComponent, PagesEditorComponent, PagesComponent
   ]
 })
 export class SharedModule { }

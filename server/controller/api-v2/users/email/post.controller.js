@@ -9,16 +9,16 @@ module.exports.request = {
     path: '/users/email'
 };
 
-const querySchema = new Schema({
+const bodySchema = new Schema({
     email: String
 })
 
 module.exports.inputValidation = {
-    query: querySchema
+    body: bodySchema
 };
 
 module.exports.endpoint = async function (req, res) {
-    let queryBody = req.query;
+    let queryBody = req.body;
     const userDoc = await users.findOneByEmail( queryBody.email );
     if(userDoc) {
         let signOptions = {

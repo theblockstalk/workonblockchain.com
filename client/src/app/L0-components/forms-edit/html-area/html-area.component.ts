@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-c-forme-html-area',
@@ -13,6 +13,7 @@ export class HtmlAreaComponent implements OnInit {
   @Input() height: number; //optional
   @Input() width: number; //optional
   @Input() value: string;
+  @Output() htmlAreaValue: EventEmitter<string> = new EventEmitter<string>();
   ckeEditorConfig;
   formattingClass;
   constructor() { }

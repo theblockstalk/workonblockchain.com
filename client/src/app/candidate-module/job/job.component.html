@@ -22,9 +22,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="/job" class="nav-link">
+            <a routerLink="/work" class="nav-link">
               <i class="{{active_class}}"></i>
-              Jobs
+              Work
             </a>
           </li>
           <li class="nav-item px-2">
@@ -68,10 +68,9 @@
                 <label class="invisible">Current annual salary currency</label>
 
                 <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
-                  <option value="-1" >Currency</option>
                   <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) || (current_salary && current_currency === '-1')  ">
+                <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) || (current_salary && current_currency === 'Currency')  ">
                   {{current_currency_log}}
                 </div>
               </div>
@@ -150,7 +149,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="employeeSelectedValueFunction($event)">
                   </mat-form-field>
@@ -237,7 +236,7 @@
                 <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
                   <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
+                <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency || employee.currency === 'Currency'">
                   {{currency_log}}
                 </div>
               </div>
@@ -275,7 +274,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="contractorAuto" placeholder="Remote, Canada, London..." [(ngModel)]="contractor.country" name="country" (input)="suggestedOptions(contractor.country)" (ngModelChange)="contractorSelectedValueFunction($event)">
                   </mat-form-field>
@@ -362,7 +361,7 @@
                 <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" id="currency1" required name="contractor_currency" >
                   <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === contractor.currency ? true : null" >{{baseCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency">
+                <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency || contractor.currency === 'Currency'">
                   {{contractor_currency_log}}
                 </div>
               </div>
@@ -446,7 +445,7 @@
                     </mat-option>
                   </mat-autocomplete>
 
-                  <mat-form-field floatLabel="always">
+                  <mat-form-field floatLabel="always" class="w-100">
                     <mat-label></mat-label>
                     <input matInput [matAutocomplete]="volunteerAuto" placeholder="Remote, Canada, London..." [(ngModel)]="volunteer.country" name="country" (input)="suggestedOptions(volunteer.country)" (ngModelChange)="volunteerSelectedValueFunction($event)">
                   </mat-form-field>

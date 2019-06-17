@@ -90,6 +90,7 @@ module.exports.endpoint = async function (req, res) {
     }
     if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
+        logger.debug("Linkedin data" , linkedinData);
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
             if(!userDoc) errors.throwError('This email has not been used to signup with Linkedin.' , 400)

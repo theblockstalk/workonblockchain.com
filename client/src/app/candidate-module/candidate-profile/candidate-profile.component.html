@@ -93,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-4" *ngIf="github || linkedin_account || medium_account || stack || stackoverflow_url ||personal_website_url">
               <div class="col-md-6">
                 <h4>Links</h4>
               </div>
@@ -101,7 +101,7 @@
             <div class="row mt-2" *ngIf="github">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-github fa-2x"></i>
                     <a class="ml-2" [href]="websiteUrl(github)" target="_blank">
                       {{github}}
@@ -113,7 +113,7 @@
             <div class="row mt-2" *ngIf="linkedin_account">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(linkedin_account)" target="_blank">
                     {{linkedin_account}}
                   </a>
@@ -124,7 +124,7 @@
             <div class="row mt-2" *ngIf="medium_account">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(medium_account)" target="_blank">
                     {{medium_account}}
                   </a>
@@ -135,7 +135,7 @@
             <div class="row mt-2" *ngIf="stack">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(stack)" target="_blank">
                     {{stack}}
                   </a>
@@ -146,7 +146,7 @@
             <div class="row mt-2" *ngIf="stackoverflow_url">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(stackoverflow_url)" target="_blank">
                     {{stackoverflow_url}}
                   </a>
@@ -157,7 +157,7 @@
             <div class="row mt-2" *ngIf="personal_website_url">
               <div class = "col-md-12">
                 <div class="form-group">
-                  <p>
+                  <p class="break-class">
                     <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(personal_website_url)" target="_blank">
                     {{personal_website_url}}
                   </a>

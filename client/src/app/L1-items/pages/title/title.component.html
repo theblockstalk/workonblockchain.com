@@ -1,0 +1,9 @@
+<app-c-forme-text
+  placeholder="Enter Page title"
+  [errorMsg]="errMsg"
+  [value]="title"
+  label="Page title"
+  (change)= selfValidate()
+  (textInputValue)="title = $event"
+>
+</app-c-forme-text>

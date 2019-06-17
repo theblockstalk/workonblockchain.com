@@ -17,7 +17,6 @@ export class LanguagesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.programming_languages);
     if(this.programming_languages) {
       for(let language of this.programming_languages) {
         this.platform.push(language['language']);

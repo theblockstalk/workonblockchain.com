@@ -24,9 +24,9 @@ const verifyEmail = module.exports.verifyEmail = async function verifyEmail(veri
 
 const verifyClient = module.exports.verifyClient = async function (jwtToken,email){
     const res = await chai.request(server)
-        .post('/v2/users/email?email='+ email)
+        .post('/v2/users/email')
         .set('Authorization', jwtToken)
-        .send();
+        .send({email: email});
     res.should.have.status(200);
     return res;
 }

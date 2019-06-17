@@ -112,13 +112,13 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
                       this.about_link="/about";
-                      this.link="/job";
+                      this.link="/work";
                   }
 
                   if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
                   {
                        this.resume_disable = "";
-                      this.link="/job";
+                      this.link="/work";
                       this.resume_class="/resume";
                       this.job_active_class = 'fa fa-check-circle text-success';
 

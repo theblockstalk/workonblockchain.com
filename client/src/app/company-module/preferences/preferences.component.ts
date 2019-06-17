@@ -264,7 +264,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   country_log;
   residence_country_log;
   name_log;
-
+  language_log;
+  exp_year_log;
+  work_type_log;
+  annual_salary_log;
+  hourly_log;
   checkNumber(salary) {
     return /^[0-9]*$/.test(salary);
   }
@@ -304,6 +308,16 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           count=1;
         }
 
+        if(!this.preferncesForm.value.prefItems[i].work_type) {
+          this.work_type_log = "Please select work type";
+          count=1;
+        }
+
+        if(!this.preferncesForm.value.prefItems[i].skills || (this.preferncesForm.value.prefItems[i].skills && this.preferncesForm.value.prefItems[i].skills.length<=0)) {
+          this.language_log = "Please select languages";
+          count=1;
+        }
+
         if(!this.preferncesForm.value.prefItems[i].position || this.preferncesForm.value.prefItems[i].position.length === 0) {
           this.position_log = "Please select roles";
           count=1;
@@ -322,31 +336,42 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           const checkNumber = this.checkNumber(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
           if(checkNumber === false) {
             count = 1;
-            this.expected_hourly_rate_log = "Hourly rate should be a number "
+            this.hourly_log = "Hourly rate should be a number "
           }
         }
-        if(this.preferncesForm.value.prefItems[i].work_type === 'employee' && this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
-          this.current_currency_log = "Please choose currency ";
-          count = 1;
+
+        if(this.preferncesForm.value.prefItems[i].work_type === 'employee') {
+          if(!this.preferncesForm.value.prefItems[i].current_salary) {
+            this.annual_salary_log = "Please enter current salary";
+            count=1;
+          }
+          if(this.preferncesForm.value.prefItems[i].current_salary){
+            if(this.preferncesForm.value.prefItems[i].current_currency === 'Currency' || !this.preferncesForm.value.prefItems[i].current_currency){
+              this.current_currency_log = "Please choose currency ";
+              count = 1;
+            }
+          }
         }
 
-        if(this.preferncesForm.value.prefItems[i].work_type === 'employee' && !this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-          this.current_currency_log = "Please enter expected hours ";
-          count = 1;
-        }
-
-        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor' && this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
-          this.expected_hourly_rate_log = "Please choose currency ";
-          count = 1;
-        }
-
-        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor' && !this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-          this.expected_hourly_rate_log = "Please enter expected hours ";
-          count = 1;
+        if(this.preferncesForm.value.prefItems[i].work_type === 'contractor'){
+          if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate) {
+            this.hourly_log = 'Please enter hourly rate';
+            count = 1;
+          }
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate){
+            if(!this.preferncesForm.value.prefItems[i].currency || this.preferncesForm.value.prefItems[i].currency === 'Currency') {
+              this.expected_hourly_rate_log = "Please choose currency ";
+              count = 1;
+            }
+          }
         }
 
         if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
           this.residence_country_log = "Please select maximum 50 countries";
+          count=1;
+        }
+        if(!this.preferncesForm.value.prefItems[i].residence_country || (this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length <= 0)) {
+          this.residence_country_log = "Please select residence country";
           count=1;
         }
       }
