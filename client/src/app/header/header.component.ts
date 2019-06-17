@@ -220,20 +220,20 @@ export class HeaderComponent implements OnInit {
   }
 
   privacy_pop_show(){
-    console.log(this.terms_id);
-    this.authenticationService.get_page_content(this.page_name)
+    if(this.terms_id) {
+      this.authenticationService.get_page_content(this.page_name)
       .subscribe(
         data => {
           if (data) {
-            console.log(data);
             this.new_terms_id = data['_id'];
-            if(this.new_terms_id && this.new_terms_id === this.terms_id) {
+            if (this.new_terms_id && this.new_terms_id === this.terms_id) {
               //console.log('new terms_id');
             }
             else $("#popModalForTerms").modal("show");
           }
         }
       );
+    }
   }
 
 }

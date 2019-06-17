@@ -316,14 +316,12 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let userId;
-    let queryBody = req.body;
-    let candidateQuery = queryBody.candidate;
-    let blockchainQuery = queryBody.candidate.blockchain;
+    let queryBody;
+    let blockchainQuery;
     let updateCandidateUser = {};
     let userDoc;
     let unset = {};
-
-    console.log(queryBody);
+    let blockChainCheck = 0;
 
     if (req.query.admin) {
         userId = req.query.user_id;
@@ -338,6 +336,13 @@ module.exports.endpoint = async function (req, res) {
         updateCandidateUser.image = req.file.path;
     }
     else {
+        queryBody = req.body;
+        let candidateQuery = queryBody.candidate;
+        if(candidateQuery.blockchain && !objects.isEmpty(candidateQuery.blockchain)) {
+            blockChainCheck = 1;
+            blockchainQuery = candidateQuery.blockchain;
+        }
+
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
         if (queryBody.last_name) updateCandidateUser.last_name = queryBody.last_name;
         if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
@@ -356,7 +361,6 @@ module.exports.endpoint = async function (req, res) {
         if(queryBody.unset_employee) unset['candidate.employee'] = 1;
         else {
             if(candidateQuery.employee) {
-                console.log(candidateQuery.employee.location);
                 for(let loc of candidateQuery.employee.location) {
                     if(loc.city) {
                         const index = candidateQuery.employee.location.findIndex((obj => obj.city === loc.city));
@@ -421,7 +425,7 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.commercial_platforms'] = 1;
             unset['candidate.blockchain.description_commercial_platforms'] = 1;
         } else {
-            if (blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
+            if (blockChainCheck && blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
                 if(blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
             }
@@ -431,7 +435,7 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.experimented_platforms'] = 1;
             unset['candidate.blockchain.description_experimented_platforms'] = 1;
         } else {
-            if (blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
+            if (blockChainCheck && blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
                 if(blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
             }
@@ -441,7 +445,7 @@ module.exports.endpoint = async function (req, res) {
             unset['candidate.blockchain.commercial_skills'] = 1;
             unset['candidate.blockchain.description_commercial_skills'] = 1;
         } else {
-            if (blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
+            if (blockChainCheck && blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
                 if(blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
             }
@@ -509,12 +513,12 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-        let wizardCompletedStatus = candidateHistory.filter(
-            (history) => history.status && history.status.status === 'wizard completed'
-    );
+            let wizardCompletedStatus = candidateHistory.filter(
+                (history) => history.status && history.status.status === 'wizard completed'
+        );
 
         if (wizardCompletedStatus.length === 0) {
-            if(queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };
+            if(queryBody && queryBody.wizardNum === 5) history.status = { status: 'wizard completed' };
             else history.status = { status: 'wizard' };
         }
         else {

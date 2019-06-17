@@ -17,7 +17,7 @@ const bodySchema = new Schema({
     marketing_emails: {
         type: Boolean,
     },
-    terms_id: Schema.Types.ObjectId,
+    terms_id: String,
     disable_account : {
         type:Boolean,
     },
@@ -59,7 +59,7 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.is_unread_msgs_to_send || queryBody.is_unread_msgs_to_send === false) updateUser['is_unread_msgs_to_send'] = queryBody.is_unread_msgs_to_send;
 
     if(queryBody.terms_id) {
-
+        console.log('in terms id: '+ queryBody.terms_id);
         if (userDoc.type === 'candidate') {
             let latest_terms = await Pages.findOneAndSort({page_name: 'Terms and Condition for candidate'});
             if (queryBody.terms_id === latest_terms._id.toString()) {
