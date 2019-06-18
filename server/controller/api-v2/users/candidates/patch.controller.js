@@ -399,15 +399,21 @@ module.exports.endpoint = async function (req, res) {
 
         if (candidateQuery.why_work) updateCandidateUser['candidate.why_work'] = candidateQuery.why_work;
         if (candidateQuery.description) updateCandidateUser['candidate.description'] = candidateQuery.description;
-        if (candidateQuery.education_history && candidateQuery.education_history.length > 0) {
-            updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
-        }
-        else unset['candidate.education_history'] = 1;
 
-        if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
-            updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+        if (queryBody.unset_education_history) unset['candidate.education_history'] = 1;
+        else{
+            if (candidateQuery.education_history && candidateQuery.education_history.length > 0) {
+                updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
+            }
         }
-        else unset['candidate.work_history'] = 1;
+
+        if(queryBody.unset_work_history) unset['candidate.work_history'] = 1;
+        else{
+            if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
+                updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+            }
+        }
+
         if (candidateQuery.interest_areas) updateCandidateUser['candidate.interest_areas'] = candidateQuery.interest_areas;
 
         if (queryBody.unset_curret_currency) {
