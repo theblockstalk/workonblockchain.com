@@ -26,6 +26,10 @@ const bodySchema = new Schema({
         type:String,
         validate: regexes.password
     },
+    confirm_password:{
+        type:String,
+        validate: regexes.password
+    },
     first_name: {
         type:String
     },
@@ -43,6 +47,9 @@ const bodySchema = new Schema({
         validate: regexes.url
     },
     company_phone: {
+        type:String
+    },
+    country_code: {
         type:String
     },
     company_country: {
