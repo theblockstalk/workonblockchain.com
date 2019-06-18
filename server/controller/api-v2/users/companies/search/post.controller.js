@@ -14,9 +14,9 @@ module.exports.request = {
 
 const bodySchema = new Schema({
     is_approved: {
-        type:Boolean
+        type:String,
+        enum: ['0','1']
     },
-
     disable_account: {
         type:Boolean
     },
@@ -71,12 +71,14 @@ module.exports.endpoint = async function (req, res) {
             queryString.push(msgTagFilter);
         }
     }
-    if(queryBody.is_approved) {
-        const isApproveFilter = {"users.is_approved" : 1};
+    queryBody.is_approved = parseInt(queryBody.is_approved);
+    if(queryBody.is_approved || queryBody.is_approved === 0) {
+        const isApproveFilter = {"users.is_approved" : queryBody.is_approved};
         queryString.push(isApproveFilter);
     }
-    if(queryBody.is_verify) {
-        const isApproveFilter = {"users.is_verify" : 1};
+    queryBody.is_verify = parseInt(queryBody.is_verify);
+    if(queryBody.is_verify || queryBody.is_verify === 0) {
+        const isApproveFilter = {"users.is_verify" : queryBody.is_verify};
         queryString.push(isApproveFilter);
     }
 
@@ -89,6 +91,7 @@ module.exports.endpoint = async function (req, res) {
         const nameFilter = { "company_name" : {'$regex' : queryBody.search_word, $options: 'i' } };
         queryString.push(nameFilter);
     }
+    
     if(queryString.length>0) {
         var object = queryString.reduce((a, b) => Object.assign(a, b), {})
 
