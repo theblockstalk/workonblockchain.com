@@ -190,7 +190,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
       if(this.candidate_status) queryBody.is_verify = this.candidate_status;
-      if(this.candidate_status_account) queryBody.disable_account = this.candidate_status_account;
+      if(this.candidate_status_account === true || this.candidate_status_account === 'true') queryBody.disable_account = true;
+      else if(this.candidate_status_account === false || this.candidate_status_account === 'false') queryBody.disable_account = false;
+
       this.authenticationService.admin_candidate_filter(queryBody)
         .subscribe(
           data =>
