@@ -89,7 +89,7 @@ module.exports.endpoint = async function (req, res) {
         const nameFilter = { "company_name" : {'$regex' : queryBody.search_word, $options: 'i' } };
         queryString.push(nameFilter);
     }
-    
+
     if(queryString.length>0) {
         var object = queryString.reduce((a, b) => Object.assign(a, b), {})
 
