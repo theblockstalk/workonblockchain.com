@@ -22,7 +22,8 @@ const bodySchema = new Schema({
         type:Boolean
     },
     is_verify: {
-        type:Boolean
+        type:String,
+        enum: ['0','1']
     },
     msg_tags: {
         type: [{
