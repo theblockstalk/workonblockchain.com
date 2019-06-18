@@ -52,7 +52,7 @@ describe('admin search company by filter', function () {
             const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id});
             const data = {
                 msg_tags : [messageDoc.msg_tag],
-                is_approved : true,
+                is_approved : 1,
                 search_word : updatedData.company_name
             };
             const companyFilterRes = await companyHelper.companyFilter(data , companyUserDoc.jwt_token);
