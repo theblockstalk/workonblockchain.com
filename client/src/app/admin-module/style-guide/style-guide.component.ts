@@ -102,10 +102,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   }
 
   selectedLocations;
-  getSelectedLocations(data) {
-    console.log(data);
-
-  }
+  getSelectedLocations(data) {}
 
   itemSelected(data) {
     this.selectedLocations = data;
