@@ -371,7 +371,9 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
       const formData = new FormData();
       formData.append('image', file);
-      this.authenticationService.edit_candidate_profile(this.userDoc['_id'] , formData , false)
+      let admin = false;
+      if(this.viewBy === 'admin') admin = true;
+      this.authenticationService.edit_candidate_profile(this.userDoc['_id'] , formData , admin)
         .subscribe(
           data => {
           },
