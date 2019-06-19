@@ -31,6 +31,7 @@ export class WorkHistoryComponent implements OnInit {
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
+    console.log('in ngonint');
     this.ExperienceForm = this._fb.group({
       ExpItems: this._fb.array([this.initExpRows()])
     });
@@ -55,7 +56,8 @@ export class WorkHistoryComponent implements OnInit {
     return this.month[monthnum-1] || '';
   }
 
-  currentWork(value, index ){
+  currentWork(index){
+    console.log(this.ExperienceForm.value.ExpItems[index]);
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 100);
@@ -63,6 +65,7 @@ export class WorkHistoryComponent implements OnInit {
 
   initExpRows()
   {
+    console.log('initExpRows');
     return this._fb.group({
       companyname:[''],
       positionname:[''],
@@ -80,6 +83,7 @@ export class WorkHistoryComponent implements OnInit {
 
   addNewExpRow()
   {
+    console.log('addNewExpRow');
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 100);
@@ -98,11 +102,13 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   monthNameToNum(monthname) {
+    console.log('monthNameToNum');
     this.monthNumber = this.month.indexOf(monthname);
     this.monthNumber = '0'  + (this.monthNumber);
     return this.monthNumber ?  this.monthNumber : 0;
   }
   companyValidate(index) {
+    console.log('companyValidate');
     if(!this.ExperienceForm.value.ExpItems[index].companyname) {
       this.companyErrMsg[index] = 'Please fill company';
       return false;
@@ -111,6 +117,7 @@ export class WorkHistoryComponent implements OnInit {
     return true;
   }
   positionValidate(index) {
+    console.log('positionValidate');
     if(!this.ExperienceForm.value.ExpItems[index].positionname) {
       this.positionErrMsg[index] = 'Please fill position';
       return false;
@@ -119,6 +126,7 @@ export class WorkHistoryComponent implements OnInit {
     return true;
   }
   locationValidate(index) {
+    console.log('locationValidate');
     if(!this.ExperienceForm.value.ExpItems[index].locationname) {
       this.locationErrMsg[index] = 'Please fill location';
       return false;
@@ -127,6 +135,7 @@ export class WorkHistoryComponent implements OnInit {
     return true;
   }
   startMonthValidate(index) {
+    console.log('startMonthValidate');
     if(!this.ExperienceForm.value.ExpItems[index].start_date) {
       this.startMonthErrMsg[index] = 'Please select start date month';
       return false;
@@ -141,6 +150,7 @@ export class WorkHistoryComponent implements OnInit {
 
   }
   startYearValidate(index) {
+    console.log('startYearValidate');
     if(!this.ExperienceForm.value.ExpItems[index].startyear) {
       this.startYearErrMsg[index] = 'Please select start date year';
       return false;
@@ -154,6 +164,7 @@ export class WorkHistoryComponent implements OnInit {
     return true;
   }
   endMonthValidate(index) {
+    console.log('endMonthValidate');
     if(!this.ExperienceForm.value.ExpItems[index].end_date) {
       this.endMonthErrMsg[index] = 'Please select end date month';
       return false;
@@ -176,6 +187,7 @@ export class WorkHistoryComponent implements OnInit {
 
   }
   endYearValidate(index) {
+    console.log('endYearValidate');
     if(!this.ExperienceForm.value.ExpItems[index].endyear) {
       this.endYearErrMsg[index] = 'Please select end date year';
       return false;
@@ -199,6 +211,7 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   selfValidate() {
+    console.log('selfValidate');
     let errorCount = 0;
     this.experiencearray = [];
     if(this.ExperienceForm.value.ExpItems.length > 0 ) {
@@ -252,6 +265,7 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   compareDates(startmonth , startyear , endmonth, endyear, current) {
+    console.log('compareDates');
     let startMonth = this.monthNameToNum(startmonth);
     let startDateFormat  = new Date(startyear, startMonth);
 
@@ -272,6 +286,7 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   checkDateVerification(month,year) {
+    console.log('checkDateVerification');
     if(month && year) {
       let startmonthIndex = this.monthNameToNum(month);
       let start_date_format  = new Date(year, startmonthIndex);

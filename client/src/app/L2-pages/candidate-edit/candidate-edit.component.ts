@@ -119,6 +119,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit on page cand edit');
     const candidateSubDoc = this.userDoc['candidate'];
     this.email_address = this.userDoc['email'];
     this.first_name = this.userDoc['first_name'];
