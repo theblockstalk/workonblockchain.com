@@ -41,14 +41,17 @@ module.exports.endpoint = async function (req, res) {
 
             if(filterData.referred_email) {
                 const referredUserDoc = await Users.findOne({email: filterData.referred_email});
-                filterData.user_id = referredUserDoc._id;
-                filterData.user_type = referredUserDoc.type;
-                if(referredUserDoc.type === 'company') {
-                    const employerDoc = await companies.findOne({_creator : referredUserDoc._id});
-                    if(employerDoc.first_name) filterData.name = employerDoc.first_name+' '+employerDoc.last_name;
-                }
-                else{
-                    if(referredUserDoc.first_name) filterData.name = referredUserDoc.first_name+' '+referredUserDoc.last_name;
+                if(referredUserDoc) {
+                    filterData.user_id = referredUserDoc._id;
+                    filterData.user_type = referredUserDoc.type;
+                    if (referredUserDoc.type === 'company') {
+                        const employerDoc = await
+                        companies.findOne({_creator: referredUserDoc._id});
+                        if (employerDoc.first_name) filterData.name = employerDoc.first_name + ' ' + employerDoc.last_name;
+                    }
+                    else {
+                        if (referredUserDoc.first_name) filterData.name = referredUserDoc.first_name + ' ' + referredUserDoc.last_name;
+                    }
                 }
             }
             res.send(filterData);
