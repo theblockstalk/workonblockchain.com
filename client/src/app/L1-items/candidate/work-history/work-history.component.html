@@ -107,7 +107,7 @@
                 <div class="row ">
                   <div class="form-check" *ngFor="let current of current_work">
                     <label class="form-check-label">
-                      <input type="checkbox" (change)="currentWork(i)" class="form-check-input" formControlName="currentwork"  [checked]="ExperienceForm.value.ExpItems[i].currentwork"  value="current.value" />
+                      <input type="checkbox" (change)="currentWork(i,$event)" class="form-check-input" [checked]="ExperienceForm.value.ExpItems[i].currentwork"  value="current.value" />
                       {{current.name}}
                     </label>
                   </div>
