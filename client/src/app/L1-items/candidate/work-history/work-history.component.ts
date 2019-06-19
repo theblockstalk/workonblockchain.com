@@ -56,7 +56,7 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   currentWork(index,event){
-    this.ExperienceForm.value.ExpItems[index].currentwork = event.explicitOriginalTarget.checked;
+    this.ExperienceForm.value.ExpItems[index].currentwork = event.target.checked;
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 100);
