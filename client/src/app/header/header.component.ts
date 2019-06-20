@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
   terms_log;
   page_name;
   new_terms_id;
+  agree;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
