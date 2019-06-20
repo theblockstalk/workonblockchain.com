@@ -216,7 +216,7 @@ export class HeaderComponent implements OnInit {
       );
     }
     else{
-      this.terms_log = 'Please accept Privacy notice';
+      this.terms_log = 'Please accept Terms of Business';
     }
   }
 
