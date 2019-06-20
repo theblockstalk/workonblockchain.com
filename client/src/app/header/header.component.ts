@@ -209,14 +209,14 @@ export class HeaderComponent implements OnInit {
         {
           if(error['status'] === 404 && error['error']['message'])
           {
-            console.log(error);
             this.terms_log = 'something getting wrong';
           }
         }
       );
     }
     else{
-      this.terms_log = 'Please accept Privacy notice';
+      if(this.user_type === 'candidate') this.terms_log = 'Please accept Candidate Terms';
+      else this.terms_log = 'Please accept Terms of Business';
     }
   }
 

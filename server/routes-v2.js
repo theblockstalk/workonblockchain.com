@@ -123,9 +123,10 @@ const amplitudeTrack = function (request) {
         return function (req) {
             if (req.auth && req.auth.user) {
                 data.user_id = req.auth.user._id.toString();
-                data.session_id = req.auth.user.session_started.getTime();
+                if(req.auth.user.session_started) data.session_id = req.auth.user.session_started.getTime();
+                else data.session_id = -1;
             } else {
-                data.user_id = "anonimous"
+                data.user_id = "anonimous";
                 data.session_id = -1;
             }
             if (req.query && !objects.isEmpty(req.query)) data.event_properties.query = req.query;
