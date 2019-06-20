@@ -317,11 +317,10 @@ module.exports.auth = async function (req) {
 module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody;
-    let blockchainQuery;
+    let blockchainQuery,blockChainCheck = 0;
     let updateCandidateUser = {};
     let userDoc;
     let unset = {};
-    let blockChainCheck = 0;
 
     if (req.query.admin) {
         userId = req.query.user_id;
