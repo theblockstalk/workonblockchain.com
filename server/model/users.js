@@ -64,7 +64,10 @@ const UserSchema = new Schema({
         default:0
     },
     jwt_token: {
-        type:String,
+        type:String
+    },
+    session_started: {
+        type: Date
     },
     verify_email_key: {
         type:String, // This is a hash
@@ -107,6 +110,10 @@ const UserSchema = new Schema({
                 enum: enumerations.countries
             },
             terms_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'pages_content'
+            },
+            privacy_id: {
                 type: Schema.Types.ObjectId,
                 ref: 'pages_content'
             },

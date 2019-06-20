@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { DataService } from "../data.service";
-
+import {NgForm} from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -22,13 +23,17 @@ export class HeaderComponent implements OnInit {
   is_verify;
   date;
   msg;
-  increment;
   user_name = 'Admin';
-  setting;
   log;
   success;
   success_msg;
   location;
+  privacy_id;
+  terms_id;
+  termscondition = false;
+  terms_log;
+  page_name;
+  new_terms_id;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -46,9 +51,6 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-
-
-
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(this.currentUser )
@@ -57,7 +59,7 @@ export class HeaderComponent implements OnInit {
 
       if(this.user_type === 'candidate')
       {
-
+        this.page_name = 'Terms and Condition for candidate';
         this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
           .subscribe(
             data =>
@@ -65,6 +67,10 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
+                this.terms_id = data['candidate']['terms_id'];
+                this.privacy_id = data['candidate']['privacy_id'];
+                this.privacy_pop_show();
+
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
                 {
@@ -90,13 +96,17 @@ export class HeaderComponent implements OnInit {
       }
       else if(this.user_type === 'company')
       {
-
+        this.page_name = 'Terms and Condition for company';
         this.authenticationService.getCurrentCompany(this.currentUser._id, false)
           .subscribe(
             data =>
             {
               if(data)
               {
+                this.terms_id = data['terms_id'];
+                this.privacy_id = data['privacy_id'];
+                this.privacy_pop_show();
+
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
@@ -185,5 +195,45 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  update_terms_status(newTermsForm : NgForm){
+    if(newTermsForm.valid === true && newTermsForm.value.terms) {
+      let inputQuery : any = {};
+      inputQuery.terms_id = this.new_terms_id;
+      this.authenticationService.update_terms_and_privacy(inputQuery)
+      .subscribe(
+        data => {
+          $("#popModalForTerms").modal("hide");
+        },
+        error=>
+        {
+          if(error['status'] === 404 && error['error']['message'])
+          {
+            console.log(error);
+            this.terms_log = 'something getting wrong';
+          }
+        }
+      );
+    }
+    else{
+      this.terms_log = 'Please accept Privacy notice';
+    }
+  }
+
+  privacy_pop_show(){
+    if(this.terms_id) {
+      this.authenticationService.get_page_content(this.page_name)
+      .subscribe(
+        data => {
+          if (data) {
+            this.new_terms_id = data['_id'];
+            if (this.new_terms_id && this.new_terms_id === this.terms_id) {
+              //console.log('new terms_id');
+            }
+            else $("#popModalForTerms").modal("show");
+          }
+        }
+      );
+    }
+  }
 
 }

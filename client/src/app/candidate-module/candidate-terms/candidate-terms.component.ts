@@ -32,6 +32,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     prefill_link;
     prefill_disable;
     term_active_class;
+    privacy_id;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService)
     {
@@ -66,14 +67,25 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                 data =>
                 {
                   this.authenticationService.get_page_content('Terms and Condition for candidate')
-                    .subscribe(
-                      data => {
-                        if(data)
-                        {
-                          this.terms_id = data['_id'];
-                        }
+                  .subscribe(
+                    data => {
+                      if(data)
+                      {
+                        this.terms_id = data['_id'];
                       }
-                    );
+                    }
+                  );
+
+                  this.authenticationService.get_page_content('Privacy Notice')
+                  .subscribe(
+                    data => {
+                      if(data)
+                      {
+                        this.privacy_id = data['_id'];
+                      }
+                    }
+                  );
+
                   if(data['candidate'].terms_id ||data['marketing_emails'])
                   {
 
@@ -161,7 +173,6 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_log;
   terms_and_condition(termsForm: NgForm)
   {
-
       if(this.termscondition === false)
       {
           this.terms_log = "Please accept terms and conditions";
@@ -169,8 +180,9 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       else
       {
         let queryBody: any = {};
-        queryBody.terms_id = termsForm.value.termsID;
         queryBody.marketing_emails = termsForm.value.marketing;
+        queryBody.terms_id = this.terms_id;
+        //queryBody.privacy_id = this.privacy_id;
 
         this.authenticationService.account_settings(queryBody)
         .subscribe(
@@ -180,17 +192,16 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
               {
                   this.router.navigate(['/prefill-profile']);
               }
-
           },
           error=>
           {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              this.router.navigate(['/not_found']);
+                this.router.navigate(['/prefill-profile']);
             }
-
-          });
-       }
+        }
+      );
+    }
   }
 
 }

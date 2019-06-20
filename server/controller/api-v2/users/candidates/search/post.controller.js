@@ -4,7 +4,7 @@ const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
-const candidateSearch = require('../../candidate/searchCandidates');
+const candidateSearch = require('./searchCandidates');
 const objects = require('../../../../services/objects');
 
 module.exports.request = {
@@ -25,42 +25,36 @@ const bodySchema = new Schema({
         type:String,
         enum: ['0','1']
     },
-    msg_tags: {
-        type: [{
-            type: String,
-            enum: enumerations.chatMsgTypes
-        }]
-    },
+    word: String,
+    msg_tags: [{
+        type: String,
+        enum: enumerations.chatMsgTypes
+    }],
     why_work: {
         type:String
     },
-    programming_languages: {
-        type:[{
-            type: String,
-            enum: enumerations.programmingLanguages
-        }]
-    },
+    programming_languages: [{
+        type: String,
+        enum: enumerations.programmingLanguages
+    }],
     years_exp_min: {
         type: Number,
         min: 1,
         max: 20
     },
-    roles: {
-        type: [{
-            type: String,
-            enum: enumerations.workRoles
-        }]
-    },
-    locations: {
-        type:[{
-            city: {
-                type: String
-            },
-            name: {
-                type: String
-            }
-        }]
-    },
+    roles: [{
+        type: String,
+        enum: enumerations.workRoles
+    }],
+    locations: [{
+        city: {
+            type: String
+        },
+        name: {
+            type: String
+        }
+
+    }],
     current_currency: {
         type: String,
         enum: enumerations.currencies
@@ -73,12 +67,10 @@ const bodySchema = new Schema({
         type : Number,
         min:0,
     },
-    base_country: {
-        type:[{
+    base_country: [{
             type: String,
             enum: enumerations.countries
-        }]
-    },
+    }],
     work_type: {
         type: String,
         enum: enumerations.workTypes
@@ -102,7 +94,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     if(req.query.admin) await auth.isAdmin(req);
-    else await auth.isValidCompany(req);
+else await auth.isValidCompany(req);
 }
 
 module.exports.endpoint = async function (req, res) {

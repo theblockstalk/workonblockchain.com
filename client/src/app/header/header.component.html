@@ -52,4 +52,43 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="popModalForTerms" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header bg-primary">
+        <h3>Our terms have changed</h3>
+      </div>
+      <div class = "col-md-12">
+        <form (submit)="update_terms_status(newTermsForm)" #newTermsForm = ngForm>
+          <div class="modal-body mo_body">
+            <p>
+              We have recently made changes to our Candidate Terms. This document contains
+              important information about the expectations you have about us, and what we
+              expect from you
+            </p>
+            <a *ngIf="user_type === 'candidate'" routerLink='/terms-for-candidate' target="_blank" class="btn btn-primary">Review</a>
+            <a *ngIf="user_type === 'company'" routerLink='/terms-for-company' target="_blank" class="btn btn-primary">Review</a>
+          </div>
+          <div class="checkbox ml-3">
+            <label>
+              <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+              I have read and accepted the
+              <a *ngIf="user_type === 'candidate'" routerLink='/terms-for-candidate' target="_blank">Candidate Terms</a>
+              <a *ngIf="user_type === 'company'" routerLink='/terms-for-company' target="_blank">Terms of Business</a>.
+            </label>
+          </div>
+          <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "invalid-feedback d-inline ml-3">
+            {{terms_log}}
+          </div>
+          <div class="modal-footer mo_footer">
+            <button type="submit" class="btn btn-primary model-btn">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
+  </div>
+</div>
+<!-- end model -->

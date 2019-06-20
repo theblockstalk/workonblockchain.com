@@ -1,10 +1,10 @@
-const users = require('../../../../model/mongoose/users');
-const messages = require('../../../../model/messages');
-const logger = require('../../../services/logger');
-const currency = require('../../../services/currency');
-const errors = require('../../../services/errors');
-const cities = require('../../../../model/mongoose/cities');
-const objects = require('../../../services/objects');
+const users = require('../../../../../model/mongoose/users');
+const messages = require('../../../../../model/messages');
+const logger = require('../../../../services/logger');
+const currency = require('../../../../services/currency');
+const errors = require('../../../../services/errors');
+const cities = require('../../../../../model/mongoose/cities');
+const objects = require('../../../../services/objects');
 
 
 const salaryFactor = 1.1;

@@ -1,7 +1,7 @@
 const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
-const candidateSearch = require('../../api-v2/users/candidate/searchCandidates');
+const candidateSearch = require('../../api-v2/users/candidates/search/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');

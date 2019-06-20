@@ -7,8 +7,7 @@ module.exports.candidate = function candidate() {
         last_name: "Hussain",
         email: random.email(),
         password: "Password1",
-        type: "candidate",
-        social_type : ""
+        type: "candidate"
     };
 };
 
@@ -20,10 +19,10 @@ module.exports.company = function company() {
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
-        phone_number: "926546456",
-        country: "Pakistan",
-        postal_code: "25000",
-        city: "RWP",
+        company_phone: "926546456",
+        company_country: "Pakistan",
+        company_postcode: "25000",
+        company_city: "RWP",
         password: "Password1",
         type: "company"
     };
@@ -107,14 +106,17 @@ module.exports.profileData = function profileData(){
     return {
         first_name : 'Tayyab',
         last_name : 'Hussain',
-        github_account : 'fb.com',
-        exchange_account : 'fb.com',
-        linkedin_account : 'http://linkedin.com/in/sadia',
-        medium_account : 'http://medium.com/sadia',
+        nationality : ['Pakistani'],
         contact_number : '65464655',
-        nationality : 'Pakistani',
-        country : 'Pakistan',
-        city : 'Islamabad'
+        candidate: {
+            github_account : 'fb.com',
+            exchange_account : 'fb.com',
+            linkedin_account : 'http://linkedin.com/in/sadia',
+            medium_account : 'http://medium.com/sadia',
+            base_country : 'Pakistan',
+            base_city : 'Islamabad'
+        }
+
     }
 }
 
@@ -343,9 +345,9 @@ module.exports.cmsContentFroTC = function cmsContentFroTC() {
 
 module.exports.cmsContentForTCCandidate = function cmsContentForTCCandidate() {
     return {
-        page_title: "T&C for Candidate",
-        html_text: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
-        page_name: "Terms and Condition for company"
+        title: "T&C for Candidate",
+        content: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
+        name: "Terms and Condition for candidate"
     }
 }
 

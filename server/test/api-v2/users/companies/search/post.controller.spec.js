@@ -10,6 +10,7 @@ const userHelper = require('../../../otherHelpers/usersHelpers');
 const docGeneratorV2 = require('../../../../helpers/docGenerator-v2');
 const messagesHelpers = require('../../../../../test/api-v2/helpers');
 const companiesHelperV2 = require('../../../../api-v2/users/companies/companyHelpers')
+const candidateHelperV2 = require('../../../../api-v2/users/candidates/candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -37,12 +38,10 @@ describe('admin search company by filter', function () {
             await userHelper.approve(updateRes.body._creator.email);
             const companyUserDoc = await Users.findOneByEmail(company.email);
 
-            const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const candidate = docGeneratorV2.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelperV2.candidateProfile(candidate, profileData);
             await userHelper.makeAdmin(candidate.email);
             const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 

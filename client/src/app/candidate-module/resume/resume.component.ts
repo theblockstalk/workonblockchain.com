@@ -408,40 +408,60 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
     )
     {
+      let inputQuery: any = {};
+      let candidateQuery:any ={};
+      let blockchainQuery:any ={};
+
+      candidateQuery.interest_areas = this.selectedValue;
+      candidateQuery.why_work = this.why_work;
       if(this.commercially_worked.length === 0) {
+        inputQuery.unset_commercial_platforms = true;
         expForm.value.unset_commercial_platforms = true;
         expForm.value.commercial_platforms = [];
       }
       else {
+        blockchainQuery.commercial_platforms = this.commercial_expYear;
         expForm.value.commercial_platforms = this.commercial_expYear;
       }
 
       if(this.commercialSkills.length === 0) {
+        inputQuery.unset_commercial_skills = true;
         expForm.value.unset_commercial_skills = true;
         expForm.value.commercial_skills = [];
       }
       else {
+        blockchainQuery.commercial_skills = this.commercialSkillsExperienceYear;
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
       }
 
       expForm.value.description_commercial_platforms = '';
       if(this.description_commercial_platforms){
+        blockchainQuery.description_commercial_platforms = this.description_commercial_platforms;
         expForm.value.description_commercial_platforms = this.description_commercial_platforms;
       }
 
       expForm.value.description_experimented_platforms = '';
       if(this.description_experimented_platforms){
+        blockchainQuery.description_experimented_platforms = this.description_experimented_platforms;
         expForm.value.description_experimented_platforms = this.description_experimented_platforms;
       }
 
       expForm.value.description_commercial_skills = '';
       if(this.description_commercial_skills){
+        blockchainQuery.description_commercial_skills = this.description_commercial_skills;
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
 
-      if(this.experimented_platform.length == 0) expForm.value.unset_experimented_platforms = true;
-      expForm.value.wizardNum = 4;
-      this.authenticationService.edit_candidate_profile(this.currentUser._id , expForm.value,false)
+      if(this.experimented_platform.length == 0) {
+        inputQuery.unset_experimented_platforms = true;
+        expForm.value.unset_experimented_platforms = true;
+      }
+
+      candidateQuery.blockchain = blockchainQuery;
+      inputQuery.candidate = candidateQuery;
+      inputQuery.wizardNum = 4;
+
+      this.authenticationService.edit_candidate_profile(this.currentUser._id , inputQuery,false)
         .subscribe(
           data => {
             if(data && this.currentUser)
