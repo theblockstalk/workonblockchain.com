@@ -22,7 +22,8 @@ const bodySchema = new Schema({
         type:Boolean
     },
     is_verify: {
-        type:Boolean
+        type:String,
+        enum: ['0','1']
     },
     word: String,
     msg_tags: [{
@@ -99,9 +100,11 @@ else await auth.isValidCompany(req);
 module.exports.endpoint = async function (req, res) {
     if(req.query.admin) {
         let queryBody = req.body;
+        console.log(queryBody.disable_account);
 
         let filter = {};
-        if (queryBody.is_verify) filter.is_verify = 1;
+        queryBody.is_verify = parseInt(queryBody.is_verify);
+        if (queryBody.is_verify || queryBody.is_verify === 0) filter.is_verify = queryBody.is_verify;
         if (queryBody.status) filter.status = queryBody.status;
         if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
         if (queryBody.disable_account || queryBody.disable_account === false) filter.disable_account = queryBody.disable_account;

@@ -183,19 +183,19 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.info=[];
     this.response = "";
 
-    if(!this.approve && !this.msgtags && !this.searchWord )
+    if(!this.approve && !this.msgtags && !this.searchWord && !this.candidate_status && !this.candidate_status_account)
     {
       this.getAllCompanies();
-
     }
     else
     {
       let queryBody : any = {};
-      if(this.approve) queryBody.is_approved = this.approve;
+      if(this.approve || this.approve === '0') queryBody.is_approved = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.search_word = this.searchWord;
-      if(this.candidate_status) queryBody.is_verify = this.candidate_status;
-      if(this.candidate_status_account) queryBody.disable_account = this.candidate_status_account;
+      if(this.candidate_status || this.candidate_status === '0') queryBody.is_verify = this.candidate_status;
+      if(this.candidate_status_account === true || this.candidate_status_account === 'true') queryBody.disable_account = true;
+      else if(this.candidate_status_account === false || this.candidate_status_account === 'false') queryBody.disable_account = false;
 
       this.authenticationService.admin_company_filter(queryBody)
         .subscribe(
@@ -254,6 +254,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
   reset()
   {
+    this.candidate_status = 1;
+    this.candidate_status_account = false;
     this.msgtags = '';
     this.approve = '';
     this.info=[];
