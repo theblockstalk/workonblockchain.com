@@ -24,7 +24,6 @@ const bodySchema = new Schema({
     is_verify: {
         type:Boolean
     },
-    is_approve : String,
     word: String,
     msg_tags: [{
         type: String,

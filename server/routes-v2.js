@@ -115,7 +115,7 @@ const amplitudeTrack = function (request) {
         event_properties: {}
     };
 
-    if (request.path === '/') {
+    if (request.path === '/v2/health') {
         return function (req) {
             return;
         }

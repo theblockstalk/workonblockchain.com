@@ -82,7 +82,7 @@ describe('get all users', function () {
             console.log(messageDoc);
             const data = {
                 msg_tags : [messageDoc.msg_tag],
-                is_approve : candidateUserDoc.candidate.history[0].status.status,
+                status : candidateUserDoc.candidate.history[0].status.status,
                 word : candidate.first_name
             }
             const isAdmin = true;
