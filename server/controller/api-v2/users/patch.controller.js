@@ -29,7 +29,8 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    await auth.isValidUser(req);
+    if(!objects.isEmpty(req.body)) await auth.isLoggedIn(req);
+    else await auth.isValidUser(req);
 }
 
 module.exports.endpoint = async function (req, res) {

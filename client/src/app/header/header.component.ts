@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
   page_name;
   new_terms_id;
   agree;
+  check_route;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -51,6 +52,8 @@ export class HeaderComponent implements OnInit {
         //this.route = 'Home'
       }
     });
+    this.check_route = this.admin_route;
+    this.check_route = this.check_route.split('/');
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -70,7 +73,8 @@ export class HeaderComponent implements OnInit {
               {
                 this.terms_id = data['candidate']['terms_id'];
                 this.privacy_id = data['candidate']['privacy_id'];
-                this.privacy_pop_show();
+                if(this.check_route[2] === 'candidate-terms'){}
+                else this.privacy_pop_show();
 
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
@@ -106,7 +110,8 @@ export class HeaderComponent implements OnInit {
               {
                 this.terms_id = data['terms_id'];
                 this.privacy_id = data['privacy_id'];
-                this.privacy_pop_show();
+                if(this.check_route[2] === 'company-terms'){}
+                else this.privacy_pop_show();
 
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
@@ -215,7 +220,7 @@ export class HeaderComponent implements OnInit {
       );
     }
     else{
-      if(this.user_type === 'candidate') this.terms_log = 'Please accept Candidate Terms';
+      if(this.user_type === 'candidate') this.terms_log = 'Please accept ';
       else this.terms_log = 'Please accept Terms of Business';
     }
   }
