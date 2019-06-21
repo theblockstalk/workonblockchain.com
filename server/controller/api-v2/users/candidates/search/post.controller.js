@@ -50,14 +50,21 @@ const bodySchema = new Schema({
         type: String,
         enum: enumerations.blockchainPlatforms
     }],
+    visa_needed: Boolean,
+    blockchainOrder: [{
+        type: String,
+        enum: enumerations.blockchainPlatforms
+    }],
     locations: [{
+        _id: {
+            type: String
+        },
         city: {
             type: String
         },
         name: {
             type: String
         }
-
     }],
     current_currency: {
         type: String,
@@ -81,7 +88,8 @@ const bodySchema = new Schema({
     },
     name: {
         type: String
-    }
+    },
+    searchName: String
 });
 
 const querySchema = new Schema({
