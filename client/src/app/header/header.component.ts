@@ -215,7 +215,7 @@ export class HeaderComponent implements OnInit {
       );
     }
     else{
-      if(this.user_type === 'candidate') this.terms_log = 'Please accept Candidate Terms';
+      if(this.user_type === 'candidate') this.terms_log = 'Please accept ';
       else this.terms_log = 'Please accept Terms of Business';
     }
   }

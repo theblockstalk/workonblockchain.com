@@ -46,6 +46,10 @@ const bodySchema = new Schema({
         type: String,
         enum: enumerations.workRoles
     }],
+    blockchains: [{
+        type: String,
+        enum: enumerations.blockchainPlatforms
+    }],
     locations: [{
         city: {
             type: String
