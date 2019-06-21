@@ -508,7 +508,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
       });
-
+      
       this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {
