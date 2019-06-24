@@ -46,6 +46,11 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   country_code;
   templates;
   routerUrl;
+  progress_bar_value = 15;
+  linked_websites;
+  progress_bar_class = 'progress-bar bg-warning';
+  work_history_progress = 0;
+
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -212,10 +217,29 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 data['contact_number'] = this.contact_number;
               }
 
+              this.linked_websites = 0;
+              if(data['candidate'].github_account) this.linked_websites++;
+              if(data['candidate'].stackexchange_account) this.linked_websites++;
+              if(data['candidate'].linkedin_account) this.linked_websites++;
+              if(data['candidate'].medium_account) this.linked_websites++;
+              if(data['candidate'].stackoverflow_url) this.linked_websites++;
+              if(data['candidate'].personal_website_url) this.linked_websites++;
+
+              console.log(this.linked_websites);
+              if(this.linked_websites>=2) {
+                this.progress_bar_class = 'progress-bar bg-warning';
+                this.progress_bar_value = 25;
+              }
+
               this.info.push(data);
               this.verify =data['is_verify'];
 
               if(data['candidate'].work_history) {
+                this.work_history_progress = 1;
+                if(this.linked_websites>=2) {
+                  this.progress_bar_class = 'progress-bar bg-info';
+                  this.progress_bar_value = 50;
+                }
                 this.work_history = data['candidate'].work_history;
                 this.work_history.sort(this.date_sort_desc);
               }
@@ -302,9 +326,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 this.created_date = data['candidate'].status[data['candidate'].status.length-1].timestamp;
               }
 
+              let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;
               if(data['candidate'] && data['candidate'].blockchain) {
-
                 if(data['candidate'].blockchain.commercial_skills) {
+                  commercial_skills_check = 1;
                   this.commercial_skills = data['candidate'].blockchain.commercial_skills;
                   this.commercial_skills.sort(function(a, b){
                     if(a.skill < b.skill) { return -1; }
@@ -316,6 +341,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 if(data['candidate'].blockchain.commercial_platforms){
                   this.commercial = data['candidate'].blockchain.commercial_platforms;
                   if(this.commercial && this.commercial.length>0){
+                    commercial_platforms_check = 1;
                     this.commercial.sort(function(a, b){
                       if(a.platform_name < b.platform_name) { return -1; }
                       if(a.platform_name > b.platform_name) { return 1; }
@@ -326,6 +352,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 if(data['candidate'].blockchain.experimented_platforms){
                   this.experimented = data['candidate'].blockchain.experimented_platforms;
                   if(this.experimented && this.experimented.length>0){
+                    experimented_platforms_check = 1;
                     this.experimented.sort(function(a, b){
                       if(a < b) { return -1; }
                       if(a > b) { return 1; }
@@ -333,35 +360,39 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                     })
                   }
                 }
-                if(data['candidate'].blockchain.commercial_skills) {
-                  this.commercial_skills = data['candidate'].blockchain.commercial_skills;
-                  this.commercial_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }
 
                 if(data['candidate'].blockchain.description_commercial_platforms) {
                   this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
+                  commercial_platforms_check = 0;
+                  if(this.description_commercial_platforms.length > 100) commercial_platforms_check = 1;
                 }
 
                 if(data['candidate'].blockchain.description_experimented_platforms) {
                   this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
+                  experimented_platforms_check = 0;
+                  if(this.description_experimented_platforms.length>100) experimented_platforms_check = 1;
                 }
 
                 if(data['candidate'].blockchain.description_commercial_skills) {
                   this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+                  commercial_skills_check = 0;
+                  if(this.description_commercial_skills.length> 100) commercial_skills_check = 1;
                 }
-
+              }
+              console.log(this.work_history_progress);
+              console.log(this.linked_websites);
+              if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
+                if(this.linked_websites>=2 && this.work_history_progress === 1) this.progress_bar_value = 75;
               }
 
 
               if(data['image'] != null )
               {
-
+                if(this.linked_websites>=2 && this.work_history_progress) {
+                  this.progress_bar_class = 'progress-bar bg-success';
+                  this.progress_bar_value = 100;
+                }
                 this.imgPath =  data['image'];
-
               }
 
               if(this.approve === 1)
@@ -591,5 +622,11 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
+  }
+
+  sectionScroll;
+  internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
   }
 }

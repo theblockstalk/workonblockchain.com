@@ -124,7 +124,6 @@
             </div>
             <div class="row mt-5">
               <div [ngClass]="(progress_bar_value === 15 || progress_bar_value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-                <p>3 days till review</p>
                 <a (click)="internalRoute('users/talent/edit','about')">
                   <u>Basic information</u>
                 </a>
@@ -135,7 +134,6 @@
                 </a>
               </div>
               <div [ngClass]="(progress_bar_value >= 50)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-                <p>2 days till review</p>
                 <a (click)="internalRoute('users/talent/edit','work_history')">
                   <u>Work History</u>
                 </a>
@@ -146,7 +144,6 @@
                 </a>
               </div>
               <div [ngClass]="(progress_bar_value === 100)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-                <p>Priority</p>
                 <a (click)="internalRoute('users/talent/edit','about')">
                   <u>Profile picture</u>
                 </a>
