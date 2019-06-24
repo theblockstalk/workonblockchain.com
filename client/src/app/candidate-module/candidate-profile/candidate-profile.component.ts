@@ -62,6 +62,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   stackoverflow_url;
   personal_website_url;
   country_code;
+  progress_bar_value = 15;
+  linked_websites;
+  progress_bar_class = 'progress-bar bg-warning';
+  work_history_progress = 0;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -170,15 +174,38 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 this.id = data['_id'];
                 this.email =data['email'];
-                if(data['candidate'].github_account) this.github = data['candidate'].github_account;
-                if(data['candidate'].stackexchange_account) this.stack = data['candidate'].stackexchange_account;
+                this.linked_websites = 0;
+                if(data['candidate'].github_account) {
+                  this.linked_websites++;
+                  this.github = data['candidate'].github_account
+                };
+                if(data['candidate'].stackexchange_account) {
+                  this.linked_websites++;
+                  this.stack = data['candidate'].stackexchange_account;
+                }
 
-                if(data['candidate'].linkedin_account) this.linkedin_account = data['candidate'].linkedin_account;
-                if(data['candidate'].medium_account) this.medium_account = data['candidate'].medium_account;
+                if(data['candidate'].linkedin_account) {
+                  this.linked_websites++;
+                  this.linkedin_account = data['candidate'].linkedin_account;
+                }
+                if(data['candidate'].medium_account) {
+                  this.linked_websites++;
+                  this.medium_account = data['candidate'].medium_account;
+                }
 
-                if(data['candidate'].stackoverflow_url) this.stackoverflow_url = data['candidate'].stackoverflow_url;
-                if(data['candidate'].personal_website_url) this.personal_website_url = data['candidate'].personal_website_url;
-
+                if(data['candidate'].stackoverflow_url) {
+                  this.linked_websites++;
+                  this.stackoverflow_url = data['candidate'].stackoverflow_url;
+                }
+                if(data['candidate'].personal_website_url) {
+                  this.linked_websites++;
+                  this.personal_website_url = data['candidate'].personal_website_url;
+                }
+                console.log(this.linked_websites);
+                if(this.linked_websites>=2) {
+                  this.progress_bar_class = 'progress-bar bg-warning';
+                  this.progress_bar_value = 25;
+                }
 
                 if(data['candidate'] && data['candidate'].base_country){
                   this.base_country = data['candidate'].base_country;
@@ -207,6 +234,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.description =data['candidate'].description;
                 if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {
+                  this.work_history_progress = 1;
+                  if(this.linked_websites>=2) {
+                    this.progress_bar_class = 'progress-bar bg-info';
+                    this.progress_bar_value = 50;
+                  }
                   this.history =data['candidate'].work_history;
                   this.history.sort(this.date_sort_desc);
                   for(let data1 of data['candidate'].work_history)
@@ -279,8 +311,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
                 if(data['candidate'].why_work) this.why_work = data['candidate'].why_work;
+
+                let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;
                 if(data['candidate'].blockchain) {
                   if(data['candidate'].blockchain.commercial_platforms) {
+                    commercial_platforms_check = 1;
                     this.commercial = data['candidate'].blockchain.commercial_platforms;
                     if(this.commercial && this.commercial.length>0){
                       this.commercial.sort(function(a, b){
@@ -292,6 +327,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
 
                   if(data['candidate'].blockchain.experimented_platforms) {
+                    experimented_platforms_check = 1;
                     this.experimented = data['candidate'].blockchain.experimented_platforms;
                     if(this.experimented && this.experimented.length>0){
                       this.experimented.sort(function(a, b){
@@ -304,17 +340,24 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                   if(data['candidate'].blockchain.description_commercial_platforms) {
                     this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
+                    commercial_platforms_check = 0;
+                    if(this.description_commercial_platforms.length > 100) commercial_platforms_check = 1;
                   }
 
                   if(data['candidate'].blockchain.description_experimented_platforms) {
                     this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
+                    experimented_platforms_check = 0;
+                    if(this.description_experimented_platforms.length>100) experimented_platforms_check = 1;
                   }
 
                   if(data['candidate'].blockchain.description_commercial_skills) {
                     this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+                    commercial_skills_check = 0;
+                    if(this.description_commercial_skills.length> 100) commercial_skills_check = 1;
                   }
 
                   if(data['candidate'].blockchain.commercial_skills) {
+                    commercial_skills_check = 1;
                     this.commercial_skills = data['candidate'].blockchain.commercial_skills;
                     this.commercial_skills.sort(function(a, b){
                       if(a.skill < b.skill) { return -1; }
@@ -323,8 +366,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     })
                   }
                 }
-
-
+                if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
+                  if(this.linked_websites>=2 && this.work_history_progress === 1) this.progress_bar_value = 75;
+                }
 
                 if(data['candidate'].programming_languages) {
                   this.languages= data['candidate'].programming_languages;
@@ -344,9 +388,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 if(data['image'] != null )
                 {
-
+                  if(this.linked_websites>=2 && this.work_history_progress) {
+                    this.progress_bar_class = 'progress-bar bg-success';
+                    this.progress_bar_value = 100;
+                  }
                   this.imgPath = data['image'];
-
                 }
 
                 this.infoo= data;
