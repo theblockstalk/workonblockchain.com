@@ -361,6 +361,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     let inputQuery: any = {};
     let remote_error_count = 0;
     let visaRequired = 0;
+    let candidateQuery:any ={};
 
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
@@ -545,7 +546,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
       if(this.employeeCheck) {
-        inputQuery.employee = {
+        candidateQuery.employee = {
           employment_type : this.employee.employment_type,
           expected_annual_salary: parseInt(this.employee.expected_annual_salary),
           currency: this.employee.currency,
@@ -558,7 +559,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
       if(this.contractorCheck) {
-        inputQuery.contractor = {
+        candidateQuery.contractor = {
           expected_hourly_rate : parseInt(this.contractor.hourly_rate),
           currency: this.contractor.currency,
           location: this.contractor.locations,
@@ -566,25 +567,27 @@ export class JobComponent implements OnInit,AfterViewInit {
           contractor_type: this.contractor.contractor_type,
           service_description : this.contractor.service_description
         }
-        if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
-        if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
+        if(this.contractor.agency_website) candidateQuery.contractor.agency_website = this.contractor.agency_website;
+        if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') candidateQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
       else inputQuery.unset_contractor = true;
 
       if(this.volunteerCheck) {
-        inputQuery.volunteer = {
+        candidateQuery.volunteer = {
           location: this.volunteer.locations,
           roles: this.volunteer.roles,
           learning_objectives : this.volunteer.learning_objectives
         }
         if(this.volunteer.max_hours_per_week && this.volunteer.max_hours_per_week !== '-1') {
-          inputQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
+          candidateQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
         }
       }
       else inputQuery.unset_volunteer = true;
 
-      if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
-      if(this.current_currency && this.current_currency !== 'Currency') inputQuery.current_currency = this.current_currency;
+      if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
+      if(this.current_currency) candidateQuery.current_currency = this.current_currency;
+      inputQuery.candidate = candidateQuery;
+
       inputQuery.wizardNum = 3;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)

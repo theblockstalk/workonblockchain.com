@@ -643,18 +643,20 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
 
     let inputQuery : any = {};
+    let candidateQuery:any ={};
 
-    if(this.expYear && this.expYear.length>0) inputQuery.programming_languages = this.expYear;
+    if(this.expYear && this.expYear.length>0) candidateQuery.programming_languages = this.expYear;
     else inputQuery.unset_language = true;
 
-    if(this.education_json_array && this.education_json_array.length>0) inputQuery.education_history =  this.education_json_array;
+    if(this.education_json_array && this.education_json_array.length>0) candidateQuery.education_history =  this.education_json_array;
     else inputQuery.unset_education_history = true;
 
-    if(this.experiencearray && this.experiencearray.length>0) inputQuery.work_history =  this.experiencearray;
+    if(this.experiencearray && this.experiencearray.length>0) candidateQuery.work_history =  this.experiencearray;
     else inputQuery.unset_work_history = true;
 
-    if(this.Intro) inputQuery.description =  this.Intro;
+    if(this.Intro) candidateQuery.description =  this.Intro;
 
+    inputQuery.candidate = candidateQuery;
     inputQuery.wizardNum = 5;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(

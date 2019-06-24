@@ -143,18 +143,18 @@
                         <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value">{{country_code.name}}</option>
                       </select>
                     </div>
-                    <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
-                    <div class="invalid-feedback d-inline" *ngIf="!credentials.phone_number">
+                    <input type="tel" class="form-control" placeholder="1234567890" id="mobile-number" required name="company_phone" [(ngModel)]="credentials.company_phone">
+                    <div class="invalid-feedback d-inline" *ngIf="!credentials.company_phone">
                       {{companyPhoneLog}}
                     </div>
                     <div class = "invalid-feedback d-inline" *ngIf="!credentials.country_code">
                       {{country_code_log}}
                     </div>
-                    <ng-container *ngIf="credentials.phone_number;else no_contact_number">
-                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.phone_number)">
+                    <ng-container *ngIf="credentials.company_phone;else no_contact_number">
+                      <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(credentials.company_phone)">
                         Please enter only numbers
                       </div>
-                      <div class = "invalid-feedback d-inline" *ngIf="credentials.phone_number.length < 4 || credentials.phone_number.length > 15 ">
+                      <div class = "invalid-feedback d-inline" *ngIf="credentials.company_phone.length < 4 || credentials.company_phone.length > 15 ">
                         {{contact_number_log}}
                       </div>
                     </ng-container>
@@ -166,26 +166,26 @@
                 <div class="form-group">
                   <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
                   <label>Country</label>
-                  <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
+                  <select class="selectpicker form-control" title="(select one)"  required name="company_country" [(ngModel)]="credentials.company_country"  required="">
                     <option *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
                   </select>
-                  <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.company_country">
                     {{companyCountryLog}}
                   </div>
                 </div>
                 <div class="form-group">
                   <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
                   <label>City</label>
-                  <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="credentials.city">
-                  <div class="invalid-feedback d-inline" *ngIf="!credentials.city">
+                  <input type="text" class="form-control" placeholder="London" required name="company_city" [(ngModel)]="credentials.company_city">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.company_city">
                     {{companyCityLog}}
                   </div>
                 </div>
                 <div class="form-group">
                   <span><i class="fas fa-podcast mr-1" aria-hidden="true"></i></span>
                   <label>Postal code</label>
-                  <input type="text" class="form-control right-input" placeholder="SW1 7XL" id="post_no" required name="postal_code" [(ngModel)]="credentials.postal_code">
-                  <div class="invalid-feedback d-inline" *ngIf="!credentials.postal_code">
+                  <input type="text" class="form-control right-input" placeholder="SW1 7XL" id="post_no" required name="company_postcode" [(ngModel)]="credentials.company_postcode">
+                  <div class="invalid-feedback d-inline" *ngIf="!credentials.company_postcode">
                     {{companyPostalCodeLog}}
                   </div>
                 </div>

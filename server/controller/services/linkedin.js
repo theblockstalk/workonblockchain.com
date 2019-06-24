@@ -50,17 +50,20 @@ async function getLinkedinAccountFromCode(code) {
     logger.debug("Linkedin profile data" , profile);
 
     const email = await getLinkedinEmailAddress(code);
-    logger.debug("Linkedin email" , email);
+    if(email.status === 401) errors.throwError('This Linkedin login session has already expired, please try again', 400);
+    else {
+        logger.debug("Linkedin email", email);
 
-    const response = {
-        linkedin_id: profile.id,
-        first_name: profile.localizedFirstName,
-        last_name: profile.localizedLastName,
-        email: email.elements[0]['handle~'].emailAddress
+        const response = {
+            linkedin_id: profile.id,
+            first_name: profile.localizedFirstName,
+            last_name: profile.localizedLastName,
+            email: email.elements[0]['handle~'].emailAddress
+        }
+
+        logger.debug("Response data", response);
+        return response;
     }
-
-    logger.debug("Response data" , response);
-    return response;
 }
 
 async function getLinkedinLiteProfile(code) {

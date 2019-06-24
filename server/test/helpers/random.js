@@ -19,7 +19,9 @@ module.exports.boolean = function () {
 };
 
 module.exports.integer = function (min = 0, max = 10000) {
-    return Math.floor((max - min)*Math.random()) - min;
+    let number = Math.floor((max - min)*Math.random()) - min;
+    if(number < -1) number = Math.floor((max - min)*Math.random()) - min;
+    return number
 };
 
 module.exports.enum = function (enums) {

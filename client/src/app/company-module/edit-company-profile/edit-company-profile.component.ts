@@ -559,7 +559,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         }
       }
 
-      profileForm.value.phone_number = this.country_code +' '+ this.company_phone;
+      profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
       this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)

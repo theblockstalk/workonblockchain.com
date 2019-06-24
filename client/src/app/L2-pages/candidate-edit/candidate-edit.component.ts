@@ -182,6 +182,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     let workTypeCount = 0;
     this.errMsg = '';
     let queryBody : any = {};
+    let candidateBody : any = {};
+    let blockchainBody : any = {};
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
     else errorCount++;
@@ -193,37 +195,37 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     else errorCount++;
 
     if(this.githubUrl.github_account) {
-      if(this.githubUrl.selfValidate()) queryBody.github_account = this.githubUrl.github_account;
+      if(this.githubUrl.selfValidate()) candidateBody.github_account = this.githubUrl.github_account;
       else errorCount++;
     }
     else queryBody.unset_github_account = true;
 
     if(this.stackexchangeUrl.stackexchange_account) {
-      if(this.stackexchangeUrl.selfValidate()) queryBody.stackexchange_account = this.stackexchangeUrl.stackexchange_account;
+      if(this.stackexchangeUrl.selfValidate()) candidateBody.stackexchange_account = this.stackexchangeUrl.stackexchange_account;
       else errorCount++;
     }
     else queryBody.unset_exchange_account = true;
 
     if(this.linkedinUrl.linkedin_account) {
-      if(this.linkedinUrl.selfValidate()) queryBody.linkedin_account = this.linkedinUrl.linkedin_account;
+      if(this.linkedinUrl.selfValidate()) candidateBody.linkedin_account = this.linkedinUrl.linkedin_account;
       else errorCount++;
     }
     else queryBody.unset_linkedin_account = true;
 
     if(this.mediumUrl.medium_account) {
-      if(this.mediumUrl.selfValidate()) queryBody.medium_account = this.mediumUrl.medium_account;
+      if(this.mediumUrl.selfValidate()) candidateBody.medium_account = this.mediumUrl.medium_account;
       else errorCount++;
     }
     else queryBody.unset_medium_account = true;
 
     if(this.stackoverflowUrl.stackoverflow_url) {
-      if(this.stackoverflowUrl.selfValidate()) queryBody.stackoverflow_url = this.stackoverflowUrl.stackoverflow_url;
+      if(this.stackoverflowUrl.selfValidate()) candidateBody.stackoverflow_url = this.stackoverflowUrl.stackoverflow_url;
       else errorCount++;
     }
     else queryBody.unset_stackoverflow_url = true;
 
     if(this.personalWebsiteUrl.personal_website_url) {
-      if(this.personalWebsiteUrl.selfValidate()) queryBody.personal_website_url = this.personalWebsiteUrl.personal_website_url;
+      if(this.personalWebsiteUrl.selfValidate()) candidateBody.personal_website_url = this.personalWebsiteUrl.personal_website_url;
       else errorCount++;
     }
     else queryBody.unset_personal_website_url = true;
@@ -231,19 +233,19 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.nationalities.selfValidate()) queryBody.nationality = this.nationalities.nationality;
     else errorCount++;
 
-    if(this.bioDescription.selfValidate()) queryBody.description = this.bioDescription.description;
+    if(this.bioDescription.selfValidate()) candidateBody.description = this.bioDescription.description;
     else errorCount++;
 
-    if(this.baseCountry.selfValidate()) queryBody.base_country = this.baseCountry.country;
+    if(this.baseCountry.selfValidate()) candidateBody.base_country = this.baseCountry.country;
     else errorCount++;
 
-    if(this.baseCity.selfValidate()) queryBody.base_city = this.baseCity.city;
+    if(this.baseCity.selfValidate()) candidateBody.base_city = this.baseCity.city;
     else errorCount++;
 
     if(this.currentSalary.selfValidate()) {
       if(this.currentSalary.current_salary && this.currentSalary.current_currency && this.currentSalary.current_currency !== 'Currency') {
-        queryBody.current_currency = this.currentSalary.current_currency;
-        queryBody.current_salary = this.currentSalary.current_salary;
+        candidateBody.current_currency = this.currentSalary.current_currency;
+        candidateBody.current_salary = this.currentSalary.current_salary;
       }
       else queryBody.unset_curret_currency = true;
     }
@@ -263,7 +265,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             visaRequired++;
           }
         }
-        queryBody.employee = this.employeeType.employee;
+        candidateBody.employee = this.employeeType.employee;
       }
       else errorCount++;
     }
@@ -277,7 +279,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             visaRequired++;
           }
         }
-        queryBody.contractor = this.contractorType.contractor;
+        candidateBody.contractor = this.contractorType.contractor;
       }
       else errorCount++;
     }
@@ -292,7 +294,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
           }
 
         }
-        queryBody.volunteer = this.volunteerType.volunteer;
+        candidateBody.volunteer = this.volunteerType.volunteer;
       }
       else errorCount++;
     }
@@ -303,16 +305,16 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       errorCount++;
     }
 
-    if(this.whyWork.selfValidate()) queryBody.why_work = this.whyWork.why_work;
+    if(this.whyWork.selfValidate()) candidateBody.why_work = this.whyWork.why_work;
     else errorCount++;
 
-    if(this.interestType.selfValidate()) queryBody.interest_areas = this.interestType.interest_areas;
+    if(this.interestType.selfValidate()) candidateBody.interest_areas = this.interestType.interest_areas;
     else errorCount++;
 
     if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
       if(this.commercialExp.selfValidate()) {
-        queryBody.commercial_platforms = this.commercialExp.commercial_platforms;
-        queryBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
+        blockchainBody.commercial_platforms = this.commercialExp.commercial_platforms;
+        blockchainBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
       }
       else errorCount++;
     }
@@ -320,8 +322,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.experimentedWith.experimented_platforms && this.experimentedWith.experimented_platforms.length > 0) {
       if(this.experimentedWith.selfValidate()) {
-        queryBody.experimented_platforms = this.experimentedWith.experimented_platforms;
-        queryBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
+        blockchainBody.experimented_platforms = this.experimentedWith.experimented_platforms;
+        blockchainBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
       }
       else errorCount++;
     }
@@ -329,8 +331,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.commercialSkills.commercial_skills && this.commercialSkills.commercial_skills.length >0){
       if(this.commercialSkills.selfValidate()) {
-        queryBody.commercial_skills = this.commercialSkills.commercial_skills;
-        queryBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
+        blockchainBody.commercial_skills = this.commercialSkills.commercial_skills;
+        blockchainBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
       }
       else errorCount++;
     }
@@ -338,7 +340,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.languageExp.programming_languages && this.languageExp.programming_languages.length > 0){
       if(this.languageExp.selfValidate()) {
-        queryBody.programming_languages = this.languageExp.programming_languages;
+        candidateBody.programming_languages = this.languageExp.programming_languages;
       }
       else errorCount++;
     }
@@ -346,7 +348,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {
-        queryBody.work_history = this.workHistoryComp.experiencearray;
+        candidateBody.work_history = this.workHistoryComp.experiencearray;
       }
       else errorCount++;
     }
@@ -354,17 +356,24 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.educationHistoryComp.EducationForm.value.itemRows && this.educationHistoryComp.EducationForm.value.itemRows.length >0) {
       if(this.educationHistoryComp.selfValidate()) {
-        queryBody.education_history = this.educationHistoryComp.education_array;
+        candidateBody.education_history = this.educationHistoryComp.education_array;
       }
       else errorCount++;
     }
     else queryBody.unset_education_history = true;
 
+    candidateBody.blockchain = blockchainBody;
+    queryBody.candidate = candidateBody;
+    console.log(errorCount);
+    console.log(queryBody);
+
     if(this.profileImage.imageCropData.image) {
       const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
       const formData = new FormData();
       formData.append('image', file);
-      this.authenticationService.edit_candidate_profile(this.userDoc['_id'] , formData , false)
+      let admin = false;
+      if(this.viewBy === 'admin') admin = true;
+      this.authenticationService.edit_candidate_profile(this.userDoc['_id'] , formData , admin)
         .subscribe(
           data => {
           },

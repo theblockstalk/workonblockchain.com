@@ -1,9 +1,10 @@
 const logger = require('../services/logger');
+const objects = require('../services/objects');
 
 module.exports = function (req, res, next) {
 
     if (req.url !== '/') { // Do not log the healthcheck, AWS sends request very frequently
-        let body = copyObject(req.body);
+        let body = objects.copyObject(req.body);
         if (body.password) delete body.password;
 
         let log = {
@@ -19,7 +20,3 @@ module.exports = function (req, res, next) {
 
     next();
 };
-
-function copyObject(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
