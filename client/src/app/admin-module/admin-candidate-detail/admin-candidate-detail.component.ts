@@ -235,11 +235,18 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               this.verify =data['is_verify'];
 
               if(data['candidate'].work_history) {
-                this.work_history_progress = 1;
-                if(this.linked_websites>=2) {
-                  this.progress_bar_class = 'progress-bar bg-info';
-                  this.progress_bar_value = 50;
+                for(let workHistory of data['candidate'].work_history){
+                  this.work_history_progress = 1;
+                  if(workHistory.description.length < 100){
+                    this.work_history_progress = 0;
+                    if(this.linked_websites>=2) {
+                      this.progress_bar_class = 'progress-bar bg-info';
+                      this.progress_bar_value = 50;
+                    }
+                    break;
+                  }
                 }
+
                 this.work_history = data['candidate'].work_history;
                 this.work_history.sort(this.date_sort_desc);
               }
@@ -370,13 +377,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 if(data['candidate'].blockchain.description_experimented_platforms) {
                   this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
                   experimented_platforms_check = 0;
-                  if(this.description_experimented_platforms.length>100) experimented_platforms_check = 1;
+                  if(this.description_experimented_platforms.length > 100) experimented_platforms_check = 1;
                 }
 
                 if(data['candidate'].blockchain.description_commercial_skills) {
                   this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
                   commercial_skills_check = 0;
-                  if(this.description_commercial_skills.length> 100) commercial_skills_check = 1;
+                  if(this.description_commercial_skills.length > 100) commercial_skills_check = 1;
                 }
               }
               console.log(this.work_history_progress);
