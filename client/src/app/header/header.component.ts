@@ -206,18 +206,18 @@ export class HeaderComponent implements OnInit {
       let inputQuery : any = {};
       inputQuery.terms_id = this.new_terms_id;
       this.authenticationService.update_terms_and_privacy(inputQuery)
-      .subscribe(
-        data => {
-          $("#popModalForTerms").modal("hide");
-        },
-        error=>
-        {
-          if(error['status'] === 404 && error['error']['message'])
+        .subscribe(
+          data => {
+            $("#popModalForTerms").modal("hide");
+          },
+          error=>
           {
-            this.terms_log = 'something getting wrong';
+            if(error['status'] === 404 && error['error']['message'])
+            {
+              this.terms_log = 'something getting wrong';
+            }
           }
-        }
-      );
+        );
     }
     else{
       if(this.user_type === 'candidate') this.terms_log = 'Please accept ';
@@ -226,8 +226,7 @@ export class HeaderComponent implements OnInit {
   }
 
   privacy_pop_show(){
-    if(this.terms_id) {
-      this.authenticationService.get_page_content(this.page_name)
+    this.authenticationService.get_page_content(this.page_name)
       .subscribe(
         data => {
           if (data) {
@@ -239,7 +238,6 @@ export class HeaderComponent implements OnInit {
           }
         }
       );
-    }
   }
 
 }
