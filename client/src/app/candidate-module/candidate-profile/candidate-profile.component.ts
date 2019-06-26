@@ -234,11 +234,18 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.description =data['candidate'].description;
                 if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {
-                  this.work_history_progress = 1;
-                  if(this.linked_websites>=2) {
-                    this.progress_bar_class = 'progress-bar bg-info';
-                    this.progress_bar_value = 50;
+                  for(let workHistory of data['candidate'].work_history){
+                    this.work_history_progress = 1;
+                    if(workHistory.description.length < 100){
+                      this.work_history_progress = 0;
+                      if(this.linked_websites>=2) {
+                        this.progress_bar_class = 'progress-bar bg-info';
+                        this.progress_bar_value = 50;
+                      }
+                      break;
+                    }
                   }
+                  
                   this.history =data['candidate'].work_history;
                   this.history.sort(this.date_sort_desc);
                   for(let data1 of data['candidate'].work_history)
