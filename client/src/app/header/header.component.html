@@ -46,8 +46,8 @@
         </div>
       </nav>
 
-     <!-- <L0-alerts alertClass="alert-success" aligmentClass="error_msg mx-auto" *ngIf = "msg && close && !success" [alertMsg]="msg" ></L0-alerts>
--->
+      <!-- <L0-alerts alertClass="alert-success" aligmentClass="error_msg mx-auto" *ngIf = "msg && close && !success" [alertMsg]="msg" ></L0-alerts>
+ -->
     </div>
   </div>
 </div>
@@ -64,7 +64,7 @@
         <form (submit)="update_terms_status(newTermsForm)" #newTermsForm = ngForm>
           <div class="modal-body mo_body">
             <p>
-              We have recently made changes to our Candidate Terms. This document contains
+              We have recently made changes to our <span *ngIf="user_type === 'candidate'" >Candidate Terms</span> <span *ngIf="user_type === 'company'">Terms of Business</span>. This document contains
               important information about the expectations you have about us, and what we
               expect from you
             </p>

@@ -340,7 +340,20 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.languageExp.programming_languages && this.languageExp.programming_languages.length > 0){
       if(this.languageExp.selfValidate()) {
-        candidateBody.programming_languages = this.languageExp.programming_languages;
+        let programmingLanguages = [];
+        let flag = false;
+        for (let programming_languages of this.languageExp.programming_languages) {
+          if(programming_languages['_id']) {
+            flag = true;
+            let programmingLanguagesInfo = {
+              language: programming_languages['language'],
+              exp_year: programming_languages['exp_year']
+            };
+            programmingLanguages.push(programmingLanguagesInfo);
+          }
+        }
+        if(flag) candidateBody.programming_languages = programmingLanguages;
+        else candidateBody.programming_languages = this.languageExp.programming_languages;
       }
       else errorCount++;
     }
@@ -394,6 +407,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
         const locations = this.changeLocationToBEFormat(this.volunteerType.volunteer['location']);
         this.volunteerType.volunteer['location'] = locations;
       }
+
       if(this.viewBy === 'candidate') {
         this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)
           .subscribe(
