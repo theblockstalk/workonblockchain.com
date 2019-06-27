@@ -61,10 +61,10 @@ const bodySchema = new Schema({
             validate: regexes.url
         },
         employee: {
-            employment_type :  {
+            employment_type :  [{
                 type : String,
                 enum: enumerations.employmentTypes
-            },
+            }],
             expected_annual_salary: {
                 type: Number,
                 min:0
