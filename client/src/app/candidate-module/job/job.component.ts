@@ -80,6 +80,20 @@ export class JobComponent implements OnInit,AfterViewInit {
   employement_availability = constants.workAvailability;
   display_error;
   remote_location_log;
+  job_activity_status = constants.job_activity_status;
+  radio_buttons = constants.radio_buttons;
+  reasons_of_leaving = constants.reasons_of_leaving;
+  job_activity_value;// = 'Not now';
+  currently_employ;
+  job_activity_log;
+  currently_employ_log;
+  reason_selectedValue = [];
+  other_reasons;
+  other_reasons_text_box;
+  reason_selectedValue_log;
+  other_reasons_log;
+  counter_offer;
+  counter_offer_log;
 
   ngAfterViewInit(): void
   {
@@ -90,6 +104,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
+    this.reasons_of_leaving.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.roles = unCheckCheckboxes(constants.workRoles);
@@ -194,6 +214,28 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.volunteer.learning_objectives = volunteer.learning_objectives;
               this.volunteer.roles = volunteer.roles;
             }
+
+            if(data['candidate'].job_activity_status) {
+              console.log(data['candidate'].job_activity_status);
+              if (data['candidate'].job_activity_status.new_work_opportunities) this.job_activity_value = data['candidate'].job_activity_status.new_work_opportunities;
+              if (data['candidate'].job_activity_status.currently_employed) this.currently_employ = data['candidate'].job_activity_status.currently_employed;
+              if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                for (let reason of data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                  for (let option of this.reasons_of_leaving) {
+                    if (option.value === reason) {
+                      option.checked = true;
+                      this.reason_selectedValue.push(reason);
+                    }
+                  }
+                }
+              }
+              if (data['candidate'].job_activity_status.other_reasons) {
+                this.other_reasons_text_box = 1;
+                this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+              }
+              if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+            }
+
             setTimeout(() => {
               $('.selectpicker').selectpicker();
             }, 500);
@@ -362,6 +404,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     let remote_error_count = 0;
     let visaRequired = 0;
     let candidateQuery:any ={};
+    let job_activity_statuses:any ={};
 
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
@@ -542,6 +585,29 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
+    if(!this.job_activity_value) {
+      this.job_activity_log = "Please select current job activity status";
+      this.count++;
+    }
+    if(this.job_activity_value && this.job_activity_value !== 'Not now' && !this.currently_employ){
+      this.currently_employ_log = "Please select current employment";
+      this.count++;
+    }
+    if(this.currently_employ && this.currently_employ === 'Yes'){
+      if(!this.reason_selectedValue || (this.reason_selectedValue && this.reason_selectedValue.length <= 0)) {
+        this.reason_selectedValue_log = "Please select minimum one reason";
+        this.count++;
+      }
+      if(!this.counter_offer){
+        this.counter_offer_log = "Please select yes or no";
+        this.count++;
+      }
+    }
+    if(this.currently_employ === 'Yes' && this.other_reasons_text_box && !this.other_reasons){
+      this.other_reasons_log = "Please enter other details";
+      this.count++;
+    }
+
     if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
@@ -586,6 +652,22 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) candidateQuery.current_currency = this.current_currency;
+
+      job_activity_statuses.new_work_opportunities = this.job_activity_value;
+      if(this.job_activity_value !== 'Not now' && this.currently_employ) job_activity_statuses.currently_employed = this.currently_employ;
+      else inputQuery.unset_currently_employed = true;
+
+      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.reason_selectedValue && this.reason_selectedValue.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.reason_selectedValue;
+      else inputQuery.unset_leaving_current_employ_reasons = true;
+
+      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.other_reasons) job_activity_statuses.other_reasons = this.other_reasons;
+      else inputQuery.unset_other_reasons = true;
+
+      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.counter_offer) job_activity_statuses.counter_offer = this.counter_offer;
+      else inputQuery.unset_counter_offer = true;
+
+      candidateQuery.job_activity_status = job_activity_statuses;
+
       inputQuery.candidate = candidateQuery;
 
       inputQuery.wizardNum = 3;
@@ -890,6 +972,22 @@ export class JobComponent implements OnInit,AfterViewInit {
   populateRoles(value, array) {
     if(array && array.find((obj => obj === value))) return true;
     else false
+  }
+
+  onAreaSelected(e) {
+    if(e.target.checked) {
+      this.reason_selectedValue.push(e.target.value);
+    }
+    else{
+      let updateItem = this.reason_selectedValue.find(x => x === e.target.value);
+      let index = this.reason_selectedValue.indexOf(updateItem);
+      this.reason_selectedValue.splice(index, 1);
+    }
+    this.other_reasons_text_box = 0;
+    if(this.reason_selectedValue.find((obj => obj === 'Other')))
+      this.other_reasons_text_box = 1;
+
+    console.log(this.reason_selectedValue);
   }
 }
 

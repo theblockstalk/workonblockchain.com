@@ -460,6 +460,67 @@
             </div>
           </div>
 
+          <div class="row mt-4" *ngIf="job_activity_status">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-secret"></i> Job activity </h4>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="new_work_opportunities">
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>New work opportunities:</label>
+                <div>
+                  {{new_work_opportunities}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="currently_employed">
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Currently employed:</label>
+                <div>
+                  {{currently_employed}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="leaving_reasons">
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Reasons of leaving your current employer:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let reason of leaving_reasons;'> {{reason}} </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="other_reasons">
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Other reasons:</label>
+                <div>
+                  {{other_reasons}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="counter_offer">
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Consider a counter-offer from your current employer:</label>
+                <div>
+                  {{counter_offer}}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="row mt-4">
             <div class = "col-md-12" >
               <div class="form-group">

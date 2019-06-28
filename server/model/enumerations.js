@@ -36,3 +36,7 @@ module.exports.workTypes = ['employee', 'contractor', 'volunteer'];
 module.exports.pages = ['Privacy Notice', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ','Candidate popup message', 'Company popup message', 'Candidate chat popup message', 'Company chat popup message'];
 
 module.exports.userTypes = ['candidate', 'company'];
+
+module.exports.jobActivityStatus = ['Not now', 'Open to offers (pensive)', 'Actively searching', 'Actively interviewing'];
+
+module.exports.leavingCurrentEmployReasons = ['Higher salary', 'More responsibility', 'More Challenging', 'New technology stack', 'New role', 'Other'];
