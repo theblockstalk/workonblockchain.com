@@ -74,7 +74,10 @@ export class HeaderComponent implements OnInit {
                 this.terms_id = data['candidate']['terms_id'];
                 this.privacy_id = data['candidate']['privacy_id'];
                 if(this.check_route[2] === 'candidate-terms'){}
-                else this.privacy_pop_show();
+                //else {
+                  //if(data['candidate']['latest_status']['status'] === 'created'){}
+                  else this.privacy_pop_show();
+                //}
 
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
@@ -231,10 +234,12 @@ export class HeaderComponent implements OnInit {
         data => {
           if (data) {
             this.new_terms_id = data['_id'];
-            if (this.new_terms_id && this.new_terms_id === this.terms_id) {
-              //console.log('new terms_id');
+            if (this.terms_id) {
+              if (this.new_terms_id && this.new_terms_id === this.terms_id) {
+                //console.log('new terms_id');
+              }
+              else $("#popModalForTerms").modal("show");
             }
-            else $("#popModalForTerms").modal("show");
           }
         }
       );
