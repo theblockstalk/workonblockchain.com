@@ -1,0 +1,27 @@
+<div class = "row mt-3">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>How interested are you in new work opportunities?</label>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <app-c-forme-button-group
+                              [value]="jobActivity" [label]="123"
+                              (selectedValue)="job_activity_status_value"
+                              [options]="job_activity_status"
+                              [errorMsg]="errMsg"
+                              (change)="onChange($event)"
+    ></app-c-forme-button-group>
+  </div>
+  <!--<div class="form-check form-check-inline mt-3">
+    <div *ngFor="let job_activity of job_activity_status;">
+      <input type="radio" id="radio-{{job_activity.value}}" name="job_activity_value" class="d-none" [(ngModel)]="job_activity_value" [checked] = "job_activity_value === job_activity.value" value = {{job_activity.value}}>
+      <label for="radio-{{job_activity.value}}" class="border border py-2 px-lg-5 px-2">
+        {{job_activity.name}}
+      </label>
+    </div>
+  </div>
+  <div class = "invalid-feedback d-inline" *ngIf="!job_activity_value">
+    {{job_activity_log}}
+  </div>-->
+</div>

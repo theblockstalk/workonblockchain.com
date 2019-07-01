@@ -1,10 +1,11 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit,ViewChild } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
 
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
@@ -15,6 +16,7 @@ import {unCheckCheckboxes} from "../../../services/object";
   styleUrls: ['./job.component.css']
 })
 export class JobComponent implements OnInit,AfterViewInit {
+  @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
   info: any = {};
@@ -235,6 +237,8 @@ export class JobComponent implements OnInit,AfterViewInit {
               }
               if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
             }
+
+            console.log(this.job_activity_value);
 
             setTimeout(() => {
               $('.selectpicker').selectpicker();
@@ -585,10 +589,13 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
-    if(!this.job_activity_value) {
+    if(this.candJobActivity.selfValidate()) job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
+    else this.count++;
+
+    /*if(!this.job_activity_value) {
       this.job_activity_log = "Please select current job activity status";
       this.count++;
-    }
+    }*/
     if(this.job_activity_value && this.job_activity_value !== 'Not now' && !this.currently_employ){
       this.currently_employ_log = "Please select current employment";
       this.count++;
@@ -653,7 +660,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) candidateQuery.current_currency = this.current_currency;
 
-      job_activity_statuses.new_work_opportunities = this.job_activity_value;
+      //job_activity_statuses.new_work_opportunities = this.job_activity_value;
       if(this.job_activity_value !== 'Not now' && this.currently_employ) job_activity_statuses.currently_employed = this.currently_employ;
       else inputQuery.unset_currently_employed = true;
 
