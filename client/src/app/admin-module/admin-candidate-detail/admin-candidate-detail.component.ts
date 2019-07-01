@@ -212,6 +212,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 data['contact_number'] = this.contact_number;
               }
 
+              if(data['candidate'] && data['candidate'].base_country){
+                if(data['candidate'].base_country === 'Batswana') data['candidate'].base_country = 'Botswana';
+              }
+
               this.info.push(data);
               this.verify =data['is_verify'];
 

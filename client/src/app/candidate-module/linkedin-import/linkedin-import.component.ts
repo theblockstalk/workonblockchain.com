@@ -343,6 +343,7 @@ export class LinkedinImportComponent implements OnInit {
 
           var obj = JSON.parse(linkedinData);
           let info;
+          let candidateData: any = {};
           let name;
           if (!obj.basics && !obj.work && !obj.education) {
             this.error_log = "There is an error message. Your file formate is not supported.";
@@ -351,7 +352,12 @@ export class LinkedinImportComponent implements OnInit {
           else {
             if (obj.basics.name || obj.basics.phone || obj.basics.summary) {
               name = obj.basics.name.split(' ');
-              info = {first_name: name[0], last_name: name[1] , description : obj.basics.summary};
+              candidateData.description = obj.basics.summary;
+              info = {
+                first_name: name[0],
+                last_name: name[1] ,
+                candidate : candidateData
+              };
             }
 
             if(obj.work){
@@ -402,8 +408,9 @@ export class LinkedinImportComponent implements OnInit {
 
 
             if (obj.work || obj.education || obj.basics ) {
-              info.education_history = education_json_array;
-              info.work_history = experiencearray;
+              candidateData.education_history = education_json_array;
+              candidateData.work_history = experiencearray;
+              info.candidate = candidateData;
               info.wizardNum = 1;
               backendService.edit_candidate_profile(this.currentUser._id, info, false )
                 .subscribe(
