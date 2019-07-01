@@ -74,10 +74,7 @@ export class HeaderComponent implements OnInit {
                 this.terms_id = data['candidate']['terms_id'];
                 this.privacy_id = data['candidate']['privacy_id'];
                 if(this.check_route[2] === 'candidate-terms'){}
-                //else {
-                  //if(data['candidate']['latest_status']['status'] === 'created'){}
-                  else this.privacy_pop_show();
-                //}
+                else this.privacy_pop_show();
 
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
