@@ -96,6 +96,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   other_reasons_log;
   counter_offer;
   counter_offer_log;
+  allData = 0 ;
 
   ngAfterViewInit(): void
   {
@@ -234,8 +235,10 @@ export class JobComponent implements OnInit,AfterViewInit {
               if (data['candidate'].job_activity_status.other_reasons) {
                 this.other_reasons_text_box = 1;
                 this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+                console.log('this.other_reasons: ' + this.other_reasons);
               }
               if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+              this.allData = 1;
             }
 
             console.log(this.job_activity_value);
@@ -589,18 +592,31 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
-    if(this.candJobActivity.selfValidate()) job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
-    else this.count++;
+    if(!this.candJobActivity.selfValidate()) this.count++;
+
+    if(this.candJobActivity.jobActivity === 'Not now'){}
+    else{
+      if(!this.candJobActivity.currentEmploymentValidate()) this.count++;
+      if(this.candJobActivity.currentEmploy === 'Yes') {
+        if (!this.candJobActivity.validateReasons()) this.count++;
+        if(this.candJobActivity.reasonsOfLeaving.find((obj => obj === 'Other')))
+          if (!this.candJobActivity.selfValidateOtherReasons()) this.count++;
+
+        if (!this.candJobActivity.validateCounterOffer()) this.count++;
+      }
+    }
+
+    console.log(this.candJobActivity);
 
     /*if(!this.job_activity_value) {
       this.job_activity_log = "Please select current job activity status";
       this.count++;
     }*/
-    if(this.job_activity_value && this.job_activity_value !== 'Not now' && !this.currently_employ){
+    /*if(this.job_activity_value && this.job_activity_value !== 'Not now' && !this.currently_employ){
       this.currently_employ_log = "Please select current employment";
       this.count++;
-    }
-    if(this.currently_employ && this.currently_employ === 'Yes'){
+    }*/
+    /*if(this.candJobActivity.currentEmploy === 'Yes'){
       if(!this.reason_selectedValue || (this.reason_selectedValue && this.reason_selectedValue.length <= 0)) {
         this.reason_selectedValue_log = "Please select minimum one reason";
         this.count++;
@@ -609,8 +625,8 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.counter_offer_log = "Please select yes or no";
         this.count++;
       }
-    }
-    if(this.currently_employ === 'Yes' && this.other_reasons_text_box && !this.other_reasons){
+    }*/
+    if(this.candJobActivity.currentEmploy === 'Yes' && this.other_reasons_text_box && !this.other_reasons){
       this.other_reasons_log = "Please enter other details";
       this.count++;
     }
@@ -660,17 +676,21 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
       if(this.current_currency) candidateQuery.current_currency = this.current_currency;
 
-      //job_activity_statuses.new_work_opportunities = this.job_activity_value;
-      if(this.job_activity_value !== 'Not now' && this.currently_employ) job_activity_statuses.currently_employed = this.currently_employ;
+      job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;
 
-      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.reason_selectedValue && this.reason_selectedValue.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.reason_selectedValue;
+      //job_activity_statuses.new_work_opportunities = this.job_activity_value;
+      //if(this.job_activity_value !== 'Not now' && this.currently_employ) job_activity_statuses.currently_employed = this.currently_employ;
+      //else inputQuery.unset_currently_employed = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.reasonsOfLeaving && this.candJobActivity.reasonsOfLeaving.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.candJobActivity.reasonsOfLeaving;
       else inputQuery.unset_leaving_current_employ_reasons = true;
 
-      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.other_reasons) job_activity_statuses.other_reasons = this.other_reasons;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.otherReasons) job_activity_statuses.other_reasons = this.candJobActivity.otherReasons;
       else inputQuery.unset_other_reasons = true;
 
-      if(this.job_activity_value !== 'Not now' && this.currently_employ === 'Yes' && this.counter_offer) job_activity_statuses.counter_offer = this.counter_offer;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.counterOffer) job_activity_statuses.counter_offer = this.candJobActivity.counterOffer;
       else inputQuery.unset_counter_offer = true;
 
       candidateQuery.job_activity_status = job_activity_statuses;

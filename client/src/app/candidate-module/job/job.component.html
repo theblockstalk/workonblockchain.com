@@ -46,9 +46,18 @@
       <div class="row p-4 border bg-white">
         <div class="col-md-12">
           <h4><i class="fas fa-briefcase mr-1"></i> Work preferences</h4>
-          <app-i-forme-cand-job-activity [jobActivity]="job_activity_value"></app-i-forme-cand-job-activity>
+          <!--cand-job-activity starts-->
+          <app-i-forme-cand-job-activity *ngIf="allData"
+            [jobActivity]="job_activity_value"
+            [currentEmploy]="currently_employ"
+            [reasonsOfLeaving]="reason_selectedValue"
+            [otherReasons]="other_reasons"
+            [counterOffer]="counter_offer"
+          >
+          </app-i-forme-cand-job-activity>
+          <!--cand-job-activity ends-->
 
-          <div class = "row mt-3">
+          <!--<div class = "row mt-3">
             <div class="col-md-12">
               <div class="form-group">
                 <label>How interested are you in new work opportunities?</label>
@@ -65,15 +74,16 @@
                 {{job_activity_log}}
               </div>
             </div>
-          </div>
-          <div class = "row mt-3" *ngIf="job_activity_value && job_activity_value !== 'Not now'">
+          </div>-->
+
+          <!--<div class = "row mt-3" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now'">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Are you currently employed?</label>
               </div>
             </div>
           </div>
-          <div class = "row mt-1" *ngIf="job_activity_value && job_activity_value !== 'Not now'">
+          <div class = "row mt-1" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now'">
             <div class="col-md-12">
               <div class="form-check-inline">
                 <div class="mr-5" *ngFor="let radio_button of radio_buttons;">
@@ -87,8 +97,8 @@
             <div class = "ml-3 invalid-feedback d-inline" *ngIf="!currently_employ">
               {{currently_employ_log}}
             </div>
-          </div>
-          <div class = "row mt-3" *ngIf="job_activity_value && job_activity_value !== 'Not now' && currently_employ === 'Yes'">
+          </div>-->
+          <!--<div class = "row mt-3" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes'">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Why are you interested in leaving you current employer?</label>
@@ -108,8 +118,9 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class = "row" *ngIf="job_activity_value && job_activity_value !== 'Not now' && currently_employ === 'Yes' && other_reasons_text_box">
+          </div>-->
+
+          <!--<div class = "row" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && other_reasons_text_box">
             <div class="col-md-6">
               <div class="form-group">
                 <input type="text" class="form-control" [(ngModel)]='other_reasons' name="other_reasons">
@@ -118,15 +129,15 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class = "row mt-3" *ngIf="job_activity_value && job_activity_value !== 'Not now' && currently_employ === 'Yes'">
+          </div>-->
+          <!--<div class = "row mt-3" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes'">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Would you consider a counter-offer from your current employer?</label>
               </div>
             </div>
           </div>
-          <div class = "row mt-1" *ngIf="job_activity_value && job_activity_value !== 'Not now' && currently_employ === 'Yes'">
+          <div class = "row mt-1" *ngIf="this.candJobActivity.jobActivity && this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes'">
             <div class="col-md-12">
               <div class="form-check-inline">
                 <div class="mr-5" *ngFor="let radio_button of radio_buttons;">
@@ -140,7 +151,7 @@
             <div class = "ml-3 invalid-feedback d-inline" *ngIf="!counter_offer">
               {{counter_offer_log}}
             </div>
-          </div>
+          </div>-->
 
           <div class = "row mt-4">
             <div class="col-md-6">
