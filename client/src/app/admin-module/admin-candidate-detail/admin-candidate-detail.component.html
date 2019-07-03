@@ -468,56 +468,32 @@
 
           <div class="row" *ngIf="new_work_opportunities">
             <div class = "col-md-12" >
-              <div class="form-group">
-                <label>New work opportunities:</label>
-                <div>
-                  {{new_work_opportunities}}
-                </div>
-              </div>
+              <app-c-formv-text label="New work opportunities:" [value]="new_work_opportunities"></app-c-formv-text>
             </div>
           </div>
 
           <div class="row" *ngIf="currently_employed">
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Currently employed:</label>
-                <div>
-                  {{currently_employed}}
-                </div>
-              </div>
+            <div class = "col-md-12">
+              <app-c-formv-text label="Currently employed:" [value]="currently_employed"></app-c-formv-text>
             </div>
           </div>
 
           <div class="row" *ngIf="leaving_reasons">
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Reasons of leaving your current employer:</label>
-                <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let reason of leaving_reasons;'> {{reason}} </div>
-                </div>
-              </div>
+            <div class = "col-md-12">
+              <app-c-formv-list label="Reasons of leaving your current employer:" [value]="leaving_reasons">
+              </app-c-formv-list>
             </div>
           </div>
 
           <div class="row" *ngIf="other_reasons">
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Other reasons:</label>
-                <div>
-                  {{other_reasons}}
-                </div>
-              </div>
+            <div class = "col-md-12">
+              <app-c-formv-text label="Other reasons:" [value]="other_reasons"></app-c-formv-text>
             </div>
           </div>
 
           <div class="row" *ngIf="counter_offer">
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Consider a counter-offer from your current employer:</label>
-                <div>
-                  {{counter_offer}}
-                </div>
-              </div>
+            <div class = "col-md-12">
+              <app-c-formv-text label="Consider a counter-offer from your current employer:" [value]="counter_offer"></app-c-formv-text>
             </div>
           </div>
 
