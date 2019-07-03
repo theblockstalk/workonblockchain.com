@@ -82,20 +82,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   employement_availability = constants.workAvailability;
   display_error;
   remote_location_log;
-  job_activity_status = constants.job_activity_status;
-  radio_buttons = constants.radio_buttons;
   reasons_of_leaving = constants.reasons_of_leaving;
   job_activity_value;// = 'Not now';
   currently_employ;
-  job_activity_log;
-  currently_employ_log;
   reason_selectedValue = [];
   other_reasons;
-  other_reasons_text_box;
-  reason_selectedValue_log;
-  other_reasons_log;
   counter_offer;
-  counter_offer_log;
   allData = 0 ;
 
   ngAfterViewInit(): void
@@ -233,7 +225,6 @@ export class JobComponent implements OnInit,AfterViewInit {
                 }
               }
               if (data['candidate'].job_activity_status.other_reasons) {
-                this.other_reasons_text_box = 1;
                 this.other_reasons = data['candidate'].job_activity_status.other_reasons;
                 console.log('this.other_reasons: ' + this.other_reasons);
               }
@@ -608,29 +599,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     console.log(this.candJobActivity);
 
-    /*if(!this.job_activity_value) {
-      this.job_activity_log = "Please select current job activity status";
-      this.count++;
-    }*/
-    /*if(this.job_activity_value && this.job_activity_value !== 'Not now' && !this.currently_employ){
-      this.currently_employ_log = "Please select current employment";
-      this.count++;
-    }*/
-    /*if(this.candJobActivity.currentEmploy === 'Yes'){
-      if(!this.reason_selectedValue || (this.reason_selectedValue && this.reason_selectedValue.length <= 0)) {
-        this.reason_selectedValue_log = "Please select minimum one reason";
-        this.count++;
-      }
-      if(!this.counter_offer){
-        this.counter_offer_log = "Please select yes or no";
-        this.count++;
-      }
-    }*/
-    if(this.candJobActivity.currentEmploy === 'Yes' && this.other_reasons_text_box && !this.other_reasons){
-      this.other_reasons_log = "Please enter other details";
-      this.count++;
-    }
-
     if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
@@ -679,10 +647,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;
-
-      //job_activity_statuses.new_work_opportunities = this.job_activity_value;
-      //if(this.job_activity_value !== 'Not now' && this.currently_employ) job_activity_statuses.currently_employed = this.currently_employ;
-      //else inputQuery.unset_currently_employed = true;
 
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.reasonsOfLeaving && this.candJobActivity.reasonsOfLeaving.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.candJobActivity.reasonsOfLeaving;
       else inputQuery.unset_leaving_current_employ_reasons = true;
@@ -999,22 +963,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   populateRoles(value, array) {
     if(array && array.find((obj => obj === value))) return true;
     else false
-  }
-
-  onAreaSelected(e) {
-    if(e.target.checked) {
-      this.reason_selectedValue.push(e.target.value);
-    }
-    else{
-      let updateItem = this.reason_selectedValue.find(x => x === e.target.value);
-      let index = this.reason_selectedValue.indexOf(updateItem);
-      this.reason_selectedValue.splice(index, 1);
-    }
-    this.other_reasons_text_box = 0;
-    if(this.reason_selectedValue.find((obj => obj === 'Other')))
-      this.other_reasons_text_box = 1;
-
-    console.log(this.reason_selectedValue);
   }
 }
 
