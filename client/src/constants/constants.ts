@@ -454,7 +454,7 @@ export const constants = {
   ],
   job_activity_status: [
     {name:'Not now', value:'Not now', checked:false},
-    {name:'Open to offers (passive)', value:'Open to offers (pensive)', checked:false},
+    {name:'Open to offers (passive)', value:'Open to offers (passive)', checked:false},
     {name:'Actively searching', value:'Actively searching', checked:false},
     {name:'Actively interviewing', value:'Actively interviewing', checked:false}
   ],
@@ -465,7 +465,7 @@ export const constants = {
   reasons_of_leaving: [
     {name: 'Higher salary', value: "Higher salary", checked: false},
     {name: 'More responsibility', value: "More responsibility", checked: false},
-    {name: 'More Challenging', value: "More challenging", checked: false},
+    {name: 'More challenging', value: "More challenging", checked: false},
     {name: 'New technology stack', value: "New technology stack", checked: false},
     {name: 'New role', value: "New role", checked: false},
     {name: 'Other', value: "Other", checked: false}
