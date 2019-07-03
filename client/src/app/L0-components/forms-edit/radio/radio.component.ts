@@ -10,7 +10,7 @@ export class RadioComponent implements OnInit {
   @Input() value: string;
   @Input() options: Array<string>;
   @Input() errorMsg: string;
-  @Input() radioFor: string;
+  @Input() id: string; //used to differentiate b/w radio buttons on same page
   @Output() selectedOption: EventEmitter<string> = new EventEmitter<string>();
   constructor() { }
 

@@ -442,7 +442,6 @@ module.exports.endpoint = async function (req, res) {
 
         if(candidateQuery.job_activity_status) {
             let job_activity_status = candidateQuery.job_activity_status;
-            console.log(job_activity_status);
             if (job_activity_status.new_work_opportunities) updateCandidateUser['candidate.job_activity_status.new_work_opportunities'] = job_activity_status.new_work_opportunities;
 
             if(queryBody.unset_currently_employed) unset['candidate.job_activity_status.currently_employed'] = 1;
