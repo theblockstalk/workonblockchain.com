@@ -29,6 +29,8 @@ import { CommercialSkillsComponent } from '../../L1-items/candidate/commercial-s
 import { LanguagesComponent } from '../../L1-items/candidate/languages/languages.component';
 import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work-history.component';
 import { EducationHistoryComponent } from '../../L1-items/candidate/education-history/education-history.component';
+import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
+import {constants} from '../../../constants/constants';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -65,6 +67,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(LanguagesComponent) languageExp: LanguagesComponent;
   @ViewChild(WorkHistoryComponent) workHistoryComp: WorkHistoryComponent;
   @ViewChild(EducationHistoryComponent) educationHistoryComp: EducationHistoryComponent;
+  @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
+
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
   email_address;
@@ -105,6 +109,13 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   education_history = [];
   error_msg;
   errMsg;
+  reasons_of_leaving = constants.reasons_of_leaving;
+  job_activity_value;// = 'Not now';
+  currently_employ;
+  reason_selectedValue = [];
+  other_reasons;
+  counter_offer;
+  allData = 0;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -119,6 +130,12 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.reasons_of_leaving.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+
     const candidateSubDoc = this.userDoc['candidate'];
     this.email_address = this.userDoc['email'];
     this.first_name = this.userDoc['first_name'];
@@ -137,6 +154,29 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(candidateSubDoc.base_city) this.city = candidateSubDoc.base_city;
     if(candidateSubDoc.current_salary) this.current_salary = candidateSubDoc.current_salary;
     if(candidateSubDoc.current_currency) this.current_currency = candidateSubDoc.current_currency;
+
+    if(candidateSubDoc.job_activity_status) {
+      console.log(candidateSubDoc.job_activity_status);
+      if (candidateSubDoc.job_activity_status.new_work_opportunities) this.job_activity_value = candidateSubDoc.job_activity_status.new_work_opportunities;
+      if (candidateSubDoc.job_activity_status.currently_employed) this.currently_employ = candidateSubDoc.job_activity_status.currently_employed;
+      if (candidateSubDoc.job_activity_status.leaving_current_employ_reasons) {
+        for (let reason of candidateSubDoc.job_activity_status.leaving_current_employ_reasons) {
+          for (let option of this.reasons_of_leaving) {
+            if (option.value === reason) {
+              option.checked = true;
+              this.reason_selectedValue.push(reason);
+            }
+          }
+        }
+      }
+      if (candidateSubDoc.job_activity_status.other_reasons) {
+        this.other_reasons = candidateSubDoc.job_activity_status.other_reasons;
+      }
+      if (candidateSubDoc.job_activity_status.counter_offer) this.counter_offer = candidateSubDoc.job_activity_status.counter_offer;
+      this.allData = 1;
+    }
+    else this.allData = 1;
+
     if(candidateSubDoc.employee) {
       this.employeeCheck = true;
       this.work_types.push('employee');
@@ -184,6 +224,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     let queryBody : any = {};
     let candidateBody : any = {};
     let blockchainBody : any = {};
+    let job_activity_statuses:any ={};
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
     else errorCount++;
@@ -375,10 +416,22 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
     else queryBody.unset_education_history = true;
 
-    candidateBody.blockchain = blockchainBody;
-    queryBody.candidate = candidateBody;
+    if(!this.candJobActivity.selfValidate()) errorCount++;
+
+    if(this.candJobActivity.jobActivity === 'Not now'){}
+    else{
+      if(!this.candJobActivity.currentEmploymentValidate()) errorCount++;
+      if(this.candJobActivity.currentEmploy === 'Yes') {
+        if (!this.candJobActivity.validateReasons()) errorCount++;
+        if(this.candJobActivity.reasonsOfLeaving.find((obj => obj === 'Other')))
+          if (!this.candJobActivity.selfValidateOtherReasons()) errorCount++;
+
+        if (!this.candJobActivity.validateCounterOffer()) errorCount++;
+      }
+    }
+
+    console.log(this.candJobActivity);
     console.log(errorCount);
-    console.log(queryBody);
 
     if(this.profileImage.imageCropData.image) {
       const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
@@ -407,6 +460,24 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
         const locations = this.changeLocationToBEFormat(this.volunteerType.volunteer['location']);
         this.volunteerType.volunteer['location'] = locations;
       }
+
+      job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
+      else queryBody.unset_currently_employed = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.reasonsOfLeaving && this.candJobActivity.reasonsOfLeaving.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.candJobActivity.reasonsOfLeaving;
+      else queryBody.unset_leaving_current_employ_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.otherReasons) job_activity_statuses.other_reasons = this.candJobActivity.otherReasons;
+      else queryBody.unset_other_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.counterOffer) job_activity_statuses.counter_offer = this.candJobActivity.counterOffer;
+      else queryBody.unset_counter_offer = true;
+
+      candidateBody.job_activity_status = job_activity_statuses;
+      candidateBody.blockchain = blockchainBody;
+      queryBody.candidate = candidateBody;
+      console.log(queryBody);
 
       if(this.viewBy === 'candidate') {
         this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)

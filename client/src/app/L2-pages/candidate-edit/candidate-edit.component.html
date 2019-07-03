@@ -102,6 +102,17 @@
               </div>
             </div>
 
+            <!--cand-job-activity starts-->
+            <app-i-forme-cand-job-activity *ngIf="allData"
+              [jobActivity]="job_activity_value"
+              [currentEmploy]="currently_employ"
+              [reasonsOfLeaving]="reason_selectedValue"
+              [otherReasons]="other_reasons"
+              [counterOffer]="counter_offer"
+            >
+            </app-i-forme-cand-job-activity>
+            <!--cand-job-activity ends-->
+
             <app-i-forme-current-salary [current_currency]="current_currency" [current_salary]="current_salary"></app-i-forme-current-salary>
 
             <div class="row">

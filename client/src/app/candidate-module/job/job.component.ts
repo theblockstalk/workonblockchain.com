@@ -88,7 +88,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   reason_selectedValue = [];
   other_reasons;
   counter_offer;
-  allData = 0 ;
+  allData = 0;
 
   ngAfterViewInit(): void
   {
@@ -231,6 +231,7 @@ export class JobComponent implements OnInit,AfterViewInit {
               if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
               this.allData = 1;
             }
+            else this.allData = 1;
 
             console.log(this.job_activity_value);
 
