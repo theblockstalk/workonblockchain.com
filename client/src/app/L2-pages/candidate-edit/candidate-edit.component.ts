@@ -156,7 +156,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(candidateSubDoc.current_currency) this.current_currency = candidateSubDoc.current_currency;
 
     if(candidateSubDoc.job_activity_status) {
-      console.log(candidateSubDoc.job_activity_status);
       if (candidateSubDoc.job_activity_status.new_work_opportunities) this.job_activity_value = candidateSubDoc.job_activity_status.new_work_opportunities;
       if (candidateSubDoc.job_activity_status.currently_employed) this.currently_employ = candidateSubDoc.job_activity_status.currently_employed;
       if (candidateSubDoc.job_activity_status.leaving_current_employ_reasons) {
@@ -430,9 +429,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       }
     }
 
-    console.log(this.candJobActivity);
-    console.log(errorCount);
-
     if(this.profileImage.imageCropData.image) {
       const file = this.profileImage.dataURLtoFile(this.profileImage.imageCropData.image, this.profileImage.imageName);
       const formData = new FormData();
@@ -477,7 +473,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       candidateBody.job_activity_status = job_activity_statuses;
       candidateBody.blockchain = blockchainBody;
       queryBody.candidate = candidateBody;
-      console.log(queryBody);
 
       if(this.viewBy === 'candidate') {
         this.authenticationService.edit_candidate_profile(this.userDoc['_id'], queryBody, false)

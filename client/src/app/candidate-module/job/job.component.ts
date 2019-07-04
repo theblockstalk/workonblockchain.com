@@ -211,7 +211,6 @@ export class JobComponent implements OnInit,AfterViewInit {
             }
 
             if(data['candidate'].job_activity_status) {
-              console.log(data['candidate'].job_activity_status);
               if (data['candidate'].job_activity_status.new_work_opportunities) this.job_activity_value = data['candidate'].job_activity_status.new_work_opportunities;
               if (data['candidate'].job_activity_status.currently_employed) this.currently_employ = data['candidate'].job_activity_status.currently_employed;
               if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
@@ -226,14 +225,11 @@ export class JobComponent implements OnInit,AfterViewInit {
               }
               if (data['candidate'].job_activity_status.other_reasons) {
                 this.other_reasons = data['candidate'].job_activity_status.other_reasons;
-                console.log('this.other_reasons: ' + this.other_reasons);
               }
               if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
               this.allData = 1;
             }
             else this.allData = 1;
-
-            console.log(this.job_activity_value);
 
             setTimeout(() => {
               $('.selectpicker').selectpicker();
@@ -597,8 +593,6 @@ export class JobComponent implements OnInit,AfterViewInit {
         if (!this.candJobActivity.validateCounterOffer()) this.count++;
       }
     }
-
-    console.log(this.candJobActivity);
 
     if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)

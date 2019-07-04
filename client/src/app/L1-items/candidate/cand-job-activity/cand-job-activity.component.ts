@@ -28,8 +28,6 @@ export class CandJobActivityComponent implements OnInit {
 
   ngOnInit() {
     if(this.otherReasons) this.other_reasons_text_box = 1;
-
-    console.log(this.reasonsOfLeaving);
   }
 
   selfValidate() {
@@ -47,7 +45,6 @@ export class CandJobActivityComponent implements OnInit {
   }
 
   currentEmploymentValidate(){
-    console.log('in currentEmploymentValidate');
     if(this.jobActivity && this.jobActivity !== 'Not now'){
       if(!this.currentEmploy){
         this.currentEmployerrMsg = "Please select current employment";
@@ -59,19 +56,16 @@ export class CandJobActivityComponent implements OnInit {
   }
 
   selectEmployment(event){
-    console.log('selectEmployment');
     this.currentEmploy = event.target.value;
     this.currentEmployerrMsg = '';
   }
 
   selectCounterOffer(event){
-    console.log('selectCounterOffer');
     this.counterOffer = event.target.value;
     this.counterOfferErrMsg = '';
   }
 
   validateCounterOffer(){
-    console.log('in validateCounterOffer');
     if(this.jobActivity && this.jobActivity !== 'Not now'){
       if(!this.counterOffer){
         this.counterOfferErrMsg = "Please select yes or no";
@@ -83,7 +77,6 @@ export class CandJobActivityComponent implements OnInit {
   }
 
   validateReasons(){
-    console.log('in validateReasons');
     if(!this.reasonsOfLeaving) {
       this.errMsgLeavingReasons = 'Please select atleast one reason';
       return false;

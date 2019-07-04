@@ -350,7 +350,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 if(data['candidate'].job_activity_status) {
                   this.job_activity_status = 1;
-                  console.log(data['candidate'].job_activity_status);
                   if(data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
                   if(data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
                   if(data['candidate'].job_activity_status.leaving_current_employ_reasons) {
