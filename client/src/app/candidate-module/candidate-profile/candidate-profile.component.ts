@@ -62,6 +62,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   stackoverflow_url;
   personal_website_url;
   country_code;
+  currently_employed;
+  leaving_reasons;
+  other_reasons;
+  counter_offer;
+  new_work_opportunities;
+  job_activity_status;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -342,6 +348,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
                 if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
 
+                if(data['candidate'].job_activity_status) {
+                  this.job_activity_status = 1;
+                  if(data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
+                  if(data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
+                  if(data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                    this.leaving_reasons = data['candidate'].job_activity_status.leaving_current_employ_reasons;
+                    this.leaving_reasons = this.leaving_reasons.sort();
+                  }
+                  if(data['candidate'].job_activity_status.other_reasons) this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+                  if(data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+                }
 
                 if(data['image'] != null )
                 {

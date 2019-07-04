@@ -46,6 +46,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   country_code;
   templates;
   routerUrl;
+  currently_employed;
+  leaving_reasons;
+  other_reasons;
+  counter_offer;
+  new_work_opportunities;
+  job_activity_status;
+
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -210,6 +217,18 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                 else this.contact_number = contact_number[0];
 
                 data['contact_number'] = this.contact_number;
+              }
+
+              if(data['candidate'].job_activity_status) {
+                this.job_activity_status = 1;
+                if (data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
+                if (data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
+                if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                  this.leaving_reasons = data['candidate'].job_activity_status.leaving_current_employ_reasons;
+                  this.leaving_reasons = this.leaving_reasons.sort();
+                }
+                if (data['candidate'].job_activity_status.other_reasons) this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+                if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
               }
 
               if(data['candidate'] && data['candidate'].base_country){

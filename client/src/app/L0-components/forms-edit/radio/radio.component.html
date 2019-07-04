@@ -1,12 +1,20 @@
 <div class="form-group">
   <label>{{label}}</label>
-  <div class="form-check" *ngFor="let opt of options">
-    <input type="radio" id="{{opt}}" class="form-check-input" [(ngModel)]="value" (ngModelChange)="selectedOption.emit($event.target.value)">
-    <label class="form-check-label simple-radio-button" for="{{opt}}">
-      {{opt}}
+</div>
+<div class="form-check-inline">
+  <div class="mr-5" *ngFor="let opt of options">
+    <input type="radio" id="{{opt.name}}-{{id}}" class="form-check-input"
+           name="radiogroup-{{opt.name}}-{{id}}"
+           value="{{opt.value}}"
+           (change)="selectedItem($event)"
+           [checked]="selectedValue(opt.value)? true: null">
+    <label class="form-check-label simple-radio-button" for="{{opt.name}}-{{id}}">
+      {{opt.name}}
     </label>
   </div>
-  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
-    {{errorMsg}}
-  </div>
+</div>
+<div class="form-group">
+</div>
+<div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+  {{errorMsg}}
 </div>

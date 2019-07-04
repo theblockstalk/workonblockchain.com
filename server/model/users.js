@@ -104,6 +104,31 @@ const UserSchema = new Schema({
     },
     candidate: {
         type: {
+            job_activity_status:{
+                type: {
+                    new_work_opportunities: {
+                        type: String,
+                        enum: enumerations.jobActivityStatus
+                    },
+                    currently_employed:{
+                        type:String,
+                        enum: ['Yes','No']
+                    },
+                    leaving_current_employ_reasons:{
+                        type: [{
+                            type: String,
+                            enum: enumerations.leavingCurrentEmployReasons
+                        }]
+                    },
+                    other_reasons:{ //leaving_current_employ_reasons is other then it will be filled
+                      type: String
+                    },
+                    counter_offer:{
+                        type:String,
+                        enum: ['Yes','No']
+                    }
+                }
+            },
             base_city: String,
             base_country: {
                 type: String,
