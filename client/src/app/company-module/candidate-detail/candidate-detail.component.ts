@@ -74,6 +74,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   rolesData = constants.workRoles;
   already_approached = 0;
   country_code;
+  cand_job_activity;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -434,6 +435,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 }
               }
 
+              if(dataa['candidate'].job_activity_status) {
+                this.cand_job_activity = dataa['candidate'].job_activity_status.new_work_opportunities;
+              }
             }
           },
           error => {
