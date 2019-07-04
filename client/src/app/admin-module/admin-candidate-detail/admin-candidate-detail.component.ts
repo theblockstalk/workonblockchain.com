@@ -222,14 +222,18 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               if(data['candidate'].job_activity_status) {
                 this.job_activity_status = 1;
                 console.log(data['candidate'].job_activity_status);
-                if(data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
-                if(data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
-                if(data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                if (data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
+                if (data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
+                if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
                   this.leaving_reasons = data['candidate'].job_activity_status.leaving_current_employ_reasons;
                   this.leaving_reasons = this.leaving_reasons.sort();
                 }
-                if(data['candidate'].job_activity_status.other_reasons) this.other_reasons = data['candidate'].job_activity_status.other_reasons;
-                if(data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+                if (data['candidate'].job_activity_status.other_reasons) this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+                if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+              }
+              
+              if(data['candidate'] && data['candidate'].base_country){
+                if(data['candidate'].base_country === 'Batswana') data['candidate'].base_country = 'Botswana';
               }
 
               this.info.push(data);

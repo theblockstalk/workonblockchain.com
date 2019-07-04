@@ -187,7 +187,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
                 if(data['candidate'] && data['candidate'].base_country){
-                  this.base_country = data['candidate'].base_country;
+                  if(data['candidate'].base_country === 'Batswana') this.base_country = 'Botswana';
+                  else this.base_country = data['candidate'].base_country;
                 }
                 if(data['candidate'] && data['candidate'].base_city){
                   this.base_city = data['candidate'].base_city;
