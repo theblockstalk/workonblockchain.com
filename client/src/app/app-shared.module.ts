@@ -70,6 +70,8 @@ import { TitleComponent } from './L1-items/pages/title/title.component';
 import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.component';
 import { PagesComponent } from './L2-pages/pages/pages.component';
 import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/progress-bar.component';
+import { ImageComponent} from './L0-components/forms-view/image/image.component';
+import { NameComponent } from './L0-components/forms-view/name/name.component';
 
 @NgModule({
   imports: [
@@ -89,7 +91,8 @@ import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/pro
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent,ProgressBarComponent
+    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
+    ImageComponent, NameComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -105,7 +108,7 @@ import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/pro
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent, PagesComponent,ProgressBarComponent
+    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, NameComponent
   ]
 })
 export class SharedModule { }
