@@ -7,6 +7,7 @@ import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -106,6 +107,68 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
+          }
+          for(let i=0;i<this.info.length;i++){
+            if(this.info[i].candidate.latest_status.status !== 'approved') {
+              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 0;
+              if (this.info[i].candidate.latest_status.status === 'wizard') {
+                this.info[i].candidate_badge = '4 days till review';
+                this.info[i].candidate_badge_color = 'success';
+                //console.log('will be a green badge ['+i+']');
+                wizard = 1;
+              }
+
+              if (this.info[i].candidate.github_account) linking_accounts++;
+              if (this.info[i].candidate.stackexchange_account) linking_accounts++;
+              if (this.info[i].candidate.linkedin_account) linking_accounts++;
+              if (this.info[i].candidate.medium_account) linking_accounts++;
+              if (this.info[i].candidate.stackoverflow_url) linking_accounts++;
+              if (this.info[i].candidate.personal_website_url) linking_accounts++;
+
+              if (linking_accounts >= 2) {
+                this.info[i].candidate_badge = '4 days till review';
+                this.info[i].candidate_badge_color = 'success';
+                //console.log('will be a green badge ['+i+']');
+                wizard = 1;
+              }
+
+              let twoDays = new Date();
+              let fourDays = new Date();
+              twoDays.setSeconds(twoDays.getSeconds() - 172800); //2 days ago
+              fourDays.setSeconds(fourDays.getSeconds() - 345600); //4 days ago
+              //console.log('fourDays ['+i+']:'+fourDays);
+              let status_date = new Date(this.info[i].candidate.latest_status.timestamp);
+              //status_date = formatDate(status_date, 'yyyy/MM/dd', 'en');
+              //console.log("status_date: " + status_date);
+              //console.log("latest status ["+i+"]: " + this.info[i].candidate.latest_status.status);
+
+              if (this.info[i].candidate.work_history && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
+                console.log('in history if ' + i);
+                this.info[i].candidate_badge = '2 days till review';
+                this.info[i].candidate_badge_color = 'warning';
+                //console.log('will be an orange badge ['+i+']');
+                work_history = 1;
+              }
+              if ((work_history && this.info[i].candidate.blockchain) && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
+                if ((this.info[i].candidate.blockchain.commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms) && (this.info[i].candidate.blockchain.experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms) && (this.info[i].candidate.blockchain.commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills)) {
+                  console.log('in blockchain if ' + i);
+                  this.info[i].candidate_badge = '2 days till review';
+                  this.info[i].candidate_badge_color = 'warning';
+                  //console.log('will be an orange badge ['+i+']');
+                  blockchain_platforms = 1;
+                }
+              }
+              if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
+                console.log('in Priority if ' + i);
+                this.info[i].candidate_badge = 'Priority review';
+                this.info[i].candidate_badge_color = 'danger';
+                //console.log('will be a red badge ['+i+']');
+              }
+            }
+            else{
+              this.info[i].candidate_badge = 'Approved';
+              this.info[i].candidate_badge_color = 'primary';
+            }
           }
           this.setPage(1);
           this.length=0;

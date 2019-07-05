@@ -236,9 +236,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
               if(data['candidate'].work_history) {
                 for(let workHistory of data['candidate'].work_history){
-                  this.work_history_progress = 1;
-                  if(workHistory.description.length < 100){
-                    this.work_history_progress = 0;
+                  this.work_history_progress = 0;
+                  if(workHistory.description.length > 100){
+                    this.work_history_progress = 1;
                     if(this.linked_websites>=2) {
                       this.progress_bar_class = 'progress-bar bg-info';
                       this.progress_bar_value = 50;
@@ -386,16 +386,21 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                   if(this.description_commercial_skills.length > 100) commercial_skills_check = 1;
                 }
               }
-              console.log(this.work_history_progress);
-              console.log(this.linked_websites);
+              console.log('WH: ' + this.work_history_progress);
+              console.log('sites: ' + this.linked_websites);
+
               if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
-                if(this.linked_websites>=2 && this.work_history_progress === 1) this.progress_bar_value = 75;
+                if(this.linked_websites>=2 && this.work_history_progress === 1) {
+                  console.log('in all BC if');
+                  this.progress_bar_class = 'progress-bar bg-info';
+                  this.progress_bar_value = 75;
+                }
               }
 
 
               if(data['image'] != null )
               {
-                if(this.linked_websites>=2 && this.work_history_progress) {
+                if(this.linked_websites>=2 && this.work_history_progress && (commercial_platforms_check && experimented_platforms_check && commercial_skills_check)) {
                   this.progress_bar_class = 'progress-bar bg-success';
                   this.progress_bar_value = 100;
                 }

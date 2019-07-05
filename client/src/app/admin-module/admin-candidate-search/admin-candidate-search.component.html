@@ -84,10 +84,10 @@
                       <img *ngIf="data.image" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.image}}" alt="">
 
                       <div class="ml-4">
-
-                        <a  [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
-
-
+                        <a [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                        <span *ngIf = "data.candidate_badge" class = "badge badge-pill badge-{{data.candidate_badge_color}}">
+                          {{data.candidate_badge}}
+                        </span>
                       </div>
                     </div>
 

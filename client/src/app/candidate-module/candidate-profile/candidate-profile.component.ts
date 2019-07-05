@@ -245,7 +245,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                       break;
                     }
                   }
-                  
+
                   this.history =data['candidate'].work_history;
                   this.history.sort(this.date_sort_desc);
                   for(let data1 of data['candidate'].work_history)
@@ -374,7 +374,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
                 }
                 if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
-                  if(this.linked_websites>=2 && this.work_history_progress === 1) this.progress_bar_value = 75;
+                  if(this.linked_websites>=2 && this.work_history_progress === 1) {
+                    this.progress_bar_class = 'progress-bar bg-info';
+                    this.progress_bar_value = 75;
+                  }
                 }
 
                 if(data['candidate'].programming_languages) {
