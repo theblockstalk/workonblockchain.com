@@ -89,15 +89,18 @@ export class CandJobActivityComponent implements OnInit {
     this.other_reasons_text_box = 0;
     if(this.reasonsOfLeaving.find((obj => obj === 'Other')))
       this.other_reasons_text_box = 1;
+    else this.otherReasons = '';
 
     delete this.errMsgLeavingReasons;
     return true;
   }
 
   selfValidateOtherReasons() {
-    if(!this.otherReasons) {
-      this.errMsgOtherReasons = 'Please enter other reasons';
-      return false;
+    if(this.other_reasons_text_box) {
+      if (!this.otherReasons) {
+        this.errMsgOtherReasons = 'Please enter other reasons';
+        return false;
+      }
     }
     delete this.errMsgOtherReasons;
     return true;
