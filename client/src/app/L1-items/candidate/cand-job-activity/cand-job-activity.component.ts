@@ -96,11 +96,9 @@ export class CandJobActivityComponent implements OnInit {
   }
 
   selfValidateOtherReasons() {
-    if(this.other_reasons_text_box) {
-      if (!this.otherReasons) {
-        this.errMsgOtherReasons = 'Please enter other reasons';
-        return false;
-      }
+    if (!this.otherReasons) {
+      this.errMsgOtherReasons = 'Please enter other reasons';
+      return false;
     }
     delete this.errMsgOtherReasons;
     return true;
