@@ -50,6 +50,7 @@
       [value]="otherReasons"
       [errorMsg]="errMsgOtherReasons"
       (textInputValue)="otherReasons = $event"
+      [hasLable]="true"
       (change)="selfValidateOtherReasons()"
     ></app-c-forme-text>
   </div>
@@ -58,7 +59,7 @@
 <div class = "row mt-3" *ngIf="jobActivity && jobActivity !== 'Not now' && (currentEmploy && currentEmploy === 'Yes')">
   <div class="col-md-12">
     <app-c-forme-radio
-      label="Would you consider a counter-offer from your current employer comp?"
+      label="Would you consider a counter-offer from your current employer?"
       [value]="counterOffer"
       (selectedOption)="counterOffer"
       [options]="radio_buttons"

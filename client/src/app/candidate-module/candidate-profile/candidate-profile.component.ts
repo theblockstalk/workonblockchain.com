@@ -68,6 +68,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   counter_offer;
   new_work_opportunities;
   job_activity_status;
+  job_activities = constants.job_activity_status;
 
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
@@ -350,7 +351,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                 if(data['candidate'].job_activity_status) {
                   this.job_activity_status = 1;
-                  if(data['candidate'].job_activity_status.new_work_opportunities) this.new_work_opportunities = data['candidate'].job_activity_status.new_work_opportunities;
+
+                  if(data['candidate'].job_activity_status.new_work_opportunities){
+                    let job_activity_obj = getNameFromValue(this.job_activities,data['candidate'].job_activity_status.new_work_opportunities);
+                    this.new_work_opportunities = job_activity_obj.name;
+                  }
                   if(data['candidate'].job_activity_status.currently_employed) this.currently_employed = data['candidate'].job_activity_status.currently_employed;
                   if(data['candidate'].job_activity_status.leaving_current_employ_reasons) {
                     this.leaving_reasons = data['candidate'].job_activity_status.leaving_current_employ_reasons;
