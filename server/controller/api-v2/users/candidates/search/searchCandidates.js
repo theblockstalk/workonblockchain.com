@@ -303,12 +303,13 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
     logger.debug("query", {query: userQuery});
     let searchQuery = {$and: userQuery};
-    const userDocs = await users.find(searchQuery);
+    let sort = {"candidate.latest_status.timestamp" : -1};
+    const userDocs = await users.findAndSort(searchQuery, sort);
     if(userDocs && userDocs.length > 0) {
         if(orderBy) {
             userQuery.push(orderBy);
             searchQuery = {$and: userQuery};
-            const userDocsOrderBy = await users.find(searchQuery);
+            const userDocsOrderBy = await users.findAndSort(searchQuery, sort);
             let sortedDocs = userDocsOrderBy.concat(userDocs);
             sortedDocs = objects.removeDuplicates(sortedDocs , '_id');
             return {
