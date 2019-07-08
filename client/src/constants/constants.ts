@@ -454,7 +454,7 @@ export const constants = {
   ],
   job_activity_status: [
     {name:'Not now', value:'Not now', checked:false},
-    {name:'Open to offers (passive)', value:'Open to offers (passive)', checked:false},
+    {name:'Open to offers', value:'Open to offers (passive)', checked:false},
     {name:'Actively searching', value:'Actively searching', checked:false},
     {name:'Actively interviewing', value:'Actively interviewing', checked:false}
   ],
