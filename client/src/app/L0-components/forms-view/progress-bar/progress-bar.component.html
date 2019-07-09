@@ -49,7 +49,7 @@
   </div>
   <div class="row mt-5">
     <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-      <p *ngIf="isAdmin">3 days till review</p>
+      <p *ngIf="viewBy === 'admin'">3 days till review</p>
       <a (click)="internalRoute(routerUrl,'about')">
         <u>Basic information</u>
       </a>
@@ -60,7 +60,7 @@
       </a>
     </div>
     <div [ngClass]="(value >= 50)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p *ngIf="isAdmin">2 days till review</p>
+      <p *ngIf="viewBy === 'admin'">2 days till review</p>
       <a (click)="internalRoute(routerUrl,'work_history')">
         <u>Work History</u>
       </a>
@@ -71,7 +71,7 @@
       </a>
     </div>
     <div [ngClass]="(value === 100)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p  *ngIf="isAdmin">Priority</p>
+      <p  *ngIf="viewBy === 'admin'">Priority</p>
       <a (click)="internalRoute(routerUrl,'about')">
         <u>Profile picture</u>
       </a>

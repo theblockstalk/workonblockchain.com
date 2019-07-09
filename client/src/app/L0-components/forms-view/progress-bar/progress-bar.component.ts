@@ -10,7 +10,8 @@ export class ProgressBarComponent implements OnInit {
   @Input() value: number;
   @Input() class: string; //'success', 'warning', 'info'
   @Input() routerUrl: string;
-  @Input() isAdmin: boolean; // true/false
+  @Input() viewBy: string; // admin, candidate or company
+
   sectionScroll;
 
   constructor(private router: Router) { }

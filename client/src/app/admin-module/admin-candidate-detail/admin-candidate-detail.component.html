@@ -24,49 +24,19 @@
               </div>
             </div>
             <div class="col-md-6">
-              <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''" class="list-group-item list-without-underline">
-                  <ng-container *ngIf="referred_link ; else noLink">
-                    <span><i class="fas fa-user mr-2"></i></span>
-                    <span>Refered By:
-                      <a [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
-                    </span>
-                  </ng-container>
-                  <ng-template #noLink>
-                    <span><i class="fas fa-user mr-2"></i></span>
-                    <span>Refered By: {{referred_name}}
-                    </span>
-                  </ng-template>
-                </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-flag mr-2"></i></span>
-                  <span *ngFor="let nation of data.nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < data.nationality.length"/></span>
-                </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-phone mr-2"></i></span>
-                  <span>{{data.contact_number}}</span>
-                </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                  <span >{{data.candidate.base_city}}</span>
-                </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-user mr-2"></i></span>Status:
-                  <span *ngIf="candidate_status.status === 'created'">Created</span>
-                  <span *ngIf="candidate_status.status === 'other'">Other</span>
-                  <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
-                  <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
-                  <span *ngIf="candidate_status.status === 'approved'">Approved</span>
-                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
-                  <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
-                  <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
-                  <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
-                </li>
-                <li class="list-group-item">
-                  <span><i class="fas fa-calendar mr-2"></i></span>
-                  <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
-                </li>
-              </ul>
+              <app-c-formv-right-side-bar
+                [referredName]="referred_name"
+                [referredLink]="referred_link"
+                [detailLink]="detail_link"
+                [nationality]="data.nationality"
+                [contactNumber]="data.contact_number"
+                [baseCity]="data.candidate.base_city"
+                [candidateStatus]="candidate_status"
+                [createdDate]="created_date"
+                viewBy="admin"
+              >
+              </app-c-formv-right-side-bar>
+
             </div>
           </div>
           <div class="row">
@@ -331,7 +301,7 @@
         </section>
 
         <!--section for progress bar-->
-        <app-c-formv-progress-bar [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [isAdmin]="true"></app-c-formv-progress-bar>
+        <app-c-formv-progress-bar [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" viewBy="admin"></app-c-formv-progress-bar>
         <!--section for progress bar ends-->
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">

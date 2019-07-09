@@ -72,6 +72,7 @@ import { PagesComponent } from './L2-pages/pages/pages.component';
 import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/progress-bar.component';
 import { ImageComponent} from './L0-components/forms-view/image/image.component';
 import { NameComponent } from './L0-components/forms-view/name/name.component';
+import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar/right-side-bar.component';
 
 @NgModule({
   imports: [
@@ -92,7 +93,7 @@ import { NameComponent } from './L0-components/forms-view/name/name.component';
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, NameComponent
+    ImageComponent, NameComponent, RightSideBarComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -108,7 +109,8 @@ import { NameComponent } from './L0-components/forms-view/name/name.component';
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, NameComponent
+    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, NameComponent,
+    RightSideBarComponent
   ]
 })
 export class SharedModule { }
