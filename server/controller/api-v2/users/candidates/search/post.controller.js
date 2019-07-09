@@ -127,8 +127,7 @@ module.exports.endpoint = async function (req, res) {
         }
 
         if(!objects.isEmpty(filter) || !objects.isEmpty(search)) {
-            let candidateDocs = await
-            candidateSearch.candidateSearch(filter, search);
+            let candidateDocs = await candidateSearch.candidateSearch(filter, search);
 
             for (let candidateDoc of candidateDocs.candidates) {
                 filterReturnData.removeSensativeData(candidateDoc);
@@ -137,14 +136,14 @@ module.exports.endpoint = async function (req, res) {
             res.send(candidateDocs.candidates);
         }
         else{
-            let filteredUsers = [];
-            await users.findAndIterate({type: 'candidate'}, async function (userDoc) {
-                filterReturnData.removeSensativeData(userDoc);
-                filteredUsers.push(userDoc);
-            });
-
-            if (filteredUsers && filteredUsers.length > 0) res.send(filteredUsers);
-
+            let sort = {"candidate.latest_status.timestamp" : -1};
+            const candidateDocs = await users.findAndSort({type: 'candidate'}, sort);
+            if(candidateDocs && candidateDocs.length > 0) {
+                for (let candidateDoc of candidateDocs) {
+                    filterReturnData.removeSensativeData(candidateDoc);
+                }
+                res.send(candidateDocs);
+            }
             else errors.throwError("No candidate exists", 404);
         }
     }
