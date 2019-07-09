@@ -10,18 +10,66 @@
         <section class = "border rounded mt-3 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
-              <app-c-formv-image [image]="userDoc.image"></app-c-formv-image>
+              <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
               <div class="mt-3">
-                <span><h3>{{userDoc.first_name.charAt(0).toUpperCase()}}{{userDoc.first_name.slice(1)}} {{userDoc.last_name.charAt(0).toUpperCase()}}{{userDoc.last_name.slice(1)}}</h3></span>
+                <span><h3 class="text-capitalize">{{userDoc['first_name']}} {{userDoc['last_name']}}</h3></span>
                 <span *ngIf="viewBy === 'admin'">
                   <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
                 </span>
               </div>
             </div>
             <div class="col-md-6">
+              <app-c-formv-right-side-bar
+                [referredName]="referred_name"
+                [referredLink]="referred_link"
+                [detailLink]="detail_link"
+                [nationality]="userDoc['nationality']"
+                [contactNumber]="userDoc['contact_number']"
+                [baseCity]="userDoc['candidate']['base_city']"
+                [candidateStatus]="candidate_status"
+                [createdDate]="created_date"
+                viewBy="admin"
+              >
+              </app-c-formv-right-side-bar>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <pre>{{userDoc['candidate']['description']}}</pre>
             </div>
           </div>
         </section>
+
+        <!--only for admin starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin'">
+          <div class="row">
+            <div class="col-md-6">
+              <h4> <i class="fas fa-user"></i> Account </h4>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class = "col-md-6">
+              <div class="form-group">
+                <label>Email verified:</label>
+                <p *ngIf="userDoc['is_verify'] === 1"> Yes </p>
+                <p *ngIf="userDoc['is_verify'] === 0"> No </p>
+              </div>
+            </div>
+
+            <div class = "col-md-6">
+              <div class="form-group">
+                <label>Account enabled:</label>
+                <p *ngIf="userDoc['disable_account'] === false"> Yes
+                </p>
+                <p *ngIf="userDoc['disable_account'] === true"> No </p>
+              </div>
+            </div>
+            <div class = "col-md-6" *ngIf="userDoc['dissable_account_timestamp']">
+              <app-c-formv-date label="Account enabled/disabled timestamp:" [value]="userDoc['dissable_account_timestamp']"></app-c-formv-date>
+            </div>
+          </div>
+        </section>
+        <!--only for admin ends-->
       </div>
     </div>
   </div>

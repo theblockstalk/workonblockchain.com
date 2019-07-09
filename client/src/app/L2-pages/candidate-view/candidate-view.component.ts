@@ -15,6 +15,12 @@ export class CandidateViewComponent implements OnInit {
 
   routerUrl;
   user_id;
+  candidate_image;
+  referred_name = '';
+  referred_link;
+  detail_link;
+  candidate_status;
+  created_date;
 
   constructor() {}
 
@@ -25,6 +31,23 @@ export class CandidateViewComponent implements OnInit {
     console.log("this.user_id: " + this.user_id);
     console.log('viewBy: ' + this.viewBy);
     console.log(this.userDoc);
+    if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
+
+    if(this.viewBy === 'admin') {
+      if (this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
+      if (this.userDoc['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
+
+      if (this.userDoc['name']) {
+        this.referred_name = this.userDoc['name'];
+        this.referred_link = this.userDoc['user_id'];
+      }
+      else if (this.userDoc['referred_email']) this.referred_name = this.userDoc['referred_email'];
+    }
+
+    if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
+      this.candidate_status = this.userDoc['candidate'].latest_status;
+      this.created_date = this.userDoc['candidate'].history[this.userDoc['candidate'].history.length - 1].timestamp;
+    }
   }
 
 }

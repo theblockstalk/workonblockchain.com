@@ -1,80 +1,30 @@
-<section class = "border rounded mt-4 py-3 px-5 bg-white">
-  <div class="row">
-    <div class="col-md-6">
-      <h2> <i class="fas fa-smile"></i> We're here to help</h2>
-    </div>
+<div class="row">
+  <div class="col-md-6">
+    <h2> <i class="fas fa-smile"></i> We're here to help</h2>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <img src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "admin-img"/>
-      <h4>Antonio Sabado</h4>
-      <p>antonio@workonblockchain.com</p>
-      <p>+44 7923 521 833</p>
-    </div>
-    <div class="col-md-6">
-      <p>Hi i'm Antonio</p>
-      <strong>
-        I'm here to help you find work in the blockchain space.
-      </strong>
-      <br> <br>
-      <strong>
-        But first i need to make sure your profile looks attractive for companies. To do
-        this i need your help to ensure i understand exactly what you offer, and what
-        you are looking for.
-      </strong>
-      <br> <br>
-      <p>
-        Please take the time to add in as much detail as you can and then let me know
-        it is ready!
-      </p>
-    </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <img src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "admin-img"/>
+    <h4>Antonio Sabado</h4>
+    <p>antonio@workonblockchain.com</p>
+    <p>+44 7923 521 833</p>
   </div>
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <div class="progress">
-        <div *ngIf="value === 15 || value === 25" class="{{class}}" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 50" class="{{class}}" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 75" class="{{class}}" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 100" class="{{class}}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-      </div>
-    </div>
+  <div class="col-md-6">
+    <p>Hi i'm Antonio</p>
+    <strong>
+      I'm here to help you find work in the blockchain space.
+    </strong>
+    <br> <br>
+    <strong>
+      But first i need to make sure your profile looks attractive for companies. To do
+      this i need your help to ensure i understand exactly what you offer, and what
+      you are looking for.
+    </strong>
+    <br> <br>
+    <p>
+      Please take the time to add in as much detail as you can and then let me know
+      it is ready!
+    </p>
   </div>
-  <div class="row mt-5">
-    <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-      <p *ngIf="viewBy === 'admin'">3 days till review</p>
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Basic information</u>
-      </a>
-    </div>
-    <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Linked accounts (e.g Gitub etc)</u>
-      </a>
-    </div>
-    <div [ngClass]="(value >= 50)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p *ngIf="viewBy === 'admin'">2 days till review</p>
-      <a (click)="internalRoute(routerUrl,'work_history')">
-        <u>Work History</u>
-      </a>
-    </div>
-    <div [ngClass]="(value >= 75)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <a (click)="internalRoute(routerUrl,'blockchain_experience')">
-        <u>Blockchain experience descriptions</u>
-      </a>
-    </div>
-    <div [ngClass]="(value === 100)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p  *ngIf="viewBy === 'admin'">Priority</p>
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Profile picture</u>
-      </a>
-    </div>
-  </div>
-</section>
+</div>
