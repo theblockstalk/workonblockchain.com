@@ -46,7 +46,7 @@
 <div class = "row" *ngIf="(jobActivity && jobActivity !== 'Not now') && (currentEmploy && currentEmploy === 'Yes') && other_reasons_text_box">
   <div class="col-md-6">
     <app-c-forme-text
-      placeholder="Other info"
+      placeholder="Other"
       [value]="otherReasons"
       [errorMsg]="errMsgOtherReasons"
       (textInputValue)="otherReasons = $event"
