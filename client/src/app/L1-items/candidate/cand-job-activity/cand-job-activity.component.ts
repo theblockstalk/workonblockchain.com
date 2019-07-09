@@ -32,7 +32,7 @@ export class CandJobActivityComponent implements OnInit {
 
   selfValidate() {
     if(!this.jobActivity){
-      this.errMsg = "Please select current job activity status";
+      this.errMsg = "Please enter your opportunity interest";
       return false;
     }
     this.errMsg = '';
@@ -47,7 +47,7 @@ export class CandJobActivityComponent implements OnInit {
   currentEmploymentValidate(){
     if(this.jobActivity && this.jobActivity !== 'Not now'){
       if(!this.currentEmploy){
-        this.currentEmployerrMsg = "Please select current employment";
+        this.currentEmployerrMsg = "Please select your employment status";
         return false;
       }
       this.currentEmployerrMsg = '';
@@ -68,7 +68,7 @@ export class CandJobActivityComponent implements OnInit {
   validateCounterOffer(){
     if(this.jobActivity && this.jobActivity !== 'Not now'){
       if(!this.counterOffer){
-        this.counterOfferErrMsg = "Please select yes or no";
+        this.counterOfferErrMsg = "Please choose an option";
         return false;
       }
       this.counterOfferErrMsg = '';
@@ -78,11 +78,11 @@ export class CandJobActivityComponent implements OnInit {
 
   validateReasons(){
     if(!this.reasonsOfLeaving) {
-      this.errMsgLeavingReasons = 'Please select atleast one reason';
+      this.errMsgLeavingReasons = 'Please select a reason';
       return false;
     }
     if(this.reasonsOfLeaving && this.reasonsOfLeaving.length <= 0) {
-      this.errMsgLeavingReasons = 'Please select atleast one reason';
+      this.errMsgLeavingReasons = 'Please select a reason';
       return false;
     }
 
@@ -97,7 +97,7 @@ export class CandJobActivityComponent implements OnInit {
 
   selfValidateOtherReasons() {
     if (!this.otherReasons) {
-      this.errMsgOtherReasons = 'Please enter other reasons';
+      this.errMsgOtherReasons = 'Please enter a reason';
       return false;
     }
     delete this.errMsgOtherReasons;
