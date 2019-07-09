@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-p-candidate-view',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./candidate-view.component.css']
 })
 export class CandidateViewComponent implements OnInit {
+  @Input() userDoc: object;
+  @Input() viewBy: string; // "admin", "candidate", company
 
   constructor() { }
 
