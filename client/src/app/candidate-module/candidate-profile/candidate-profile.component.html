@@ -211,6 +211,43 @@
               </div>
             </div>
 
+            <div class="row mt-4" *ngIf="job_activity_status">
+              <div class="col-md-6">
+                <h4><i class="fas fa-search"></i> New opportunity interest </h4>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="new_work_opportunities">
+              <div class = "col-md-12">
+                <app-c-formv-text label="How interested are you in new work opportunities:" [value]="new_work_opportunities"></app-c-formv-text>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="currently_employed">
+              <div class = "col-md-12">
+                <app-c-formv-text label="Currently employed:" [value]="currently_employed"></app-c-formv-text>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="leaving_reasons">
+              <div class = "col-md-12">
+                <app-c-formv-list label="Why are you interested in leaving you current employer:" [value]="leaving_reasons">
+                </app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="other_reasons">
+              <div class = "col-md-12">
+                <app-c-formv-text label="Other reason:" [value]="other_reasons"></app-c-formv-text>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="counter_offer">
+              <div class = "col-md-12">
+                <app-c-formv-text label="Would you consider a counter-offer from your current employer:" [value]="counter_offer"></app-c-formv-text>
+              </div>
+            </div>
+
             <div class="row mt-4" *ngIf="current_salary">
               <div class = "col-md-12" >
                 <div class="form-group">
@@ -223,7 +260,7 @@
               </div>
             </div>
 
-            <div class="row mt-2" *ngIf="employee.value">
+            <div class="row mt-4" *ngIf="employee.value">
               <div class="col-md-6">
                 <h4><i class="fas fa-user-secret"></i> Employee</h4>
               </div>

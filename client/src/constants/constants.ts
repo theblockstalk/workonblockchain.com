@@ -451,6 +451,24 @@ export const constants = {
     {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-secret fa-4x', checked: false},
     {name: 'Contractor/Freelancer', value: 'contractor', iconClass: 'fas fa-address-card fa-4x', checked: false},
     {name: 'Temporary volunteer', value: 'volunteer', iconClass: 'fas fa-user-check fa-4x', checked: false}
+  ],
+  job_activity_status: [
+    {name:'Not now', value:'Not now', checked:false},
+    {name:'Open to offers', value:'Open to offers (passive)', checked:false},
+    {name:'Actively searching', value:'Actively searching', checked:false},
+    {name:'Actively interviewing', value:'Actively interviewing', checked:false}
+  ],
+  radio_buttons: [
+    {name: 'Yes', value: 'Yes', checked: false},
+    {name: 'No', value: 'No', checked: false}
+  ],
+  reasons_of_leaving: [
+    {name: 'Higher salary', value: "Higher salary", checked: false},
+    {name: 'More responsibility', value: "More responsibility", checked: false},
+    {name: 'More challenging', value: "More challenging", checked: false},
+    {name: 'New technology stack', value: "New technology stack", checked: false},
+    {name: 'New role', value: "New role", checked: false},
+    {name: 'Other', value: "Other", checked: false}
   ]
 
 };
