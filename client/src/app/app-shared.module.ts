@@ -73,6 +73,7 @@ import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/pro
 import { ImageComponent} from './L0-components/forms-view/image/image.component';
 import { NameComponent } from './L0-components/forms-view/name/name.component';
 import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar/right-side-bar.component';
+import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
 
 @NgModule({
   imports: [
@@ -93,7 +94,7 @@ import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, NameComponent, RightSideBarComponent
+    ImageComponent, NameComponent, RightSideBarComponent, CandidateViewComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -110,7 +111,7 @@ import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, NameComponent,
-    RightSideBarComponent
+    RightSideBarComponent, CandidateViewComponent
   ]
 })
 export class SharedModule { }
