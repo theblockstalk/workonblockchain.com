@@ -6,11 +6,13 @@ import { AdminTalentEditComponent } from './admins/talent/edit/admin-talent-edit
 import {ProfileResolver} from '../incomplete-profile.resolver';
 import {VerifyEmailMiddleware} from '../auth-module/verify-email-middleware';
 import { PagesEditComponent } from './admins/pages/pages-edit.component';
+import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view.component';
 
 const routes: Routes = [
   { path: urls.users_talent_edit , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
   { path: urls.admins_talent_edit , component: AdminTalentEditComponent},
   { path: urls.admins_pages_edit, component: PagesEditComponent},
+  { path: urls.admin_talent_view, component: AdminTalentViewComponent},
 ];
 
 @NgModule({

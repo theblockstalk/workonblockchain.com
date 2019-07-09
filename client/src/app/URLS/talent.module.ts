@@ -8,6 +8,7 @@ import { ProfileResolver } from '../incomplete-profile.resolver';
 import { EditCandidateProfileComponent } from './users/talent/edit/edit-candidate-profile.component';
 import { AdminTalentEditComponent } from './admins/talent/edit/admin-talent-edit.component';
 import { PagesEditComponent } from './admins/pages/pages-edit.component';
+import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { PagesEditComponent } from './admins/pages/pages-edit.component';
   declarations: [
     EditCandidateProfileComponent,
     AdminTalentEditComponent,
-    PagesEditComponent
+    PagesEditComponent,
+    AdminTalentViewComponent
   ],
   providers: [
     ProfileResolver

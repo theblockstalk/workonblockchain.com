@@ -1,3 +1,28 @@
-<p>
-  candidate-view works!
-</p>
+<section class = "wob-bg-primary2 py-5 mt-5">
+  <div class="container pt-2">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row" *ngIf="viewBy === 'admin'">
+          <div class="col-md-12">
+            <button [routerLink]="[routerUrl]"  class = "btn btn-primary float-right">Edit Profile</button>
+          </div>
+        </div>
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-image [image]="userDoc.image"></app-c-formv-image>
+              <div class="mt-3">
+                <span><h3>{{userDoc.first_name.charAt(0).toUpperCase()}}{{userDoc.first_name.slice(1)}} {{userDoc.last_name.charAt(0).toUpperCase()}}{{userDoc.last_name.slice(1)}}</h3></span>
+                <span *ngIf="viewBy === 'admin'">
+                  <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

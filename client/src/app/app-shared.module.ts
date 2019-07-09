@@ -71,7 +71,6 @@ import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.compo
 import { PagesComponent } from './L2-pages/pages/pages.component';
 import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/progress-bar.component';
 import { ImageComponent} from './L0-components/forms-view/image/image.component';
-import { NameComponent } from './L0-components/forms-view/name/name.component';
 import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar/right-side-bar.component';
 import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
 
@@ -94,7 +93,7 @@ import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, NameComponent, RightSideBarComponent, CandidateViewComponent
+    ImageComponent, RightSideBarComponent, CandidateViewComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -110,8 +109,8 @@ import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, NameComponent,
-    RightSideBarComponent, CandidateViewComponent
+    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, RightSideBarComponent,
+    CandidateViewComponent
   ]
 })
 export class SharedModule { }
