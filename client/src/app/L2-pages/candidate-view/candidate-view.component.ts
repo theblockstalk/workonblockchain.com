@@ -356,18 +356,4 @@ export class CandidateViewComponent implements OnInit {
     this.send_email = false;
   }
 
-  website_url;
-  websiteUrl(link) {
-    let loc = link;
-    let x = loc.split("/");
-    if (x[0] === 'http:' || x[0] === 'https:') {
-      this.website_url = link;
-      return this.website_url;
-    }
-    else {
-      this.website_url = 'http://' + link;
-      return this.website_url;
-    }
-  }
-
 }

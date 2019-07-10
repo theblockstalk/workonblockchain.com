@@ -258,6 +258,7 @@
           </div>
         </section>
         <!--only for admin ends-->
+
         <!--section for progress bar-->
         <app-i-formv-candidate-progressbar [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
         <!--section for progress bar ends-->
@@ -282,72 +283,54 @@
           </div>
           <div class="row mt-2" *ngIf="userDoc['candidate'].github_account">
             <div class="col-md-6">
-              <div class="form-group" >
-                <p class="break-class">
-                  <i class="fab fa-github fa-2x"></i><a class="ml-2" [href]="websiteUrl(userDoc['candidate'].github_account)" target="_blank">
-                  {{userDoc['candidate'].github_account}}
-                </a>
-                </p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fab fa-github fa-2x" [link]="userDoc['candidate'].github_account"></app-i-formv-link-accounts>
             </div>
           </div>
-          <!--<div class="row mt-2" *ngIf="data.candidate.stackexchange_account">
+          <div class="row mt-2" *ngIf="userDoc['candidate'].stackexchange_account">
             <div class="col-md-6">
-              <div class="form-group">
-                <p class="break-class">
-                  <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
-                  {{data.candidate.stackexchange_account}}
-                </a>
-                </p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fab fa-exchange fa-2x" [link]="userDoc['candidate'].stackexchange_account"></app-i-formv-link-accounts>
             </div>
           </div>
-          <div class="row mt-2" *ngIf="data.candidate.linkedin_account">
+          <div class="row mt-2" *ngIf="userDoc['candidate'].linkedin_account">
             <div class="col-md-6">
-              <div class="form-group" >
-                <p class="break-class">
-                  <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
-                  {{data.candidate.linkedin_account}}
-                </a>
-                </p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fab fa-linkedin-in fa-2x" [link]="userDoc['candidate'].linkedin_account"></app-i-formv-link-accounts>
             </div>
           </div>
-          <div class="row mt-2" *ngIf="data.candidate.medium_account">
+          <div class="row mt-2" *ngIf="userDoc['candidate'].medium_account">
             <div class="col-md-6">
-              <div class="form-group" >
-                <p class="break-class">
-                  <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
-                  {{data.candidate.medium_account}}
-                </a>
-                </p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fab fa-medium-m fa-2x" [link]="userDoc['candidate'].medium_account"></app-i-formv-link-accounts>
             </div>
           </div>
-          <div class="row mt-2" *ngIf="data.candidate.stackoverflow_url">
+          <div class="row mt-2" *ngIf="userDoc['candidate'].stackoverflow_url">
             <div class = "col-md-6">
-              <div class="form-group">
-                <p class="break-class">
-                  <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
-                  {{data.candidate.stackoverflow_url}}
-                </a>
-                <p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fab fa-stack-overflow fa-2x" [link]="userDoc['candidate'].stackoverflow_url"></app-i-formv-link-accounts>
             </div>
           </div>
-          <div class="row mt-2" *ngIf="data.candidate.personal_website_url">
+          <div class="row mt-2" *ngIf="userDoc['candidate'].personal_website_url">
             <div class = "col-md-6">
-              <div class="form-group">
-                <p class="break-class">
-                  <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
-                  {{data.candidate.personal_website_url}}
-                </a>
-                <p>
-              </div>
+              <app-i-formv-link-accounts iconClass="fas fa-user fa-2x" [link]="userDoc['candidate'].personal_website_url"></app-i-formv-link-accounts>
             </div>
-          </div>-->
+          </div>
         </section>
         <!--About section ends-->
+
+        <!--Residence section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Country:" [value]="userDoc['candidate'].base_country"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="City:" [value]="userDoc['candidate'].base_city"></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+        <!--Residence section ends-->
       </div>
     </div>
   </div>
