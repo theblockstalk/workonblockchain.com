@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {constants} from '../../../constants/constants';
+
+declare var $: any;
 
 @Component({
   selector: 'app-p-candidate-view',
@@ -22,11 +24,24 @@ export class CandidateViewComponent implements OnInit {
   candidate_status;
   created_date;
   candidateHistory;
+  _id;
+  set_status;
+  status_reason_rejected;
+  status_reason_deferred;
+  set_candidate_status = constants.set_candidate_status;
+  set_candidate_status_rejected = constants.statusReasons_rejected;
+  set_candidate_status_deferred = constants.statusReasons_deferred;
+  email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   constructor() {}
 
   ngOnInit() {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+
     this.user_id = this.userDoc['_id'];
+    this._id  = this.user_id;
     this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
     console.log('in cand view component');
     console.log("this.user_id: " + this.user_id);
@@ -51,6 +66,20 @@ export class CandidateViewComponent implements OnInit {
       this.candidate_status = this.userDoc['candidate'].latest_status;
       this.created_date = this.userDoc['candidate'].history[this.userDoc['candidate'].history.length - 1].timestamp;
     }
+  }
+
+  changeStatus(event){
+    /*if(event === 'Rejected' || event === 'rejected'){
+      $("#sel1-reason-deferred").css('display', 'none');
+      $("#sel1-reason-rejected").css('display', 'block');
+    }
+    if(event === 'Deferred' || event === 'deferred'){
+      $("#sel1-reason-rejected").css('display', 'none');
+      $("#sel1-reason-deferred").css('display', 'block');
+    }*/
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 
 }
