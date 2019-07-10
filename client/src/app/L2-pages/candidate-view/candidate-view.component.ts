@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
+import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
 
 declare var $: any;
 
@@ -34,6 +35,7 @@ export class CandidateViewComponent implements OnInit {
   set_candidate_status = constants.set_candidate_status;
   set_candidate_status_rejected = constants.statusReasons_rejected;
   set_candidate_status_deferred = constants.statusReasons_deferred;
+  roles = constants.workRoles;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -56,6 +58,9 @@ export class CandidateViewComponent implements OnInit {
   description_commercial_platforms;
   description_experimented_platforms;
   description_commercial_skills;
+  employee: any = {};
+  contractor:any = {};
+  volunteer: any = {};
 
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {}
 
@@ -66,6 +71,23 @@ export class CandidateViewComponent implements OnInit {
 
     this.user_id = this.userDoc['_id'];
     this._id  = this.user_id;
+
+    //for employee
+    if(this.userDoc['candidate'].employee) {
+      this.employee.value = this.userDoc['candidate'].employee;
+      const locationArray = changeLocationDisplayFormat(this.employee.value.location);
+      this.employee.noVisaArray = locationArray.noVisaArray;
+      this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+      let rolesValue = [];
+      for(let role of this.employee.value.roles){
+        const filteredArray = getNameFromValue(this.roles,role);
+        rolesValue.push(filteredArray.name);
+      }
+      this.employee.value.roles = rolesValue.sort();
+      let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
+      this.employee.value.employment_availability = availability.name;
+    }
+
     if(this.viewBy === 'candidate') this.routerUrl = '/users/talent/edit';
 
     if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];

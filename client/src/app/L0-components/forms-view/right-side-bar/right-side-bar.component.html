@@ -11,15 +11,15 @@
       <span> Refered By: {{referredName}} </span>
     </ng-template>
   </li>
-  <li class="list-group-item">
+  <li class="list-group-item" *ngIf="nationality && nationality.length>0">
     <span><i class="fas fa-flag mr-2"></i></span>
     <span *ngFor="let nation of nationality;let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < nationality.length"/></span>
   </li>
-  <li class="list-group-item">
+  <li class="list-group-item" *ngIf="contactNumber">
     <span><i class="fas fa-phone mr-2"></i></span>
     <span>{{contactNumber}}</span>
   </li>
-  <li class="list-group-item">
+  <li class="list-group-item" *ngIf="baseCity">
     <span><i class="fas fa-map-marker-alt mr-2"></i></span>
     <span >{{baseCity}}</span>
   </li>
