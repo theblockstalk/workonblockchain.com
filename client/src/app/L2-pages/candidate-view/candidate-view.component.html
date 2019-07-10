@@ -89,7 +89,7 @@
                   </div>
                 </div>
 
-                <!--<div class="row">
+                <div class="row">
                   <div class="col-md-4" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
                     <div class="form-group">
                       <label>Reason: </label>
@@ -112,7 +112,86 @@
                       </div>
                     </div>
                   </div>
-                </div>-->
+                </div>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="add_note" [(ngModel)]="add_note" (click)="refreshSelect()"> Add note
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf = "add_note === true">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Template</label>
+                  <select class="form-control selectpicker" (change)="selectTemplate($event, 'note')" title="(select one)" required name="template" [(ngModel)]="note_template">
+                    <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <ckeditor  [config]="ckeConfig" debounce="500" name="note" [(ngModel)]="note" >
+                  </ckeditor>
+                </div>
+              </div>
+            </div>
+
+            <div class="row m-0">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="send_email" [(ngModel)]="send_email" (click)="refreshSelect()"> Send email
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf = "send_email === true">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Template</label>
+                  <select class="form-control selectpicker" (change)="selectTemplate($event, 'email')" title="(select one)" required name="template" [(ngModel)]="email_template">
+                    <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Subject:</label>
+                  <input type="text" class="form-control" [(ngModel)]="email_subject" required  name="email_subject">
+
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <ckeditor  [config]="ckeConfig" debounce="500" name="email_text" [(ngModel)]="email_text" >
+                  </ckeditor>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <p>Make sure the email text is complete and checked before you press Send</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class = "form-group">
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="text-success float-right mt-2" *ngIf = "success">
+                  {{success}}
+                </div>
+                <div class="text-danger float-right mt-2" *ngIf = "error">
+                  {{error}}
+                </div>
               </div>
             </div>
             <!--/New code for 23-Nov-2018-->
@@ -122,10 +201,7 @@
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin' && candidateHistory">
           <div class="row">
             <div class="col-md-12">
-              <h2>
-                <i class="fas fa-history"></i>
-                History
-              </h2>
+              <h2> <i class="fas fa-history"></i> History </h2>
             </div>
           </div>
 
@@ -182,6 +258,96 @@
           </div>
         </section>
         <!--only for admin ends-->
+        <!--section for progress bar-->
+        <app-i-formv-candidate-progressbar [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
+        <!--section for progress bar ends-->
+
+        <!--About section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-user"></i> About </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Email address:" [value]="userDoc['email']"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="userDoc['candidate'].github_account || userDoc['candidate'].stackexchange_account || userDoc['candidate'].linkedin_account || userDoc['candidate'].medium_account || userDoc['candidate'].stackoverflow_url || userDoc['candidate'].personal_website_url">
+            <div class="col-md-6">
+              <h4>Links</h4>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].github_account">
+            <div class="col-md-6">
+              <div class="form-group" >
+                <p class="break-class">
+                  <i class="fab fa-github fa-2x"></i><a class="ml-2" [href]="websiteUrl(userDoc['candidate'].github_account)" target="_blank">
+                  {{userDoc['candidate'].github_account}}
+                </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!--<div class="row mt-2" *ngIf="data.candidate.stackexchange_account">
+            <div class="col-md-6">
+              <div class="form-group">
+                <p class="break-class">
+                  <i class="fab fa-stack-exchange fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackexchange_account)" target="_blank">
+                  {{data.candidate.stackexchange_account}}
+                </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.linkedin_account">
+            <div class="col-md-6">
+              <div class="form-group" >
+                <p class="break-class">
+                  <i class="fab fa-linkedin-in fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.linkedin_account)" target="_blank">
+                  {{data.candidate.linkedin_account}}
+                </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.medium_account">
+            <div class="col-md-6">
+              <div class="form-group" >
+                <p class="break-class">
+                  <i class="fab fa-medium-m fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.medium_account)" target="_blank">
+                  {{data.candidate.medium_account}}
+                </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.stackoverflow_url">
+            <div class = "col-md-6">
+              <div class="form-group">
+                <p class="break-class">
+                  <i class="fab fa-stack-overflow fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.stackoverflow_url)" target="_blank">
+                  {{data.candidate.stackoverflow_url}}
+                </a>
+                <p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="data.candidate.personal_website_url">
+            <div class = "col-md-6">
+              <div class="form-group">
+                <p class="break-class">
+                  <i class="fas fa-user fa-2x"></i><a class="ml-2" [href]="websiteUrl(data.candidate.personal_website_url)" target="_blank">
+                  {{data.candidate.personal_website_url}}
+                </a>
+                <p>
+              </div>
+            </div>
+          </div>-->
+        </section>
+        <!--About section ends-->
       </div>
     </div>
   </div>
