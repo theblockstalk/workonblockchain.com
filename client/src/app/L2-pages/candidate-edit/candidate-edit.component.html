@@ -103,7 +103,7 @@
             </div>
 
             <!--cand-job-activity starts-->
-            <app-i-forme-cand-job-activity *ngIf="allData"
+            <app-i-forme-cand-job-activity *ngIf="viewBy === 'candidate' && allData"
               [jobActivity]="job_activity_value"
               [currentEmploy]="currently_employ"
               [reasonsOfLeaving]="reason_selectedValue"
