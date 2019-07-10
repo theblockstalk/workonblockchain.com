@@ -69,6 +69,70 @@
             </div>
           </div>
         </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin' && candidateHistory">
+          <div class="row">
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-history"></i>
+                History
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor="let history of candidateHistory; let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group" *ngIf="history.status">
+                <label *ngIf="history.status.status === 'wizard' || history.status.status === 'wizard completed'" class="border border-success p-2 text-success rounded font-weight-normal">
+                  wizard
+                </label>
+                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'updated' || history.status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'reviewed'" class="border border-info p-2 text-info rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">
+                  {{history.status.status}}: {{history.status.reason}}
+                </label>
+                <label *ngIf="history.status.status === 'deferred'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  {{history.status.status}}: {{history.status.reason}}
+                </label>
+
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group" *ngIf="history.note">
+                <div>
+                  <label>Note</label>
+                  <app-c-formv-html-area [value]="history.note"></app-c-formv-html-area>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group" *ngIf="history.email_html">
+                <label>Email</label>
+                <h6>{{history.email_subject}}</h6>
+                <div  [innerHTML] = "history.email_html| safeHtml "></div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <hr *ngIf="i < (userDoc['candidate']['history'].length - 1)"  />
+            </div>
+          </div>
+        </section>
         <!--only for admin ends-->
       </div>
     </div>

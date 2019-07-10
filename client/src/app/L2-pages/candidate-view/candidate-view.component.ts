@@ -11,7 +11,7 @@ export class CandidateViewComponent implements OnInit {
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
 
-  //http://localhost:4200/admins/talent/5cf20e07e205eb2358d33fdb/view
+  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/view
 
   routerUrl;
   user_id;
@@ -21,6 +21,7 @@ export class CandidateViewComponent implements OnInit {
   detail_link;
   candidate_status;
   created_date;
+  candidateHistory;
 
   constructor() {}
 
@@ -42,6 +43,8 @@ export class CandidateViewComponent implements OnInit {
         this.referred_link = this.userDoc['user_id'];
       }
       else if (this.userDoc['referred_email']) this.referred_name = this.userDoc['referred_email'];
+
+      this.candidateHistory = this.userDoc['candidate'].history;
     }
 
     if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
