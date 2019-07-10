@@ -107,7 +107,6 @@
                 <label *ngIf="history.status.status === 'deferred'" class="border border-warning p-2 text-warning rounded font-weight-normal">
                   {{history.status.status}}: {{history.status.reason}}
                 </label>
-
               </div>
             </div>
 
@@ -124,7 +123,7 @@
               <div class="form-group" *ngIf="history.email_html">
                 <label>Email</label>
                 <h6>{{history.email_subject}}</h6>
-                <div  [innerHTML] = "history.email_html| safeHtml "></div>
+                <app-c-formv-html-area [value]="history.email_html"></app-c-formv-html-area>
               </div>
             </div>
 
