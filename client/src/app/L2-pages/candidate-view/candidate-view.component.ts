@@ -76,7 +76,24 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].employee) {
       this.employee.value = this.userDoc['candidate'].employee;
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
-      this.employee.noVisaArray = locationArray.noVisaArray;
+      let newNoVisaPlaceArray = [];
+      for(let noVisaPlace of locationArray.noVisaArray){
+        if(noVisaPlace.type === 'city') {
+          if(noVisaPlace.name === 'Remote'){
+            let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
+            newNoVisaPlaceArray.push(remote);
+          }
+          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(city);
+        }
+        if(noVisaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(country);
+        }
+      }
+      console.log(newNoVisaPlaceArray);
+
+      this.employee.noVisaArray = newNoVisaPlaceArray;
       this.employee.visaRequiredArray = locationArray.visaRequiredArray;
       let rolesValue = [];
       for(let role of this.employee.value.roles){
