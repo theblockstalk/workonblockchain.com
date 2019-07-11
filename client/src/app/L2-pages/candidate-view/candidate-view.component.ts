@@ -78,11 +78,11 @@ export class CandidateViewComponent implements OnInit {
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
       let newNoVisaPlaceArray = [];
       for(let noVisaPlace of locationArray.noVisaArray){
+        if(noVisaPlace.name === 'Remote'){
+          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(remote);
+        }
         if(noVisaPlace.type === 'city') {
-          if(noVisaPlace.name === 'Remote'){
-            let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
-            newNoVisaPlaceArray.push(remote);
-          }
           let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
           newNoVisaPlaceArray.push(city);
         }
@@ -91,10 +91,20 @@ export class CandidateViewComponent implements OnInit {
           newNoVisaPlaceArray.push(country);
         }
       }
-      console.log(newNoVisaPlaceArray);
-
       this.employee.noVisaArray = newNoVisaPlaceArray;
-      this.employee.visaRequiredArray = locationArray.visaRequiredArray;
+
+      let newVisaRequiredArray = [];
+      for(let visaPlace of locationArray.visaRequiredArray){
+        if(visaPlace.type === 'city') {
+          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(city);
+        }
+        if(visaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(country);
+        }
+      }
+      this.employee.visaRequiredArray = newVisaRequiredArray;
       let rolesValue = [];
       for(let role of this.employee.value.roles){
         const filteredArray = getNameFromValue(this.roles,role);
@@ -103,6 +113,8 @@ export class CandidateViewComponent implements OnInit {
       this.employee.value.roles = rolesValue.sort();
       let availability = getNameFromValue(constants.workAvailability,this.employee.value.employment_availability);
       this.employee.value.employment_availability = availability.name;
+
+      this.employee.annual_salary = this.employee.value.currency+' '+this.employee.value.expected_annual_salary;
     }
 
     if(this.viewBy === 'candidate') this.routerUrl = '/users/talent/edit';
