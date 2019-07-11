@@ -352,6 +352,7 @@
             </div>
           </div>
 
+          <!--for employee-->
           <div class="row mt-2" *ngIf="employee.value">
             <div class="col-md-6">
               <h4><i class="fas fa-user-secret"></i> Employee</h4>
@@ -380,6 +381,52 @@
 
             <div class="col-md-12">
               <app-c-formv-text label="Availability:" [value]="employee.value.employment_availability"></app-c-formv-text>
+            </div>
+          </div>
+
+          <!--for contractor-->
+          <div class="row mt-2" *ngIf="contractor.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-address-card"></i> Contractor</h4>
+            </div>
+
+            <div class = "col-md-12 mt-4">
+              <div *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
+                <app-c-formv-list label="Locations:" [value]="contractor.noVisaArray"></app-c-formv-list>
+              </div>
+              <div *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0">
+                <app-c-formv-list label="Locations (work visa required):" [value]="contractor.visaRequiredArray"></app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-list label="Roles:" [value]="contractor.value.roles"></app-c-formv-list>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-text label="Hourly rate:" [value]="contractor.expected_hourly_rate"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
+              <app-c-formv-text label="Maximum hours per week (optional):" [value]="contractor.value.max_hour_per_week"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.contractor_type">
+              <div class="form-group">
+                <label>Contractor type: </label>
+                <p *ngFor="let contractorType of contractor.value.contractor_type">{{contractorType}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.agency_website">
+              <app-c-formv-text label="Agency website:" [value]="contractor.value.agency_website"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.service_description">
+              <div class="form-group">
+                <label>Service description: </label>
+                <pre>{{contractor.value.service_description}}</pre>
+              </div>
             </div>
           </div>
         </section>

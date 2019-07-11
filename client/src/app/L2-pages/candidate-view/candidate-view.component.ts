@@ -36,6 +36,7 @@ export class CandidateViewComponent implements OnInit {
   set_candidate_status_rejected = constants.statusReasons_rejected;
   set_candidate_status_deferred = constants.statusReasons_deferred;
   roles = constants.workRoles;
+  contractorTypes = constants.contractorTypes;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -115,6 +116,56 @@ export class CandidateViewComponent implements OnInit {
       this.employee.value.employment_availability = availability.name;
 
       this.employee.annual_salary = this.employee.value.currency+' '+this.employee.value.expected_annual_salary;
+    }
+
+    //for contractor
+    if(this.userDoc['candidate'].contractor) {
+      this.contractor.value = this.userDoc['candidate'].contractor;
+      const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
+      let newNoVisaPlaceArray = [];
+      for(let noVisaPlace of locationArray.noVisaArray){
+        if(noVisaPlace.name === 'Remote'){
+          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(remote);
+        }
+        if(noVisaPlace.type === 'city') {
+          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(city);
+        }
+        if(noVisaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(country);
+        }
+      }
+      this.contractor.noVisaArray = newNoVisaPlaceArray;
+
+      let newVisaRequiredArray = [];
+      for(let visaPlace of locationArray.visaRequiredArray){
+        if(visaPlace.type === 'city') {
+          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(city);
+        }
+        if(visaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(country);
+        }
+      }
+      this.contractor.visaRequiredArray = newVisaRequiredArray;
+
+      let rolesValue = [];
+      for(let role of this.contractor.value.roles){
+        const filteredArray = getNameFromValue(this.roles,role);
+        rolesValue.push(filteredArray.name);
+      }
+      this.contractor.value.roles = rolesValue;
+      let contractorType = [];
+      for(let type of this.contractor.value.contractor_type) {
+        const filteredArray = getNameFromValue(this.contractorTypes , type);
+        contractorType.push(filteredArray.name);
+      }
+      this.contractor.value.contractor_type = contractorType.sort();
+
+      this.contractor.expected_hourly_rate = this.contractor.value.currency+' '+this.contractor.value.expected_hourly_rate;
     }
 
     if(this.viewBy === 'candidate') this.routerUrl = '/users/talent/edit';
