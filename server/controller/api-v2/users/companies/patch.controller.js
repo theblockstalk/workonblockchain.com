@@ -79,8 +79,9 @@ const bodySchema = new Schema({
             location: {
                 type: [new Schema({
                     city: {
-                        type : Schema.Types.ObjectId,
+                        type : Schema.Types.ObjectId
                     },
+                    visa_needed: Boolean,
                     remote: Boolean,
                 })]
             },
