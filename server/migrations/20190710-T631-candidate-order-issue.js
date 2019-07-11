@@ -1,7 +1,7 @@
 const logger = require('../controller/services/logger');
 const users = require('../model/mongoose/users');
 const fs = require("fs");
-//const log = require('log-to-file');
+const log = require('log-to-file');
 
 let totalDocsToProcess, totalModified = 0, totalProcessed=0;
 
@@ -14,7 +14,9 @@ module.exports.up = async function() {
         //console.log(userDoc.candidate.history[0].status);
         if(!userDoc.candidate.history[0].timestamp || !userDoc.candidate.latest_status.timestamp){
             totalCount++;
-            console.log('it has no: ' + userDoc._id);
+            const data = 'it has no timestamp ['+totalCount+']: '+ userDoc._id;
+            console.log(data);
+            log(data, 'my-log.log');
         }
     });
 
