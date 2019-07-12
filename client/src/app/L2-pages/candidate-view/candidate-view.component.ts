@@ -65,6 +65,8 @@ export class CandidateViewComponent implements OnInit {
   interest_area;
   languages;
   work_history;
+  education_history;
+
   date_sort_desc = function (date1, date2)
   {
     if (date1.enddate > date2.enddate) return -1;
@@ -281,6 +283,11 @@ export class CandidateViewComponent implements OnInit {
 
         this.work_history = this.userDoc['candidate'].work_history;
         this.work_history.sort(this.date_sort_desc);
+
+        if(this.userDoc['candidate'].education_history) {
+          this.education_history = this.userDoc['candidate'].education_history;
+          this.education_history.sort(this.education_sort_desc);
+        }
       }
 
       let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;

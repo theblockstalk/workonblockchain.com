@@ -546,6 +546,29 @@
         </section>
         <!--Work history section ends-->
 
+        <!--Education section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-university"></i> Education </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor='let edu of education_history'>
+            <div class="col-md-12">
+              <h4>{{edu.uniname}}</h4>
+            </div>
+            <div class="col-md-6">
+              <strong>{{edu.degreename}} - {{edu.fieldname}}</strong>
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-calendar" aria-hidden="true"></i>
+              {{edu.eduyear}}
+            </div>
+          </div>
+        </section>
+        <!--Education section ends-->
+
       </div>
     </div>
   </div>
