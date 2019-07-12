@@ -75,6 +75,7 @@ import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar
 import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
 import { CandidateProgressbarComponent } from './L1-items/candidate/candidate-progressbar/candidate-progressbar.component';
 import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-accounts.component';
+import { CandidateProfileComponent } from './URLS/users/talent/view/candidate-profile/candidate-profile.component';
 
 @NgModule({
   imports: [
@@ -95,7 +96,8 @@ import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-a
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
+    ImageComponent, RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent,
+    CandidateProfileComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -112,7 +114,7 @@ import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-a
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, RightSideBarComponent,
-    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
+    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent, CandidateProfileComponent
   ]
 })
 export class SharedModule { }
