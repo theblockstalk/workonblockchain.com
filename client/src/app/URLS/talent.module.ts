@@ -5,7 +5,6 @@ import { SharedModule } from '../app-shared.module';
 import { TalentRoutingModule } from './talent-routing.module';
 
 import { ProfileResolver } from '../incomplete-profile.resolver';
-import { EditCandidateProfileComponent } from './users/talent/edit/edit-candidate-profile.component';
 import { AdminTalentEditComponent } from './admins/talent/edit/admin-talent-edit.component';
 import { PagesEditComponent } from './admins/pages/pages-edit.component';
 import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view.component';
@@ -17,7 +16,6 @@ import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view
     SharedModule,
   ],
   declarations: [
-    EditCandidateProfileComponent,
     AdminTalentEditComponent,
     PagesEditComponent,
     AdminTalentViewComponent
