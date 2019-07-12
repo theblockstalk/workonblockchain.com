@@ -75,8 +75,6 @@ import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar
 import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
 import { CandidateProgressbarComponent } from './L1-items/candidate/candidate-progressbar/candidate-progressbar.component';
 import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-accounts.component';
-import { CandidateProfileComponent } from './URLS/users/talent/view/candidate-profile/candidate-profile.component';
-import { CandidateDetailsComponent } from './URLS/users/companies/candidate-details/candidate-details.component';
 
 @NgModule({
   imports: [
@@ -97,8 +95,7 @@ import { CandidateDetailsComponent } from './URLS/users/companies/candidate-deta
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent,
-    CandidateProfileComponent, CandidateDetailsComponent
+    ImageComponent, RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -115,7 +112,7 @@ import { CandidateDetailsComponent } from './URLS/users/companies/candidate-deta
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, RightSideBarComponent,
-    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent, CandidateProfileComponent, CandidateDetailsComponent
+    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
   ]
 })
 export class SharedModule { }

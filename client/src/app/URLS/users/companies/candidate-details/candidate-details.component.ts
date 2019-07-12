@@ -10,6 +10,7 @@ export class CandidateDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('in CandidateDetailsComponent');
   }
 
 }

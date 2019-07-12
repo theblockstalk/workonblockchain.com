@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: '', loadChildren: './admin-editor-module/admin-editor-module.module#AdminEditorModuleModule'},
   { path: '', loadChildren: './URLS/talent.module#TalentModule'},
   { path: '', loadChildren: './URLS/pages/pages.module#PagesModule'},
+  { path: '', loadChildren: './URLS/users/users.module#UsersModule'},
   { path: '**', component: PageNotFoundComponent}
 ];
 
