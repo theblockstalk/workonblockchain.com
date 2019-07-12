@@ -62,6 +62,22 @@ export class CandidateViewComponent implements OnInit {
   employee: any = {};
   contractor:any = {};
   volunteer: any = {};
+  interest_area;
+  languages;
+  work_history;
+  date_sort_desc = function (date1, date2)
+  {
+    if (date1.enddate > date2.enddate) return -1;
+    if (date1.enddate < date2.enddate) return 1;
+    return 0;
+  };
+
+  education_sort_desc = function (year1, year2)
+  {
+    if (year1.eduyear > year2.eduyear) return -1;
+    if (year1.eduyear < year2.eduyear) return 1;
+    return 0;
+  };
 
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {}
 
@@ -168,6 +184,51 @@ export class CandidateViewComponent implements OnInit {
       this.contractor.expected_hourly_rate = this.contractor.value.currency+' '+this.contractor.value.expected_hourly_rate;
     }
 
+    //volunteer
+    if(this.userDoc['candidate'].volunteer) {
+      this.volunteer.value = this.userDoc['candidate'].volunteer;
+      const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
+      let newNoVisaPlaceArray = [];
+      for(let noVisaPlace of locationArray.noVisaArray){
+        if(noVisaPlace.name === 'Remote'){
+          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(remote);
+        }
+        if(noVisaPlace.type === 'city') {
+          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(city);
+        }
+        if(noVisaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
+          newNoVisaPlaceArray.push(country);
+        }
+      }
+      this.volunteer.noVisaArray = newNoVisaPlaceArray;
+      console.log(this.volunteer.noVisaArray.length);
+
+      let newVisaRequiredArray = [];
+      for(let visaPlace of locationArray.visaRequiredArray){
+        if(visaPlace.type === 'city') {
+          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(city);
+        }
+        if(visaPlace.type === 'country') {
+          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
+          newVisaRequiredArray.push(country);
+        }
+      }
+      this.volunteer.visaRequiredArray = newVisaRequiredArray;
+      let rolesValue = [];
+      for(let role of this.volunteer.value.roles){
+        const filteredArray = getNameFromValue(this.roles,role);
+        rolesValue.push(filteredArray.name);
+      }
+      this.volunteer.value.roles = rolesValue.sort();
+    }
+
+    this.interest_area =this.userDoc['candidate'].interest_areas;
+    if(this.interest_area) this.interest_area.sort();
+
     if(this.viewBy === 'candidate') this.routerUrl = '/users/talent/edit';
 
     if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
@@ -218,8 +279,8 @@ export class CandidateViewComponent implements OnInit {
           }
         }
 
-        //this.work_history = data['candidate'].work_history;
-        //this.work_history.sort(this.date_sort_desc);
+        this.work_history = this.userDoc['candidate'].work_history;
+        this.work_history.sort(this.date_sort_desc);
       }
 
       let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;
@@ -231,7 +292,14 @@ export class CandidateViewComponent implements OnInit {
             if(a.skill < b.skill) { return -1; }
             if(a.skill > b.skill) { return 1; }
             return 0;
-          })
+          });
+
+          let newCommercialsSkills = [];
+          for(let commercialsSkills of this.commercial_skills){
+            let img = commercialsSkills.skill+': ' +commercialsSkills.exp_year +' years';
+            newCommercialsSkills.push(img);
+          }
+          this.commercial_skills = newCommercialsSkills;
         }
 
         if(this.userDoc['candidate'].blockchain.commercial_platforms){
@@ -242,7 +310,14 @@ export class CandidateViewComponent implements OnInit {
               if(a.platform_name < b.platform_name) { return -1; }
               if(a.platform_name > b.platform_name) { return 1; }
               return 0;
-            })
+            });
+
+            let newCommercials = [];
+            for(let commercials of this.commercial){
+              let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+commercials.name+'.png" alt="'+commercials.name+' Logo"> ' + commercials.name+': ' +commercials.exp_year +' years';
+              newCommercials.push(img);
+            }
+            this.commercial = newCommercials;
           }
         }
 
@@ -254,7 +329,14 @@ export class CandidateViewComponent implements OnInit {
               if(a < b) { return -1; }
               if(a > b) { return 1; }
               return 0;
-            })
+            });
+
+            let newExperimented = [];
+            for(let experimented of this.experimented){
+              let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented+'.png" alt="'+experimented+' Logo"> '+experimented;
+              newExperimented.push(img);
+            }
+            this.experimented = newExperimented;
           }
         }
 
@@ -286,6 +368,22 @@ export class CandidateViewComponent implements OnInit {
           this.progress_bar_class = 'progress-bar bg-info';
           this.progress_bar_value = 75;
         }
+      }
+
+      this.languages = this.userDoc['candidate'].programming_languages;
+      if(this.languages && this.languages.length>0){
+        this.languages.sort(function(a, b){
+          if(a.language < b.language) { return -1; }
+          if(a.language > b.language) { return 1; }
+          return 0;
+        });
+
+        let newLanguages = [];
+        for(let languages of this.languages){
+          let img = languages.language+': ' +languages.exp_year +' years';
+          newLanguages.push(img);
+        }
+        this.languages = newLanguages;
       }
 
       if(this.userDoc['image'] != null ) {

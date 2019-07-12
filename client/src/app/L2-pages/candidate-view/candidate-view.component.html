@@ -429,8 +429,123 @@
               </div>
             </div>
           </div>
+
+          <!--for contractor-->
+          <div class="row mt-2" *ngIf="volunteer.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-check"></i> Volunteer</h4>
+            </div>
+
+            <div class = "col-md-12 mt-4">
+              <div *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
+                <app-c-formv-list label="Locations:" [value]="volunteer.noVisaArray"></app-c-formv-list>
+              </div>
+              <div *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0">
+                <app-c-formv-list label="Locations (work visa required):" [value]="volunteer.visaRequiredArray"></app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-list label="Roles:" [value]="volunteer.value.roles"></app-c-formv-list>
+            </div>
+
+            <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
+              <app-c-formv-text label="Maximum hours per week:" [value]="volunteer.value.max_hours_per_week"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
+              <div class="form-group">
+                <label>Learning objectives: </label>
+                <pre >{{volunteer.value.learning_objectives}}</pre>
+              </div>
+            </div>
+          </div>
         </section>
         <!--work pref section ends-->
+
+        <!--Blockchain experience section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fab fa-bitcoin"></i> Blockchain experience </h2>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="userDoc['candidate'].why_work">
+            <div class="col-md-12">
+              <app-c-formv-text label="Why work on blockchain?" [value]="userDoc['candidate'].why_work"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="interest_area">
+            <div class="col-md-12">
+              <app-c-formv-list label="Interest:" [value]="interest_area"></app-c-formv-list>
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
+            <div class="col-md-12 mb-2">
+              <h4>Technologies</h4>
+            </div>
+            <div class="col-md-12" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length>0) || (commercial_skills && commercial_skills.length > 0)">
+              <app-c-formv-list label="Commercial experience:" [value]="commercial"></app-c-formv-list>
+              <app-c-formv-html-area [value]="description_commercial_platforms"></app-c-formv-html-area>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="experimented && experimented.length>0">
+              <app-c-formv-list label="Experimented with:" [value]="experimented"></app-c-formv-list>
+              <app-c-formv-html-area [value]="description_experimented_platforms"></app-c-formv-html-area>
+            </div>
+            <div class="col-md-12 mt-3" *ngIf="commercial_skills && commercial_skills.length > 0">
+              <app-c-formv-list label="Skills:" [value]="commercial_skills"></app-c-formv-list>
+              <app-c-formv-html-area [value]="description_commercial_skills"></app-c-formv-html-area>
+            </div>
+          </div>
+        </section>
+        <!--Blockchain experience section ends-->
+
+        <!--Languages experience section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-code"></i> Experience </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12 mb-3">
+              <app-c-formv-list label="Languages:" [value]="languages"></app-c-formv-list>
+            </div>
+          </div>
+        </section>
+        <!--Languages experience section ends-->
+
+        <!--Work history section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-wrench"></i> Work history </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor='let work of work_history'>
+            <div class="col-md-12">
+              <h4>{{work.positionname}}</h4>
+              <strong>{{work.companyname}}</strong>
+            </div>
+            <div class="col-md-6">
+              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}} <i class="fas fa-long-arrow-alt-right"></i> now.</p>
+              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} <i class="fas fa-long-arrow-alt-right"></i> {{work.enddate | date:'MMMM-yyyy'}} </p>
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-globe"></i> {{work.locationname}}
+            </div>
+            <div class="col-md-12">
+              <app-c-formv-html-area [value]="work.description"></app-c-formv-html-area>
+            </div>
+          </div>
+        </section>
+        <!--Work history section ends-->
+
       </div>
     </div>
   </div>
