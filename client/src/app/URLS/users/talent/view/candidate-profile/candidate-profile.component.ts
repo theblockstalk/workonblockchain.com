@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+import { UserService } from '../../../../../user.service' ;
 
 @Component({
   selector: 'app-u-users-talent-view-candidate-profile',
@@ -6,11 +8,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./candidate-profile.component.css']
 })
 export class CandidateProfileComponent implements OnInit {
+  currentUser;
+  userDoc;
 
-  constructor() { }
+  constructor(private router: Router, private authenticationService: UserService) { }
 
   ngOnInit() {
     console.log('in CandidateProfileComponent');
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.currentUser && this.currentUser.type === 'candidate'){
+      this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
+        .subscribe(data => {
+            if (data) {
+              console.log(data);
+              this.userDoc = data;
+            }
+            else this.router.navigate(['/not_found']);
+          },
+          error => {
+            this.router.navigate(['/not_found']);
+          }
+        );
+    }
+    else{
+      this.router.navigate(['/login']);
+    }
   }
 
 }
