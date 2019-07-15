@@ -93,6 +93,8 @@ export class CandidateViewComponent implements OnInit {
   job_offer_msg_success;
   credentials: any = {};
   hourly_currency_log;
+  candidateMsgTitle;
+  candidateMsgBody;
 
   date_sort_desc = function (date1, date2)
   {
@@ -266,7 +268,18 @@ export class CandidateViewComponent implements OnInit {
     this.interest_area =this.userDoc['candidate'].interest_areas;
     if(this.interest_area) this.interest_area.sort();
 
-    if(this.viewBy === 'candidate') this.routerUrl = '/users/talent/edit';
+    if(this.viewBy === 'candidate') {
+      this.routerUrl = '/users/talent/edit';
+      this.authenticationService.get_page_content('Candidate popup message')
+      .subscribe(
+        data => {
+          if(data){
+            this.candidateMsgTitle = data['page_title'];
+            this.candidateMsgBody = data['page_content'];
+          }
+        }
+      );
+    }
 
     if(!this.anonimize)
       if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];

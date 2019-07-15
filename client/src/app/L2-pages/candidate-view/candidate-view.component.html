@@ -1,5 +1,10 @@
 <section class = "wob-bg-primary2 py-5 mt-5">
   <div class="container pt-2">
+    <div class="row" *ngIf="viewBy === 'candidate'">
+      <div class="col-md-12">
+        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right text-white">What happens next?</button>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="row" *ngIf="viewBy === 'admin'">
@@ -808,4 +813,25 @@
       </div>
     </div>
   </div>
+  <!-- Modal -->
+  <div id="popModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+          <h2 class="modal-title text-center">
+            {{candidateMsgTitle}}
+          </h2>
+        </div>
+        <div class="modal-body">
+          <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end model -->
 </section>

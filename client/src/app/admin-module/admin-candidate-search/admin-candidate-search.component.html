@@ -84,7 +84,9 @@
                       <img *ngIf="data.image" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.image}}" alt="">
 
                       <div class="ml-4">
-                        <a [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                        <a *ngIf="data.first_name" routerLink="/admins/talent/{{data._id}}/view">
+                          <h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2>
+                        </a>
                         <app-c-formv-badge *ngIf = "data.candidate_badge" [class]="data.candidate_badge_color" [value]="data.candidate_badge"></app-c-formv-badge>
                       </div>
                     </div>
