@@ -12,9 +12,13 @@
             <div class="col-md-6">
               <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
               <div class="mt-3">
-                <span><h3 class="text-capitalize">{{userDoc['first_name']}} {{userDoc['last_name']}}</h3></span>
+                <span *ngIf="userDoc['first_name']"><h3 class="text-capitalize">{{userDoc['first_name']}} {{userDoc['last_name']}}</h3></span>
                 <span *ngIf="viewBy === 'admin'">
                   <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
+                </span>
+                <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
+                <span *ngIf = "viewBy === 'company' && already_approached === 1">
+                  <span class = "badge badge-pill badge-primary"> Already approached </span>
                 </span>
               </div>
             </div>
@@ -28,14 +32,30 @@
                 [baseCity]="userDoc['candidate']['base_city']"
                 [candidateStatus]="candidate_status"
                 [createdDate]="created_date"
-                viewBy="admin"
+                [viewBy]=viewBy
               >
               </app-c-formv-right-side-bar>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <pre>{{userDoc['candidate']['description']}}</pre>
+              <app-c-formv-html-area [value]="userDoc['candidate']['description']"></app-c-formv-html-area>
+            </div>
+          </div>
+          <div class="row" *ngIf="viewBy === 'company'">
+            <div class="col-12">
+              <div class="text-right">
+                <ng-container *ngIf="already_approached === 1;else no_already_approached">
+                  <a [routerLink]="['/chat']">
+                    <button type="button" class = "btn btn-primary my-btn-style">
+                      <i class="fa fa-comment-dots"></i> Chat
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-template #no_already_approached>
+                  <button type="button" class = "btn btn-primary my-btn-style" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach with offer</button>
+                </ng-template>
+              </div>
             </div>
           </div>
         </section>
@@ -260,7 +280,7 @@
         <!--only for admin ends-->
 
         <!--section for progress bar-->
-        <app-i-formv-candidate-progressbar [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
+        <app-i-formv-candidate-progressbar *ngIf="viewBy !== 'company'" [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
         <!--section for progress bar ends-->
 
         <!--About section starts-->

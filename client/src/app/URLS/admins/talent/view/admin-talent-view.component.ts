@@ -39,6 +39,7 @@ export class AdminTalentViewComponent implements OnInit {
           );
       }
     }
+    else this.router.navigate(['/not_found']);
   }
 
 }
