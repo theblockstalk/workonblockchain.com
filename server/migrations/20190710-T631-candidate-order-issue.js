@@ -7,7 +7,7 @@ let totalDocsToProcess, totalModified = 0, totalProcessed=0;
 // This function will perform the migration
 module.exports.up = async function() {
     totalDocsToProcess = await users.count({type: 'candidate'});
-    logger.debug(totalDocsToProcess);
+    console.log('totalDocsToProcess: ' + totalDocsToProcess);
 
     let noHistor0moreLatest=0, minLatest0MoreHistory1, minLatest0MoreHistory2;
 
@@ -20,19 +20,18 @@ module.exports.up = async function() {
             minLatest0MoreHistory1 = Math.min(userDoc.candidate.history[0].timestamp, userDoc.candidate.latest_status.timestamp);
             minLatest0MoreHistory2 = Math.min(userDoc.candidate.latest_status.timestamp, userDoc.candidate.history[0].timestamp);
             set['candidate.latest_status.timestamp'] = userDoc.candidate.history[0].timestamp;
-            logger.debug(set);
-            logger.debug(userDoc._id);
         }
 
         if(!userDoc.candidate.history[0].timestamp || !userDoc.candidate.latest_status.timestamp){
             totalModified++;
             set['candidate.latest_status.timestamp'] = userDoc.candidate.history[0].timestamp;
-            logger.debug(set);
-            logger.debug( userDoc._id);
         }
 
-        if(!objects.isEmpty(set))
-            await users.update({_id : userDoc._id},{$set : set});
+        if(!objects.isEmpty(set)) {
+            console.log(set);
+            console.log(userDoc._id);
+            await users.update({_id: userDoc._id}, {$set: set});
+        }
     });
 
     console.log('Total user document to process: ' + totalDocsToProcess);
