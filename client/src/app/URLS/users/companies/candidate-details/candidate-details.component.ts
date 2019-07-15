@@ -11,6 +11,7 @@ export class CandidateDetailsComponent implements OnInit {
   currentUser;
   user_id;
   userDoc;
+  anonimize = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
     this.route.params.subscribe(params => {
@@ -27,6 +28,7 @@ export class CandidateDetailsComponent implements OnInit {
         .subscribe(data => {
             if (data) {
               console.log(data);
+              if(data['initials']) this.anonimize = true;
               this.userDoc = data;
             }
             else this.router.navigate(['/not_found']);

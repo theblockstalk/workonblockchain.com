@@ -284,7 +284,7 @@
         <!--section for progress bar ends-->
 
         <!--About section starts-->
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
             <div class="col-md-12">
               <h2> <i class="fas fa-user"></i> About </h2>
@@ -335,7 +335,7 @@
         <!--About section ends-->
 
         <!--Residence section starts-->
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
             <div class="col-md-12">
               <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
