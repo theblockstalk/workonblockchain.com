@@ -53,12 +53,18 @@ module.exports.endpoint = async function (req, res) {
             timestamp: timestamp
         }
         let set = {};
-        if(queryInput.note) history.note = queryInput.note;
+        if(queryInput.note) {
+            history.note = queryInput.note;
+            if(!queryInput.status)
+                set['candidate.latest_status.timestamp'] = timestamp;
+        }
 
 
         if(queryInput.email_html) {
             sanitizedEmailHtml = sanitizer.sanitizeHtml(req.unsanitizedBody.email_html, true);
             history.email_html = sanitizedEmailHtml;
+            if(!queryInput.status)
+                set['candidate.latest_status.timestamp'] = timestamp;
         }
         if(queryInput.email_subject) history.email_subject = queryInput.email_subject;
         if(queryInput.status) {
