@@ -69,7 +69,6 @@ import { ContentComponent } from './L1-items/pages/content/content.component';
 import { TitleComponent } from './L1-items/pages/title/title.component';
 import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.component';
 import { PagesComponent } from './L2-pages/pages/pages.component';
-import { ProgressBarComponent} from './L0-components/forms-view/progress-bar/progress-bar.component';
 import { ImageComponent} from './L0-components/forms-view/image/image.component';
 import { RightSideBarComponent } from './L0-components/forms-view/right-side-bar/right-side-bar.component';
 import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
@@ -94,8 +93,8 @@ import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-a
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent,
-    ImageComponent, RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
+    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
+    RightSideBarComponent, CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -111,8 +110,8 @@ import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-a
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent, PagesComponent, ProgressBarComponent, ImageComponent, RightSideBarComponent,
-    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent
+    TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, RightSideBarComponent, CandidateViewComponent,
+    CandidateProgressbarComponent, LinkAccountsComponent
   ]
 })
 export class SharedModule { }
