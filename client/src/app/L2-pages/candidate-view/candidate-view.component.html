@@ -28,18 +28,48 @@
               </div>
             </div>
             <div class="col-md-6">
-              <app-c-formv-right-side-bar
-                [referredName]="referred_name"
-                [referredLink]="referred_link"
-                [detailLink]="detail_link"
-                [nationality]="userDoc['nationality']"
-                [contactNumber]="userDoc['contact_number']"
-                [baseCity]="userDoc['candidate']['base_city']"
-                [candidateStatus]="candidate_status"
-                [createdDate]="created_date"
-                [viewBy]=viewBy
-              >
-              </app-c-formv-right-side-bar>
+              <ul class="list-group list-group-flush float-right">
+                <li *ngIf="viewBy === 'admin' && referred_name !== ''" class="list-group-item list-without-underline">
+                  <ng-container *ngIf="referred_link ; else noLink">
+                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span>Refered By:
+                      <a [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+                    </span>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span> Refered By: {{referred_name}} </span>
+                  </ng-template>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['nationality'] && userDoc['nationality'].length>0">
+                  <span><i class="fas fa-flag mr-2"></i></span>
+                  <span *ngFor="let nation of userDoc['nationality'];let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < userDoc['nationality'].length"/></span>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['contact_number']">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span>{{userDoc['contact_number']}}</span>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['candidate']['base_city']">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >{{userDoc['candidate']['base_city']}}</span>
+                </li>
+                <li class="list-group-item" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
+                  <span><i class="fas fa-user mr-2"></i></span>Status:
+                  <span *ngIf="candidate_status.status === 'created'">Created</span>
+                  <span *ngIf="candidate_status.status === 'other'">Other</span>
+                  <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
+                  <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
+                  <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
+                  <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                  <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
+                </li>
+                <li class="list-group-item" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
+                  <span><i class="fas fa-calendar mr-2"></i></span>
+                  <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="row">
