@@ -41,6 +41,7 @@ export class CandidateViewComponent implements OnInit {
   workTypes = constants.workTypes;
   currency = constants.currencies;
   job_type = constants.job_type;
+  base_countries = constants.countries;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -95,6 +96,12 @@ export class CandidateViewComponent implements OnInit {
   hourly_currency_log;
   candidateMsgTitle;
   candidateMsgBody;
+  public loading = false;information: any = {};
+  base_country;
+  base_city;
+  country_log;
+  city_log;
+  first_name;last_name;
 
   date_sort_desc = function (date1, date2)
   {
@@ -113,6 +120,7 @@ export class CandidateViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {}
 
   ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -265,11 +273,19 @@ export class CandidateViewComponent implements OnInit {
       this.volunteer.value.roles = rolesValue.sort();
     }
 
-    this.interest_area =this.userDoc['candidate'].interest_areas;
+    this.interest_area = this.userDoc['candidate'].interest_areas;
     if(this.interest_area) this.interest_area.sort();
 
     if(this.viewBy === 'candidate') {
+      this.information.country = -1;
       this.routerUrl = '/users/talent/edit';
+      if(!this.userDoc['candidate'].base_country && !this.userDoc['candidate'].base_city){
+        $("#popModal_b").modal({
+          show: true
+        });
+      }
+      this.first_name = this.userDoc['first_name'];
+      this.last_name = this.userDoc['last_name'];
       this.authenticationService.get_page_content('Candidate popup message')
       .subscribe(
         data => {
@@ -699,8 +715,6 @@ export class CandidateViewComponent implements OnInit {
 
   send_job_offer(msgForm: NgForm) {
     if(this.viewBy === 'company') {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
       let errorCount = 0;
       if (this.approach_work_type === 'employee') {
         if (!this.employee.job_title) {
@@ -880,6 +894,36 @@ export class CandidateViewComponent implements OnInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 300);
+  }
+
+  about() {
+    if(this.information.country === -1) this.country_log ="Please choose base country";
+    if(!this.information.city) this.city_log ="Please enter base city";
+    if(this.information.country !== -1 && this.information.city) {
+      let queryBody : any = {};
+      let candidateBody : any = {};
+      candidateBody.base_country = this.information.country;
+      candidateBody.base_city = this.information.city;
+      queryBody.candidate = candidateBody;
+
+      this.authenticationService.edit_candidate_profile(this.currentUser._id,queryBody,false)
+      .subscribe(
+        data => {
+          if(data){
+            this.userDoc['candidate'].base_country = this.information.country;
+            this.userDoc['candidate'].base_city = this.information.city;
+            $('#popModal_b').modal('hide');
+          }
+        },
+        error => {
+          if(error.message === 500 || error.message === 401) {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            window.location.href = '/login';
+          }
+          if(error.message === 403) {}
+        }
+      );
+    }
   }
 
 }

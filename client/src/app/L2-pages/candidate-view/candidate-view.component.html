@@ -835,3 +835,48 @@
   </div>
   <!-- end model -->
 </section>
+
+<!-- Modal-b -->
+<div id="popModal_b" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title text-center">Update your profile<br></h4>
+        <legend class="w-auto m-0">
+          <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
+        </legend>
+      </div>
+      <h4 class = "text-center">{{first_name}} {{last_name}}</h4>
+      <div class="modal-body">
+        <div class = "">
+          <strong>
+            Where do you currently live, or where are you most frequently based?
+          </strong>
+          <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
+                <option value="-1" disabled selected hidden >Please choose country</option>
+                <option *ngFor='let options of base_countries' [value]="options.value" selected>{{options.name}}</option>
+              </select>
+              <div class = "d-inline invalid-feedback" *ngIf="information.country === -1">
+                {{country_log}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" class="form-control" placeholder="London" name="city" #city required [(ngModel)]="information.city" >
+              <div class = "d-inline invalid-feedback" *ngIf="!information.city">
+                {{city_log}}
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
