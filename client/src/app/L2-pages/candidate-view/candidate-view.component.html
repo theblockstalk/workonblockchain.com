@@ -104,20 +104,11 @@
           </div>
           <div class="row mt-4">
             <div class = "col-md-6">
-              <div class="form-group">
-                <label>Email verified:</label>
-                <p *ngIf="userDoc['is_verify'] === 1"> Yes </p>
-                <p *ngIf="userDoc['is_verify'] === 0"> No </p>
-              </div>
+              <app-c-formv-text label="Email verified:" [value]="is_verify"></app-c-formv-text>
             </div>
 
             <div class = "col-md-6">
-              <div class="form-group">
-                <label>Account enabled:</label>
-                <p *ngIf="userDoc['disable_account'] === false"> Yes
-                </p>
-                <p *ngIf="userDoc['disable_account'] === true"> No </p>
-              </div>
+              <app-c-formv-text label="Account enabled:" [value]="account_status"></app-c-formv-text>
             </div>
             <div class = "col-md-6" *ngIf="userDoc['dissable_account_timestamp']">
               <app-c-formv-date label="Account enabled/disabled timestamp:" [value]="userDoc['dissable_account_timestamp']"></app-c-formv-date>
@@ -511,7 +502,7 @@
             <div class="col-md-12" *ngIf="contractor.value.service_description">
               <div class="form-group">
                 <label>Service description: </label>
-                <pre>{{contractor.value.service_description}}</pre>
+                <app-c-formv-html-area [value]="contractor.value.service_description"></app-c-formv-html-area>
               </div>
             </div>
           </div>
@@ -542,7 +533,7 @@
             <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
               <div class="form-group">
                 <label>Learning objectives: </label>
-                <pre >{{volunteer.value.learning_objectives}}</pre>
+                <app-c-formv-html-area [value]="volunteer.value.learning_objectives"></app-c-formv-html-area>
               </div>
             </div>
           </div>

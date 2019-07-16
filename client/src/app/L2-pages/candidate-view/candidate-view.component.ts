@@ -102,6 +102,8 @@ export class CandidateViewComponent implements OnInit {
   country_log;
   city_log;
   first_name;last_name;
+  is_verify;
+  account_status;
 
   date_sort_desc = function (date1, date2)
   {
@@ -301,6 +303,12 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
 
     if(this.viewBy === 'admin') {
+      this.is_verify = 'No';
+      if(this.userDoc['is_verify'] === 1) this.is_verify = 'Yes';
+
+      this.account_status = 'Yes';
+      if(this.userDoc['disable_account'] === true) this.account_status = 'No';
+
       this.routerUrl = '/admins/talent/'+ this.user_id +'/edit';
       this.getTemplateOptions();
       if (this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
