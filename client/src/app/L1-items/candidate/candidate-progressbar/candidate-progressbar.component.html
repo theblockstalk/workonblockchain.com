@@ -1,51 +1,53 @@
-<section class = "border rounded mt-4 py-3 px-5 bg-white">
-  <app-c-formv-progress-bar></app-c-formv-progress-bar>
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <div class="progress">
-        <div *ngIf="value === 15 || value === 25" class="{{class}}" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 50" class="{{class}}" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 75" class="{{class}}" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
-        <div *ngIf="value === 100" class="{{class}}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">
-          {{value}}%
-        </div>
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="progress">
+      <div *ngIf="value === 15 || value === 25" class="{{class}}" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="100" aria-valuemax="100">
+        {{value}}%
+      </div>
+      <div *ngIf="value === 50" class="{{class}}" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100">
+        {{value}}%
+      </div>
+      <div *ngIf="value === 75" class="{{class}}" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100">
+        {{value}}%
+      </div>
+      <div *ngIf="value === 100" class="{{class}}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">
+        {{value}}%
       </div>
     </div>
   </div>
-  <div class="row mt-5">
-    <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-      <p *ngIf="viewBy === 'admin'">3 days till review</p>
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Basic information</u>
-      </a>
-    </div>
-    <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Linked accounts (e.g Gitub etc)</u>
-      </a>
-    </div>
-    <div [ngClass]="(value >= 50)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p *ngIf="viewBy === 'admin'">2 days till review</p>
-      <a (click)="internalRoute(routerUrl,'work_history')">
-        <u>Work History</u>
-      </a>
-    </div>
-    <div [ngClass]="(value >= 75)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <a (click)="internalRoute(routerUrl,'blockchain_experience')">
-        <u>Blockchain experience descriptions</u>
-      </a>
-    </div>
-    <div [ngClass]="(value === 100)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
-      <p  *ngIf="viewBy === 'admin'">Priority</p>
-      <a (click)="internalRoute(routerUrl,'about')">
-        <u>Profile picture</u>
-      </a>
-    </div>
+</div>
+<div class="row mt-5">
+  <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
+    <p>3 days till review</p>
+    <a *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+      <u>Basic information</u>
+    </a>
+    <u *ngIf="viewBy === 'admin'">Basic information</u>
   </div>
-</section>
+  <div [ngClass]="(value === 15 || value === 25)?'col-md-2 mr-4 progress-color-warning':'col-md-2 mr-4 progress-color-info'">
+    <a *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+      <u>Linked accounts (e.g Gitub etc)</u>
+    </a>
+    <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
+  </div>
+  <div [ngClass]="(value >= 50)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
+    <p>2 days till review</p>
+    <a *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
+      <u>Work History</u>
+    </a>
+    <u *ngIf="viewBy === 'admin'">Work History</u>
+  </div>
+  <div [ngClass]="(value >= 75)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
+    <a *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
+      <u>Blockchain experience descriptions</u>
+    </a>
+    <u *ngIf="viewBy === 'admin'">Blockchain experience descriptions</u>
+  </div>
+  <div [ngClass]="(value === 100)?'col-md-2 mr-4 progress-color-info':'col-md-2 mr-4'">
+    <p>Priority</p>
+    <a *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+      <u>Profile picture</u>
+    </a>
+    <u *ngIf="viewBy === 'admin'">Profile picture</u>
+  </div>
+</div>

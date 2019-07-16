@@ -285,7 +285,38 @@
         <!--only for admin ends-->
 
         <!--section for progress bar-->
-        <app-i-formv-candidate-progressbar *ngIf="viewBy !== 'company'" [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-smile"></i> We're here to help</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-image image="assets/profile/profile-image.png"></app-c-formv-image>
+              <h4>Antonio Sabado</h4>
+              <p>antonio@workonblockchain.com</p>
+              <p>+44 7923 521 833</p>
+            </div>
+            <div class="col-md-6">
+              <p>Hi i'm Antonio</p>
+              <strong>
+                I'm here to help you find work in the blockchain space.
+              </strong>
+              <br> <br>
+              <strong>
+                But first i need to make sure your profile looks attractive for companies. To do
+                this I need your help to ensure I understand exactly what you offer, and what
+                you are looking for.
+              </strong>
+              <br> <br>
+              <p>
+                Please take the time to add in as much detail as you can!
+              </p>
+            </div>
+          </div>
+          <app-i-formv-candidate-progressbar *ngIf="viewBy !== 'company'" [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
+        </section>
         <!--section for progress bar ends-->
 
         <!--About section starts-->
