@@ -27,7 +27,7 @@
                 </span>
               </div>
             </div>
-            <div class="col-md-6">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-5':'col-md-6'">
               <ul class="list-group list-group-flush float-right">
                 <li *ngIf="viewBy === 'admin' && referred_name !== ''" class="list-group-item list-without-underline">
                   <ng-container *ngIf="referred_link ; else noLink">
@@ -70,6 +70,9 @@
                   <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
                 </li>
               </ul>
+            </div>
+            <div class="col-md-1" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-i-forme-edit-link-icon>
             </div>
           </div>
           <div class="row">
@@ -343,8 +346,11 @@
         <!--About section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fas fa-user"></i> About </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -394,8 +400,11 @@
         <!--Residence section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="residence"></app-i-forme-edit-link-icon>
             </div>
           </div>
           <div class="row mt-3">
@@ -412,8 +421,11 @@
         <!--work pref section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-6">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="work_preferences"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -543,8 +555,11 @@
         <!--Blockchain experience section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fab fa-bitcoin"></i> Blockchain experience </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="blockchain_experience"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -583,8 +598,11 @@
         <!--Languages experience section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fas fa-code"></i> Experience </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="experience"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -599,8 +617,11 @@
         <!--Work history section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fas fa-wrench"></i> Work history </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="work_history"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -626,8 +647,11 @@
         <!--Education section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div class="col-md-12">
+            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
               <h2> <i class="fas fa-university"></i> Education </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="education_history"></app-i-forme-edit-link-icon>
             </div>
           </div>
 
@@ -857,8 +881,17 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="reset" class="btn btn-secondary">Reset</button>
-              <button type="submit" class="btn btn-primary">Send</button>
+              <app-c-button-normal
+                level="secondary"
+                buttonType="reset"
+                label="Reset"
+              ></app-c-button-normal>
+
+              <app-c-button-normal
+                level="primary"
+                buttonType="submit"
+                label="Send"
+              ></app-c-button-normal>
             </div>
           </form>
         </div>
@@ -871,7 +904,6 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header bg-primary">
-          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
           <h2 class="modal-title text-center">
             {{candidateMsgTitle}}
           </h2>
@@ -924,7 +956,11 @@
               </div>
             </div>
             <div class="form-group">
-              <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+              <app-c-button-normal
+                level="primary form-control"
+                buttonType="submit"
+                label="Update your profile"
+              ></app-c-button-normal>
             </div>
           </form>
         </div>
