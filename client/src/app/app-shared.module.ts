@@ -72,7 +72,6 @@ import { PagesComponent } from './L2-pages/pages/pages.component';
 import { ImageComponent} from './L0-components/forms-view/image/image.component';
 import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
 import { CandidateProgressbarComponent } from './L1-items/candidate/candidate-progressbar/candidate-progressbar.component';
-import { LinkAccountsComponent } from './L1-items/candidate/link-accounts/link-accounts.component';
 import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-icon/text-linked-icon.component';
 
 @NgModule({
@@ -94,7 +93,7 @@ import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
-    CandidateViewComponent, CandidateProgressbarComponent, LinkAccountsComponent, TextLinkedIconComponent
+    CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -111,7 +110,7 @@ import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
-    CandidateProgressbarComponent, LinkAccountsComponent, TextLinkedIconComponent
+    CandidateProgressbarComponent, TextLinkedIconComponent
   ]
 })
 export class SharedModule { }
