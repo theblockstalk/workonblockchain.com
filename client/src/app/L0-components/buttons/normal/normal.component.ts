@@ -11,6 +11,8 @@ export class OthersComponent implements OnInit {
   @Input() alignment: string; // "left", "center", "right"
   @Input() buttonType: string; // "submit", "reset", "button"
   @Input() disabled: boolean;
+  @Input() routeUrl: string; //optional
+  @Input() buttonIconClass: string; //optional
 
   constructor() { }
 

@@ -9,7 +9,11 @@
       <div class="col-md-12">
         <div class="row" *ngIf="viewBy === 'admin'">
           <div class="col-md-12">
-            <button [routerLink]="[routerUrl]"  class = "btn btn-primary float-right">Edit Profile</button>
+            <app-c-button-normal
+              alignment="btn btn-primary float-right"
+              label="Edit Profile"
+              [routeUrl]="routerUrl"
+            ></app-c-button-normal>
           </div>
         </div>
         <section class = "border rounded mt-3 py-3 px-5 bg-white">
@@ -85,9 +89,12 @@
               <div class="text-right">
                 <ng-container *ngIf="already_approached === 1;else no_already_approached">
                   <a [routerLink]="['/chat']">
-                    <button type="button" class = "btn btn-primary my-btn-style">
-                      <i class="fa fa-comment-dots"></i> Chat
-                    </button>
+                    <app-c-button-normal
+                       level="primary my-btn-style"
+                       buttonType="button"
+                       label="Chat"
+                       buttonIconClass="fa fa-comment-dots"
+                    ></app-c-button-normal>
                   </a>
                 </ng-container>
                 <ng-template #no_already_approached>

@@ -1,0 +1,12 @@
+/*progress bar styling*/
+.progress-color-warning{
+  color: #aaad3d;
+}
+
+.progress-color-info{
+  color: #6767d5;
+}
+
+.progress-color-success{
+  color: green;
+}
