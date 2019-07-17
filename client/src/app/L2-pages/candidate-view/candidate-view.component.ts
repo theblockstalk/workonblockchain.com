@@ -137,35 +137,12 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].employee) {
       this.employee.value = this.userDoc['candidate'].employee;
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
-      let newNoVisaPlaceArray = [];
-      for(let noVisaPlace of locationArray.noVisaArray){
-        if(noVisaPlace.name === 'Remote'){
-          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(remote);
-        }
-        if(noVisaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(city);
-        }
-        if(noVisaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(country);
-        }
-      }
+      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.employee.noVisaArray = newNoVisaPlaceArray;
 
-      let newVisaRequiredArray = [];
-      for(let visaPlace of locationArray.visaRequiredArray){
-        if(visaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(city);
-        }
-        if(visaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(country);
-        }
-      }
+      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
       this.employee.visaRequiredArray = newVisaRequiredArray;
+
       let rolesValue = [];
       for(let role of this.employee.value.roles){
         const filteredArray = getNameFromValue(this.roles,role);
@@ -182,34 +159,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].contractor) {
       this.contractor.value = this.userDoc['candidate'].contractor;
       const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
-      let newNoVisaPlaceArray = [];
-      for(let noVisaPlace of locationArray.noVisaArray){
-        if(noVisaPlace.name === 'Remote'){
-          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(remote);
-        }
-        if(noVisaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(city);
-        }
-        if(noVisaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(country);
-        }
-      }
+      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.contractor.noVisaArray = newNoVisaPlaceArray;
 
-      let newVisaRequiredArray = [];
-      for(let visaPlace of locationArray.visaRequiredArray){
-        if(visaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(city);
-        }
-        if(visaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(country);
-        }
-      }
+      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
       this.contractor.visaRequiredArray = newVisaRequiredArray;
 
       let rolesValue = [];
@@ -232,36 +185,12 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].volunteer) {
       this.volunteer.value = this.userDoc['candidate'].volunteer;
       const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
-      let newNoVisaPlaceArray = [];
-      for(let noVisaPlace of locationArray.noVisaArray){
-        if(noVisaPlace.name === 'Remote'){
-          let remote = '<i class="fas fa-laptop"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(remote);
-        }
-        if(noVisaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(city);
-        }
-        if(noVisaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+noVisaPlace.name;
-          newNoVisaPlaceArray.push(country);
-        }
-      }
+      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.volunteer.noVisaArray = newNoVisaPlaceArray;
-      console.log(this.volunteer.noVisaArray.length);
 
-      let newVisaRequiredArray = [];
-      for(let visaPlace of locationArray.visaRequiredArray){
-        if(visaPlace.type === 'city') {
-          let city = '<i class="fas fa-city"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(city);
-        }
-        if(visaPlace.type === 'country') {
-          let country = '<i class="fas fa-flag"></i> '+visaPlace.name;
-          newVisaRequiredArray.push(country);
-        }
-      }
+      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
       this.volunteer.visaRequiredArray = newVisaRequiredArray;
+
       let rolesValue = [];
       for(let role of this.volunteer.value.roles){
         const filteredArray = getNameFromValue(this.roles,role);
@@ -927,6 +856,26 @@ export class CandidateViewComponent implements OnInit {
         }
       );
     }
+  }
+
+  createLocationsListStrings(locationArray){
+    let placesArray = [];
+
+    for (let noVisaPlace of locationArray) {
+      if (noVisaPlace.name === 'Remote') {
+        let remote = '<i class="fas fa-laptop"></i> ' + noVisaPlace.name;
+        placesArray.push(remote);
+      }
+      if (noVisaPlace.type === 'city') {
+        let city = '<i class="fas fa-city"></i> ' + noVisaPlace.name;
+        placesArray.push(city);
+      }
+      if (noVisaPlace.type === 'country') {
+        let country = '<i class="fas fa-flag"></i> ' + noVisaPlace.name;
+        placesArray.push(country);
+      }
+    }
+    return placesArray;
   }
 
 }
