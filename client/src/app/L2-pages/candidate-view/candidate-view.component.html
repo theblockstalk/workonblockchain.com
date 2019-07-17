@@ -37,12 +37,12 @@
                   <ng-container *ngIf="referred_link ; else noLink">
                     <span><i class="fas fa-user mr-2"></i></span>
                     <span>Refered By:
-                      <a [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+                      <a class="text-capitalize" [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
                     </span>
                   </ng-container>
                   <ng-template #noLink>
                     <span><i class="fas fa-user mr-2"></i></span>
-                    <span> Refered By: {{referred_name}} </span>
+                    <span class="text-capitalize"> Refered By: {{referred_name}} </span>
                   </ng-template>
                 </li>
                 <li class="list-group-item" *ngIf="userDoc['nationality'] && userDoc['nationality'].length>0">
