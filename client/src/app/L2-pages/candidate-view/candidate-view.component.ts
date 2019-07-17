@@ -19,7 +19,6 @@ export class CandidateViewComponent implements OnInit {
 
   //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/view
 
-  currentUser;
   routerUrl;
   user_id;
   candidate_image;
@@ -29,7 +28,6 @@ export class CandidateViewComponent implements OnInit {
   candidate_status;
   created_date;
   candidateHistory;
-  _id;
   set_status;
   status_reason_rejected;
   status_reason_deferred;
@@ -92,7 +90,6 @@ export class CandidateViewComponent implements OnInit {
   volunteer_desc_log;
   work_log;
   job_offer_msg_success;
-  credentials: any = {};
   hourly_currency_log;
   candidateMsgTitle;
   candidateMsgBody;
@@ -122,7 +119,6 @@ export class CandidateViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {}
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -134,9 +130,8 @@ export class CandidateViewComponent implements OnInit {
       $('.selectpicker').selectpicker('refresh');
     }, 500);
 
+    console.log('this.userDoc._id: ' + this.userDoc['_id']);
     this.user_id = this.userDoc['_id'];
-    this._id = this.user_id;
-    this.credentials.user_id = this._id;
 
     //for employee
     if(this.userDoc['candidate'].employee) {
@@ -325,7 +320,7 @@ export class CandidateViewComponent implements OnInit {
 
     if(this.viewBy === 'company'){
       //checking already approached or not
-      this.authenticationService.get_user_messages_comp(this._id)
+      this.authenticationService.get_user_messages_comp(this.user_id)
       .subscribe(
         data => {
           if(data['messages'][0].message.approach) this.already_approached=1;
@@ -677,11 +672,11 @@ export class CandidateViewComponent implements OnInit {
     if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
 
 
-    this.authenticationService.candidate_status_history(this._id, queryInput, true)
+    this.authenticationService.candidate_status_history(this.user_id, queryInput, true)
       .subscribe(
         data => {
           this.candidateHistory = data['candidate'].history;
-          this._id  = data['_id'];
+          this.user_id = data['_id'];
           let statusCount = 0;
           for(let history of this.candidateHistory) {
             if(statusCount === 0 && history.status) {
@@ -847,7 +842,7 @@ export class CandidateViewComponent implements OnInit {
             volunteer: job_offer
           }
         }
-        this.authenticationService.send_message(this.credentials.user_id, 'approach', new_offer)
+        this.authenticationService.send_message(this.user_id, 'approach', new_offer)
           .subscribe(
             data => {
               this.job_offer_msg_success = 'Message successfully sent';
@@ -914,7 +909,7 @@ export class CandidateViewComponent implements OnInit {
       candidateBody.base_city = this.information.city;
       queryBody.candidate = candidateBody;
 
-      this.authenticationService.edit_candidate_profile(this.currentUser._id,queryBody,false)
+      this.authenticationService.edit_candidate_profile(this.user_id,queryBody,false)
       .subscribe(
         data => {
           if(data){
