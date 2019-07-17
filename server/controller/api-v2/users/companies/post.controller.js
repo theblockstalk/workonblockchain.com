@@ -65,6 +65,10 @@ const bodySchema = new Schema({
     type:{
         type: String,
         enum: enumerations.userTypes
+    },
+    referred_email:{
+        type: String,
+        validate: regexes.email,
     }
 });
 
