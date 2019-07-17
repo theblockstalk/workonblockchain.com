@@ -61,7 +61,7 @@ export class SocialAuthComponent implements OnInit {
         user => {
 
           if(user) {
-            window.location.href = '/talent/view';
+            window.location.href = '/users/talent';
           }
 
         },
@@ -90,7 +90,7 @@ export class SocialAuthComponent implements OnInit {
         user => {
           if(user) {
             localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = '/talent/view';
+            window.location.href = '/users/talent';
           }
 
         },

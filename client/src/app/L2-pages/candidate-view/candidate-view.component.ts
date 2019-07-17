@@ -17,7 +17,7 @@ export class CandidateViewComponent implements OnInit {
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
 
-  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/view
+  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/
 
   routerUrl;
   user_id;

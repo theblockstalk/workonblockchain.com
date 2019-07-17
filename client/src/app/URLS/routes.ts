@@ -3,7 +3,7 @@ export const urls = {
   admins_talent_edit: 'admins/talent/:user_id/edit',
   admins_pages_edit: 'admins/pages/:page_name/edit',
   pages: 'pages/:page_name',
-  admin_talent_view: 'admins/talent/:user_id/view',
-  company_talent_view: 'company/talent/:user_id/view',
-  candidate_profile_view: 'talent/view',
+  admin_talent_view: 'admins/talent/:user_id',
+  company_talent_view: 'users/talent/:user_id',
+  candidate_talent_view: 'users/talent',
 };

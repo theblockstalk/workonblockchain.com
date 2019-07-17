@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
             if(user['type'] === 'candidate')
             {
-              window.location.href = '/talent/view';
+              window.location.href = '/users/talent';
             }
 
           },
