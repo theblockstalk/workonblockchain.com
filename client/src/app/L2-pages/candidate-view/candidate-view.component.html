@@ -230,8 +230,19 @@
             <div class="row">
               <div class="col-md-12">
                 <div class = "form-group">
-                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
-                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
+                  <app-c-button-normal *ngIf = "!email_text"
+                    (click) = "approveClick(approve_form)"
+                    buttonType="submit"
+                    label="Done"
+                    alignment="btn btn-primary float-right"
+                  ></app-c-button-normal>
+
+                  <app-c-button-normal *ngIf = "email_text"
+                     (click) = "approveClick(approve_form)"
+                     buttonType="submit"
+                     label="Send"
+                     alignment="btn btn-primary float-right"
+                  ></app-c-button-normal>
                 </div>
               </div>
               <div class="col-md-12">
