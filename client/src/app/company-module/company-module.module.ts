@@ -11,7 +11,6 @@ import { TermsWizardComponent } from './terms-wizard/terms-wizard.component';
 import { CompanySearchComponent } from './company-search/company-search.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
-import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import {PagerService} from '../pager.service';
 import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
@@ -40,7 +39,6 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
     CompanySearchComponent,
     CompanyProfileComponent,
     EditCompanyProfileComponent,
-    CandidateDetailComponent,
     PreferencesComponent,
     CompanyVerifyEmailComponent,
     CompaniesLandingPageComponent

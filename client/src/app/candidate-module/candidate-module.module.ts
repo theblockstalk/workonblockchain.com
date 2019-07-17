@@ -11,7 +11,6 @@ import { AboutComponent } from './about/about.component';
 import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
-import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import {ProfileResolver} from '../incomplete-profile.resolver';
 import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
@@ -34,7 +33,6 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
     JobComponent,
     ResumeComponent,
     ExperienceComponent,
-    CandidateProfileComponent,
     CandidateVerifyEmailComponent
   ],
   providers:

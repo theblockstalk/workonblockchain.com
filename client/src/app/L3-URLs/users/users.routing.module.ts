@@ -9,8 +9,8 @@ import { EditCandidateProfileComponent } from './talent/edit/edit-candidate-prof
 
 const routes: Routes = [
   { path: urls.users_talent_edit , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
-  { path: urls.company_talent_view, component: CandidateDetailsComponent},
-  { path: urls.candidate_talent_view, component: CandidateProfileComponent},
+  { path: urls.company_talent_view, component: CandidateDetailsComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: urls.candidate_talent_view, component: CandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
 ];
 
 @NgModule({
