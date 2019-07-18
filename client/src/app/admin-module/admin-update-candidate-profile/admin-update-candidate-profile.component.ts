@@ -189,6 +189,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+    console.log(this.user_id);
+    this.router.navigate(['/admins/talent/'+this.user_id+'/edit']);
   }
 
   private education_data(): FormGroup[]
