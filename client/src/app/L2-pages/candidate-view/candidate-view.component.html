@@ -10,7 +10,8 @@
         <div class="row" *ngIf="viewBy === 'admin'">
           <div class="col-md-12">
             <app-c-button-normal
-              alignment="btn btn-primary float-right"
+              level = "primary"
+              alignment="float-right"
               label="Edit Profile"
               [routeUrl]="routerUrl"
             ></app-c-button-normal>
@@ -22,16 +23,14 @@
               <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
               <div class="mt-3">
                 <span *ngIf="userDoc['first_name']"><h3 class="text-capitalize">{{userDoc['first_name']}} {{userDoc['last_name']}}</h3></span>
+                <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
+                <app-c-formv-badge *ngIf = "viewBy === 'company' && already_approached === 1" class="primary" value="Already approached"></app-c-formv-badge>
                 <span *ngIf="viewBy === 'admin'">
                   <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
                 </span>
-                <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
-                <span *ngIf = "viewBy === 'company' && already_approached === 1">
-                  <span class = "badge badge-pill badge-primary"> Already approached </span>
-                </span>
               </div>
             </div>
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-5':'col-md-6'">
+            <div class="col-md-5">
               <ul class="list-group list-group-flush float-right">
                 <li *ngIf="viewBy === 'admin' && referred_name !== ''" class="list-group-item list-without-underline">
                   <ng-container *ngIf="referred_link ; else noLink">
@@ -241,14 +240,16 @@
                     (click) = "approveClick(approve_form)"
                     buttonType="submit"
                     label="Done"
-                    alignment="btn btn-primary float-right"
+                    level = "primary"
+                    alignment="float-right"
                   ></app-c-button-normal>
 
                   <app-c-button-normal *ngIf = "email_text"
                      (click) = "approveClick(approve_form)"
                      buttonType="submit"
                      label="Send"
-                     alignment="btn btn-primary float-right"
+                     level="primary"
+                     alignment="float-right"
                   ></app-c-button-normal>
                 </div>
               </div>
@@ -364,7 +365,7 @@
         <!--About section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fas fa-user"></i> About </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -418,7 +419,7 @@
         <!--Residence section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -439,7 +440,7 @@
         <!--work pref section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -573,7 +574,7 @@
         <!--Blockchain experience section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fab fa-bitcoin"></i> Blockchain experience </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -616,7 +617,7 @@
         <!--Languages experience section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fas fa-code"></i> Experience </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -635,7 +636,7 @@
         <!--Work history section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fas fa-wrench"></i> Work history </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
@@ -665,7 +666,7 @@
         <!--Education section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div [ngClass]="(viewBy === 'candidate')?'col-md-6':'col-md-12'">
+            <div class="col-md-6">
               <h2> <i class="fas fa-university"></i> Education </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
