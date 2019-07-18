@@ -111,7 +111,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label >Personal website URL (optional)</label>
-                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
+                  <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,7}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
                   <div class = "invalid-feedback d-inline"  *ngIf="info.personal_website_url && personalaccount.errors">
                     Enter url in proper format.
                   </div>
