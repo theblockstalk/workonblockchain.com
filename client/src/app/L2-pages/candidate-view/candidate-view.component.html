@@ -135,37 +135,34 @@
                 <!--New code for 23-Nov-2018-->
                 <div class="row">
                   <div class="col-md-4">
-                    <div class="form-group">
-                      <label>Change status: </label>
-                      <select class="form-control selectpicker" title="Select status" [disabled]="userDoc['is_verify'] === 0 ? true : false" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
-                        <option *ngFor='let status of set_candidate_status' [value]="status.value" >{{status.name}}</option>
-                      </select>
-                    </div>
+                    <app-c-forme-dropdown-single
+                      label="Select status"
+                      [value]="set_status"
+                      [options]="set_candidate_status"
+                      (selectedValue)="set_status = $event"
+                      (change)="changeStatus()"
+                    ></app-c-forme-dropdown-single>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-4" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
-                    <div class="form-group">
-                      <label>Reason: </label>
-                      <select class="form-control selectpicker" title= "Select reason" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
-                        <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
-                      </select>
-                      <div class="text-danger" *ngIf = "status_error && !status_reason_rejected">
-                        {{status_error}}
-                      </div>
-                    </div>
+                    <app-c-forme-dropdown-single
+                      label="Select reason"
+                      [value]="status_reason_rejected"
+                      [options]="set_candidate_status_rejected"
+                      [errorMsg]="status_error"
+                      (selectedValue)="status_reason_rejected = $event"
+                    ></app-c-forme-dropdown-single>
                   </div>
                   <div class="col-md-4" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
-                    <div class="form-group">
-                      <label>Reason: </label>
-                      <select class="form-control selectpicker" title="Select reason" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
-                        <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
-                      </select>
-                      <div class="text-danger" *ngIf = "status_error && !status_reason_deferred">
-                        {{status_error}}
-                      </div>
-                    </div>
+                    <app-c-forme-dropdown-single
+                      label="Select reason"
+                      [value]="status_reason_deferred"
+                      [options]="set_candidate_status_deferred"
+                      [errorMsg]="status_error"
+                      (selectedValue)="status_reason_deferred = $event"
+                    ></app-c-forme-dropdown-single>
                   </div>
                 </div>
               </div>
@@ -181,12 +178,13 @@
             </div>
             <div class="row" *ngIf = "add_note === true">
               <div class="col-md-4">
-                <div class="form-group">
-                  <label>Template</label>
-                  <select class="form-control selectpicker" (change)="selectTemplate($event, 'note')" title="(select one)" required name="template" [(ngModel)]="note_template">
-                    <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
-                  </select>
-                </div>
+                <app-c-forme-dropdown-single
+                  label="(select one)"
+                  [value]="note_template"
+                  [options]="templates"
+                  (selectedValue)="note_template = $event"
+                  (change)="selectTemplate('note')"
+                ></app-c-forme-dropdown-single>
               </div>
               <div class="col-md-12">
                 <div class="form-group">

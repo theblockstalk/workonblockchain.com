@@ -484,18 +484,21 @@ export class CandidateViewComponent implements OnInit {
     }
   }
 
-  changeStatus(event){
-    if(event === 'Rejected' || event === 'rejected'){
+  changeStatus(){
+    console.log("this.set_status: " + this.set_status);
+    if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
       $("#sel1-reason-deferred").css('display', 'none');
       $("#sel1-reason-rejected").css('display', 'block');
     }
-    if(event === 'Deferred' || event === 'deferred'){
+    if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
       $("#sel1-reason-rejected").css('display', 'none');
       $("#sel1-reason-deferred").css('display', 'block');
     }
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 200);
+    this.status_error = '';
+    this.error = '';
   }
 
   refreshSelect(){
@@ -527,9 +530,10 @@ export class CandidateViewComponent implements OnInit {
         });
   }
 
-  selectTemplate(event, name){
+  selectTemplate(name){
+    console.log("note_template: " + this.note_template);
     if(this.viewBy === 'admin') {
-      let template = this.templateDoc.find(x => x.name === event.target.value);
+      let template = this.templateDoc.find(x => x.name === this.note_template);
       if (name === 'note') {
         this.note = template.body;
       }
@@ -545,16 +549,21 @@ export class CandidateViewComponent implements OnInit {
 
   is_approved;
   approveClick(approveForm: NgForm) {
+    console.log("this.status_reason_rejected: " + this.status_reason_rejected);
+    console.log('status_reason_deferred: ' + this.status_reason_deferred);
+    console.log('approveClick: ' + this.set_status);
     if(this.viewBy === 'admin') {
       this.error = '';
       this.success = '';
-      if (!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
+      if (!this.set_status && !approveForm.value.note && !approveForm.value.send_email) {
         this.error = 'Please fill at least one field';
       }
 
       else {
-        if (approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected") {
-          if (approveForm.value.status_reason_rejected) {
+        if (this.set_status === "Rejected" || this.set_status === "rejected") {
+          if (this.status_reason_rejected) {
+            approveForm.value.set_status = this.set_status;
+            approveForm.value.status_reason_rejected = this.status_reason_rejected;
             this.saveApproveData(approveForm.value);
           }
           else {
@@ -562,8 +571,10 @@ export class CandidateViewComponent implements OnInit {
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (approveForm.value.set_status === "Deferred" || approveForm.value.set_status === "deferred") {
-          if (approveForm.value.status_reason_deferred) {
+        else if (this.set_status === "Deferred" || this.set_status === "deferred") {
+          if (this.status_reason_deferred) {
+            approveForm.value.set_status = this.set_status;
+            approveForm.value.status_reason_deferred = this.status_reason_deferred;
             this.saveApproveData(approveForm.value);
           }
           else {
@@ -581,6 +592,7 @@ export class CandidateViewComponent implements OnInit {
 
         }
         else {
+          approveForm.value.set_status = this.set_status;
           this.saveApproveData(approveForm.value);
           approveForm.resetForm();
         }
