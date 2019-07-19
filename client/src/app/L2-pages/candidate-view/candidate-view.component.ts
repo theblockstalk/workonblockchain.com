@@ -41,6 +41,7 @@ export class CandidateViewComponent implements OnInit {
   job_type = constants.job_type;
   base_countries = constants.countries;
   job_activities = constants.job_activity_status;
+  add_note_options = constants.add_note_options;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -513,8 +514,20 @@ export class CandidateViewComponent implements OnInit {
     }
   }
 
+  addNoteChange(event){
+    if(event.target.name === 'add_note' && event.target.checked === false){
+      this.note_template = '';
+      this.note = '';
+    }
+
+    if(event.target.name === 'send_email' && event.target.checked === false){
+      this.email_template = '';
+      this.email_text = '';
+      this.email_subject = 'Welcome to workonblockchain.com - your account has been approved!';
+    }
+  }
+
   changeStatus(){
-    console.log("this.set_status: " + this.set_status);
     if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
       $("#sel1-reason-deferred").css('display', 'none');
       $("#sel1-reason-rejected").css('display', 'block');
@@ -559,10 +572,9 @@ export class CandidateViewComponent implements OnInit {
         });
   }
 
-  selectTemplate(name){
-    console.log("note_template: " + this.note_template);
+  selectTemplate(event,name){
     if(this.viewBy === 'admin') {
-      let template = this.templateDoc.find(x => x.name === this.note_template);
+      let template = this.templateDoc.find(x => x.name === event.target.value);
       if (name === 'note') {
         this.note = template.body;
       }
@@ -578,13 +590,10 @@ export class CandidateViewComponent implements OnInit {
 
   is_approved;
   approveClick(approveForm: NgForm) {
-    console.log("this.status_reason_rejected: " + this.status_reason_rejected);
-    console.log('status_reason_deferred: ' + this.status_reason_deferred);
-    console.log('approveClick: ' + this.set_status);
     if(this.viewBy === 'admin') {
       this.error = '';
       this.success = '';
-      if (!this.set_status && !approveForm.value.note && !approveForm.value.send_email) {
+      if (!this.set_status && !this.note && !this.send_email) {
         this.error = 'Please fill at least one field';
       }
 
@@ -611,18 +620,22 @@ export class CandidateViewComponent implements OnInit {
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (approveForm.value.send_email && approveForm.value.email_text && !approveForm.value.email_subject) {
+        else if (this.send_email && this.email_text && !this.email_subject) {
           this.error = 'Please enter email subject too.';
 
         }
 
-        else if (approveForm.value.send_email && !approveForm.value.email_text && approveForm.value.email_subject) {
+        else if (this.send_email && !this.email_text && this.email_subject) {
           this.error = 'Please enter email body too.';
 
         }
         else {
+          approveForm.value.email_subject = this.email_subject;
+          approveForm.value.email_text = this.email_text;
+          approveForm.value.note = this.note;
           approveForm.value.set_status = this.set_status;
           this.saveApproveData(approveForm.value);
+          this.reset();
           approveForm.resetForm();
         }
       }
@@ -655,7 +668,7 @@ export class CandidateViewComponent implements OnInit {
             }
           }
           this.reset();
-          this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
+          this.email_subject = 'Welcome to workonblockchain.com - your account has been approved!';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
@@ -684,6 +697,8 @@ export class CandidateViewComponent implements OnInit {
     this.note = '';
     this.email_text = '';
     this.send_email = false;
+    this.email_template = '';
+    this.note_template = '';
   }
 
   send_job_offer(msgForm: NgForm) {
@@ -850,7 +865,6 @@ export class CandidateViewComponent implements OnInit {
       }
     }
     else {
-      console.log('in else');
       //window.location.href = '/login';
     }
   }

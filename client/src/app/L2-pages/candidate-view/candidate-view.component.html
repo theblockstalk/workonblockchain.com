@@ -169,9 +169,15 @@
             </div>
             <div class="row m-0">
               <div class="col-md-6">
+                <!--<app-c-forme-checkbox
+                  [options]="add_note_options"
+                  (selectedItem)="add_note = $event"
+                  (change)="addNoteValue()"
+                >
+                </app-c-forme-checkbox>-->
                 <div class="form-group">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="add_note" [(ngModel)]="add_note" (click)="refreshSelect()"> Add note
+                    <input class="form-check-input" type="checkbox" name="add_note" [(ngModel)]="add_note" (click)="refreshSelect()" (change)="addNoteChange($event)"> Add note
                   </label>
                 </div>
               </div>
@@ -179,18 +185,21 @@
             <div class="row" *ngIf = "add_note === true">
               <div class="col-md-4">
                 <app-c-forme-dropdown-single
-                  label="(select one)"
+                  label="Template"
                   [value]="note_template"
                   [options]="templates"
                   (selectedValue)="note_template = $event"
-                  (change)="selectTemplate('note')"
+                  (change)="selectTemplate($event,'note')"
                 ></app-c-forme-dropdown-single>
               </div>
               <div class="col-md-12">
-                <div class="form-group">
-                  <ckeditor  [config]="ckeConfig" debounce="500" name="note" [(ngModel)]="note" >
-                  </ckeditor>
-                </div>
+                <app-c-forme-html-area
+                  height="35"
+                  [value]="note"
+                  [errorMsg]="error"
+                  removeButtons="true"
+                  (htmlAreaValue) = "note = $event"
+                ></app-c-forme-html-area>
               </div>
             </div>
 
@@ -198,33 +207,36 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="send_email" [(ngModel)]="send_email" (click)="refreshSelect()"> Send email
+                    <input class="form-check-input" type="checkbox" name="send_email" [(ngModel)]="send_email" (click)="refreshSelect()" (change)="addNoteChange($event)"> Send email
                   </label>
                 </div>
               </div>
             </div>
             <div class="row" *ngIf = "send_email === true">
               <div class="col-md-4">
-                <div class="form-group">
-                  <label>Template</label>
-                  <select class="form-control selectpicker" (change)="selectTemplate($event, 'email')" title="(select one)" required name="template" [(ngModel)]="email_template">
-                    <option *ngFor='let template of templates'  [value]="template" >{{template}}</option>
-                  </select>
-
-                </div>
+                <app-c-forme-dropdown-single
+                  label="Template"
+                  [value]="email_template"
+                  [options]="templates"
+                  (selectedValue)="email_template = $event"
+                  (change)="selectTemplate($event,'email')"
+                ></app-c-forme-dropdown-single>
               </div>
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Subject:</label>
-                  <input type="text" class="form-control" [(ngModel)]="email_subject" required  name="email_subject">
-
-                </div>
+                <app-c-forme-text
+                  label="Subject:"
+                  [value]="email_subject"
+                  (textInputValue)="email_subject = $event"
+                ></app-c-forme-text>
               </div>
               <div class="col-md-12">
-                <div class="form-group">
-                  <ckeditor  [config]="ckeConfig" debounce="500" name="email_text" [(ngModel)]="email_text" >
-                  </ckeditor>
-                </div>
+                <app-c-forme-html-area
+                  height="35"
+                  [value]="email_text"
+                  [errorMsg]="error"
+                  removeButtons="true"
+                  (htmlAreaValue) = "email_text = $event"
+                ></app-c-forme-html-area>
               </div>
               <div class="col-md-7">
                 <p>Make sure the email text is complete and checked before you press Send</p>

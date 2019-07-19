@@ -469,6 +469,10 @@ export const constants = {
     {name: 'New technology stack', value: "New technology stack", checked: false},
     {name: 'New role', value: "New role", checked: false},
     {name: 'Other', value: "Other", checked: false}
+  ],
+
+  add_note_options:[
+    {name: 'Add note', value: true, checked: false},
   ]
 
 };
