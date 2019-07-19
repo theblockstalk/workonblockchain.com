@@ -630,8 +630,11 @@ export class CandidateViewComponent implements OnInit {
 
         }
         else {
-          approveForm.value.email_subject = this.email_subject;
-          approveForm.value.email_text = this.email_text;
+          if(this.email_text){
+            approveForm.value.email_subject = this.email_subject;
+            approveForm.value.email_text = this.email_text;
+          }
+
           approveForm.value.note = this.note;
           approveForm.value.set_status = this.set_status;
           this.saveApproveData(approveForm.value);
