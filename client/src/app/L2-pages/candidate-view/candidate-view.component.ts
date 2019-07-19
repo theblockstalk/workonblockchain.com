@@ -40,6 +40,7 @@ export class CandidateViewComponent implements OnInit {
   currency = constants.currencies;
   job_type = constants.job_type;
   base_countries = constants.countries;
+  job_activities = constants.job_activity_status;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -101,6 +102,13 @@ export class CandidateViewComponent implements OnInit {
   first_name;last_name;
   is_verify;
   account_status;
+  job_activity_status;
+  new_work_opportunities;
+  currently_employed;
+  leaving_reasons;
+  other_reasons;
+  counter_offer;
+  cand_job_activity;
 
   date_sort_desc = function (date1, date2)
   {
@@ -130,7 +138,6 @@ export class CandidateViewComponent implements OnInit {
       $('.selectpicker').selectpicker('refresh');
     }, 500);
 
-    console.log('this.userDoc._id: ' + this.userDoc['_id']);
     this.user_id = this.userDoc['_id'];
 
     //for employee
@@ -202,6 +209,25 @@ export class CandidateViewComponent implements OnInit {
     this.interest_area = this.userDoc['candidate'].interest_areas;
     if(this.interest_area) this.interest_area.sort();
 
+    if(this.viewBy === 'candidate' || this.viewBy === 'admin'){
+      console.log(this.userDoc['candidate'].job_activity_status);
+      if(this.userDoc['candidate'].job_activity_status) {
+        this.job_activity_status = 1;
+
+        if(this.userDoc['candidate'].job_activity_status.new_work_opportunities){
+          let job_activity_obj = getNameFromValue(this.job_activities,this.userDoc['candidate'].job_activity_status.new_work_opportunities);
+          this.new_work_opportunities = job_activity_obj.name;
+        }
+        if(this.userDoc['candidate'].job_activity_status.currently_employed) this.currently_employed = this.userDoc['candidate'].job_activity_status.currently_employed;
+        if(this.userDoc['candidate'].job_activity_status.leaving_current_employ_reasons) {
+          this.leaving_reasons = this.userDoc['candidate'].job_activity_status.leaving_current_employ_reasons;
+          this.leaving_reasons = this.leaving_reasons.sort();
+        }
+        if(this.userDoc['candidate'].job_activity_status.other_reasons) this.other_reasons = this.userDoc['candidate'].job_activity_status.other_reasons;
+        if(this.userDoc['candidate'].job_activity_status.counter_offer) this.counter_offer = this.userDoc['candidate'].job_activity_status.counter_offer;
+      }
+    }
+
     if(this.viewBy === 'candidate') {
       this.information.country = -1;
       this.routerUrl = '/users/talent/edit';
@@ -248,6 +274,9 @@ export class CandidateViewComponent implements OnInit {
     }
 
     if(this.viewBy === 'company'){
+      if(this.userDoc['candidate'].job_activity_status) {
+        this.cand_job_activity = this.userDoc['candidate'].job_activity_status.new_work_opportunities;
+      }
       //checking already approached or not
       this.authenticationService.get_user_messages_comp(this.user_id)
       .subscribe(
