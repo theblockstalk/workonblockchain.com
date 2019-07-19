@@ -310,21 +310,12 @@
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group" *ngIf="history.note">
-                <div>
-                  <label>Note</label>
-                  <app-c-formv-html-area [value]="history.note"></app-c-formv-html-area>
-                </div>
-              </div>
+            <div class="col-md-6" *ngIf="history.note">
+              <app-c-formv-html-area label="Note" [value]="history.note"></app-c-formv-html-area>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group" *ngIf="history.email_html">
-                <label>Email</label>
-                <h6>{{history.email_subject}}</h6>
-                <app-c-formv-html-area [value]="history.email_html"></app-c-formv-html-area>
-              </div>
+            <div class="col-md-6" *ngIf="history.email_html">
+              <app-c-formv-html-area label="Email" [value]="history.email_html"></app-c-formv-html-area>
             </div>
 
             <div class="col-md-12">
@@ -587,10 +578,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="contractor.value.service_description">
-              <div class="form-group">
-                <label>Service description: </label>
-                <app-c-formv-html-area [value]="contractor.value.service_description"></app-c-formv-html-area>
-              </div>
+              <app-c-formv-html-area label="Service description:" [value]="contractor.value.service_description"></app-c-formv-html-area>
             </div>
           </div>
 
@@ -618,10 +606,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
-              <div class="form-group">
-                <label>Learning objectives: </label>
-                <app-c-formv-html-area [value]="volunteer.value.learning_objectives"></app-c-formv-html-area>
-              </div>
+              <app-c-formv-html-area label="Learning objectives:" [value]="volunteer.value.learning_objectives"></app-c-formv-html-area>
             </div>
           </div>
         </section>
