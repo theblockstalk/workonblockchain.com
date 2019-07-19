@@ -13,6 +13,7 @@ import { StyleGuideComponent } from './style-guide/style-guide.component';
 import {PagerService} from '../pager.service';
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
 import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profile/admin-update-company-profile.component';
+import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profi
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
     StyleGuideComponent,
-    AdminUpdateCompanyProfileComponent
+    AdminUpdateCompanyProfileComponent,
+    AdminCandidateDetailComponent
   ],
   providers : [PagerService]
 
