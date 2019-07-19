@@ -1,10 +1,11 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit,ViewChild } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
 
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
@@ -15,6 +16,7 @@ import {unCheckCheckboxes} from "../../../services/object";
   styleUrls: ['./job.component.css']
 })
 export class JobComponent implements OnInit,AfterViewInit {
+  @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
   info: any = {};
@@ -80,6 +82,13 @@ export class JobComponent implements OnInit,AfterViewInit {
   employement_availability = constants.workAvailability;
   display_error;
   remote_location_log;
+  reasons_of_leaving = constants.reasons_of_leaving;
+  job_activity_value;// = 'Not now';
+  currently_employ;
+  reason_selectedValue = [];
+  other_reasons;
+  counter_offer;
+  allData = 0;
 
   ngAfterViewInit(): void
   {
@@ -90,6 +99,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
+    this.reasons_of_leaving.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.roles = unCheckCheckboxes(constants.workRoles);
@@ -194,6 +209,28 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.volunteer.learning_objectives = volunteer.learning_objectives;
               this.volunteer.roles = volunteer.roles;
             }
+
+            if(data['candidate'].job_activity_status) {
+              if (data['candidate'].job_activity_status.new_work_opportunities) this.job_activity_value = data['candidate'].job_activity_status.new_work_opportunities;
+              if (data['candidate'].job_activity_status.currently_employed) this.currently_employ = data['candidate'].job_activity_status.currently_employed;
+              if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                for (let reason of data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                  for (let option of this.reasons_of_leaving) {
+                    if (option.value === reason) {
+                      option.checked = true;
+                      this.reason_selectedValue.push(reason);
+                    }
+                  }
+                }
+              }
+              if (data['candidate'].job_activity_status.other_reasons) {
+                this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+              }
+              if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+              this.allData = 1;
+            }
+            else this.allData = 1;
+
             setTimeout(() => {
               $('.selectpicker').selectpicker();
             }, 500);
@@ -362,6 +399,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     let remote_error_count = 0;
     let visaRequired = 0;
     let candidateQuery:any ={};
+    let job_activity_statuses:any ={};
 
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
@@ -542,6 +580,20 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }*/
 
+    if(!this.candJobActivity.selfValidate()) this.count++;
+
+    if(this.candJobActivity.jobActivity === 'Not now'){}
+    else{
+      if(!this.candJobActivity.currentEmploymentValidate()) this.count++;
+      if(this.candJobActivity.currentEmploy === 'Yes') {
+        if (!this.candJobActivity.validateReasons()) this.count++;
+        if(this.candJobActivity.reasonsOfLeaving.find((obj => obj === 'Other')))
+          if (!this.candJobActivity.selfValidateOtherReasons()) this.count++;
+
+        if (!this.candJobActivity.validateCounterOffer()) this.count++;
+      }
+    }
+
     if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
@@ -584,8 +636,23 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
       else inputQuery.unset_volunteer = true;
 
-      //if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
-      //if(this.current_currency) candidateQuery.current_currency = this.current_currency;
+      if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
+      if(this.current_currency) candidateQuery.current_currency = this.current_currency;
+
+      job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
+      else inputQuery.unset_currently_employed = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.reasonsOfLeaving && this.candJobActivity.reasonsOfLeaving.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.candJobActivity.reasonsOfLeaving;
+      else inputQuery.unset_leaving_current_employ_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.otherReasons) job_activity_statuses.other_reasons = this.candJobActivity.otherReasons;
+      else inputQuery.unset_other_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.counterOffer) job_activity_statuses.counter_offer = this.candJobActivity.counterOffer;
+      else inputQuery.unset_counter_offer = true;
+
+      candidateQuery.job_activity_status = job_activity_statuses;
       inputQuery.candidate = candidateQuery;
 
       inputQuery.wizardNum = 3;

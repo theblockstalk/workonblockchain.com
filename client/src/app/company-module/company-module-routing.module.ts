@@ -9,6 +9,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
 import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
 import { CompaniesLandingPageComponent } from './companies-landing-page/companies-landing-page.component';
+import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 
 const routes: Routes = [
   {path : 'about_comp' , component: AboutCompanyComponent, canActivate : [VerifyEmailMiddleware]},
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path : 'edit_company_profile' , component: EditCompanyProfileComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'preferences' , component: PreferencesComponent, canActivate : [VerifyEmailMiddleware]},
   {path : 'company-verify-email', component: CompanyVerifyEmailComponent},
-  {path : 'companies', component: CompaniesLandingPageComponent}
+  {path : 'companies', component: CompaniesLandingPageComponent},
+  {path : 'candidate-detail' , component: CandidateDetailComponent, canActivate : [VerifyEmailMiddleware]},
 ];
 
 @NgModule({

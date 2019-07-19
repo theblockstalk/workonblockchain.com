@@ -18,6 +18,9 @@ module.exports.track = async function (data) {
                 amplitude.track(data).then( function (result) {
                     res(result);
                 }).catch( function (error) {
+                    if(error.message === 'Too Many Requests')
+                        logger.debug("Amplitude error", {error: error});
+
                     logger.error("Amplitude error", {error: error});
                     res();
                 })

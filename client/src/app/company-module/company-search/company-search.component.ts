@@ -124,6 +124,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.route.queryParams.subscribe(params => {
       if (params['queryBody']) {
         this.urlParameters = JSON.parse(params['queryBody']);
+        console.log(this.urlParameters);
         if (this.urlParameters) {
           this.no_value = true;
           if (this.urlParameters.work_type) {
@@ -137,8 +138,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if (this.urlParameters.searchName) {
             this.saveSearchName = this.urlParameters.searchName;
           }
-          if (this.urlParameters.skills) {
-            this.skill_value = this.urlParameters.skills;
+          if (this.urlParameters.programming_languages) {
+            this.skill_value = this.urlParameters.programming_languages;
+          }
+          if(this.urlParameters.years_exp_min){
+            this.years_exp_value = this.urlParameters.years_exp_min;
           }
           if (this.urlParameters.locations) {
             this.selectedValueArray = this.urlParameters.locations;
@@ -146,14 +150,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if (this.urlParameters.visa_needed) {
             this.visa_check = this.urlParameters.visa_needed;
           }
-          if (this.urlParameters.positions) {
-            this.role_value = this.urlParameters.positions;
+          if (this.urlParameters.roles) {
+            this.role_value = this.urlParameters.roles;
           }
           if (this.urlParameters.blockchains) {
             this.blockchain_value = this.urlParameters.blockchains;
           }
-          if (this.urlParameters.residence_country) {
-            this.residence_country = this.urlParameters.residence_country;
+          if (this.urlParameters.base_country) {
+            this.residence_country = this.urlParameters.base_country;
           }
           if (this.urlParameters.current_salary && this.urlParameters.current_currency) {
             this.salary = this.urlParameters.current_salary;
@@ -508,7 +512,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
       });
-      
+
       this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {

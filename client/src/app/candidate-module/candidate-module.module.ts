@@ -14,6 +14,7 @@ import { ExperienceComponent } from './experience/experience.component';
 import {ProfileResolver} from '../incomplete-profile.resolver';
 import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
     JobComponent,
     ResumeComponent,
     ExperienceComponent,
-    CandidateVerifyEmailComponent
+    CandidateVerifyEmailComponent,
+    CandidateProfileComponent
   ],
   providers:
     [

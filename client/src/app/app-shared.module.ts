@@ -74,6 +74,7 @@ import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view
 import { CandidateProgressbarComponent } from './L1-items/candidate/candidate-progressbar/candidate-progressbar.component';
 import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-icon/text-linked-icon.component';
 import { EditLinkIconComponent } from './L1-items/users/edit-link-icon/edit-link-icon.component';
+import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity/cand-job-activity.component';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import { EditLinkIconComponent } from './L1-items/users/edit-link-icon/edit-link
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
-    CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent
+    CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
+    CandJobActivityComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -111,7 +113,7 @@ import { EditLinkIconComponent } from './L1-items/users/edit-link-icon/edit-link
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
-    CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent
+    CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent
   ]
 })
 export class SharedModule { }

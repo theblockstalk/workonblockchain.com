@@ -31,6 +31,29 @@ const bodySchema = new Schema({
         validate: regexes.url
     },
     candidate: {
+        job_activity_status:{
+            new_work_opportunities: {
+                type: String,
+                enum: enumerations.jobActivityStatus
+            },
+            currently_employed:{
+                type:String,
+                enum: ['Yes','No']
+            },
+            leaving_current_employ_reasons:{
+                type: [{
+                    type: String,
+                    enum: enumerations.leavingCurrentEmployReasons
+                }]
+            },
+            other_reasons:{
+                type: String
+            },
+            counter_offer:{
+                type:String,
+                enum: ['Yes','No']
+            }
+        },
         base_city: String,
         base_country: {
             type: String,
@@ -61,10 +84,10 @@ const bodySchema = new Schema({
             validate: regexes.url
         },
         employee: {
-            employment_type :  {
+            employment_type :  [{
                 type : String,
                 enum: enumerations.employmentTypes
-            },
+            }],
             expected_annual_salary: {
                 type: Number,
                 min:0
@@ -291,7 +314,11 @@ const bodySchema = new Schema({
     wizardNum : {
         type: Number,
         enum: [1,2,3,4,5]
-    }
+    },
+    unset_currently_employed: Boolean,
+    unset_leaving_current_employ_reasons: Boolean,
+    unset_other_reasons: Boolean,
+    unset_counter_offer: Boolean
 });
 
 module.exports.inputValidation = {
@@ -410,6 +437,31 @@ module.exports.endpoint = async function (req, res) {
         else{
             if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
                 updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+            }
+        }
+
+        if(candidateQuery.job_activity_status) {
+            let job_activity_status = candidateQuery.job_activity_status;
+            if (job_activity_status.new_work_opportunities) updateCandidateUser['candidate.job_activity_status.new_work_opportunities'] = job_activity_status.new_work_opportunities;
+
+            if(queryBody.unset_currently_employed) unset['candidate.job_activity_status.currently_employed'] = 1;
+            else{
+                if (job_activity_status.currently_employed) updateCandidateUser['candidate.job_activity_status.currently_employed'] = job_activity_status.currently_employed;
+            }
+
+            if(queryBody.unset_leaving_current_employ_reasons) unset['candidate.job_activity_status.leaving_current_employ_reasons'] = 1;
+            else{
+                if (job_activity_status.leaving_current_employ_reasons) updateCandidateUser['candidate.job_activity_status.leaving_current_employ_reasons'] = job_activity_status.leaving_current_employ_reasons;
+            }
+
+            if(queryBody.unset_other_reasons) unset['candidate.job_activity_status.other_reasons'] = 1;
+            else{
+                if (job_activity_status.other_reasons) updateCandidateUser['candidate.job_activity_status.other_reasons'] = job_activity_status.other_reasons;
+            }
+
+            if(queryBody.unset_counter_offer) unset['candidate.job_activity_status.counter_offer'] = 1;
+            else{
+                if (job_activity_status.counter_offer) updateCandidateUser['candidate.job_activity_status.counter_offer'] = job_activity_status.counter_offer;
             }
         }
 

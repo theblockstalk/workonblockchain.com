@@ -9,6 +9,10 @@ module.exports.insert = async function insert(data) {
     return newDoc._doc;
 }
 
+module.exports.findAndSort = async function find(selector, sort) {
+    return await User.find(selector).sort(sort).lean();
+}
+
 module.exports.find = async function find(selector) {
     return await User.find(selector).lean();
 }
