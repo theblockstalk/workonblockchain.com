@@ -879,15 +879,6 @@
                   (selectedValue)="contractor.currency = $event"
                   (change)="contractorCurrencyValidate()"
                 ></app-c-forme-dropdown-single>
-                <!--<div class="form-group">
-                  <label class="invisible">Currency</label>
-                  <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
-                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency || contractor.currency === 'Currency'">
-                    {{hourly_currency_log}}
-                  </div>
-                </div>-->
               </div>
               <div class="col-md-6">
                 <div class="form-group">
