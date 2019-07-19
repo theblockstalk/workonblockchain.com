@@ -768,22 +768,24 @@
             </div>
             <div class="row" *ngIf="approach_work_type === 'employee'">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Job title</label>
-                  <input type="text" required name="job_title" [(ngModel)]="employee.job_title" class="form-control" placeholder="Director">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_title">
-                    {{job_title_log}}
-                  </div>
-                </div>
+                <app-c-forme-text
+                  label="Job title"
+                  placeholder="Director"
+                  [value]="employee.job_title"
+                  (textInputValue)="employee.job_title = $event"
+                  [errorMsg]="job_title_log"
+                  (change)="jobTitleValidation()"
+                ></app-c-forme-text>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Location</label>
-                  <input type="text" name="location" [(ngModel)]="employee.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.location">
-                    {{location_log}}
-                  </div>
-                </div>
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="employee.location"
+                  (textInputValue)="employee.location = $event"
+                  [errorMsg]="location_log"
+                  (change)="employeeLocationValidation()"
+                ></app-c-forme-text>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
@@ -809,15 +811,13 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label class="invisible">Currency</label>
-                  <select title="Currency" name="currency" [(ngModel)]="employee.currency" class="selectpicker form-control">
-                    <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === employee.currency? true: null">{{base_currency}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency || employee.currency === 'Currency'">
-                    {{salary_currency_log}}
-                  </div>
-                </div>
+                <app-c-forme-dropdown-single
+                  [options]="currency"
+                  [errorMsg]="salary_currency_log"
+                  [value]="employee.currency"
+                  (selectedValue)="employee.currency = $event"
+                  (change)="employeeCurrencyValidate()"
+                ></app-c-forme-dropdown-single>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
@@ -872,7 +872,14 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <app-c-forme-dropdown-single
+                  [options]="currency"
+                  [errorMsg]="hourly_currency_log"
+                  [value]="contractor.currency"
+                  (selectedValue)="contractor.currency = $event"
+                  (change)="contractorCurrencyValidate()"
+                ></app-c-forme-dropdown-single>
+                <!--<div class="form-group">
                   <label class="invisible">Currency</label>
                   <select title="Currency" name="currency" [(ngModel)]="contractor.currency" class="selectpicker form-control">
                     <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === contractor.currency">{{base_currency}}</option>
@@ -880,7 +887,7 @@
                   <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency || contractor.currency === 'Currency'">
                     {{hourly_currency_log}}
                   </div>
-                </div>
+                </div>-->
               </div>
               <div class="col-md-6">
                 <div class="form-group">

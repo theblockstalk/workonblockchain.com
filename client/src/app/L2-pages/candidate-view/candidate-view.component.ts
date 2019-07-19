@@ -769,7 +769,7 @@ export class CandidateViewComponent implements OnInit {
           errorCount = 1;
         }
         if (!this.contractor.currency || this.contractor.currency === 'Currency') {
-          this.hourly_currency_log = 'Please enter currency';
+          this.hourly_currency_log = 'Please select currency';
           errorCount = 1;
         }
         if (!this.contractor.contract_description) {
@@ -934,6 +934,42 @@ export class CandidateViewComponent implements OnInit {
       }
     }
     return placesArray;
+  }
+
+  contractorCurrencyValidate(){
+    if (!this.contractor.currency || this.contractor.currency === 'Currency') {
+      this.hourly_currency_log = 'Please select currency';
+      return false;
+    }
+    delete this.hourly_currency_log;
+    return true
+  }
+
+  employeeCurrencyValidate(){
+    if (!this.employee.currency || this.employee.currency === 'Currency') {
+      this.salary_currency_log = 'Please select currency';
+      return false;
+    }
+    delete this.salary_currency_log;
+    return true
+  }
+
+  employeeLocationValidation(){
+    if(!this.employee.location) {
+      this.location_log = 'Please enter job title';
+      return false;
+    }
+    delete this.location_log;
+    return true
+  }
+
+  jobTitleValidation(){
+    if(!this.employee.job_title) {
+      this.job_title_log = 'Please enter job title';
+      return false;
+    }
+    delete this.job_title_log;
+    return true
   }
 
 }
