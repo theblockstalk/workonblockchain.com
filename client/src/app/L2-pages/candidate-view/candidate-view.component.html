@@ -169,17 +169,12 @@
             </div>
             <div class="row m-0">
               <div class="col-md-6">
-                <!--<app-c-forme-checkbox
+                <app-c-forme-checkbox
                   [options]="add_note_options"
-                  (selectedItem)="add_note = $event"
-                  (change)="addNoteValue()"
+                  [value]="add_note"
+                  (change)="addNoteValue($event)"
                 >
-                </app-c-forme-checkbox>-->
-                <div class="form-group">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="add_note" [(ngModel)]="add_note" (click)="refreshSelect()" (change)="addNoteChange($event)"> Add note
-                  </label>
-                </div>
+                </app-c-forme-checkbox>
               </div>
             </div>
             <div class="row" *ngIf = "add_note === true">
@@ -205,11 +200,12 @@
 
             <div class="row m-0">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="send_email" [(ngModel)]="send_email" (click)="refreshSelect()" (change)="addNoteChange($event)"> Send email
-                  </label>
-                </div>
+                <app-c-forme-checkbox
+                  [options]="add_email_options"
+                  [value]="send_email"
+                  (change)="sendEmailValue($event)"
+                >
+                </app-c-forme-checkbox>
               </div>
             </div>
             <div class="row" *ngIf = "send_email === true">

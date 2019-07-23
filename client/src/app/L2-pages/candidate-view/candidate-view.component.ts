@@ -42,6 +42,7 @@ export class CandidateViewComponent implements OnInit {
   base_countries = constants.countries;
   job_activities = constants.job_activity_status;
   add_note_options = constants.add_note_options;
+  add_email_options = constants.add_email_options;
   email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
   status_error;
   add_note;
@@ -934,6 +935,30 @@ export class CandidateViewComponent implements OnInit {
       }
     }
     return placesArray;
+  }
+
+  sendEmailValue(event){
+    this.send_email = false;
+    if(event.target.checked){
+      this.send_email = true;
+    }
+    console.log(event.target.checked);
+    console.log(event.target.value);
+    let strr = JSON.stringify(this.send_email);
+    console.log('send_email: ' + strr);
+    console.log(typeof strr);
+  }
+
+  addNoteValue(event){
+    this.add_note = false;
+    if(event.target.checked){
+      this.add_note = true;
+    }
+    console.log(event.target.checked);
+    console.log(event.target.value);
+    let strr = JSON.stringify(this.add_note);
+    console.log('add_note: ' + strr);
+    console.log(typeof strr);
   }
 
   candidateCityValidation(){
