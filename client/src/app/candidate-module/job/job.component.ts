@@ -637,7 +637,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       else inputQuery.unset_volunteer = true;
 
       if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
-      if(this.current_currency) candidateQuery.current_currency = this.current_currency;
+      if(this.current_currency !== 'Currency') candidateQuery.current_currency = this.current_currency;
 
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
