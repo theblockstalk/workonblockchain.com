@@ -214,31 +214,25 @@ const bodySchema = new Schema({
         },
         education_history: [{
             uniname: {
-                type: String,
-                required: true
+                type: String
             },
             degreename: {
-                type: String,
-                required: true
+                type: String
             },
             fieldname: {
-                type: String,
-                required: true
+                type: String
             },
             eduyear: Number
         }],
         work_history: [{
             companyname: {
-                type: String,
-                required: true
+                type: String
             },
             positionname: {
-                type: String,
-                required: true
+                type: String
             },
             locationname: {
-                type: String,
-                required: true
+                type: String
             },
             description: {
                 type: String,
@@ -247,8 +241,7 @@ const bodySchema = new Schema({
             startdate: Date,
             enddate: Date,
             currentwork: {
-                type: Boolean,
-                required: true
+                type: Boolean
             }
         }],
         interest_areas: [{
