@@ -784,27 +784,6 @@
                   [maxSalary]="employee.max_salary"
                 >
                 </app-i-forme-approach-offer-rate>
-                <!--<div class="form-group">
-                  <label>Annual salary</label>
-                  <div class="form-row">
-                    <div class="col">
-                      <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="min_salary" [(ngModel)]="employee.min_salary" class="form-control" placeholder="Min">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!employee.min_salary || (employee.min_salary && !checkNumber(employee.min_salary))">
-                        {{salary_log}}
-                      </div>
-                    </div>
-                    <div class="col">
-                      <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="max_salary" [(ngModel)]="employee.max_salary" class="form-control" placeholder="Max">
-                      <div class = "invalid-feedback d-inline"  *ngIf="employee.max_salary && !checkNumber(employee.max_salary)">
-                        {{max_salary_log}}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(employee.max_salary) < convertNumber(employee.min_salary) ">
-                    Maximum salary should be greater the minimum salary
-                  </div>
-                </div>-->
               </div>
               <div class="col-md-6">
                 <app-c-forme-dropdown-single
@@ -844,28 +823,12 @@
             <div class="row" *ngIf="approach_work_type === 'contractor'">
 
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Hourly rate</label>
-                  <div class="form-row">
-                    <div class="col">
-                      <input type="text" id="hourly_rate" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_min" [(ngModel)]="contractor.hourly_rate_min" class="form-control" placeholder="Min">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_min || (contractor.hourly_rate_min && !checkNumber(contractor.hourly_rate_min))">
-                        {{hourly_rate_log}}
-                      </div>
-                    </div>
-                    <div class="col">
-                      <input type="text" id="max_hourly_rate" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="hourly_rate_max" [(ngModel)]="contractor.hourly_rate_max" class="form-control" placeholder="Max">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!contractor.hourly_rate_max || (contractor.hourly_rate_max && !checkNumber(contractor.hourly_rate_max))">
-                        {{max_hourly_rate_log}}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(contractor.hourly_rate_min) > convertNumber(contractor.hourly_rate_max) ">
-                    Maximum rate should be greater the minimum rate
-                  </div>
-
-                </div>
+                <app-i-forme-approach-offer-rate
+                  label="Hourly rate"
+                  [minSalary]="contractor.hourly_rate_min"
+                  [maxSalary]="contractor.hourly_rate_max"
+                >
+                </app-i-forme-approach-offer-rate>
               </div>
               <div class="col-md-6">
                 <app-c-forme-dropdown-single

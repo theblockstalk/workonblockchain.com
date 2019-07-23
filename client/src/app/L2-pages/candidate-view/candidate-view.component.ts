@@ -711,6 +711,7 @@ export class CandidateViewComponent implements OnInit {
   send_job_offer(msgForm: NgForm) {
     if(this.viewBy === 'company') {
       let errorCount = 0;
+      console.log("this.approach_work_type: " + this.approach_work_type);
       if (this.approach_work_type === 'employee') {
         if (!this.employee.job_title) {
           this.job_title_log = 'Please enter job title';
@@ -721,7 +722,10 @@ export class CandidateViewComponent implements OnInit {
           errorCount = 1;
         }
 
-        if(!this.approachOfferRate.minSalarySelfValidate()) errorCount = 1;
+        if(!this.approachOfferRate.minSalarySelfValidate()) {
+          console.log('in if');
+          errorCount = 1;
+        }
         else{
           this.employee.min_salary = this.approachOfferRate.minSalary;
           console.log('min sal: ' + this.employee.min_salary);
@@ -731,24 +735,6 @@ export class CandidateViewComponent implements OnInit {
         else{
           this.employee.max_salary = this.approachOfferRate.maxSalary;
           console.log('max sal: ' + this.employee.max_salary);
-        }
-        /*queryBody.first_name = this.firstName.first_name;
-        else errorCount++;
-        if (!this.employee.min_salary) {
-          this.salary_log = 'Please enter minimum salary';
-          errorCount = 1;
-        }*/
-        if (this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
-          this.salary_log = 'Salary should be a number';
-          errorCount = 1;
-        }
-        if (this.employee.max_salary && !this.checkNumber(this.employee.max_salary)) {
-          this.max_salary_log = 'Salary should be a number';
-          errorCount = 1;
-        }
-
-        if (Number(this.employee.max_salary) < Number(this.employee.min_salary)) {
-          errorCount = 1;
         }
 
         if (!this.employee.currency || this.employee.currency === 'Currency') {
@@ -770,22 +756,23 @@ export class CandidateViewComponent implements OnInit {
           this.contractor_location_log = 'Please enter location';
           errorCount = 1;
         }
+
+        if(!this.approachOfferRate.minSalarySelfValidate()) errorCount = 1;
+        else{
+          this.contractor.hourly_rate_min = this.approachOfferRate.minSalary;
+          console.log('min sal: ' + this.contractor.hourly_rate_min);
+        }
+
+        if(!this.approachOfferRate.maxSalarySelfValidate()) errorCount = 1;
+        else{
+          this.contractor.hourly_rate_max = this.approachOfferRate.maxSalary;
+          console.log('max sal: ' + this.contractor.hourly_rate_max);
+        }
         if (!this.contractor.hourly_rate_min) {
           this.hourly_rate_log = 'Please enter hourly rate';
           errorCount = 1;
         }
 
-        if (this.contractor.hourly_rate_min && !this.checkNumber(this.contractor.hourly_rate_min)) {
-          this.hourly_rate_log = 'Salary should be a number';
-          errorCount = 1;
-        }
-        if (this.contractor.hourly_rate_max && !this.checkNumber(this.contractor.hourly_rate_max)) {
-          this.max_hourly_rate_log = 'Salary should be a number';
-          errorCount = 1;
-        }
-        if (Number(this.contractor.hourly_rate_min) > Number(this.contractor.hourly_rate_max)) {
-          errorCount = 1;
-        }
         if (!this.contractor.currency || this.contractor.currency === 'Currency') {
           this.hourly_currency_log = 'Please select currency';
           errorCount = 1;
