@@ -374,6 +374,7 @@ export class LinkedinImportComponent implements OnInit {
                     end_date_format = new Date();
                     obj.work[key].currentwork = true;
                   }
+
                   let experiencejson = {
                     companyname: obj.work[key].company,
                     positionname: obj.work[key].position,
@@ -396,9 +397,12 @@ export class LinkedinImportComponent implements OnInit {
 
                 for (var key in obj.education) {
                   let eduyear = parseInt(obj.education[key].endDate);
+
                   let educationjson = {
-                    uniname: obj.education[key].institution, degreename: obj.education[key].studyType
-                    , fieldname: obj.education[key].fieldname, eduyear: eduyear
+                    uniname: obj.education[key].institution,
+                    degreename: obj.education[key].studyType,
+                    fieldname: obj.education[key].fieldname,
+                    eduyear: eduyear
                   };
                   education_json_array.push(educationjson);
 
