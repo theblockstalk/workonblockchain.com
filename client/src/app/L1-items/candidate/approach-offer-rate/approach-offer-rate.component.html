@@ -1,0 +1,27 @@
+<div class="form-group">
+  <label>{{label}}</label>
+  <div class="form-row">
+    <div class="col">
+      <app-c-forme-text
+        placeholder="Min"
+        [value]="minSalary"
+        [errorMsg]="minSalaryErrorMsg"
+        [hasLable]="true"
+        (textInputValue)="minSalary = $event"
+        (change)= minSalarySelfValidate()
+      >
+      </app-c-forme-text>
+    </div>
+    <div class="col">
+      <app-c-forme-text
+        placeholder="Max"
+        [value]="maxSalary"
+        [hasLable]="true"
+        (textInputValue)="maxSalary = $event"
+        [errorMsg]="maxSalaryErrorMsg"
+        (change)= maxSalarySelfValidate()
+      >
+      </app-c-forme-text>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {changeLocationDisplayFormat, getNameFromValue} from "../../../services/object";
+import {changeLocationDisplayFormat, getNameFromValue} from '../../../services/object';
+import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 
 declare var $: any;
 
@@ -13,6 +14,8 @@ declare var $: any;
   styleUrls: ['./candidate-view.component.css']
 })
 export class CandidateViewComponent implements OnInit {
+  @ViewChild(ApproachOfferRateComponent) approachOfferRate: ApproachOfferRateComponent;
+
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
@@ -717,10 +720,24 @@ export class CandidateViewComponent implements OnInit {
           this.location_log = 'Please enter location';
           errorCount = 1;
         }
+
+        if(!this.approachOfferRate.minSalarySelfValidate()) errorCount = 1;
+        else{
+          this.employee.min_salary = this.approachOfferRate.minSalary;
+          console.log('min sal: ' + this.employee.min_salary);
+        }
+
+        if(!this.approachOfferRate.maxSalarySelfValidate()) errorCount = 1;
+        else{
+          this.employee.max_salary = this.approachOfferRate.maxSalary;
+          console.log('max sal: ' + this.employee.max_salary);
+        }
+        /*queryBody.first_name = this.firstName.first_name;
+        else errorCount++;
         if (!this.employee.min_salary) {
           this.salary_log = 'Please enter minimum salary';
           errorCount = 1;
-        }
+        }*/
         if (this.employee.min_salary && !this.checkNumber(this.employee.min_salary)) {
           this.salary_log = 'Salary should be a number';
           errorCount = 1;

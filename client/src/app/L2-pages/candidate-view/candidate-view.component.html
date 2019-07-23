@@ -778,7 +778,13 @@
                 ></app-c-forme-text>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <app-i-forme-approach-offer-rate
+                  label="Annual salary"
+                  [minSalary]="employee.min_salary"
+                  [maxSalary]="employee.max_salary"
+                >
+                </app-i-forme-approach-offer-rate>
+                <!--<div class="form-group">
                   <label>Annual salary</label>
                   <div class="form-row">
                     <div class="col">
@@ -798,7 +804,7 @@
                   <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(employee.max_salary) < convertNumber(employee.min_salary) ">
                     Maximum salary should be greater the minimum salary
                   </div>
-                </div>
+                </div>-->
               </div>
               <div class="col-md-6">
                 <app-c-forme-dropdown-single
