@@ -729,7 +729,6 @@
           </div>
         </section>
         <!--Education section ends-->
-
       </div>
     </div>
   </div>
@@ -749,21 +748,16 @@
             <ng-template #no_modal>
             </ng-template>
             <div class="row">
-              <div class="col-md-4" *ngFor="let types of workTypes">
-                <div class="form-group">
-                  <div class="form-check">
-                    <label class="form-check-label simple-radio-button" >
-                      <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="changeWorkTypes()">
-                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
-                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
-                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
-                      {{types.name}}
-                    </label>
-                  </div>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!this.approach_work_type">
-                    {{work_log}}
-                  </div>
-                </div>
+              <div class="col-md-12">
+                <app-c-forme-radio
+                  [options]="workTypes"
+                  [value]="approach_work_type"
+                  (selectedOption)="approach_work_type = $event"
+                  [errorMsg]="work_log"
+                  (change)="changeWorkTypes()"
+                  id="workTypes"
+                >
+                </app-c-forme-radio>
               </div>
             </div>
             <div class="row" *ngIf="approach_work_type === 'employee'">
