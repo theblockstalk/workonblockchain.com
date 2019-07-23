@@ -197,7 +197,7 @@
                   height="35"
                   [value]="note"
                   [errorMsg]="error"
-                  removeButtons="true"
+                  formattingBar="true"
                   (htmlAreaValue) = "note = $event"
                 ></app-c-forme-html-area>
               </div>
@@ -234,7 +234,7 @@
                   height="35"
                   [value]="email_text"
                   [errorMsg]="error"
-                  removeButtons="true"
+                  formattingBar="true"
                   (htmlAreaValue) = "email_text = $event"
                 ></app-c-forme-html-area>
               </div>
@@ -834,14 +834,14 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Employment description</label>
-                  <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-                  </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc">
-                    {{job_desc_log}}
-                  </div>
-                </div>
+                <app-c-forme-html-area
+                  label="Employment description"
+                  height="12"
+                  [value]="employee.job_desc"
+                  [errorMsg]="job_desc_log"
+                  (htmlAreaValue) = "employee.job_desc = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
               </div>
             </div>
 
@@ -881,61 +881,61 @@
                 ></app-c-forme-dropdown-single>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="validationCustom06">Location</label>
-                  <input type="text" id="validationCustom06" name="location" [(ngModel)]="contractor.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.location">
-                    {{contractor_location_log}}
-                  </div>
-                </div>
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="contractor.location"
+                  (textInputValue)="contractor.location = $event"
+                  [errorMsg]="contractor_location_log"
+                  (change)="contractorLocationValidation()"
+                ></app-c-forme-text>
               </div>
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Contract description</label>
-                  <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
-                  </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
-                    {{contract_desc_log}}
-                  </div>
-                </div>
+                <app-c-forme-html-area
+                  label="Contract description"
+                  height="12"
+                  [value]="contractor.contract_description"
+                  [errorMsg]="contract_desc_log"
+                  (htmlAreaValue) = "contractor.contract_description = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
               </div>
-
             </div>
 
-
             <div class="row" *ngIf="approach_work_type === 'volunteer'">
-
               <div class="col-md-6">
-                <div class="form-group">
-                  <label>Location</label>
-                  <input type="text" name="location" [(ngModel)]="volunteer.location" class="form-control" placeholder="London">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.location">
-                    {{volunteer_location_log}}
-                  </div>
-                </div>
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="volunteer.location"
+                  (textInputValue)="volunteer.location = $event"
+                  [errorMsg]="volunteer_location_log"
+                  (change)="volunteerLocationValidation()"
+                ></app-c-forme-text>
               </div>
 
               <div class="col-md-12">
-                <div class="form-group">
-                  <label>Opportunity description</label>
-                  <ckeditor class="ckeditor_tab" [(ngModel)]="volunteer.opportunity_description" #myckeditor name="opportunity_description" [config]="ckeConfig" debounce="500" >
-                  </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description">
-                    {{volunteer_desc_log}}
-                  </div>
-                </div>
+                <app-c-forme-html-area
+                  label="Opportunity description"
+                  height="12"
+                  [value]="volunteer.opportunity_description"
+                  [errorMsg]="volunteer_desc_log"
+                  (htmlAreaValue) = "volunteer.opportunity_description = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
               </div>
-
             </div>
 
             <div class="row">
               <div class="col-md-12">
-                <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
-                  {{job_offer_log_erorr}}
-                </div>
-                <div class = "alert alert-success" *ngIf="job_offer_log_success">
-                  {{job_offer_log_success}}
-                </div>
+                <app-c-alert *ngIf="job_offer_log_erorr"
+                  [message]="job_offer_log_erorr"
+                  level="danger"
+                ></app-c-alert>
+                <app-c-alert *ngIf="job_offer_log_success"
+                   [message]="job_offer_log_success"
+                   level="success"
+                ></app-c-alert>
               </div>
             </div>
             <div class="modal-footer">
@@ -967,7 +967,7 @@
           </h2>
         </div>
         <div class="modal-body">
-          <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+          <app-c-formv-html-area [value]="candidateMsgBody"></app-c-formv-html-area>
         </div>
         <div class="modal-footer">
           <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
@@ -996,23 +996,22 @@
             Where do you currently live, or where are you most frequently based?
           </strong>
           <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
-            <div class="form-group">
-              <label>Country</label>
-              <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
-                <option value="-1" disabled selected hidden >Please choose country</option>
-                <option *ngFor='let options of base_countries' [value]="options.value" selected>{{options.name}}</option>
-              </select>
-              <div class = "d-inline invalid-feedback" *ngIf="information.country === -1">
-                {{country_log}}
-              </div>
-            </div>
-            <div class="form-group">
-              <label>City</label>
-              <input type="text" class="form-control" placeholder="London" name="city" #city required [(ngModel)]="information.city" >
-              <div class = "d-inline invalid-feedback" *ngIf="!information.city">
-                {{city_log}}
-              </div>
-            </div>
+            <app-c-forme-dropdown-single
+              label="Country"
+              [options]="base_countries"
+              [errorMsg]="country_log"
+              [value]="information.country"
+              (selectedValue)="information.country = $event"
+              (change)="candidateLocationValidate()"
+            ></app-c-forme-dropdown-single>
+            <app-c-forme-text
+              label="City"
+              placeholder="London"
+              [value]="information.city"
+              (textInputValue)="information.city = $event"
+              [errorMsg]="city_log"
+              (change)="candidateCityValidation()"
+            ></app-c-forme-text>
             <div class="form-group">
               <app-c-button-normal
                 level="primary form-control"

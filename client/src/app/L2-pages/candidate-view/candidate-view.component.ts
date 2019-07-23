@@ -936,6 +936,42 @@ export class CandidateViewComponent implements OnInit {
     return placesArray;
   }
 
+  candidateCityValidation(){
+    if(!this.information.city) {
+      this.city_log = 'Please enter base city';
+      return false;
+    }
+    delete this.city_log;
+    return true;
+  }
+
+  candidateLocationValidate(){
+    if(!this.information.country) {
+      this.country_log = 'Please choose base country';
+      return false;
+    }
+    delete this.country_log;
+    return true;
+  }
+
+  volunteerLocationValidation(){
+    if(!this.volunteer.location) {
+      this.volunteer_location_log = 'Please enter location';
+      return false;
+    }
+    delete this.volunteer_location_log;
+    return true;
+  }
+
+  contractorLocationValidation(){
+    if(!this.contractor.location) {
+      this.contractor_location_log = 'Please enter location';
+      return false;
+    }
+    delete this.contractor_location_log;
+    return true;
+  }
+
   contractorCurrencyValidate(){
     if (!this.contractor.currency || this.contractor.currency === 'Currency') {
       this.hourly_currency_log = 'Please select currency';
@@ -956,11 +992,11 @@ export class CandidateViewComponent implements OnInit {
 
   employeeLocationValidation(){
     if(!this.employee.location) {
-      this.location_log = 'Please enter job title';
+      this.location_log = 'Please enter location';
       return false;
     }
     delete this.location_log;
-    return true
+    return true;
   }
 
   jobTitleValidation(){
