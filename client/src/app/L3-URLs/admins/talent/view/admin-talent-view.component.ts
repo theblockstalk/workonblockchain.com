@@ -23,14 +23,10 @@ export class AdminTalentViewComponent implements OnInit {
     this.admin = JSON.parse(localStorage.getItem('admin_log'));
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (this.user_id && this.admin && this.currentUser) {
-      console.log('from param: ' + this.user_id);
       if(this.admin.is_admin == 1) {
         this.authenticationService.getCandidateProfileById(this.user_id, true)
           .subscribe(data => {
-              if (data) {
-                console.log(data);
-                this.userDoc = data;
-              }
+              if (data) this.userDoc = data;
               else this.router.navigate(['/not_found']);
             },
             error => {

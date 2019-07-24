@@ -215,7 +215,6 @@ export class CandidateViewComponent implements OnInit {
     if(this.interest_area) this.interest_area.sort();
 
     if(this.viewBy === 'candidate' || this.viewBy === 'admin'){
-      console.log(this.userDoc['candidate'].job_activity_status);
       if(this.userDoc['candidate'].job_activity_status) {
         this.job_activity_status = 1;
 
@@ -454,7 +453,6 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].stackoverflow_url) this.linked_websites++;
       if(this.userDoc['candidate'].personal_website_url) this.linked_websites++;
 
-      console.log(this.linked_websites);
       if(this.linked_websites>=2) {
         this.progress_bar_class = 'progress-bar bg-warning';
         this.progress_bar_value = 25;
@@ -474,12 +472,8 @@ export class CandidateViewComponent implements OnInit {
         }
       }
 
-      console.log('WH: ' + this.work_history_progress);
-      console.log('sites: ' + this.linked_websites);
-
       if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
         if(this.linked_websites>=2 && this.work_history_progress === 1) {
-          console.log('in all BC if');
           this.progress_bar_class = 'progress-bar bg-info';
           this.progress_bar_value = 75;
         }
@@ -711,7 +705,6 @@ export class CandidateViewComponent implements OnInit {
   send_job_offer(msgForm: NgForm) {
     if(this.viewBy === 'company') {
       let errorCount = 0;
-      console.log("this.approach_work_type: " + this.approach_work_type);
       if (this.approach_work_type === 'employee') {
         if (!this.employee.job_title) {
           this.job_title_log = 'Please enter job title';
@@ -722,20 +715,11 @@ export class CandidateViewComponent implements OnInit {
           errorCount = 1;
         }
 
-        if(!this.approachOfferRate.minSalarySelfValidate()) {
-          console.log('in if');
-          errorCount = 1;
-        }
-        else{
-          this.employee.min_salary = this.approachOfferRate.minSalary;
-          console.log('min sal: ' + this.employee.min_salary);
-        }
+        if(!this.approachOfferRate.minSalarySelfValidate()) errorCount = 1;
+        else this.employee.min_salary = this.approachOfferRate.minSalary;
 
         if(!this.approachOfferRate.maxSalarySelfValidate()) errorCount = 1;
-        else{
-          this.employee.max_salary = this.approachOfferRate.maxSalary;
-          console.log('max sal: ' + this.employee.max_salary);
-        }
+        else this.employee.max_salary = this.approachOfferRate.maxSalary;
 
         if (!this.employee.currency || this.employee.currency === 'Currency') {
           this.salary_currency_log = 'Please select currency';
@@ -758,16 +742,10 @@ export class CandidateViewComponent implements OnInit {
         }
 
         if(!this.approachOfferRate.minSalarySelfValidate()) errorCount = 1;
-        else{
-          this.contractor.hourly_rate_min = this.approachOfferRate.minSalary;
-          console.log('min sal: ' + this.contractor.hourly_rate_min);
-        }
+        else this.contractor.hourly_rate_min = this.approachOfferRate.minSalary;
 
         if(!this.approachOfferRate.maxSalarySelfValidate()) errorCount = 1;
-        else{
-          this.contractor.hourly_rate_max = this.approachOfferRate.maxSalary;
-          console.log('max sal: ' + this.contractor.hourly_rate_max);
-        }
+        else this.contractor.hourly_rate_max = this.approachOfferRate.maxSalary;
         if (!this.contractor.hourly_rate_min) {
           this.hourly_rate_log = 'Please enter hourly rate';
           errorCount = 1;
@@ -946,11 +924,7 @@ export class CandidateViewComponent implements OnInit {
     if(event.target.checked){
       this.send_email = true;
     }
-    console.log(event.target.checked);
-    console.log(event.target.value);
     let strr = JSON.stringify(this.send_email);
-    console.log('send_email: ' + strr);
-    console.log(typeof strr);
   }
 
   addNoteValue(event){
@@ -958,11 +932,7 @@ export class CandidateViewComponent implements OnInit {
     if(event.target.checked){
       this.add_note = true;
     }
-    console.log(event.target.checked);
-    console.log(event.target.value);
     let strr = JSON.stringify(this.add_note);
-    console.log('add_note: ' + strr);
-    console.log(typeof strr);
   }
 
   candidateCityValidation(){

@@ -14,15 +14,11 @@ export class CandidateProfileComponent implements OnInit {
   constructor(private router: Router, private authenticationService: UserService) { }
 
   ngOnInit() {
-    console.log('in CandidateProfileComponent');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser && this.currentUser.type === 'candidate'){
       this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(data => {
-            if (data) {
-              console.log(data);
-              this.userDoc = data;
-            }
+            if (data) this.userDoc = data;
             else this.router.navigate(['/not_found']);
           },
           error => {

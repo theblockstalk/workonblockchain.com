@@ -20,14 +20,11 @@ export class CandidateDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('user_id: ' + this.user_id);
-    console.log('in CandidateDetailsComponent');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser && this.currentUser.type === 'company'){
       this.authenticationService.candidate_detail(this.user_id)
         .subscribe(data => {
             if (data) {
-              console.log(data);
               if(data['initials']) this.anonimize = true;
               this.userDoc = data;
             }

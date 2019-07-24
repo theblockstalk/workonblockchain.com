@@ -13,7 +13,6 @@ export class CandidateDetailComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
-    console.log(this.user_id);
     this.router.navigate(['/users/talent/' + this.user_id]);
   }
 
