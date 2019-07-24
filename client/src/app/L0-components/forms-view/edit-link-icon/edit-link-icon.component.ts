@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-i-forme-edit-link-icon',
+  selector: 'app-c-forme-edit-link-icon',
   templateUrl: './edit-link-icon.component.html',
   styleUrls: ['./edit-link-icon.component.css']
 })

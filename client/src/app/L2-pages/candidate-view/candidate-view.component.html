@@ -75,7 +75,7 @@
               </ul>
             </div>
             <div class="col-md-1" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-c-forme-edit-link-icon>
             </div>
           </div>
           <div class="row">
@@ -363,7 +363,7 @@
               <h2> <i class="fas fa-user"></i> About </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
@@ -417,15 +417,15 @@
               <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="residence"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="residence"></app-c-forme-edit-link-icon>
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-md-6 mb-3">
-              <app-c-formv-text label="Country:" [value]="userDoc['candidate'].base_country"></app-c-formv-text>
+              <app-c-formv-text *ngIf="userDoc['candidate'].base_country" label="Country:" [value]="userDoc['candidate'].base_country"></app-c-formv-text>
             </div>
             <div class="col-md-6 mb-3">
-              <app-c-formv-text label="City:" [value]="userDoc['candidate'].base_city"></app-c-formv-text>
+              <app-c-formv-text *ngIf="userDoc['candidate'].base_city" label="City:" [value]="userDoc['candidate'].base_city"></app-c-formv-text>
             </div>
           </div>
         </section>
@@ -438,7 +438,7 @@
               <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="work_preferences"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="work_preferences"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
@@ -615,7 +615,7 @@
               <h2> <i class="fab fa-bitcoin"></i> Blockchain experience </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="blockchain_experience"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="blockchain_experience"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
@@ -658,7 +658,7 @@
               <h2> <i class="fas fa-code"></i> Experience </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="experience"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="experience"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
@@ -677,7 +677,7 @@
               <h2> <i class="fas fa-wrench"></i> Work history </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="work_history"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="work_history"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
@@ -707,7 +707,7 @@
               <h2> <i class="fas fa-university"></i> Education </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
-              <app-i-forme-edit-link-icon [routerUrl]="routerUrl" section="education_history"></app-i-forme-edit-link-icon>
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="education_history"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
