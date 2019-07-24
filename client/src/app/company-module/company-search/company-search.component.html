@@ -188,8 +188,12 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.initials">
+                            <h2 class="">{{data.initials}}</h2>
+                          </a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.first_name">
+                            <h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2>
+                          </a>
                         </div>
                         <span *ngIf="data.candidate.employee">
                           Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year

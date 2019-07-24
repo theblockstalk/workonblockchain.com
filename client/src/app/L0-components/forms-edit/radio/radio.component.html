@@ -8,6 +8,9 @@
            value="{{opt.value}}"
            (change)="selectedItem($event)"
            [checked]="selectedValue(opt.value)? true: null">
+    <i *ngIf="opt.value === 'employee'" class="fas fa-user-secret mr-1"></i>
+    <i *ngIf="opt.value === 'contractor'" class="fas fa-address-card mr-1"></i>
+    <i *ngIf="opt.value === 'volunteer'" class="fas fa-user-check mr-1"></i>
     <label class="form-check-label simple-radio-button" for="{{opt.name}}-{{id}}">
       {{opt.name}}
     </label>

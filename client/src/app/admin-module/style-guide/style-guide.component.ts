@@ -20,6 +20,9 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
+  candidate_image;
+  progress_bar_value = 25;
+  progress_bar_class = 'progress-bar bg-warning';
 
   country_codes = constants.country_codes;
   imageName;

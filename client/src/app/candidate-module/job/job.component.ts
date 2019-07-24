@@ -163,8 +163,8 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.resume_disable ='';
               this.resume_class="/resume";
             }
-            if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
-            if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+            //if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
+            //if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
             if(data['candidate'].employee) {
               this.employeeCheck = true;
               this.selected_work_type.push('employee');
@@ -561,7 +561,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.remote_location_log = "Please select at least one location which you can work in without needing a visa";
     }
 
-    if(this.current_salary && !this.current_currency ) {
+    /*if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
       this.count++;
     }
@@ -578,7 +578,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "Currency")){
       this.count = 0;
-    }
+    }*/
 
     if(!this.candJobActivity.selfValidate()) this.count++;
 
@@ -653,7 +653,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       else inputQuery.unset_counter_offer = true;
 
       candidateQuery.job_activity_status = job_activity_statuses;
-
       inputQuery.candidate = candidateQuery;
 
       inputQuery.wizardNum = 3;

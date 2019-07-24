@@ -124,7 +124,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.route.queryParams.subscribe(params => {
       if (params['queryBody']) {
         this.urlParameters = JSON.parse(params['queryBody']);
-        console.log(this.urlParameters);
         if (this.urlParameters) {
           this.no_value = true;
           if (this.urlParameters.work_type) {

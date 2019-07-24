@@ -161,12 +161,13 @@ export class AboutComponent implements OnInit,AfterViewInit
                 else this.info.contact_number = contact_number[0];
               }
 
-              if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
+              /*if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
               if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
               if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
               if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
               if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
+              */
               if(data['nationality'])
               {
                 this.info.nationality = data['nationality'];
@@ -330,7 +331,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.last_name) inputQuery.last_name = this.info.last_name;
       if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+ this.info.contact_number;
 
-      if(this.info.github_account) candidateQuery.github_account = this.info.github_account;
+      /*if(this.info.github_account) candidateQuery.github_account = this.info.github_account;
       else inputQuery.unset_github_account = true;
 
       if(this.info.exchange_account) candidateQuery.stackexchange_account = this.info.exchange_account;
@@ -347,6 +348,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
       if(this.info.personal_website_url) candidateQuery.personal_website_url = this.info.personal_website_url;
       else inputQuery.unset_personal_website_url = true;
+      */
 
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) candidateQuery.base_country = this.info.country;

@@ -482,7 +482,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             data => {
               if(data )
               {
-                this.router.navigate(['/candidate_profile']);
+                this.router.navigate(['/users/talent']);
               }
             },
             error => {
@@ -495,7 +495,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             data => {
               if(data )
               {
-                this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.userDoc['_id'] } });
+                this.router.navigate(['/admins/talent/'+ this.userDoc['_id']]);
               }
             },
             error => {

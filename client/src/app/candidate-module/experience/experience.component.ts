@@ -687,7 +687,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   redirectToCandidate()
   {
     $('#popModal').modal('hide');
-    this.router.navigate(['/candidate_profile']);
+    this.router.navigate(['/users/talent']);
   }
   selectedValue;langValue;
   onExpYearOptions(e, value)

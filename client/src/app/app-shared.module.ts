@@ -69,7 +69,13 @@ import { ContentComponent } from './L1-items/pages/content/content.component';
 import { TitleComponent } from './L1-items/pages/title/title.component';
 import { PagesEditorComponent } from './L2-pages/pages-editor/pages-editor.component';
 import { PagesComponent } from './L2-pages/pages/pages.component';
+import { ImageComponent} from './L0-components/forms-view/image/image.component';
+import { CandidateViewComponent } from './L2-pages/candidate-view/candidate-view.component';
+import { CandidateProgressbarComponent } from './L1-items/candidate/candidate-progressbar/candidate-progressbar.component';
+import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-icon/text-linked-icon.component';
+import { EditLinkIconComponent } from './L0-components/forms-view/edit-link-icon/edit-link-icon.component';
 import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity/cand-job-activity.component';
+import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 
 @NgModule({
   imports: [
@@ -89,8 +95,9 @@ import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity
     DateComponent, WorkTypesComponent, RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent,
     EmployeeComponent, WhyWorkComponent, InterestsComponent, CommercialExperienceComponent, LogosItemsComponent,
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
-    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent,
-    CandJobActivityComponent
+    TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
+    CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
+    CandJobActivityComponent, ApproachOfferRateComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -106,7 +113,9 @@ import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity
     RoleComponent, VolunteerComponent, LocationsComponent, ContractorComponent, EmployeeComponent, WhyWorkComponent,
     InterestsComponent, CommercialExperienceComponent, LogosItemsComponent, CommercialSkillsComponent,
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
-    TitleComponent, PagesEditorComponent, PagesComponent, CandJobActivityComponent
+    TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
+    CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
+    ApproachOfferRateComponent
   ]
 })
 export class SharedModule { }
