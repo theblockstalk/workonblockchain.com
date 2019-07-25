@@ -114,6 +114,7 @@ export class CandidateViewComponent implements OnInit {
   other_reasons;
   counter_offer;
   cand_job_activity;
+  job_offer_log;
 
   date_sort_desc = function (date1, date2)
   {
