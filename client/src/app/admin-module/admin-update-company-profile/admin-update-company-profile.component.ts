@@ -246,7 +246,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.company_id)
+      this.authenticationService.getCurrentCompany(this.company_id, true)
         .subscribe(
           data =>
           {
@@ -569,7 +569,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
         }
       }
 
-      profileForm.value.phone_number = this.country_code +' '+ this.company_phone;
+      profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)

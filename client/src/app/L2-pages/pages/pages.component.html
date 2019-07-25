@@ -1,0 +1,21 @@
+<section class="bg-light py-5 mt-5">
+  <div class="container border p-3 bg-white mt-2">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="p-2">{{pageDoc.page_title}}</h1>
+        <hr/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <app-c-formv-html-area
+          class="p-2"
+          [value]="pageDoc.page_content"
+        ></app-c-formv-html-area>
+        </div>
+    </div>
+  </div>
+
+</section>
+

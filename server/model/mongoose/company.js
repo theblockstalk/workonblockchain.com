@@ -82,3 +82,15 @@ module.exports.findAndIterate = async function findAndIterate(selector, fn) {
         await fn(doc.toObject());
     }
 }
+
+module.exports.aggregate = async function aggregate(searchQuery) {
+    return await Company.aggregate([{
+        $lookup:
+            {
+                from: "users",
+                localField: "_creator",
+                foreignField: "_id",
+                as: "users"
+            }
+    }, searchQuery]);
+}

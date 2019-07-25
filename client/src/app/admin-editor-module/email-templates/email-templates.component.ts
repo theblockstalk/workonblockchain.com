@@ -95,7 +95,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       let InputBody : any = {};
       if(editorForm.value.subject) InputBody.subject = editorForm.value.subject;
       if(editorForm.value.body) InputBody.body = editorForm.value.body;
-      if (!this.template_id) {
+      if (this.newTemplateButton) {
         if(editorForm.value.name !== this.templateName) InputBody.name = editorForm.value.name;
         this.authenticationService.email_templates_post(InputBody)
           .subscribe(
@@ -196,10 +196,11 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
 
         });
   }
-
-  newTemplate(value: boolean) {
-    this.new_template = value;
-    if (!value) {
+  newTemplateButton = false;
+  newTemplate(value: string) {
+    if (value === 'new') {
+      this.new_template = true;
+      this.newTemplateButton = true;
       this.name = '';
       this.subject = '';
       this.body = '';
@@ -214,6 +215,8 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
       }, 200);
     }
     else {
+      this.newTemplateButton = false;
+
       this.name = '';
       this.subject = '';
       this.body = '';
@@ -231,6 +234,7 @@ export class EmailTemplatesComponent implements OnInit, AfterViewInit {
 
   fillFields(event, name) {
     this.new_template = true;
+    this.newTemplateButton = false;
     let template;
     if(name && name !== '') template = this.templateDoc.find(x => x.name === name);
     else template = this.templateDoc.find(x => x.name === event.target.value);

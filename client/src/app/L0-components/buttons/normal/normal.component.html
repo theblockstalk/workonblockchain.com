@@ -1,0 +1,6 @@
+<button *ngIf="buttonType" type="{{buttonType}}" class="btn btn-{{level}}" [ngClass]="alignment" [disabled]="disabled? '' : null" >
+  <i *ngIf="buttonIconClass" class="{{buttonIconClass}}"></i> {{label}}
+</button>
+<button *ngIf="routeUrl" [routerLink]="[routeUrl]" type="{{buttonType}}" class="btn btn-{{level}}" [ngClass]="alignment" [disabled]="disabled? '' : null" >
+  <i *ngIf="buttonIconClass" class="{{buttonIconClass}}"></i> {{label}}
+</button>

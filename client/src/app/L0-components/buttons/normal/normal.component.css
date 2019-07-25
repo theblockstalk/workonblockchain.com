@@ -1,0 +1,20 @@
+.btn-light {
+  background-color: #ffffff !important;
+  border-color: #ced4da !important;
+}
+
+.btn-light:hover {
+  color: #495057;
+  background-color: #ffffff;
+  border-color: #ced4da;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.my-btn-style{
+  font-size: 20px;
+}

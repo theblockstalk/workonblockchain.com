@@ -1,0 +1,71 @@
+<div class = "row mt-3">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>How interested are you in new work opportunities?</label>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <app-c-forme-button-group
+      [value]="jobActivity"
+      (selectedValue)="jobActivity"
+      [options]="job_activity_status"
+      [errorMsg]="errMsg"
+      (change)="onChange($event)"
+    ></app-c-forme-button-group>
+  </div>
+</div>
+
+<div class = "row mt-3" *ngIf="jobActivity && jobActivity !== 'Not now'">
+  <div class="col-md-12">
+    <app-c-forme-radio
+      label="Are you currently employed?"
+      [value]="currentEmploy"
+      (selectedOption)="currentEmploy"
+      [options]="radio_buttons"
+      [errorMsg]="currentEmployerrMsg"
+      (change)="selectEmployment($event)"
+      id="currentEmploy"
+    ></app-c-forme-radio>
+  </div>
+</div>
+
+<div class = "row mt-3" *ngIf="(jobActivity && jobActivity !== 'Not now') && (currentEmploy && currentEmploy === 'Yes')">
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="reasons_of_leaving"
+      label="Why are you interested in leaving you current employer?"
+      [errorMsg]="errMsgLeavingReasons"
+      (selectedItem)="reasonsOfLeaving = $event"
+      column="col-md-12 mb-3"
+      [value]="reasonsOfLeaving"
+      (change)="validateReasons()"
+    ></app-c-forme-checkbox>
+  </div>
+</div>
+
+<div class = "row" *ngIf="(jobActivity && jobActivity !== 'Not now') && (currentEmploy && currentEmploy === 'Yes') && other_reasons_text_box">
+  <div class="col-md-6">
+    <app-c-forme-text
+      placeholder="Other"
+      [value]="otherReasons"
+      [errorMsg]="errMsgOtherReasons"
+      (textInputValue)="otherReasons = $event"
+      [hasLable]="true"
+      (change)="selfValidateOtherReasons()"
+    ></app-c-forme-text>
+  </div>
+</div>
+
+<div class = "row mt-3" *ngIf="jobActivity && jobActivity !== 'Not now' && (currentEmploy && currentEmploy === 'Yes')">
+  <div class="col-md-12">
+    <app-c-forme-radio
+      label="Would you consider a counter-offer from your current employer?"
+      [value]="counterOffer"
+      (selectedOption)="counterOffer"
+      [options]="radio_buttons"
+      [errorMsg]="counterOfferErrMsg"
+      (change)="selectCounterOffer($event)"
+      id="counterOffer"
+    ></app-c-forme-radio>
+  </div>
+</div>

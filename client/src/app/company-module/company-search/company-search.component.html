@@ -24,12 +24,30 @@
               </div>
             </div>
 
+            <div class="row my-3">
+              <div class="col-md-6">
+                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save</button>
+              </div>
+              <div class="col-md-6">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear</button>
+              </div>
+              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
+                {{success_msg}}
+              </div>
+              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
+                {{error_msg}}
+              </div>
+            </div>
+
             <div class="wob-bg-primary2 p-2 border mt-2">
               <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
               <div class="form-group px-1">
                 <div class="form-check" *ngFor="let types of workTypes">
                   <label class="form-check-label simple-radio-button" >
                     <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
+                    <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                    <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                    <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     {{types.name}}
                   </label>
                 </div>
@@ -55,7 +73,7 @@
                     <span>{{ loc.name }}</span>
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field floatLabel="always">
+                <mat-form-field floatLabel="always" class="w-100">
                   <mat-label></mat-label>
                   <input matInput placeholder="Work place (city/remote)" [matAutocomplete]="auto" [disabled]="msg !== '' ? true : false" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 </mat-form-field>
@@ -109,7 +127,6 @@
                 <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Annual salary">
 
                 <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
-                  <option value="-1" >Currency</option>
                   <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
                 </select>
 
@@ -133,21 +150,6 @@
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
-              </div>
-            </div>
-
-            <div class="row my-3">
-              <div class="col-md-6">
-                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
-              </div>
-              <div class="col-md-6">
-                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Clear filters</button>
-              </div>
-              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
-                {{success_msg}}
-              </div>
-              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
-                {{error_msg}}
               </div>
             </div>
           </div>
@@ -186,8 +188,12 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.initials">
+                            <h2 class="">{{data.initials}}</h2>
+                          </a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.first_name">
+                            <h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2>
+                          </a>
                         </div>
                         <span *ngIf="data.candidate.employee">
                           Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
@@ -302,10 +308,10 @@
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                      {{types.name}}
                       <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                       <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                      {{types.name}}
                     </label>
 
                   </div>
@@ -535,6 +541,9 @@
                   <div class="form-check" *ngFor="let types of workTypes">
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
+                      <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                       {{types.name}}
                     </label>
                   </div>

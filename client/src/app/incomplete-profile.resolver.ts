@@ -26,7 +26,7 @@ export class ProfileResolver  {
                   return false;
                 }
                 else if(!data['candidate'].employee && !data['candidate'].contractor && !data['candidate'].volunteer) {
-                  this.router.navigate(['/job']);
+                  this.router.navigate(['/work']);
                   return false;
                 }
                 else if (!data['candidate'].why_work && !data['candidate'].interest_areas) {

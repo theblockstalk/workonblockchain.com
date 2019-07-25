@@ -1,0 +1,6 @@
+<div class="form-group">
+  <label>{{label}} </label>
+  <div>
+    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let opt of value;' [innerHTML] = " opt | safeHtml "> {{opt}} </div>
+  </div>
+</div>

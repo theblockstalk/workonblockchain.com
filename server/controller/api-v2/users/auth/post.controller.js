@@ -90,6 +90,7 @@ module.exports.endpoint = async function (req, res) {
     }
     if(queryBody.linkedin_code) {
         const linkedinData = await linkedin.linkedinAuth(queryBody.linkedin_code);
+        logger.debug("Linkedin data" , linkedinData);
         if (linkedinData) {
             userDoc = await users.findOneByEmail(linkedinData.email);
             if(!userDoc) errors.throwError('This email has not been used to signup with Linkedin.' , 400)
@@ -124,6 +125,7 @@ module.exports.endpoint = async function (req, res) {
         }
         const jwtUserToken = jwtToken.createJwtToken(userDoc);
         set.jwt_token = jwtUserToken;
+        set.session_started = new Date();
         await users.update({_id: userDoc._id}, {$set: set});
         response.jwt_token = jwtUserToken;
         res.send(response);

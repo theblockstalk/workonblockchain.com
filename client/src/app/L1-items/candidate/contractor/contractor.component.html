@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-12 mt-4">
+    <app-i-forme-locations
+      [selectedLocation] = "contractor.location"
+      (selectedItems)="contractor.location = $event"
+    ></app-i-forme-locations>
+  </div>
+  <div class = "invalid-feedback d-inline" *ngIf="errorMsg">
+    {{errorMsg}}
+  </div>
+
+  <div class="col-md-12">
+    <app-i-forme-role
+      [roles]="contractor.roles"
+      (selectedItems)="contractor.roles = $event"
+    ></app-i-forme-role>
+  </div>
+
+  <div class="col-md-6">
+    <app-c-forme-text
+      label="Hourly rate:"
+      [errorMsg]="hourlyErrMsg"
+      [value]="contractor.expected_hourly_rate"
+      (change)="hourlyValidate()"
+      (textInputValue)="contractor.expected_hourly_rate = $event"
+    ></app-c-forme-text>
+  </div>
+
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      [options]="currencies"
+      [value]="contractor.currency"
+      [errorMsg]="currencyErrMsg"
+      (selectedValue)="contractor.currency = $event"
+      (change)="currencyValidate()"
+    ></app-c-forme-dropdown-single>
+  </div>
+
+
+  <div class="col-md-6">
+    <app-c-forme-dropdown-single
+      label="Maximum hours per week (optional):"
+      [options]="max_hours"
+      [value]="contractor.max_hour_per_week"
+      (selectedValue) = "contractor.max_hour_per_week = $event"
+    ></app-c-forme-dropdown-single>
+  </div>
+
+  <div class="col-md-12">
+    <app-c-forme-checkbox
+      [options]="contractor_types"
+      label="Contractor type:"
+      [errorMsg]="typeErrMsg"
+      (selectedItem)="contractor.contractor_type = $event"
+      column="col-md-12"
+      [value]="contractor.contractor_type"
+      (change)="typeValidate()"
+    ></app-c-forme-checkbox>
+
+  </div>
+
+  <div class="col-md-6" *ngIf="agencyCheck">
+    <app-c-forme-text
+      label="Agency website:"
+      [value]="contractor.agency_website"
+      [errorMsg]="agencyErrMsg"
+      (change) = websiteValidate()
+      (textInputValue)="contractor.agency_website = $event" ></app-c-forme-text>
+  </div>
+
+
+  <div class="col-md-12">
+    <app-c-forme-text-area
+      label="Service description:"
+      [value]="contractor.service_description"
+      placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis."
+      rows="5"
+      [errorMsg]="descErrMsg"
+      (change)="descValidation()"
+      (textareaInput)="contractor.service_description = $event"
+    ></app-c-forme-text-area>
+  </div>
+</div>
+

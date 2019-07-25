@@ -7,8 +7,7 @@ module.exports.candidate = function candidate() {
         last_name: "Hussain",
         email: random.email(),
         password: "Password1",
-        type: "candidate",
-        social_type : ""
+        type: "candidate"
     };
 };
 
@@ -20,10 +19,10 @@ module.exports.company = function company() {
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
-        phone_number: "926546456",
-        country: "Pakistan",
-        postal_code: "25000",
-        city: "RWP",
+        company_phone: "926546456",
+        company_country: "Pakistan",
+        company_postcode: "25000",
+        company_city: "RWP",
         password: "Password1",
         type: "company"
     };
@@ -107,14 +106,17 @@ module.exports.profileData = function profileData(){
     return {
         first_name : 'Tayyab',
         last_name : 'Hussain',
-        github_account : 'fb.com',
-        exchange_account : 'fb.com',
-        linkedin_account : 'http://linkedin.com/in/sadia',
-        medium_account : 'http://medium.com/sadia',
+        nationality : ['Pakistani'],
         contact_number : '65464655',
-        nationality : 'Pakistani',
-        country : 'Pakistan',
-        city : 'Islamabad'
+        candidate: {
+            github_account : 'fb.com',
+            exchange_account : 'fb.com',
+            linkedin_account : 'http://linkedin.com/in/sadia',
+            medium_account : 'http://medium.com/sadia',
+            base_country : 'Pakistan',
+            base_city : 'Islamabad'
+        }
+
     }
 }
 
@@ -320,9 +322,9 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
 
 module.exports.cmsContent = function cmsContent() {
     return {
-        page_title: "Privacy Notice",
-        html_text: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
-        page_name: "Privacy Notice"
+        title: "Privacy Notice",
+        content: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
+        name: "Privacy Notice"
     }
 }
 
@@ -335,17 +337,17 @@ module.exports.image = function image(){
 
 module.exports.cmsContentFroTC = function cmsContentFroTC() {
     return {
-        page_title: "T&C for Company",
-        html_text: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
-        page_name: "Terms and Condition for company"
+        title: "T&C for Company",
+        content: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
+        name: "Terms and Condition for company"
     }
 }
 
 module.exports.cmsContentForTCCandidate = function cmsContentForTCCandidate() {
     return {
-        page_title: "T&C for Candidate",
-        html_text: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
-        page_name: "Terms and Condition for company"
+        title: "T&C for Candidate",
+        content: "<p>These are Terms and Conditions for candidates. We will not tolerate anything.</p>\n",
+        name: "Terms and Condition for candidate"
     }
 }
 

@@ -8,6 +8,7 @@ declare var $:any;
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -110,6 +111,56 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
           }
+          for(let i=0;i<this.info.length;i++){
+            if(this.info[i].candidate.latest_status.status !== 'approved') {
+              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 0;
+              if (this.info[i].candidate.latest_status.status === 'wizard') {
+                this.info[i].candidate_badge = '4 days till review';
+                this.info[i].candidate_badge_color = 'success';
+                wizard = 1;
+              }
+
+              if (this.info[i].candidate.github_account) linking_accounts++;
+              if (this.info[i].candidate.stackexchange_account) linking_accounts++;
+              if (this.info[i].candidate.linkedin_account) linking_accounts++;
+              if (this.info[i].candidate.medium_account) linking_accounts++;
+              if (this.info[i].candidate.stackoverflow_url) linking_accounts++;
+              if (this.info[i].candidate.personal_website_url) linking_accounts++;
+
+              if (linking_accounts >= 2) {
+                this.info[i].candidate_badge = '4 days till review';
+                this.info[i].candidate_badge_color = 'success';
+                wizard = 1;
+              }
+
+              let twoDays = new Date();
+              let fourDays = new Date();
+              twoDays.setSeconds(twoDays.getSeconds() - 172800); //2 days ago
+              fourDays.setSeconds(fourDays.getSeconds() - 345600); //4 days ago
+              let status_date = new Date(this.info[i].candidate.latest_status.timestamp);
+              //status_date = formatDate(status_date, 'yyyy/MM/dd', 'en');
+              if (this.info[i].candidate.work_history && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
+                this.info[i].candidate_badge = '2 days till review';
+                this.info[i].candidate_badge_color = 'warning';
+                work_history = 1;
+              }
+              if ((work_history && this.info[i].candidate.blockchain) && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
+                if ((this.info[i].candidate.blockchain.commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms) && (this.info[i].candidate.blockchain.experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms) && (this.info[i].candidate.blockchain.commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills)) {
+                  this.info[i].candidate_badge = '2 days till review';
+                  this.info[i].candidate_badge_color = 'warning';
+                  blockchain_platforms = 1;
+                }
+              }
+              if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
+                this.info[i].candidate_badge = 'Priority review';
+                this.info[i].candidate_badge_color = 'danger';
+              }
+            }
+            else{
+              this.info[i].candidate_badge = 'Approved';
+              this.info[i].candidate_badge_color = 'primary';
+            }
+          }
           this.setPage(1);
           this.length=0;
 
@@ -189,11 +240,13 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.approve) queryBody.is_approve = this.approve;
+      if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
-      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
-      if(this.candidate_status) queryBody.verify_status = this.candidate_status;
-      if(this.candidate_status_account) queryBody.account_status = this.candidate_status_account;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
+      if(this.candidate_status) queryBody.is_verify = this.candidate_status;
+      if(this.candidate_status_account === true || this.candidate_status_account === 'true') queryBody.disable_account = true;
+      else if(this.candidate_status_account === false || this.candidate_status_account === 'false') queryBody.disable_account = false;
+
       this.authenticationService.admin_candidate_filter(queryBody)
         .subscribe(
           data =>

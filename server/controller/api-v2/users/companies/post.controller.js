@@ -8,7 +8,7 @@ const jwtToken = require('../../../services/jwtToken');
 const companies = require('../../../../model/mongoose/company');
 const Users = require('../../../../model/mongoose/users');
 const referral = require('../../../../model/mongoose/referral');
-const verify_send_email = require('../../../api/users/auth/verify_send_email');
+const verify_send_email = require('../auth/verify_send_email');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
 
 module.exports.request = {
@@ -23,6 +23,10 @@ const bodySchema = new Schema({
         lowercase: true,
     },
     password: {
+        type:String,
+        validate: regexes.password
+    },
+    confirm_password:{
         type:String,
         validate: regexes.password
     },
@@ -45,6 +49,9 @@ const bodySchema = new Schema({
     company_phone: {
         type:String
     },
+    country_code: {
+        type:String
+    },
     company_country: {
         type: String,
         enum: enumerations.countries
@@ -54,6 +61,14 @@ const bodySchema = new Schema({
     },
     company_postcode: {
         type:String
+    },
+    type:{
+        type: String,
+        enum: enumerations.userTypes
+    },
+    referred_email:{
+        type: String,
+        validate: regexes.email,
     }
 });
 
@@ -91,10 +106,10 @@ module.exports.endpoint = async function (req, res) {
                 job_title:queryBody.job_title,
                 company_name: queryBody.company_name,
                 company_website:queryBody.company_website,
-                company_phone:queryBody.phone_number,
-                company_country:queryBody.country,
-                company_city:queryBody.city,
-                company_postcode:queryBody.postal_code,
+                company_phone:queryBody.company_phone,
+                company_country:queryBody.company_country,
+                company_city:queryBody.company_city,
+                company_postcode:queryBody.company_postcode,
             };
 
             let employerDoc = await companies.insert(employerDetail);
@@ -107,7 +122,8 @@ module.exports.endpoint = async function (req, res) {
 
             var set = {
                 verify_email_key: verifyEmailToken,
-                jwt_token: jwtUserToken
+                jwt_token: jwtUserToken,
+                session_started: new Date()
             };
 
             await Users.update({ _id: companyUserCreated._id },{ $set: set });

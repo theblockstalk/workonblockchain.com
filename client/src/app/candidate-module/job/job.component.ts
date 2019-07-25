@@ -1,9 +1,10 @@
-import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit,AfterViewInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {constants} from '../../../constants/constants';
+import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
@@ -15,6 +16,7 @@ declare var $:any;
   styleUrls: ['./job.component.css']
 })
 export class JobComponent implements OnInit,AfterViewInit {
+  @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) { }
   info: any = {};
@@ -80,6 +82,13 @@ export class JobComponent implements OnInit,AfterViewInit {
   employement_availability = constants.workAvailability;
   display_error;
   remote_location_log;
+  reasons_of_leaving = constants.reasons_of_leaving;
+  job_activity_value;// = 'Not now';
+  currently_employ;
+  reason_selectedValue = [];
+  other_reasons;
+  counter_offer;
+  allData = 0;
 
   ngAfterViewInit(): void
   {
@@ -92,6 +101,12 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
+    this.reasons_of_leaving.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.roles = unCheckCheckboxes(constants.workRoles);
@@ -150,8 +165,8 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.resume_disable ='';
               this.resume_class="/resume";
             }
-            if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
-            if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+            //if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
+            //if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
             if(data['candidate'].employee) {
               this.employeeCheck = true;
               this.selected_work_type.push('employee');
@@ -166,6 +181,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
             }
             if(data['candidate'].contractor) {
+              $('.selectpicker').selectpicker('refresh');
               this.contractorCheck = true;
               this.selected_work_type.push('contractor');
               let contractor = data['candidate'].contractor;
@@ -195,12 +211,33 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.volunteer.learning_objectives = volunteer.learning_objectives;
               this.volunteer.roles = volunteer.roles;
             }
+
             if (isPlatformBrowser(this.platformId)) {
               setTimeout(() => {
                 $('.selectpicker').selectpicker();
               }, 500);
             }
 
+            if(data['candidate'].job_activity_status) {
+              if (data['candidate'].job_activity_status.new_work_opportunities) this.job_activity_value = data['candidate'].job_activity_status.new_work_opportunities;
+              if (data['candidate'].job_activity_status.currently_employed) this.currently_employ = data['candidate'].job_activity_status.currently_employed;
+              if (data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                for (let reason of data['candidate'].job_activity_status.leaving_current_employ_reasons) {
+                  for (let option of this.reasons_of_leaving) {
+                    if (option.value === reason) {
+                      option.checked = true;
+                      this.reason_selectedValue.push(reason);
+                    }
+                  }
+                }
+              }
+              if (data['candidate'].job_activity_status.other_reasons) {
+                this.other_reasons = data['candidate'].job_activity_status.other_reasons;
+              }
+              if (data['candidate'].job_activity_status.counter_offer) this.counter_offer = data['candidate'].job_activity_status.counter_offer;
+              this.allData = 1;
+            }
+            else this.allData = 1;
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
@@ -364,6 +401,8 @@ export class JobComponent implements OnInit,AfterViewInit {
     let inputQuery: any = {};
     let remote_error_count = 0;
     let visaRequired = 0;
+    let candidateQuery:any ={};
+    let job_activity_statuses:any ={};
 
     if(this.employeeCheck === false && this.contractorCheck === false && this.volunteerCheck === false) {
       this.work_type_log = "Please select at least one work type";
@@ -413,7 +452,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.salary_log = "Please enter expected yearly salary";
         employeeCount = 1;
       }
-      if(!this.employee.currency) {
+      if(!this.employee.currency || this.employee.currency === 'Currency') {
         this.currency_log = "Please choose currency";
         employeeCount = 1;
       }
@@ -464,7 +503,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.contractor_hourly_log = "Please enter hourly rate";
         contractorCount = 1;
       }
-      if(!this.contractor.currency) {
+      if(!this.contractor.currency || this.contractor.currency === 'Currency' ) {
         this.contractor_currency_log = "Please choose currency";
         contractorCount = 1;
       }
@@ -524,30 +563,44 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.remote_location_log = "Please select at least one location which you can work in without needing a visa";
     }
 
-    if(this.current_salary && !this.current_currency ) {
+    /*if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
       this.count++;
     }
 
-    if(this.current_salary && this.current_currency === "-1" ) {
+    if(this.current_salary && this.current_currency === "Currency" ) {
       this.current_currency_log = "Please choose currency";
       this.count++;
     }
 
-    if(!this.current_salary && this.current_currency !== "-1") {
+    if(!this.current_salary && this.current_currency !== "Currency") {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
 
-    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
+    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "Currency")){
       this.count = 0;
+    }*/
+
+    if(!this.candJobActivity.selfValidate()) this.count++;
+
+    if(this.candJobActivity.jobActivity === 'Not now'){}
+    else{
+      if(!this.candJobActivity.currentEmploymentValidate()) this.count++;
+      if(this.candJobActivity.currentEmploy === 'Yes') {
+        if (!this.candJobActivity.validateReasons()) this.count++;
+        if(this.candJobActivity.reasonsOfLeaving.find((obj => obj === 'Other')))
+          if (!this.candJobActivity.selfValidateOtherReasons()) this.count++;
+
+        if (!this.candJobActivity.validateCounterOffer()) this.count++;
+      }
     }
 
     if(remote_error_count === 0 && this.count === 0 && (this.employeeCheck || this.contractorCheck || this.volunteerCheck)
       && employeeCount === 0 && contractorCount === 0 && volunteerCount === 0)
     {
       if(this.employeeCheck) {
-        inputQuery.employee = {
+        candidateQuery.employee = {
           employment_type : this.employee.employment_type,
           expected_annual_salary: parseInt(this.employee.expected_annual_salary),
           currency: this.employee.currency,
@@ -560,7 +613,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
       if(this.contractorCheck) {
-        inputQuery.contractor = {
+        candidateQuery.contractor = {
           expected_hourly_rate : parseInt(this.contractor.hourly_rate),
           currency: this.contractor.currency,
           location: this.contractor.locations,
@@ -568,25 +621,42 @@ export class JobComponent implements OnInit,AfterViewInit {
           contractor_type: this.contractor.contractor_type,
           service_description : this.contractor.service_description
         }
-        if(this.contractor.agency_website) inputQuery.contractor.agency_website = this.contractor.agency_website;
-        if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') inputQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
+        if(this.contractor.agency_website) candidateQuery.contractor.agency_website = this.contractor.agency_website;
+        if(this.contractor.max_hour_per_week && this.contractor.max_hour_per_week !== '-1') candidateQuery.contractor.max_hour_per_week = parseInt(this.contractor.max_hour_per_week);
       }
       else inputQuery.unset_contractor = true;
 
       if(this.volunteerCheck) {
-        inputQuery.volunteer = {
+        candidateQuery.volunteer = {
           location: this.volunteer.locations,
           roles: this.volunteer.roles,
           learning_objectives : this.volunteer.learning_objectives
         }
         if(this.volunteer.max_hours_per_week && this.volunteer.max_hours_per_week !== '-1') {
-          inputQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
+          candidateQuery.volunteer.max_hours_per_week = parseInt(this.volunteer.max_hours_per_week);
         }
       }
       else inputQuery.unset_volunteer = true;
 
-      if(this.current_salary) inputQuery.current_salary = parseInt(this.current_salary);
-      if(this.current_currency) inputQuery.current_currency = this.current_currency;
+      if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
+      if(this.current_currency !== 'Currency') candidateQuery.current_currency = this.current_currency;
+
+      job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
+      else inputQuery.unset_currently_employed = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.reasonsOfLeaving && this.candJobActivity.reasonsOfLeaving.length > 0) job_activity_statuses.leaving_current_employ_reasons = this.candJobActivity.reasonsOfLeaving;
+      else inputQuery.unset_leaving_current_employ_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.otherReasons) job_activity_statuses.other_reasons = this.candJobActivity.otherReasons;
+      else inputQuery.unset_other_reasons = true;
+
+      if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy === 'Yes' && this.candJobActivity.counterOffer) job_activity_statuses.counter_offer = this.candJobActivity.counterOffer;
+      else inputQuery.unset_counter_offer = true;
+
+      candidateQuery.job_activity_status = job_activity_statuses;
+      inputQuery.candidate = candidateQuery;
+
       inputQuery.wizardNum = 3;
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator , inputQuery, false)
@@ -616,6 +686,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
   }
+
 
   suggestedOptions(inputParam) {
     if(inputParam !== '') {

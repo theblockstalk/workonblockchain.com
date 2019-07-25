@@ -14,6 +14,9 @@ const routes: Routes = [
   { path: '', loadChildren: './company-module/company-module.module#CompanyModuleModule'},
   { path: '', loadChildren: './admin-module/admin-module.module#AdminModuleModule'},
   { path: '', loadChildren: './admin-editor-module/admin-editor-module.module#AdminEditorModuleModule'},
+  { path: '', loadChildren: './L3-URLs/talent.module#TalentModule'},
+  { path: '', loadChildren: './L3-URLs/pages/pages.module#PagesModule'},
+  { path: '', loadChildren: './L3-URLs/users/users.module#UsersModule'},
   { path: '**', component: PageNotFoundComponent}
 ];
 

@@ -1,13 +1,13 @@
 const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
-const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
+const candidateSearch = require('../../api-v2/users/candidates/search/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const objects = require('../objects');
 const logger = require('../logger');
-const filterReturnData = require('../../api/users/filterReturnData');
+const filterReturnData = require('../../api-v2/users/filterReturnData');
 
 module.exports = async function (companyId) {
     logger.debug('Running candidate auto-notification for company cron');

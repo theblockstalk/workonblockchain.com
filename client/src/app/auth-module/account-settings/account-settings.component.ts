@@ -51,7 +51,7 @@ export class AccountSettingsComponent implements OnInit {
 
     else if(this.currentUser && this.currentUser.type === 'company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -112,13 +112,11 @@ export class AccountSettingsComponent implements OnInit {
 
     if(this.currentUser)
     {
-
       this.authenticationService.account_settings(queryInput)
         .subscribe(
           data =>
           {
             this.inform = data;
-
           },
           error => {
             if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)

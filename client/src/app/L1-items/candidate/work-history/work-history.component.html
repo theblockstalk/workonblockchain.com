@@ -1,0 +1,156 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4><i class="fas fa-wrench mr-1"></i>Work History</h4>
+    <small id="emailHelp12" class="form-text text-muted">Your profile will be hidden from all companies you have listed in your work history.</small>
+  </div>
+</div>
+<div class = "work-form mt-3" [formGroup]="ExperienceForm">
+  <div formArrayName="ExpItems">
+    <!-- Check the correct way to iterate your form array -->
+    <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
+      <div class="row">
+        <div class="col-md-4">
+          <app-c-forme-text
+            placeholder="Google Inc."
+            [errorMsg]="companyErrMsg[i]"
+            (textInputValue) = "ExperienceForm.value.ExpItems[i].companyname = $event"
+            [value]="ExperienceForm.value.ExpItems[i].companyname"
+            label="Company"
+            (change)="companyValidate(i)"
+          ></app-c-forme-text>
+        </div>
+        <div class="col-md-4">
+          <app-c-forme-text
+            placeholder="Full stack developer"
+            [errorMsg]="positionErrMsg[i]"
+            (textInputValue)="ExperienceForm.value.ExpItems[i].positionname = $event"
+            [value]="ExperienceForm.value.ExpItems[i].positionname"
+            label="Position"
+            (change)="positionValidate(i)"
+          ></app-c-forme-text>
+        </div>
+        <div class="col-md-4">
+          <app-c-forme-text
+            placeholder="London"
+            [errorMsg]="locationErrMsg[i]"
+            (textInputValue)="ExperienceForm.value.ExpItems[i].locationname = $event"
+            [value]="ExperienceForm.value.ExpItems[i].locationname"
+            label="Location"
+            (change)="locationValidate(i)"
+          ></app-c-forme-text>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <app-c-forme-dropdown-single
+                    label="Start date"
+                    [value]="ExperienceForm.value.ExpItems[i].start_date"
+                    [options]="month"
+                    [errorMsg]="startMonthErrMsg[i]"
+                    (selectedValue)="ExperienceForm.value.ExpItems[i].start_date = $event"
+                    (change)="startMonthValidate(i)"
+                  ></app-c-forme-dropdown-single>
+                </div>
+                <div class="col-md-6">
+                  <app-c-forme-dropdown-single
+                    label=""
+                    [value]="ExperienceForm.value.ExpItems[i].startyear"
+                    [options]="years"
+                    [errorMsg]="startYearErrMsg[i]"
+                    (selectedValue)="ExperienceForm.value.ExpItems[i].startyear = $event"
+                    (change)="startYearValidate(i)"
+                  ></app-c-forme-dropdown-single>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork === false ">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <!--[errorMsg]="endMonthErrMsg[i]"-->
+
+                  <app-c-forme-dropdown-single
+                    label="End date"
+                    [value]="ExperienceForm.value.ExpItems[i].end_date"
+                    [options]="month"
+                    [errorMsg]="endMonthErrMsg[i]"
+                    (selectedValue)="ExperienceForm.value.ExpItems[i].end_date = $event"
+                    (change)="endMonthValidate(i)"
+                  ></app-c-forme-dropdown-single>
+                </div>
+                <div class="col-md-6">
+                  <!--[errorMsg]="endYearErrMsg[i]"-->
+
+                  <app-c-forme-dropdown-single
+                    label=""
+                    [value]="ExperienceForm.value.ExpItems[i].endyear"
+                    [options]="years"
+                    [errorMsg]="endYearErrMsg[i]"
+                    (selectedValue)="ExperienceForm.value.ExpItems[i].endyear = $event"
+                    (change)="endYearValidate(i)"
+                  ></app-c-forme-dropdown-single>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mt-2 p-4">
+          <div class="form-group">
+              <div class="checkbox">
+                <div class="row ">
+                  <div class="form-check" *ngFor="let current of current_work">
+                    <label class="form-check-label">
+                      <input type="checkbox" (change)="currentWork(i,$event)" class="form-check-input" [checked]="ExperienceForm.value.ExpItems[i].currentwork"  value="current.value" />
+                      {{current.name}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <app-c-forme-text-area
+            rows="5"
+            [value]="ExperienceForm.value.ExpItems[i].description"
+            placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..."
+            label="Job description (optional)"
+            (textareaInput)="ExperienceForm.value.ExpItems[i].description = $event"
+          ></app-c-forme-text-area>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class = "form-group text-right">
+              <app-c-button-normal
+                (click)="deleteExpRow(i)"
+                level="danger"
+                alignment="text-white"
+                buttonType="button"
+                label="Remove"
+              ></app-c-button-normal>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class = "form-group mt-2">
+          <app-c-button-normal
+            (click)="addNewExpRow()"
+            level="primary"
+            alignment="text-white"
+            buttonType="button"
+            label="Add Position"
+          ></app-c-button-normal>
+      </div>
+    </div>
+  </div>
+</div>

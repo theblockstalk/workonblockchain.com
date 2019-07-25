@@ -114,7 +114,7 @@ export const constants = {
 
   ],
   currencies: [
-    "£ GBP" ,"€ EUR" , "$ USD"
+    "Currency", "£ GBP" ,"€ EUR" , "$ USD"
   ],
   nationalities: [
     {name:'Afghan' ,value:'Afghan'},{name:'Albanian' ,value:'Albanian'},{name:'Algerian' ,value:'Algerian'},
@@ -372,6 +372,7 @@ export const constants = {
     {name: 'Guatemala +502', value:'+502'},{name: 'Guinea-Bissau +245', value:'+245'},
     {name: 'Guinea +224', value:'+224'},{name: 'Guyana +592', value:'+592'},
     {name: 'Haiti +509', value:'+509'},{name: 'Honduras +504', value:'504'},
+    {name: 'Hong Kong +852', value:'852'},
     {name: 'Hungary +36', value:'+36'},{name: 'Iceland +354', value:'+354'},
     {name: 'India +91', value:'+91'},{name: 'Indonesia +62', value:'+62'},
     {name: 'Iran +98', value:'+98'},{name: 'Iraq +964', value:'+964'},
@@ -445,5 +446,35 @@ export const constants = {
     {value:15, name:'15+ years'},{value:16, name:'16+ years'},
     {value:17, name:'17+ years'},{value:18, name:'18+ years'},
     {value:19, name:'19+ years'},{value:20, name:'20+ years'}
+  ],
+  work_types: [
+    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-secret fa-4x', checked: false},
+    {name: 'Contractor/Freelancer', value: 'contractor', iconClass: 'fas fa-address-card fa-4x', checked: false},
+    {name: 'Temporary volunteer', value: 'volunteer', iconClass: 'fas fa-user-check fa-4x', checked: false}
+  ],
+  job_activity_status: [
+    {name:'Not now', value:'Not now', checked:false},
+    {name:'Open to offers', value:'Open to offers (passive)', checked:false},
+    {name:'Actively searching', value:'Actively searching', checked:false},
+    {name:'Actively interviewing', value:'Actively interviewing', checked:false}
+  ],
+  radio_buttons: [
+    {name: 'Yes', value: 'Yes', checked: false},
+    {name: 'No', value: 'No', checked: false}
+  ],
+  reasons_of_leaving: [
+    {name: 'Higher salary', value: "Higher salary", checked: false},
+    {name: 'More responsibility', value: "More responsibility", checked: false},
+    {name: 'More challenging', value: "More challenging", checked: false},
+    {name: 'New technology stack', value: "New technology stack", checked: false},
+    {name: 'New role', value: "New role", checked: false},
+    {name: 'Other', value: "Other", checked: false}
+  ],
+  add_note_options:[
+    {name: 'Add note', value: 'add note', checked: false},
+  ],
+  add_email_options:[
+    {name: 'Send email', value: 'send email', checked: false},
   ]
+
 };

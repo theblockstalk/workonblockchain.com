@@ -3,10 +3,10 @@ const chaiHttp = require('chai-http');
 const crypto = require('crypto');
 const server = require('../../../../../server');
 const mongo = require('../../../../helpers/mongo');
-const users = require('../../../../../model/users');
+const users = require('../../../../../model/mongoose/users');
 const docGenerator = require('../../../../helpers/docGenerator-v2');
 const candidateHelper = require('../candidateHelpers');
-const userHelper = require('../../../../api/users/usersHelpers');
+const userHelper = require('../../../otherHelpers/usersHelpers');
 const companyHelper = require('../../companies/companyHelpers');
 
 const assert = chai.assert;
@@ -28,7 +28,7 @@ describe('admin changes status of a candidate', function () {
         //creating a company
         const company = docGenerator.company();
         await companyHelper.signupCompany(company);
-        const companyDoc = await users.findOne({email: company.email}).lean();
+        const companyDoc = await users.findOne({email: company.email});
         await userHelper.makeAdmin(companyDoc.email);
 
         //creating a candidate
@@ -36,7 +36,7 @@ describe('admin changes status of a candidate', function () {
         const profileData = docGenerator.candidateProfile();
         await candidateHelper.candidateProfile(candidate, profileData);
         await userHelper.makeAdmin(candidate.email);
-        const candidateDoc = await users.findOne({email: candidate.email}).lean();
+        const candidateDoc = await users.findOne({email: candidate.email});
 
         //approve candidate
         const inputQuery = docGenerator.changeCandidateStatus();

@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
             if(user['type'] === 'candidate')
             {
-              window.location.href = '/candidate_profile';
+              window.location.href = '/users/talent';
             }
 
           },
@@ -144,7 +144,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     localStorage.setItem('linkedinLogin', 'true');
     let linkedin_id = environment.linkedin_id;
     let linkedin_redirect_url = environment.linkedin_redirect_url;
-    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
+    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_liteprofile%20r_emailaddress';
     window.location.href = this.linkedin_url;
   }
 

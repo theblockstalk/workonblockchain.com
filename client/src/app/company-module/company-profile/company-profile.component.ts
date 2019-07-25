@@ -130,7 +130,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     if(this.currentUser && this.currentUser.type === 'company')
     {
 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -221,10 +221,10 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       this.authenticationService.get_page_content('Company popup message')
         .subscribe(
           data => {
-            if(data && data[0])
+            if(data)
             {
-              this.companyMsgTitle = data[0]['page_title'];
-              this.companyMsgBody = data[0]['page_content'];
+              this.companyMsgTitle = data['page_title'];
+              this.companyMsgBody = data['page_content'];
             }
           });
     }

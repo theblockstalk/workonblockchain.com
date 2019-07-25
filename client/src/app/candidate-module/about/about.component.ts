@@ -163,12 +163,13 @@ export class AboutComponent implements OnInit,AfterViewInit
                 else this.info.contact_number = contact_number[0];
               }
 
-              if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
+              /*if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
               if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
               if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
               if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
               if(data['candidate'].stackoverflow_url) this.info.stackoverflow_url = data['candidate'].stackoverflow_url;
               if(data['candidate'].personal_website_url) this.info.personal_website_url = data['candidate'].personal_website_url;
+              */
               if(data['nationality'])
               {
                 this.info.nationality = data['nationality'];
@@ -180,18 +181,19 @@ export class AboutComponent implements OnInit,AfterViewInit
               if(data['candidate'] && data['candidate'].base_city){
                 this.info.city = data['candidate'].base_city;
               }
-
               if(data['image'] != null ) {
                 this.imagePreviewLink = data['image'];
               }
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 300);
             }
 
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.active_class='fa fa-check-circle text-success';
               this.job_disable = '';
-              this.link= "/job";
+              this.link= "/work";
             }
 
             if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
@@ -325,39 +327,42 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
     if (errorCount === 0 && aboutForm.valid === true) {
       let inputQuery:any ={};
+      let candidateQuery:any ={};
 
       if(this.info.first_name) inputQuery.first_name = this.info.first_name;
       if(this.info.last_name) inputQuery.last_name = this.info.last_name;
       if(this.info.contact_number && this.info.country_code) inputQuery.contact_number = this.info.country_code +' '+ this.info.contact_number;
 
-      if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+      /*if(this.info.github_account) candidateQuery.github_account = this.info.github_account;
       else inputQuery.unset_github_account = true;
 
-      if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+      if(this.info.exchange_account) candidateQuery.stackexchange_account = this.info.exchange_account;
       else inputQuery.unset_exchange_account = true;
 
-      if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+      if(this.info.linkedin_account) candidateQuery.linkedin_account = this.info.linkedin_account;
       else inputQuery.unset_linkedin_account = true;
 
-      if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+      if(this.info.medium_account) candidateQuery.medium_account = this.info.medium_account;
       else inputQuery.unset_medium_account = true;
 
-      if(this.info.stackoverflow_url) inputQuery.stackoverflow_url = this.info.stackoverflow_url;
+      if(this.info.stackoverflow_url) candidateQuery.stackoverflow_url = this.info.stackoverflow_url;
       else inputQuery.unset_stackoverflow_url= true;
 
-      if(this.info.personal_website_url) inputQuery.personal_website_url = this.info.personal_website_url;
+      if(this.info.personal_website_url) candidateQuery.personal_website_url = this.info.personal_website_url;
       else inputQuery.unset_personal_website_url = true;
+      */
 
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
-      if(this.info.country) inputQuery.base_country = this.info.country;
-      if(this.info.city) inputQuery.base_city = this.info.city;
+      if(this.info.country) candidateQuery.base_country = this.info.country;
+      if(this.info.city) candidateQuery.base_city = this.info.city;
+      inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 2;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
         .subscribe(
           data => {
             if(data)
             {
-              this.router.navigate(['/job']);
+              this.router.navigate(['/work']);
             }
 
           },

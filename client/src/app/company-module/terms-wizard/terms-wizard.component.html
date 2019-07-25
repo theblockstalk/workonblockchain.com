@@ -20,7 +20,7 @@
           <li class="nav-item">
             <a routerLink="{{preference}}" class="nav-link btn {{pref_disable}}">
               <i class="{{pref_active_class}}"></i>
-              Work requirements
+              Talent requirements
             </a>
           </li>
 
@@ -75,26 +75,26 @@
           <p>Please read the <a routerLink="/terms-for-company" target="_blank">Terms of business </a> for Companies and <a routerLink="/privacy-notice" target="_blank">Privacy notice</a> for full details.</p>
         </div>
         <div class="row">
-        <div class = "col-md-8 mt-2">
-          <label>
-            <input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-            I have read and accepted the <a  routerLink="/terms-for-company" target="_blank" > Terms of business </a> and conditions and <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
-            <span>
+          <div class = "col-md-8 mt-2">
+            <label>
+              <input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+              I have read and accepted the <a  routerLink="/terms-for-company" target="_blank" > Terms of business </a> and conditions and <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
+              <span>
                  <div></div>
                </span>
-          </label>
-          <label>
-            <input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
-            I consent to receive marketing and promotional emails related to the <a href="https://workonblockchain.com" target="_blank" >workonblockchain.com</a> platform.
-            <span>
+            </label>
+            <label>
+              <input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
+              I consent to receive marketing and promotional emails related to the <a href="https://workonblockchain.com" target="_blank" >workonblockchain.com</a> platform.
+              <span>
                  <div></div>
                </span>
-          </label>
-          <div class = "invalid-feedback d-inline" *ngIf ="termscondition != true">
-            {{terms_log}}
+            </label>
+            <div class = "invalid-feedback d-inline" *ngIf ="termscondition != true">
+              {{terms_log}}
+            </div>
+            <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
           </div>
-          <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
-        </div>
         </div>
         <div class="row">
           <div class="col-md-8"></div>

@@ -107,7 +107,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     let google_redirect_url = environment.google_redirect_url;
 
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+google_redirect_url;
-    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_basicprofile%20r_emailaddress';
+    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_liteprofile%20r_emailaddress';
     if (isPlatformBrowser(this.platformId)) {
       $(function () {
         var hash = window.location.hash;
@@ -144,7 +144,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   {
     this.button_status="submit";
     this.credentials.type="candidate";
-    this.credentials.social_type='';
 
     if(!this.credentials.email)
     {
@@ -237,7 +236,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.company_log = '';
     this.companySignup = "submit";
     this.credentials.type="company";
-    this.credentials.social_type='';
     this.password_log = '';
     this.contact_number_log = '';
     let errorCount = 0;
@@ -272,16 +270,16 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.companyWebsiteLog = 'Please enter company website url';
     }
-    if(!this.credentials.phone_number)
+    if(!this.credentials.company_phone)
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
-    if (this.credentials.phone_number) {
-      if((this.credentials.phone_number.length < 4 || this.credentials.phone_number.length > 15)){
+    if (this.credentials.company_phone) {
+      if((this.credentials.company_phone.length < 4 || this.credentials.company_phone.length > 15)){
         this.contact_number_log = "Please enter minimum 4 and maximum 15 digits";
         errorCount = 1;
       }
-      if(!this.checkNumber(this.credentials.phone_number)) {
+      if(!this.checkNumber(this.credentials.company_phone)) {
         errorCount = 1;
       }
     }
@@ -290,15 +288,15 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.country_code_log = 'Please select country code';
     }
-    if(!this.credentials.country)
+    if(!this.credentials.company_country)
     {
       this.companyCountryLog = 'Please select country name';
     }
-    if(!this.credentials.postal_code)
+    if(!this.credentials.company_postcode)
     {
       this.companyPostalCodeLog = 'Please enter postal code';
     }
-    if(!this.credentials.city)
+    if(!this.credentials.company_city)
     {
       this.companyCityLog = 'Please enter city name';
     }
@@ -307,10 +305,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       this.companyPasswordLog = 'Please enter password'
     }
     if(errorCount === 0 && signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
-      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country_code && this.credentials.country && this.credentials.postal_code &&
-      this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
+      && this.credentials.company_website && this.credentials.company_phone && this.credentials.country_code && this.credentials.company_country && this.credentials.company_postcode &&
+      this.credentials.company_city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
-      this.credentials.phone_number = this.credentials.country_code +' '+this.credentials.phone_number;
+      this.credentials.company_phone = this.credentials.country_code +' '+this.credentials.company_phone;
       this.authenticationService.create_employer(this.credentials)
         .subscribe(
           data =>

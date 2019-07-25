@@ -3,11 +3,11 @@ const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const messagesHelpers = require('../helpers');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
-const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../otherHelpers/companyHelpers');
+const candidateHelper = require('../otherHelpers/candidateHelpers');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const users = require('../../../model/mongoose/users');
-
+const candidateHelperV2 =  require('../../api-v2/users/candidates/candidateHelpers');
 chai.use(chaiHttp);
 
 describe('GET /conversations', function () {
@@ -23,12 +23,10 @@ describe('GET /conversations', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
             const companyUserDoc = await users.findOneByEmail(company.email);
 
-            const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate,profileData,job,resume,experience);
+            const candidate = docGeneratorV2.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
+
+            await candidateHelperV2.candidateProfile(candidate, profileData);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const approachOffer = docGeneratorV2.messages.approach(candidateuserDoc._id);

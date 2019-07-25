@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input, Inject, PLATFORM_ID } from '@angular/core';
-import {constants} from '../../../constants/constants';
 declare var $:any;
+import {constants} from "../../../constants/constants";
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {isPlatformBrowser} from "@angular/common";
 
@@ -21,6 +21,10 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
   tweet;
+  candidate_image;
+  progress_bar_value = 25;
+  progress_bar_class = 'progress-bar bg-warning';
+
   country_codes = constants.country_codes;
   imageName;
 
@@ -100,10 +104,14 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
    }
 
   }
+  getOutput(data) {
+  }
 
-  displayFn(value) {
-    //this.countriesModel = value;
-    //return this.selectedValue(value);
+  selectedLocations;
+  getSelectedLocations(data) {}
+
+  itemSelected(data) {
+    this.selectedLocations = data;
   }
 
   fileChangeListener($event) {

@@ -241,7 +241,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -432,7 +432,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             }
             else this.preferncesForm.value.prefItems[i].current_salary = parseInt(this.preferncesForm.value.prefItems[i].current_salary);
           }
-          if(this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency) {
+          if(this.preferncesForm.value.prefItems[i].current_salary && (!this.preferncesForm.value.prefItems[i].current_currency || this.preferncesForm.value.prefItems[i].current_currency === 'Currency') ) {
             this.current_currency_log = "Please choose currency ";
             count = 1;
           }
@@ -451,7 +451,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             }
             else this.preferncesForm.value.prefItems[i].expected_hourly_rate =  parseInt(this.preferncesForm.value.prefItems[i].expected_hourly_rate);
           }
-          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency) {
+          if(this.preferncesForm.value.prefItems[i].expected_hourly_rate && (!this.preferncesForm.value.prefItems[i].currency || this.preferncesForm.value.prefItems[i].currency === 'Currency')) {
             this.expected_hourly_rate_log = "Please choose currency ";
             count = 1;
           }
@@ -563,7 +563,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         }
       }
 
-      profileForm.value.phone_number = this.country_code +' '+ this.company_phone;
+      profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
       this.authenticationService.edit_company_profile(this.currentUser._id, profileForm.value, false)

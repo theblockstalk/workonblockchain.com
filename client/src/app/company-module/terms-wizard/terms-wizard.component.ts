@@ -24,6 +24,7 @@ export class TermsWizardComponent implements OnInit {
   preference;
   pref_active_class;
   pref_disable;
+  privacy_id;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -51,7 +52,18 @@ export class TermsWizardComponent implements OnInit {
           }
         }
       );
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+
+      this.authenticationService.get_page_content('Privacy Notice')
+      .subscribe(
+        data => {
+          if(data)
+          {
+            this.privacy_id = data['_id'];
+          }
+        }
+      );
+
+      this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>
           {
@@ -118,8 +130,8 @@ export class TermsWizardComponent implements OnInit {
     else
     {
       let queryBody: any = {};
-      queryBody.terms_id = termsForm.value.termsID;
       queryBody.marketing_emails = termsForm.value.marketing;
+      queryBody.terms_id = this.terms_id;
 
       this.authenticationService.account_settings(queryBody)
         .subscribe(
@@ -128,8 +140,6 @@ export class TermsWizardComponent implements OnInit {
             {
               this.router.navigate(['/about_comp']);
             }
-
-
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
@@ -141,8 +151,8 @@ export class TermsWizardComponent implements OnInit {
             else {
               this.log = "Something went wrong";
             }
-
-          });
+        }
+      );
     }
   }
 

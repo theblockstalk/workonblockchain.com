@@ -1,0 +1,9 @@
+<app-c-forme-checkbox
+  [options]="options"
+  label="Roles"
+  [errorMsg]="errMsg"
+  (selectedItem)="roles = $event"
+  column="col-md-3 mb-3"
+  [value]="roles"
+  (change)="selfValidate()"
+></app-c-forme-checkbox>

@@ -1,0 +1,4 @@
+<div class="form-group">
+  <label *ngIf="label">{{label}}</label>
+</div>
+<div [ngClass]="class" [innerHTML] = " value | safeHtml " *ngIf="value"></div>

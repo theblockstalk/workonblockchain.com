@@ -35,7 +35,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Company website</label>
-                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
+                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,7}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
                     <div class="invalid-feedback d-inline" *ngIf="!company_website">
                       <span class = "error">{{company_website_log}}</span>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Country name</label>
-                    <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
+                    <select title="Please choose country" class="selectpicker form-control"  required name="company_country" [(ngModel)]="company_country">
                       <option class='option' *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
                     </select>
                     <div class="invalid-feedback d-inline" *ngIf="!company_country">
@@ -69,7 +69,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>City name</label>
-                    <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="company_city">
+                    <input type="text" class="form-control" placeholder="London" required name="company_city" [(ngModel)]="company_city">
                     <div class="invalid-feedback d-inline" *ngIf="!company_city">
                       {{company_city_log}}
                     </div>
@@ -85,7 +85,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Postal code</label>
-                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="postal_code" [(ngModel)]="company_postcode">
+                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="company_postcode" [(ngModel)]="company_postcode">
                     <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
                       {{company_postcode_log}}
                     </div>
@@ -103,7 +103,7 @@
                         <option *ngFor='let country_code of country_codes' placeholder="Country code" [value]="country_code.value" [attr.selected]="country_code.value === country_code ? true : null">{{country_code.name}}</option>
                       </select>
                     </div>
-                    <input name="phone_number" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
+                    <input name="company_phone" [(ngModel)]="company_phone" type="tel" class="form-control" placeholder="1234567890" required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                       {{company_phone_log}}
                     </div>
@@ -304,7 +304,7 @@
             <div class="row my-3" >
               <div class="col-md-12">
                 <div class = "form-group w-100 mb-0">
-                  <h4><i class="fas fa-envelope "></i> Get an email for new matches to your work requirements</h4>
+                  <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
                   <div class="form-check form-check-inline mt-2">
                     <div *ngFor="let receive of email_notificaiton; let i_ind =index">
                       <input type="radio" id="radio - {{receive}}"  class="d-none" name="when_receive_email_notitfications" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
@@ -356,10 +356,10 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                            {{types.name}}
                             <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
+                            {{types.name}}
                           </label>
                         </div>
                       </div>
@@ -392,7 +392,7 @@
                               <span>{{ loc.name }}</span>
                             </mat-option>
                           </mat-autocomplete>
-                          <mat-form-field floatLabel="always">
+                          <mat-form-field floatLabel="always" class="w-100">
                             <mat-label></mat-label>
                             <input matInput placeholder="London" [matAutocomplete]="auto" formControlName = "location" (input)="suggestedOptions(i)" (ngModelChange)="selectedValueFunction($event, i)">
                           </mat-form-field>
@@ -438,7 +438,7 @@
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
                         <label>Residence/base country:</label>
-                        <select multiple class="form-control selectpicker" title="United Kingdom" formControlName="residence_country">
+                        <select multiple class="form-control selectpicker" title="(select multiple)" formControlName="residence_country">
                           <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
                         </select>
                         <div class = "invalid-feedback d-inline" *ngIf="preferncesForm.value.prefItems[i].residence_country && preferncesForm.value.prefItems[i].residence_country.length > 50" >
@@ -447,21 +447,29 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length > 0">
+                      <div class = "form-group">
+                        <label>Years experience:</label>
+                        <select title="1" class="selectpicker form-control position-relative" formControlName = "years_exp_min" >
+                          <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.prefItems[i].years_exp_min?true:null">{{years_exp_min.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label>Annual salary:</label>
                         <input type="text" formControlName="current_salary" [value] = "preferncesForm.value.prefItems[i].current_salary"  class="form-control" placeholder="1000">
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type && preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "current_currency" >
-                          <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].current_currency?true:null">{{base_currency}}</option>
                         </select>
-                        <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary)|| (preferncesForm.value.prefItems[i].current_currency && !preferncesForm.value.prefItems[i].current_salary)" >
+                        <div class = "invalid-feedback d-inline float-left" *ngIf="((!preferncesForm.value.prefItems[i].current_currency  || preferncesForm.value.prefItems[i].current_currency === 'Currency') && preferncesForm.value.prefItems[i].current_salary)|| (preferncesForm.value.prefItems[i].current_currency && !preferncesForm.value.prefItems[i].current_salary)" >
                           {{current_currency_log}}
                         </div>
                         <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary && !checkNumber(preferncesForm.value.prefItems[i].current_salary)  " >
@@ -484,7 +492,7 @@
                           <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].currency?true:null">{{base_currency}}</option>
                         </select>
-                        <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].expected_hourly_rate && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
+                        <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].expected_hourly_rate && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && (!preferncesForm.value.prefItems[i].currency || preferncesForm.value.prefItems[i].currency === 'Currency'))  " >
                           {{expected_hourly_rate_log}}
                         </div>
                       </div>

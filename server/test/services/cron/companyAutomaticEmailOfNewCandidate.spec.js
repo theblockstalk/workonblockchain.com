@@ -5,12 +5,12 @@ const companies = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api/users/company/companyHelpers');
-const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyHelper = require('../../api-v2/otherHelpers/companyHelpers');
+const candidateHelper = require('../../api-v2/otherHelpers/candidateHelpers');
 const companyEmail = require('../../../controller/services/cron/companyAutomaticEmailOfNewCandidate');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
-const userHelper = require('../../api/users/usersHelpers');
+const userHelper = require('../../api-v2/otherHelpers/usersHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -38,20 +38,19 @@ describe('cron', function () {
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             updatedData.saved_searches = [{
                 location: [
-                    profileData.employee.location[0]
+                    {remote: true}
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData.employee.roles[0]
+                    profileData.candidate.employee.roles[0]
                 ],
-                current_currency: profileData.employee.currency,
-                current_salary: profileData.employee.expected_annual_salary,
+                current_currency: profileData.candidate.employee.currency,
+                current_salary: profileData.candidate.employee.expected_annual_salary,
                 skills: [
-                    profileData.programming_languages[0].language
-                ],
-                availability_day: profileData.employee.employment_availability,
+                    profileData.candidate.programming_languages[0].language
+                ]
             }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
@@ -86,20 +85,19 @@ describe('cron', function () {
             console.log(updatedData);
             updatedData.saved_searches = [{
                 location: [
-                    profileData.employee.location[0]
+                    {remote: true}
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData.employee.roles[0]
+                    profileData.candidate.employee.roles[0]
                 ],
-                current_currency: profileData.employee.currency,
-                current_salary: profileData.employee.expected_annual_salary,
+                current_currency: profileData.candidate.employee.currency,
+                current_salary: profileData.candidate.employee.expected_annual_salary,
                 skills: [
-                    profileData.programming_languages[0].language
-                ],
-                availability_day: profileData.employee.employment_availability,
+                    profileData.candidate.programming_languages[0].language
+                ]
             }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
@@ -145,20 +143,19 @@ describe('cron', function () {
 
             updatedData.saved_searches = [{
                 location: [
-                    profileData[0].employee.location[0]
+                    {remote: true}
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData[0].employee.roles[0]
+                    profileData[0].candidate.employee.roles[0]
                 ],
-                current_currency: profileData[0].employee.currecny,
-                current_salary: profileData[0].employee.expected_annual_salary,
+                current_currency: profileData[0].candidate.employee.currecny,
+                current_salary: profileData[0].candidate.employee.expected_annual_salary,
                 skills: [
-                    profileData[0].programming_languages[0].language
-                ],
-                availability_day: profileData[0].employee.employment_availability,
+                    profileData[0].candidate.programming_languages[0].language
+                ]
             }];
 
             const jwtToken = companyDoc.jwt_token;
@@ -186,20 +183,19 @@ describe('cron', function () {
 
             let newSavedSearch = [{
                 location: [
-                    profileData[1].employee.location[0]
+                    {remote: true}
                 ],
                 job_type: [
                     "Part time"
                 ],
                 position: [
-                    profileData[1].employee.roles[0]
+                    profileData[1].candidate.employee.roles[0]
                 ],
-                current_currency: profileData[1].employee.currency,
-                current_salary: profileData[1].employee.expected_annual_salary,
+                current_currency: profileData[1].candidate.employee.currency,
+                current_salary: profileData[1].candidate.employee.expected_annual_salary,
                 skills: [
-                    profileData[1].programming_languages[0].language
-                ],
-                availability_day: profileData[1].employee.employment_availability,
+                    profileData[1].candidate.programming_languages[0].language
+                ]
             }];
 
             // signup and approve fourth candidate that is not matched the current company saved search

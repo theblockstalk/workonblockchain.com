@@ -66,7 +66,7 @@ export class LinkedinImportComponent implements OnInit {
             {
               this.about_active_class = 'fa fa-check-circle text-success';
               this.job_disable = '';
-              this.link= "/job";
+              this.link= "/work";
             }
 
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].current_salary )
@@ -347,6 +347,7 @@ export class LinkedinImportComponent implements OnInit {
 
           var obj = JSON.parse(linkedinData);
           let info;
+          let candidateData: any = {};
           let name;
           if (!obj.basics && !obj.work && !obj.education) {
             this.error_log = "There is an error message. Your file formate is not supported.";
@@ -355,7 +356,12 @@ export class LinkedinImportComponent implements OnInit {
           else {
             if (obj.basics.name || obj.basics.phone || obj.basics.summary) {
               name = obj.basics.name.split(' ');
-              info = {first_name: name[0], last_name: name[1] , description : obj.basics.summary};
+              candidateData.description = obj.basics.summary;
+              info = {
+                first_name: name[0],
+                last_name: name[1] ,
+                candidate : candidateData
+              };
             }
 
             if(obj.work){
@@ -372,6 +378,7 @@ export class LinkedinImportComponent implements OnInit {
                     end_date_format = new Date();
                     obj.work[key].currentwork = true;
                   }
+
                   let experiencejson = {
                     companyname: obj.work[key].company,
                     positionname: obj.work[key].position,
@@ -394,9 +401,12 @@ export class LinkedinImportComponent implements OnInit {
 
                 for (var key in obj.education) {
                   let eduyear = parseInt(obj.education[key].endDate);
+
                   let educationjson = {
-                    uniname: obj.education[key].institution, degreename: obj.education[key].studyType
-                    , fieldname: obj.education[key].fieldname, eduyear: eduyear
+                    uniname: obj.education[key].institution,
+                    degreename: obj.education[key].studyType,
+                    fieldname: obj.education[key].fieldname,
+                    eduyear: eduyear
                   };
                   education_json_array.push(educationjson);
 
@@ -406,8 +416,9 @@ export class LinkedinImportComponent implements OnInit {
 
 
             if (obj.work || obj.education || obj.basics ) {
-              info.education_history = education_json_array;
-              info.work_history = experiencearray;
+              candidateData.education_history = education_json_array;
+              candidateData.work_history = experiencearray;
+              info.candidate = candidateData;
               info.wizardNum = 1;
               backendService.edit_candidate_profile(this.currentUser._id, info, false )
                 .subscribe(

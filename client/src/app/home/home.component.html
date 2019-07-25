@@ -32,6 +32,56 @@
 
 <!--/main banner home -->
 
+<!--companies section-->
+<div class = "container py-3">
+  <h2 class = "text-center">Some of the companies hiring with us</h2>
+  <div class = "row text-center py-5">
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://www.nexusmutual.com.au/" target="_blank">
+        <img src = "/assets/images/companies_logos/nexus-mutual.png" class = "w-75" alt = "nexus-mutual-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://filmchain.co/" target="_blank">
+        <img src = "/assets/images/companies_logos/film_chain.png" class = "w-75" alt = "filmchain-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://ixtechnology.com/" target="_blank">
+        <img src = "/assets/images/companies_logos/iXGroup.png" class = "w-75" alt = "ixtechnology-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href = "https://www.bitfinex.com/" target="_blank">
+        <img src = "/assets/images/companies_logos/bitf_logo.png" class = "w-75" alt = "bitfinex-logo"/>
+      </a>
+    </div>
+  </div>
+  <div class = "row text-center py-3">
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://walletconnect.org/" target="_blank">
+        <img src = "/assets/images/companies_logos/wallet-connect.png" class = "w-75" alt = "wallet-connect-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://www.tokenanalyst.io/" target="_blank">
+        <img src = "/assets/images/companies_logos/tokenanalyst.png" class = "w-75" alt = "tokenanalyst-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "http://nethermind.io/" target="_blank">
+        <img src = "/assets/images/companies_logos/nethermind.png" class = "w-75" alt = "nethermind-logo"/>
+      </a>
+    </div>
+    <div class="col-md-3 mb-5 mb-md-0">
+      <a href = "https://www.alt36.com/" target="_blank">
+        <img src = "/assets/images/companies_logos/alt-thirty-six.png" class = "w-75" alt = "alt36-logo"/>
+      </a>
+    </div>
+  </div>
+</div>
+<!--/companies section-->
+
 <!--section one-->
 
 <div class = "container py-5 mb-5">
@@ -368,15 +418,11 @@
             </label>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" [disabled]="!subForm.valid">Subscribe</button>
+            <!--<L0-buttons-normal buttonClass="btn-primary"  buttonType="submit" label="Subscribe" ></L0-buttons-normal>-->
           </div>
           <div class="form-group">
-            <div class="alert alert-success" *ngIf="log_success">
-              {{log_success}}
-            </div>
-            <div class="alert alert-danger" *ngIf="log_error">
-              {{log_error}}
-            </div>
+            <!--<L0-alerts alertClass="alert-success" *ngIf="log_success" [alertMsg]="log_success" ></L0-alerts>
+            <L0-alerts alertClass="alert-danger" *ngIf="log_error" [alertMsg]="log_error" ></L0-alerts>-->
           </div>
         </form>
       </div>
