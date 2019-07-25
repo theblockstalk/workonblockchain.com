@@ -460,6 +460,8 @@ export class CandidateViewComponent implements OnInit {
       }
 
       if(this.userDoc['candidate'].work_history) {
+        this.work_history = this.userDoc['candidate'].work_history;
+        this.work_history.sort(this.date_sort_desc);
         for(let workHistory of this.userDoc['candidate'].work_history){
           this.work_history_progress = 0;
           if(workHistory.description.length > 100){
@@ -503,9 +505,6 @@ export class CandidateViewComponent implements OnInit {
       }
       this.languages = newLanguages;
     }
-
-    this.work_history = this.userDoc['candidate'].work_history;
-    this.work_history.sort(this.date_sort_desc);
 
     if(this.userDoc['candidate'].education_history) {
       this.education_history = this.userDoc['candidate'].education_history;
