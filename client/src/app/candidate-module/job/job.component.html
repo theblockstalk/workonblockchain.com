@@ -57,36 +57,6 @@
           </app-i-forme-cand-job-activity>
           <!--cand-job-activity ends-->
 
-          <div class = "row mt-4">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Current annual salary (optional):</label>
-                <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="" #salary_field name="current_salary" [(ngModel)]="current_salary">
-                <small id="emailHelp" class="form-text text-muted">
-                  This information is never shown to companies. It is used by us to help us help you set your expected salary.
-                </small>
-                <div class = "invalid-feedback d-inline" expected_validation *ngIf="(!current_salary && current_currency) ">
-                  {{current_sal_log}}
-                </div>
-                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="base_validation.errors && current_salary">
-                  Current annual salary should be a number.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="invisible">Current annual salary currency</label>
-
-                <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
-                  <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
-                </select>
-                <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) || (current_salary && current_currency === 'Currency')  ">
-                  {{current_currency_log}}
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
