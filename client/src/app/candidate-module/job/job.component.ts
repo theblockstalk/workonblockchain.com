@@ -612,7 +612,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
       }
       else inputQuery.unset_volunteer = true;
-
+      
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;
