@@ -4,6 +4,7 @@
   <textarea
     class="w-100"
     [rows]="rows"
+    [maxlength]="maxLength"
     [placeholder]="placeholder"
     [(ngModel)]="value"
     (ngModelChange)="textareaInput.emit(value)"

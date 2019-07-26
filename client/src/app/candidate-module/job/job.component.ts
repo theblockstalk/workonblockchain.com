@@ -39,8 +39,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   term_link;
   resume_disable;
   exp_disable;
-  current_currency;
-  current_salary;
   error_msg;
   expected_validation;
   selectedValueArray=[];
@@ -51,7 +49,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   salary_log;
   avail_log;
   current_sal_log;
-  current_currency_log;
   count;
   emptyInput;
   validatedLocation=[];
@@ -163,8 +160,7 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.resume_disable ='';
               this.resume_class="/resume";
             }
-            //if(data['candidate'].current_salary) this.current_salary = data['candidate'].current_salary;
-            //if(data['candidate'].current_currency) this.current_currency = data['candidate'].current_currency;
+
             if(data['candidate'].employee) {
               this.employeeCheck = true;
               this.selected_work_type.push('employee');
@@ -561,25 +557,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.remote_location_log = "Please select at least one location which you can work in without needing a visa";
     }
 
-    /*if(this.current_salary && !this.current_currency ) {
-      this.current_currency_log = "Please choose currency";
-      this.count++;
-    }
-
-    if(this.current_salary && this.current_currency === "Currency" ) {
-      this.current_currency_log = "Please choose currency";
-      this.count++;
-    }
-
-    if(!this.current_salary && this.current_currency !== "Currency") {
-      this.current_sal_log = "Please enter current base salary";
-      this.count++;
-    }
-
-    if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "Currency")){
-      this.count = 0;
-    }*/
-
     if(!this.candJobActivity.selfValidate()) this.count++;
 
     if(this.candJobActivity.jobActivity === 'Not now'){}
@@ -635,10 +612,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
       }
       else inputQuery.unset_volunteer = true;
-
-      if(this.current_salary) candidateQuery.current_salary = parseInt(this.current_salary);
-      if(this.current_currency !== 'Currency') candidateQuery.current_currency = this.current_currency;
-
+      
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;

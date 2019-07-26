@@ -111,7 +111,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           for(let i=0;i<this.info.length;i++){
             if(this.info[i].candidate.latest_status.status !== 'approved') {
               let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 0;
-              if (this.info[i].candidate.latest_status.status === 'wizard') {
+              if (this.info[i].candidate.latest_status.status === 'wizard' || this.info[i].candidate.latest_status.status === 'wizard completed') {
                 this.info[i].candidate_badge = '4 days till review';
                 this.info[i].candidate_badge_color = 'success';
                 wizard = 1;
