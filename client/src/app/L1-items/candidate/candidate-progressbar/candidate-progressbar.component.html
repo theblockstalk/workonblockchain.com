@@ -1,16 +1,16 @@
 <div class="row mt-5">
   <div class="col-md-12">
     <div class="progress">
-      <div *ngIf="value === 15 || value === 25" class="{{class}}" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="100" aria-valuemax="100">
+      <div *ngIf="value === 15 || value === 25" class="progress-font {{class}}" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="100" aria-valuemax="100">
         {{value}}%
       </div>
-      <div *ngIf="value === 50" class="{{class}}" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100">
+      <div *ngIf="value === 50" class="progress-font {{class}}" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="100" aria-valuemax="100">
         {{value}}%
       </div>
-      <div *ngIf="value === 75" class="{{class}}" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100">
+      <div *ngIf="value === 75" class="progress-font {{class}}" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="100" aria-valuemax="100">
         {{value}}%
       </div>
-      <div *ngIf="value === 100" class="{{class}}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">
+      <div *ngIf="value === 100" class="progress-font {{class}}" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">
         {{value}}%
       </div>
     </div>
@@ -24,24 +24,26 @@
     </a>
     <u *ngIf="viewBy === 'admin'">Basic information</u>
   </div>
-  <div class="col-md-2 mr-4">
+  <div class="col-md-2 mr-4 mt-3">
+    <p></p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
       <u>Linked accounts (e.g Gitub etc)</u>
     </a>
     <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
   </div>
   <div class="col-md-2 mr-4">
-    <p>2 days till review</p>
+    <p class="mb-2">2 days till review</p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
-      <u>Work History</u>
+      <u>Work History description</u>
     </a>
-    <u *ngIf="viewBy === 'admin'">Work History</u>
+    <u *ngIf="viewBy === 'admin'">Work History description</u>
   </div>
-  <div class="col-md-2 mr-4">
+  <div class="col-md-2 mr-4 mt-3">
+    <p></p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
-      <u>Blockchain experience descriptions</u>
+      <u>Blockchain experience</u>
     </a>
-    <u *ngIf="viewBy === 'admin'">Blockchain experience descriptions</u>
+    <u *ngIf="viewBy === 'admin'">Blockchain experience</u>
   </div>
   <div class="col-md-2 mr-4">
     <p>Priority</p>

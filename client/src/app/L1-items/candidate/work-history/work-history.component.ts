@@ -28,6 +28,7 @@ export class WorkHistoryComponent implements OnInit {
   endMonthErrMsg = [];
   endYearErrMsg = [];
   experiencearray = [];
+  jobDescErrMsg = [];
   constructor(private _fb: FormBuilder, private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -222,6 +223,8 @@ export class WorkHistoryComponent implements OnInit {
           if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
           }
         }
+        const jobDescValid = this.jobDesValidate(key);
+        if(!jobDescValid) errorCount++;
 
         if(errorCount === 0 ) {
           let today = Date.now();
@@ -286,6 +289,15 @@ export class WorkHistoryComponent implements OnInit {
     else {
       return false;
     }
+  }
+
+  jobDesValidate(index){
+    if(this.ExperienceForm.value.ExpItems[index].description && this.ExperienceForm.value.ExpItems[index].description.length < 100) {
+      this.jobDescErrMsg[index] = 'Please enter minimum 100 characters description';
+      return false;
+    }
+    delete this.jobDescErrMsg[index];
+    return true;
   }
 
 }

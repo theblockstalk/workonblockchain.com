@@ -115,6 +115,8 @@ export class CandidateViewComponent implements OnInit {
   counter_offer;
   cand_job_activity;
   job_offer_log;
+  emailError;
+  noteError;
 
   date_sort_desc = function (date1, date2)
   {
@@ -358,10 +360,10 @@ export class CandidateViewComponent implements OnInit {
         );
     }
 
-    let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;
+    let blockchainMilestone = 1;
     if(this.userDoc['candidate'] && this.userDoc['candidate'].blockchain) {
       if (this.userDoc['candidate'].blockchain.commercial_skills) {
-        if(this.viewBy === 'admin' || this.viewBy === 'candidate') commercial_skills_check = 1;
+        if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
         this.commercial_skills = this.userDoc['candidate'].blockchain.commercial_skills;
         this.commercial_skills.sort(function (a, b) {
           if (a.skill < b.skill) {
@@ -383,15 +385,14 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_commercial_skills) {
         this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          commercial_skills_check = 0;
-          if(this.description_commercial_skills.length > 100) commercial_skills_check = 1;
+          if(this.description_commercial_skills.length && this.description_commercial_skills.length < 100) blockchainMilestone = 0;
         }
       }
 
       if(this.userDoc['candidate'].blockchain.commercial_platforms){
         this.commercial = this.userDoc['candidate'].blockchain.commercial_platforms;
         if(this.commercial && this.commercial.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') commercial_platforms_check = 1;
+          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
           this.commercial.sort(function(a, b){
             if(a.platform_name < b.platform_name) { return -1; }
             if(a.platform_name > b.platform_name) { return 1; }
@@ -409,15 +410,14 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_commercial_platforms) {
         this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          commercial_platforms_check = 0;
-          if(this.description_commercial_platforms.length > 100) commercial_platforms_check = 1;
+          if(this.description_commercial_platforms && this.description_commercial_platforms.length > 100) blockchainMilestone = 0;
         }
       }
 
       if(this.userDoc['candidate'].blockchain.experimented_platforms){
         this.experimented = this.userDoc['candidate'].blockchain.experimented_platforms;
         if(this.experimented && this.experimented.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') experimented_platforms_check = 1;
+          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
           this.experimented.sort(function(a, b){
             if(a < b) { return -1; }
             if(a > b) { return 1; }
@@ -436,8 +436,7 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_experimented_platforms) {
         this.description_experimented_platforms = this.userDoc['candidate'].blockchain.description_experimented_platforms;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          experimented_platforms_check = 0;
-          if(this.description_experimented_platforms.length > 100) experimented_platforms_check = 1;
+          if(this.description_experimented_platforms && this.description_experimented_platforms.length < 100) blockchainMilestone = 0;
         }
       }
     }
@@ -475,7 +474,7 @@ export class CandidateViewComponent implements OnInit {
         }
       }
 
-      if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
+      if (blockchainMilestone){
         if(this.linked_websites>=2 && this.work_history_progress === 1) {
           this.progress_bar_class = 'progress-bar bg-info';
           this.progress_bar_value = 75;
@@ -483,7 +482,7 @@ export class CandidateViewComponent implements OnInit {
       }
 
       if(this.userDoc['image'] != null ) {
-        if(this.linked_websites>=2 && this.work_history_progress && (commercial_platforms_check && experimented_platforms_check && commercial_skills_check)) {
+        if(this.linked_websites>=2 && this.work_history_progress && blockchainMilestone) {
           this.progress_bar_class = 'progress-bar bg-success';
           this.progress_bar_value = 100;
         }
@@ -591,6 +590,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.viewBy === 'admin') {
       this.error = '';
       this.success = '';
+      this.emailError = '';
+      this.noteError = '';
+      this.status_error = '';
+      let errorCount = 0;
       if (!this.set_status && !this.note && !this.send_email) {
         this.error = 'Please fill at least one field';
       }
@@ -600,40 +603,49 @@ export class CandidateViewComponent implements OnInit {
           if (this.status_reason_rejected) {
             approveForm.value.set_status = this.set_status;
             approveForm.value.status_reason_rejected = this.status_reason_rejected;
-            this.saveApproveData(approveForm.value);
           }
           else {
+            errorCount++;
             this.status_error = 'Please select a reason';
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (this.set_status === "Deferred" || this.set_status === "deferred") {
+        if (this.set_status === "Deferred" || this.set_status === "deferred") {
           if (this.status_reason_deferred) {
             approveForm.value.set_status = this.set_status;
             approveForm.value.status_reason_deferred = this.status_reason_deferred;
-            this.saveApproveData(approveForm.value);
           }
           else {
+            errorCount++;
             this.status_error = 'Please select a reason';
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (this.send_email && this.email_text && !this.email_subject) {
-          this.error = 'Please enter email subject too.';
-
+        if(this.send_email && this.email_text && !this.email_subject) {
+          errorCount++;
+          this.emailError = 'Please enter email subject too.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
 
-        else if (this.send_email && !this.email_text && this.email_subject) {
-          this.error = 'Please enter email body too.';
-
+        if(this.send_email && !this.email_text && this.email_subject) {
+          errorCount++;
+          this.emailError = 'Please enter email body too.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
-        else {
-          if(this.email_text){
+
+        if(this.add_note && !this.note) {
+          errorCount++;
+          this.noteError = 'Please enter note text.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
+        }
+        if(errorCount === 0) {
+          if(this.send_email && this.email_text){
             approveForm.value.email_subject = this.email_subject;
             approveForm.value.email_text = this.email_text;
           }
 
-          approveForm.value.note = this.note;
+          if(this.add_note && this.note) approveForm.value.note = this.note;
+
           approveForm.value.set_status = this.set_status;
           this.saveApproveData(approveForm.value);
           this.reset();
