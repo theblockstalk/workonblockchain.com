@@ -518,11 +518,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.end_date_year_log = "Please fill end date year ";
         }
-        if(this.ExperienceForm.value.ExpItems[key].description && this.ExperienceForm.value.ExpItems[key].description.length < 100){
-          console.log(this.ExperienceForm.value.ExpItems[key].description);
-          console.log('not good must be min 100');
-          this.job_desc_logs = 'Please enter minimum 100 characters description';
-        }
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
@@ -541,6 +536,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           }
           if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
             verified=1;
+          }
+          if(this.ExperienceForm.value.ExpItems[key].description && this.ExperienceForm.value.ExpItems[key].description.length < 100){
+            verified=1;
+            this.job_desc_logs = 'Please enter minimum 100 characters description';
           }
           if(verified === 0) {
             this.exp_count = this.exp_count + 1;
