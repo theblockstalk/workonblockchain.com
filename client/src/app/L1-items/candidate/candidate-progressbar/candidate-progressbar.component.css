@@ -10,3 +10,11 @@
 .progress-color-success{
   color: green;
 }
+
+.progress-font{
+  font-size: 20px;
+}
+
+.progress{
+  height:22px;
+}
