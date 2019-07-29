@@ -384,8 +384,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.interest_log = "Please select at least one area of interest";
     }
     if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < 100){
-      console.log(this.description_commercial_platforms.length);
-      console.log('not good');
       flag_commercial_desc = false;
       this.commercial_desc_log = 'Please enter minimum 100 characters description';
     }
