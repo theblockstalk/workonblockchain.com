@@ -110,7 +110,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           }
           for(let i=0;i<this.info.length;i++){
             if(this.info[i].candidate.latest_status.status !== 'approved') {
-              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 0;
+              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 1;
               if (this.info[i].candidate.latest_status.status === 'wizard' || this.info[i].candidate.latest_status.status === 'wizard completed') {
                 this.info[i].candidate_badge = '4 days till review';
                 this.info[i].candidate_badge_color = 'success';
@@ -141,13 +141,23 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
                 this.info[i].candidate_badge_color = 'warning';
                 work_history = 1;
               }
-              if ((work_history && this.info[i].candidate.blockchain) && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
-                if ((this.info[i].candidate.blockchain.commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms) && (this.info[i].candidate.blockchain.experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms) && (this.info[i].candidate.blockchain.commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills)) {
+              if(work_history){
+                if(this.info[i].candidate.blockchain){
+                  if(this.info[i].candidate.blockchain.commercial_platforms && (this.info[i].candidate.blockchain.description_commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms.length < 100))
+                    blockchain_platforms = 0;
+                  if(this.info[i].candidate.blockchain.experimented_platforms && (this.info[i].candidate.blockchain.description_experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms.length < 100))
+                    blockchain_platforms = 0;
+                  if(this.info[i].candidate.blockchain.commercial_skills && (this.info[i].candidate.blockchain.description_commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills.length < 100))
+                    blockchain_platforms = 0;
+                }
+              }
+              /*if ((work_history && this.info[i].candidate.blockchain) && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
+                if (()) {
                   this.info[i].candidate_badge = '2 days till review';
                   this.info[i].candidate_badge_color = 'warning';
                   blockchain_platforms = 1;
                 }
-              }
+              }*/
               if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
                 this.info[i].candidate_badge = 'Priority review';
                 this.info[i].candidate_badge_color = 'danger';
