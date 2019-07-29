@@ -151,13 +151,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
                     blockchain_platforms = 0;
                 }
               }
-              /*if ((work_history && this.info[i].candidate.blockchain) && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
-                if (()) {
-                  this.info[i].candidate_badge = '2 days till review';
-                  this.info[i].candidate_badge_color = 'warning';
-                  blockchain_platforms = 1;
-                }
-              }*/
               if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
                 this.info[i].candidate_badge = 'Priority review';
                 this.info[i].candidate_badge_color = 'danger';
