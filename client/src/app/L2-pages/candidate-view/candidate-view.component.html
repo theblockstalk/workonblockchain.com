@@ -80,7 +80,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <app-c-formv-html-area [value]="userDoc['candidate']['description']"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="userDoc['candidate']['description']"></app-c-formv-textarea>
             </div>
           </div>
           <div class="row" *ngIf="viewBy === 'company'">
@@ -191,7 +191,7 @@
                 <app-c-forme-html-area
                   height="35"
                   [value]="note"
-                  [errorMsg]="noteError"
+                  [errorMsg]="error"
                   formattingBar="true"
                   (htmlAreaValue) = "note = $event"
                 ></app-c-forme-html-area>
@@ -229,7 +229,7 @@
                 <app-c-forme-html-area
                   height="35"
                   [value]="email_text"
-                  [errorMsg]="emailError"
+                  [errorMsg]="error"
                   formattingBar="true"
                   (htmlAreaValue) = "email_text = $event"
                 ></app-c-forme-html-area>
@@ -574,7 +574,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="contractor.value.service_description">
-              <app-c-formv-html-area label="Service description:" [value]="contractor.value.service_description"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="contractor.value.service_description"></app-c-formv-textarea>
             </div>
           </div>
 
@@ -602,7 +602,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
-              <app-c-formv-html-area label="Learning objectives:" [value]="volunteer.value.learning_objectives"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="volunteer.value.learning_objectives"></app-c-formv-textarea>
             </div>
           </div>
         </section>
@@ -637,15 +637,15 @@
             </div>
             <div class="col-md-12" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length>0) || (commercial_skills && commercial_skills.length > 0)">
               <app-c-formv-list label="Commercial experience:" [value]="commercial"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_commercial_platforms"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
             </div>
             <div class="col-md-12 mt-3" *ngIf="experimented && experimented.length>0">
               <app-c-formv-list label="Experimented with:" [value]="experimented"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_experimented_platforms"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
             </div>
             <div class="col-md-12 mt-3" *ngIf="commercial_skills && commercial_skills.length > 0">
               <app-c-formv-list label="Skills:" [value]="commercial_skills"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_commercial_skills"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_commercial_skills"></app-c-formv-textarea>
             </div>
           </div>
         </section>
@@ -694,7 +694,7 @@
               <i class="fas fa-globe"></i> {{work.locationname}}
             </div>
             <div class="col-md-12">
-              <app-c-formv-html-area [value]="work.description"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="work.description"></app-c-formv-textarea>
             </div>
           </div>
         </section>
