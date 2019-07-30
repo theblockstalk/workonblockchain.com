@@ -108,57 +108,74 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
           }
-          for(let i=0;i<this.info.length;i++){
-            if(this.info[i].candidate.latest_status.status !== 'approved') {
-              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 1;
-              if (this.info[i].candidate.latest_status.status === 'wizard' || this.info[i].candidate.latest_status.status === 'wizard completed') {
-                this.info[i].candidate_badge = '4 days till review';
-                this.info[i].candidate_badge_color = 'success';
-                wizard = 1;
+          for(let i=0;i<this.info.length;i++) {
+            function twoDayMilestonReached(candidate) {
+              let linking_accounts = 0;
+              if (candidate.github_account) linking_accounts++;
+              if (candidate.stackexchange_account) linking_accounts++;
+              if (candidate.linkedin_account) linking_accounts++;
+              if (candidate.medium_account) linking_accounts++;
+              if (candidate.stackoverflow_url) linking_accounts++;
+              if (candidate.personal_website_url) linking_accounts++;
+
+              if (linking_accounts < 2) return false;
+
+              for (let work_item of this.info[i].candidate.work_history) {
+                if (work_item.description.length < 100) return false;
               }
 
-              if (this.info[i].candidate.github_account) linking_accounts++;
-              if (this.info[i].candidate.stackexchange_account) linking_accounts++;
-              if (this.info[i].candidate.linkedin_account) linking_accounts++;
-              if (this.info[i].candidate.medium_account) linking_accounts++;
-              if (this.info[i].candidate.stackoverflow_url) linking_accounts++;
-              if (this.info[i].candidate.personal_website_url) linking_accounts++;
+              return true;
+            }
 
-              if (linking_accounts >= 2) {
-                this.info[i].candidate_badge = '4 days till review';
-                this.info[i].candidate_badge_color = 'success';
-                wizard = 1;
-              }
+            function priorityMilestonReached(candidate) {
+              if (!twoDayMilestonReached(candidate)) return false;
 
-              let twoDays = new Date();
-              let fourDays = new Date();
-              twoDays.setSeconds(twoDays.getSeconds() - 172800); //2 days ago
-              fourDays.setSeconds(fourDays.getSeconds() - 345600); //4 days ago
-              let status_date = new Date(this.info[i].candidate.latest_status.timestamp);
-              //status_date = formatDate(status_date, 'yyyy/MM/dd', 'en');
-              if (this.info[i].candidate.work_history && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
-                this.info[i].candidate_badge = '2 days till review';
-                this.info[i].candidate_badge_color = 'warning';
-                work_history = 1;
-              }
-              if(work_history){
-                if(this.info[i].candidate.blockchain){
-                  if(this.info[i].candidate.blockchain.commercial_platforms && (this.info[i].candidate.blockchain.description_commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms.length < 100))
-                    blockchain_platforms = 0;
-                  if(this.info[i].candidate.blockchain.experimented_platforms && (this.info[i].candidate.blockchain.description_experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms.length < 100))
-                    blockchain_platforms = 0;
-                  if(this.info[i].candidate.blockchain.commercial_skills && (this.info[i].candidate.blockchain.description_commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills.length < 100))
-                    blockchain_platforms = 0;
+              let blockchain = candidate.blockchain;
+              if (blockchain.commercial_platforms.length > 0 && blockchain.description_commercial_platforms.length < 100) return false;
+              if (blockchain.experimented_platforms.length > 0 && blockchain.description_experimented_platforms.length < 100) return false;
+              if (blockchain.commercial_skills.length > 0 && blockchain.description_commercial_skills.length < 100) return false;
+
+              if (!candidate.image) return false;
+
+              return true;
+            }
+
+            function setBadge(text, classColour) {
+              this.info[i].candidate_badge = text;
+              this.info[i].candidate_badge_color = classColour;
+            }
+            let latest_status = this.info[i].candidate.latest_status.status;
+
+            if (latest_status === 'wizard completed' || latest_status === 'updated' || latest_status === 'reviewed') {
+              let twoDaysAgo = new Date();
+              let fourDaysAgo = new Date();
+              twoDaysAgo.setSeconds(twoDaysAgo.getSeconds() - 172800);
+              fourDaysAgo.setSeconds(fourDaysAgo.getSeconds() - 345600);
+              let last_status_date = new Date(this.info[i].candidate.latest_status.timestamp);
+
+              if (latest_status === 'reviewed') {
+                for (let item of this.info[i].candidate.history) {
+                  if (item.status.status === 'wizard completed' || item.status.status === 'updated') {
+                    last_status_date = item.timestamp;
+                    break;
+                  }
                 }
               }
-              if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
-                this.info[i].candidate_badge = 'Priority review';
-                this.info[i].candidate_badge_color = 'danger';
+
+              let priorityReached = priorityMilestonReached(this.info[i].candidate);
+              let twoDayReached = twoDayMilestonReached(this.info[i].candidate);
+              if (priorityReached ||
+                (twoDayReached && last_status_date < twoDaysAgo) ||
+                last_status_date < fourDaysAgo ) {
+                setBadge('Priority', 'danger');
+              } else if (twoDayReached ||
+                last_status_date < twoDaysAgo) {
+                setBadge('2 days till review', 'warning');
+              } else {
+                setBadge('4 days till review', 'info');
               }
-            }
-            else{
-              this.info[i].candidate_badge = 'Approved';
-              this.info[i].candidate_badge_color = 'primary';
+            } else {
+              setBadge(latest_status, 'info');
             }
           }
           this.setPage(1);
