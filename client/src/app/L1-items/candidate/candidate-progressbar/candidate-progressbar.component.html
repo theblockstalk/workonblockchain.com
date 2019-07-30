@@ -24,7 +24,7 @@
     </a>
     <u *ngIf="viewBy === 'admin'">Basic information</u>
   </div>
-  <div class="col-md-2 mr-4 mt-3">
+  <div class="col-md-2 mr-4 mt-4">
     <p></p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
       <u>Linked accounts (e.g Gitub etc)</u>
@@ -32,13 +32,13 @@
     <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
   </div>
   <div class="col-md-2 mr-4">
-    <p class="mb-2">2 days till review</p>
+    <p>2 days till review</p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
       <u>Work History description</u>
     </a>
     <u *ngIf="viewBy === 'admin'">Work History description</u>
   </div>
-  <div class="col-md-2 mr-4 mt-3">
+  <div class="col-md-2 mr-4 mt-4">
     <p></p>
     <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
       <u>Blockchain experience</u>
