@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
-import {getFilteredNames} from "../../../services/object";
+import {getFilteredNames, priorityMilestonReached, twoDayMilestonReached, setBadge, candidateBadge} from "../../../services/object";
 import {formatDate} from '@angular/common';
 
 @Component({
@@ -109,41 +109,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.log= 'No candidates matched this search criteria';
           }
           for(let i=0;i<this.info.length;i++) {
-            let latest_status = this.info[i].candidate.latest_status.status;
-
-            if (latest_status === 'wizard completed' || latest_status === 'updated' || latest_status === 'reviewed') {
-              let twoDaysAgo = new Date();
-              let fourDaysAgo = new Date();
-              twoDaysAgo.setSeconds(twoDaysAgo.getSeconds() - 172800);
-              fourDaysAgo.setSeconds(fourDaysAgo.getSeconds() - 345600);
-              let last_status_date = new Date(this.info[i].candidate.latest_status.timestamp);
-
-              if (latest_status === 'reviewed') {
-                for (let item of this.info[i].candidate.history) {
-                  if (item.status.status === 'wizard completed' || item.status.status === 'updated') {
-                    last_status_date = item.timestamp;
-                    break;
-                  }
-                }
-              }
-
-              let priorityReached = this.priorityMilestonReached(this.info[i].candidate, i);
-              let twoDayReached = this.twoDayMilestonReached(this.info[i].candidate, i);
-              if (priorityReached ||
-                (twoDayReached && last_status_date < twoDaysAgo) ||
-                last_status_date < fourDaysAgo ) {
-                this.setBadge('Priority', 'danger', i);
-              } else if (twoDayReached ||
-                last_status_date < twoDaysAgo) {
-                this.setBadge('2 days till review', 'warning', i);
-              } else {
-                this.setBadge('4 days till review', 'info', i);
-              }
-            } else {
-              latest_status = latest_status.charAt(0).toUpperCase()+''+latest_status.slice(1);
-              this.setBadge(latest_status, 'info', i);
-            }
+            this.info[i].candBadge = candidateBadge(this.info[i].candidate);
           }
+          console.log(this.info);
           this.setPage(1);
           this.length=0;
 
@@ -325,39 +293,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     return getFilteredNames(roles, this.rolesData);
   }
 
-  twoDayMilestonReached(candidate, index) {
-    let linking_accounts = 0;
-    if (candidate.github_account) linking_accounts++;
-    if (candidate.stackexchange_account) linking_accounts++;
-    if (candidate.linkedin_account) linking_accounts++;
-    if (candidate.medium_account) linking_accounts++;
-    if (candidate.stackoverflow_url) linking_accounts++;
-    if (candidate.personal_website_url) linking_accounts++;
-
-    if (linking_accounts < 2) return false;
-
-    for (let work_item of this.info[index].candidate.work_history) {
-      if (work_item.description.length < 100) return false;
-    }
-
-    return true;
-  }
-
-  priorityMilestonReached(candidate, index) {
-    if (!this.twoDayMilestonReached(candidate, index)) return false;
-
-    let blockchain = candidate.blockchain;
-    if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0 && blockchain.description_commercial_platforms.length < 100) return false;
-    if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && blockchain.description_experimented_platforms.length < 100) return false;
-    if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && blockchain.description_commercial_skills.length < 100) return false;
-
-    if (!candidate.image) return false;
-
-    return true;
-  }
-
-  setBadge(text, classColour, index) {
-    this.info[index].candidate_badge = text;
-    this.info[index].candidate_badge_color = classColour;
-  }
+  /*setBadge(text, classColour, index) {
+    let candBadge : any = {};
+    candBadge.candidate_badge = text;
+    candBadge.candidate_badge_color = classColour;
+    return candBadge;
+  }*/
 }
