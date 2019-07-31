@@ -172,9 +172,9 @@ export const priorityMilestonReached = function(candidate){
 
   if(candidate.blockchain) {
     let blockchain = candidate.blockchain;
-    if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0 && blockchain.description_commercial_platforms.length < 100) return false;
-    if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && blockchain.description_experimented_platforms.length < 100) return false;
-    if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && blockchain.description_commercial_skills.length < 100) return false;
+    if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0 && (blockchain.description_commercial_platforms && blockchain.description_commercial_platforms.length < 100)) return false;
+    if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && (blockchain.description_experimented_platforms && blockchain.description_experimented_platforms.length < 100)) return false;
+    if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && (blockchain.description_commercial_skills && blockchain.description_commercial_skills.length < 100)) return false;
   }
 
   if (!candidate.image) return false;
@@ -195,7 +195,7 @@ export const twoDayMilestonReached = function(candidate){
 
   if(candidate.work_history) {
     for (let work_item of candidate.work_history) {
-      if (work_item.description.length < 100) return false;
+      if (work_item.description && work_item.description.length < 100) return false;
     }
   }
 
