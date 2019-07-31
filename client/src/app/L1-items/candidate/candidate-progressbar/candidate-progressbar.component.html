@@ -22,7 +22,7 @@
       <tbody>
         <tr>
           <td>
-            4 days till review <br><br>
+            <span [ngClass]="(value === 15 || value === 25)?'text-formatting-class-warn':'no-class'">4 days till review </span> <br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
               <u>Basic information</u>
             </a>
@@ -36,7 +36,7 @@
             <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
           </td>
           <td>
-            2 days till review <br><br>
+            <span [ngClass]="(value === 50 || value === 75)?'text-formatting-class-info':'no-class'">2 days till review</span> <br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
               <u>Work History description</u>
             </a>
@@ -50,7 +50,7 @@
             <u *ngIf="viewBy === 'admin'">Blockchain experience</u>
           </td>
           <td>
-            Priority <br><br>
+            <span [ngClass]="(value === 100)?'text-formatting-class-success':'no-class'">Priority </span><br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
               <u>Profile picture</u>
             </a>
