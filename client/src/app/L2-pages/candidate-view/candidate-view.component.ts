@@ -716,6 +716,7 @@ export class CandidateViewComponent implements OnInit {
 
   send_job_offer(msgForm: NgForm) {
     if(this.viewBy === 'company') {
+      this.job_desc_log = '';
       let errorCount = 0;
       if (this.approach_work_type === 'employee') {
         if (!this.employee.job_title) {
@@ -745,9 +746,14 @@ export class CandidateViewComponent implements OnInit {
           this.job_desc_log = 'Please enter job description';
           errorCount = 1;
         }
+        if (this.employee.job_desc && this.employee.job_desc.length > 3000) {
+          this.job_desc_log = 'Job description should be less then 3000 characters';
+          errorCount = 1;
+        }
       }
 
       if (this.approach_work_type === 'contractor') {
+        this.contract_desc_log = '';
         if (!this.contractor.location) {
           this.contractor_location_log = 'Please enter location';
           errorCount = 1;
@@ -771,15 +777,24 @@ export class CandidateViewComponent implements OnInit {
           this.contract_desc_log = 'Please enter contract description';
           errorCount = 1;
         }
+        if (this.contractor.contract_description && this.contractor.contract_description.length > 3000) {
+          this.contract_desc_log = 'Contract description should be less then 3000 characters';
+          errorCount = 1;
+        }
       }
 
       if (this.approach_work_type === 'volunteer') {
+        this.volunteer_desc_log = '';
         if (!this.volunteer.location) {
           this.volunteer_location_log = 'Please enter location';
           errorCount = 1;
         }
         if (!this.volunteer.opportunity_description) {
           this.volunteer_desc_log = 'Please enter opportunity description';
+          errorCount = 1;
+        }
+        if (this.volunteer.opportunity_description && this.volunteer.opportunity_description.length > 3000) {
+          this.volunteer_desc_log = 'Opportunity description should be less then 3000 characters';
           errorCount = 1;
         }
       }
