@@ -466,15 +466,14 @@ export class CandidateViewComponent implements OnInit {
         this.work_history.sort(this.date_sort_desc);
         for(let workHistory of this.userDoc['candidate'].work_history){
           this.work_history_progress = 0;
-          if(workHistory.description.length > 100){
-            this.work_history_progress = 1;
-            if(this.linked_websites>=2) {
-              this.progress_bar_class = 'progress-bar bg-info';
-              this.progress_bar_value = 50;
-            }
-            break;
-          }
+          if(workHistory.description.length < 100) break;
+          if(workHistory.description.length > 100) this.work_history_progress = 1;
         }
+      }
+
+      if(this.work_history_progress && this.linked_websites>=2) {
+        this.progress_bar_class = 'progress-bar bg-info';
+        this.progress_bar_value = 50;
       }
 
       if (blockchainMilestone){
