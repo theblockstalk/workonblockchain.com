@@ -31,23 +31,23 @@
           <td>
             <br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
-              <u>Linked accounts (e.g Gitub etc)</u>
+              <u>2x linked accounts (e.g Gitub)</u>
             </a>
-            <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
+            <u *ngIf="viewBy === 'admin'">2x linked accounts (e.g Gitub)</u>
           </td>
           <td>
             <span [ngClass]="(value === 50 || value === 75)?'text-formatting-class-info':'no-class'">2 days till review</span> <br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
-              <u>Work History description</u>
+              <u>Work history descriptions</u>
             </a>
-            <u *ngIf="viewBy === 'admin'">Work History description</u>
+            <u *ngIf="viewBy === 'admin'">Work history descriptions</u>
           </td>
           <td>
             <br><br>
             <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
-              <u>Blockchain experience</u>
+              <u>Blockchain experience descriptions</u>
             </a>
-            <u *ngIf="viewBy === 'admin'">Blockchain experience</u>
+            <u *ngIf="viewBy === 'admin'">Blockchain experience descriptions</u>
           </td>
           <td>
             <span [ngClass]="(value === 100)?'text-formatting-class-success':'no-class'">Priority </span><br><br>
