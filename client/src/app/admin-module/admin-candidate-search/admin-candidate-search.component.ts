@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
-import {getFilteredNames, priorityMilestonReached, twoDayMilestonReached, setBadge, candidateBadge} from "../../../services/object";
+import {getFilteredNames, candidateBadge} from "../../../services/object";
 import {formatDate} from '@angular/common';
 
 @Component({
@@ -111,7 +111,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           for(let i=0;i<this.info.length;i++) {
             this.info[i].candBadge = candidateBadge(this.info[i].candidate);
           }
-          console.log(this.info);
           this.setPage(1);
           this.length=0;
 

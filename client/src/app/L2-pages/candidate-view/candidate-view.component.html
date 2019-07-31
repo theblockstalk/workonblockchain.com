@@ -26,7 +26,8 @@
                 <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
                 <app-c-formv-badge *ngIf = "viewBy === 'company' && already_approached === 1" class="primary" value="Already approached"></app-c-formv-badge>
                 <span *ngIf="viewBy === 'admin'">
-                  <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
+                  <app-c-formv-badge *ngIf = "userDoc['candBadge'].candidate_badge" [class]="userDoc['candBadge'].candidate_badge_color" [value]="userDoc['candBadge'].candidate_badge"></app-c-formv-badge>
+                  <p class="mt-2"><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
                 </span>
               </div>
             </div>

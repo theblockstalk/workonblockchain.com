@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
 import {changeLocationDisplayFormat, getNameFromValue} from '../../../services/object';
 import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
+import {candidateBadge} from '../../../services/object';
 
 declare var $: any;
 
@@ -260,6 +261,8 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
 
     if(this.viewBy === 'admin') {
+      this.userDoc['candBadge'] = candidateBadge(this.userDoc['candidate']);
+
       this.is_verify = 'No';
       if(this.userDoc['is_verify'] === 1) this.is_verify = 'Yes';
 

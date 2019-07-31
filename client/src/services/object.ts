@@ -176,7 +176,7 @@ export const priorityMilestonReached = function(candidate){
     if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && blockchain.description_experimented_platforms.length < 100) return false;
     if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && blockchain.description_commercial_skills.length < 100) return false;
   }
-  
+
   if (!candidate.image) return false;
 
   return true;
