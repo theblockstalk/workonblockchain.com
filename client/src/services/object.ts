@@ -195,7 +195,7 @@ export const twoDayMilestonReached = function(candidate){
 
   if(candidate.work_history) {
     for (let work_item of candidate.work_history) {
-      if (work_item.description.length < 100) return false;
+      if (work_item.description && work_item.description.length < 100) return false;
     }
   }
 
