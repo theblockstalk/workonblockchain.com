@@ -17,39 +17,47 @@
   </div>
 </div>
 <div class="row mt-5">
-  <div class="col-md-2 mr-4">
-    <p>3 days till review</p>
-    <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
-      <u>Basic information</u>
-    </a>
-    <u *ngIf="viewBy === 'admin'">Basic information</u>
-  </div>
-  <div class="col-md-2 mr-4 mt-4">
-    <p></p>
-    <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
-      <u>Linked accounts (e.g Gitub etc)</u>
-    </a>
-    <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
-  </div>
-  <div class="col-md-2 mr-4">
-    <p>2 days till review</p>
-    <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
-      <u>Work History description</u>
-    </a>
-    <u *ngIf="viewBy === 'admin'">Work History description</u>
-  </div>
-  <div class="col-md-2 mr-4 mt-4">
-    <p></p>
-    <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
-      <u>Blockchain experience</u>
-    </a>
-    <u *ngIf="viewBy === 'admin'">Blockchain experience</u>
-  </div>
-  <div class="col-md-2 mr-4">
-    <p>Priority</p>
-    <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
-      <u>Profile picture</u>
-    </a>
-    <u *ngIf="viewBy === 'admin'">Profile picture</u>
+  <div class="col-md-12 table-responsive">
+    <table class="table borderless progressbar-table">
+      <tbody>
+        <tr>
+          <td>
+            <span [ngClass]="(value === 15 || value === 25)?'text-formatting-class-warn':'no-class'">4 days till review </span> <br><br>
+            <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+              <u>Basic information</u>
+            </a>
+            <u *ngIf="viewBy === 'admin'">Basic information</u>
+          </td>
+          <td>
+            <br><br>
+            <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+              <u>Linked accounts (e.g Gitub etc)</u>
+            </a>
+            <u *ngIf="viewBy === 'admin'">Linked accounts (e.g Gitub etc)</u>
+          </td>
+          <td>
+            <span [ngClass]="(value === 50 || value === 75)?'text-formatting-class-info':'no-class'">2 days till review</span> <br><br>
+            <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'work_history')">
+              <u>Work History description</u>
+            </a>
+            <u *ngIf="viewBy === 'admin'">Work History description</u>
+          </td>
+          <td>
+            <br><br>
+            <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'blockchain_experience')">
+              <u>Blockchain experience</u>
+            </a>
+            <u *ngIf="viewBy === 'admin'">Blockchain experience</u>
+          </td>
+          <td>
+            <span [ngClass]="(value === 100)?'text-formatting-class-success':'no-class'">Priority </span><br><br>
+            <a class="text-primary" *ngIf="viewBy === 'candidate'" (click)="internalRoute(routerUrl,'about')">
+              <u>Profile picture</u>
+            </a>
+            <u *ngIf="viewBy === 'admin'">Profile picture</u>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

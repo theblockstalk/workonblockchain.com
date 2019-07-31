@@ -87,7 +87,7 @@
                         <a *ngIf="data.first_name" routerLink="/admins/talent/{{data._id}}">
                           <h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2>
                         </a>
-                        <app-c-formv-badge *ngIf = "data.candidate_badge" [class]="data.candidate_badge_color" [value]="data.candidate_badge"></app-c-formv-badge>
+                        <app-c-formv-badge *ngIf = "data.candBadge.candidate_badge" [class]="data.candBadge.candidate_badge_color" [value]="data.candBadge.candidate_badge"></app-c-formv-badge>
                       </div>
                     </div>
 

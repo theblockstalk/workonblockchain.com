@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
-import {getFilteredNames} from "../../../services/object";
+import {getFilteredNames, candidateBadge} from "../../../services/object";
 import {formatDate} from '@angular/common';
 
 @Component({
@@ -108,58 +108,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
           }
-          for(let i=0;i<this.info.length;i++){
-            if(this.info[i].candidate.latest_status.status !== 'approved') {
-              let linking_accounts = 0, wizard = 0, work_history = 0, blockchain_platforms = 1;
-              if (this.info[i].candidate.latest_status.status === 'wizard' || this.info[i].candidate.latest_status.status === 'wizard completed') {
-                this.info[i].candidate_badge = '4 days till review';
-                this.info[i].candidate_badge_color = 'success';
-                wizard = 1;
-              }
-
-              if (this.info[i].candidate.github_account) linking_accounts++;
-              if (this.info[i].candidate.stackexchange_account) linking_accounts++;
-              if (this.info[i].candidate.linkedin_account) linking_accounts++;
-              if (this.info[i].candidate.medium_account) linking_accounts++;
-              if (this.info[i].candidate.stackoverflow_url) linking_accounts++;
-              if (this.info[i].candidate.personal_website_url) linking_accounts++;
-
-              if (linking_accounts >= 2) {
-                this.info[i].candidate_badge = '4 days till review';
-                this.info[i].candidate_badge_color = 'success';
-                wizard = 1;
-              }
-
-              let twoDays = new Date();
-              let fourDays = new Date();
-              twoDays.setSeconds(twoDays.getSeconds() - 172800); //2 days ago
-              fourDays.setSeconds(fourDays.getSeconds() - 345600); //4 days ago
-              let status_date = new Date(this.info[i].candidate.latest_status.timestamp);
-              //status_date = formatDate(status_date, 'yyyy/MM/dd', 'en');
-              if (this.info[i].candidate.work_history && (this.info[i].candidate.latest_status.status === 'updated' || twoDays > status_date)) {
-                this.info[i].candidate_badge = '2 days till review';
-                this.info[i].candidate_badge_color = 'warning';
-                work_history = 1;
-              }
-              if(work_history){
-                if(this.info[i].candidate.blockchain){
-                  if(this.info[i].candidate.blockchain.commercial_platforms && (this.info[i].candidate.blockchain.description_commercial_platforms && this.info[i].candidate.blockchain.description_commercial_platforms.length < 100))
-                    blockchain_platforms = 0;
-                  if(this.info[i].candidate.blockchain.experimented_platforms && (this.info[i].candidate.blockchain.description_experimented_platforms && this.info[i].candidate.blockchain.description_experimented_platforms.length < 100))
-                    blockchain_platforms = 0;
-                  if(this.info[i].candidate.blockchain.commercial_skills && (this.info[i].candidate.blockchain.description_commercial_skills && this.info[i].candidate.blockchain.description_commercial_skills.length < 100))
-                    blockchain_platforms = 0;
-                }
-              }
-              if ((work_history && blockchain_platforms && this.info[i].image) && (this.info[i].candidate.latest_status.status === 'updated' || fourDays > status_date)) {
-                this.info[i].candidate_badge = 'Priority review';
-                this.info[i].candidate_badge_color = 'danger';
-              }
-            }
-            else{
-              this.info[i].candidate_badge = 'Approved';
-              this.info[i].candidate_badge_color = 'primary';
-            }
+          for(let i=0;i<this.info.length;i++) {
+            this.info[i].candBadge = candidateBadge(this.info[i].candidate);
           }
           this.setPage(1);
           this.length=0;
@@ -341,4 +291,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   filterAndSort(roles) {
     return getFilteredNames(roles, this.rolesData);
   }
+
+  /*setBadge(text, classColour, index) {
+    let candBadge : any = {};
+    candBadge.candidate_badge = text;
+    candBadge.candidate_badge_color = classColour;
+    return candBadge;
+  }*/
 }
