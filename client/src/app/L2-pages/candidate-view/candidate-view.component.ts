@@ -413,7 +413,7 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_commercial_platforms) {
         this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          if(this.description_commercial_platforms && this.description_commercial_platforms.length > 100) blockchainMilestone = 0;
+          if(this.description_commercial_platforms && this.description_commercial_platforms.length < 100) blockchainMilestone = 0;
         }
       }
 
