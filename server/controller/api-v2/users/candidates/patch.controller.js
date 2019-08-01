@@ -311,7 +311,10 @@ const bodySchema = new Schema({
     unset_currently_employed: Boolean,
     unset_leaving_current_employ_reasons: Boolean,
     unset_other_reasons: Boolean,
-    unset_counter_offer: Boolean
+    unset_counter_offer: Boolean,
+    unset_description_commercial_platforms: Boolean,
+    unset_description_experimented_platforms: Boolean,
+    unset_description_commercial_skills: Boolean
 });
 
 module.exports.inputValidation = {
@@ -477,6 +480,7 @@ module.exports.endpoint = async function (req, res) {
         } else {
             if (blockChainCheck && blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
+                if(queryBody.unset_description_commercial_platforms) unset['candidate.blockchain.description_commercial_platforms'] = 1;
                 if(blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
             }
         }
@@ -487,6 +491,7 @@ module.exports.endpoint = async function (req, res) {
         } else {
             if (blockChainCheck && blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
                 updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
+                if(queryBody.unset_description_experimented_platforms) unset['candidate.blockchain.description_experimented_platforms'] = 1;
                 if(blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
             }
         }
@@ -497,6 +502,7 @@ module.exports.endpoint = async function (req, res) {
         } else {
             if (blockChainCheck && blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
                 updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
+                if(queryBody.unset_description_commercial_skills) unset['candidate.blockchain.description_commercial_skills'] = 1;
                 if(blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
             }
         }

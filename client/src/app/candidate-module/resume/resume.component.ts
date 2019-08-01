@@ -452,9 +452,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
 
-      if(this.experimented_platform.length == 0) {
+      if(this.experimented_platform.length === 0) {
         inputQuery.unset_experimented_platforms = true;
         expForm.value.unset_experimented_platforms = true;
+      }
+      else {
+        blockchainQuery.experimented_platforms = this.experimented_platform;
+        expForm.value.experimented_platform = this.experimented_platform;
       }
 
       candidateQuery.blockchain = blockchainQuery;
