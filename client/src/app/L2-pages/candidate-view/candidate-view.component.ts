@@ -21,8 +21,6 @@ export class CandidateViewComponent implements OnInit {
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
 
-  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/
-
   routerUrl;
   user_id;
   candidate_image;
@@ -469,48 +467,6 @@ export class CandidateViewComponent implements OnInit {
         this.progress_bar_value = 100;
         this.progress_bar_class = 'progress-bar bg-success';
       }
-
-      /*this.linked_websites = 0;
-      if(this.userDoc['candidate'].github_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackexchange_account) this.linked_websites++;
-      if(this.userDoc['candidate'].linkedin_account) this.linked_websites++;
-      if(this.userDoc['candidate'].medium_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackoverflow_url) this.linked_websites++;
-      if(this.userDoc['candidate'].personal_website_url) this.linked_websites++;
-
-      if(this.linked_websites>=2) {
-        this.progress_bar_class = 'progress-bar bg-warning';
-        this.progress_bar_value = 25;
-      }
-
-      if(this.userDoc['candidate'].work_history) {
-        this.work_history = this.userDoc['candidate'].work_history;
-        this.work_history.sort(this.date_sort_desc);
-        for(let workHistory of this.userDoc['candidate'].work_history){
-          this.work_history_progress = 0;
-          if(workHistory.description.length < 100) break;
-          if(workHistory.description.length > 100) this.work_history_progress = 1;
-        }
-      }
-
-      if(this.work_history_progress && this.linked_websites>=2) {
-        this.progress_bar_class = 'progress-bar bg-info';
-        this.progress_bar_value = 50;
-      }
-
-      if (blockchainMilestone){
-        if(this.linked_websites>=2 && this.work_history_progress === 1) {
-          this.progress_bar_class = 'progress-bar bg-info';
-          this.progress_bar_value = 75;
-        }
-      }
-
-      if(this.userDoc['image'] != null ) {
-        if(this.linked_websites>=2 && this.work_history_progress && blockchainMilestone) {
-          this.progress_bar_class = 'progress-bar bg-success';
-          this.progress_bar_value = 100;
-        }
-      }*/
     }
 
     this.languages = this.userDoc['candidate'].programming_languages;
