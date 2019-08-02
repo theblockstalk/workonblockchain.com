@@ -1,0 +1,987 @@
+<section class = "wob-bg-primary2 py-5 mt-5">
+  <div class="container pt-2">
+    <div class="row" *ngIf="viewBy === 'candidate'">
+      <div class="col-md-12">
+        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right text-white">What happens next?</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row" *ngIf="viewBy === 'admin'">
+          <div class="col-md-12">
+            <app-c-button-normal
+              level = "primary"
+              alignment="float-right"
+              label="Edit Profile"
+              [routeUrl]="routerUrl"
+            ></app-c-button-normal>
+          </div>
+        </div>
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
+              <div class="mt-3">
+                <span *ngIf="userDoc['first_name']"><h3 class="text-capitalize">{{userDoc['first_name']}} {{userDoc['last_name']}}</h3></span>
+                <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
+                <app-c-formv-badge *ngIf = "viewBy === 'company' && already_approached === 1" class="primary" value="Already approached"></app-c-formv-badge>
+                <span *ngIf="viewBy === 'admin'">
+                  <app-c-formv-badge *ngIf = "userDoc['candBadge'].candidate_badge" [class]="userDoc['candBadge'].candidate_badge_color" [value]="userDoc['candBadge'].candidate_badge"></app-c-formv-badge>
+                  <p class="mt-2"><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <ul class="list-group list-group-flush float-right">
+                <li *ngIf="viewBy === 'admin' && referred_name !== ''" class="list-group-item list-without-underline">
+                  <ng-container *ngIf="referred_link ; else noLink">
+                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span>Refered By:
+                      <a class="text-capitalize" [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+                    </span>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span class="text-capitalize"> Refered By: {{referred_name}} </span>
+                  </ng-template>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['nationality'] && userDoc['nationality'].length>0">
+                  <span><i class="fas fa-flag mr-2"></i></span>
+                  <span *ngFor="let nation of userDoc['nationality'];let i = index" [ngClass]="i !== 0? 'ml-4': ''">{{nation}}<br *ngIf="i < userDoc['nationality'].length"/></span>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['contact_number']">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span>{{userDoc['contact_number']}}</span>
+                </li>
+                <li class="list-group-item" *ngIf="userDoc['candidate']['base_city']">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >{{userDoc['candidate']['base_city']}}</span>
+                </li>
+                <li class="list-group-item" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
+                  <span><i class="fas fa-user mr-2"></i></span>Status:
+                  <span *ngIf="candidate_status.status === 'created'">Created</span>
+                  <span *ngIf="candidate_status.status === 'other'">Other</span>
+                  <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
+                  <span *ngIf="candidate_status.status === 'wizard completed'">Wizard</span>
+                  <span *ngIf="candidate_status.status === 'approved'">Approved</span>
+                  <span *ngIf="candidate_status.status === 'reviewed' || candidate_status.status === 'updated by admin'">Being reviewed</span>
+                  <span *ngIf="candidate_status.status === 'updated'">Pending review</span>
+                  <span *ngIf="candidate_status.status === 'rejected'">Rejected</span>
+                  <span *ngIf="candidate_status.status === 'deferred'">Deferred</span>
+                </li>
+                <li class="list-group-item" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
+                  <span><i class="fas fa-calendar mr-2"></i></span>
+                  <span>Created: {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <app-c-formv-textarea [value]="userDoc['candidate']['description']"></app-c-formv-textarea>
+            </div>
+          </div>
+          <div class="row" *ngIf="viewBy === 'company'">
+            <div class="col-12">
+              <div class="text-right">
+                <ng-container *ngIf="already_approached === 1;else no_already_approached">
+                  <a [routerLink]="['/chat']">
+                    <app-c-button-normal
+                       level="primary my-btn-style"
+                       buttonType="button"
+                       label="Chat"
+                       buttonIconClass="fa fa-comment-dots"
+                    ></app-c-button-normal>
+                  </a>
+                </ng-container>
+                <ng-template #no_already_approached>
+                  <button type="button" class = "btn btn-primary my-btn-style" data-toggle="modal" data-target="#approachModal" ><i class="fa fa-paper-plane"></i> Approach with offer</button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!--only for admin starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin'">
+          <div class="row">
+            <div class="col-md-6">
+              <h4> <i class="fas fa-user"></i> Account </h4>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class = "col-md-6">
+              <app-c-formv-text label="Email verified:" [value]="is_verify"></app-c-formv-text>
+            </div>
+
+            <div class = "col-md-6">
+              <app-c-formv-text label="Account enabled:" [value]="account_status"></app-c-formv-text>
+            </div>
+            <div class = "col-md-6" *ngIf="userDoc['dissable_account_timestamp']">
+              <app-c-formv-date label="Account enabled/disabled timestamp:" [value]="userDoc['dissable_account_timestamp']"></app-c-formv-date>
+            </div>
+          </div>
+
+          <form #approve_form="ngForm" >
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" name="type"  [ngModel]="userDoc['type']">
+                <input type="hidden" name="email"  [ngModel]="userDoc['email']">
+                <input type="hidden" name="name"  [ngModel]="userDoc['first_name']">
+                <input type="hidden" name="is_verify" [ngModel]="userDoc['is_verify']">
+                <input type="hidden" name="id" [ngModel]="_id">
+                <!--New code for 23-Nov-2018-->
+                <div class="row">
+                  <div class="col-md-4">
+                    <app-c-forme-dropdown-single
+                      label="Select status"
+                      [value]="set_status"
+                      [options]="set_candidate_status"
+                      (selectedValue)="set_status = $event"
+                      (change)="changeStatus()"
+                    ></app-c-forme-dropdown-single>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
+                    <app-c-forme-dropdown-single
+                      label="Select reason"
+                      [value]="status_reason_rejected"
+                      [options]="set_candidate_status_rejected"
+                      [errorMsg]="status_error"
+                      (selectedValue)="status_reason_rejected = $event"
+                    ></app-c-forme-dropdown-single>
+                  </div>
+                  <div class="col-md-4" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
+                    <app-c-forme-dropdown-single
+                      label="Select reason"
+                      [value]="status_reason_deferred"
+                      [options]="set_candidate_status_deferred"
+                      [errorMsg]="status_error"
+                      (selectedValue)="status_reason_deferred = $event"
+                    ></app-c-forme-dropdown-single>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="col-md-6">
+                <app-c-forme-checkbox
+                  [options]="add_note_options"
+                  [value]="add_note"
+                  (change)="addNoteValue($event)"
+                >
+                </app-c-forme-checkbox>
+              </div>
+            </div>
+            <div class="row" *ngIf = "add_note === true">
+              <div class="col-md-4">
+                <app-c-forme-dropdown-single
+                  label="Template"
+                  [value]="note_template"
+                  [options]="templates"
+                  (selectedValue)="note_template = $event"
+                  (change)="selectTemplate($event,'note')"
+                ></app-c-forme-dropdown-single>
+              </div>
+              <div class="col-md-12">
+                <app-c-forme-html-area
+                  height="35"
+                  [value]="note"
+                  [errorMsg]="error"
+                  formattingBar="true"
+                  (htmlAreaValue) = "note = $event"
+                ></app-c-forme-html-area>
+              </div>
+            </div>
+
+            <div class="row m-0">
+              <div class="col-md-6">
+                <app-c-forme-checkbox
+                  [options]="add_email_options"
+                  [value]="send_email"
+                  (change)="sendEmailValue($event)"
+                >
+                </app-c-forme-checkbox>
+              </div>
+            </div>
+            <div class="row" *ngIf = "send_email === true">
+              <div class="col-md-4">
+                <app-c-forme-dropdown-single
+                  label="Template"
+                  [value]="email_template"
+                  [options]="templates"
+                  (selectedValue)="email_template = $event"
+                  (change)="selectTemplate($event,'email')"
+                ></app-c-forme-dropdown-single>
+              </div>
+              <div class="col-md-12">
+                <app-c-forme-text
+                  label="Subject:"
+                  [value]="email_subject"
+                  (textInputValue)="email_subject = $event"
+                ></app-c-forme-text>
+              </div>
+              <div class="col-md-12">
+                <app-c-forme-html-area
+                  height="35"
+                  [value]="email_text"
+                  [errorMsg]="error"
+                  formattingBar="true"
+                  (htmlAreaValue) = "email_text = $event"
+                ></app-c-forme-html-area>
+              </div>
+              <div class="col-md-7">
+                <p>Make sure the email text is complete and checked before you press Send</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class = "form-group">
+                  <app-c-button-normal *ngIf = "!email_text"
+                    (click) = "approveClick(approve_form)"
+                    buttonType="submit"
+                    label="Done"
+                    level = "primary"
+                    alignment="float-right"
+                  ></app-c-button-normal>
+
+                  <app-c-button-normal *ngIf = "email_text"
+                     (click) = "approveClick(approve_form)"
+                     buttonType="submit"
+                     label="Send"
+                     level="primary"
+                     alignment="float-right"
+                  ></app-c-button-normal>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="text-success float-right mt-2" *ngIf = "success">
+                  {{success}}
+                </div>
+                <div class="text-danger float-right mt-2" *ngIf = "error">
+                  {{error}}
+                </div>
+              </div>
+            </div>
+            <!--/New code for 23-Nov-2018-->
+          </form>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin' && candidateHistory">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-history"></i> History </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor="let history of candidateHistory; let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group" *ngIf="history.status">
+                <label *ngIf="history.status.status === 'approved' || history.status.status === 'created' || history.status.status === 'updated' || history.status.status === 'updated by admin' || history.status.status === 'wizard' || history.status.status === 'wizard completed'" class="border border-success p-2 text-success rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'reviewed'" class="border border-info p-2 text-info rounded font-weight-normal">
+                  {{history.status.status}}
+                </label>
+                <label *ngIf="history.status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">
+                  {{history.status.status}}: {{history.status.reason}}
+                </label>
+                <label *ngIf="history.status.status === 'deferred'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  {{history.status.status}}: {{history.status.reason}}
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6" *ngIf="history.note">
+              <app-c-formv-html-area label="Note" [value]="history.note"></app-c-formv-html-area>
+            </div>
+
+            <div class="col-md-6" *ngIf="history.email_html">
+              <app-c-formv-html-area label="Email" [value]="history.email_html"></app-c-formv-html-area>
+            </div>
+
+            <div class="col-md-12">
+              <hr *ngIf="i < (userDoc['candidate']['history'].length - 1)"  />
+            </div>
+          </div>
+        </section>
+        <!--only for admin ends-->
+
+        <!--section for progress bar-->
+        <section *ngIf="viewBy !== 'company'" class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-smile"></i> We're here to help</h2>
+            </div>
+          </div>
+          <div class="row py-3">
+            <div class="col-md-6 text-center">
+              <app-c-formv-image image="assets/images/antonio_sabado.jpg"></app-c-formv-image>
+              <h4>Antonio Sabado</h4>
+              <p>antonio@workonblockchain.com</p>
+              <p>+44 7923 521 833</p>
+            </div>
+            <div class="col-md-6">
+              <p>Hi i'm Antonio</p>
+              <strong>
+                I'm here to help you find work in the blockchain space.
+              </strong>
+              <br> <br>
+              <strong>
+                But first i need to make sure your profile looks attractive for companies. To do
+                this I need your help to ensure I understand exactly what you offer, and what
+                you are looking for.
+              </strong>
+              <br> <br>
+              <p>
+                Please take the time to add in as much detail as you can!
+              </p>
+            </div>
+          </div>
+          <app-i-formv-candidate-progressbar *ngIf="viewBy !== 'company'" [value]="progress_bar_value" [class]="progress_bar_class" [routerUrl]="routerUrl" [viewBy]="viewBy"></app-i-formv-candidate-progressbar>
+        </section>
+        <!--section for progress bar ends-->
+
+        <!--About section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-user"></i> About </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Email address:" [value]="userDoc['email']"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="userDoc['candidate'].github_account || userDoc['candidate'].stackexchange_account || userDoc['candidate'].linkedin_account || userDoc['candidate'].medium_account || userDoc['candidate'].stackoverflow_url || userDoc['candidate'].personal_website_url">
+            <div class="col-md-6">
+              <h4>Links</h4>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].github_account">
+            <div class="col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fab fa-github fa-2x" [link]="userDoc['candidate'].github_account"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].stackexchange_account">
+            <div class="col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fab fa-stack-exchange fa-2x" [link]="userDoc['candidate'].stackexchange_account"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].linkedin_account">
+            <div class="col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fab fa-linkedin-in fa-2x" [link]="userDoc['candidate'].linkedin_account"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].medium_account">
+            <div class="col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fab fa-medium-m fa-2x" [link]="userDoc['candidate'].medium_account"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].stackoverflow_url">
+            <div class = "col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fab fa-stack-overflow fa-2x" [link]="userDoc['candidate'].stackoverflow_url"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="userDoc['candidate'].personal_website_url">
+            <div class = "col-md-6">
+              <app-c-formv-text-linked-icon iconClass="fas fa-user fa-2x" [link]="userDoc['candidate'].personal_website_url"></app-c-formv-text-linked-icon>
+            </div>
+          </div>
+        </section>
+        <!--About section ends-->
+
+        <!--Residence section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-globe"></i> Residence/base location </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="residence"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text *ngIf="userDoc['candidate'].base_country" label="Country:" [value]="userDoc['candidate'].base_country"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text *ngIf="userDoc['candidate'].base_city" label="City:" [value]="userDoc['candidate'].base_city"></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+        <!--Residence section ends-->
+
+        <!--work pref section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2><i class="fas fa-briefcase"></i> Work preferences</h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="work_preferences"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="viewBy === 'company' && cand_job_activity">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-secret"></i> Job activity </h4>
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="viewBy === 'company' && cand_job_activity">
+            <div class = "col-md-12">
+              <app-c-formv-text label="New work opportunities:" [value]="cand_job_activity"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngIf="job_activity_status">
+            <div class="col-md-6">
+              <h4><i class="fas fa-search"></i> New opportunity interest </h4>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="new_work_opportunities">
+            <div class = "col-md-12">
+              <app-c-formv-text label="How interested are you in new work opportunities:" [value]="new_work_opportunities"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="currently_employed">
+            <div class = "col-md-12">
+              <app-c-formv-text label="Currently employed:" [value]="currently_employed"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="leaving_reasons">
+            <div class = "col-md-12">
+              <app-c-formv-list label="Why are you interested in leaving you current employer:" [value]="leaving_reasons">
+              </app-c-formv-list>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="other_reasons">
+            <div class = "col-md-12">
+              <app-c-formv-text label="Other reason:" [value]="other_reasons"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="counter_offer">
+            <div class = "col-md-12">
+              <app-c-formv-text label="Would you consider a counter-offer from your current employer:" [value]="counter_offer"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row mt-3" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
+            <div class = "col-md-12">
+              <div class="form-group">
+                <label class="mb-0"> Current annual salary:</label>
+                <small id="emailHelp" class="form-text text-muted mt-0 mb-2">This information is never shown to companies. It is used by us to help us help you set your expected salary.</small>
+                <p class="mr-2">
+                  {{userDoc['candidate'].current_currency}} {{userDoc['candidate'].current_salary}}
+                <p>
+              </div>
+            </div>
+          </div>
+
+          <!--for employee-->
+          <div class="row mt-2" *ngIf="employee.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-secret"></i> Employee</h4>
+            </div>
+
+            <div class="col-md-12 mt-4">
+              <app-c-formv-list label="Position type:" [value]="employee.value.employment_type"></app-c-formv-list>
+            </div>
+
+            <div class = "col-md-12">
+              <div *ngIf="employee.noVisaArray && employee.noVisaArray.length > 0">
+                <app-c-formv-list label="Locations:" [value]="employee.noVisaArray"></app-c-formv-list>
+              </div>
+              <div *ngIf="employee.visaRequiredArray && employee.visaRequiredArray.length > 0">
+                <app-c-formv-list label="Locations (work visa required):" [value]="employee.visaRequiredArray"></app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-list label="Roles:" [value]="employee.value.roles"></app-c-formv-list>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-text label="Expected annual salary:" [value]="employee.annual_salary"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-text label="Availability:" [value]="employee.value.employment_availability"></app-c-formv-text>
+            </div>
+          </div>
+
+          <!--for contractor-->
+          <div class="row mt-2" *ngIf="contractor.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-address-card"></i> Contractor</h4>
+            </div>
+
+            <div class = "col-md-12 mt-4">
+              <div *ngIf="contractor.noVisaArray && contractor.noVisaArray.length > 0">
+                <app-c-formv-list label="Locations:" [value]="contractor.noVisaArray"></app-c-formv-list>
+              </div>
+              <div *ngIf="contractor.visaRequiredArray && contractor.visaRequiredArray.length > 0">
+                <app-c-formv-list label="Locations (work visa required):" [value]="contractor.visaRequiredArray"></app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-list label="Roles:" [value]="contractor.value.roles"></app-c-formv-list>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-text label="Hourly rate:" [value]="contractor.expected_hourly_rate"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.max_hour_per_week">
+              <app-c-formv-text label="Maximum hours per week (optional):" [value]="contractor.value.max_hour_per_week"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.contractor_type">
+              <div class="form-group">
+                <label>Contractor type: </label>
+                <p *ngFor="let contractorType of contractor.value.contractor_type">{{contractorType}}</p>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.agency_website">
+              <app-c-formv-text label="Agency website:" [value]="contractor.value.agency_website"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="contractor.value.service_description">
+              <app-c-formv-textarea [value]="contractor.value.service_description"></app-c-formv-textarea>
+            </div>
+          </div>
+
+          <!--for contractor-->
+          <div class="row mt-2" *ngIf="volunteer.value">
+            <div class="col-md-6">
+              <h4><i class="fas fa-user-check"></i> Volunteer</h4>
+            </div>
+
+            <div class = "col-md-12 mt-4">
+              <div *ngIf="volunteer.noVisaArray && volunteer.noVisaArray.length > 0">
+                <app-c-formv-list label="Locations:" [value]="volunteer.noVisaArray"></app-c-formv-list>
+              </div>
+              <div *ngIf="volunteer.visaRequiredArray && volunteer.visaRequiredArray.length > 0">
+                <app-c-formv-list label="Locations (work visa required):" [value]="volunteer.visaRequiredArray"></app-c-formv-list>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-c-formv-list label="Roles:" [value]="volunteer.value.roles"></app-c-formv-list>
+            </div>
+
+            <div class="col-md-12" *ngIf="volunteer.value.max_hours_per_week">
+              <app-c-formv-text label="Maximum hours per week:" [value]="volunteer.value.max_hours_per_week"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
+              <app-c-formv-textarea [value]="volunteer.value.learning_objectives"></app-c-formv-textarea>
+            </div>
+          </div>
+        </section>
+        <!--work pref section ends-->
+
+        <!--Blockchain experience section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fab fa-bitcoin"></i> Blockchain experience </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="blockchain_experience"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="userDoc['candidate'].why_work">
+            <div class="col-md-12">
+              <app-c-formv-text label="Why work on blockchain?" [value]="userDoc['candidate'].why_work"></app-c-formv-text>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="interest_area">
+            <div class="col-md-12">
+              <app-c-formv-list label="Interest:" [value]="interest_area"></app-c-formv-list>
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
+            <div class="col-md-12 mb-2">
+              <h4>Technologies</h4>
+            </div>
+            <div class="col-md-12" *ngIf="commercial && commercial.length > 0">
+              <app-c-formv-list label="Commercial experience:" [value]="commercial"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
+            </div>
+            <div class="col-md-12" *ngIf="experimented && experimented.length>0">
+              <app-c-formv-list label="Experimented with:" [value]="experimented"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
+            </div>
+            <div class="col-md-12" *ngIf="commercial_skills && commercial_skills.length > 0">
+              <app-c-formv-list label="Skills:" [value]="commercial_skills"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_commercial_skills"></app-c-formv-textarea>
+            </div>
+          </div>
+        </section>
+        <!--Blockchain experience section ends-->
+
+        <!--Languages experience section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-code"></i> Experience </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="experience"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12 mb-3">
+              <app-c-formv-list label="Languages:" [value]="languages"></app-c-formv-list>
+            </div>
+          </div>
+        </section>
+        <!--Languages experience section ends-->
+
+        <!--Work history section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-wrench"></i> Work history </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="work_history"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor='let work of work_history'>
+            <div class="col-md-12">
+              <h4>{{work.positionname}}</h4>
+              <strong>{{work.companyname}}</strong>
+            </div>
+            <div class="col-md-6">
+              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}} <i class="fas fa-long-arrow-alt-right"></i> now.</p>
+              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} <i class="fas fa-long-arrow-alt-right"></i> {{work.enddate | date:'MMMM-yyyy'}} </p>
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-globe"></i> {{work.locationname}}
+            </div>
+            <div class="col-md-12">
+              <app-c-formv-textarea [value]="work.description"></app-c-formv-textarea>
+            </div>
+          </div>
+        </section>
+        <!--Work history section ends-->
+
+        <!--Education section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-6">
+              <h2> <i class="fas fa-university"></i> Education </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'candidate'">
+              <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="education_history"></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor='let edu of education_history'>
+            <div class="col-md-12">
+              <h4>{{edu.uniname}}</h4>
+            </div>
+            <div class="col-md-6">
+              <strong>{{edu.degreename}} - {{edu.fieldname}}</strong>
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-calendar" aria-hidden="true"></i>
+              {{edu.eduyear}}
+            </div>
+          </div>
+        </section>
+        <!--Education section ends-->
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach Modal -->
+  <div class="modal fade" id="approachModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title mx-auto" id="exampleModalLabel"><i class="fa fa-paper-plane"></i> Approach</h5>
+        </div>
+        <div class="modal-body">
+          <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+            <ng-container *ngIf="job_offer_log;else no_modal">
+            </ng-container>
+            <ng-template #no_modal>
+            </ng-template>
+            <div class="row">
+              <div class="col-md-12">
+                <app-c-forme-radio
+                  [options]="workTypes"
+                  [value]="approach_work_type"
+                  (selectedOption)="approach_work_type = $event"
+                  [errorMsg]="work_log"
+                  (change)="changeWorkTypes()"
+                  id="workTypes"
+                >
+                </app-c-forme-radio>
+              </div>
+            </div>
+            <div class="row" *ngIf="approach_work_type === 'employee'">
+              <div class="col-md-6">
+                <app-c-forme-text
+                  label="Job title"
+                  placeholder="Director"
+                  [value]="employee.job_title"
+                  (textInputValue)="employee.job_title = $event"
+                  [errorMsg]="job_title_log"
+                  (change)="jobTitleValidation()"
+                ></app-c-forme-text>
+              </div>
+              <div class="col-md-6">
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="employee.location"
+                  (textInputValue)="employee.location = $event"
+                  [errorMsg]="location_log"
+                  (change)="employeeLocationValidation()"
+                ></app-c-forme-text>
+              </div>
+              <div class="col-md-6">
+                <app-i-forme-approach-offer-rate
+                  label="Annual salary"
+                  [minSalary]="employee.min_salary"
+                  [maxSalary]="employee.max_salary"
+                >
+                </app-i-forme-approach-offer-rate>
+              </div>
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single
+                  [options]="currency"
+                  [errorMsg]="salary_currency_log"
+                  [value]="employee.currency"
+                  (selectedValue)="employee.currency = $event"
+                  (change)="employeeCurrencyValidate()"
+                ></app-c-forme-dropdown-single>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Employment type</label>
+                  <div class="form-check" *ngFor="let options of job_type">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="employee.job_type" [value]="options">
+                    <label class="form-check-label simple-radio-button" for="{{options}}">
+                      {{options}}
+                    </label>
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_type">
+                    {{employment_log}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <app-c-forme-html-area
+                  label="Employment description"
+                  height="12"
+                  [value]="employee.job_desc"
+                  [errorMsg]="job_desc_log"
+                  (htmlAreaValue) = "employee.job_desc = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'contractor'">
+
+              <div class="col-md-6">
+                <app-i-forme-approach-offer-rate
+                  label="Hourly rate"
+                  [minSalary]="contractor.hourly_rate_min"
+                  [maxSalary]="contractor.hourly_rate_max"
+                >
+                </app-i-forme-approach-offer-rate>
+              </div>
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single
+                  [options]="currency"
+                  [errorMsg]="hourly_currency_log"
+                  [value]="contractor.currency"
+                  (selectedValue)="contractor.currency = $event"
+                  (change)="contractorCurrencyValidate()"
+                ></app-c-forme-dropdown-single>
+              </div>
+              <div class="col-md-6">
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="contractor.location"
+                  (textInputValue)="contractor.location = $event"
+                  [errorMsg]="contractor_location_log"
+                  (change)="contractorLocationValidation()"
+                ></app-c-forme-text>
+              </div>
+              <div class="col-md-12">
+                <app-c-forme-html-area
+                  label="Contract description"
+                  height="12"
+                  [value]="contractor.contract_description"
+                  [errorMsg]="contract_desc_log"
+                  (htmlAreaValue) = "contractor.contract_description = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="approach_work_type === 'volunteer'">
+              <div class="col-md-6">
+                <app-c-forme-text
+                  label="Location"
+                  placeholder="London"
+                  [value]="volunteer.location"
+                  (textInputValue)="volunteer.location = $event"
+                  [errorMsg]="volunteer_location_log"
+                  (change)="volunteerLocationValidation()"
+                ></app-c-forme-text>
+              </div>
+
+              <div class="col-md-12">
+                <app-c-forme-html-area
+                  label="Opportunity description"
+                  height="12"
+                  [value]="volunteer.opportunity_description"
+                  [errorMsg]="volunteer_desc_log"
+                  (htmlAreaValue) = "volunteer.opportunity_description = $event"
+                  formattingBar="true"
+                ></app-c-forme-html-area>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <app-c-alert *ngIf="job_offer_log_erorr"
+                  [message]="job_offer_log_erorr"
+                  level="danger"
+                ></app-c-alert>
+                <app-c-alert *ngIf="job_offer_log_success"
+                   [message]="job_offer_log_success"
+                   level="success"
+                ></app-c-alert>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <app-c-button-normal
+                level="secondary"
+                buttonType="reset"
+                label="Reset"
+              ></app-c-button-normal>
+
+              <app-c-button-normal
+                level="primary"
+                buttonType="submit"
+                label="Send"
+              ></app-c-button-normal>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="popModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h2 class="modal-title text-center">
+            {{candidateMsgTitle}}
+          </h2>
+        </div>
+        <div class="modal-body">
+          <app-c-formv-html-area [value]="candidateMsgBody"></app-c-formv-html-area>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end model -->
+</section>
+
+<!-- Modal-b -->
+<div id="popModal_b" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title text-center">Update your profile<br></h4>
+        <legend class="w-auto m-0">
+          <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
+        </legend>
+      </div>
+      <h4 class = "text-center">{{first_name}} {{last_name}}</h4>
+      <div class="modal-body">
+        <div class = "">
+          <strong>
+            Where do you currently live, or where are you most frequently based?
+          </strong>
+          <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+            <app-c-forme-dropdown-single
+              label="Country"
+              [options]="base_countries"
+              [errorMsg]="country_log"
+              [value]="information.country"
+              (selectedValue)="information.country = $event"
+              (change)="candidateLocationValidate()"
+            ></app-c-forme-dropdown-single>
+            <app-c-forme-text
+              label="City"
+              placeholder="London"
+              [value]="information.city"
+              (textInputValue)="information.city = $event"
+              [errorMsg]="city_log"
+              (change)="candidateCityValidation()"
+            ></app-c-forme-text>
+            <div class="form-group">
+              <app-c-button-normal
+                level="primary form-control"
+                buttonType="submit"
+                label="Update your profile"
+              ></app-c-button-normal>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

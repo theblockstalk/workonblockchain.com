@@ -235,6 +235,9 @@
                       <textarea rows="5" id="comment" maxlength="3000" placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..." formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                     </div>
                   </div>
+                  <div class = "invalid-feedback d-inline ml-3" *ngIf="this.ExperienceForm.value.ExpItems[i].description && this.ExperienceForm.value.ExpItems[i].description.length < 100">
+                    {{job_desc_logs}}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 ">

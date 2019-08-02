@@ -3,7 +3,7 @@
   <div class="col-md-12">
     <app-c-forme-checkbox
       [options]="otherSkills"
-      label="Commercial experience (optional)"
+      label="Commercial experience"
       (selectedItem)="oncommerciallyOptions($event)"
       column="col-md-3 mb-3"
       [value]="platform"
@@ -32,7 +32,8 @@
     <app-c-forme-text-area
       rows="5"
       placeholder=""
-      label="Description of commercial experience"
+      maxLength="3000"
+      label="Description of commercial experience (optional)"
       [value]="description_commercial_skills"
       [errorMsg]="desErrMsg"
       (textareaInput)="description_commercial_skills = $event"

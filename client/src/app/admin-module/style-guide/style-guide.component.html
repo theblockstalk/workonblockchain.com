@@ -1125,9 +1125,71 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-2">
+      Image
+    </div>
+    <div class="col-md-7">
+      <app-c-formv-image [image]="candidate_image"></app-c-formv-image>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for candidate/company image.</li>
+      </ul>
+    </div>
+  </div>
 
+  <div class="row mt-4">
+    <div class="col-md-2">
+      Link accounts
+    </div>
+    <div class="col-md-7">
+      <app-c-formv-text-linked-icon iconClass="fab fa-stack-exchange fa-2x" link="stackexchange.com"></app-c-formv-text-linked-icon>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for candidate linked accounts.</li>
+      </ul>
+    </div>
+  </div>
 </div>
-<div class = "container">
+
+<!--section for progress bar-->
+<div class = "container mt-2">
+  <div class="row">
+    <div class="col-md-6">
+      <h2> <i class="fas fa-smile"></i> We're here to help</h2>
+    </div>
+  </div>
+  <div class="row py-3">
+    <div class="col-md-6 text-center">
+      <app-c-formv-image image="assets/images/antonio_sabado.jpg"></app-c-formv-image>
+      <h4>Antonio Sabado</h4>
+      <p>antonio@workonblockchain.com</p>
+      <p>+44 7923 521 833</p>
+    </div>
+    <div class="col-md-6">
+      <p>Hi i'm Antonio</p>
+      <strong>
+        I'm here to help you find work in the blockchain space.
+      </strong>
+      <br> <br>
+      <strong>
+        But first i need to make sure your profile looks attractive for companies. To do
+        this I need your help to ensure I understand exactly what you offer, and what
+        you are looking for.
+      </strong>
+      <br> <br>
+      <p>
+        Please take the time to add in as much detail as you can!
+      </p>
+    </div>
+  </div>
+  <app-i-formv-candidate-progressbar [value]="progress_bar_value" [class]="progress_bar_class" routerUrl="/admins/talent/878d64d64d6/edit" viewBy="admin"></app-i-formv-candidate-progressbar>
+</div>
+<!--section for progress bar ends-->
+
+<div class = "container mt-4">
   <h1>Forms (read mode, field values)</h1>
   <hr>
   <div class = "row">

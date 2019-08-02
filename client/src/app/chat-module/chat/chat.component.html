@@ -87,7 +87,7 @@
                 </div>
                 <div class = "p-2 w-25 float-left d-none d-md-block">
                   <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View approach</button>
-                  <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
+                  <a *ngIf="(currentUser.type === 'company')" routerLink="/users/talent/{{credentials.id}}" class="btn btn-warning float-right text-light">View candidate profile</a>
                 </div>
               </div>
               <ng-container *ngIf="file_uploaded === 0;else no_section" >

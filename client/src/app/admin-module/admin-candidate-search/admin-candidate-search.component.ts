@@ -7,6 +7,8 @@ import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {getFilteredNames} from "../../../services/object";
+import {formatDate} from '@angular/common';
+import {candidateBadge} from '../../../services/candidate';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -106,6 +108,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.response = "data";
             this.log= 'No candidates matched this search criteria';
+          }
+          for(let i=0;i<this.info.length;i++) {
+            this.info[i].candBadge = candidateBadge(this.info[i]);
           }
           this.setPage(1);
           this.length=0;

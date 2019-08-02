@@ -188,8 +188,12 @@
                           <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                         </ng-template>
                         <div class="ml-4">
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.initials">
+                            <h2 class="">{{data.initials}}</h2>
+                          </a>
+                          <a routerLink="/users/talent/{{data._id}}" *ngIf="data.first_name">
+                            <h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2>
+                          </a>
                         </div>
                         <span *ngIf="data.candidate.employee">
                           Expects {{data.candidate.employee.expected_annual_salary}} {{data.candidate.employee.currency}} per year
@@ -389,7 +393,7 @@
                   <label>Employment description</label>
                   <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc || (employee.job_desc && employee.job_desc.length > 3000)">
                     {{job_desc_log}}
                   </div>
                 </div>
@@ -447,7 +451,7 @@
                   <label>Contract description</label>
                   <ckeditor class="ckeditor_tab" [(ngModel)]="contractor.contract_description" #myckeditor name="contract_description" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.contract_description || (contractor.contract_description && contractor.contract_description.length > 3000)">
                     {{contract_desc_log}}
                   </div>
                 </div>
@@ -472,7 +476,7 @@
                   <label>Opportunity description</label>
                   <ckeditor class="ckeditor_tab" [(ngModel)]="volunteer.opportunity_description" #myckeditor name="opportunity_description" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!volunteer.opportunity_description || (volunteer.opportunity_description && volunteer.opportunity_description.length > 3000)">
                     {{volunteer_desc_log}}
                   </div>
                 </div>

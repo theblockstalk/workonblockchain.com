@@ -6,10 +6,10 @@ import { AboutComponent } from './about/about.component';
 import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
-import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
-import {ProfileResolver} from '../incomplete-profile.resolver';
 import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
 import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import {ProfileResolver} from '../incomplete-profile.resolver';
 
 const routes: Routes = [
   { path: 'terms-and-condition', component: CandidateTermsComponent, canActivate : [VerifyEmailMiddleware]},
@@ -18,8 +18,8 @@ const routes: Routes = [
   { path: 'work', component: JobComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'resume', component: ResumeComponent, canActivate : [VerifyEmailMiddleware]},
   { path: 'experience', component: ExperienceComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'candidate-verify-email' , component: CandidateVerifyEmailComponent},
   { path: 'candidate_profile', component: CandidateProfileComponent ,  canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
-  { path: 'candidate-verify-email' , component: CandidateVerifyEmailComponent}
 ];
 
 @NgModule({

@@ -124,7 +124,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.route.queryParams.subscribe(params => {
       if (params['queryBody']) {
         this.urlParameters = JSON.parse(params['queryBody']);
-        console.log(this.urlParameters);
         if (this.urlParameters) {
           this.no_value = true;
           if (this.urlParameters.work_type) {
@@ -1016,6 +1015,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     let errorCount = 0;
     if (this.approach_work_type === 'employee') {
+      this.job_desc_log = '';
       if (!this.employee.job_title) {
         this.job_title_log = 'Please enter job title';
         errorCount = 1;
@@ -1053,9 +1053,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.job_desc_log = 'Please enter job description';
         errorCount = 1;
       }
+      if (this.employee.job_desc && this.employee.job_desc.length > 3000) {
+        this.job_desc_log = 'Job description should be less then 3000 characters';
+        errorCount = 1;
+      }
     }
 
     if (this.approach_work_type === 'contractor') {
+      this.contract_desc_log = '';
       if (!this.contractor.hourly_rate_min) {
         this.hourly_rate_log = 'Please enter hourly rate';
         errorCount = 1;
@@ -1080,6 +1085,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.contract_desc_log = 'Please enter contract description';
         errorCount = 1;
       }
+      if (this.contractor.contract_description && this.contractor.contract_description.length > 3000) {
+        this.contract_desc_log = 'Contract description should be less then 3000 characters';
+        errorCount = 1;
+      }
       if (!this.contractor.location) {
         this.contractor_location_log = 'Please enter opportunity description';
         errorCount = 1;
@@ -1087,8 +1096,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (this.approach_work_type === 'volunteer') {
+      this.volunteer_desc_log = '';
       if (!this.volunteer.opportunity_description) {
         this.volunteer_desc_log = 'Please enter opportunity description';
+        errorCount = 1;
+      }
+      if (this.volunteer.opportunity_description && this.volunteer.opportunity_description.length > 3000) {
+        this.volunteer_desc_log = 'Opportunity description should be less then 3000 characters';
         errorCount = 1;
       }
       if (!this.volunteer.location) {

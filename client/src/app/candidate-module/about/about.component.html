@@ -69,68 +69,6 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="githubURL">Github account URL (optional)</label>
-                <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" id="githubURL" placeholder="https://github.com/username"  name="github_account" [(ngModel)]="info.github_account">
-                <div class = "invalid-feedback d-inline"  *ngIf="gitaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="stackURL">Stackexchange account URL (optional)</label>
-                <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" id="stackURL" placeholder="https://stackexchange.com/users/12345/username" name="exchange_account" [(ngModel)]="info.exchange_account">
-                <div class = "invalid-feedback d-inline"  *ngIf="stackaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label >Linkedin account URL (optional)</label>
-                <input type="text" #linkedinaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://linkedin.com/in/username"  name="linkedin_account" [(ngModel)]="info.linkedin_account">
-                <div class = "invalid-feedback d-inline"  *ngIf="linkedinaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label >Medium account URL (optional)</label>
-                <input type="text" #mediumaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://medium.com/username" name="medium_account" [(ngModel)]="info.medium_account">
-                <div class = "invalid-feedback d-inline"  *ngIf="mediumaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="githubURL">Stackoverflow URL (optional)</label>
-                <input type="text" #stackoverflowaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackoverflow.com/users/123345678/username" name="stackoverflow_url" [(ngModel)]="info.stackoverflow_url">
-                <div class = "invalid-feedback d-inline"  *ngIf="stackoverflowaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="stackURL">Personal website URL (optional)</label>
-                <input type="text" #personalaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://mywebsite.com" name="personal_website_url" [(ngModel)]="info.personal_website_url">
-                <div class = "invalid-feedback d-inline"  *ngIf="personalaccount.errors">
-                  Enter url in proper format.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
                 <label for="phone"><b>Phone</b></label>
                 <div class="input-group">
                   <div class="input-group-prepend my-style">
@@ -199,7 +137,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <!--<div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label>Image (optional)</label>
@@ -216,7 +154,7 @@
 
               </div>
             </div>
-          </div>
+          </div>-->
           <div class="form-group">
             <div class = "text-right">
               <a routerLink="/prefill-profile" class = "btn btn-warning text-white">Back</a>

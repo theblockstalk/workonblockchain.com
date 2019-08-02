@@ -354,7 +354,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
       if(this.commercialExp.selfValidate()) {
         blockchainBody.commercial_platforms = this.commercialExp.commercial_platforms;
-        blockchainBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
+        if(this.commercialExp.description_commercial_platforms) blockchainBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
+        else queryBody.unset_description_commercial_platforms = true;
       }
       else errorCount++;
     }
@@ -363,7 +364,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.experimentedWith.experimented_platforms && this.experimentedWith.experimented_platforms.length > 0) {
       if(this.experimentedWith.selfValidate()) {
         blockchainBody.experimented_platforms = this.experimentedWith.experimented_platforms;
-        blockchainBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
+        if(this.experimentedWith.description_experimented_platforms)  blockchainBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
+        else queryBody.unset_description_experimented_platforms = true;
       }
       else errorCount++;
     }
@@ -372,7 +374,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.commercialSkills.commercial_skills && this.commercialSkills.commercial_skills.length >0){
       if(this.commercialSkills.selfValidate()) {
         blockchainBody.commercial_skills = this.commercialSkills.commercial_skills;
-        blockchainBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
+        if(this.commercialSkills.description_commercial_skills) blockchainBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
+        else queryBody.unset_description_commercial_skills = true;
       }
       else errorCount++;
     }
@@ -482,7 +485,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             data => {
               if(data )
               {
-                this.router.navigate(['/candidate_profile']);
+                this.router.navigate(['/users/talent']);
               }
             },
             error => {
@@ -495,7 +498,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
             data => {
               if(data )
               {
-                this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.userDoc['_id'] } });
+                this.router.navigate(['/admins/talent/'+ this.userDoc['_id']]);
               }
             },
             error => {

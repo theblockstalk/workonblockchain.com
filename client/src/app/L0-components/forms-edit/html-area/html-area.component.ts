@@ -22,7 +22,8 @@ export class HtmlAreaComponent implements OnInit {
     if(this.formattingBar) this.formattingClass = 'ckeditor_tab';
     const ckeEditor =  {
       allowedContent: false,
-      extraPlugins: 'divarea'
+      extraPlugins: 'divarea',
+      removePlugins: 'resize,elementspath',
     };
 
     if(this.height) ckeEditor['height'] = this.height + 'rem';

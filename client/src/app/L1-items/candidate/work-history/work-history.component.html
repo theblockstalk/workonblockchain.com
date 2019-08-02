@@ -120,10 +120,13 @@
         <div class="col-md-12">
           <app-c-forme-text-area
             rows="5"
+            maxLength="3000"
             [value]="ExperienceForm.value.ExpItems[i].description"
             placeholder="Primary Ethereum smart contract writer, reviewer and auditor. I researched the ..."
             label="Job description (optional)"
             (textareaInput)="ExperienceForm.value.ExpItems[i].description = $event"
+            [errorMsg]="jobDescErrMsg[i]"
+            (change)="jobDesValidate(i)"
           ></app-c-forme-text-area>
         </div>
       </div>

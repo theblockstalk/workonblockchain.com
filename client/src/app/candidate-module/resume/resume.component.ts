@@ -383,19 +383,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
-    if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+    if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < 100){
       flag_commercial_desc = false;
-      this.commercial_desc_log = 'Please enter description of commercial experience';
+      this.commercial_desc_log = 'Please enter minimum 100 characters description';
     }
 
-    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+    if(this.experimented_platform.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < 100){
       flag_experimented_desc = false;
-      this.experimented_desc_log = 'Please enter description of experimented with';
+      this.experimented_desc_log = 'Please enter minimum 100 characters description';
     }
 
-    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+    if(this.commercialSkills.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < 100){
       flag_commercialSkills_desc = false;
-      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
+      this.commercialSkills_desc_log = 'Please enter minimum 100 characters description';
     }
 
     if(!this.why_work)
@@ -452,9 +452,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
 
-      if(this.experimented_platform.length == 0) {
+      if(this.experimented_platform.length === 0) {
         inputQuery.unset_experimented_platforms = true;
         expForm.value.unset_experimented_platforms = true;
+      }
+      else {
+        blockchainQuery.experimented_platforms = this.experimented_platform;
+        expForm.value.experimented_platform = this.experimented_platform;
       }
 
       candidateQuery.blockchain = blockchainQuery;

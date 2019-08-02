@@ -1,0 +1,39 @@
+/*progress bar styling*/
+.progress-color-warning{
+  color: #aaad3d;
+}
+
+.progress-color-info{
+  color: #6767d5;
+}
+
+.progress-color-success{
+  color: green;
+}
+
+.progress-font{
+  font-size: 20px;
+}
+
+.progress{
+  height:22px;
+}
+
+.progressbar-table td{
+  border-top: 0px !important;
+}
+
+.text-formatting-class-warn{
+  font-weight: bold;
+  color: #ffc107;
+}
+
+.text-formatting-class-info{
+  font-weight: bold;
+  color: #17a2b8;
+}
+
+.text-formatting-class-success{
+  font-weight: bold;
+  color: green;
+}
