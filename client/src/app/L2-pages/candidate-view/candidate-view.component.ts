@@ -5,7 +5,7 @@ import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
 import {changeLocationDisplayFormat, getNameFromValue} from '../../../services/object';
 import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
-import {candidateBadge} from '../../../services/object';
+import {candidateBadge, candidateProgress} from '../../../services/candidate';
 
 declare var $: any;
 
@@ -20,8 +20,6 @@ export class CandidateViewComponent implements OnInit {
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
-
-  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/
 
   routerUrl;
   user_id;
@@ -261,7 +259,7 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
 
     if(this.viewBy === 'admin') {
-      this.userDoc['candBadge'] = candidateBadge(this.userDoc['candidate']);
+      this.userDoc['candBadge'] = candidateBadge(this.userDoc);
 
       this.is_verify = 'No';
       if(this.userDoc['is_verify'] === 1) this.is_verify = 'Yes';
@@ -448,46 +446,26 @@ export class CandidateViewComponent implements OnInit {
       this.candidate_status = this.userDoc['candidate'].latest_status;
       this.created_date = this.userDoc['candidate'].history[this.userDoc['candidate'].history.length - 1].timestamp;
 
-      this.linked_websites = 0;
-      if(this.userDoc['candidate'].github_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackexchange_account) this.linked_websites++;
-      if(this.userDoc['candidate'].linkedin_account) this.linked_websites++;
-      if(this.userDoc['candidate'].medium_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackoverflow_url) this.linked_websites++;
-      if(this.userDoc['candidate'].personal_website_url) this.linked_websites++;
-
-      if(this.linked_websites>=2) {
+      let progressBar = candidateProgress(this.userDoc);
+      if(progressBar === 15){
+        this.progress_bar_value = 15;
         this.progress_bar_class = 'progress-bar bg-warning';
+      }
+      else if(progressBar === 25){
         this.progress_bar_value = 25;
+        this.progress_bar_class = 'progress-bar bg-warning';
       }
-
-      if(this.userDoc['candidate'].work_history) {
-        this.work_history = this.userDoc['candidate'].work_history;
-        this.work_history.sort(this.date_sort_desc);
-        for(let workHistory of this.userDoc['candidate'].work_history){
-          this.work_history_progress = 0;
-          if(workHistory.description.length < 100) break;
-          if(workHistory.description.length > 100) this.work_history_progress = 1;
-        }
-      }
-
-      if(this.work_history_progress && this.linked_websites>=2) {
-        this.progress_bar_class = 'progress-bar bg-info';
+      else if(progressBar === 50){
         this.progress_bar_value = 50;
+        this.progress_bar_class = 'progress-bar bg-info';
       }
-
-      if (blockchainMilestone){
-        if(this.linked_websites>=2 && this.work_history_progress === 1) {
-          this.progress_bar_class = 'progress-bar bg-info';
-          this.progress_bar_value = 75;
-        }
+      else if(progressBar === 75){
+        this.progress_bar_class = 'progress-bar bg-info';
+        this.progress_bar_value = 75;
       }
-
-      if(this.userDoc['image'] != null ) {
-        if(this.linked_websites>=2 && this.work_history_progress && blockchainMilestone) {
-          this.progress_bar_class = 'progress-bar bg-success';
-          this.progress_bar_value = 100;
-        }
+      else{
+        this.progress_bar_value = 100;
+        this.progress_bar_class = 'progress-bar bg-success';
       }
     }
 

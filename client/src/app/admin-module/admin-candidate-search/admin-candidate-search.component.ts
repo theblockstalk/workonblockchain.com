@@ -6,8 +6,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
-import {getFilteredNames, candidateBadge} from "../../../services/object";
+import {getFilteredNames} from "../../../services/object";
 import {formatDate} from '@angular/common';
+import {candidateBadge} from '../../../services/candidate';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -109,7 +110,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.log= 'No candidates matched this search criteria';
           }
           for(let i=0;i<this.info.length;i++) {
-            this.info[i].candBadge = candidateBadge(this.info[i].candidate);
+            this.info[i].candBadge = candidateBadge(this.info[i]);
           }
           this.setPage(1);
           this.length=0;
@@ -291,11 +292,4 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   filterAndSort(roles) {
     return getFilteredNames(roles, this.rolesData);
   }
-
-  /*setBadge(text, classColour, index) {
-    let candBadge : any = {};
-    candBadge.candidate_badge = text;
-    candBadge.candidate_badge_color = classColour;
-    return candBadge;
-  }*/
 }
