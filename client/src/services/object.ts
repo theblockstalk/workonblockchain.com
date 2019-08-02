@@ -166,8 +166,7 @@ export const checkNumber = function(number) {
   return /^[0-9]*$/.test(number);
 }
 
-
-export const priorityMilestonReached = function(candidate){
+/*export const priorityMilestonReached = function(candidate){
   if (!twoDayMilestonReached(candidate)) return false;
 
   if(candidate.blockchain) {
@@ -246,4 +245,4 @@ export const candidateBadge = function(candidate){
     candBadge = setBadge(latest_status, 'info');
   }
   return candBadge;
-}
+}*/
