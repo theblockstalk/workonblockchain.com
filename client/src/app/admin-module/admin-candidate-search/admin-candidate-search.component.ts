@@ -207,12 +207,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.information = this.filter_array(data);
 
 
-            for(let res of this.information)
-            {
-
+            for(let res of this.information) {
+              res.candBadge = candidateBadge(res);
               this.length++;
               this.info.push(res);
-
             }
 
             if(this.length> 0 )
