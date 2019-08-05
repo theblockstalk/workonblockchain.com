@@ -12,6 +12,7 @@ export class TextAreaComponent implements OnInit {
   @Input() errorMsg: string;
   @Input() value: string;
   @Input() field_description: string; //optional
+  @Input() maxLength: number; //optional
   @Output() textareaInput: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }

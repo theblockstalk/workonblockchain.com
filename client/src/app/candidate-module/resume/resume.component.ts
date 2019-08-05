@@ -144,7 +144,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
               }
             }
-            /*if(data['candidate'].blockchain)
+            if(data['candidate'].blockchain)
             {
 
               if(data['candidate'].blockchain.commercial_platforms)
@@ -274,7 +274,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
               }
 
-            }*/
+            }
 
 
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
@@ -371,39 +371,42 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     let flag_commercialSkills_desc = true;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    /*if(this.commercially_worked.length !== this.commercial_expYear.length )
+    if(this.commercially_worked.length !== this.commercial_expYear.length )
     {
       this.commercial_log = "Please fill year of experience";
     }
     if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
     {
       this.commercial_skill_log = "Please fill year of experience";
-    }*/
+    }
 
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
-    /*if(this.commercially_worked.length > 0 && !this.description_commercial_platforms){
+    if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < 100){
       flag_commercial_desc = false;
-      this.commercial_desc_log = 'Please enter description of commercial experience';
+      this.commercial_desc_log = 'Please enter minimum 100 characters description';
     }
 
-    if(this.experimented_platform.length > 0 && !this.description_experimented_platforms){
+    if(this.experimented_platform.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < 100){
       flag_experimented_desc = false;
-      this.experimented_desc_log = 'Please enter description of experimented with';
+      this.experimented_desc_log = 'Please enter minimum 100 characters description';
     }
 
-    if(this.commercialSkills.length > 0 && !this.description_commercial_skills){
+    if(this.commercialSkills.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < 100){
       flag_commercialSkills_desc = false;
-      this.commercialSkills_desc_log = 'Please enter description of commercial experience';
-    }*/
+      this.commercialSkills_desc_log = 'Please enter minimum 100 characters description';
+    }
 
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
 
-    if(this.why_work && this.selectedValue.length > 0)
+    if(this.why_work && this.selectedValue.length > 0  && this.commercially_worked.length === this.commercial_expYear.length
+      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
+    )
     {
       let inputQuery: any = {};
       let candidateQuery:any ={};
@@ -449,9 +452,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         expForm.value.description_commercial_skills = this.description_commercial_skills;
       }
 
-      if(this.experimented_platform.length == 0) {
+      if(this.experimented_platform.length === 0) {
         inputQuery.unset_experimented_platforms = true;
         expForm.value.unset_experimented_platforms = true;
+      }
+      else {
+        blockchainQuery.experimented_platforms = this.experimented_platform;
+        expForm.value.experimented_platform = this.experimented_platform;
       }
 
       candidateQuery.blockchain = blockchainQuery;

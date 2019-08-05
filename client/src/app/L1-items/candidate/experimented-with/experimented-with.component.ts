@@ -18,8 +18,8 @@ export class ExperimentedWithComponent implements OnInit {
 
   selfValidate() {
     if(this.experimented_platforms && this.experimented_platforms.length > 0) {
-      if(!this.description_experimented_platforms) {
-        this.errMsg = "Please enter description of experimentation";
+      if(this.description_experimented_platforms && this.description_experimented_platforms.length < 100) {
+        this.errMsg = 'Please enter minimum 100 characters description';
         return false;
       }
       delete this.errMsg;

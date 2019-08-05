@@ -32,6 +32,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   candidateMsgBody;
   error_msg;
   button_status;
+  job_desc_logs;
 
   inputArray=[];
 
@@ -543,6 +544,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           }
           if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
             verified=1;
+          }
+          if(this.ExperienceForm.value.ExpItems[key].description && this.ExperienceForm.value.ExpItems[key].description.length < 100){
+            verified=1;
+            this.job_desc_logs = 'Please enter minimum 100 characters description';
           }
           if(verified === 0) {
             this.exp_count = this.exp_count + 1;

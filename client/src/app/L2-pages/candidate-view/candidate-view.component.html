@@ -26,7 +26,8 @@
                 <span *ngIf="userDoc['initials']"><h3>{{userDoc['initials']}}</h3></span>
                 <app-c-formv-badge *ngIf = "viewBy === 'company' && already_approached === 1" class="primary" value="Already approached"></app-c-formv-badge>
                 <span *ngIf="viewBy === 'admin'">
-                  <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
+                  <app-c-formv-badge *ngIf = "userDoc['candBadge'].candidate_badge" [class]="userDoc['candBadge'].candidate_badge_color" [value]="userDoc['candBadge'].candidate_badge"></app-c-formv-badge>
+                  <p class="mt-2"><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : userDoc.type}" >Show Chat With Companies</a></p>
                 </span>
               </div>
             </div>
@@ -80,7 +81,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <app-c-formv-html-area [value]="userDoc['candidate']['description']"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="userDoc['candidate']['description']"></app-c-formv-textarea>
             </div>
           </div>
           <div class="row" *ngIf="viewBy === 'company'">
@@ -328,9 +329,9 @@
               <h2> <i class="fas fa-smile"></i> We're here to help</h2>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <app-c-formv-image image="assets/profile/profile-image.png"></app-c-formv-image>
+          <div class="row py-3">
+            <div class="col-md-6 text-center">
+              <app-c-formv-image image="assets/images/antonio_sabado.jpg"></app-c-formv-image>
               <h4>Antonio Sabado</h4>
               <p>antonio@workonblockchain.com</p>
               <p>+44 7923 521 833</p>
@@ -574,7 +575,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="contractor.value.service_description">
-              <app-c-formv-html-area label="Service description:" [value]="contractor.value.service_description"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="contractor.value.service_description"></app-c-formv-textarea>
             </div>
           </div>
 
@@ -602,7 +603,7 @@
             </div>
 
             <div class="col-md-12" *ngIf="volunteer.value.learning_objectives">
-              <app-c-formv-html-area label="Learning objectives:" [value]="volunteer.value.learning_objectives"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="volunteer.value.learning_objectives"></app-c-formv-textarea>
             </div>
           </div>
         </section>
@@ -635,17 +636,17 @@
             <div class="col-md-12 mb-2">
               <h4>Technologies</h4>
             </div>
-            <div class="col-md-12" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length>0) || (commercial_skills && commercial_skills.length > 0)">
+            <div class="col-md-12" *ngIf="commercial && commercial.length > 0">
               <app-c-formv-list label="Commercial experience:" [value]="commercial"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_commercial_platforms"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
             </div>
-            <div class="col-md-12 mt-3" *ngIf="experimented && experimented.length>0">
+            <div class="col-md-12" *ngIf="experimented && experimented.length>0">
               <app-c-formv-list label="Experimented with:" [value]="experimented"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_experimented_platforms"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
             </div>
-            <div class="col-md-12 mt-3" *ngIf="commercial_skills && commercial_skills.length > 0">
+            <div class="col-md-12" *ngIf="commercial_skills && commercial_skills.length > 0">
               <app-c-formv-list label="Skills:" [value]="commercial_skills"></app-c-formv-list>
-              <app-c-formv-html-area [value]="description_commercial_skills"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="description_commercial_skills"></app-c-formv-textarea>
             </div>
           </div>
         </section>
@@ -694,7 +695,7 @@
               <i class="fas fa-globe"></i> {{work.locationname}}
             </div>
             <div class="col-md-12">
-              <app-c-formv-html-area [value]="work.description"></app-c-formv-html-area>
+              <app-c-formv-textarea [value]="work.description"></app-c-formv-textarea>
             </div>
           </div>
         </section>

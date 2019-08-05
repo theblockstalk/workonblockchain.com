@@ -75,6 +75,7 @@
       [value]="contractor.service_description"
       placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis."
       rows="5"
+      maxLength="3000"
       [errorMsg]="descErrMsg"
       (change)="descValidation()"
       (textareaInput)="contractor.service_description = $event"

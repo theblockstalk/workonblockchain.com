@@ -5,6 +5,7 @@ import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
 import {changeLocationDisplayFormat, getNameFromValue} from '../../../services/object';
 import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
+import {candidateBadge, candidateProgress} from '../../../services/candidate';
 
 declare var $: any;
 
@@ -19,8 +20,6 @@ export class CandidateViewComponent implements OnInit {
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate", company
   @Input() anonimize: boolean; //true/false for view by company
-
-  //http://localhost:4200/admins/talent/5ced0aa45b3fda10fc2aef2b/
 
   routerUrl;
   user_id;
@@ -115,6 +114,8 @@ export class CandidateViewComponent implements OnInit {
   counter_offer;
   cand_job_activity;
   job_offer_log;
+  emailError;
+  noteError;
 
   date_sort_desc = function (date1, date2)
   {
@@ -258,6 +259,8 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['image']) this.candidate_image = this.userDoc['image'];
 
     if(this.viewBy === 'admin') {
+      this.userDoc['candBadge'] = candidateBadge(this.userDoc);
+
       this.is_verify = 'No';
       if(this.userDoc['is_verify'] === 1) this.is_verify = 'Yes';
 
@@ -358,10 +361,10 @@ export class CandidateViewComponent implements OnInit {
         );
     }
 
-    let commercial_platforms_check = 0,experimented_platforms_check = 0,commercial_skills_check=0;
+    let blockchainMilestone = 1;
     if(this.userDoc['candidate'] && this.userDoc['candidate'].blockchain) {
       if (this.userDoc['candidate'].blockchain.commercial_skills) {
-        if(this.viewBy === 'admin' || this.viewBy === 'candidate') commercial_skills_check = 1;
+        if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
         this.commercial_skills = this.userDoc['candidate'].blockchain.commercial_skills;
         this.commercial_skills.sort(function (a, b) {
           if (a.skill < b.skill) {
@@ -383,15 +386,14 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_commercial_skills) {
         this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          commercial_skills_check = 0;
-          if(this.description_commercial_skills.length > 100) commercial_skills_check = 1;
+          if(this.description_commercial_skills.length && this.description_commercial_skills.length < 100) blockchainMilestone = 0;
         }
       }
 
       if(this.userDoc['candidate'].blockchain.commercial_platforms){
         this.commercial = this.userDoc['candidate'].blockchain.commercial_platforms;
         if(this.commercial && this.commercial.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') commercial_platforms_check = 1;
+          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
           this.commercial.sort(function(a, b){
             if(a.platform_name < b.platform_name) { return -1; }
             if(a.platform_name > b.platform_name) { return 1; }
@@ -409,15 +411,14 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_commercial_platforms) {
         this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          commercial_platforms_check = 0;
-          if(this.description_commercial_platforms.length > 100) commercial_platforms_check = 1;
+          if(this.description_commercial_platforms && this.description_commercial_platforms.length < 100) blockchainMilestone = 0;
         }
       }
 
       if(this.userDoc['candidate'].blockchain.experimented_platforms){
         this.experimented = this.userDoc['candidate'].blockchain.experimented_platforms;
         if(this.experimented && this.experimented.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') experimented_platforms_check = 1;
+          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
           this.experimented.sort(function(a, b){
             if(a < b) { return -1; }
             if(a > b) { return 1; }
@@ -436,8 +437,7 @@ export class CandidateViewComponent implements OnInit {
       if(this.userDoc['candidate'].blockchain.description_experimented_platforms) {
         this.description_experimented_platforms = this.userDoc['candidate'].blockchain.description_experimented_platforms;
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          experimented_platforms_check = 0;
-          if(this.description_experimented_platforms.length > 100) experimented_platforms_check = 1;
+          if(this.description_experimented_platforms && this.description_experimented_platforms.length < 100) blockchainMilestone = 0;
         }
       }
     }
@@ -446,45 +446,26 @@ export class CandidateViewComponent implements OnInit {
       this.candidate_status = this.userDoc['candidate'].latest_status;
       this.created_date = this.userDoc['candidate'].history[this.userDoc['candidate'].history.length - 1].timestamp;
 
-      this.linked_websites = 0;
-      if(this.userDoc['candidate'].github_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackexchange_account) this.linked_websites++;
-      if(this.userDoc['candidate'].linkedin_account) this.linked_websites++;
-      if(this.userDoc['candidate'].medium_account) this.linked_websites++;
-      if(this.userDoc['candidate'].stackoverflow_url) this.linked_websites++;
-      if(this.userDoc['candidate'].personal_website_url) this.linked_websites++;
-
-      if(this.linked_websites>=2) {
+      let progressBar = candidateProgress(this.userDoc);
+      if(progressBar === 15){
+        this.progress_bar_value = 15;
         this.progress_bar_class = 'progress-bar bg-warning';
+      }
+      else if(progressBar === 25){
         this.progress_bar_value = 25;
+        this.progress_bar_class = 'progress-bar bg-warning';
       }
-
-      if(this.userDoc['candidate'].work_history) {
-        for(let workHistory of this.userDoc['candidate'].work_history){
-          this.work_history_progress = 0;
-          if(workHistory.description.length > 100){
-            this.work_history_progress = 1;
-            if(this.linked_websites>=2) {
-              this.progress_bar_class = 'progress-bar bg-info';
-              this.progress_bar_value = 50;
-            }
-            break;
-          }
-        }
+      else if(progressBar === 50){
+        this.progress_bar_value = 50;
+        this.progress_bar_class = 'progress-bar bg-info';
       }
-
-      if (commercial_platforms_check && experimented_platforms_check && commercial_skills_check){
-        if(this.linked_websites>=2 && this.work_history_progress === 1) {
-          this.progress_bar_class = 'progress-bar bg-info';
-          this.progress_bar_value = 75;
-        }
+      else if(progressBar === 75){
+        this.progress_bar_class = 'progress-bar bg-info';
+        this.progress_bar_value = 75;
       }
-
-      if(this.userDoc['image'] != null ) {
-        if(this.linked_websites>=2 && this.work_history_progress && (commercial_platforms_check && experimented_platforms_check && commercial_skills_check)) {
-          this.progress_bar_class = 'progress-bar bg-success';
-          this.progress_bar_value = 100;
-        }
+      else{
+        this.progress_bar_value = 100;
+        this.progress_bar_class = 'progress-bar bg-success';
       }
     }
 
@@ -592,6 +573,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.viewBy === 'admin') {
       this.error = '';
       this.success = '';
+      this.emailError = '';
+      this.noteError = '';
+      this.status_error = '';
+      let errorCount = 0;
       if (!this.set_status && !this.note && !this.send_email) {
         this.error = 'Please fill at least one field';
       }
@@ -601,40 +586,49 @@ export class CandidateViewComponent implements OnInit {
           if (this.status_reason_rejected) {
             approveForm.value.set_status = this.set_status;
             approveForm.value.status_reason_rejected = this.status_reason_rejected;
-            this.saveApproveData(approveForm.value);
           }
           else {
+            errorCount++;
             this.status_error = 'Please select a reason';
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (this.set_status === "Deferred" || this.set_status === "deferred") {
+        if (this.set_status === "Deferred" || this.set_status === "deferred") {
           if (this.status_reason_deferred) {
             approveForm.value.set_status = this.set_status;
             approveForm.value.status_reason_deferred = this.status_reason_deferred;
-            this.saveApproveData(approveForm.value);
           }
           else {
+            errorCount++;
             this.status_error = 'Please select a reason';
             this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
-        else if (this.send_email && this.email_text && !this.email_subject) {
-          this.error = 'Please enter email subject too.';
-
+        if(this.send_email && this.email_text && !this.email_subject) {
+          errorCount++;
+          this.emailError = 'Please enter email subject too.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
 
-        else if (this.send_email && !this.email_text && this.email_subject) {
-          this.error = 'Please enter email body too.';
-
+        if(this.send_email && !this.email_text && this.email_subject) {
+          errorCount++;
+          this.emailError = 'Please enter email body too.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
-        else {
-          if(this.email_text){
+
+        if(this.add_note && !this.note) {
+          errorCount++;
+          this.noteError = 'Please enter note text.';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
+        }
+        if(errorCount === 0) {
+          if(this.send_email && this.email_text){
             approveForm.value.email_subject = this.email_subject;
             approveForm.value.email_text = this.email_text;
           }
 
-          approveForm.value.note = this.note;
+          if(this.add_note && this.note) approveForm.value.note = this.note;
+
           approveForm.value.set_status = this.set_status;
           this.saveApproveData(approveForm.value);
           this.reset();
@@ -705,6 +699,7 @@ export class CandidateViewComponent implements OnInit {
 
   send_job_offer(msgForm: NgForm) {
     if(this.viewBy === 'company') {
+      this.job_desc_log = '';
       let errorCount = 0;
       if (this.approach_work_type === 'employee') {
         if (!this.employee.job_title) {
@@ -734,9 +729,14 @@ export class CandidateViewComponent implements OnInit {
           this.job_desc_log = 'Please enter job description';
           errorCount = 1;
         }
+        if (this.employee.job_desc && this.employee.job_desc.length > 3000) {
+          this.job_desc_log = 'Job description should be less then 3000 characters';
+          errorCount = 1;
+        }
       }
 
       if (this.approach_work_type === 'contractor') {
+        this.contract_desc_log = '';
         if (!this.contractor.location) {
           this.contractor_location_log = 'Please enter location';
           errorCount = 1;
@@ -760,15 +760,24 @@ export class CandidateViewComponent implements OnInit {
           this.contract_desc_log = 'Please enter contract description';
           errorCount = 1;
         }
+        if (this.contractor.contract_description && this.contractor.contract_description.length > 3000) {
+          this.contract_desc_log = 'Contract description should be less then 3000 characters';
+          errorCount = 1;
+        }
       }
 
       if (this.approach_work_type === 'volunteer') {
+        this.volunteer_desc_log = '';
         if (!this.volunteer.location) {
           this.volunteer_location_log = 'Please enter location';
           errorCount = 1;
         }
         if (!this.volunteer.opportunity_description) {
           this.volunteer_desc_log = 'Please enter opportunity description';
+          errorCount = 1;
+        }
+        if (this.volunteer.opportunity_description && this.volunteer.opportunity_description.length > 3000) {
+          this.volunteer_desc_log = 'Opportunity description should be less then 3000 characters';
           errorCount = 1;
         }
       }
