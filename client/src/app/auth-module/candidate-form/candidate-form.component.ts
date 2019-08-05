@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Inject, PLATFORM_ID} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
@@ -7,6 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
 import {environment} from '../../../environments/environment';
 import {constants} from '../../../constants/constants';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-candidate-form',
@@ -37,7 +38,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,private dataservice: DataService,
-    private authenticationService: UserService,private titleService: Title,private newMeta: Meta
+    private authenticationService: UserService,private titleService: Title,private newMeta: Meta,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
     this.code = localStorage.getItem('ref_code');
@@ -85,13 +87,15 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
 
@@ -104,16 +108,18 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+google_redirect_url;
     this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+linkedin_redirect_url+'&scope=r_liteprofile%20r_emailaddress';
-    $(function(){
-      var hash = window.location.hash;
-      hash && $('div.nav a[href="' + hash + '"]').tab('show');
-      $('.nav-tabs a').click(function (e) {
-        $(this).tab('show');
-        var scrollmem = $('body').scrollTop();
-        window.location.hash = this.hash;
-        $('html,body').scrollTop(scrollmem);
+    if (isPlatformBrowser(this.platformId)) {
+      $(function () {
+        var hash = window.location.hash;
+        hash && $('div.nav a[href="' + hash + '"]').tab('show');
+        $('.nav-tabs a').click(function (e) {
+          $(this).tab('show');
+          var scrollmem = $('body').scrollTop();
+          window.location.hash = this.hash;
+          $('html,body').scrollTop(scrollmem);
+        });
       });
-    });
+    }
 
     this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });

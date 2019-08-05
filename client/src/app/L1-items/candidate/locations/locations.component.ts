@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { UserService} from '../../../user.service';
 import {filter_array, removeDuplication} from '../../../../services/object';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-i-forme-locations',
@@ -15,7 +16,7 @@ export class LocationsComponent implements OnInit {
   autoSuggestController;
   resultItemDisplay;
   object;
-  constructor(public authenticationService: UserService) { }
+  constructor(public authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
     if(this.selectedLocation) {
@@ -67,21 +68,23 @@ export class LocationsComponent implements OnInit {
     if(this.selectedLocation.length > 9) {
       this.errorMsg = 'You can select maximum 10 locations';
       return false;
-      setInterval(() => {
-        delete this.errorMsg;
-        return true;
-      }, 3000);
+      if (isPlatformBrowser(this.platformId)) {
+        setInterval(() => {
+          delete this.errorMsg;
+          return true;
+        }, 3000);
+      }
     }
     else {
       if(this.selectedLocation.find(x => x['name'] === locationObj.name)) {
         this.errorMsg = 'This location has already been selected';
         return false;
-
-        setInterval(() => {
-          delete this.errorMsg;
-          return true;
-        }, 3000);
-
+        if (isPlatformBrowser(this.platformId)) {
+          setInterval(() => {
+            delete this.errorMsg;
+            return true;
+          }, 3000);
+        }
       }
       else {
         if(locationObj) this.selectedLocation.push({_id:locationObj._id ,  name: locationObj.name, visa_needed: false});

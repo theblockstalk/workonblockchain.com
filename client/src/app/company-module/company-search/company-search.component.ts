@@ -1,12 +1,11 @@
-import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ViewChild ,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
-declare var $:any;
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
-import {getFilteredNames} from "../../../services/object";
+import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-company-search',
@@ -120,7 +119,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchData;
   years_exp_value = '';
 
-  constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
       if (params['queryBody']) {
         this.urlParameters = JSON.parse(params['queryBody']);
@@ -187,13 +186,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
 
   }
 
@@ -247,8 +248,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/login']);
     }
     else if (this.currentUser && this.currentUser.type == 'company') {
-      $('.selectpicker').selectpicker('refresh');
-
+      if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
       this.skillsData.sort(function (a, b) {
         if (a.name < b.name) {
@@ -320,9 +320,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   for (let i = 0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
                   }
-                  setTimeout(() => {
-                    $('.selectpicker').selectpicker('refresh');
-                  }, 300);
+                  if (isPlatformBrowser(this.platformId)) {
+                    setTimeout(() => {
+                      $('.selectpicker').selectpicker('refresh');
+                    }, 300);
+                  }
 
                 }
                 if (!this.no_value) {
@@ -382,13 +384,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     for (let key of searches) {
       if (key['name'] === name) {
         this.saveSearchName = name;
-        setTimeout(() => {
-          $('.selectpicker').selectpicker();
-        }, 200);
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            $('.selectpicker').selectpicker();
+          }, 200);
 
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh');
-        }, 300);
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
+        }
 
         if (key['location']) {
           this.prefillLocationFEFormat(key['location']);
@@ -434,7 +438,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['expected_hourly_rate'] && key['current_currency']) this.contractorCurrency = key['current_currency'];
         else this.contractorCurrency = '';
 
-
         if (key['order_preferences']) this.blockchain_order = key['order_preferences'];
         else this.blockchain_order = [];
 
@@ -443,7 +446,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if (key['residence_country'] && key['residence_country'].length > 0) this.residence_country = key['residence_country'];
         else this.residence_country = '';
-        $('.selectpicker').selectpicker('refresh');
+        if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
       }
     }
@@ -462,9 +465,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found = '';
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+    }
 
     if (this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
     if (this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
@@ -473,7 +478,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     //this.populatePopupFields();
 
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
     if (this.residence_country && this.residence_country.length > 50) {
       this.residence_log = "Please select maximum 50 countries";
@@ -561,8 +566,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.hourly_rate = '';
     this.contractorCurrency = '';
     this.years_exp_value = '';
-    $('.selectpicker').val('default');
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) {
+      $('.selectpicker').val('default');
+      $('.selectpicker').selectpicker('refresh');
+    }
     this.router.navigate(['candidate-search'], {});
     this.getVerrifiedCandidate();
   }
@@ -652,9 +659,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }
 
                 }
-                setTimeout(() => {
-                  $('.selectpicker').selectpicker('refresh');
-                }, 300);
+                if (isPlatformBrowser(this.platformId)) {
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
+                }
               }
 
               setInterval(() => {
@@ -820,25 +829,29 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   queryParams: {queryBody: JSON.stringify(newQueryBody)}
                 });
 
-                $('#saveNewSearch').modal('hide');
+                if (isPlatformBrowser(this.platformId)) $('#saveNewSearch').modal('hide');
 
                 if (data['saved_searches'] && data['saved_searches'].length > 0) {
                   this.savedSearches = data['saved_searches'];
                   this.searchName = [];
                   for (let i = 0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
-                    setTimeout(() => {
-                      $('.selectpicker').selectpicker('refresh');
-                    }, 300);
+                    if (isPlatformBrowser(this.platformId)) {
+                      setTimeout(() => {
+                        $('.selectpicker').selectpicker('refresh');
+                      }, 300);
+                    }
                   }
 
                 }
                 this.fillFields(data['saved_searches'], this.preferncesForm.value.name);
                 this.searchdata('new search', this.preferncesForm.value);
 
-                setTimeout(() => {
-                  $('.selectpicker').selectpicker('refresh');
-                }, 300);
+                if (isPlatformBrowser(this.platformId)) {
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
+                }
 
                 this.preferncesForm.reset();
                 this.newSearchLocation = [];
@@ -877,6 +890,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         dataa => {
           this.candidate_data = dataa;
           this.alreadyApproachedCheck();
+
           this.setPage(1);
           if(this.candidate_data && this.candidate_data.length > 0) {
             this.not_found='';
@@ -975,9 +989,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.volunteer.opportunity_description = volunteerOffer.opportunity_description ;
               this.volunteer.location = volunteerOffer.location;
             }
-            setTimeout(() => {
-              $('.selectpicker').selectpicker('refresh');
-            }, 500);
+            if (isPlatformBrowser(this.platformId)) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
+            }
           }
 
         },
@@ -1010,6 +1026,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   max_salary_log;
   max_hourly_rate_log;
   work_log;
+
   send_job_offer(msgForm: NgForm) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -1115,6 +1132,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.work_log = "Please select work type";
       errorCount = 1;
     }
+
     if (errorCount === 0) {
       let job_offer: any = {};
       let new_offer: any = {};
@@ -1157,7 +1175,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data => {
             this.job_offer_log_success = 'Message successfully sent';
             this.employee = {};
-            $("#approachModal").modal("hide");
+            if (isPlatformBrowser(this.platformId)) $("#approachModal").modal("hide");
+
             this.router.navigate(['/chat']);
           },
           error => {
@@ -1365,16 +1384,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.newSearchLocation.splice(index, 1);
   }
 
-  refreshSelectBox(){
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
-    //this.populatePopupFields();
-    //this.searchdata("work_type", this.workTypes);
-  }
-
-  convertNumber(string) {
-    return Number(string);
+  refreshSelectBox() {
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+      //this.populatePopupFields();
+      //this.searchdata("work_type", this.workTypes);
+    }
   }
 
   alreadyApproachedCheck(){
@@ -1399,4 +1416,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
+  convertNumber(string) {
+    return Number(string);
+  }
 }

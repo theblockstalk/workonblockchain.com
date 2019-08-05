@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './admin-candidate-detail.component.html',
   styleUrls: ['./admin-candidate-detail.component.css']
 })
+
 export class AdminCandidateDetailComponent implements OnInit {
   user_id;
 

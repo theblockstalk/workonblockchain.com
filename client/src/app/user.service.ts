@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import {User} from './Model/user';
-import {CandidateProfile} from './Model/CandidateProfile';
 import { DataService } from './data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, throwError} from 'rxjs';
-
+import { throwError} from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {environment} from '../environments/environment';
 
@@ -21,11 +19,9 @@ export class UserService {
               private router: Router ,private dataservice: DataService)
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(this.currentUser)
-    {
+    if (this.currentUser) {
       this.token = this.currentUser.jwt_token;
     }
-
   }
 
   getAll()

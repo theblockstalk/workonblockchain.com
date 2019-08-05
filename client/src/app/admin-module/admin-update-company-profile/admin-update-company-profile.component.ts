@@ -1,14 +1,14 @@
-import { Component, OnInit, ElementRef , Input , ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef , Input , ViewChild, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
 import { Router , ActivatedRoute} from '@angular/router';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+declare var $:any;
 
 @Component({
   selector: 'app-admin-update-company-profile',
@@ -102,7 +102,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private router: Router ,private route: ActivatedRoute,
+              private authenticationService: UserService,
+              private dataservice: DataService,
+              private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
       this.company_id = params['company'];
     });
@@ -123,13 +126,15 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 500);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 500);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   initPrefRows()
@@ -200,7 +205,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
   locationArray = [];
   ngOnInit() {
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
@@ -290,10 +295,12 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             }
 
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
-              setTimeout(() => {
-                $('.selectpicker').selectpicker();
-                $('.selectpicker').selectpicker('refresh');
-              }, 500);
+              if (isPlatformBrowser(this.platformId)) {
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                  $('.selectpicker').selectpicker('refresh');
+                }, 500);
+              }
               this.prefData = data['saved_searches'];
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(
@@ -711,18 +718,22 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
   addNewSearch()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
   }
 
   refreshSelectBox() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
   }
   imageName;
   fileChangeListener($event) {
@@ -753,6 +764,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

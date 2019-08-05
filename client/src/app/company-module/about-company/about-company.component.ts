@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -6,9 +6,9 @@ import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+declare var $:any;
 const URL = environment.backend_url;
 
 @Component({
@@ -39,7 +39,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   prefil_image;
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
-              private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;
@@ -268,6 +268,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

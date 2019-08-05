@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "esnext",
+    "module": "commonjs",
+    "target": "es2015",
     "types": []
   },
   "exclude": [

@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-admin-company-search',
@@ -41,13 +42,16 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
   admin_checks_candidate_account = constants.admin_checks_candidate_account;
 
-  constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
+
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 200);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 200);
+    }
   }
   ngOnInit()
   {
@@ -260,8 +264,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.approve = '';
     this.info=[];
     this.searchWord='';
-    $('.selectpicker').val('default');
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) {
+      $('.selectpicker').val('default');
+      $('.selectpicker').selectpicker('refresh');
+    }
     this.getAllCompanies();
 
   }

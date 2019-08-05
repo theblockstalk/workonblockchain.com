@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 declare var $:any;
 
 @Component({
@@ -14,17 +15,19 @@ export class DropdownMultiselectComponent implements OnInit {
   @Output () selectedValue: EventEmitter<Array<string>> = new EventEmitter<Array<string>>();
   optionsType;
   labelClass;
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
     if(this.options) {
       if(this.options[0].hasOwnProperty('name')) this.optionsType = 'paired-array';
       else this.optionsType = 'array';
     }
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
 
     if(!this.label) {
       this.labelClass = 'invisible';
