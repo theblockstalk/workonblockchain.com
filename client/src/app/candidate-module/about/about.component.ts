@@ -65,6 +65,9 @@ export class AboutComponent implements OnInit,AfterViewInit
   contact_number_log;
   imagePreviewLink;
   prefil_image;
+  how_hear_about_wob = constants.hear_about_wob;
+  hear_about_wob_ErrMsg;
+  errMsgOtherReasons;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -132,6 +135,8 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
+            if(data['hear_about_wob']) this.info.hear_about_wob = data['hear_about_wob'];
+            if(data['hear_about_wob'] && data['hear_about_wob'] === 'Other' && data['hear_about_wob_other_info']) this.info.otherReasons = data['hear_about_wob_other_info'];
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
             if(data['refered_id'])
@@ -291,6 +296,15 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
+    if(!this.info.hear_about_wob){
+      this.hear_about_wob_ErrMsg = "Please choose an option";
+      errorCount++;
+    }
+    if((this.info.hear_about_wob && this.info.hear_about_wob === 'Other') && !this.info.otherReasons){
+      this.errMsgOtherReasons = "Please enter other info";
+      errorCount++;
+    }
+
     if(errorCount === 0 && this.imageCropData.image) {
       const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
       const formData = new FormData();
@@ -327,6 +341,9 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) candidateQuery.base_country = this.info.country;
       if(this.info.city) candidateQuery.base_city = this.info.city;
+      if(this.info.hear_about_wob) inputQuery.hear_about_wob = this.info.hear_about_wob;
+      if(this.info.hear_about_wob && this.info.hear_about_wob === 'Other' && this.info.otherReasons) inputQuery.hear_about_wob_other_info = this.info.otherReasons;
+
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 2;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
@@ -404,6 +421,15 @@ export class AboutComponent implements OnInit,AfterViewInit
     $('#imageModal').modal('hide');
   }
 
+  hear_about_wob_Validate(){
+    if(this.info.hear_about_wob)
+      this.hear_about_wob_ErrMsg = '';
+  }
+
+  otherReasons_Validate(){
+    if(this.info.otherReasons !== '')
+      this.errMsgOtherReasons = '';
+  }
 
 }
 

@@ -106,7 +106,7 @@ const UserSchema = new Schema({
         type: String,
         enum: enumerations.hearAboutWob
     },
-    other_info:{
+    hear_about_wob_other_info:{
         type: String
     },
     candidate: {

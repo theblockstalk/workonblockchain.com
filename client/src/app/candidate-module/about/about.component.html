@@ -137,6 +137,27 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-forme-dropdown-single
+                label="How did you hear about us?"
+                [value]="info.hear_about_wob"
+                [options]="how_hear_about_wob"
+                [errorMsg]="hear_about_wob_ErrMsg"
+                (selectedValue)="info.hear_about_wob = $event"
+                (change)="hear_about_wob_Validate()"
+              ></app-c-forme-dropdown-single>
+            </div>
+            <div class="col-md-6 mt-2" *ngIf="info.hear_about_wob === 'Other'">
+              <app-c-forme-text
+                [value]="info.otherReasons"
+                [errorMsg]="errMsgOtherReasons"
+                (textInputValue)="info.otherReasons = $event"
+                (change)="otherReasons_Validate()"
+              ></app-c-forme-text>
+            </div>
+          </div>
           <!--<div class="row">
             <div class="col-md-12">
               <div class="form-group">
