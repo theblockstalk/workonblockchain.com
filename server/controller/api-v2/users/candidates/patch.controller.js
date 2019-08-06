@@ -30,6 +30,10 @@ const bodySchema = new Schema({
         type: String,
         validate: regexes.url
     },
+    hear_about_wob:{
+        type: String,
+        enum: enumerations.hearAboutWob
+    },
     candidate: {
         job_activity_status:{
             new_work_opportunities: {
@@ -371,6 +375,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
         if (candidateQuery.base_city) updateCandidateUser['candidate.base_city'] = candidateQuery.base_city;
         if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
+        if (queryBody.hear_about_wob) updateCandidateUser.hear_about_wob = queryBody.hear_about_wob;
 
         if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
             updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;

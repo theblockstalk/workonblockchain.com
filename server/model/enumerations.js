@@ -40,3 +40,5 @@ module.exports.userTypes = ['candidate', 'company'];
 module.exports.jobActivityStatus = ['Not now', 'Open to offers (passive)', 'Actively searching', 'Actively interviewing'];
 
 module.exports.leavingCurrentEmployReasons = ['Higher salary', 'More responsibility', 'More challenging', 'New technology stack', 'New role', 'Other'];
+
+module.exports.hearAboutWob = ['Social media', 'Candidate from the platform', 'Company from the platform', 'Word of mouth', 'Internet search', 'Phone call', 'Other'];
