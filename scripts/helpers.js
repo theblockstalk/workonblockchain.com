@@ -111,7 +111,7 @@ async function copyDir(from, to, options) {
 
 const execCommand = async function (command) {
   return new Promise((resolve, reject) => {
-      exec(command, (err, stdout, stderr) => {
+      exec(command, {maxBuffer: 1000*1024}, (err, stdout, stderr) => {
           if (err) {
               reject(err);
           }
@@ -183,7 +183,7 @@ module.exports.zipServerDir = async function (tempDirName, directoryToZip, zipNa
         // good practice to catch warnings (ie stat failures and other non-blocking errors)
         archive.on('warning', function(err) {
             if (err.code === 'ENOENT') {
-                console.log(err);
+                console.warn(err);
             } else {
                 reject(err);
             }
@@ -230,7 +230,7 @@ module.exports.addElasticEnvironmentVersion = async function (s3bucket, appName,
         console.log(ebVersion);
     } catch(error) {
         if (error.message === 'Application Version ' + zipFileName.name + ' already exists.')
-            console.log('Application version was already found for the elastic beanstalk application');
+            console.warn('Application version was already found for the elastic beanstalk application');
         else throw error;
     }
 };
