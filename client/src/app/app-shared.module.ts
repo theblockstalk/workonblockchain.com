@@ -76,6 +76,7 @@ import { TextLinkedIconComponent } from './L0-components/forms-view/text-linked-
 import { EditLinkIconComponent } from './L0-components/forms-view/edit-link-icon/edit-link-icon.component';
 import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity/cand-job-activity.component';
 import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
+import { HowHearAboutWobComponent } from './L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 
 @NgModule({
   imports: [
@@ -97,7 +98,7 @@ import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
     CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
-    CandJobActivityComponent, ApproachOfferRateComponent
+    CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -115,7 +116,7 @@ import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
     CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
-    ApproachOfferRateComponent
+    ApproachOfferRateComponent, HowHearAboutWobComponent
   ]
 })
 export class SharedModule { }

@@ -140,16 +140,9 @@
 
           <div class="row">
             <div class="col-md-6">
-              <app-c-forme-dropdown-single
-                label="How did you hear about us?"
-                [value]="info.hear_about_wob"
-                [options]="how_hear_about_wob"
-                [errorMsg]="hear_about_wob_ErrMsg"
-                (selectedValue)="info.hear_about_wob = $event"
-                (change)="hear_about_wob_Validate()"
-              ></app-c-forme-dropdown-single>
+              <app-i-forme-how-hear-about-wob [howHearAboutWOB]="info.hear_about_wob"></app-i-forme-how-hear-about-wob>
             </div>
-            <div class="col-md-6 mt-2" *ngIf="info.hear_about_wob === 'Other'">
+            <div class="col-md-6 mt-2" *ngIf="howHearAboutWob.howHearAboutWOB === 'Other'">
               <app-c-forme-text
                 [value]="info.otherReasons"
                 [errorMsg]="errMsgOtherReasons"

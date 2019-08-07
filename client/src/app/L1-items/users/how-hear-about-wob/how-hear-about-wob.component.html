@@ -1,0 +1,8 @@
+<app-c-forme-dropdown-single
+  label="How did you hear about us?"
+  [value]="howHearAboutWOB"
+  [options]="how_hear_about_wob_options"
+  [errorMsg]="hear_about_wob_ErrMsg"
+  (selectedValue)="howHearAboutWOB = $event"
+  (change)="selfValidateHearAboutWOB()"
+></app-c-forme-dropdown-single>

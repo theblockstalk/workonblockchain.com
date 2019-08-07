@@ -8,7 +8,7 @@ declare var $:any;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
-
+import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 
 @Component({
   selector: 'app-about',
@@ -17,6 +17,8 @@ import {NgForm} from '@angular/forms';
 })
 export class AboutComponent implements OnInit,AfterViewInit
 {
+  @ViewChild(HowHearAboutWobComponent) howHearAboutWob: HowHearAboutWobComponent;
+
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
@@ -139,6 +141,7 @@ export class AboutComponent implements OnInit,AfterViewInit
             if(data['hear_about_wob'] && data['hear_about_wob'] === 'Other' && data['hear_about_wob_other_info']) this.info.otherReasons = data['hear_about_wob_other_info'];
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
+            console.log(this.info.hear_about_wob);
             if(data['refered_id'])
             {
               this.referred_id = data['refered_id'];
@@ -296,11 +299,11 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    if(!this.info.hear_about_wob){
+    if(!this.howHearAboutWob.selfValidateHearAboutWOB()){
       this.hear_about_wob_ErrMsg = "Please choose an option";
       errorCount++;
     }
-    if((this.info.hear_about_wob && this.info.hear_about_wob === 'Other') && !this.info.otherReasons){
+    if((this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other') && !this.info.otherReasons){
       this.errMsgOtherReasons = "Please enter other info";
       errorCount++;
     }
@@ -341,7 +344,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) candidateQuery.base_country = this.info.country;
       if(this.info.city) candidateQuery.base_city = this.info.city;
-      if(this.info.hear_about_wob) inputQuery.hear_about_wob = this.info.hear_about_wob;
+      if(this.howHearAboutWob.howHearAboutWOB) inputQuery.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
       if(this.info.hear_about_wob && this.info.hear_about_wob === 'Other' && this.info.otherReasons) inputQuery.hear_about_wob_other_info = this.info.otherReasons;
 
       inputQuery.candidate = candidateQuery;
