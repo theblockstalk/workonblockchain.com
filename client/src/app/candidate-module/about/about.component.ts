@@ -339,6 +339,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.city) candidateQuery.base_city = this.info.city;
       if(this.howHearAboutWob.howHearAboutWOB) inputQuery.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
       if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) inputQuery.hear_about_wob_other_info = this.otherInfo.otherInfo;
+      else inputQuery.unset_hear_about_wob_other_info = true;
 
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 2;

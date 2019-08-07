@@ -319,7 +319,8 @@ const bodySchema = new Schema({
     unset_counter_offer: Boolean,
     unset_description_commercial_platforms: Boolean,
     unset_description_experimented_platforms: Boolean,
-    unset_description_commercial_skills: Boolean
+    unset_description_commercial_skills: Boolean,
+    unset_hear_about_wob_other_info: Boolean
 });
 
 module.exports.inputValidation = {
@@ -378,6 +379,7 @@ module.exports.endpoint = async function (req, res) {
         if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
         if (queryBody.hear_about_wob) updateCandidateUser.hear_about_wob = queryBody.hear_about_wob;
         if (queryBody.hear_about_wob_other_info) updateCandidateUser.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
+        if (queryBody.unset_hear_about_wob_other_info) unset['hear_about_wob_other_info'] = 1;
 
         if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
             updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
