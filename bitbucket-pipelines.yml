@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:8.11.4
+# image: node:8.11.4
 
 pipelines:
   branches:
@@ -24,6 +24,8 @@ pipelines:
               - cd server
               - GIT_HASH=$(git log --pretty=format:'%h' -n 1)
               - ZIP_FILE=$GIT_HASH"-staging.zip"
+              - echo $ZIP_FILE
+              - apt-get install zip
               - zip $ZIP_FILE *
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
                 variables:
