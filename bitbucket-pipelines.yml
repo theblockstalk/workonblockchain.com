@@ -9,15 +9,15 @@ pipelines:
   branches:
       staging:
       - parallel:
-        - step:
-              name: "Deploy client to staging"
-              script:
-                - cd client
-                - npm install
-                - npm run build:serverless:staging
-                - npm install -g serverless
-                - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
-                - serverless deploy --stage staging
+        # - step:
+        #       name: "Deploy client to staging"
+        #       script:
+        #         - cd client
+        #         - npm install
+        #         - npm run build:serverless:staging
+        #         - npm install -g serverless
+        #         - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+        #         - serverless deploy --stage staging
         - step:
               name: "Deploy server to staging"
               script:
@@ -29,7 +29,7 @@ pipelines:
               - ZIP_FILE=$GIT_HASH"-staging.zip"
               - echo $ZIP_FILE
               - apt-get update
-              - apt-get install zip
+              - apt-get install zip -y
               - zip $ZIP_FILE *
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
                 variables:
