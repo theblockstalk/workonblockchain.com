@@ -18,11 +18,11 @@ pipelines:
                 - git config --global user.email "contact@workonblockchain.com"
                 - git log --pretty=format:'%h' -n 1
                 - GIT_HASH=$(git log --pretty=format:'%h' -n 1)
-                - ZIP_FILE=$GIT_HASH"-staging.zip"
+                - ZIP_FILE="server_"$GIT_HASH"_staging.zip"
                 - echo $ZIP_FILE
                 - apt-get update
                 - apt-get install zip -y
-                - zip $ZIP_FILE *
+                - zip -r $ZIP_FILE *
                 - npm install
                 - npm test
               services:
