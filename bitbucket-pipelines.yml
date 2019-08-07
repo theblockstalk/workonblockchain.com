@@ -15,10 +15,6 @@ pipelines:
               script:
                 - . ./scripts/git.sh staging
                 - cd server
-                - echo $SERVER_VERSION_FILE > "config/version.json"
-                - apt-get update
-                - apt-get install zip -y
-                - zip -r $SERVER_ZIP_FILE *
                 - npm install
                 - npm test
               services:
@@ -40,6 +36,11 @@ pipelines:
               script:
               - . ./scripts/git.sh staging
               - cd server
+              - echo $SERVER_VERSION_FILE > "config/version.json"
+              - apt-get update
+              - apt-get install zip -y
+              - ls
+              - zip -r $SERVER_ZIP_FILE *
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
                 variables:
                   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
