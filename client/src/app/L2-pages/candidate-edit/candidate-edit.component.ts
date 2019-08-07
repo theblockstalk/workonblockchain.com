@@ -116,6 +116,11 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   other_reasons;
   counter_offer;
   allData = 0;
+  how_hear_about_wob_options;
+  how_hear_about_wob_value;
+  hear_about_wob_other_info;
+  hear_about_wob_ErrMsg;
+  errMsgOtherReasons;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -130,6 +135,12 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    if(this.viewBy === 'admin') {
+      this.how_hear_about_wob_options = constants.hear_about_wob;
+      if(this.userDoc['hear_about_wob']) this.how_hear_about_wob_value = this.userDoc['hear_about_wob'];
+      if(this.userDoc['hear_about_wob_other_info']) this.hear_about_wob_other_info = this.userDoc['hear_about_wob_other_info'];
+    }
+
     this.reasons_of_leaving.sort(function(a, b){
       if(a.name < b.name) { return -1; }
       if(a.name > b.name) { return 1; }
