@@ -5,9 +5,9 @@ const tempClientDirName = './temp/client/dist/';
 let  buildCommand, cloudFrontId;
 
 (async function run() {
-    try {
+    // try {
         const environmentName = process.argv[2];
-        console.log('deploying the frontend to S3 bucket');
+        console.log('deploying the frontend to AWS Lambda');
         if (environmentName === 'production') {
             buildCommand = 'npm run build:serverless:prod';
             cloudFrontId = config.cloudFrontId.production;
@@ -23,11 +23,11 @@ let  buildCommand, cloudFrontId;
         await deployFrontend(environmentName);
         console.log("finished");
         console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");
-    } catch(error) {
-        console.log(error);
-        process.exit(1);
-    }
-    process.exit(0);
+    // } catch(error) {
+    //     console.error(error);
+    //     process.exit(1);
+    // }
+    // process.exit(0);
 })();
 
 async function deployFrontend(environmentName) {

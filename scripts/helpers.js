@@ -115,9 +115,12 @@ const execCommand = async function (command) {
           if (err) {
               reject(err);
           }
+          if (stderr) {
+              reject(stderr);
+          }
 
-          console.log(`stdout: `, stdout);
-          console.log(`stderr: `, stderr);
+          console.log(stdout);
+          // console.error(stderr);
           resolve();
       });
   });
@@ -246,8 +249,9 @@ module.exports.updateElisticEnvironment = async function (appName, envName, zipF
 };
 
 module.exports.buildAngularAndServer = async function (buildCommand) {
-    let command = 'cd ./client && npm install && ' + buildCommand;
-    console.log('Running command: ' + command);
+  let command = 'cd ./client && npm install && ' + buildCommand;
+  // let command = 'cd ./client && ' + buildCommand;
+  console.log('Running command: ' + command);
 
     await execCommand(command);
 };
