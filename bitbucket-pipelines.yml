@@ -9,16 +9,6 @@ pipelines:
   branches:
       staging:
        - step:
-           name: Run server unit tests
-           caches:
-             - node
-           script:
-             - cd server
-             - npm install
-             - npm test
-           services:
-             - mongo
-       - step:
             name: Deploy server and client to staging
             deployment: staging
             trigger: automatic
@@ -27,7 +17,6 @@ pipelines:
               - npm install
               - cd ../
               - node scripts/client.js staging
-              - node scripts/server.js staging
       master:
         - step:
             name: Run server unit tests

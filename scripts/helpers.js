@@ -112,16 +112,17 @@ async function copyDir(from, to, options) {
 const execCommand = async function (command) {
   return new Promise((resolve, reject) => {
       exec(command, {maxBuffer: 1000*1024}, (err, stdout, stderr) => {
-          if (err) {
-              reject(err);
-          }
-          if (stderr) {
-              reject(stderr);
-          }
+        console.log("stdout");
+        console.log(stdout);
+        if (stderr) {
+          console.error("stderr");
+          console.error(stderr);          
+        }
 
-          console.log("stdout");
-          console.log(stdout);
-          // console.error(stderr);
+        if (err) {
+              reject(err);
+        }
+
           resolve();
       });
   });
