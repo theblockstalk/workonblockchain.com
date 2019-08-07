@@ -28,6 +28,7 @@ pipelines:
               - GIT_HASH=$(git log --pretty=format:'%h' -n 1)
               - ZIP_FILE=$GIT_HASH"-staging.zip"
               - echo $ZIP_FILE
+              - apt-get update
               - apt-get install zip
               - zip $ZIP_FILE *
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
