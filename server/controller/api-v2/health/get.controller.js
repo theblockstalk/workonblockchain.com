@@ -1,6 +1,6 @@
 const Schema = require('mongoose').Schema;
 const amplitude = require('../../services/amplitude');
-// const version = require('../../../config/version.json').version;
+const version = require('../../../config/version.json').version;
 const errors = require('../../services/errors');
 const logger = require('../../services/logger');
 
@@ -30,6 +30,6 @@ module.exports.endpoint = async function (req, res) {
     res.json({
         success: true,
         message: "this is a health check for the API",
-        // version: version
+        version: version
     });
 }

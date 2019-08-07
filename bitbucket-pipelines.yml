@@ -20,6 +20,7 @@ pipelines:
                 - GIT_HASH=$(git log --pretty=format:'%h' -n 1)
                 - ZIP_FILE="server_"$GIT_HASH"_staging.zip"
                 - echo $ZIP_FILE
+                - echo "{ \"version\": \""$GIT_HASH"\" }" > "config/version.json"
                 - apt-get update
                 - apt-get install zip -y
                 - zip -r $ZIP_FILE *
@@ -34,6 +35,7 @@ pipelines:
                 - cd client
                 - npm install
                 - npm run build:serverless:staging
+                - echo "{ \"version\": \""$GIT_HASH"\" }" > "dist/version"
                 - npm install -g serverless
                 - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
                 - serverless deploy --stage staging
