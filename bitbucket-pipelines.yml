@@ -13,7 +13,7 @@ pipelines:
               caches:
                 - node
               script:
-                - . ./script/git.sh staging
+                - . ./scripts/git.sh staging
                 - cd server
                 - echo $SERVER_VERSION_FILE > "config/version.json"
                 - apt-get update
@@ -27,7 +27,7 @@ pipelines:
         - step:
               name: "Deploy client to staging"
               script:
-                - . ./script/git.sh staging
+                - . ./scripts/git.sh staging
                 - cd client
                 - npm install
                 - npm run build:serverless:staging
@@ -38,7 +38,7 @@ pipelines:
         - step:
               name: "Deploy server to staging"
               script:
-              - . ./script/git.sh staging
+              - . ./scripts/git.sh staging
               - cd server
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
                 variables:
