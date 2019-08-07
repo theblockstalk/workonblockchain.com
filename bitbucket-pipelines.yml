@@ -14,16 +14,11 @@ pipelines:
                 - node
               script:
                 - cd server
-                - git config --global user.name "WOB"
-                - git config --global user.email "contact@workonblockchain.com"
-                - git log --pretty=format:'%h' -n 1
-                - GIT_HASH=$(git log --pretty=format:'%h' -n 1)
-                - ZIP_FILE="server_"$GIT_HASH"_staging.zip"
-                - echo $ZIP_FILE
-                - echo "{ \"version\": \""$GIT_HASH"\" }" > "config/version.json"
+                - . ./script/git.sh staging
+                - echo $SERVER_VERSION_FILE > "config/version.json"
                 - apt-get update
                 - apt-get install zip -y
-                - zip -r $ZIP_FILE *
+                - zip -r $SERVER_ZIP_FILE *
                 - npm install
                 - npm test
               services:
@@ -35,7 +30,7 @@ pipelines:
                 - cd client
                 - npm install
                 - npm run build:serverless:staging
-                - echo "{ \"version\": \""$GIT_HASH"\" }" > "dist/version"
+                - echo $CLIENT_VERSION_FILE > "dist/version"
                 - npm install -g serverless
                 - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
                 - serverless deploy --stage staging
@@ -49,7 +44,7 @@ pipelines:
                   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                   AWS_DEFAULT_REGION: "eu-west-1"
                   APPLICATION_NAME: "staging.workonblockchain.com"
-                  ZIP_FILE: $ZIP_FILE
+                  ZIP_FILE: $SERVER_ZIP_FILE
                   S3_BUCKET: "elasticbeanstalk-eu-west-1-831241436261"
                   VERSION_LABEL: $GIT_HASH
                   ENVIRONMENT_NAME: "staging-api-workonblockchain-com"
