@@ -82,8 +82,8 @@ export class CommercialExperienceComponent implements OnInit {
   desValidate() {
     if(this.commercial_platforms) {
       if(this.commercial_platforms.length > 0) {
-        if(this.description_commercial_platforms && this.description_commercial_platforms.length < 100) {
-          this.desErrMsg = 'Please enter minimum 100 characters description';
+        if(this.description_commercial_platforms && this.description_commercial_platforms.length < 40) {
+          this.desErrMsg = 'Please enter minimum 40 characters description';
           return false;
         }
         delete this.desErrMsg;
