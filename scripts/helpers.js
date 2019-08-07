@@ -119,6 +119,7 @@ const execCommand = async function (command) {
               reject(stderr);
           }
 
+          console.log("stdout");
           console.log(stdout);
           // console.error(stderr);
           resolve();

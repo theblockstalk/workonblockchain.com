@@ -24,6 +24,7 @@ let  buildCommand, cloudFrontId;
         console.log("finished");
         console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");
     } catch(error) {
+        console.error("error");
         console.error(error);
         process.exit(1);
     }
