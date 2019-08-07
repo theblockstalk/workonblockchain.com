@@ -77,6 +77,7 @@ import { EditLinkIconComponent } from './L0-components/forms-view/edit-link-icon
 import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity/cand-job-activity.component';
 import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 import { HowHearAboutWobComponent } from './L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from './L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
 
 @NgModule({
   imports: [
@@ -98,7 +99,7 @@ import { HowHearAboutWobComponent } from './L1-items/users/how-hear-about-wob/ho
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
     CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
-    CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent
+    CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -116,7 +117,7 @@ import { HowHearAboutWobComponent } from './L1-items/users/how-hear-about-wob/ho
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
     CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
-    ApproachOfferRateComponent, HowHearAboutWobComponent
+    ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent
   ]
 })
 export class SharedModule { }

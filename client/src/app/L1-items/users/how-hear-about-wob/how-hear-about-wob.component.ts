@@ -15,7 +15,6 @@ export class HowHearAboutWobComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('howHearAboutWOB: ' + this.howHearAboutWOB);
   }
 
   selfValidateHearAboutWOB(){

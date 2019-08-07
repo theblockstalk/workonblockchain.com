@@ -9,6 +9,8 @@ import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+import {getLViewChild} from "@angular/core/src/render3/node_manipulation";
 
 @Component({
   selector: 'app-about',
@@ -18,6 +20,7 @@ import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wo
 export class AboutComponent implements OnInit,AfterViewInit
 {
   @ViewChild(HowHearAboutWobComponent) howHearAboutWob: HowHearAboutWobComponent;
+  @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
 
   @Input() name: string;
   cropperSettings: CropperSettings;
@@ -67,9 +70,6 @@ export class AboutComponent implements OnInit,AfterViewInit
   contact_number_log;
   imagePreviewLink;
   prefil_image;
-  how_hear_about_wob = constants.hear_about_wob;
-  hear_about_wob_ErrMsg;
-  errMsgOtherReasons;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -141,7 +141,6 @@ export class AboutComponent implements OnInit,AfterViewInit
             if(data['hear_about_wob'] && data['hear_about_wob'] === 'Other' && data['hear_about_wob_other_info']) this.info.otherReasons = data['hear_about_wob_other_info'];
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
-            console.log(this.info.hear_about_wob);
             if(data['refered_id'])
             {
               this.referred_id = data['refered_id'];
@@ -299,14 +298,8 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    if(!this.howHearAboutWob.selfValidateHearAboutWOB()){
-      this.hear_about_wob_ErrMsg = "Please choose an option";
-      errorCount++;
-    }
-    if((this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other') && !this.info.otherReasons){
-      this.errMsgOtherReasons = "Please enter other info";
-      errorCount++;
-    }
+    if(!this.howHearAboutWob.selfValidateHearAboutWOB()) errorCount++;
+    if((this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other') && !this.otherInfo.selfValidate()) errorCount++;
 
     if(errorCount === 0 && this.imageCropData.image) {
       const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
@@ -345,7 +338,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.country) candidateQuery.base_country = this.info.country;
       if(this.info.city) candidateQuery.base_city = this.info.city;
       if(this.howHearAboutWob.howHearAboutWOB) inputQuery.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
-      if(this.info.hear_about_wob && this.info.hear_about_wob === 'Other' && this.info.otherReasons) inputQuery.hear_about_wob_other_info = this.info.otherReasons;
+      if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) inputQuery.hear_about_wob_other_info = this.otherInfo.otherInfo;
 
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 2;
@@ -422,16 +415,6 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.imageCropData = {};
     }
     $('#imageModal').modal('hide');
-  }
-
-  hear_about_wob_Validate(){
-    if(this.info.hear_about_wob)
-      this.hear_about_wob_ErrMsg = '';
-  }
-
-  otherReasons_Validate(){
-    if(this.info.otherReasons !== '')
-      this.errMsgOtherReasons = '';
   }
 
 }

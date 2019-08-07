@@ -143,12 +143,7 @@
               <app-i-forme-how-hear-about-wob [howHearAboutWOB]="info.hear_about_wob"></app-i-forme-how-hear-about-wob>
             </div>
             <div class="col-md-6 mt-2" *ngIf="howHearAboutWob.howHearAboutWOB === 'Other'">
-              <app-c-forme-text
-                [value]="info.otherReasons"
-                [errorMsg]="errMsgOtherReasons"
-                (textInputValue)="info.otherReasons = $event"
-                (change)="otherReasons_Validate()"
-              ></app-c-forme-text>
+              <app-i-forme-hear-about-wob-other-info [otherInfo]="info.otherReasons"></app-i-forme-hear-about-wob-other-info>
             </div>
           </div>
 
