@@ -35,26 +35,26 @@ async function deployFrontend(environmentName) {
     console.log('This script will deploy the latest in the /client directory to the frontend application');
     console.log('Please make sure there is no files in the working directory (responsibly do a `git stash` if you are unsure)');
 
-    console.log();
-    console.log('(1/5) getting Git branch and commit info');
-    const gitInfo = await scriptHelpers.getGitCommit();
-    console.log(gitInfo);
+    // console.log();
+    // console.log('(1/5) getting Git branch and commit info');
+    // const gitInfo = await scriptHelpers.getGitCommit();
+    // console.log(gitInfo);
+    //
+    // scriptHelpers.checkGitBranch(gitInfo.branch, environmentName);
 
-    scriptHelpers.checkGitBranch(gitInfo.branch, environmentName);
+    // console.log();
+    // console.log('(2/5) building distribution in client/dist/');
+    // await scriptHelpers.buildAngularAndServer(buildCommand);
 
-    console.log();
-    console.log('(2/5) building distribution in client/dist/');
-    await scriptHelpers.buildAngularAndServer(buildCommand);
+    // console.log();
+    // console.log('(3/5) moving to temporary directory temp/client/dist');
+    // await scriptHelpers.createTempClientDir(tempClientDirName, environmentName === 'production');
+    // const versonName = 'client_' + gitInfo.commit + '_' + environmentName;
+    // await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
 
-    console.log();
-    console.log('(3/5) moving to temporary directory temp/client/dist');
-    await scriptHelpers.createTempClientDir(tempClientDirName, environmentName === 'production');
-    const versonName = 'client_' + gitInfo.commit + '_' + environmentName;
-    await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
-
-    console.log();
-    console.log('(4/5) Deploy to AWS');
-    await scriptHelpers.deployLambda(environmentName)
+    // console.log();
+    // console.log('(4/5) Deploy to AWS');
+    // await scriptHelpers.deployLambda(environmentName)
 
     console.log('(5/5) clearing CloudFront CDN cache (production only)');
     if (environmentName === 'production') {
