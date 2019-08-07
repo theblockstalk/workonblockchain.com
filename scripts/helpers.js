@@ -116,7 +116,7 @@ const execCommand = async function (command) {
         console.log(stdout);
         if (stderr) {
           console.error("stderr");
-          console.error(stderr);          
+          console.error(stderr);
         }
 
         if (err) {
@@ -259,7 +259,7 @@ module.exports.buildAngularAndServer = async function (buildCommand) {
 };
 
 module.exports.deployLambda = async function (environment) {
-    let command = 'sudo npm install -g serverless';
+    let command = 'npm install -g serverless';
     console.log('Running command: ' + command);
     await execCommand(command);
 
