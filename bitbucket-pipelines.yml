@@ -32,31 +32,23 @@ pipelines:
             - apt-get update
             - apt-get install zip -y
             - zip -r $SERVER_ZIP_FILE *
-            - cd ../
           artifacts:
-            # - client/**
+            - client/**
             - server/*.zip
       - parallel:
-        # - step:
-        #     name: "Deploy client to staging"
-        #     deployment: staging
-        #     script:
-        #       - cd client
-        #       - ls
-        #       - ls dist/
-        #       - npm install -g serverless
-        #       - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
-        #       - serverless deploy --stage staging
-        #     artifacts:
-        #       - client/**
-        #       - server/$SERVER_ZIP_FILE
+        - step:
+            name: "Deploy client to staging"
+            deployment: staging
+            script:
+              - cd client
+              # - npm install -g serverless
+              # - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+              # - serverless deploy --stage staging
         - step:
             name: "Deploy server to staging"
             script:
             - . ./scripts/git.sh staging
-            - ls
             - cd server
-            - ls
             - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
               variables:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -67,9 +59,6 @@ pipelines:
                 S3_BUCKET: "elasticbeanstalk-eu-west-1-831241436261"
                 VERSION_LABEL: $SERVER_VERSION
                 ENVIRONMENT_NAME: "staging-api-workonblockchain-com"
-            artifacts:
-              - client/**
-              - server/$SERVER_ZIP_FILE
       master:
         - step:
             name: "Run server unit tests"
