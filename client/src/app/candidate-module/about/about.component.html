@@ -142,7 +142,7 @@
             <div class="col-md-6">
               <app-i-forme-how-hear-about-wob [howHearAboutWOB]="info.hear_about_wob"></app-i-forme-how-hear-about-wob>
             </div>
-            <div class="col-md-6 mt-2" *ngIf="howHearAboutWob.howHearAboutWOB === 'Other'">
+            <div class="col-md-6 mt-2" *ngIf="info.otherReasons === 'Other' || howHearAboutWob.howHearAboutWOB === 'Other'">
               <app-i-forme-hear-about-wob-other-info [otherInfo]="info.otherReasons"></app-i-forme-hear-about-wob-other-info>
             </div>
           </div>
