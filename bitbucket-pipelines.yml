@@ -24,6 +24,7 @@ pipelines:
           script:
             - . ./scripts/git.sh staging
             - cd client
+            - npm install
             - npm run build:serverless:staging
             - echo $CLIENT_VERSION_FILE > "dist/version"
             - cd ../server
