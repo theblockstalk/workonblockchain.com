@@ -35,7 +35,7 @@ pipelines:
             - cd ../
           artifacts:
             # - client/**
-            - server/$SERVER_ZIP_FILE
+            - server/*.zip
       - parallel:
         # - step:
         #     name: "Deploy client to staging"
