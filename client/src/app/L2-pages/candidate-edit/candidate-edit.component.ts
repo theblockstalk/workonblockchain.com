@@ -137,15 +137,12 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
   hearAboutWOBSelect(){
     this.how_hear_about_wob = this.hearAboutWob.howHearAboutWOB;
-    console.log('my: ' + this.how_hear_about_wob);
   }
 
   ngOnInit() {
     if(this.viewBy === 'admin') {
-      console.log('in if: ' + this.viewBy);
       if(this.userDoc['hear_about_wob']) this.how_hear_about_wob = this.userDoc['hear_about_wob'];
       if(this.userDoc['hear_about_wob_other_info']) this.hear_about_wob_other_info = this.userDoc['hear_about_wob_other_info'];
-      console.log(this.how_hear_about_wob);
     }
 
     this.reasons_of_leaving.sort(function(a, b){
