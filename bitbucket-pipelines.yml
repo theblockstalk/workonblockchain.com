@@ -13,6 +13,8 @@ pipelines:
               caches:
                 - node
               script:
+                - pip3 --version
+                - python --version
                 - . ./scripts/git.sh staging
                 - cd server
                 - npm install
@@ -53,28 +55,54 @@ pipelines:
                   ENVIRONMENT_NAME: "staging-api-workonblockchain-com"
       master:
         - step:
-            name: Run server unit tests
-            caches:
-              - node
-            script:
-              - cd server
-              - npm install
-              - npm test
-            services:
-              - mongo
-        - step:
-            name: Deploy server and client to production
-            deployment: production
-            trigger: manual
-            script:
-              - cd client
-              - npm install
-              - npm install -g @angular/cli
-              - cd ../scripts
-              - npm install
-              - cd ../
-              - node scripts/client.js production
-              - node scripts/server.js production
+                name: "Run server unit tests"
+                caches:
+                  - node
+                script:
+                  - . ./scripts/git.sh staging
+                  - cd server
+                  - npm install
+                  - npm test
+                services:
+                  - mongo
+        - parallel:
+          - step:
+                name: "Deploy client to production"
+                deployment: client-production
+                trigger: manual
+                script:
+                  - . ./scripts/git.sh production
+                  - cd client
+                  - npm install
+                  - npm run build:serverless:prod
+                  - echo $CLIENT_VERSION_FILE > "dist/version"
+                  - npm install -g serverless
+                  - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+                  - serverless deploy --stage production
+                  - echo "MUST INVALIDATE CLOUDFRONT NOW!!!"
+          - step:
+                name: "Deploy server to production"
+                deployment: server-production
+                trigger: manual
+                script:
+                - . ./scripts/git.sh production
+                - cd server
+                - echo $SERVER_VERSION_FILE > "config/version.json"
+                - apt-get update
+                - apt-get install zip -y
+                - ls
+                - zip -r $SERVER_ZIP_FILE *
+                - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
+                  variables:
+                    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                    AWS_DEFAULT_REGION: "eu-west-1"
+                    APPLICATION_NAME: "production.workonblockchain.com"
+                    ZIP_FILE: $SERVER_ZIP_FILE
+                    S3_BUCKET: "elasticbeanstalk-eu-west-1-831241436261"
+                    VERSION_LABEL: $SERVER_VERSION
+                    ENVIRONMENT_NAME: "production-api-workonblockchain-com"
+
 options:
   max-time: 20
 
