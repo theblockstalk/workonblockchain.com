@@ -8,42 +8,43 @@ image: node:8.10
 pipelines:
   branches:
       staging:
-      - step:
-          name: "Run server unit tests"
-          caches:
-            - node
-          script:
-            - . ./scripts/git.sh staging
-            - cd server
-            - npm install
-            - npm test
-          services:
-            - mongo
+      # - step:
+      #     name: "Run server unit tests"
+      #     caches:
+      #       - node
+      #     script:
+      #       - . ./scripts/git.sh staging
+      #       - cd server
+      #       - npm install
+      #       - npm test
+      #     services:
+      #       - mongo
       - step:
           name: "Build client and server distributions"
           script:
             - . ./scripts/git.sh staging
             - cd client
-            - npm install
-            - npm run build:serverless:staging
-            - echo $CLIENT_VERSION_FILE > "dist/version"
+            # - npm install
+            # - npm run build:serverless:staging
+            # - echo $CLIENT_VERSION_FILE > "dist/version"
             - cd ../server
             - echo $SERVER_VERSION_FILE > "config/version.json"
             - apt-get update
             - apt-get install zip -y
             - zip -r $SERVER_ZIP_FILE *
+            - cd ../
           artifacts:
-            - client/**
+            # - client/**
             - server/$SERVER_ZIP_FILE
       - parallel:
-        - step:
-            name: "Deploy client to staging"
-            deployment: staging
-            script:
-              - cd client
-              - npm install -g serverless
-              - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
-              - serverless deploy --stage staging
+        # - step:
+        #     name: "Deploy client to staging"
+        #     deployment: staging
+        #     script:
+        #       - cd client
+        #       - npm install -g serverless
+        #       - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+        #       - serverless deploy --stage staging
         - step:
             name: "Deploy server to staging"
             script:
