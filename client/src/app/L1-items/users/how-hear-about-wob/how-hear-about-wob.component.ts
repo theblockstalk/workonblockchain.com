@@ -17,7 +17,7 @@ export class HowHearAboutWobComponent implements OnInit {
   ngOnInit() {
   }
 
-  selfValidateHearAboutWOB(){
+  selfValidate(){
     if(!this.howHearAboutWOB){
       this.hear_about_wob_ErrMsg = "Please choose an option";
       return false;

@@ -424,7 +424,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(!this.howHearAboutWob.selfValidateHearAboutWOB()){}
+    if(!this.howHearAboutWob.selfValidate()){}
 
     if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && !this.otherInfo.selfValidate()) count = 1;
 

@@ -181,7 +181,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
       this.yearValidation = "Please enter value greater than 1800";
     }
 
-    if(!this.howHearAboutWob.selfValidateHearAboutWOB()){}
+    if(!this.howHearAboutWob.selfValidate()){}
 
     if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && !this.otherInfo.selfValidate()) errorCount = 0;
 

@@ -298,7 +298,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
-    if(!this.howHearAboutWob.selfValidateHearAboutWOB()) errorCount++;
+    if(!this.howHearAboutWob.selfValidate()) errorCount++;
     if((this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other') && !this.otherInfo.selfValidate()) errorCount++;
 
     if(errorCount === 0 && this.imageCropData.image) {
