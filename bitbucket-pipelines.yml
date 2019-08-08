@@ -13,8 +13,6 @@ pipelines:
               caches:
                 - node
               script:
-                - pip3 --version
-                - python --version
                 - . ./scripts/git.sh staging
                 - cd server
                 - npm install
@@ -41,7 +39,6 @@ pipelines:
               - echo $SERVER_VERSION_FILE > "config/version.json"
               - apt-get update
               - apt-get install zip -y
-              - ls
               - zip -r $SERVER_ZIP_FILE *
               - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
                 variables:
@@ -79,7 +76,8 @@ pipelines:
                   - npm install -g serverless
                   - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
                   - serverless deploy --stage production
-                  - echo "MUST INVALIDATE CLOUDFRONT NOW!!!"
+                  - . ./scripts/aws-install.sh
+                  - aws cloudfront create-invalidation --distribution-id E2T7J9DH7RQP73 --paths "/*"
           - step:
                 name: "Deploy server to production"
                 deployment: server-production
