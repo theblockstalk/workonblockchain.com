@@ -362,6 +362,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   commercial_desc_log;
   experimented_desc_log;
   commercialSkills_desc_log;
+  max_characters_limit = 40;
 
   blockchain_exp(expForm: NgForm)
   {
@@ -383,19 +384,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
-    if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < 100){
+    if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < this.max_characters_limit){
       flag_commercial_desc = false;
-      this.commercial_desc_log = 'Please enter minimum 100 characters description';
+      this.commercial_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
     }
 
-    if(this.experimented_platform.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < 100){
+    if(this.experimented_platform.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < this.max_characters_limit){
       flag_experimented_desc = false;
-      this.experimented_desc_log = 'Please enter minimum 100 characters description';
+      this.experimented_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
     }
 
-    if(this.commercialSkills.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < 100){
+    if(this.commercialSkills.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < this.max_characters_limit){
       flag_commercialSkills_desc = false;
-      this.commercialSkills_desc_log = 'Please enter minimum 100 characters description';
+      this.commercialSkills_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
     }
 
     if(!this.why_work)
