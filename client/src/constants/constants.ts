@@ -479,8 +479,7 @@ export const constants = {
   hear_about_wob:[
     {name: 'Social media', value: "Social media"}, {name: 'Candidate from the platform', value: "Candidate from the platform"},
     {name: 'Company from the platform', value: "Company from the platform"}, {name: 'Word of mouth', value: "Word of mouth"},
-    {name: 'Internet search', value: "Internet search"}, {name: 'Phone call', value: "Phone call"},
-    {name: 'Other', value: "Other"}
+    {name: 'Internet search', value: "Internet search"}, {name: 'Other', value: "Other"}
   ]
 
 };
