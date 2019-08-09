@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm , FormsModule} from '@angular/forms';
 import { DataService } from '../../data.service';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-change-password',
@@ -21,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor( private route: ActivatedRoute,
                private router: Router,
-               private authenticationService: UserService,private dataservice: DataService) { }
+               private authenticationService: UserService,private dataservice: DataService,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -76,7 +77,7 @@ export class ChangePasswordComponent implements OnInit {
               localStorage.removeItem('googleUser');
               localStorage.removeItem('linkedinUser');
               localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+            if (isPlatformBrowser(this.platformId)) window.location.href = '/login';
 
 
 
