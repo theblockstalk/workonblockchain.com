@@ -9,13 +9,13 @@ module.exports.request = {
     path: '/users/auth/password'
 };
 
-const querySchema = new Schema({
+const bodySchema = new Schema({
     current_password: String,
     new_password: String
-})
+});
 
 module.exports.inputValidation = {
-    query: querySchema
+    body: bodySchema
 };
 
 module.exports.auth = async function (req) {
@@ -25,7 +25,7 @@ module.exports.auth = async function (req) {
 module.exports.endpoint = async function (req, res) {
     let userId = req.auth.user._id;
     const userDoc = req.auth.user;
-    let queryBody = req.query;
+    let queryBody = req.body;
     let hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.current_password, userDoc.salt)
 
     if (hashedPasswordAndSalt === userDoc.password_hash) {

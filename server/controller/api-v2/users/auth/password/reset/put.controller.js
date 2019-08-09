@@ -9,18 +9,18 @@ module.exports.request = {
     path: '/users/auth/password/reset'
 };
 
-const querySchema = new Schema({
+const bodySchema = new Schema({
     forgot_password_token: String,
     new_password: String
-})
+});
 
 module.exports.inputValidation = {
-    query: querySchema
+    body: bodySchema
 };
 
 module.exports.endpoint = async function (req, res) {
-    let passwordToken = req.query.forgot_password_token;
-    let queryBody = req.query;
+    let passwordToken = req.body.forgot_password_token;
+    let queryBody = req.body;
 
     let payloaddata = jwtToken.verifyJwtToken(passwordToken);
     if((payloaddata.exp - payloaddata.iat) === 3600) {
