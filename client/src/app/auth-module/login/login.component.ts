@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
     this.dataservice.forgetMessage.subscribe(message => this.forgetMessage = message);
     this.password_message='';
-    this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
+    this.dataservice.currentMessage.subscribe(message => this.error = message);
     setInterval(() => {
       this.message = "" ;
       this.error = '';
