@@ -475,6 +475,11 @@ export const constants = {
   ],
   add_email_options:[
     {name: 'Send email', value: 'send email', checked: false},
+  ],
+  hear_about_wob:[
+    {name: 'Social media', value: "Social media"}, {name: 'Candidate from the platform', value: "Candidate from the platform"},
+    {name: 'Company from the platform', value: "Company from the platform"}, {name: 'Word of mouth', value: "Word of mouth"},
+    {name: 'Internet search', value: "Internet search"}, {name: 'Other', value: "Other"}
   ]
 
 };

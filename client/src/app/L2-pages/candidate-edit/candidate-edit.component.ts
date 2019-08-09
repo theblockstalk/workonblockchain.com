@@ -31,6 +31,8 @@ import { WorkHistoryComponent } from '../../L1-items/candidate/work-history/work
 import { EducationHistoryComponent } from '../../L1-items/candidate/education-history/education-history.component';
 import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
 import {constants} from '../../../constants/constants';
+import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -68,6 +70,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(WorkHistoryComponent) workHistoryComp: WorkHistoryComponent;
   @ViewChild(EducationHistoryComponent) educationHistoryComp: EducationHistoryComponent;
   @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
+  @ViewChild(HowHearAboutWobComponent) hearAboutWob: HowHearAboutWobComponent;
+  @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
@@ -116,6 +120,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   other_reasons;
   counter_offer;
   allData = 0;
+  how_hear_about_wob;
+  hear_about_wob_other_info;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -129,7 +135,16 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
   }
 
+  hearAboutWOBSelect(){
+    this.how_hear_about_wob = this.hearAboutWob.howHearAboutWOB;
+  }
+
   ngOnInit() {
+    if(this.viewBy === 'admin') {
+      if(this.userDoc['hear_about_wob']) this.how_hear_about_wob = this.userDoc['hear_about_wob'];
+      if(this.userDoc['hear_about_wob_other_info']) this.hear_about_wob_other_info = this.userDoc['hear_about_wob_other_info'];
+    }
+
     this.reasons_of_leaving.sort(function(a, b){
       if(a.name < b.name) { return -1; }
       if(a.name > b.name) { return 1; }
@@ -272,6 +287,18 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
 
     if(this.nationalities.selfValidate()) queryBody.nationality = this.nationalities.nationality;
     else errorCount++;
+
+    if(this.viewBy === 'admin') {
+      if (this.hearAboutWob.selfValidate()) queryBody.hear_about_wob = this.hearAboutWob.howHearAboutWOB;
+      else errorCount++;
+
+      if (this.hearAboutWob.howHearAboutWOB && this.hearAboutWob.howHearAboutWOB === 'Other'){
+        if(this.otherInfo.selfValidate()) queryBody.hear_about_wob_other_info = this.otherInfo.otherInfo;
+        else errorCount++;
+      }
+
+      if (this.hearAboutWob.howHearAboutWOB && this.hearAboutWob.howHearAboutWOB !== 'Other') queryBody.unset_hear_about_wob_other_info = true;
+    }
 
     if(this.bioDescription.selfValidate()) candidateBody.description = this.bioDescription.description;
     else errorCount++;

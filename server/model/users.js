@@ -102,6 +102,13 @@ const UserSchema = new Schema({
         type:Boolean,
         default:false
     },
+    hear_about_wob: {
+        type: String,
+        enum: enumerations.hearAboutWob
+    },
+    hear_about_wob_other_info:{
+        type: String
+    },
     candidate: {
         type: {
             job_activity_status:{

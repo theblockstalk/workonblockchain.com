@@ -6,6 +6,7 @@ const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
+const users = require('../../../../model/mongoose/users');
 
 module.exports.request = {
     type: 'patch',
@@ -158,7 +159,13 @@ const bodySchema = new Schema({
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
-    }
+    },
+    hear_about_wob: {
+        type: String,
+        enum: enumerations.hearAboutWob
+    },
+    hear_about_wob_other_info:  String,
+    unset_hear_about_wob_other_info: Boolean
 });
 
 module.exports.inputValidation = {
@@ -196,8 +203,13 @@ module.exports.endpoint = async function (req, res) {
     if(employerDoc){
         const queryBody = req.body;
         let employerUpdate = {};
+        let userUpdate = {};
+        let unset = {};
         if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
         else {
+            if(queryBody.hear_about_wob) userUpdate.hear_about_wob = queryBody.hear_about_wob;
+            if(queryBody.hear_about_wob_other_info) userUpdate.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
+            if(queryBody.unset_hear_about_wob_other_info) unset['hear_about_wob_other_info'] = 1;
             if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
             if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
             if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
@@ -247,6 +259,14 @@ module.exports.endpoint = async function (req, res) {
             }
 
         }
+
+        let updateObj = {};
+        if(!objects.isEmpty(userUpdate))
+            updateObj.$set = userUpdate;
+        if(!objects.isEmpty(unset))
+            updateObj.$unset=  unset;
+        if(!objects.isEmpty(updateObj))
+            await users.update({_id: userId}, updateObj);
 
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
