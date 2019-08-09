@@ -77,11 +77,11 @@
                     </select>
                   </div>
                   <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required [(ngModel)]="info.contact_number">
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
-                    {{contact_name_log}}
-                  </div>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
                     {{country_code_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
+                    {{contact_name_log}}
                   </div>
                   <ng-container *ngIf="info.contact_number;else no_contact_number">
                     <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
