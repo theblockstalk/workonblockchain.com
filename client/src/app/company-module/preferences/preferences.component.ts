@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit , AfterViewInit, AfterViewChecked, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm,FormGroup,FormControl,FormBuilder,FormArray} from '@angular/forms';
 declare var $:any;
 import {constants} from '../../../constants/constants';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-preferences',
@@ -49,18 +50,20 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   expected_hourly_rate_log;
   locationArray = [];
 
-  constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
+  constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   ngAfterViewChecked() {
@@ -219,6 +222,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                   this.preferncesFormData()
                 )
               });
+              if (isPlatformBrowser(this.platformId)) {
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 400);
+              }
 
             }
 
@@ -278,6 +286,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     this.error_msg = "";
     this.validatedLocation = [];
     let count = 0;
+
     if(!this.locationArray[0] || this.locationArray[0].length <= 0) {
       this.country_input_log = "Please select at least one location";
       count=1;
@@ -417,7 +426,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data) {
-              $('#whatHappensNextModal').modal('show');
+              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
             }
           },
           error => {
@@ -505,7 +514,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   redirectToCompany()
   {
-    $('#whatHappensNextModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('hide');
     this.router.navigate(['/candidate-search']);
   }
 
@@ -628,9 +637,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   refreshSelectBox(){
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
   }
 
   get DynamicWorkFormControls()

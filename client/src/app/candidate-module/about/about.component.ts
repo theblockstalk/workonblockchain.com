@@ -1,16 +1,17 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
 import {getLViewChild} from "@angular/core/src/render3/node_manipulation";
+import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-about',
@@ -71,7 +72,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   imagePreviewLink;
   prefil_image;
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object)
   {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
@@ -92,13 +93,15 @@ export class AboutComponent implements OnInit,AfterViewInit
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   ngOnInit()
@@ -415,7 +418,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 
 }

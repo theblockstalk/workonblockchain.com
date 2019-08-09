@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../environments/environment';
-import { map } from 'rxjs/operators';
-const URL = environment.backend_url;
+import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
-
 
 @Injectable()
 export class ProfileResolver  {
@@ -14,6 +10,7 @@ export class ProfileResolver  {
 
   resolve() : void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log("resolve");
     if (this.currentUser)
     {
       if(this.currentUser.type === 'candidate') {
