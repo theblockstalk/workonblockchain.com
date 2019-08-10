@@ -127,9 +127,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.credentials.email='';
 
     this.dataservice.currentMessage.subscribe(message => this.message = message);
-    setInterval(() => {
-      this.message = "" ;
-    }, 13000);
+    if (isPlatformBrowser(this.platformId)) {
+      setInterval(() => {
+        this.message = "";
+      }, 13000);
+    }
   }
   log = '';
   email_log='';
