@@ -485,8 +485,10 @@ export class CandidateViewComponent implements OnInit {
       this.languages = newLanguages;
     }
 
-    this.work_history = this.userDoc['candidate'].work_history;
-    this.work_history.sort(this.date_sort_desc);
+    if(this.userDoc['candidate'].work_history) {
+      this.work_history = this.userDoc['candidate'].work_history;
+      this.work_history.sort(this.date_sort_desc);
+    }
 
     if(this.userDoc['candidate'].education_history) {
       this.education_history = this.userDoc['candidate'].education_history;
