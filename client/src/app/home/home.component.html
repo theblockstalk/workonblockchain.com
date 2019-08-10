@@ -4,6 +4,7 @@
       <h1 class = "text-center text-light">Learn and work on blockchain, DLT and cryptocurrency</h1>
     </div>
   </div>
+  
   <div class = "row">
     <div class = "col-md-12 text-center text-lg-left">
       <div class = "row row-main">
@@ -418,11 +419,23 @@
             </label>
           </div>
           <div class="modal-footer">
-            <!--<L0-buttons-normal buttonClass="btn-primary"  buttonType="submit" label="Subscribe" ></L0-buttons-normal>-->
+            <app-c-button-normal
+              level="primary form-control"
+              buttonType="submit"
+              label="Subscribe"
+            ></app-c-button-normal>
           </div>
           <div class="form-group">
-            <!--<L0-alerts alertClass="alert-success" *ngIf="log_success" [alertMsg]="log_success" ></L0-alerts>
-            <L0-alerts alertClass="alert-danger" *ngIf="log_error" [alertMsg]="log_error" ></L0-alerts>-->
+            <app-c-alert *ngIf="log_success"
+              [message]="log_success"
+              level="success"
+            >
+            </app-c-alert>
+            <app-c-alert *ngIf="log_error"
+              [message]="log_error"
+              level="danger"
+            >
+            </app-c-alert>
           </div>
         </form>
       </div>

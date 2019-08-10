@@ -9,8 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AdminUpdateCandidateProfileComponent implements OnInit {
   user_id;
 
-  constructor(private route: ActivatedRoute, private router: Router)
-  {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });

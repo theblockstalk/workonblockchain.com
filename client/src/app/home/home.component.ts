@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, Inject, PLATFORM_ID} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Title, Meta } from '@angular/platform-browser';
 import {NgForm} from '@angular/forms';
+import {isPlatformBrowser} from "@angular/common";
+
 declare var $: any;
 
 @Component({
@@ -19,7 +21,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   data;result;
   constructor( private route: ActivatedRoute,
                private router: Router,
-               private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
+               private authenticationService: UserService,private titleService: Title,private newMeta: Meta,
+               @Inject(PLATFORM_ID) private platformId: Object) {
     this.titleService.setTitle('Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers');
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
@@ -30,9 +33,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void
   {
-    $('.carousel').carousel({
-      interval: 3500
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      $('.carousel').carousel({
+        interval: 3500
+      });
+    }
     window.scrollTo(0, 0);
   }
   ngOnInit()
@@ -40,10 +45,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.newMeta.updateTag({ name: 'description', content: 'Work and jobs for blockchain, cryptocurrency and DLT. Work for freelancers, volunteers, developers, CTOs and more with or without blockchain experience.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'Jobs work blockchain technology, Developers freelance cryptocurrency, Hiring projects companies' });
     this.newMeta.updateTag({ name: 'title', content: 'Learn and work on blockchain and cryptocurrency projects, freelance and find jobs for developers' });
-    $('#text').html($('.active > .carousel-caption').html());
-    $('.slide').on('slid.bs.carousel', function () {
+    if (isPlatformBrowser(this.platformId)) {
       $('#text').html($('.active > .carousel-caption').html());
-    });
+      $('.slide').on('slid.bs.carousel', function () {
+        $('#text').html($('.active > .carousel-caption').html());
+      });
+    }
   }
 
   internalRoute(page,dst){
@@ -53,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   subscribe_modal_show(subscribeForm: NgForm) {
     this.button_status="submit";
-    $("#subscribeModal").modal("show");
+    if (isPlatformBrowser(this.platformId)) $("#subscribeModal").modal("show");
   }
 
   subscribe(subForm: NgForm) {

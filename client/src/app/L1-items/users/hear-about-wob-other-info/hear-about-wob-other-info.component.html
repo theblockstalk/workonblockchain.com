@@ -1,0 +1,6 @@
+<app-c-forme-text
+  [value]="otherInfo"
+  [errorMsg]="errMsg"
+  (textInputValue)="otherInfo = $event"
+  (change)="selfValidate()"
+></app-c-forme-text>

@@ -1,14 +1,17 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {NgForm} from '@angular/forms';
-
+import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+import {getLViewChild} from "@angular/core/src/render3/node_manipulation";
+import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-about',
@@ -17,6 +20,9 @@ import {NgForm} from '@angular/forms';
 })
 export class AboutComponent implements OnInit,AfterViewInit
 {
+  @ViewChild(HowHearAboutWobComponent) howHearAboutWob: HowHearAboutWobComponent;
+  @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
+
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
@@ -66,7 +72,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   imagePreviewLink;
   prefil_image;
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object)
   {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
@@ -87,13 +93,15 @@ export class AboutComponent implements OnInit,AfterViewInit
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   ngOnInit()
@@ -132,6 +140,8 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
+            if(data['hear_about_wob']) this.info.hear_about_wob = data['hear_about_wob'];
+            if(data['hear_about_wob'] && data['hear_about_wob'] === 'Other' && data['hear_about_wob_other_info']) this.info.otherReasons = data['hear_about_wob_other_info'];
             if(data['first_name']) this.info.first_name = data['first_name'];
             if(data['last_name']) this.info.last_name = data['last_name'];
             if(data['refered_id'])
@@ -291,6 +301,9 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.city_log = "Please enter base city";
       errorCount++;
     }
+    if(!this.howHearAboutWob.selfValidate()) errorCount++;
+    if((this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other') && !this.otherInfo.selfValidate()) errorCount++;
+
     if(errorCount === 0 && this.imageCropData.image) {
       const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
       const formData = new FormData();
@@ -327,6 +340,10 @@ export class AboutComponent implements OnInit,AfterViewInit
       if(this.info.nationality) inputQuery.nationality = this.info.nationality;
       if(this.info.country) candidateQuery.base_country = this.info.country;
       if(this.info.city) candidateQuery.base_city = this.info.city;
+      if(this.howHearAboutWob.howHearAboutWOB) inputQuery.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
+      if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) inputQuery.hear_about_wob_other_info = this.otherInfo.otherInfo;
+      else inputQuery.unset_hear_about_wob_other_info = true;
+
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 2;
       this.authenticationService.edit_candidate_profile(this.currentUser._id, inputQuery, false)
@@ -401,9 +418,8 @@ export class AboutComponent implements OnInit,AfterViewInit
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
-
 
 }
 

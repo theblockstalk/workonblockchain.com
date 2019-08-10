@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -6,10 +6,12 @@ import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+declare var $:any;
 const URL = environment.backend_url;
+import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
 
 @Component({
   selector: 'app-about-company',
@@ -17,6 +19,9 @@ const URL = environment.backend_url;
   styleUrls: ['./about-company.component.css']
 })
 export class AboutCompanyComponent implements OnInit,AfterViewInit {
+  @ViewChild(HowHearAboutWobComponent) howHearAboutWob: HowHearAboutWobComponent;
+  @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
+
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
@@ -37,9 +42,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   pref_disable;
   imagePreviewLink;
   prefil_image;
+  hear_about_wob;otherReasons;
+
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
-              private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private authenticationService: UserService,private dataservice: DataService,private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;
@@ -80,6 +87,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
           {
             if(data['company_founded'] || data['no_of_employees'] || data['company_funded'] || data['company_description'] ||data['company_logo'])
             {
+              if(data['_creator'].hear_about_wob) this.hear_about_wob = data['_creator'].hear_about_wob;
+              if(data['_creator'].hear_about_wob && data['_creator'].hear_about_wob === 'Other' && data['_creator'].hear_about_wob_other_info) this.otherReasons = data['_creator'].hear_about_wob_other_info;
               this.company_founded=data['company_founded'];
               this.no_of_employees=data['no_of_employees'];
               this.company_funded=data['company_funded'];
@@ -140,6 +149,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
   about_company(companyForm: NgForm)
   {
+    let errorCount = 1;
     this.error_msg="";
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
@@ -171,14 +181,21 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
       this.yearValidation = "Please enter value greater than 1800";
     }
 
+    if(!this.howHearAboutWob.selfValidate()){}
+
+    if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && !this.otherInfo.selfValidate()) errorCount = 0;
 
     if(!this.company_description)
     {
       this.des_log = 'Please fill company description';
     }
-    if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
+    if(errorCount && this.howHearAboutWob.howHearAboutWOB && this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
       companyForm.value.company_founded = parseInt(companyForm.value.company_founded);
+      if(this.howHearAboutWob.howHearAboutWOB) companyForm.value.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
+      if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) companyForm.value.hear_about_wob_other_info = this.otherInfo.otherInfo;
+      else companyForm.value.unset_hear_about_wob_other_info = true;
+
       this.authenticationService.edit_company_profile(this.currentUser._id, companyForm.value, false)
         .subscribe(
           data => {
@@ -268,6 +285,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

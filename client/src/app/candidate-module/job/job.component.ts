@@ -1,14 +1,14 @@
-import { Component, OnInit,AfterViewInit,ViewChild } from '@angular/core';
+import { Component, OnInit,AfterViewInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activity/cand-job-activity.component';
-
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
+import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-job',
@@ -18,7 +18,7 @@ import {unCheckCheckboxes} from "../../../services/object";
 export class JobComponent implements OnInit,AfterViewInit {
   @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) { }
   info: any = {};
   country ='';
   interest_area='';
@@ -90,9 +90,11 @@ export class JobComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 700);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 700);
+    }
   }
   ngOnInit()
   {
@@ -206,6 +208,12 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.volunteer.roles = volunteer.roles;
             }
 
+            if (isPlatformBrowser(this.platformId)) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+              }, 500);
+            }
+
             if(data['candidate'].job_activity_status) {
               if (data['candidate'].job_activity_status.new_work_opportunities) this.job_activity_value = data['candidate'].job_activity_status.new_work_opportunities;
               if (data['candidate'].job_activity_status.currently_employed) this.currently_employ = data['candidate'].job_activity_status.currently_employed;
@@ -226,11 +234,6 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.allData = 1;
             }
             else this.allData = 1;
-
-            setTimeout(() => {
-              $('.selectpicker').selectpicker();
-            }, 500);
-
           },
           error => {
             if(error['message'] === 500 || error['message'] === 401)
@@ -478,7 +481,6 @@ export class JobComponent implements OnInit,AfterViewInit {
           if(location.name === 'Remote') {
             this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
           }
-
         }
         this.contractor.locations = this.validatedLocation;
       }
@@ -684,9 +686,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-
             }
-
           },
           error=>
           {
@@ -715,7 +715,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     let objIndex = array.findIndex((obj => obj.name === input));
     array[objIndex].visa_needed = check;
     return array;
-
   }
 
   deleteLocationRow(array, index){
@@ -734,10 +733,11 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   workTypeChange(event) {
-
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
     if(event.target.checked)
     {
       this.selected_work_type.push(event.target.value);

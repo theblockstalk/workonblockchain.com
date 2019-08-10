@@ -170,6 +170,14 @@
                 <p>
               </div>
             </div>
+
+            <div class="col-md-6" *ngIf="data['_creator'].hear_about_wob">
+              <div class="form-group">
+                <label>How did you hear about us:</label>
+                <p> {{data['_creator'].hear_about_wob}} </p>
+                <p> {{data['_creator'].hear_about_wob_other_info}} </p>
+              </div>
+            </div>
           </div>
         </section>
 

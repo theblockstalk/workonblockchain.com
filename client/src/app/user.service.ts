@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import {User} from './Model/user';
-import {CandidateProfile} from './Model/CandidateProfile';
 import { DataService } from './data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable, throwError} from 'rxjs';
-
+import { throwError} from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {environment} from '../environments/environment';
 
@@ -21,11 +19,9 @@ export class UserService {
               private router: Router ,private dataservice: DataService)
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(this.currentUser)
-    {
+    if (this.currentUser) {
       this.token = this.currentUser.jwt_token;
     }
-
   }
 
   getAll()
@@ -284,7 +280,7 @@ export class UserService {
 
   reset_password(hash: string, data: User)
   {
-    return this.http.put(URL+'v2/users/auth/password/reset?forgot_password_token=' + hash+'&new_password='+data.password,'')
+    return this.http.put(URL+'v2/users/auth/password/reset',{forgot_password_token: hash, new_password: data.password})
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -313,7 +309,7 @@ export class UserService {
 
   change_password(params : any)
   {
-    return this.http.put(URL+'v2/users/auth/password?current_password=' + params.current_password+'&new_password='+params.confirm_password  ,'', {
+    return this.http.put(URL+'v2/users/auth/password' ,{current_password: params.current_password, new_password: params.confirm_password}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

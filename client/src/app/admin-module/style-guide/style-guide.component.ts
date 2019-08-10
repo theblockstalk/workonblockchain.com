@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Input, Inject, PLATFORM_ID } from '@angular/core';
 declare var $:any;
 import {constants} from "../../../constants/constants";
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: 'app-style-guide',
@@ -27,7 +28,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   country_codes = constants.country_codes;
   imageName;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;
@@ -69,10 +70,12 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 200);
-    $("#startdate_datepicker").datepicker();
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 200);
+      $("#startdate_datepicker").datepicker();
+    }
 
   }
   countries;
@@ -139,6 +142,6 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

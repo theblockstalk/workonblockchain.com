@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
@@ -6,6 +6,7 @@ import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 import {NgForm} from '@angular/forms';
 declare var $: any;
+import {isPlatformBrowser} from "@angular/common";
 
 const URL = environment.backend_url;
 @Component({
@@ -31,7 +32,8 @@ export class LinkedinImportComponent implements OnInit {
   resume_active_class;
   exp_active_class;
   error_log;
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
+
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   ngOnInit() {
@@ -114,17 +116,19 @@ export class LinkedinImportComponent implements OnInit {
       this.router.navigate(['/not_found']);
     }
 
-    $('#fileselect').bind('change', function () {
-      var filename = $("#fileselect").val();
-      if (/^\s*$/.test(filename)) {
-        $(".file-uploadd").removeClass('active');
-        $("#noFile").text("No file chosen...");
-      }
-      else {
-        $(".file-uploadd").addClass('active');
-        $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
-      }
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      $('#fileselect').bind('change', function () {
+        var filename = $("#fileselect").val();
+        if (/^\s*$/.test(filename)) {
+          $(".file-uploadd").removeClass('active');
+          $("#noFile").text("No file chosen...");
+        }
+        else {
+          $(".file-uploadd").addClass('active');
+          $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+        }
+      });
+    }
   }
 
   public fileselected(e) {

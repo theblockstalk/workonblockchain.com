@@ -1,15 +1,15 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
-declare var $:any;
 import {constants} from '../../../constants/constants';
 import {unCheckCheckboxes} from "../../../services/object";
+declare var $:any;
 
 @Component({
   selector: 'app-experience',
@@ -38,7 +38,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
               private router: Router,private dataservice: DataService,
-              private authenticationService: UserService) { }
+              private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) { }
 
 
   private education_data(): FormGroup[]
@@ -59,22 +59,26 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngAfterViewInit(): void
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 300);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
     window.scrollTo(0, 0);
 
   }
 
   currentWork(){
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
   }
   message;
   current_work_check=[];
@@ -348,10 +352,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   addNewExpRow()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
 
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
@@ -369,10 +375,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   addNewRow()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
     const control = <FormArray>this.EducationForm.controls['itemRows'];
     control.push(this.initItemRows());
   }
@@ -668,11 +676,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           data => {
             if(data)
             {
-              $("#popModal").modal({
-                backdrop: 'static',
-                keyboard: true,
-                show: true
-              });
+              if (isPlatformBrowser(this.platformId)) {
+                $("#popModal").modal({
+                  backdrop: 'static',
+                  keyboard: true,
+                  show: true
+                });
+              }
 
               //this.router.navigate(['/candidate_profile']);
             }
@@ -691,7 +701,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   redirectToCandidate()
   {
-    $('#popModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#popModal').modal('hide');
     this.router.navigate(['/users/talent']);
   }
   selectedValue;langValue;

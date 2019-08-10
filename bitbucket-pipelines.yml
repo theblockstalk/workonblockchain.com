@@ -3,55 +3,117 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:8.11.4
+image: node:8.10
 
 pipelines:
   branches:
       staging:
-       - step:
-           name: Run server unit tests
-           caches:
-             - node
-           script:
-             - cd server
-             - npm install
-             - npm test
-           services:
-             - mongo
-       - step:
-            name: Deploy server and client to staging
+      - step:
+          name: "Run server unit tests"
+          caches:
+            - node
+          script:
+            - cd server
+            - npm install
+            - npm test
+          services:
+            - mongo
+      - step:
+          name: "Build client and server distributions"
+          script:
+            - . ./scripts/git.sh staging
+            - cd client
+            - npm install
+            - npm run build:serverless:staging
+            - echo $CLIENT_VERSION_FILE > "dist/version"
+            - cd ../server
+            - echo $SERVER_VERSION_FILE > "config/version.json"
+            - apt-get update
+            - apt-get install zip -y
+            - zip -r $SERVER_ZIP_FILE *
+          artifacts:
+            - client/**
+            - server/*.zip
+      - parallel:
+        - step:
+            name: "Deploy client to staging"
             deployment: staging
-            trigger: automatic
-            script:
-              - cd scripts
-              - npm install
-              - cd ../
-              - node scripts/server.js staging
-              - node scripts/client.js staging
-      master:
-        - step:
-            name: Run server unit tests
-            caches:
-              - node
-            script:
-              - cd server
-              - npm install
-              - npm test
-            services:
-              - mongo
-        - step:
-            name: Deploy server and client to production
-            deployment: production
-            trigger: manual
             script:
               - cd client
-              - npm install
-              - npm install -g @angular/cli
-              - cd ../scripts
-              - npm install
-              - cd ../
-              - node scripts/client.js production
-              - node scripts/server.js production
+              - npm install -g serverless
+              - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+              - serverless deploy --stage staging
+        - step:
+            name: "Deploy server to staging"
+            script:
+            - . ./scripts/git.sh staging
+            - cd server
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: "eu-west-1"
+                APPLICATION_NAME: "staging.workonblockchain.com"
+                ZIP_FILE: $SERVER_ZIP_FILE
+                S3_BUCKET: "elasticbeanstalk-eu-west-1-831241436261"
+                VERSION_LABEL: $SERVER_VERSION
+                ENVIRONMENT_NAME: "staging-api-workonblockchain-com"
+      master:
+      - step:
+          name: "Run server unit tests"
+          caches:
+            - node
+          script:
+            - cd server
+            - npm install
+            - npm test
+          services:
+            - mongo
+      - step:
+          name: "Build client and server distributions"
+          script:
+            - . ./scripts/git.sh production
+            - cd client
+            - npm install
+            - npm run build:serverless:prod
+            - echo $CLIENT_VERSION_FILE > "dist/version"
+            - cd ../server
+            - echo $SERVER_VERSION_FILE > "config/version.json"
+            - apt-get update
+            - apt-get install zip -y
+            - zip -r $SERVER_ZIP_FILE *
+          artifacts:
+            - client/**
+            - server/*.zip
+      - parallel:
+        - step:
+            name: "Deploy client to production"
+            deployment: production
+            script:
+              - cd client
+              - npm install -g serverless
+              - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+              - serverless deploy --stage production
+              - . ./scripts/aws-install.sh
+              - aws cloudfront create-invalidation --distribution-id E2T7J9DH7RQP73 --paths "/*"
+        - step:
+            name: "Deploy server to production"
+            script:
+            - . ./scripts/git.sh production
+            - cd server
+            - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: "eu-west-1"
+                APPLICATION_NAME: "production.workonblockchain.com"
+                ZIP_FILE: $SERVER_ZIP_FILE
+                S3_BUCKET: "elasticbeanstalk-eu-west-1-831241436261"
+                VERSION_LABEL: $SERVER_VERSION
+                ENVIRONMENT_NAME: "production-api-workonblockchain-com"
+
+options:
+  max-time: 20
 
 definitions:
   services:
