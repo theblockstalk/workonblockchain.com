@@ -431,10 +431,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(!this.howHearAboutWob.selfValidate()){}
-
-    if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && !this.otherInfo.selfValidate()) count = 1;
-
     if(this.preferncesForm.value.prefItems.length > 0) {
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
         if(!this.preferncesForm.value.prefItems[i].name) {
@@ -499,7 +495,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       }
     }
 
-    if(count === 0 && this.howHearAboutWob.howHearAboutWOB && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {

@@ -62,15 +62,15 @@ export const candidateProgress = function(candidate){
   if(!candidateDoc.work_history) return 25;
   if(candidateDoc.work_history) {
     for (let work_item of candidateDoc.work_history) {
-      if (!work_item.description || work_item.description.length < 100) return 25;
+      if (!work_item.description || work_item.description.length < 40) return 25;
     }
   }
 
   if(candidateDoc.blockchain) {
     let blockchain = candidateDoc.blockchain;
-    if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0 && (!blockchain.description_commercial_platforms || blockchain.description_commercial_platforms.length < 100)) return 50;
-    if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && (!blockchain.description_experimented_platforms || blockchain.description_experimented_platforms.length < 100)) return 50;
-    if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && (!blockchain.description_commercial_skills || blockchain.description_commercial_skills.length < 100)) return 50;
+    if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0 && (!blockchain.description_commercial_platforms || blockchain.description_commercial_platforms.length < 40)) return 50;
+    if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0 && (!blockchain.description_experimented_platforms || blockchain.description_experimented_platforms.length < 40)) return 50;
+    if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0 && (!blockchain.description_commercial_skills || blockchain.description_commercial_skills.length < 40)) return 50;
   }
 
   if (!candidate.image) return 75;

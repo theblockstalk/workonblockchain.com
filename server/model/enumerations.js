@@ -41,4 +41,4 @@ module.exports.jobActivityStatus = ['Not now', 'Open to offers (passive)', 'Acti
 
 module.exports.leavingCurrentEmployReasons = ['Higher salary', 'More responsibility', 'More challenging', 'New technology stack', 'New role', 'Other'];
 
-module.exports.hearAboutWob = ['Social media', 'Candidate from the platform', 'Company from the platform', 'Word of mouth', 'Internet search', 'Other'];
+module.exports.hearAboutWob = ['Social media', 'Attended a WOB event', 'Contacted by WOB', 'Word of mouth', 'Internet search', 'Other'];
