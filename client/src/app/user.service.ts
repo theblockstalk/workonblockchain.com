@@ -280,7 +280,7 @@ export class UserService {
 
   reset_password(hash: string, data: User)
   {
-    return this.http.put(URL+'v2/users/auth/password/reset?forgot_password_token=' + hash+'&new_password='+data.password,'')
+    return this.http.put(URL+'v2/users/auth/password/reset',{forgot_password_token: hash, new_password: data.password})
       .pipe(map((res: Response) =>
       {
         if (res)
@@ -309,7 +309,7 @@ export class UserService {
 
   change_password(params : any)
   {
-    return this.http.put(URL+'v2/users/auth/password?current_password=' + params.current_password+'&new_password='+params.confirm_password  ,'', {
+    return this.http.put(URL+'v2/users/auth/password' ,{current_password: params.current_password, new_password: params.confirm_password}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

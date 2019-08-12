@@ -292,8 +292,8 @@ export class WorkHistoryComponent implements OnInit {
   }
 
   jobDesValidate(index){
-    if(this.ExperienceForm.value.ExpItems[index].description && this.ExperienceForm.value.ExpItems[index].description.length < 100) {
-      this.jobDescErrMsg[index] = 'Please enter minimum 100 characters description';
+    if(this.ExperienceForm.value.ExpItems[index].description && this.ExperienceForm.value.ExpItems[index].description.length < 40) {
+      this.jobDescErrMsg[index] = 'Please enter minimum 40 characters description';
       return false;
     }
     delete this.jobDescErrMsg[index];

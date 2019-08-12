@@ -25,10 +25,14 @@ const destroyToken = module.exports.destroyToken  = async function destroyToken(
 }
 
 const changeUserPassword = module.exports.changeUserPassword = async function(inputData,jwtToken){
+    const input = {
+        current_password:inputData.current_password,
+        new_password: inputData.password
+    };
     const res = await chai.request(server)
-        .put('/v2/users/auth/password?current_password='+inputData.current_password+'&new_password='+inputData.password)
+        .put('/v2/users/auth/password')
         .set('Authorization', jwtToken)
-        .send();
+        .send(input);
     res.should.have.status(200);
     return res;
 }
@@ -45,9 +49,13 @@ const forgotPasswordEmail = module.exports.forgotPassworsEmail = async function 
 }
 
 const resetPassword = module.exports.resetPassword = async function(forgot_password_key , password){
+    const input = {
+        forgot_password_token:forgot_password_key,
+        new_password: password
+    };
     const res = await chai.request(server)
-        .put('/v2/users/auth/password/reset?forgot_password_token=' + forgot_password_key+'&new_password='+password)
-        .send();
+        .put('/v2/users/auth/password/reset')
+        .send(input);
     res.should.have.status(200);
     return res;
 }

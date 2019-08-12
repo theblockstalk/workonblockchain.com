@@ -77,11 +77,11 @@
                     </select>
                   </div>
                   <input type="tel" class="form-control" id="phone" placeholder="1234567890" name="contact_number" required [(ngModel)]="info.contact_number">
-                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
-                    {{contact_name_log}}
-                  </div>
                   <div class = "invalid-feedback d-inline" *ngIf="!info.country_code">
                     {{country_code_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
+                    {{contact_name_log}}
                   </div>
                   <ng-container *ngIf="info.contact_number;else no_contact_number">
                     <div class = "invalid-feedback d-inline" *ngIf="!checkNumber(info.contact_number)">
@@ -137,24 +137,16 @@
               </div>
             </div>
           </div>
-          <!--<div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Image (optional)</label>
-                <p>
-                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#imageModal">Upload profile picture</button>
-                </p>
-                <span *ngIf="imageCropData.image;else prefil_image" >
-                  <img [src]="imageCropData.image" class="img-responsive border rounded-circle" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
-                </span>
 
-                <span #prefil_image *ngIf="imagePreviewLink && !imageCropData.image" >
-                  <img [src]="imagePreviewLink" class="img-responsive border rounded-circle" width="200" height="200">
-                </span>
-
-              </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-i-forme-how-hear-about-wob [howHearAboutWOB]="info.hear_about_wob"></app-i-forme-how-hear-about-wob>
             </div>
-          </div>-->
+            <div class="col-md-6 mt-2" *ngIf="info.otherReasons === 'Other' || howHearAboutWob.howHearAboutWOB === 'Other'">
+              <app-i-forme-hear-about-wob-other-info [otherInfo]="info.otherReasons"></app-i-forme-hear-about-wob-other-info>
+            </div>
+          </div>
+
           <div class="form-group">
             <div class = "text-right">
               <a routerLink="/prefill-profile" class = "btn btn-warning text-white">Back</a>

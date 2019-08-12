@@ -54,8 +54,17 @@
               </div>
             </div>
             <div class = "row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <app-i-forme-nationality [nationality]="nationality" ></app-i-forme-nationality>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="viewBy === 'admin'">
+              <div class="col-md-6">
+                <app-i-forme-how-hear-about-wob (change)="hearAboutWOBSelect()" [howHearAboutWOB]="how_hear_about_wob"></app-i-forme-how-hear-about-wob>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="how_hear_about_wob === 'Other'">
+                <app-i-forme-hear-about-wob-other-info [otherInfo]="hear_about_wob_other_info"></app-i-forme-hear-about-wob-other-info>
               </div>
             </div>
 
