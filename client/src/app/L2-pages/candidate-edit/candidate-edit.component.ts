@@ -289,10 +289,10 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     else errorCount++;
 
     if(this.viewBy === 'admin') {
-      if (this.hearAboutWob.selfValidate()) queryBody.hear_about_wob = this.hearAboutWob.howHearAboutWOB;
+      if(this.hearAboutWob.howHearAboutWOB) queryBody.hear_about_wob = this.hearAboutWob.howHearAboutWOB;
 
       if (this.hearAboutWob.howHearAboutWOB && this.hearAboutWob.howHearAboutWOB === 'Other'){
-        if(this.otherInfo.selfValidate()) queryBody.hear_about_wob_other_info = this.otherInfo.otherInfo;
+        if(queryBody.hear_about_wob_other_info) queryBody.hear_about_wob_other_info = this.otherInfo.otherInfo;
       }
 
       if (this.hearAboutWob.howHearAboutWOB && this.hearAboutWob.howHearAboutWOB !== 'Other') queryBody.unset_hear_about_wob_other_info = true;
