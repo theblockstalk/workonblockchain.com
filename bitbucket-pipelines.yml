@@ -94,8 +94,9 @@ pipelines:
               - npm install -g serverless
               - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
               - serverless deploy --stage production
-              - . ./scripts/aws-install.sh
-              - aws cloudfront create-invalidation --distribution-id E2T7J9DH7RQP73 --paths "/*"
+              - . ../scripts/aws-install.sh
+              - aws cloudfront create-invalidation --distribution-id E13O7UFUMVSIRZ --paths "/*"
+              - aws cloudfront create-invalidation --distribution-id E32QBMZ6U0Z8AV --paths "/*"
         - step:
             name: "Deploy server to production"
             script:
