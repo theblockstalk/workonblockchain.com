@@ -149,7 +149,7 @@ export class CandidateViewComponent implements OnInit {
 
     //for employee
     if(this.userDoc['candidate'].employee) {
-      this.employee.value = this.userDoc['candidate'].employee;
+      this.employee.value = JSON.parse(JSON.stringify(this.userDoc['candidate'].employee));
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.employee.noVisaArray = newNoVisaPlaceArray;
@@ -171,7 +171,7 @@ export class CandidateViewComponent implements OnInit {
 
     //for contractor
     if(this.userDoc['candidate'].contractor) {
-      this.contractor.value = this.userDoc['candidate'].contractor;
+      this.contractor.value = JSON.parse(JSON.stringify(this.userDoc['candidate'].contractor));
       const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.contractor.noVisaArray = newNoVisaPlaceArray;
@@ -197,7 +197,7 @@ export class CandidateViewComponent implements OnInit {
 
     //volunteer
     if(this.userDoc['candidate'].volunteer) {
-      this.volunteer.value = this.userDoc['candidate'].volunteer;
+      this.volunteer.value = JSON.parse(JSON.stringify(this.userDoc['candidate'].volunteer));
       const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.volunteer.noVisaArray = newNoVisaPlaceArray;
