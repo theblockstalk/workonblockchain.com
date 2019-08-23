@@ -545,6 +545,10 @@
             <div class="col-md-12">
               <app-c-formv-text label="Availability:" [value]="employee.value.employment_availability"></app-c-formv-text>
             </div>
+
+            <div class="col-md-12" *ngIf="employee.value.opportunities_of_interest">
+              <app-c-formv-textarea [value]="employee.value.opportunities_of_interest"></app-c-formv-textarea>
+            </div>
           </div>
 
           <!--for contractor-->

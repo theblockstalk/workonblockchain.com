@@ -173,8 +173,7 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.employee.expected_annual_salary = employee.expected_annual_salary;
               this.employee.currency = employee.currency;
               this.employee.employment_availability = employee.employment_availability;
-
-
+              this.employee.opportunities_of_interest = employee.opportunities_of_interest;
             }
             if(data['candidate'].contractor) {
               $('.selectpicker').selectpicker('refresh');
@@ -583,7 +582,8 @@ export class JobComponent implements OnInit,AfterViewInit {
           currency: this.employee.currency,
           location: this.employee.locations,
           roles: this.employee.roles,
-          employment_availability: this.employee.employment_availability
+          employment_availability: this.employee.employment_availability,
+          opportunities_of_interest: this.employee.opportunities_of_interest
         }
       }
       else inputQuery.unset_employee = true;
@@ -614,7 +614,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
       }
       else inputQuery.unset_volunteer = true;
-      
+
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;
