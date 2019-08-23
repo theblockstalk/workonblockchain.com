@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {changeLocationDisplayFormat, getNameFromValue} from '../../../services/object';
+import {changeLocationDisplayFormat, getNameFromValue, copyObject} from '../../../services/object';
 import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 import {candidateBadge, candidateProgress} from '../../../services/candidate';
 
@@ -149,7 +149,7 @@ export class CandidateViewComponent implements OnInit {
 
     //for employee
     if(this.userDoc['candidate'].employee) {
-      this.employee.value = this.userDoc['candidate'].employee;
+      this.employee.value = copyObject(this.userDoc['candidate'].employee);
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.employee.noVisaArray = newNoVisaPlaceArray;
@@ -171,7 +171,7 @@ export class CandidateViewComponent implements OnInit {
 
     //for contractor
     if(this.userDoc['candidate'].contractor) {
-      this.contractor.value = this.userDoc['candidate'].contractor;
+      this.contractor.value = copyObject(this.userDoc['candidate'].contractor);
       const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.contractor.noVisaArray = newNoVisaPlaceArray;
@@ -184,7 +184,7 @@ export class CandidateViewComponent implements OnInit {
         const filteredArray = getNameFromValue(this.roles,role);
         rolesValue.push(filteredArray.name);
       }
-      this.contractor.value.roles = rolesValue;
+      this.contractor.value.roles = rolesValue.sort();
       let contractorType = [];
       for(let type of this.contractor.value.contractor_type) {
         const filteredArray = getNameFromValue(this.contractorTypes , type);
@@ -197,7 +197,7 @@ export class CandidateViewComponent implements OnInit {
 
     //volunteer
     if(this.userDoc['candidate'].volunteer) {
-      this.volunteer.value = this.userDoc['candidate'].volunteer;
+      this.volunteer.value = copyObject(this.userDoc['candidate'].volunteer);
       const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
       const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
       this.volunteer.noVisaArray = newNoVisaPlaceArray;

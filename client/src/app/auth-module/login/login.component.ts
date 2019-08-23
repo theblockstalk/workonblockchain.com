@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,Directive } from '@angular/core';
+import { Component, OnInit,OnDestroy,Directive, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
+import {isPlatformBrowser} from "@angular/common";
 
 const URL = environment.backend_url;
 @Component({
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   forgetMessage;
   constructor(private http: HttpClient , private route: ActivatedRoute,
               private router: Router,
-              private authenticationService: UserService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
+              private authenticationService: UserService,private dataservice: DataService,private titleService: Title,private newMeta: Meta,
+              @Inject(PLATFORM_ID) private platformId: Object) {
     this.titleService.setTitle('Work on Blockchain | Login');
 
   }
@@ -48,15 +50,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.dataservice.forgetMessage.subscribe(message => this.forgetMessage = message);
     this.password_message='';
     this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
-    setInterval(() => {
-      this.message = "" ;
-      this.error = '';
-      this.forgetMessage='';
-    }, 15000);
+    if (isPlatformBrowser(this.platformId)) {
+      setInterval(() => {
+        this.message = "";
+        this.error = '';
+        this.forgetMessage = '';
+      }, 15000);
 
-    setInterval(() => {
-      //this.log='';
-    }, 30000);
+      setInterval(() => {
+        //this.log='';
+      }, 30000);
+    }
     localStorage.removeItem('currentUser');
     this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
     localStorage.removeItem('password_change_msg');

@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import { Title, Meta } from '@angular/platform-browser';
+import {isPlatformBrowser} from "@angular/common";
 
 declare var $: any;
 
@@ -15,7 +16,7 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
   approvedUsers;
   blockchainExperienceUsers;
 
-  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
+  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta,@Inject(PLATFORM_ID) private platformId: Object) {
     this.titleService.setTitle('Hire developers today. Work and jobs platform for blockchain, cryptocurrency and DLT projects');
     this.newMeta.updateTag({ name: 'description', content: 'Hire and contract talent for blockchain, cryptocurrency and DLT. Jobs, freelancers, agencies, developers, CTOs and more with or without blockchain experience.' });
     this.newMeta.updateTag({ name: 'title', content: 'Hire developers today. Work and jobs platform for blockchain, cryptocurrency and DLT projects' });
@@ -35,13 +36,15 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    $('.carousel').carousel({
-      interval: 3500
-    });
-    $('#text').html($('.active > .carousel-caption').html());
-    $('.slide').on('slid.bs.carousel', function () {
+    if (isPlatformBrowser(this.platformId)) {
+      $('.carousel').carousel({
+        interval: 3500
+      });
       $('#text').html($('.active > .carousel-caption').html());
-    });
+      $('.slide').on('slid.bs.carousel', function () {
+        $('#text').html($('.active > .carousel-caption').html());
+      });
+    }
     this.authenticationService.get_users_statistics()
       .subscribe(
         data => {

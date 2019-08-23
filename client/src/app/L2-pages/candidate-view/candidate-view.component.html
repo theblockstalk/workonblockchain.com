@@ -408,6 +408,17 @@
               <app-c-formv-text-linked-icon iconClass="fas fa-user fa-2x" [link]="userDoc['candidate'].personal_website_url"></app-c-formv-text-linked-icon>
             </div>
           </div>
+
+          <div class="row mt-3" *ngIf="viewBy === 'admin' && userDoc['hear_about_wob']">
+            <div class="col-md-6">
+              <app-c-formv-text label="How did you hear about us:" [value]="userDoc['hear_about_wob']"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row" *ngIf="viewBy === 'admin' && userDoc['hear_about_wob_other_info']">
+            <div class="col-md-6">
+              <app-c-formv-text [value]="userDoc['hear_about_wob_other_info']"></app-c-formv-text>
+            </div>
+          </div>
         </section>
         <!--About section ends-->
 

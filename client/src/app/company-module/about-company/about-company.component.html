@@ -72,6 +72,15 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-6">
+                <app-i-forme-how-hear-about-wob [howHearAboutWOB]="hear_about_wob"></app-i-forme-how-hear-about-wob>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6" *ngIf="otherReasons === 'Other' || howHearAboutWob.howHearAboutWOB === 'Other'">
+                <app-i-forme-hear-about-wob-other-info [otherInfo]="otherReasons"></app-i-forme-hear-about-wob-other-info>
+              </div>
             </div>
 
             <div class="row">

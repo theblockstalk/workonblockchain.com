@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HtmlAreaComponent } from './html-area.component';
+import { HtmlAreaViewComponent } from './html-area.component';
 
-describe('HtmlAreaComponent', () => {
-  let component: HtmlAreaComponent;
-  let fixture: ComponentFixture<HtmlAreaComponent>;
+describe('HtmlAreaViewComponent', () => {
+  let component: HtmlAreaViewComponent;
+  let fixture: ComponentFixture<HtmlAreaViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HtmlAreaComponent ]
+      declarations: [ HtmlAreaViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HtmlAreaComponent);
+    fixture = TestBed.createComponent(HtmlAreaViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

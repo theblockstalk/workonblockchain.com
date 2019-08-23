@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import {IMyDpOptions} from 'mydatepicker';
 import {environment} from '../../../environments/environment';
 declare var $: any;
+import {isPlatformBrowser} from "@angular/common";
 
 const back_url = environment.backend_url;
 
@@ -78,7 +79,8 @@ export class ChatComponent implements OnInit {
     private fb: FormBuilder,
     private el: ElementRef,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.date = new Date();
     this.start_year = this.date.getFullYear();
@@ -98,16 +100,18 @@ export class ChatComponent implements OnInit {
 
   ngAfterViewInit(): void
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 500);
-    $("#startdate_datepicker").datepicker({
-      startDate: '-1'
-    });
-    $("#startdate_datepicker_employ").datepicker({
-      startDate: '-1'
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+      $("#startdate_datepicker").datepicker({
+        startDate: '-1'
+      });
+      $("#startdate_datepicker_employ").datepicker({
+        startDate: '-1'
+      });
+    }
   }
 
   ngOnInit() {
@@ -181,7 +185,7 @@ export class ChatComponent implements OnInit {
                     }
                   );
                 if(data['viewed_explanation_popup'] === false || !data['viewed_explanation_popup']){
-                  $("#popModal").modal("show");
+                  if (isPlatformBrowser(this.platformId)) $("#popModal").modal("show");
                 }
                 this.msg='';
                 this.display_msgs();
@@ -225,7 +229,7 @@ export class ChatComponent implements OnInit {
                     }
                   );
                 if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
-                  $("#popModal").modal("show");
+                  if (isPlatformBrowser(this.platformId)) $("#popModal").modal("show");
                 }
                 this.msg='';
                 this.display_msgs();
@@ -491,7 +495,8 @@ export class ChatComponent implements OnInit {
     this.location_log = '';
     this.description_log = '';
 
-    let interview_date = $('#startdate_datepicker').val();
+    let interview_date
+    if (isPlatformBrowser(this.platformId)) interview_date = $('#startdate_datepicker').val();
     if(!interview_date){
       this.date_log = 'Please enter date';
     }
@@ -506,7 +511,7 @@ export class ChatComponent implements OnInit {
     }
 
     if (interview_date && this.credentials.time && this.credentials.location && this.credentials.description) {
-      $("#myModal").modal("hide");
+      if (isPlatformBrowser(this.platformId)) $("#myModal").modal("hide");
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.msg_tag = 'interview_offer';
@@ -593,7 +598,7 @@ export class ChatComponent implements OnInit {
       let toArray = inputEl.files.item(0).type.split("/");
       if (inputEl.files.item(0).size <= this.file_size && (toArray[0] === 'image' || inputEl.files.item(0).type === 'application/pdf' || inputEl.files.item(0).type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
         formData.append('photo', inputEl.files.item(0));
-        this.credentials.start_date = $('#startdate_datepicker_employ').val();
+        if (isPlatformBrowser(this.platformId)) this.credentials.start_date = $('#startdate_datepicker_employ').val();
         if(!this.credentials.start_date){
           this.start_date_log = 'Please enter start date';
         }
@@ -630,7 +635,7 @@ export class ChatComponent implements OnInit {
       }
     }
     else {
-      this.credentials.start_date = $('#startdate_datepicker_employ').val();
+      if (isPlatformBrowser(this.platformId)) this.credentials.start_date = $('#startdate_datepicker_employ').val();
       if(!this.credentials.start_date){
         this.start_date_log = 'Please enter start date';
       }
@@ -923,10 +928,12 @@ export class ChatComponent implements OnInit {
           this.credentials.start_date = '';
           this.credentials.job_description = '';
           this.img_name = '';
-          setTimeout(() => {
-            $('.selectpicker').selectpicker('refresh');
-          }, 900);
-          $("#Modal").modal("hide");
+          if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 900);
+            $("#Modal").modal("hide");
+          }
           this.authenticationService.get_user_messages_comp(this.credentials.id)
             .subscribe(
               data => {
@@ -997,8 +1004,7 @@ export class ChatComponent implements OnInit {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false){}
         }
       );
-    $("#popModal").modal("hide");
-
+    if (isPlatformBrowser(this.platformId)) $("#popModal").modal("hide");
   }
 
 }

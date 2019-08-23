@@ -1,14 +1,16 @@
-import { Component, OnInit, ElementRef , Input , ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef , Input , ViewChild, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
 import { Router , ActivatedRoute} from '@angular/router';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
+import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+declare var $:any;
 
 @Component({
   selector: 'app-admin-update-company-profile',
@@ -16,6 +18,9 @@ import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
   styleUrls: ['./admin-update-company-profile.component.css']
 })
 export class AdminUpdateCompanyProfileComponent implements OnInit {
+  @ViewChild(HowHearAboutWobComponent) howHearAboutWob: HowHearAboutWobComponent;
+  @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
+
   @Input() name: string;
   cropperSettings: CropperSettings;
   imageCropData:any;
@@ -100,9 +105,13 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   contact_number_log;
   imagePreviewLink;
   prefil_image;
+  hear_about_wob;otherReasons;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router ,private route: ActivatedRoute, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private router: Router ,private route: ActivatedRoute,
+              private authenticationService: UserService,
+              private dataservice: DataService,
+              private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
       this.company_id = params['company'];
     });
@@ -123,13 +132,15 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 500);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 500);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   initPrefRows()
@@ -200,7 +211,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
   locationArray = [];
   ngOnInit() {
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
@@ -247,6 +258,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
           {
             if(data)
             {
+              if(data['_creator'].hear_about_wob) this.hear_about_wob = data['_creator'].hear_about_wob;
+              if(data['_creator'].hear_about_wob && data['_creator'].hear_about_wob === 'Other' && data['_creator'].hear_about_wob_other_info) this.otherReasons = data['_creator'].hear_about_wob_other_info;
               this.email = data['_creator'].email;
               this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
             }
@@ -290,10 +303,12 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             }
 
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
-              setTimeout(() => {
-                $('.selectpicker').selectpicker();
-                $('.selectpicker').selectpicker('refresh');
-              }, 500);
+              if (isPlatformBrowser(this.platformId)) {
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                  $('.selectpicker').selectpicker('refresh');
+                }, 500);
+              }
               this.prefData = data['saved_searches'];
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(
@@ -480,11 +495,15 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       }
     }
 
-    if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
+      if(this.howHearAboutWob.howHearAboutWOB) profileForm.value.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
+      if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) profileForm.value.hear_about_wob_other_info = this.otherInfo.otherInfo;
+      else profileForm.value.unset_hear_about_wob_other_info = true;
+
       if(this.imageCropData.image) {
         const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
         const formData = new FormData();
@@ -711,18 +730,22 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
   addNewSearch()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
   }
 
   refreshSelectBox() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
   }
   imageName;
   fileChangeListener($event) {
@@ -753,6 +776,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

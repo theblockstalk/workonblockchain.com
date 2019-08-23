@@ -1,16 +1,14 @@
-import { Component, OnInit, ElementRef , AfterViewInit , Input, ViewChild} from '@angular/core';
+import { Component, OnInit, ElementRef , AfterViewInit , Input, ViewChild, Inject, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../user.service';
-import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';
 import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
-declare var $:any;
+import { Router } from '@angular/router';
+import { DatePipe,isPlatformBrowser } from '@angular/common';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import {constants} from '../../../constants/constants';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+declare var $:any;
 
 @Component({
   selector: 'app-edit-company-profile',
@@ -103,7 +101,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   prefil_image;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+              private router: Router,private authenticationService: UserService,
+              private dataservice: DataService,
+              private el: ElementRef,@Inject(PLATFORM_ID) private platformId: Object) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.noFileInput = true;
     this.cropperSettings.width = 200;
@@ -121,13 +121,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 500);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+      }, 500);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 900);
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 900);
+    }
   }
 
   initPrefRows()
@@ -199,7 +201,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   locationArray = [];
   ngOnInit()
   {
-    $('.selectpicker').selectpicker('refresh');
+    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
@@ -288,10 +290,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             }
 
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
-              setTimeout(() => {
-                $('.selectpicker').selectpicker();
-                $('.selectpicker').selectpicker('refresh');
-              }, 500);
+              if (isPlatformBrowser(this.platformId)) {
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                  $('.selectpicker').selectpicker('refresh');
+                }, 500);
+              }
               this.prefData = data['saved_searches'];
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(
@@ -708,18 +712,22 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
 
   addNewSearch()
   {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
+    }
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.push(this.initPrefRows());
   }
 
   refreshSelectBox() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
   }
   imageName;
   fileChangeListener($event) {
@@ -749,6 +757,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     if(key === 'cancel') {
       this.imageCropData = {};
     }
-    $('#imageModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
   }
 }

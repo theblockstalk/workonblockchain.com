@@ -27,7 +27,6 @@ describe('healthCheck', function () {
 
             // Three ways of running tests using chai
             res.body.success.should.equal(true);
-            expect(res.body.version).to.equal("localhost");
             assert(res.body.message === "this is a health check for the API");
         })
 

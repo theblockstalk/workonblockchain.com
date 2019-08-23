@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, PLATFORM_ID  } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm , FormGroup,FormControl,FormBuilder} from '@angular/forms';
+import {isPlatformBrowser} from "@angular/common";
 declare var $:any;
 
 @Component({
@@ -46,7 +47,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
-               private authenticationService: UserService) { }
+               private authenticationService: UserService,
+               @Inject(PLATFORM_ID) private platformId: Object) { }
 
   sectionScroll;
   internalRoute(page,dst){
@@ -195,7 +197,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               }
 
               if(data['terms_id'] && data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'] && !data['saved_searches'] ) {
-                $('#popModal_b').modal('show');
+                if (isPlatformBrowser(this.platformId)) $('#popModal_b').modal('show');
               }
               if(data['saved_searches']) {
                 this.saved_searche = data['saved_searches'];
@@ -234,7 +236,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   redirectToCompany()
   {
-    $('#popModal').modal('hide');
+    if (isPlatformBrowser(this.platformId)) $('#popModal').modal('hide');
     this.router.navigate(['/company_profile']);
   }
 
