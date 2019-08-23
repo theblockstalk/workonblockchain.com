@@ -74,8 +74,6 @@ export class CommercialSkillsComponent implements OnInit {
         this.commercial_skills[index].exp_year = object.exp_year;
       }
     }
-
-    console.log(this.commercial_skills);
   }
 
   selectedPlatform(obj) {
