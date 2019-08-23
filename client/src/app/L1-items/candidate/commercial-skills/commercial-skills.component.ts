@@ -21,6 +21,12 @@ export class CommercialSkillsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.otherSkills.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
+
     if (this.commercial_skills) {
       for (let commercial of this.commercial_skills) {
         this.platform.push(commercial.skill);
@@ -68,6 +74,8 @@ export class CommercialSkillsComponent implements OnInit {
         this.commercial_skills[index].exp_year = object.exp_year;
       }
     }
+
+    console.log(this.commercial_skills);
   }
 
   selectedPlatform(obj) {

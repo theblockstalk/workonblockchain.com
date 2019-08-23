@@ -376,9 +376,11 @@ export class CandidateViewComponent implements OnInit {
           return 0;
         });
 
+        console.log(this.commercial_skills);
         let newCommercialsSkills = [];
         for (let commercialsSkills of this.commercial_skills) {
-          let img = commercialsSkills.skill + ': ' + commercialsSkills.exp_year + ' years';
+          let skillName = getNameFromValue(constants.otherSkills,commercialsSkills.skill);
+          let img = skillName.name + ': ' + commercialsSkills.exp_year + ' years';
           newCommercialsSkills.push(img);
         }
         this.commercial_skills = newCommercialsSkills;

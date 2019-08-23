@@ -33,6 +33,7 @@ import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activi
 import {constants} from '../../../constants/constants';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+import {getNameFromValue} from '../../../services/object';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -219,6 +220,13 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       }
       if(candidateSubDoc.blockchain.commercial_skills) {
         this.commercial_skills = candidateSubDoc.blockchain.commercial_skills;
+        for (let commercialsSkills of this.commercial_skills) {
+          let skillName = getNameFromValue(constants.otherSkills, commercialsSkills.skill);
+          console.log(skillName);
+          commercialsSkills.name = skillName.name;
+          console.log(commercialsSkills);
+        }
+        console.log(this.commercial_skills);
         this.description_commercial_skills = candidateSubDoc.blockchain.description_commercial_skills;
       }
 

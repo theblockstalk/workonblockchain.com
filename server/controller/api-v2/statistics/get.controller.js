@@ -153,6 +153,9 @@ module.exports.endpoint = async function (req, res) {
             disable_account: false, is_verify: 1
         });
 
+        const totalCandidates = await
+            users.count({ type: 'candidate' });
+
         const blockchainExperienceCount = await
         users.count({
             type: 'candidate', "candidate.latest_status.status": 'approved',
@@ -160,13 +163,9 @@ module.exports.endpoint = async function (req, res) {
             'candidate.blockchain.commercial_platforms': {$exists: true, $ne: []}
         });
 
-        /*res.send({
-            approvedUsers: approvedUserCount,
-            blockchainExperienceUsers: blockchainExperienceCount
-        });*/
-
         res.send({
             approvedEnabled: {
+                totalCandidates: totalCandidates,
                 count: approvedUserCount,
                 aggregated: {
                     blockchain: {

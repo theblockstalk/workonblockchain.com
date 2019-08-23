@@ -212,7 +212,7 @@
             </div>
             <div class = "col-md-12" *ngFor="let option of commercialSkills; let i = index ">
               <div class="form-group">
-                <p>{{option.value}}</p>
+                <p>{{option.name}}</p>
                 <div class="form-check form-check-inline">
                   <div *ngFor="let exp of exp_year; let i_ind =index">
                     <input type="radio" class="d-none" id = "skill{{option.value}}{{i_ind}}" name="commercialradiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value" >
