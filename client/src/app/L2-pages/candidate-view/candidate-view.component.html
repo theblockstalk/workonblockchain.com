@@ -869,8 +869,15 @@
                 ></app-c-forme-text>
               </div>
               <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contract description</label>
+                  <ul>
+                    <li>A concise clear description of the role, what they will do and what are the requirements</li>
+                    <li>Benefits for the candidate</li>
+                    <li>If the candidate does not accept the approach, you will not be able to contact them again. So make it sound attractive!</li>
+                  </ul>
+                </div>
                 <app-c-forme-html-area
-                  label="Contract description"
                   height="12"
                   [value]="contractor.contract_description"
                   [errorMsg]="contract_desc_log"
@@ -893,8 +900,15 @@
               </div>
 
               <div class="col-md-12">
+                <div class="form-group">
+                  <label>Opportunity description</label>
+                  <ul>
+                    <li>A concise clear description of the role, what they will do and what are the requirements</li>
+                    <li>Benefits for the candidate</li>
+                    <li>If the candidate does not accept the approach, you will not be able to contact them again. So make it sound attractive!</li>
+                  </ul>
+                </div>
                 <app-c-forme-html-area
-                  label="Opportunity description"
                   height="12"
                   [value]="volunteer.opportunity_description"
                   [errorMsg]="volunteer_desc_log"
