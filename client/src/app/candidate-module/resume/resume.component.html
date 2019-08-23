@@ -96,6 +96,9 @@
               <h4>Technologies</h4>
               <div class="form-group mt-4">
                 <label>Commercial experience</label>
+                <ul>
+                  <li>Technologies you have commercially worked with or done university projects on</li>
+                </ul>
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
@@ -143,7 +146,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description of experience (optional)</label>
-                <textarea rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
+                <textarea placeholder="I have spent 3 years using the web3 API as a back end developer, as well as helping to design smart contracts." rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
               </div>
             </div>
           </div>
@@ -155,6 +158,10 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Experimented with </label>
+                <ul>
+                  <li>Technologies you have used or tested</li>
+                  <li>E.g. sending some Zcash to an exchange, or reading the white paper</li>
+                </ul>
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
@@ -175,7 +182,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description of experimentation (optional)</label>
-                <textarea rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
+                <textarea placeholder="I have used Bitcoin and Zcash to send money to some friends and family. I used several exchanges. I use the Luno wallet." rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
               </div>
             </div>
           </div>

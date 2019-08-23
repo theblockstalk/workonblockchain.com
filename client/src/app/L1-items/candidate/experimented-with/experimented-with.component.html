@@ -1,8 +1,14 @@
 <div class="row">
   <div class="col-md-12">
+    <div class="form-group">
+      <label>Experimented with</label>
+      <ul>
+        <li>Technologies you have used or tested</li>
+        <li>E.g. sending some Zcash to an exchange, or reading the white paper</li>
+      </ul>
+    </div>
     <app-c-forme-checkbox
       [options]="experimented"
-      label="Experimented with"
       (selectedItem)="experimented_platforms = $event"
       column="col-md-3 mb-3"
       [value]="experimented_platforms"
@@ -15,7 +21,7 @@
   <div class="col-md-12">
     <app-c-forme-text-area
       rows="5"
-      placeholder=""
+      placeholder="I have used Bitcoin and Zcash to send money to some friends and family. I used several exchanges. I use the Luno wallet."
       maxLength="3000"
       label="Description of experimentation (optional)"
       [value]="description_experimented_platforms"

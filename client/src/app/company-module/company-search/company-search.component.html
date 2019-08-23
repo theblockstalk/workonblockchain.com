@@ -391,6 +391,11 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Employment description</label>
+                  <ul>
+                    <li>A concise clear description of the role, what they will do and what are the requirements</li>
+                    <li>Benefits for the candidate</li>
+                    <li>If the candidate does not accept the approach, you will not be able to contact them again. So make it sound attractive!</li>
+                  </ul>
                   <ckeditor class="ckeditor_tab" [(ngModel)]="employee.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                   </ckeditor>
                   <div class = "invalid-feedback d-inline"  *ngIf="!employee.job_desc || (employee.job_desc && employee.job_desc.length > 3000)">
