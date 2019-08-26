@@ -1,8 +1,13 @@
 <div class="row">
   <div class="col-md-12">
+    <div class="form-group">
+      <label>Commercial experience</label>
+      <ul>
+        <li>Technologies you have commercially worked with or done university projects on</li>
+      </ul>
+    </div>
     <app-c-forme-checkbox
       [options]="blockchainPlatforms"
-      label="Commercial experience"
       (selectedItem)="oncommerciallyOptions($event)"
       column="col-md-3 mb-3"
       [value]="platform"
@@ -32,7 +37,7 @@
   <div class="col-md-12">
     <app-c-forme-text-area
       rows="5"
-      placeholder=""
+      placeholder="I have spent 3 years using the web3 API as a back end developer, as well as helping to design smart contracts."
       maxLength="3000"
       label="Description of experience (optional)"
       [value]="description_commercial_platforms"

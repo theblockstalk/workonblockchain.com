@@ -196,8 +196,8 @@
                             <!--msg.message.approach_accepted ends-->
                             <!--msg.message.approach_rejected starts-->
                             <ng-container *ngIf="msg.message.approach_rejected">
-                              <span [innerHTML]="msg.message.approach_rejected.message | safeHtml">
-                                {{msg.message.approach_rejected.message}}
+                              <span>
+                                Not accepted
                               </span>
                             </ng-container>
                             <!--msg.message.approach_rejected ends-->
@@ -386,8 +386,8 @@
                             <!--msg.message.approach_accepted ends-->
                             <!--msg.message.approach_rejected starts-->
                             <ng-container *ngIf="msg.message.approach_rejected">
-                              <span [innerHTML]="msg.message.approach_rejected.message | safeHtml">
-                                {{msg.message.approach_rejected.message}}
+                              <span>
+                                Not accepted
                               </span>
                             </ng-container>
                             <!--msg.message.approach_rejected ends-->

@@ -1,5 +1,5 @@
 <div class="form-group">
-  <label>{{label}}</label>
+  <label *ngIf="label">{{label}}</label>
   <ckeditor
     #myckeditor [ngClass]="formattingClass"
     [(ngModel)]="value"

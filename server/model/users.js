@@ -243,6 +243,10 @@ const UserSchema = new Schema({
                     employment_availability: {
                         type:String,
                         enum: enumerations.workAvailability
+                    },
+                    opportunities_of_interest: {
+                        type:String,
+                        maxlength: 3000
                     }
                 }
             },
