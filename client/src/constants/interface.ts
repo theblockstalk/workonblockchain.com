@@ -44,6 +44,7 @@ export interface Employee {
   location: Array<Locations>;
   roles: Array<string>;
   employment_availability: string; //['1 week', '2 weeks', '3 weeks' ,'1 month','Now','2 months','3 months','Longer than 3 months']
+  opportunities_of_interest: string
 }
 
 export interface Volunteer {
