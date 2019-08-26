@@ -242,7 +242,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       {
                         option.checked=true;
                         this.skillDbArray.push(key[i]);
-                        this.skillDb= ({value: key[i]});
+                        this.skillDb= ({value: key[i], name: option.name});
                         this.commercialSkills.push(this.skillDb);
 
                       }
