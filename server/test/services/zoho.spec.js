@@ -5,7 +5,7 @@ const mongo = require('../helpers/mongo');
 
 const server = require('../../../server');
 const users = require('../../model/mongoose/users');
-const zoho = require('../../controller/services/zoho');
+const zoho = require('../../controller/services/zoho/zoho');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -24,10 +24,16 @@ describe('zoho', function () {
 
         it('should get a new refresh token', async function () {
             await zoho.initialize();
-            // await zoho.generateAuthTokens();
             await zoho.generateAuthTokenfromRefreshToken();
 
-            await zoho.contacts.get();
+            let contact = await zoho.contacts.getMany({
+                params: {
+                    page: 0,
+                    per_page: 1
+                }
+            });
+
+            console.log(contact)
         })
     })
 });
