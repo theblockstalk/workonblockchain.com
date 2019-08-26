@@ -26,6 +26,8 @@ describe('zoho', function () {
             await zoho.initialize();
             // await zoho.generateAuthTokens();
             await zoho.generateAuthTokenfromRefreshToken();
+
+            await zoho.contacts.get();
         })
     })
 });

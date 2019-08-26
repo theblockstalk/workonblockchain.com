@@ -10,10 +10,10 @@ const TokenSchema = new Schema({
         required: true
     },
     zoho: {
-        access_token: String,
-        expires_in: Number,
-        user_identifier: String,
-        refresh_token: String
+        accesstoken: String,
+        expirytime: Date,
+        useridentifier: String,
+        refreshtoken: String
     },
     last_modified: {
         type: Date,

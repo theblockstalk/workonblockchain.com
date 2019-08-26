@@ -29,7 +29,37 @@ module.exports.generateAuthTokenfromRefreshToken = async function() {
     await zcrm.generateAuthTokenfromRefreshToken(user_identifier,  config.refresh_token);
 }
 
-zcrm.API.MODULES.put({})
+module.exports.contacts = {
+    get: async function (inputs) {
+        const response = await zcrm.API.MODULES.get({
+            module: "Contacts",
+            params: {
+                page: 0,
+                per_page: 5
+            }
+        });
+
+        const result = JSON.parse(response.body);
+
+        console.log(result);
+
+        // let result = "<html><body><b> Top 5 Leads</b>";
+        // let data = response.body;
+        // data = JSON.parse(data);
+        // data = data.data;
+        // for (i in data){
+        //
+        //     let record = data[i];
+        //     let name = record.Full_Name;
+        //
+        //     result+="<br><span>"+name+"</span>";
+        //
+        // }
+        //
+        // result+="</body></html>";
+
+    }
+};
 
 
 module.exports.saveOAuthTokens = async function (token_obj) {
@@ -37,11 +67,26 @@ module.exports.saveOAuthTokens = async function (token_obj) {
 
     await tokens.insert({
         token_type: 'zoho',
-        zoho: token_obj,
+        zoho: formatTokenObj(token_obj),
         last_modified: Date.now()
     });
-
 }
+
+const formatTokenObj = function (token_obj) {
+    let res = {
+        accesstoken: token_obj.access_token,
+        refreshtoken: token_obj.refresh_token,
+        expirytime: token_obj.expires_in,
+        useridentifier: token_obj.user_identifier
+    };
+
+    if (token_obj.accesstoken) res.accesstoken = token_obj.accesstoken;
+    if (token_obj.refreshtoken) res.refreshtoken = token_obj.refreshtoken;
+    if (token_obj.expirytime) res.accesstoken = token_obj.expirytime;
+    if (token_obj.useridentifier) res.accesstoken = token_obj.useridentifier;
+
+    return res;
+};
 
 module.exports.updateOAuthTokens = async function (token_obj) {
     // Irrespective of response, the next execution happens. So care should be taken by the user in handling their module.
@@ -51,7 +96,7 @@ module.exports.updateOAuthTokens = async function (token_obj) {
         await this.saveOAuthTokens(token_obj);
     } else {
         await tokens.updateOne({_id: tokenDoc._id}, {$set: {
-                zoho: token_obj,
+                zoho: formatTokenObj(token_obj),
                 last_modified: Date.now()
             }
         });
@@ -61,6 +106,8 @@ module.exports.updateOAuthTokens = async function (token_obj) {
 module.exports.getOAuthTokens = async function () {
     const tokenDoc = await tokens.findOneByType('zoho');
     console.log("getOAuthTokens", tokenDoc)
-
-    return tokenDoc.zoho;
+    // let zoho_token = tokenDoc.zoho;
+    // zoho_token.expirytime = zoho_token.expires_in;
+    // zoho_token.refreshtoken = zoho_token.refresh_token;
+    return [tokenDoc.zoho];
 }
