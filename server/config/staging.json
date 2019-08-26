@@ -50,5 +50,9 @@
   "linkedinConfig" : {
     "clientId": "86q3xso6dxvymx",
     "redirectUrl": "https://staging.workonblockchain.com/linkedin-auth"
+  },
+  "zoho":  {
+    "client_id": "1000.GP605I5C44F549062Y0ILIZMN9C79H",
+    "redirect_url": "https://workonblockchain.com/test2callback",
   }
 }

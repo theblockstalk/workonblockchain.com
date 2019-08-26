@@ -50,6 +50,7 @@
     "uuid": "^3.3.2",
     "winston": "^3.0.0",
     "winston-cloudwatch": "^2.0.3",
-    "winston-slack-hook": "^0.3.0"
+    "winston-slack-hook": "^0.3.0",
+    "zcrmsdk": "0.0.15"
   }
 }

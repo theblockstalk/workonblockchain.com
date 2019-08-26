@@ -65,7 +65,12 @@ if (isLiveApplication()) {
     settings.AMPLITUDE = {
         API_KEY: process.env.AMPLITUDE_API_KEY,
         SECRET_API_KEY: process.env.AMPLITUDE_SECRET_API_KEY
-    }
+    };
+
+    settings.ZOHO = config.zoho;
+    settings.ZOHO.client_secret = process.env.ZOHO_CLIENT_SECRET;
+    settings.ZOHO.refresh_token = process.env.ZOHO_REFRESH_TOKEN;
+
 } else if (settings.ENVIRONMENT === 'migrate') {
     settings.MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 
