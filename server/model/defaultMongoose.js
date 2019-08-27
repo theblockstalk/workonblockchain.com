@@ -50,3 +50,5 @@ let defaultFunctions = function(model) {
         }
     }
 }
+
+module.exports = defaultFunctions;
