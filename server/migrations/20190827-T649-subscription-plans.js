@@ -12,13 +12,15 @@ module.exports.up = async function() {
     await referral.findAndIterate({ discount: { $exists: true} }, async function (referralDoc) {
         let set = {};
         totalProcessed++;
-        const userDoc = await users.findOne({type: 'company', email: referralDoc.email});
-        if(userDoc){
-            const employerDoc = await companies.findOne({_creator : userDoc._id});
-            if(employerDoc){
-                set['discount'] = referralDoc.discount;
-                await companies.update({_id: employerDoc._id}, {$set: set});
-                totalModified++;
+        const userDocs = await users.find({type: 'company', referred_email: referralDoc.email});
+        if(userDocs && userDocs.length > 0){
+            for (userDoc of userDocs) {
+                const employerDoc = await companies.findOne({_creator : userDoc._id});
+                if(employerDoc){
+                    set['discount'] = referralDoc.discount;
+                    await companies.update({_id: employerDoc._id}, {$set: set});
+                    totalModified++;
+                }
             }
         }
     });
