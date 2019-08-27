@@ -1,4 +1,7 @@
-let Referral = require('../referrals');
+const mongoose = require('mongoose');
+const referralSchema = require('../schemas/referrals');
+
+let Referral = mongoose.model('Referrals', referralSchema);
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Referral(data);

@@ -1,69 +1,67 @@
-const mongoose = require('mongoose');
-const regexes = require('./regexes');
-const enumerations = require('./enumerations');
+const Schema = require('mongoose').Schema;
+const regexes = require('../regexes');
+const enumerations = require('../enumerations');
 
-const Schema = mongoose.Schema;
-
-const CompanyProfileSchema = new Schema({
+module.exports = new Schema({
     privacy_id: {
         type: Schema.Types.ObjectId,
         ref: 'pages_content'
     },
     terms_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'pages_content'
+        type: Schema.Types.ObjectId,
+        ref: 'pages_content'
     },
     marketing_emails: {
-            type:Boolean,
-            default:false
+        type:Boolean,
+        default:false
     },
     first_name: {
-            type:String
+        type:String
     },
     last_name: {
-            type:String
+        type:String
     },
     job_title: {
-            type:String
+        type:String
     },
     company_name: {
-            type:String
+        type:String
     },
     company_website: {
-            type:String,
-            validate: regexes.url
+        type:String,
+        validate: regexes.url
     },
     company_phone: {
-            type:String
+        type:String
     },
     company_country: {
-            type: String,
-            enum: enumerations.countries
+        type: String,
+        enum: enumerations.countries
     },
     company_city: {
-            type:String
+        type:String
     },
     company_postcode: {
-            type:String
+        type:String
     },
     company_founded: {
-            type:Number,
-            min: 1800
+        type:Number,
+        min: 1800
     },
     no_of_employees: {
-            type:Number,
-            min: 1
+        type:Number,
+        min: 1
     },
     company_funded: {
-            type:String
+        type:String
     },
     company_logo: {
-            type: String,
-            validate: regexes.url
+        type: String,
+        validate: regexes.url
     },
     company_description: {
-            type: String,
-            maxlength: 3000
+        type: String,
+        maxlength: 3000
     },
 
     saved_searches: {
@@ -182,13 +180,9 @@ const CompanyProfileSchema = new Schema({
     },
 
     _creator : {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
 
 
 });
-
-module.exports = mongoose.model('CompanyProfile',CompanyProfileSchema);
-
-

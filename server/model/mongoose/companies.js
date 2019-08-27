@@ -1,4 +1,7 @@
-let Company = require('../employer_profile');
+const mongoose = require('mongoose');
+const companySchema = require('../schemas/companies');
+
+let Company = mongoose.model('CompanyProfile', companySchema);
 let cities = require('./cities');
 
 module.exports.insert = async function insert(data) {

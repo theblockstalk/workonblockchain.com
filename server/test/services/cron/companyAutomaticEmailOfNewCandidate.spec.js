@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
-const companies = require('../../../model/mongoose/company');
+const companies = require('../../../model/mongoose/companies');
 const users = require('../../../model/mongoose/users');
 
 const docGenerator = require('../../helpers/docGenerator');

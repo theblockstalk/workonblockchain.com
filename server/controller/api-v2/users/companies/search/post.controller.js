@@ -1,11 +1,10 @@
 const auth = require('../../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const EmployerProfile = require('../../../../../model/employer_profile');
 const messages = require('../../../../../model/mongoose/messages');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
-const company = require('../../../../../model/mongoose/company');
+const companies = require('../../../../../model/mongoose/companies');
 
 module.exports.request = {
     type: 'post',
@@ -98,7 +97,7 @@ module.exports.endpoint = async function (req, res) {
 
         const searchQuery = {$match: object};
 
-        const companyDoc = await company.aggregate(searchQuery);
+        const companyDoc = await companies.aggregate(searchQuery);
         if (companyDoc && companyDoc.length > 0) {
             for (companyDetail of companyDoc) {
                 let query_result = companyDetail.users[0];

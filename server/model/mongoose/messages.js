@@ -1,4 +1,7 @@
-let Messages = require('../messages');
+const mongoose = require('mongoose');
+const msgSchema = require('../schemas/messages');
+
+let Messages = mongoose.model('Messages', msgSchema);
 
 module.exports.insert = async function (data) {
     let newDoc = new Messages(data);

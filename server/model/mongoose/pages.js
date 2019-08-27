@@ -1,7 +1,10 @@
-let Pages = require('../pages_content');
+const mongoose = require('mongoose');
+const pageSchema = require('../schemas/pages');
+
+let Pages = mongoose.model('pages_content', pageSchema);
 
 module.exports.insert = async function insert(data) {
-    let newDoc = new Page(data);
+    let newDoc = new Pages(data);
     await newDoc.save();
     return newDoc._doc;
 }

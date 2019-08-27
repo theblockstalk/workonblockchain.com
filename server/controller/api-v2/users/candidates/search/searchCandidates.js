@@ -1,5 +1,5 @@
 const users = require('../../../../../model/mongoose/users');
-const messages = require('../../../../../model/messages');
+const messages = require('../../../../../model/mongoose/messages');
 const logger = require('../../../../services/logger');
 const currency = require('../../../../services/currency');
 const errors = require('../../../../services/errors');
@@ -26,7 +26,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     if (filters.disable_account === true || filters.disable_account === false) userQuery.push({"disable_account" :  filters.disable_account});
     if (filters.msg_tags) {
         let userIds = [];
-        const messageDocs = await messages.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
+        const messageDocs = await messages.findMany({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1});
         if (!messageDocs) {
             errors.throwError("No users matched the search", 404);
         }

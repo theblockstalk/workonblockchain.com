@@ -1,4 +1,7 @@
-let User = require('../users');
+const mongoose = require('mongoose');
+const userSchema = require('../schemas/users');
+
+let User = mongoose.model('User', userSchema);
 let cities = require('./cities');
 
 module.exports.insert = async function insert(data) {

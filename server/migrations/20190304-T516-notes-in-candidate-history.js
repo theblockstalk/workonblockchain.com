@@ -1,5 +1,5 @@
 const users = require('../model/mongoose/users');
-const companies = require('../model/mongoose/company');
+const companies = require('../model/mongoose/companies');
 const logger = require('../controller/services/logger');
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;

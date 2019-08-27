@@ -1,4 +1,7 @@
-let Templates = require('../email_templates');
+const mongoose = require('mongoose');
+const emailSchema = require('../schemas/email_templates');
+
+let Templates = mongoose.model('email_templates', emailSchema);
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Templates(data);

@@ -1,4 +1,7 @@
-let Cities = require('../cities');
+const mongoose = require('mongoose');
+const citiesSchema = require('../schemas/cities');
+
+let Cities = mongoose.model('Cities', citiesSchema);
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Cities(data);
