@@ -43,7 +43,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
-  country_code;
+  country_code;discount;referred_name;
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
@@ -191,6 +191,12 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.company_funded=data['company_funded'];
               this.no_of_employees=data['no_of_employees'];
               this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
+              if(data['discount']) this.discount = data['discount'];
+
+              if (data['name']) this.referred_name = data['name'];
+              else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
+
+
               if(data['company_logo'] != null )
               {
                 this.imgPath =  data['company_logo'];

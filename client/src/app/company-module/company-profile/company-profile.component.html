@@ -54,6 +54,31 @@
           <div class="row">
             <div class="col-md-6">
               <h2>
+                <i class="fas fa-user" aria-hidden="true"></i>
+                Account info
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-text label="Plan:" value="Basic"></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
                 <i class="fas fa-building" aria-hidden="true"></i>
                 Company info
               </h2>
