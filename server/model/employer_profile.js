@@ -65,7 +65,7 @@ const CompanyProfileSchema = new Schema({
             type: String,
             maxlength: 3000
     },
-
+    discount: Number,
     saved_searches: {
         type:[new Schema({
             name: {
