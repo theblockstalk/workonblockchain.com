@@ -13,7 +13,7 @@ module.exports.up = async function() {
         let set = {};
         totalProcessed++;
         const userDocs = await users.find({type: 'company', referred_email: referralDoc.email});
-        if(userDocs && userDocs.length > 0){
+        if(let userDocs && userDocs.length > 0){
             for (userDoc of userDocs) {
                 const employerDoc = await companies.findOne({_creator : userDoc._id});
                 if(employerDoc){
