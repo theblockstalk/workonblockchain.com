@@ -66,6 +66,28 @@ const CompanyProfileSchema = new Schema({
             maxlength: 3000
     },
     discount: Number,
+    pricing_plan: {
+        type: String,
+        enum: enumerations.pricingPlans
+    },
+    history : {
+        type : [{
+            pricing_plan: {
+                type: String,
+                enum: enumerations.pricingPlans
+            },
+            discount: Number,
+            timestamp: {
+                type: Date,
+                required:true,
+            },
+            updated_by: {
+                type: Schema.Types.ObjectId,
+                ref: "Users",
+                required:true
+            }
+        }]
+    },
     saved_searches: {
         type:[new Schema({
             name: {
