@@ -1,0 +1,54 @@
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about_comp" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/preferences" class="nav-link">
+              <i class="{{pref_active_class}}"></i>
+              Talent requirements
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <h3 class="text-center">Pricing Plans</h3>
+        <div class="row my-3">
+          <div class="col-md-12">
+            <div class = "form-group w-100 mb-0">
+              <h4> Your Price plan </h4>
+            </div>
+          </div>
+        </div>
+
+        <form (ngSubmit)="price_plan()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class = "text-right mt-3">
+                  <a routerLink="/preferences" class = "btn btn-warning text-white">Back</a>
+                  <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

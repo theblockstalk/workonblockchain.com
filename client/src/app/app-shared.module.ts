@@ -78,6 +78,7 @@ import { CandJobActivityComponent } from './L1-items/candidate/cand-job-activity
 import { ApproachOfferRateComponent } from './L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 import { HowHearAboutWobComponent } from './L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from './L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+import { PricingComponent } from './L2-pages/pricing/pricing.component';
 
 @NgModule({
   imports: [
@@ -99,7 +100,8 @@ import { HearAboutWobOtherInfoComponent } from './L1-items/users/hear-about-wob-
     CommercialSkillsComponent, ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent,
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
     CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
-    CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent
+    CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent,
+    PricingComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -117,7 +119,7 @@ import { HearAboutWobOtherInfoComponent } from './L1-items/users/hear-about-wob-
     ExperimentedWithComponent, LanguagesComponent, EducationHistoryComponent, TextPasswordComponent, ContentComponent,
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
     CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
-    ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent
+    ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent, PricingComponent
   ]
 })
 export class SharedModule { }
