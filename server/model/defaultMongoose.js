@@ -21,19 +21,19 @@ let defaultFunctions = function(model) {
             return await model.findById(id).lean();
         },
 
-        deleteOne: async function (selector) {
-            await model.findOne(selector).remove();
-        },
-
         findWithCursor: findWithCursor,
 
         findAndIterate: async function (selector, fn) {
-          let cursor = await findWithCursor(selector);
+            let cursor = await findWithCursor(selector);
             let doc = await cursor.next();
 
             for (null; doc !== null; doc = await cursor.next()) {
                 await fn(doc);
             }
+        },
+
+        deleteOne: async function (selector) {
+            await model.findOne(selector).remove();
         },
 
         count: async function (selector) {

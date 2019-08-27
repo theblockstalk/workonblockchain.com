@@ -1,42 +1,22 @@
 const mongoose = require('mongoose');
 const pageSchema = require('../schemas/pages');
+const defaultMongoose = require('../defaultMongoose');
 
-let Pages = mongoose.model('pages_content', pageSchema);
+let Model = mongoose.model('pages_content', pageSchema);
 
-module.exports.insert = async function insert(data) {
-    let newDoc = new Pages(data);
-    await newDoc.save();
-    return newDoc._doc;
+let mongooseFunctions = defaultMongoose(Model);
+
+mongooseFunctions.findByDescDate = async function findByDescDate(selector) {
+    return await Model.findOne(selector).sort({updated_date: 'descending'}).lean();
 }
 
-module.exports.findOne = async function findOne(selector) {
-    return await Pages.findOne(selector).lean();
+mongooseFunctions.findOneAndSort = async function findOne(selector) {
+    return await Model.findOne(selector).sort({updated_date : -1}).lean();
 }
 
-module.exports.findOneById = async function findOneById(id) {
-    return await Pages.findById(id).lean();
+// TODO: need to change this to updateOne()
+mongooseFunctions.update = async function update(selector, updateObj) {
+    await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
-module.exports.findByDescDate = async function findByDescDate(selector) {
-    return await Pages.findOne(selector).sort({updated_date: 'descending'}).lean();
-}
-
-module.exports.insert = async function insert(data) {
-    let newDoc = new Pages(data);
-
-    await newDoc.save();
-
-    return newDoc._doc;
-}
-
-module.exports.findOneAndSort = async function findOne(selector) {
-    return await Pages.findOne(selector).sort({updated_date : -1}).lean();
-}
-
-module.exports.update = async function update(selector, updateObj) {
-    await Pages.findOneAndUpdate(selector, updateObj, { runValidators: true });
-}
-
-module.exports.deleteOne = async function deleteOne(selector) {
-    await Pages.find(selector).remove();
-}
+module.exports = mongooseFunctions;

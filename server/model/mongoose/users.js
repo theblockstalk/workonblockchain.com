@@ -1,35 +1,22 @@
 const mongoose = require('mongoose');
 const userSchema = require('../schemas/users');
-
-let User = mongoose.model('User', userSchema);
+const defaultMongoose = require('../defaultMongoose');
 let cities = require('./cities');
 
-module.exports.insert = async function insert(data) {
-    let newDoc = new User(data);
+let Model = mongoose.model('User', userSchema);
 
-    await newDoc.save();
+let mongooseFunctions = defaultMongoose(Model);
 
-    return newDoc._doc;
+mongooseFunctions.findAndSort = async function find(selector, sort) {
+    return await Model.find(selector).sort(sort).lean();
 }
 
-module.exports.findAndSort = async function find(selector, sort) {
-    return await User.find(selector).sort(sort).lean();
+mongooseFunctions.find = async function find(selector) {
+    return await Model.find(selector).lean();
 }
 
-module.exports.find = async function find(selector) {
-    return await User.find(selector).lean();
-}
-
-module.exports.findOne = async function findOne(selector) {
-    return await User.findOne(selector).lean();
-}
-
-module.exports.findOneById = async function findOneById(id) {
-    return await User.findById(id).lean();
-}
-
-module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
-    let userDoc = await User.findById(id).lean();
+mongooseFunctions.findByIdAndPopulate = async function findByIdAndPopulate(id) {
+    let userDoc = await Model.findById(id).lean();
     if(userDoc) {
         if(userDoc.candidate ) {
             if(userDoc.candidate.employee) {
@@ -74,40 +61,13 @@ module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
 
 }
 
-module.exports.findOneByEmail = async function findOneByEmail(email) {
-    return await User.findOne({email: email}).lean();
+mongooseFunctions.findOneByEmail = async function findOneByEmail(email) {
+    return await Model.findOne({email: email}).lean();
 }
 
-module.exports.update = async function update(selector, updateObj) {
-    await User.findOneAndUpdate(selector, updateObj, { runValidators: true });
+// TODO: need to change this to updateOne()
+mongooseFunctions.update = async function update(selector, updateObj) {
+    await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
-module.exports.deleteOne = async function deleteOne(selector) {
-    await User.find(selector).remove();
-}
-
-module.exports.count = async function count(selector) {
-    return new Promise((resolve, reject) => {
-        try {
-            User.count(selector, (err1, result) => {
-            if (err1) reject(err1);
-    resolve(result);
-})
-} catch (err2) {
-        reject(err2);
-    }
-})
-}
-
-module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await User.find(selector).cursor();
-}
-
-module.exports.findAndIterate = async function findAndIterate(selector, fn) {
-    let cursor = await this.findWithCursor(selector);
-    let doc = await cursor.next();
-
-    for (null; doc !== null; doc = await cursor.next()) {
-        await fn(doc);
-    }
-}
+module.exports = mongooseFunctions;

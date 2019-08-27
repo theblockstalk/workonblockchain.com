@@ -1,31 +1,26 @@
 const mongoose = require('mongoose');
 const companySchema = require('../schemas/companies');
+const defaultMongoose = require('../defaultMongoose');
 
-let Company = mongoose.model('CompanyProfile', companySchema);
+let Model = mongoose.model('CompanyProfile', companySchema);
 let cities = require('./cities');
 
-module.exports.insert = async function insert(data) {
-    let newDoc = new Company(data);
+let mongooseFunctions = defaultMongoose(Model);
 
-    await newDoc.save();
-
-    return newDoc._doc;
+mongooseFunctions.findOne = async function (selector) {
+    return await Model.findOne(selector).populate('_creator').lean();
 }
 
-module.exports.findOne = async function findOne(selector) {
-    return await Company.findOne(selector).populate('_creator').lean();
+mongooseFunctions.findOneById = async function (id) {
+    return await Model.findById(id).populate('_creator').lean();
 }
 
-module.exports.findOneById = async function findOneById(id) {
-    return await Company.findById(id).populate('_creator').lean();
+mongooseFunctions.findOneByUserId = async function (id) {
+    return await Model.findOne({_creator: id}).populate('_creator').lean();
 }
 
-module.exports.findOneByUserId = async function findOneByUserId(id) {
-    return await Company.findOne({_creator: id}).populate('_creator').lean();
-}
-
-module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
-    let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
+mongooseFunctions.findOneAndPopulate = async function (id) {
+    let companyDoc = await Model.findOne({_creator: id}).populate('_creator').lean();
     if(companyDoc) {
         if(companyDoc.saved_searches ) {
             for(let i =0; i < companyDoc.saved_searches.length ; i++) {
@@ -47,47 +42,17 @@ module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
 
 }
 
-module.exports.update = async function (selector, updateObj) {
-    await Company.findOneAndUpdate(selector, updateObj, { runValidators: true });
+// TODO: need to change this to updateOne()
+mongooseFunctions.update = async function (selector, updateObj) {
+    await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
-
-module.exports.updateMany = async function (selector, updateObj) {
-    await Company.updateMany(selector, updateObj, { runValidators: true });
+mongooseFunctions.updateMany = async function (selector, updateObj) {
+    await Model.updateMany(selector, updateObj, { runValidators: true });
 }
 
-module.exports.deleteOne = async function deleteOne(selector) {
-    await Company.find(selector).remove();
-}
-
-module.exports.count = async function count(selector) {
-    return new Promise((resolve, reject) => {
-        try {
-            Company.count(selector, (err1, result) => {
-                if (err1) reject(err1);
-                resolve(result);
-            })
-        } catch (err2) {
-            reject(err2);
-        }
-    })
-}
-
-module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await Company.find(selector).populate('_creator').cursor();
-}
-
-module.exports.findAndIterate = async function findAndIterate(selector, fn) {
-    let cursor = await this.findWithCursor(selector);
-    let doc = await cursor.next();
-
-    for (null; doc !== null; doc = await cursor.next()) {
-        await fn(doc.toObject());
-    }
-}
-
-module.exports.aggregate = async function aggregate(searchQuery) {
-    return await Company.aggregate([{
+mongooseFunctions.aggregate = async function (searchQuery) {
+    return await Model.aggregate([{
         $lookup:
             {
                 from: "users",
@@ -97,3 +62,5 @@ module.exports.aggregate = async function aggregate(searchQuery) {
             }
     }, searchQuery]);
 }
+
+module.exports = mongooseFunctions;

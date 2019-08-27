@@ -10,6 +10,7 @@ mongooseFunctions.findAndLimit4 = async function findAndLimit4(selector) {
     return await Model.find(selector).limit(4).lean();
 }
 
+// TODO: need to change this to updateOne()
 mongooseFunctions.update = async function (selector, updateObj) {
     await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
