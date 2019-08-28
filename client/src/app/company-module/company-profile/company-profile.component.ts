@@ -43,7 +43,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
-  country_code;discount;referred_name;
+  country_code;discount;referred_name;price_plan;
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
@@ -196,6 +196,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               if (data['name']) this.referred_name = data['name'];
               else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
 
+              this.price_plan = 'Basic';
 
               if(data['company_logo'] != null )
               {

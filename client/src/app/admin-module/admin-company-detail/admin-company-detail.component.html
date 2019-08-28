@@ -132,6 +132,20 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3" *ngIf="discount">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="referred_name">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" *ngIf="price_plan">
+              <app-c-formv-text label="Plan:" [value]="price_plan"></app-c-formv-text>
+            </div>
+          </div>
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">

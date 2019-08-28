@@ -25,8 +25,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   error;
   is_approve;
   admin_log;
-  imgPath;
-
+  imgPath;discount;price_plan;
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -86,6 +85,13 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.referred_link = data['user_id'];
             }
             else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
+
+            if(data['discount']) this.discount = data['discount'];
+
+            if (data['name']) this.referred_name = data['name'];
+            else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
+
+            this.price_plan = 'Basic';
 
               if(data['company_logo'] != null )
               {

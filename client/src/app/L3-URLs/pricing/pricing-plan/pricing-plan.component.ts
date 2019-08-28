@@ -40,6 +40,7 @@ export class PricingPlanComponent implements OnInit {
         }
       );
     }
+    else this.router.navigate(['/login']);
   }
 
 }
