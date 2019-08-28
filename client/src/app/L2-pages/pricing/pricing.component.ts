@@ -10,11 +10,15 @@ declare var $:any;
   styleUrls: ['./pricing.component.css']
 })
 export class PricingComponent implements OnInit {
-  @Input() pricingDoc: object;
+  @Input() companyDoc: object; //optional
   @Input() viewBy: string; //company, candidate or anyone
 
   terms_active_class;about_active_class;pref_active_class;companyMsgTitle;
-  companyMsgBody;
+  companyMsgBody;price_plan_active_class;log;
+  free_plan = "Free till you hire";
+  starter = "Starter";
+  essential = "Essential";
+  unlimited = "Unlimited";
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private authenticationService: UserService) { }
 
@@ -22,10 +26,10 @@ export class PricingComponent implements OnInit {
     if (this.viewBy === 'company') {
       console.log(this.viewBy);
       console.log('in PricingComponent');
-      console.log(this.pricingDoc);
-      if (this.pricingDoc['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
-      if (this.pricingDoc['company_founded'] && this.pricingDoc['no_of_employees'] && this.pricingDoc['company_funded'] && this.pricingDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
-      if (this.pricingDoc['saved_searches'] && this.pricingDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
+      console.log(this.companyDoc);
+      if (this.companyDoc['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
+      if (this.companyDoc['company_founded'] && this.companyDoc['no_of_employees'] && this.companyDoc['company_funded'] && this.companyDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
+      if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
 
       this.authenticationService.get_page_content('Company popup message')
       .subscribe(
@@ -49,11 +53,36 @@ export class PricingComponent implements OnInit {
     this.router.navigate(['/candidate-search']);
   }
 
-  selectPlan(id){
-    console.log(id);
-    if (isPlatformBrowser(this.platformId)) {
-      $(".pr-col").removeClass("table-info");
-      $("#div-" + id).addClass("table-info");
+  selectPlan(plan, id){
+    if (this.viewBy === 'company') {
+      console.log(this.companyDoc['_creator']._id);
+      let inputQuery : any ={};
+      console.log(plan);
+      console.log(id);
+      if (isPlatformBrowser(this.platformId)) {
+        $(".pr-col").removeClass("table-info");
+        $("#div-" + id).addClass("table-info");
+      }
+      inputQuery.pricing_plan = plan;
+      this.authenticationService.edit_company_profile(this.companyDoc['_creator']._id, inputQuery, false)
+      .subscribe(
+        data =>{
+          if(data) {
+            if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+          }
+        },
+        error => {
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.router.navigate(['/not_found']);
+          }
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.router.navigate(['/not_found']);
+          }
+          else this.log = "Something went wrong";
+        }
+      )
     }
   }
 

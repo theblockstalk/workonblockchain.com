@@ -25,7 +25,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   error;
   is_approve;
   admin_log;
-  imgPath;discount;price_plan;
+  imgPath;discount;price_plan = 'N/A';
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -91,7 +91,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             if (data['name']) this.referred_name = data['name'];
             else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
 
-            this.price_plan = 'Basic';
+            if (data['pricing_plan']) this.price_plan = data['pricing_plan'];
 
               if(data['company_logo'] != null )
               {

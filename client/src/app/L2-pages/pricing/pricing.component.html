@@ -1,6 +1,6 @@
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row">
+    <div class="row" *ngIf="viewBy === 'company'">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard mb-3">
           <li class="nav-item">
@@ -21,46 +21,44 @@
               Talent requirements
             </a>
           </li>
+          <li class="nav-item">
+            <a routerLink="/price_plan" class="nav-link">
+              <i class="{{price_plan_active_class}}"></i>
+              Price plan
+            </a>
+          </li>
         </ul>
       </div>
     </div>
 
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <form (ngSubmit)="price_plan()">
+        <!--<form (ngSubmit)="price_plan()">-->
           <div class="row desktop_row">
             <div class="col pr-col">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5 class = "text-uppercase">PLAN</h5>
               </div>
-
               <div class = "row_1 py-3">
                 <h5 class = "text-uppercase">Price</h5>
               </div>
-
               <div class = "row_1 py-3">
                 <h5 class = "text-uppercase">Model</h5>
               </div>
             </div>
-
             <div class="col pr-col" id="div-1">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
-                <p>
-                  All the basic for getting
-                  started
-                </p>
+                <p> All the basics for getting started </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163; 39.90</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter,1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
                   engagements per year</b>
@@ -75,84 +73,65 @@
               </div>
               <div class = "row_1 py-3">
                 <h5>Essential</h5>
-                <p>
-                  The must have features with a dedicated hiring manager
-                </p>
+                <p> The must have features with a dedicated hiring manager </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential,2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
               </div>
             </div>
-
             <div class="col pr-col" id="div-3">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
-                <p>
-                  Scale your business with unlimited hires
-                </p>
+                <p> Scale your business with unlimited hires </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163;299.90</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited,3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
               </div>
 
               <div class = "row_1 py-3">
                 <b>Unlimited ulta-low fee engagements per year</b>
               </div>
             </div>
-
             <div class="col pr-col" id="div-4">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
-                <p>
-                  Flexible hiring where you are in control
-                </p>
+                <p> Flexible hiring where you are in control </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163;0</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan,4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
               </div>
             </div>
-
           </div>
 
           <div class="row mobile-row">
             <div class="col-12 pr-col">
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
-                <p>
-                  All the basic for getting
-                  started
-                </p>
+                <p> All the basic for getting started </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163; 39.90</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter,1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
                   engagements per year</b>
@@ -165,38 +144,31 @@
                   RECOMENDED
                 </button>
                 <h5>Essential</h5>
-                <p>
-                  The must have features with a dedicated hiring manager
-                </p>
+                <p> The must have features with a dedicated hiring manager </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential,2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
               </div>
             </div>
+
             <div class="col-12 pr-col" id="div-3">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
-                <p>
-                  Scale your business with unlimited hires
-                </p>
+                <p> Scale your business with unlimited hires </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163;299.90</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited,3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>Unlimited ulta-low fee engagements per year</b>
               </div>
@@ -206,18 +178,14 @@
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
-                <p>
-                  Flexible hiring where you are in control
-                </p>
+                <p> Flexible hiring where you are in control </p>
               </div>
-
               <div class = "row_1 py-3">
                 just <br>
                 <b> &#163;0</b> <br>
                 a month <br>
-                <button type="button" (click) = selectPlan(4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan,4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
               </div>
-
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
               </div>
@@ -228,21 +196,16 @@
             <div class="col-md-8 offset-md-2 text-center">
               <div class="table-success">
                 <button class="btn btn-success w-100">Ulta-low fee engagements</button>
-                <h2 class="py-3">
-                  1%
-                </h2>
+                <h2 class="py-3"> 1% </h2>
               </div>
             </div>
 
             <div class="col-md-2 text-center">
               <div class="table-success">
                 <button class="btn btn-success w-100">Low Fee</button>
-                <h2 class="py-3">
-                  6%
-                </h2>
+                <h2 class="py-3"> 6% </h2>
               </div>
             </div>
-
           </div>
 
           <div class="row mt-5">
@@ -254,7 +217,6 @@
                 - No rebate period applies (as you only pay while the candidate is engaged) <br>
                 - Fee rate is determined by the selected plan on the date when the first approach is made
               </p>
-
               <p>
                 See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
               </p>
@@ -265,21 +227,12 @@
             <div class="col-12">
               <div class="table-responsive">
                 <table class="table text-center">
-
                   <tr>
                     <td>Ultra low-fee engagements</td>
-                    <td>
-                      3
-                    </td>
-                    <td>
-                      9
-                    </td>
-                    <td>
-                      Unlimited
-                    </td>
-                    <td>
-                      0
-                    </td>
+                    <td> 3 </td>
+                    <td> 9 </td>
+                    <td> Unlimited </td>
+                    <td> 0 </td>
                   </tr>
 
                   <tr>
@@ -321,7 +274,6 @@
                     <td>&#10003;</td>
                     <td></td>
                   </tr>
-
                 </table>
               </div>
             </div>
@@ -385,72 +337,48 @@
 
           <div class="row mt-5">
             <div class="col-md-6">
-              <p class="text-center">
-                on the
-              </p>
+              <p class="text-center"> on the </p>
               <img src="/assets/images/price_plan_imgs/logo_woc.png" class = "w-100" alt="">
               <p class="text-center">
                 <button type="button" class="btn btn-success font-weight-bold">Essential Plan</button>
               </p>
-              <p class="text-center">
-                you pay
-              </p>
+              <p class="text-center"> you pay </p>
               <p>
                 - &#163; 50 per month while John is employed (up to 2 year max) <br>
                 - Plus &#163;59.90 per month subscription while still using the platform
               </p>
-
-              <h6>
-                Maximum engagement fee
-              </h6>
-
-              <h5>
-                &#163;1,437.60
-              </h5>
-
+              <h6> Maximum engagement fee </h6>
+              <h5> &#163;1,437.60 </h5>
               <h6>Upfront cost:</h6>
               <h5>&#163;109.90</h5>
             </div>
-
             <div class="col-md-6">
-              <p class="text-center">
-                With a
-              </p>
+              <p class="text-center"> With a </p>
               <p class="text-center">
                 <button type="button" class="btn btn-danger font-weight-bold mt-5">Traditional Recruitment Agency</button>
               </p>
-              <p class="text-center mt-3">
-                you pay
-              </p>
+              <p class="text-center mt-3"> you pay </p>
               <p>
                 - &#163;18,000 for their heigh commission, due upfort with limited retainer period
               </p>
-
-              <h6 class = "mt-5">
-                Maximum engagement fee
-              </h6>
-
-              <h5>
-                &#163;18,000
-              </h5>
-
+              <h6 class = "mt-5"> Maximum engagement fee </h6>
+              <h5> &#163;18,000 </h5>
               <h6>Upfront cost:</h6>
               <h5>&#163;18,000</h5>
             </div>
-
           </div>
 
-          <div class="row">
+          <!--<div class="row" *ngIf="viewBy === 'company'">
             <div class="col-md-12">
               <div class="form-group">
                 <div class = "text-right mt-3">
-                  <a routerLink="/preferences" class = "btn btn-warning text-white">Back</a>
+                  <a  routerLink="/preferences" class = "btn btn-warning text-white">Back</a>
                   <button type="submit" class = "btn btn-primary ml-1">Done</button>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </div>-->
+        <!--</form>-->
       </div>
     </div>
   </div>

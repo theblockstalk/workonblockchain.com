@@ -196,7 +196,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               if (data['name']) this.referred_name = data['name'];
               else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
 
-              this.price_plan = 'Basic';
+              if (data['pricing_plan']) this.price_plan = data['pricing_plan'];
 
               if(data['company_logo'] != null )
               {

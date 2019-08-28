@@ -8,23 +8,21 @@ import {UserService} from '../../../user.service';
   styleUrls: ['./pricing-plan.component.css']
 })
 export class PricingPlanComponent implements OnInit {
-  viewBy;pricingDoc;currentUser;
+  viewBy;companyDoc;currentUser;
 
   constructor(private authenticationService: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.viewBy = 'company';
     console.log('in pricing page URL for comp wizard');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(!this.currentUser) {
-      this.router.navigate(['/login']);
-    }
+    if(this.currentUser && this.currentUser.type === 'candidate') this.viewBy = 'candidate';
     else if(this.currentUser && this.currentUser.type === 'company') {
+      this.viewBy = 'company';
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
       .subscribe(
         data => {
           console.log(data);
-          this.pricingDoc = data;
+          this.companyDoc = data;
         },
         error => {
           if(error['message'] === 500 || error['message'] === 401) {
@@ -40,7 +38,7 @@ export class PricingPlanComponent implements OnInit {
         }
       );
     }
-    else this.router.navigate(['/login']);
+    else this.viewBy = 'general';
   }
 
 }

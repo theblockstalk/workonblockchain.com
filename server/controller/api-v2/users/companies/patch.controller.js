@@ -70,7 +70,10 @@ const bodySchema = new Schema({
         type: String,
         maxlength: 3000
     },
-
+    pricing_plan: {
+        type: String,
+        enum: enumerations.pricingPlans
+    },
     saved_searches: {
         type:[new Schema({
             work_type : {
@@ -224,6 +227,8 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
             if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
             if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
+            if(queryBody.pricing_plan) employerUpdate.pricing_plan = queryBody.pricing_plan;
+
             if (queryBody.saved_searches) {
                 let patchSearches = queryBody.saved_searches;
                 let currentSearches = employerDoc.saved_searches;
