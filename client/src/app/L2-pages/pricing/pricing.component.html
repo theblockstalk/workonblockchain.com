@@ -27,16 +27,419 @@
 
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <h3 class="text-center">Pricing Plans</h3>
-        <div class="row my-3">
-          <div class="col-md-12">
-            <div class = "form-group w-100 mb-0">
-              <h4> Your Price plan </h4>
+        <form (ngSubmit)="price_plan()">
+          <div class="row desktop_row">
+            <div class="col pr-col">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">PLAN</h5>
+              </div>
+
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">Price</h5>
+              </div>
+
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">Model</h5>
+              </div>
+            </div>
+
+            <div class="col pr-col" id="div-1">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Starter</h5>
+                <p>
+                  All the basic for getting
+                  started
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 39.90</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>3 ulta-low fee
+                  engagements per year</b>
+              </div>
+            </div>
+
+            <div class="col pr-col" id="div-2">
+              <div class = "row_a">
+                <button class = "btn btn-primary btn_th w-100 font-weight-bold">
+                  RECOMENDED
+                </button>
+              </div>
+              <div class = "row_1 py-3">
+                <h5>Essential</h5>
+                <p>
+                  The must have features with a dedicated hiring manager
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 59.90 </b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>9 ulta-low fee engagements per year</b>
+              </div>
+            </div>
+
+            <div class="col pr-col" id="div-3">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Unlimited</h5>
+                <p>
+                  Scale your business with unlimited hires
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;299.90</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>Unlimited ulta-low fee engagements per year</b>
+              </div>
+            </div>
+
+            <div class="col pr-col" id="div-4">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Free Till Your Hire</h5>
+                <p>
+                  Flexible hiring where you are in control
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;0</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>Pay 6% per year per engagements</b>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mobile-row">
+            <div class="col-12 pr-col">
+              <div class = "row_1 py-3">
+                <h5>Starter</h5>
+                <p>
+                  All the basic for getting
+                  started
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 39.90</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>3 ulta-low fee
+                  engagements per year</b>
+              </div>
+            </div>
+
+            <div class="col-12 pr-col" id="div-2">
+              <div class = "row_1 py-3">
+                <button class = "btn btn-primary btn_th w-100 font-weight-bold">
+                  RECOMENDED
+                </button>
+                <h5>Essential</h5>
+                <p>
+                  The must have features with a dedicated hiring manager
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 59.90 </b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>9 ulta-low fee engagements per year</b>
+              </div>
+            </div>
+            <div class="col-12 pr-col" id="div-3">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Unlimited</h5>
+                <p>
+                  Scale your business with unlimited hires
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;299.90</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>Unlimited ulta-low fee engagements per year</b>
+              </div>
+            </div>
+
+            <div class="col-12 pr-col" id="div-4">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Free Till Your Hire</h5>
+                <p>
+                  Flexible hiring where you are in control
+                </p>
+              </div>
+
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;0</b> <br>
+                a month <br>
+                <button type="button" (click) = selectPlan(4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>Pay 6% per year per engagements</b>
+              </div>
             </div>
           </div>
-        </div>
 
-        <form (ngSubmit)="price_plan()">
+          <div class="row my-3">
+            <div class="col-md-8 offset-md-2 text-center">
+              <div class="table-success">
+                <button class="btn btn-success w-100">Ulta-low fee engagements</button>
+                <h2 class="py-3">
+                  1%
+                </h2>
+              </div>
+            </div>
+
+            <div class="col-md-2 text-center">
+              <div class="table-success">
+                <button class="btn btn-success w-100">Low Fee</button>
+                <h2 class="py-3">
+                  6%
+                </h2>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-8 offset-md-2">
+              <h6>Engagements Fees</h6>
+              <p>
+                - Calculated from the annual salary or contracting rate <br>
+                - Paid yearly every month for 24 months while they remain commercially engaged <br>
+                - No rebate period applies (as you only pay while the candidate is engaged) <br>
+                - Fee rate is determined by the selected plan on the date when the first approach is made
+              </p>
+
+              <p>
+                See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table class="table text-center">
+
+                  <tr>
+                    <td>Ultra low-fee engagements</td>
+                    <td>
+                      3
+                    </td>
+                    <td>
+                      9
+                    </td>
+                    <td>
+                      Unlimited
+                    </td>
+                    <td>
+                      0
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Pre Vatted Candidates</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                  </tr>
+
+                  <tr>
+                    <td>Search Candiates at yo...</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                  </tr>
+
+                  <tr>
+                    <td>Phone Support</td>
+                    <td></td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Automated matches</td>
+                    <td></td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>Dedicated hiring manager</td>
+                    <td></td>
+                    <td>&#10003;</td>
+                    <td>&#10003;</td>
+                    <td></td>
+                  </tr>
+
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card py-5">
+                <img class="card-img-top" src="/assets/images/price_plan_imgs/card-1.png" alt="Card image">
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Employees</h4>
+                  <p class="card-text">
+                    Full or part time employees fees are paid every month that they remain
+                    commercially engaged with the company. The fee is calculated from the
+                    current salary times.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card py-5">
+                <img class="card-img-top" src="/assets/images/price_plan_imgs/card-2.png" alt="Card image">
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Contractors and freelancers</h4>
+                  <p class="card-text">
+                    Fees are paid every month that they remain commercially engaged with
+                    the company. The fee is calculated from the current contracting rate.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card py-5">
+                <img class="card-img-top" src="/assets/images/price_plan_imgs/card-3.png" alt="Card image">
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Volunteers</h4>
+                  <p class="card-text">
+                    If a volunteer role turns into a paid engagement within 24 months of the
+                    initial engagement then fees are paid every month that they remain
+                    commercially engaged with the company. The fee is calculated by the
+                    current salary or contracting rate.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <h3>Transparency matter to us....</h3>
+            <div class="col-12 text-center">
+              <p>So here simple example fo hiring John through our platform</p>
+              <img src="/assets/images/price_plan_imgs/jhon.png" class = "mb-3" alt="">
+              <h5>John</h5>
+              <h5>
+                Reactjs dev &#163;60,000
+              </h5>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <p class="text-center">
+                on the
+              </p>
+              <img src="/assets/images/price_plan_imgs/logo_woc.png" class = "w-100" alt="">
+              <p class="text-center">
+                <button type="button" class="btn btn-success font-weight-bold">Essential Plan</button>
+              </p>
+              <p class="text-center">
+                you pay
+              </p>
+              <p>
+                - &#163; 50 per month while John is employed (up to 2 year max) <br>
+                - Plus &#163;59.90 per month subscription while still using the platform
+              </p>
+
+              <h6>
+                Maximum engagement fee
+              </h6>
+
+              <h5>
+                &#163;1,437.60
+              </h5>
+
+              <h6>Upfront cost:</h6>
+              <h5>&#163;109.90</h5>
+            </div>
+
+            <div class="col-md-6">
+              <p class="text-center">
+                With a
+              </p>
+              <p class="text-center">
+                <button type="button" class="btn btn-danger font-weight-bold mt-5">Traditional Recruitment Agency</button>
+              </p>
+              <p class="text-center mt-3">
+                you pay
+              </p>
+              <p>
+                - &#163;18,000 for their heigh commission, due upfort with limited retainer period
+              </p>
+
+              <h6 class = "mt-5">
+                Maximum engagement fee
+              </h6>
+
+              <h5>
+                &#163;18,000
+              </h5>
+
+              <h6>Upfront cost:</h6>
+              <h5>&#163;18,000</h5>
+            </div>
+
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -52,3 +455,23 @@
     </div>
   </div>
 </section>
+
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

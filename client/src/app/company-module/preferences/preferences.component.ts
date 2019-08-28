@@ -426,7 +426,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data) {
-              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              this.router.navigate(['/price_plan']);
             }
           },
           error => {
@@ -511,13 +511,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       return;
     }
   }
-
-  redirectToCompany()
-  {
-    if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('hide');
-    this.router.navigate(['/candidate-search']);
-  }
-
 
   suggestedOptions(index) {
     if(this.preferncesForm.value.prefItems[index].location !== '') {

@@ -1,0 +1,46 @@
+
+.first_td {
+  width: 200px !important;
+}
+
+.btn_th {
+  padding: 3px;
+  font-size: 12px;
+}
+
+.tb_btn {
+  width: 100px;
+  margin-top: 10px;
+  text-decoration: none !important;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.card-img-top {
+  width: 85px;
+  margin: auto;
+}
+
+.row_a {
+  height: 20px;
+}
+
+.row_1 {
+  min-height: 150px;
+  position: relative;
+}
+
+
+@media (min-width: 768px) {
+  .mobile-row {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px){
+  .desktop_row {
+    display: none !important;
+  }
+}
