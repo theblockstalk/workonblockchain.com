@@ -139,7 +139,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.router.navigate(['/company_wizard']);
             }
 
-
             else if(!data['company_founded'] || !data['no_of_employees'] || !data['company_funded'] || !data['company_description'] )
             {
               this.router.navigate(['/about_comp']);
@@ -148,6 +147,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
             else if(((new Date(data['_creator'].created_date) > new Date('2018/11/28')) && (!data['saved_searches'] || data['saved_searches'].length === 0))) {
               this.router.navigate(['/preferences']);
             }
+
+            else if(!data['pricing_plan']) this.router.navigate(['/price_plan']);
 
             else
             {
