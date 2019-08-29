@@ -74,6 +74,24 @@ const bodySchema = new Schema({
         type: String,
         enum: enumerations.pricingPlans
     },
+    history : {
+        type:[new Schema({
+            pricing_plan: {
+                type: String,
+                enum: enumerations.pricingPlans
+            },
+            discount: Number,
+            timestamp: {
+                type: Date,
+                required:true,
+            },
+            updated_by: {
+                type: Schema.Types.ObjectId,
+                ref: "Users",
+                required:true
+            }
+        })]
+    },
     saved_searches: {
         type:[new Schema({
             work_type : {
@@ -195,6 +213,10 @@ module.exports.auth = async function (req) {
 module.exports.endpoint = async function (req, res) {
     let userId;
     let employerDoc;
+    const timestamp = new Date();
+    const updatedUserID = req.auth.user._id;
+    let pushObj = {};
+
     if (req.query.admin) {
         userId = req.query.user_id;
         employerDoc = await companies.findOne({ _creator: userId });
@@ -227,12 +249,26 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
             if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
             if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
-            if(queryBody.pricing_plan) employerUpdate.pricing_plan = queryBody.pricing_plan;
+            if(queryBody.pricing_plan) {
+                employerUpdate.pricing_plan = queryBody.pricing_plan;
+                let history = {
+                    pricing_plan: queryBody.pricing_plan,
+                    timestamp : timestamp,
+                    updated_by: updatedUserID,
+                };
+                pushObj = {
+                    $push: {
+                        'history': {
+                            $each: [history],
+                            $position: 0
+                        }
+                    }
+                }
+            }
 
             if (queryBody.saved_searches) {
                 let patchSearches = queryBody.saved_searches;
                 let currentSearches = employerDoc.saved_searches;
-                const timestamp = new Date();
                 for (let patchSearch of patchSearches) {
                     if(currentSearches) {
 
@@ -273,7 +309,11 @@ module.exports.endpoint = async function (req, res) {
         if(!objects.isEmpty(updateObj))
             await users.update({_id: userId}, updateObj);
 
-        await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+        if(!objects.isEmpty(pushObj)){
+            pushObj.$set = employerUpdate;
+            await companies.update({ _id: employerDoc._id },pushObj);
+        }
+        else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
         res.send(updatedEmployerDoc);

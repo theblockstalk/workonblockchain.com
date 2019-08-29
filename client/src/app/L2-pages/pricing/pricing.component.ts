@@ -15,7 +15,8 @@ export class PricingComponent implements OnInit {
 
   terms_active_class;about_active_class;pref_active_class;companyMsgTitle;
   companyMsgBody;price_plan_active_class;log;
-  free_plan = "Free till you hire";
+
+  free_plan: any;
   starter = "Starter";
   essential = "Essential";
   unlimited = "Unlimited";
@@ -24,12 +25,16 @@ export class PricingComponent implements OnInit {
 
   ngOnInit() {
     if (this.viewBy === 'company') {
+      this.free_plan = {
+        name: "Free till you hire", value: 'freeplan'
+      };
       console.log(this.viewBy);
       console.log('in PricingComponent');
       console.log(this.companyDoc);
       if (this.companyDoc['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['company_founded'] && this.companyDoc['no_of_employees'] && this.companyDoc['company_funded'] && this.companyDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
+      if (this.companyDoc['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
       this.authenticationService.get_page_content('Company popup message')
       .subscribe(
@@ -53,17 +58,21 @@ export class PricingComponent implements OnInit {
     this.router.navigate(['/candidate-search']);
   }
 
-  selectPlan(plan, id){
+  selectPlan(plan){
     if (this.viewBy === 'company') {
       console.log(this.companyDoc['_creator']._id);
       let inputQuery : any ={};
+      let planSelected = plan;
+      if(plan === this.free_plan.name) {
+        plan = this.free_plan.value;
+        planSelected = this.free_plan.name;
+      }
       console.log(plan);
-      console.log(id);
       if (isPlatformBrowser(this.platformId)) {
         $(".pr-col").removeClass("table-info");
-        $("#div-" + id).addClass("table-info");
+        $("#div-" + plan).addClass("table-info");
       }
-      inputQuery.pricing_plan = plan;
+      inputQuery.pricing_plan = planSelected;
       this.authenticationService.edit_company_profile(this.companyDoc['_creator']._id, inputQuery, false)
       .subscribe(
         data =>{

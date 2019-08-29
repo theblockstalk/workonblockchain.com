@@ -481,9 +481,5 @@ export const constants = {
     {name: 'Contacted by WOB', value: "Contacted by WOB"}, {name: 'Word of mouth', value: "Word of mouth"},
     {name: 'Internet search', value: "Internet search"}, {name: 'Other', value: "Other"}
   ],
-  pricing_plans: [
-    {name: 'Starter', value: 'Starter'},{name: 'Essential', value: 'Essential'},
-    {name: 'Unlimited', value: 'Unlimited'},{name: 'Free till you hire', value: 'Free till you hire'}
-  ],
 
 };

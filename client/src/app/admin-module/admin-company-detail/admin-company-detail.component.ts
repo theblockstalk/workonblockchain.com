@@ -58,6 +58,7 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             let company_phone = '';
             let country_code = '';
             let contact_number = data['company_phone'];

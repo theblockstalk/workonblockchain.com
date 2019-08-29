@@ -47,7 +47,7 @@
                 <h5 class = "text-uppercase">Model</h5>
               </div>
             </div>
-            <div class="col pr-col" id="div-1">
+            <div [ngClass]="(companyDoc['pricing_plan'] === starter)?'col pr-col table-info':'col pr-col'" id="div-{{starter}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
@@ -57,7 +57,7 @@
                 just <br>
                 <b> &#163; 39.90</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter,1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
@@ -65,7 +65,7 @@
               </div>
             </div>
 
-            <div class="col pr-col" id="div-2">
+            <div [ngClass]="(companyDoc['pricing_plan'] === essential)?'col pr-col table-info':'col pr-col'" id="div-{{essential}}">
               <div class = "row_a">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMENDED
@@ -79,13 +79,13 @@
                 just <br>
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential,2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
               </div>
             </div>
-            <div class="col pr-col" id="div-3">
+            <div [ngClass]="(companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info':'col pr-col'" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -95,14 +95,14 @@
                 just <br>
                 <b> &#163;299.90</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited,3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
               </div>
 
               <div class = "row_1 py-3">
                 <b>Unlimited ulta-low fee engagements per year</b>
               </div>
             </div>
-            <div class="col pr-col" id="div-4">
+            <div [ngClass]="(companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info':'col pr-col'" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -112,7 +112,7 @@
                 just <br>
                 <b> &#163;0</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan,4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
@@ -121,7 +121,7 @@
           </div>
 
           <div class="row mobile-row">
-            <div class="col-12 pr-col">
+            <div class="col-12 pr-col" id="div-{{starter}}">
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
                 <p> All the basic for getting started </p>
@@ -130,7 +130,7 @@
                 just <br>
                 <b> &#163; 39.90</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter,1) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
@@ -138,7 +138,7 @@
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-2">
+            <div class="col-12 pr-col" id="div-{{essential}}">
               <div class = "row_1 py-3">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMENDED
@@ -150,14 +150,14 @@
                 just <br>
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential,2) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-3">
+            <div class="col-12 pr-col" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -167,14 +167,14 @@
                 just <br>
                 <b> &#163;299.90</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited,3) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Unlimited ulta-low fee engagements per year</b>
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-4">
+            <div class="col-12 pr-col" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -184,7 +184,7 @@
                 just <br>
                 <b> &#163;0</b> <br>
                 a month <br>
-                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan,4) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
