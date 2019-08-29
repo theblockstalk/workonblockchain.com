@@ -14,6 +14,7 @@ export class PricingPlanComponent implements OnInit {
 
   ngOnInit() {
     console.log('in pricing page URL for comp wizard');
+    this.viewBy = 'general';
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser && this.currentUser.type === 'candidate') this.viewBy = 'candidate';
     else if(this.currentUser && this.currentUser.type === 'company') {
@@ -38,7 +39,7 @@ export class PricingPlanComponent implements OnInit {
         }
       );
     }
-    else this.viewBy = 'general';
+    else{}
   }
 
 }

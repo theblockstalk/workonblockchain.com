@@ -58,6 +58,7 @@
                 <b> &#163; 39.90</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
@@ -80,6 +81,7 @@
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
@@ -96,6 +98,7 @@
                 <b> &#163;299.90</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
 
               <div class = "row_1 py-3">
@@ -113,6 +116,7 @@
                 <b> &#163;0</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
@@ -131,6 +135,7 @@
                 <b> &#163; 39.90</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>3 ulta-low fee
@@ -151,6 +156,7 @@
                 <b> &#163; 59.90 </b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>9 ulta-low fee engagements per year</b>
@@ -168,6 +174,7 @@
                 <b> &#163;299.90</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Unlimited ulta-low fee engagements per year</b>
@@ -185,6 +192,7 @@
                 <b> &#163;0</b> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
                 <b>Pay 6% per year per engagements</b>
