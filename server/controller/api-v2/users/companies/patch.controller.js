@@ -70,6 +70,7 @@ const bodySchema = new Schema({
         type: String,
         maxlength: 3000
     },
+    discount: Number,
     pricing_plan: {
         type: String,
         enum: enumerations.pricingPlans
@@ -249,10 +250,26 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
             if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
             if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
-            if(queryBody.pricing_plan) {
+            if(queryBody.pricing_plan && (employerDoc.pricing_plan !== queryBody.pricing_plan)) {
                 employerUpdate.pricing_plan = queryBody.pricing_plan;
                 let history = {
                     pricing_plan: queryBody.pricing_plan,
+                    timestamp : timestamp,
+                    updated_by: updatedUserID,
+                };
+                pushObj = {
+                    $push: {
+                        'history': {
+                            $each: [history],
+                            $position: 0
+                        }
+                    }
+                }
+            }
+            if(queryBody.discount && (employerDoc.discount !== queryBody.discount)) {
+                employerUpdate.discount = queryBody.discount;
+                let history = {
+                    discount: queryBody.discount,
                     timestamp : timestamp,
                     updated_by: updatedUserID,
                 };

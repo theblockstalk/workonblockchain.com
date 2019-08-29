@@ -58,7 +58,6 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-            console.log(data);
             let company_phone = '';
             let country_code = '';
             let contact_number = data['company_phone'];
@@ -87,7 +86,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             }
             else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
 
-            if(data['discount']) this.discount = data['discount'];
+            if(data['discount']) this.discount = data['discount']+'%';
 
             if (data['name']) this.referred_name = data['name'];
             else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;

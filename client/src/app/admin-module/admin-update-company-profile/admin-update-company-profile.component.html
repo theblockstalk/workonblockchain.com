@@ -122,8 +122,23 @@
                   </div>
                 </div>
               </div>
+            </div>
 
-
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Discount</label>
+                    <input type="text" class="form-control" placeholder="10" name="discount" [(ngModel)]="discount">
+                    <div class = "invalid-feedback d-inline" *ngIf="discount && !checkNumber(discount)">
+                      Only numbers are allowed
+                    </div>
+                    <!--<div class="invalid-feedback d-inline" *ngIf="!discount">
+                      {{discount}}
+                    </div>-->
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
