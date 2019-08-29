@@ -8,6 +8,7 @@ import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activi
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
+import { regexs } from '../../../constants/regex';
 declare var $:any;
 
 @Component({
@@ -513,6 +514,13 @@ export class JobComponent implements OnInit,AfterViewInit {
       if(!this.contractor.service_description) {
         this.contractor_description_log = "Please enter service description";
         contractorCount = 1;
+      }
+      if(this.contractor.agency_website) {
+        const regex = new RegExp(regexs.url_regex);
+        if (!regex.test(this.contractor['agency_website'])) {
+          this.agency_website_log = "Please enter agency website";
+          contractorCount = 1;
+        }
       }
     }
 
