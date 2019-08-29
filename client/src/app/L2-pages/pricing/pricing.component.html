@@ -47,7 +47,7 @@
                 <h5 class = "text-uppercase">Model</h5>
               </div>
             </div>
-            <div [ngClass]="(companyDoc['pricing_plan'] === starter)?'col pr-col table-info':'col pr-col'" id="div-{{starter}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col pr-col table-info':'col pr-col'" id="div-{{starter}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
@@ -65,7 +65,7 @@
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc['pricing_plan'] === essential)?'col pr-col table-info':'col pr-col'" id="div-{{essential}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col pr-col table-info':'col pr-col'" id="div-{{essential}}">
               <div class = "row_a">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMENDED
@@ -85,7 +85,7 @@
                 <b>9 ulta-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info':'col pr-col'" id="div-{{unlimited}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info':'col pr-col'" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -102,7 +102,7 @@
                 <b>Unlimited ulta-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info':'col pr-col'" id="div-{{free_plan.value}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info':'col pr-col'" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -121,7 +121,7 @@
           </div>
 
           <div class="row mobile-row">
-            <div class="col-12 pr-col" id="div-{{starter}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{starter}}">
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
                 <p> All the basic for getting started </p>
@@ -138,7 +138,7 @@
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-{{essential}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{essential}}">
               <div class = "row_1 py-3">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMENDED
@@ -157,7 +157,7 @@
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-{{unlimited}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -174,7 +174,7 @@
               </div>
             </div>
 
-            <div class="col-12 pr-col" id="div-{{free_plan.value}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>

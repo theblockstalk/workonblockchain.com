@@ -24,10 +24,10 @@ export class PricingComponent implements OnInit {
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private authenticationService: UserService) { }
 
   ngOnInit() {
+    this.free_plan = {
+      name: "Free till you hire", value: 'freeplan'
+    };
     if (this.viewBy === 'company') {
-      this.free_plan = {
-        name: "Free till you hire", value: 'freeplan'
-      };
       console.log(this.viewBy);
       console.log('in PricingComponent');
       console.log(this.companyDoc);
