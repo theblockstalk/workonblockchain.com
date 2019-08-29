@@ -73,6 +73,16 @@
               <app-c-formv-text label="Plan:" [value]="price_plan"></app-c-formv-text>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-c-button-normal
+                level = "primary"
+                alignment="float-right"
+                label="Change plan"
+                [routeUrl]="pricePlanLink"
+              ></app-c-button-normal>
+            </div>
+          </div>
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
