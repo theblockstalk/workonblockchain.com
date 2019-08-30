@@ -25,7 +25,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   error;
   is_approve;
   admin_log;
-  imgPath;discount;price_plan = 'N/A';
+  imgPath;discount;price_plan;
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {

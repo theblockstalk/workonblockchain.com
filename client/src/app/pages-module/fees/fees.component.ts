@@ -16,7 +16,7 @@ export class FeesComponent implements OnInit {
   ngOnInit() {
 	  this.newMeta.updateTag({ name: 'description', content: 'Fees for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
 	  this.newMeta.updateTag({ name: 'keywords', content: 'fees workonblockchain.com' });
-    this.router.navigate(['/price_plan']);
+    this.router.navigate(['/pricing']);
   }
 
 }

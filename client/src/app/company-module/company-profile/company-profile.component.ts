@@ -44,7 +44,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   countries;
   when_receive_email_notitfications;
   country_code;discount;referred_name;price_plan;
-  pricePlanLink = '/price_plan';
+  pricePlanLink = '/pricing';
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
@@ -149,7 +149,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.router.navigate(['/preferences']);
             }
 
-            else if(!data['pricing_plan']) this.router.navigate(['/price_plan']);
+            else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
 
             else
             {
