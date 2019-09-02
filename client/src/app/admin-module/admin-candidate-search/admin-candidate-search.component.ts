@@ -42,6 +42,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   pager: any = {};
   pagedItems: any[];
   msgTagsOptions = constants.chatMsgTypes;
+  numberOfDays = constants.number_of_days;
+  number_of_days;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
   ngAfterViewInit(): void
@@ -144,6 +146,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   }
 
+  search_days(event){
+    this.number_of_days =event;
+    this.search(this.number_of_days);
+  }
 
   msgtags;
   messagetag_changed(data)
@@ -186,7 +192,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length =0;
     this.info=[];
     this.response = "";
-    if(!this.approve && !this.msgtags && !this.searchWord && !this.candidate_status && !this.candidate_status_account)
+    if(!this.number_of_days && !this.approve && !this.msgtags && !this.searchWord && !this.candidate_status && !this.candidate_status_account)
     {
       this.getAllCandidate();
     }
@@ -194,6 +200,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
+      if(this.number_of_days) queryBody.last_msg_received_day = this.number_of_days;
       if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
