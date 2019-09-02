@@ -250,7 +250,7 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
             if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
             if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
-            if(queryBody.pricing_plan && (employerDoc.pricing_plan !== queryBody.pricing_plan)) {
+            if(!req.query.admin && queryBody.pricing_plan && (employerDoc.pricing_plan !== queryBody.pricing_plan)) {
                 employerUpdate.pricing_plan = queryBody.pricing_plan;
                 let history = {
                     pricing_plan: queryBody.pricing_plan,
@@ -266,7 +266,7 @@ module.exports.endpoint = async function (req, res) {
                     }
                 }
             }
-            if(queryBody.discount && (employerDoc.discount !== queryBody.discount)) {
+            if(req.query.admin && queryBody.discount && (employerDoc.discount !== queryBody.discount)) {
                 employerUpdate.discount = queryBody.discount;
                 let history = {
                     discount: queryBody.discount,
