@@ -89,7 +89,8 @@ const bodySchema = new Schema({
     name: {
         type: String
     },
-    searchName: String
+    searchName: String,
+    last_msg_received_day: Number
 });
 
 const querySchema = new Schema({
@@ -112,7 +113,6 @@ else await auth.isValidCompany(req);
 module.exports.endpoint = async function (req, res) {
     if(req.query.admin) {
         let queryBody = req.body;
-        console.log(queryBody.disable_account);
 
         let filter = {};
         queryBody.is_verify = parseInt(queryBody.is_verify);
@@ -120,6 +120,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.status) filter.status = queryBody.status;
         if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
         if (queryBody.disable_account || queryBody.disable_account === false) filter.disable_account = queryBody.disable_account;
+        if(queryBody.last_msg_received_day) filter.last_msg_received_day = queryBody.last_msg_received_day;
 
         let search = {};
         if (queryBody.name) {

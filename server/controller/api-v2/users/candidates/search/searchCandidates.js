@@ -38,6 +38,17 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         userQuery.push({_id : {$in : userIdsDistinct}});
 
     }
+    if(filters.last_msg_received_day){
+        let lastMsgDate = new Date();
+        lastMsgDate.setTime(lastMsgDate.getTime() - (filters.last_msg_received_day*24*60*60*1000));
+
+        userQuery.push({
+            type: 'candidate',
+            "conversations": {
+                "$elemMatch":{"last_message":{$gte:lastMsgDate}}
+            }
+        });
+    }
 
     if (filters.blacklist) {
         userQuery.push({_id: {$nin: filters.blacklist}});
