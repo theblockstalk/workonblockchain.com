@@ -47,6 +47,7 @@ module.exports.endpoint = async function (req, res) {
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
         ]
     });
+    console.log(messageDocs);
     messageDocs = await messageDocs.sort({date_created: 1}).lean();
     // TODO: test this is working
 

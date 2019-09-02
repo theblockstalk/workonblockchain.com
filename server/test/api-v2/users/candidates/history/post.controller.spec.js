@@ -43,7 +43,8 @@ describe('admin changes status of a candidate', function () {
         const approveUser = await candidateHelper.changeCandidateStatus(candidateDoc._id, inputQuery,companyDoc.jwt_token);
         const candidateUserDoc = approveUser.body;
 
-        candidateUserDoc.candidate.history[0].status.status.should.equal(inputQuery.status);
+        console.log(candidateUserDoc.candidate.history[0].status[0].status);
+        candidateUserDoc.candidate.history[0].status[0].status.should.equal(inputQuery.status);
         candidateUserDoc.candidate.history[0].note.should.equal(inputQuery.note);
         candidateUserDoc.candidate.history[0].email_html.should.equal(inputQuery.email_html);
         candidateUserDoc.candidate.history[0].email_subject.should.equal(inputQuery.email_subject);
