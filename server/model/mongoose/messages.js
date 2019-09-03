@@ -7,7 +7,7 @@ let Model = mongoose.model('Messages', msgSchema);
 let mongooseFunctions = defaultMongoose(Model);
 
 mongooseFunctions.findMany = async function (selector) {
-    return await Model.find(selector).sort({date_created: 'descending'}).lean();
+    return await Model.find(selector).sort({date_created: 1}).lean();
 }
 
 mongooseFunctions.find = async function (selector) {

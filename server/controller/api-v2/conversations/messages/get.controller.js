@@ -40,16 +40,13 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
     }
 
-
-    let messageDocs = await messages.findWithCursor({
+    //this will get sorted result from DB
+    let messageDocs = await messages.findMany({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
         ]
     });
-    console.log(messageDocs);
-    messageDocs = await messageDocs.sort({date_created: 1}).lean();
-    // TODO: test this is working
 
     let jobOfferStatus = '';
     if (messageDocs.length === 0) {
