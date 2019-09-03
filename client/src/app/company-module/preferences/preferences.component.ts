@@ -48,7 +48,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   emptyInput;
   workTypes = constants.workTypes;
   expected_hourly_rate_log;
-  locationArray = [];
+  locationArray = [];price_plan_active_class;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -212,6 +212,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
 
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
+              this.pref_active_class = 'fa fa-check-circle text-success';
               setTimeout(() => {
                 $('.selectpicker').selectpicker();
                 $('.selectpicker').selectpicker('refresh');
@@ -229,6 +230,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               }
 
             }
+            if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
           },
           error =>
@@ -426,7 +428,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data) {
-              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              this.router.navigate(['/pricing']);
             }
           },
           error => {
@@ -511,13 +513,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       return;
     }
   }
-
-  redirectToCompany()
-  {
-    if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('hide');
-    this.router.navigate(['/candidate-search']);
-  }
-
 
   suggestedOptions(index) {
     if(this.preferncesForm.value.prefItems[index].location !== '') {

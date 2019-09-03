@@ -105,7 +105,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   contact_number_log;
   imagePreviewLink;
   prefil_image;
-  hear_about_wob;otherReasons;
+  hear_about_wob;otherReasons;discount;
+  discount_log;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute,
@@ -258,6 +259,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
           {
             if(data)
             {
+              console.log(data);
               if(data['_creator'].hear_about_wob) this.hear_about_wob = data['_creator'].hear_about_wob;
               if(data['_creator'].hear_about_wob && data['_creator'].hear_about_wob === 'Other' && data['_creator'].hear_about_wob_other_info) this.otherReasons = data['_creator'].hear_about_wob_other_info;
               this.email = data['_creator'].email;
@@ -272,8 +274,9 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               if(data['company_logo'] != null) {
                 this.imagePreviewLink = data['company_logo'];
               }
-
             }
+
+            if(data['discount']) this.discount = data['discount'];
 
             if(data['first_name'] && data['last_name'] && data['job_title'] && data['company_name'] && data['company_website'] &&
               data['company_phone'] && data['company_postcode'])
@@ -389,6 +392,9 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
         count = 1;
       }
     }
+
+    if(this.discount && !this.checkNumber(this.discount)) count = 1;
+    console.log(profileForm);
 
     if(!this.country_code){
       this.country_code_log = 'Please select country code';

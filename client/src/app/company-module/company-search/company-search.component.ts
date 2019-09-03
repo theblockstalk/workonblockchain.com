@@ -298,6 +298,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             else if (new Date(data['_creator']['created_date']) < new Date('2018/11/28') && !data['saved_searches']) {
               this.router.navigate(['/company_profile']);
             }
+            else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
             else {
               this.is_approved = data['_creator'].is_approved;
               this.display_name = data['company_name'];

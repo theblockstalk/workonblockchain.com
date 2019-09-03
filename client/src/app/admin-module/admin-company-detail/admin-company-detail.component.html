@@ -132,6 +132,49 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+            <div class="col-md-6">
+              <app-c-formv-text label="Plan:" [value]="price_plan"></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data['history'] && data['history'].length > 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-history"></i> Account history </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor="let history of data['history']; let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label *ngIf="history.pricing_plan" class="border border-success p-2 text-success rounded font-weight-normal">
+                  Plan: {{history.pricing_plan}}
+                </label>
+                <label *ngIf="history.discount" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  Discount: {{history.discount}}%
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <hr *ngIf="i < (data['history'].length - 1)"  />
+            </div>
+          </div>
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">

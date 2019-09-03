@@ -1,0 +1,458 @@
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
+  <div class="container">
+    <div class="row" *ngIf="viewBy === 'company'">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about_comp" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/preferences" class="nav-link">
+              <i class="{{pref_active_class}}"></i>
+              Talent requirements
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/pricing" class="nav-link">
+              <i class="{{price_plan_active_class}}"></i>
+              Price plan
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <!--<form (ngSubmit)="price_plan()">-->
+          <div class="row desktop_row">
+            <div class="col pr-col">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">PLAN</h5>
+              </div>
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">Price</h5>
+              </div>
+              <div class = "row_1 py-3">
+                <h5 class = "text-uppercase">Model</h5>
+              </div>
+            </div>
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col pr-col table-info':'col pr-col'" id="div-{{starter}}">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Starter</h5>
+                <p> All the basics for getting started </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 39.90</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>3 ulta-low fee
+                  engagements per year</b>
+              </div>
+            </div>
+
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col pr-col table-info':'col pr-col'" id="div-{{essential}}">
+              <div class = "row_a">
+                <button class = "btn btn-primary btn_th w-100 font-weight-bold">
+                  RECOMENDED
+                </button>
+              </div>
+              <div class = "row_1 py-3">
+                <h5>Essential</h5>
+                <p> The must have features with a dedicated hiring manager </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 59.90 </b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>9 ulta-low fee engagements per year</b>
+              </div>
+            </div>
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info':'col pr-col'" id="div-{{unlimited}}">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Unlimited</h5>
+                <p> Scale your business with unlimited hires </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;299.90</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+
+              <div class = "row_1 py-3">
+                <b>Unlimited ulta-low fee engagements per year</b>
+              </div>
+            </div>
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info':'col pr-col'" id="div-{{free_plan.value}}">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Free Till Your Hire</h5>
+                <p> Flexible hiring where you are in control </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;0</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>Pay 6% per year per engagements</b>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mobile-row">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{starter}}">
+              <div class = "row_1 py-3">
+                <h5>Starter</h5>
+                <p> All the basic for getting started </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 39.90</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>3 ulta-low fee
+                  engagements per year</b>
+              </div>
+            </div>
+
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{essential}}">
+              <div class = "row_1 py-3">
+                <button class = "btn btn-primary btn_th w-100 font-weight-bold">
+                  RECOMENDED
+                </button>
+                <h5>Essential</h5>
+                <p> The must have features with a dedicated hiring manager </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163; 59.90 </b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>9 ulta-low fee engagements per year</b>
+              </div>
+            </div>
+
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{unlimited}}">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Unlimited</h5>
+                <p> Scale your business with unlimited hires </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;299.90</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>Unlimited ulta-low fee engagements per year</b>
+              </div>
+            </div>
+
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{free_plan.value}}">
+              <div class = "row_a"></div>
+              <div class = "row_1 py-3">
+                <h5>Free Till Your Hire</h5>
+                <p> Flexible hiring where you are in control </p>
+              </div>
+              <div class = "row_1 py-3">
+                just <br>
+                <b> &#163;0</b> <br>
+                a month <br>
+                <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
+                <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
+              </div>
+              <div class = "row_1 py-3">
+                <b>Pay 6% per year per engagements</b>
+              </div>
+            </div>
+          </div>
+
+          <div class="row my-3">
+            <div class="col-md-8 offset-md-2 text-center">
+              <div class="table-success">
+                <button class="btn btn-success w-100">Ulta-low fee engagements</button>
+                <h2 class="py-3"> 1% </h2>
+              </div>
+            </div>
+
+            <div class="col-md-2 text-center">
+              <div class="table-success">
+                <button class="btn btn-success w-100">Low Fee</button>
+                <h2 class="py-3"> 6% </h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-8 offset-md-2">
+              <h6>Engagements Fees</h6>
+              <ul>
+                <li>Calculated from the annual salary or contracting rate</li>
+                <li>Paid yearly every month for 24 months while they remain commercially engaged</li>
+                <li>No rebate period applies (as you only pay while the candidate is engaged)</li>
+                <li>Fee rate is determined by the selected plan on the date when the first approach is made</li>
+              </ul>
+              <p>
+                See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
+              </p>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="col pr-col">
+            <div class = " py-3">
+              <p>Ultra low-fee engagements</p>
+            </div>
+            <div class = " py-3">
+              <p>Pre-vetted candidates</p>
+            </div>
+            <div class = " py-3">
+              <p>Search candidates at any time</p>
+            </div>
+            <div class = " py-3">
+              <p>Phone support</p>
+            </div>
+            <div class = " py-3">
+              <p>Automated matches</p>
+            </div>
+            <div class = " py-3">
+              <p>Dedicated hiring manager</p>
+            </div>
+          </div>
+          <div class="col pr-col">
+            <div class = "text-center py-3">
+              <p>3</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+            </div>
+            <div class = "text-center py-3">
+            </div>
+            <div class = "text-center py-3">
+            </div>
+          </div>
+          <div class="col pr-col">
+            <div class = "text-center py-3">
+              <p>9</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+          </div>
+          <div class="col pr-col">
+            <div class = "text-center py-3">
+              <p>Unlimited</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+          </div>
+          <div class="col pr-col">
+            <div class = "text-center py-3">
+              <p>0</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+            </div>
+            <div class = "text-center py-3">
+            </div>
+            <div class = "text-center py-3">
+            </div>
+          </div>
+        </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card py-5">
+                <i class="text-center fa-6x fas fa-user-tie"></i>
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Employees</h4>
+                  <p class="card-text">
+                    Full or part time employees fees are paid every month that they remain
+                    commercially engaged with the company. The fee is calculated from the
+                    current salary times.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card py-5">
+                <i class="text-center fa-6x fas fa-file-contract"></i>
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Contractors and freelancers</h4>
+                  <p class="card-text">
+                    Fees are paid every month that they remain commercially engaged with the
+                    company. The fee is calculated from the current contracting rate.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card py-5">
+                <i class="text-center fa-6x fas fa-hands-helping"></i>
+                <div class="card-body mt-5">
+                  <h4 class="card-title">Volunteers</h4>
+                  <p class="card-text">
+                    If a volunteer role turns into a paid engagement within 24 months of
+                    the initial engagement then fees are paid every month that they
+                    remain commercially engaged with the company. The fee is calculated
+                    by the current salary or contracting rate.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-12 text-center">
+              <h3>Transparency matters</h3>
+              <p>So here simple example of hiring John through our platform</p>
+              <img src="/assets/images/price_plan_imgs/wob-developer.png" class = "employee-img mb-3" alt="">
+              <h5>John</h5>
+              <h5>
+                Reactjs dev &#163;60,000 / yr
+              </h5>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <div class="text-center">
+                <img src="/assets/images/navbar_imgs/logo/logo_woc.png" class = "w-50" alt="WOB logo">
+              </div>
+              <p class="text-center mt-3">
+                <button type="button" class="btn btn-success font-weight-bold">Essential Plan</button>
+              </p>
+              <p class="text-center"> you pay </p>
+              <ul>
+                <li>&#163;50 per month while John is employed (up to 2 years max)</li>
+                <li>Plus &#163;59.90 per month subscription while you use the platform (traditional recruiter)</li>
+              </ul>
+              <div class="text-center">
+                <h6> Maximum engagement fee </h6>
+                <h5> &#163;1,437.60 </h5>
+                <h6>Upfront cost:</h6>
+                <h5>&#163;109.90</h5>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <p class="text-center">
+                <button type="button" class="btn btn-danger font-weight-bold mt-5">Traditional Recruitment Agency</button>
+              </p>
+              <p class="text-center mt-3"> you pay </p>
+              <ul>
+                <li>&#163;18,000 finders commission, due upfront with a limited retainer period</li>
+              </ul>
+              <div class="text-center">
+                <h6 class = "mt-5"> Maximum engagement fee </h6>
+                <h5> &#163;18,000 </h5>
+                <h6>Upfront cost:</h6>
+                <h5>&#163;18,000</h5>
+              </div>
+            </div>
+          </div>
+
+          <!--<div class="row" *ngIf="viewBy === 'company'">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class = "text-right mt-3">
+                  <a  routerLink="/preferences" class = "btn btn-warning text-white">Back</a>
+                  <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                </div>
+              </div>
+            </div>
+          </div>-->
+        <!--</form>-->
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
