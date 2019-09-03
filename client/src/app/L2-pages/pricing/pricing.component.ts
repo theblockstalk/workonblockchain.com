@@ -23,12 +23,12 @@ export class PricingComponent implements OnInit {
   unlimited = "Unlimited";
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private authenticationService: UserService, private titleService: Title,private newMeta: Meta) {
-    this.titleService.setTitle('Work on Blockchain | Fees for companies');
+    this.titleService.setTitle('Work on Blockchain | Pricing for companies');
   }
 
   ngOnInit() {
-    this.newMeta.updateTag({ name: 'description', content: 'Fees for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
-    this.newMeta.updateTag({ name: 'keywords', content: 'fees workonblockchain.com' });
+    this.newMeta.updateTag({ name: 'description', content: 'Pricing for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
+    this.newMeta.updateTag({ name: 'keywords', content: 'Pricing workonblockchain.com' });
     this.free_plan = {
       name: "Free till you hire", value: 'freeplan'
     };
