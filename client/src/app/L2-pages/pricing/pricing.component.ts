@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import {isPlatformBrowser} from "@angular/common";
 import {UserService} from '../../user.service';
+import { Title, Meta } from '@angular/platform-browser';
 declare var $:any;
 
 @Component({
@@ -21,9 +22,13 @@ export class PricingComponent implements OnInit {
   essential = "Essential";
   unlimited = "Unlimited";
 
-  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private authenticationService: UserService) { }
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private authenticationService: UserService, private titleService: Title,private newMeta: Meta) {
+    this.titleService.setTitle('Work on Blockchain | Fees for companies');
+  }
 
   ngOnInit() {
+    this.newMeta.updateTag({ name: 'description', content: 'Fees for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
+    this.newMeta.updateTag({ name: 'keywords', content: 'fees workonblockchain.com' });
     this.free_plan = {
       name: "Free till you hire", value: 'freeplan'
     };
