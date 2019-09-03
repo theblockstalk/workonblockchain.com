@@ -46,7 +46,7 @@ module.exports.endpoint = async function (req, res) {
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
         ]
-    });
+    }, {date_created: 'descending'});
 
     let jobOfferStatus = '';
     if (messageDocs.length === 0) {
