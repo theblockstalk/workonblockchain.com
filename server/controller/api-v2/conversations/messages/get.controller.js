@@ -41,7 +41,7 @@ module.exports.endpoint = async function (req, res) {
     }
 
     //this will get sorted result from DB
-    let messageDocs = await messages.findMany({
+    let messageDocs = await messages.findSortLimitSkip({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }

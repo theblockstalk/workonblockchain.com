@@ -7,7 +7,7 @@ let Model = mongoose.model('Messages', msgSchema);
 let mongooseFunctions = defaultMongoose(Model);
 
 mongooseFunctions.findMany = async function (selector) {
-    return await Model.find(selector).sort({date_created: 1}).lean();
+    return await Model.find(selector).sort({date_created: 'descending'}).lean();
 }
 
 mongooseFunctions.find = async function (selector) {
@@ -17,6 +17,10 @@ mongooseFunctions.find = async function (selector) {
 // TODO: need to change this to updateOne()
 mongooseFunctions.update = async function (selector, updateObj) {
     return await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
+}
+
+mongooseFunctions.findSortLimitSkip = async function(selector, sorter, limit, skip){
+    return await Model.find(selector).sort(sorter).limit(limit).skip(skip).lean();
 }
 
 module.exports = mongooseFunctions;
