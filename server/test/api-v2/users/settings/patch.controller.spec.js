@@ -5,7 +5,7 @@ const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const Pages = require('../../../../model/mongoose/pages');
-const Companies = require('../../../../model/employer_profile');
+const companies = require('../../../../model/mongoose/companies');
 const companyHepler = require('../companies/companyHelpers');
 const candidateHepler = require('../candidates/candidateHelpers');
 const usersHelpers = require('../usersHelpers');
@@ -43,7 +43,7 @@ describe('account setting' , function () {
         userDoc = await Users.findOne({email: company.email});
         userDoc.is_unread_msgs_to_send.should.equal(false);
         userDoc.disable_account.should.equal(false);
-        const newCompanyDoc = await Companies.findOne({_creator: userDoc._id});
+        const newCompanyDoc = await companies.findOne({_creator: userDoc._id});
         newCompanyDoc.marketing_emails.should.equal(true);
 
     })
@@ -61,7 +61,7 @@ describe('account setting' , function () {
 
         await usersHelpers.accountSetting(userId, {terms_id : cmsDoc._id} ,companyDoc.jwt_token);
 
-        const newCompanyDoc = await Companies.findOne({_creator: companyDoc._id});
+        const newCompanyDoc = await companies.findOne({_creator: companyDoc._id});
         console.log(newCompanyDoc)
         const cmsID = newCompanyDoc.terms_id.toString();
         cmsID.should.equal(cmsDoc._id.toString());

@@ -2,7 +2,7 @@ const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 
 const users = require('../../../../model/mongoose/users');
-const companies = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/companies');
 const Pages = require('../../../../model/mongoose/pages');
 const errors = require('../../../services/errors');
 const mongoose = require('mongoose');

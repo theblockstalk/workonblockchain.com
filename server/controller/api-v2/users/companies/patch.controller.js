@@ -4,7 +4,7 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
-const companies = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
 

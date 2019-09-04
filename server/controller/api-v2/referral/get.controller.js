@@ -1,8 +1,8 @@
 const Schema = require('mongoose').Schema;
-const mongooseReferral = require('../../../model/mongoose/referral');
+const mongooseReferral = require('../../../model/mongoose/referrals');
 const errors = require('../../services/errors');
 const users = require('../../../model/mongoose/users');
-const employerProfile = require('../../../model/mongoose/company');
+const employerProfile = require('../../../model/mongoose/companies');
 
 module.exports.request = {
     type: 'get',
