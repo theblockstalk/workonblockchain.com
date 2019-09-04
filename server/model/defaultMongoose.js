@@ -5,6 +5,10 @@ let defaultFunctions = function(model) {
     }
 
     return {
+        findSortLimitSkip: async function(selector, sorter, limit, skip){
+            return await model.find(selector).sort(sorter).limit(limit).skip(skip).lean();
+        },
+
         insert: async function (data) {
             let newDoc = new model(data);
 

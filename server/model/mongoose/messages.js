@@ -19,8 +19,4 @@ mongooseFunctions.update = async function (selector, updateObj) {
     return await Model.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
-mongooseFunctions.findSortLimitSkip = async function(selector, sorter, limit, skip){
-    return await Model.find(selector).sort(sorter).limit(limit).skip(skip).lean();
-}
-
 module.exports = mongooseFunctions;
