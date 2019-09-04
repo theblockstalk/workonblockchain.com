@@ -44,7 +44,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   countries;
   when_receive_email_notitfications;
   country_code;discount;referred_name;price_plan;
-  pricePlanLink = '/pricing';
+  pricePlanLink = '/users/company/wizard/pricing';
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
