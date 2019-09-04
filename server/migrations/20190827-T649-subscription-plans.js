@@ -1,6 +1,7 @@
 const users = require('../model/mongoose/users');
 const referral = require('../model/mongoose/referral');
 const companies = require('../model/mongoose/company');
+const logger = require('../controller/services/logger');
 
 let totalDocsToProcess, totalModified = 0, totalProcessed=0;
 
@@ -19,6 +20,7 @@ module.exports.up = async function() {
                 if(employerDoc){
                     set['discount'] = referralDoc.discount;
                     await companies.update({_id: employerDoc._id}, {$set: set});
+                    logger.debug('employer doc id: ' + employerDoc._id);
                     totalModified++;
                 }
             }
