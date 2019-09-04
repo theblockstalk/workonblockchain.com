@@ -254,7 +254,7 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <h2>
-                  <i class="fas fa-user icon" aria-hidden="true"></i>
+                  <i class="fas fa-user-tie icon" aria-hidden="true"></i>
                   Company administration
                 </h2>
               </div>
@@ -373,7 +373,7 @@
 
                   <div class="row">
                     <div class="col-md-12">
-                      <h4 class="pt-2 "><i class="fas fa-user" aria-hidden="true"></i> Requirements</h4>
+                      <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Requirements</h4>
                     </div>
                   </div>
                   <div class="row">
@@ -382,7 +382,7 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()">
-                            <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                            <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                             {{types.name}}

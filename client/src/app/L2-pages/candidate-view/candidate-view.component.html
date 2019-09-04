@@ -35,13 +35,13 @@
               <ul class="list-group list-group-flush float-right">
                 <li *ngIf="viewBy === 'admin' && referred_name !== ''" class="list-group-item list-without-underline">
                   <ng-container *ngIf="referred_link ; else noLink">
-                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span><i class="fas fa-user-tie mr-2"></i></span>
                     <span>Refered By:
                       <a class="text-capitalize" [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
                     </span>
                   </ng-container>
                   <ng-template #noLink>
-                    <span><i class="fas fa-user mr-2"></i></span>
+                    <span><i class="fas fa-user-tie mr-2"></i></span>
                     <span class="text-capitalize"> Refered By: {{referred_name}} </span>
                   </ng-template>
                 </li>
@@ -58,7 +58,7 @@
                   <span >{{userDoc['candidate']['base_city']}}</span>
                 </li>
                 <li class="list-group-item" *ngIf="viewBy === 'admin' || viewBy === 'candidate'">
-                  <span><i class="fas fa-user mr-2"></i></span>Status:
+                  <span><i class="fas fa-user-tie mr-2"></i></span>Status:
                   <span *ngIf="candidate_status.status === 'created'">Created</span>
                   <span *ngIf="candidate_status.status === 'other'">Other</span>
                   <span *ngIf="candidate_status.status === 'wizard'">Wizard</span>
@@ -109,7 +109,7 @@
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin'">
           <div class="row">
             <div class="col-md-6">
-              <h4> <i class="fas fa-user"></i> Account </h4>
+              <h4> <i class="fas fa-user-tie"></i> Account </h4>
             </div>
           </div>
           <div class="row mt-4">
@@ -361,7 +361,7 @@
         <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!anonimize">
           <div class="row">
             <div class="col-md-6">
-              <h2> <i class="fas fa-user"></i> About </h2>
+              <h2> <i class="fas fa-user-tie"></i> About </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
               <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="about"></app-c-forme-edit-link-icon>
@@ -405,7 +405,7 @@
           </div>
           <div class="row mt-2" *ngIf="userDoc['candidate'].personal_website_url">
             <div class = "col-md-6">
-              <app-c-formv-text-linked-icon iconClass="fas fa-user fa-2x" [link]="userDoc['candidate'].personal_website_url"></app-c-formv-text-linked-icon>
+              <app-c-formv-text-linked-icon iconClass="fas fa-user-tie fa-2x" [link]="userDoc['candidate'].personal_website_url"></app-c-formv-text-linked-icon>
             </div>
           </div>
 
@@ -456,7 +456,7 @@
 
           <div class="row mt-2" *ngIf="viewBy === 'company' && cand_job_activity">
             <div class="col-md-6">
-              <h4><i class="fas fa-user-secret"></i> Job activity </h4>
+              <h4><i class="fas fa-user-tie"></i> Job activity </h4>
             </div>
           </div>
 
@@ -518,7 +518,7 @@
           <!--for employee-->
           <div class="row mt-2" *ngIf="employee.value">
             <div class="col-md-6">
-              <h4><i class="fas fa-user-secret"></i> Employee</h4>
+              <h4><i class="fas fa-user-tie"></i> Employee</h4>
             </div>
 
             <div class="col-md-12 mt-4">

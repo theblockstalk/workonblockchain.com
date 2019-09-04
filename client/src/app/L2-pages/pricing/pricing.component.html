@@ -33,8 +33,9 @@
 
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
+        <h1 class="text-center">Pricing plans</h1>
         <!--<form (ngSubmit)="price_plan()">-->
-          <div class="row desktop_row">
+          <div class="row desktop_row mt-3">
             <div class="col pr-col">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
@@ -47,7 +48,7 @@
                 <h5 class = "text-uppercase">Model</h5>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col pr-col table-info':'col pr-col'" id="div-{{starter}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{starter}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
@@ -55,21 +56,21 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163; 39.90</b> <br>
+                <p class="price"> &#163; 49.90</p> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
-                <b>3 ulta-low fee
+                <b>3 ultra-low fee
                   engagements per year</b>
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col pr-col table-info':'col pr-col'" id="div-{{essential}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col pr-col table-info text-center':'col pr-col default-bg text-center'" id="div-{{essential}}">
               <div class = "row_a">
-                <button class = "btn btn-primary btn_th w-100 font-weight-bold">
-                  RECOMENDED
+                <button class = "btn btn-primary btn_th w-100">
+                  RECOMMENDED
                 </button>
               </div>
               <div class = "row_1 py-3">
@@ -78,16 +79,16 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163; 59.90 </b> <br>
+                <p class="price"> &#163; 69.90 </p> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
-                <b>9 ulta-low fee engagements per year</b>
+                <b>9 ultra-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info':'col pr-col'" id="div-{{unlimited}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -95,17 +96,17 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163;299.90</b> <br>
+                <p class="price"> &#163;299.90</p> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
 
               <div class = "row_1 py-3">
-                <b>Unlimited ulta-low fee engagements per year</b>
+                <b>Unlimited ultra-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info':'col pr-col'" id="div-{{free_plan.value}}">
+            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -113,7 +114,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163;0</b> <br>
+                <p class="price"> &#163;0</p> <br>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -138,7 +139,7 @@
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
-                <b>3 ulta-low fee
+                <b>3 ultra-low fee
                   engagements per year</b>
               </div>
             </div>
@@ -146,7 +147,7 @@
             <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{essential}}">
               <div class = "row_1 py-3">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
-                  RECOMENDED
+                  RECOMMENDED
                 </button>
                 <h5>Essential</h5>
                 <p> The must have features with a dedicated hiring manager </p>
@@ -159,7 +160,7 @@
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
-                <b>9 ulta-low fee engagements per year</b>
+                <b>9 ultra-low fee engagements per year</b>
               </div>
             </div>
 
@@ -177,7 +178,7 @@
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
               </div>
               <div class = "row_1 py-3">
-                <b>Unlimited ulta-low fee engagements per year</b>
+                <b>Unlimited ultra-low fee engagements per year</b>
               </div>
             </div>
 
@@ -202,15 +203,15 @@
 
           <div class="row my-3">
             <div class="col-md-8 offset-md-2 text-center">
-              <div class="table-success">
-                <button class="btn btn-success w-100">Ulta-low fee engagements</button>
-                <h2 class="py-3"> 1% </h2>
+              <div class="table-success mr-4">
+                <button class="btn btn-success w-100">Ultra-low fee engagements</button>
+                <h2 class="py-3"> 2% </h2>
               </div>
             </div>
 
-            <div class="col-md-2 text-center">
+            <div class="col-md-2 text-center low-fee">
               <div class="table-success">
-                <button class="btn btn-success w-100">Low Fee</button>
+                <button class="btn btn-success w-100">Low fee</button>
                 <h2 class="py-3"> 6% </h2>
               </div>
             </div>
@@ -218,12 +219,13 @@
 
           <div class="row mt-5">
             <div class="col-md-8 offset-md-2">
-              <h6>Engagements Fees</h6>
+              <h6>Engagements fees</h6>
               <ul>
                 <li>Calculated from the annual salary or contracting rate</li>
                 <li>Paid yearly every month for 24 months while they remain commercially engaged</li>
                 <li>No rebate period applies (as you only pay while the candidate is engaged)</li>
                 <li>Fee rate is determined by the selected plan on the date when the first approach is made</li>
+                <li>Startups enquire about discounts</li>
               </ul>
               <p>
                 See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
@@ -253,33 +255,33 @@
             </div>
           </div>
           <div class="col pr-col">
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>3</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
             </div>
           </div>
           <div class="col pr-col">
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>9</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -290,16 +292,16 @@
             </div>
           </div>
           <div class="col pr-col">
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>Unlimited</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -316,7 +318,7 @@
             <div class = "text-center py-3">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -333,7 +335,7 @@
               <div class="card py-5">
                 <i class="text-center fa-6x fas fa-user-tie"></i>
                 <div class="card-body mt-5">
-                  <h4 class="card-title">Employees</h4>
+                  <h4 class="card-title text-center">Employees</h4>
                   <p class="card-text">
                     Full or part time employees fees are paid every month that they remain
                     commercially engaged with the company. The fee is calculated from the
@@ -347,7 +349,7 @@
               <div class="card py-5">
                 <i class="text-center fa-6x fas fa-file-contract"></i>
                 <div class="card-body mt-5">
-                  <h4 class="card-title">Contractors and freelancers</h4>
+                  <h4 class="card-title text-center">Contractors and freelancers</h4>
                   <p class="card-text">
                     Fees are paid every month that they remain commercially engaged with the
                     company. The fee is calculated from the current contracting rate.
@@ -360,7 +362,7 @@
               <div class="card py-5">
                 <i class="text-center fa-6x fas fa-hands-helping"></i>
                 <div class="card-body mt-5">
-                  <h4 class="card-title">Volunteers</h4>
+                  <h4 class="card-title text-center">Volunteers</h4>
                   <p class="card-text">
                     If a volunteer role turns into a paid engagement within 24 months of
                     the initial engagement then fees are paid every month that they
@@ -395,25 +397,25 @@
               <p class="text-center"> you pay </p>
               <ul>
                 <li>&#163;50 per month while John is employed (up to 2 years max)</li>
-                <li>Plus &#163;59.90 per month subscription while you use the platform (traditional recruiter)</li>
+                <li>Plus &#163;59.90 per month subscription while you use the platform</li>
               </ul>
               <div class="text-center">
                 <h6> Maximum engagement fee </h6>
-                <h5> &#163;1,437.60 </h5>
+                <h5> &#163;2,400.00 </h5>
                 <h6>Upfront cost:</h6>
-                <h5>&#163;109.90</h5>
+                <h5>&#163;169.90</h5>
               </div>
             </div>
             <div class="col-md-6">
-              <p class="text-center">
-                <button type="button" class="btn btn-danger font-weight-bold mt-5">Traditional Recruitment Agency</button>
-              </p>
+              <div class="text-center">
+                <p class="font-weight-bold mt-5 recruitment-agency">Traditional Recruitment Agency</p>
+              </div>
               <p class="text-center mt-3"> you pay </p>
               <ul>
                 <li>&#163;18,000 finders commission, due upfront with a limited retainer period</li>
               </ul>
               <div class="text-center">
-                <h6 class = "mt-5"> Maximum engagement fee </h6>
+                <h6 class = "mt-4"> Maximum engagement fee </h6>
                 <h5> &#163;18,000 </h5>
                 <h6>Upfront cost:</h6>
                 <h5>&#163;18,000</h5>

@@ -75,7 +75,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <h4 class="pt-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Requirements</h4>
+                      <h4 class="pt-2 mb-3"><i class="fas fa-user-tie" aria-hidden="true"></i> Requirements</h4>
                     </div>
                   </div>
                   <div class="row">
@@ -84,7 +84,7 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                            <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                            <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                             {{types.name}}
