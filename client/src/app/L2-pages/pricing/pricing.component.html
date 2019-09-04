@@ -48,7 +48,7 @@
                 <h5 class = "text-uppercase">Model</h5>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{starter}}">
+            <div class="col pr-col text-center" id="div-{{starter}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
@@ -67,7 +67,7 @@
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col pr-col table-info text-center':'col pr-col default-bg text-center'" id="div-{{essential}}">
+            <div class="col pr-col default-bg text-center" id="div-{{essential}}">
               <div class = "row_a">
                 <button class = "btn btn-primary btn_th w-100">
                   RECOMMENDED
@@ -88,7 +88,7 @@
                 <b>9 ultra-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{unlimited}}">
+            <div class="col pr-col text-center" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -106,7 +106,7 @@
                 <b>Unlimited ultra-low fee engagements per year</b>
               </div>
             </div>
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col pr-col table-info text-center':'col pr-col text-center'" id="div-{{free_plan.value}}">
+            <div class="col pr-col text-center" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -126,7 +126,7 @@
           </div>
 
           <div class="row mobile-row">
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === starter)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{starter}}">
+            <div class="col pr-col text-center" id="div-{{starter}}">
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
                 <p> All the basic for getting started </p>
@@ -144,7 +144,7 @@
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === essential)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{essential}}">
+            <div class="col pr-col text-center" id="div-{{essential}}">
               <div class = "row_1 py-3">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMMENDED
@@ -164,7 +164,7 @@
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === unlimited)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{unlimited}}">
+            <div class="col pr-col text-center" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -182,7 +182,7 @@
               </div>
             </div>
 
-            <div [ngClass]="(companyDoc && companyDoc['pricing_plan'] === free_plan.name)?'col-12 pr-col table-info':'col-12 pr-col'" id="div-{{free_plan.value}}">
+            <div class="col pr-col text-center" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -256,7 +256,7 @@
           </div>
           <div class="col pr-col">
             <div class = "text-center py-4">
-              <p>3</p>
+              <p>Starter</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -273,7 +273,7 @@
           </div>
           <div class="col pr-col">
             <div class = "text-center py-4">
-              <p>9</p>
+              <p>Essential</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -312,13 +312,13 @@
             </div>
           </div>
           <div class="col pr-col">
-            <div class = "text-center py-3">
-              <p>0</p>
-            </div>
-            <div class = "text-center py-3">
-              <p>&#10003;</p>
+            <div class = "text-center py-4">
+              <p>Free</p>
             </div>
             <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -339,7 +339,7 @@
                   <p class="card-text">
                     Full or part time employees fees are paid every month that they remain
                     commercially engaged with the company. The fee is calculated from the
-                    current salary times.
+                    current salary time.
                   </p>
                 </div>
               </div>
@@ -396,8 +396,8 @@
               </p>
               <p class="text-center"> you pay </p>
               <ul>
-                <li>&#163;50 per month while John is employed (up to 2 years max)</li>
-                <li>Plus &#163;59.90 per month subscription while you use the platform</li>
+                <li>&#163;100 per month while John is employed (up to 2 years max)</li>
+                <li>Plus &#163;69.90 per month subscription while you use the platform</li>
               </ul>
               <div class="text-center">
                 <h6> Maximum engagement fee </h6>
