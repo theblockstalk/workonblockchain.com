@@ -428,7 +428,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data) {
-              this.router.navigate(['/pricing']);
+              this.router.navigate(['/users/company/wizard/pricing']);
             }
           },
           error => {
