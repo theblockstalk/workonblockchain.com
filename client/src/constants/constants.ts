@@ -448,7 +448,7 @@ export const constants = {
     {value:19, name:'19+ years'},{value:20, name:'20+ years'}
   ],
   work_types: [
-    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-secret fa-4x', checked: false},
+    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-tie fa-4x', checked: false},
     {name: 'Contractor/Freelancer', value: 'contractor', iconClass: 'fas fa-address-card fa-4x', checked: false},
     {name: 'Temporary volunteer', value: 'volunteer', iconClass: 'fas fa-user-check fa-4x', checked: false}
   ],
