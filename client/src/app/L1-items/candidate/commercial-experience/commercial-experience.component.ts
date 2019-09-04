@@ -20,6 +20,12 @@ export class CommercialExperienceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.blockchainPlatforms.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
+
     if(this.commercial_platforms) {
       for(let commercial of this.commercial_platforms) {
         this.platform.push(commercial.name);

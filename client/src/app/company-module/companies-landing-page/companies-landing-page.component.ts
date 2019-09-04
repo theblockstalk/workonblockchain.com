@@ -15,6 +15,7 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
 
   approvedUsers;
   blockchainExperienceUsers;
+  totalCandidates;
 
   constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService,private titleService: Title,private newMeta: Meta,@Inject(PLATFORM_ID) private platformId: Object) {
     this.titleService.setTitle('Hire developers today. Work and jobs platform for blockchain, cryptocurrency and DLT projects');
@@ -48,10 +49,10 @@ export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
     this.authenticationService.get_users_statistics()
       .subscribe(
         data => {
-          if(data)
-          {
+          if(data) {
             this.approvedUsers = data['approvedEnabled']['count'];
             this.blockchainExperienceUsers = Math.floor((data['approvedEnabled']['aggregated']['blockchain']['commercial'] / data['approvedEnabled']['count'])*100) + "%";
+            this.totalCandidates = data['approvedEnabled']['totalCandidates'];
           }
         });
   }

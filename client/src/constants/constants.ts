@@ -34,7 +34,7 @@ export const constants = {
     {name:'Game theory', value:'Game theory', checked:false},
     {name:'Economics', value:'Economics', checked:false},
     {name:'Smart contract audits', value:'Smart contract audits', checked:false},
-    {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
+    {name:'Zero knowledge proofs', value:'Zero Knowlege Proofs', checked:false},
     {name:'Currency exchanges', value:'Currency exchanges', checked:false}
   ],
   experimented: [
@@ -272,8 +272,8 @@ export const constants = {
     {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
     {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
     {name:'Erlang', value:'Erlang', checked:false},{name:'Elixir', value:'Elixir', checked:false},
-    {name:'Angularjs', value:'Angularjs', checked:false},
-    {name:'Reactjs', value:'Reactjs', checked:false}
+    {name:'Angularjs', value:'Angularjs', checked:false}, {name:'Reactjs', value:'Reactjs', checked:false},
+    {name:'Vuejs', value:'Vuejs', checked:false}
   ],
   job_type: ["Part time", "Full time"],
   candidateStatus: [

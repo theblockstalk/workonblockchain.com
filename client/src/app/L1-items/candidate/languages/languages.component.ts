@@ -17,6 +17,12 @@ export class LanguagesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.languages.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
+
     if(this.programming_languages) {
       for(let language of this.programming_languages) {
         this.platform.push(language['language']);

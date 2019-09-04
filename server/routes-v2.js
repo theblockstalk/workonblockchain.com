@@ -72,7 +72,7 @@ const validateInputs = function(request, inputSchemas) {
                     schemaObj = schema.obj;
 
                     for (let key in obj) {
-                        if (key !== '_id' && !schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                        if (key !== '_id' && !schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema')
                         checkForUnwantedProperties(obj[key], schemaObj[key]);
                     }
                 } else {
@@ -81,7 +81,7 @@ const validateInputs = function(request, inputSchemas) {
                     for (let key in obj) {
                         if(schemaObj[key] && schemaObj[key].type) schemaObject = schemaObj[key].type;
                         else schemaObject = schemaObj[key];
-                        if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                        if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema')
                         checkForUnwantedProperties(obj[key], schemaObject);
                     }
                 }

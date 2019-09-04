@@ -5,6 +5,9 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:8.10
 
+# Test manually
+# sudo docker run -it --volume=/home/dev/Documents/Git/workonblockchain.com:/workonblockchain.com --workdir="/workonblockchain.com" --memory=4g --memory-swap=4g --memory-swappiness=0 --entrypoint=/bin/bash node:8.10
+
 pipelines:
   branches:
       staging:
@@ -94,8 +97,9 @@ pipelines:
               - npm install -g serverless
               - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
               - serverless deploy --stage production
-              - . ./scripts/aws-install.sh
-              - aws cloudfront create-invalidation --distribution-id E2T7J9DH7RQP73 --paths "/*"
+              - . ../scripts/aws-install.sh
+              - aws cloudfront create-invalidation --distribution-id E13O7UFUMVSIRZ --paths "/*"
+              - aws cloudfront create-invalidation --distribution-id E32QBMZ6U0Z8AV --paths "/*"
         - step:
             name: "Deploy server to production"
             script:

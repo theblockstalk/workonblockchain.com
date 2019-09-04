@@ -226,13 +226,19 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Availability:</label>
-
                 <select title="(select one)" [(ngModel)]="employee.employment_availability" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let month of employement_availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!employee.employment_availability">
                   {{avail_log}}
                 </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Opportunities of interest (optional):</label>
+                <textarea class="form-control" rows="5" maxlength="3000" placeholder="I would like to work on EOSIO projects as a full stack developer. Also interested in DEXs and cross blockchain projects." required [(ngModel)]="employee.opportunities_of_interest" name="opportunities_of_interest" ></textarea>
               </div>
             </div>
 

@@ -8,6 +8,7 @@ import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activi
 import { HttpClient } from '@angular/common/http';
 import {unCheckCheckboxes} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
+import { regexs } from '../../../constants/regex';
 declare var $:any;
 
 @Component({
@@ -173,8 +174,7 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.employee.expected_annual_salary = employee.expected_annual_salary;
               this.employee.currency = employee.currency;
               this.employee.employment_availability = employee.employment_availability;
-
-
+              this.employee.opportunities_of_interest = employee.opportunities_of_interest;
             }
             if(data['candidate'].contractor) {
               $('.selectpicker').selectpicker('refresh');
@@ -515,6 +515,13 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.contractor_description_log = "Please enter service description";
         contractorCount = 1;
       }
+      if(this.contractor.agency_website) {
+        const regex = new RegExp(regexs.url_regex);
+        if (!regex.test(this.contractor['agency_website'])) {
+          this.agency_website_log = "Please enter agency website";
+          contractorCount = 1;
+        }
+      }
     }
 
     if(this.volunteerCheck) {
@@ -583,7 +590,8 @@ export class JobComponent implements OnInit,AfterViewInit {
           currency: this.employee.currency,
           location: this.employee.locations,
           roles: this.employee.roles,
-          employment_availability: this.employee.employment_availability
+          employment_availability: this.employee.employment_availability,
+          opportunities_of_interest: this.employee.opportunities_of_interest
         }
       }
       else inputQuery.unset_employee = true;
@@ -614,7 +622,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
       }
       else inputQuery.unset_volunteer = true;
-      
+
       job_activity_statuses.new_work_opportunities = this.candJobActivity.jobActivity;
       if(this.candJobActivity.jobActivity !== 'Not now' && this.candJobActivity.currentEmploy) job_activity_statuses.currently_employed = this.candJobActivity.currentEmploy;
       else inputQuery.unset_currently_employed = true;
