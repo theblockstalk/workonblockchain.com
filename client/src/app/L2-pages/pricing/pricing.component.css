@@ -1,3 +1,16 @@
+.default-bg{
+  background-color: #39B7CD;
+}
+
+.low-fee{
+  left: -5px;
+}
+
+.price{
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .recruitment-agency{
   color: red;
 }
@@ -15,8 +28,8 @@
 }
 
 .btn_th {
-  padding: 3px;
-  font-size: 12px;
+  padding: 1px;
+  font-size: 1.25rem;
 }
 
 .tb_btn {
