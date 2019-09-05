@@ -53,6 +53,29 @@ describe('update candidate profile', function () {
             blockchainSkills.commercial_platforms[0].exp_year.should.equal(candidateEditProfileData.candidate.blockchain.commercial_platforms[0].exp_year);
             blockchainSkills.description_commercial_platforms.should.equal(candidateEditProfileData.candidate.blockchain.description_commercial_platforms);
             blockchainSkills.description_experimented_platforms.should.equal(candidateEditProfileData.candidate.blockchain.description_experimented_platforms);
+        });
+
+        it('it should update link sites', async function() {
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGenerator.candidateProfile();
+
+            await candidateHelper.candidateProfile(candidate, profileData);
+
+            let  candidateUserDoc = await users.findOne({email: candidate.email});
+            let candidateEditProfileData = docGenerator.candidateProfileUpdate();
+
+            const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
+
+            candidateEditProfileData = {
+                candidate: {
+                    base_city: 'Islamabad'
+                },
+                unset_github_account: true,
+                unset_linkedin_account: true
+            };
+            const resNew = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
+
         })
     })
 });
