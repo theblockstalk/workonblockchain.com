@@ -610,7 +610,7 @@ module.exports.endpoint = async function (req, res) {
     }
 
     if(!objects.isEmpty(unset)){
-        updateObj.$unset=  unset
+        updateObj.$unset =  unset;
     }
 
     await users.update({_id: userId}, updateObj);

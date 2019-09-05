@@ -108,7 +108,9 @@ module.exports = new Schema({
     hear_about_wob_other_info:{
         type: String
     },
-    candidate: candidateSchema,
+    candidate: {
+        type: candidateSchema
+    },
     conversations: [new Schema({
         user_id: {
             type: Schema.Types.ObjectId,

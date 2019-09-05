@@ -2,7 +2,7 @@ const Schema = require('mongoose').Schema;
 const regexes = require('../regexes');
 const enumerations = require('../enumerations');
 
-module.exports = new Schema({
+module.exports = {
     job_activity_status:{
         type: {
             new_work_opportunities: {
@@ -201,7 +201,7 @@ module.exports = new Schema({
     },
     why_work: String,
     programming_languages: {
-        type:[{
+        type:[new Schema({
             language: {
                 type: String,
                 enum: enumerations.programmingLanguages
@@ -210,7 +210,7 @@ module.exports = new Schema({
                 type: String,
                 enum: enumerations.experienceYears
             }
-        }]
+        })]
     },
     description: {
         type:String,
@@ -331,7 +331,7 @@ module.exports = new Schema({
     history : {
         type : [{
             status:{
-                type:[{
+                type:{
                     status: {
                         type: String,
                         enum: enumerations.candidateStatus,
@@ -341,7 +341,7 @@ module.exports = new Schema({
                         type: String,
                         enum: enumerations.statusReasons
                     }
-                }],
+                },
                 required: false
             },
             note : String,
@@ -370,4 +370,4 @@ module.exports = new Schema({
         }
 
     }
-})
+}

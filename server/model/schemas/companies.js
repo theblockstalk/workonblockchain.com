@@ -126,12 +126,10 @@ module.exports = new Schema({
             },
             current_salary: {
                 type:Number,
-                required : true,
                 min: 0
             },
             expected_hourly_rate: {
                 type:Number,
-                required : true,
                 min: 0
             },
             current_currency: {
