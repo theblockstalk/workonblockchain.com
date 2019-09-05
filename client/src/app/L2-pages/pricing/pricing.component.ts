@@ -13,6 +13,7 @@ declare var $:any;
 export class PricingComponent implements OnInit {
   @Input() companyDoc: object; //optional
   @Input() viewBy: string; //company, candidate or anyone
+  @Input() showNavbar: boolean; //to show navbar for comp wizard
 
   terms_active_class;about_active_class;pref_active_class;companyMsgTitle;
   companyMsgBody;price_plan_active_class;log;

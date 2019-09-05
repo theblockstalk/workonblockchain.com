@@ -8,9 +8,9 @@ import {UserService} from '../../../user.service';
   styleUrls: ['./pricing-plan.component.css']
 })
 export class PricingPlanComponent implements OnInit {
-  viewBy;companyDoc;currentUser;
+  viewBy;companyDoc;currentUser;showNavbar;
 
-  constructor(private authenticationService: UserService, private router: Router) { }
+  constructor(private authenticationService: UserService, private router: Router) {}
 
   ngOnInit() {
     console.log('in pricing page URL for comp wizard');
@@ -19,6 +19,13 @@ export class PricingPlanComponent implements OnInit {
     if(this.currentUser && this.currentUser.type === 'candidate') this.viewBy = 'candidate';
     else if(this.currentUser && this.currentUser.type === 'company') {
       this.viewBy = 'company';
+      this.showNavbar = true;
+      let route: any;
+      route = this.router.url;
+      route = route.split('/');
+      if(route[1] === 'pricing')
+        this.showNavbar = false;
+
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
       .subscribe(
         data => {
