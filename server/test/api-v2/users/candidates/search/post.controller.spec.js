@@ -88,7 +88,7 @@ describe('get all users', function () {
             const isAdmin = true;
             const candidateFilterRes = await candidateHelpers.candidateFilter(isAdmin,data , candidateUserDoc.jwt_token);
             candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
-            candidateUserDoc.candidate.history[0].status[0].status.should.equal('approved');
+            candidateUserDoc.candidate.history[0].status.status.should.equal('approved');
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
         });
 
