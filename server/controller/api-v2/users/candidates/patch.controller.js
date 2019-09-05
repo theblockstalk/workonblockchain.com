@@ -561,21 +561,16 @@ module.exports.endpoint = async function (req, res) {
             if (candidateQuery.medium_account) updateCandidateUser['candidate.medium_account'] = candidateQuery.medium_account;
         }
         if (queryBody.unset_stackoverflow_url) {
-            console.log('in unset if unset_stackoverflow_url');
             unset['candidate.stackoverflow_url'] = 1;
         } else {
             if (candidateQuery.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = candidateQuery.stackoverflow_url;
         }
 
         if (queryBody.unset_personal_website_url) {
-            console.log('in unset if unset_personal_website_url');
             unset['candidate.personal_website_url'] = 1;
         } else {
             if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
         }
-
-        if(candidateQuery.github_account)
-            console.log(candidateQuery.github_account);
     }
 
     let timestamp = new Date();
@@ -615,8 +610,7 @@ module.exports.endpoint = async function (req, res) {
     }
 
     if(!objects.isEmpty(unset)){
-        updateObj.$unset=  unset
-        console.log(unset);
+        updateObj.$unset =  unset;
     }
 
     await users.update({_id: userId}, updateObj);
