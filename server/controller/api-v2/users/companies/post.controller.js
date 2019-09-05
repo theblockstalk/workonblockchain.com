@@ -111,9 +111,11 @@ module.exports.endpoint = async function (req, res) {
                 company_phone:queryBody.company_phone,
                 company_country:queryBody.company_country,
                 company_city:queryBody.company_city,
-                company_postcode:queryBody.company_postcode,
-                discount: refDoc.discount
+                company_postcode:queryBody.company_postcode
             };
+
+            if(refDoc && refDoc.discount)
+                employerDetail.discount = refDoc.discount;
 
             let employerDoc = await companies.insert(employerDetail);
 
