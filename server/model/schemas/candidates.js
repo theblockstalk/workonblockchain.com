@@ -2,7 +2,7 @@ const Schema = require('mongoose').Schema;
 const regexes = require('../regexes');
 const enumerations = require('../enumerations');
 
-module.exports = new Schema({
+module.exports = {
     job_activity_status:{
         type: {
             new_work_opportunities: {
@@ -370,4 +370,4 @@ module.exports = new Schema({
         }
 
     }
-})
+}
