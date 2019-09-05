@@ -1,6 +1,6 @@
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row" *ngIf="viewBy === 'company'">
+    <div class="row" *ngIf="viewBy === 'company' && showNavbar">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard mb-3">
           <li class="nav-item">
@@ -56,7 +56,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <p class="price"> &#163; 49.90</p>
+                <div class="price"> &#163; 49.90</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -79,7 +79,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <p class="price"> &#163; 69.90 </p>
+                <div class="price"> &#163; 69.90 </div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -96,7 +96,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <p class="price"> &#163;299.90</p>
+                <div class="price"> &#163;299.90</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -114,7 +114,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <p class="price"> &#163;0</p>
+                <div class="price"> &#163;0</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -126,14 +126,14 @@
           </div>
 
           <div class="row mobile-row">
-            <div class="col pr-col text-center" id="div-{{starter}}">
+            <div class="col-12 pr-col text-center" id="div-{{starter}}">
               <div class = "row_1 py-3">
                 <h5>Starter</h5>
                 <p> All the basic for getting started </p>
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163; 39.90</b>
+                <div class="price"> &#163; 39.90</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -144,7 +144,7 @@
               </div>
             </div>
 
-            <div class="col pr-col text-center" id="div-{{essential}}">
+            <div class="col-12 pr-col text-center" id="div-{{essential}}">
               <div class = "row_1 py-3">
                 <button class = "btn btn-primary btn_th w-100 font-weight-bold">
                   RECOMMENDED
@@ -154,7 +154,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163; 59.90 </b>
+                <div class="price"> &#163; 59.90 </div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -164,7 +164,7 @@
               </div>
             </div>
 
-            <div class="col pr-col text-center" id="div-{{unlimited}}">
+            <div class="col-12 pr-col text-center" id="div-{{unlimited}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Unlimited</h5>
@@ -172,7 +172,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163;299.90</b>
+                <div class="price"> &#163;299.90 </div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(unlimited) class = "btn btn-primary tb_btn select_btn" id="3">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -182,7 +182,7 @@
               </div>
             </div>
 
-            <div class="col pr-col text-center" id="div-{{free_plan.value}}">
+            <div class="col-12 pr-col text-center" id="div-{{free_plan.value}}">
               <div class = "row_a"></div>
               <div class = "row_1 py-3">
                 <h5>Free Till Your Hire</h5>
@@ -190,7 +190,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <b> &#163;0</b>
+                <div class="price"> &#163;0</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(free_plan.name) class = "btn btn-primary tb_btn select_btn" id="4">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -235,6 +235,7 @@
 
         <div class="row">
           <div class="col pr-col">
+            <div class = " py-5"></div>
             <div class = " py-3">
               <p>Ultra low-fee engagements</p>
             </div>
@@ -256,7 +257,7 @@
           </div>
           <div class="col pr-col">
             <div class = "text-center py-4">
-              <p>Starter</p>
+              <p class="font-weight-bold">Starter</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -273,7 +274,7 @@
           </div>
           <div class="col pr-col">
             <div class = "text-center py-4">
-              <p>Essential</p>
+              <p class="font-weight-bold">Essential</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -282,23 +283,6 @@
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-4">
-              <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
-              <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
-              <p>&#10003;</p>
-            </div>
-          </div>
-          <div class="col pr-col">
-            <div class = "text-center py-4">
-              <p>Unlimited</p>
-            </div>
-            <div class = "text-center py-4">
-              <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-4">
@@ -313,7 +297,30 @@
           </div>
           <div class="col pr-col">
             <div class = "text-center py-4">
-              <p>Free</p>
+              <p class="font-weight-bold">Unlimited</p>
+            </div>
+            <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-3">
+              <p>&#10003;</p>
+            </div>
+          </div>
+          <div class="col pr-col">
+            <div class = "text-center py-4">
+              <p class="font-weight-bold">Free</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>

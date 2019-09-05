@@ -13,6 +13,7 @@ declare var $:any;
 export class PricingComponent implements OnInit {
   @Input() companyDoc: object; //optional
   @Input() viewBy: string; //company, candidate or anyone
+  @Input() showNavbar: boolean; //to show navbar for comp wizard
 
   terms_active_class;about_active_class;pref_active_class;companyMsgTitle;
   companyMsgBody;price_plan_active_class;log;
@@ -33,9 +34,6 @@ export class PricingComponent implements OnInit {
       name: "Free till you hire", value: 'freeplan'
     };
     if (this.viewBy === 'company') {
-      console.log(this.viewBy);
-      console.log('in PricingComponent');
-      console.log(this.companyDoc);
       if (this.companyDoc['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['company_founded'] && this.companyDoc['no_of_employees'] && this.companyDoc['company_funded'] && this.companyDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
@@ -65,7 +63,6 @@ export class PricingComponent implements OnInit {
 
   selectPlan(plan){
     if (this.viewBy === 'company') {
-      console.log(this.companyDoc['_creator']._id);
       let inputQuery : any ={};
       let planSelected = plan;
       if(plan === this.free_plan.name) {

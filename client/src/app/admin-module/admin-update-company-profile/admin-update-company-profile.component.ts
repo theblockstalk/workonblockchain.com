@@ -259,7 +259,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
           {
             if(data)
             {
-              console.log(data);
               if(data['_creator'].hear_about_wob) this.hear_about_wob = data['_creator'].hear_about_wob;
               if(data['_creator'].hear_about_wob && data['_creator'].hear_about_wob === 'Other' && data['_creator'].hear_about_wob_other_info) this.otherReasons = data['_creator'].hear_about_wob_other_info;
               this.email = data['_creator'].email;

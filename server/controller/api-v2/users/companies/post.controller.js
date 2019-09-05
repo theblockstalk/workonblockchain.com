@@ -99,6 +99,8 @@ module.exports.endpoint = async function (req, res) {
         const companyUserCreated =  await Users.insert(newCompanyDoc);
         if(companyUserCreated)
         {
+            const refDoc = await referral.findOneByEmail(queryBody.referred_email);
+
             let employerDetail = {
                 _creator : companyUserCreated._id,
                 first_name : queryBody.first_name,
@@ -109,8 +111,11 @@ module.exports.endpoint = async function (req, res) {
                 company_phone:queryBody.company_phone,
                 company_country:queryBody.company_country,
                 company_city:queryBody.company_city,
-                company_postcode:queryBody.company_postcode,
+                company_postcode:queryBody.company_postcode
             };
+
+            if(refDoc && refDoc.discount)
+                employerDetail.discount = refDoc.discount;
 
             let employerDoc = await companies.insert(employerDetail);
 
@@ -130,7 +135,7 @@ module.exports.endpoint = async function (req, res) {
             verify_send_email(companyUserCreated.email, verifyEmailToken);
 
             //sending email to referee
-            const refDoc = await referral.findOneByEmail(queryBody.referred_email);
+
             if(refDoc){
                 const companyDoc = await companies.findOne({_creator : companyUserCreated._id});
                 let data;
