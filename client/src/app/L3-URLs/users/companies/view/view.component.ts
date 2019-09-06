@@ -8,7 +8,7 @@ import {UserService} from '../../../../user.service' ;
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent implements OnInit {
-  currentUser;userDoc;viewBy;
+  currentUser;userDoc;
 
   constructor(private authenticationService: UserService,private router: Router) { }
 
@@ -27,10 +27,7 @@ export class ViewComponent implements OnInit {
           else if(((new Date(data['_creator'].created_date) > new Date('2018/11/28')) && (!data['saved_searches'] || data['saved_searches'].length === 0)))
             this.router.navigate(['/preferences']);
           else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
-          else{
-            this.userDoc = data;
-            this.viewBy = 'company';
-          }
+          else this.userDoc = data;
         },
         error => {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
