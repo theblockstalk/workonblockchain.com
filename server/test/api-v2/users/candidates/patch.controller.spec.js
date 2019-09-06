@@ -68,9 +68,6 @@ describe('update candidate profile', function () {
             const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
 
             candidateEditProfileData = {
-                candidate: {
-                    base_city: 'Islamabad'
-                },
                 unset_github_account: true,
                 unset_linkedin_account: true
             };

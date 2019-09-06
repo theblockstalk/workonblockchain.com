@@ -369,208 +369,210 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         queryBody = req.body;
-        let candidateQuery = queryBody.candidate;
-        if(candidateQuery.blockchain && !objects.isEmpty(candidateQuery.blockchain)) {
-            blockChainCheck = 1;
-            blockchainQuery = candidateQuery.blockchain;
+        if(queryBody.candidate) {
+            let candidateQuery = queryBody.candidate;
+            if (candidateQuery.blockchain && !objects.isEmpty(candidateQuery.blockchain)) {
+                blockChainCheck = 1;
+                blockchainQuery = candidateQuery.blockchain;
+            }
+            if (candidateQuery.base_city) updateCandidateUser['candidate.base_city'] = candidateQuery.base_city;
+            if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
+            if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
+                updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
+            }
+            else unset['candidate.current_currency'] = 1;
+
+            if (candidateQuery.current_salary) updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
+            else unset['candidate.current_salary'] = 1;
+
+            if (queryBody.unset_employee) unset['candidate.employee'] = 1;
+            else {
+                if (candidateQuery.employee) {
+                    for (let loc of candidateQuery.employee.location) {
+                        if (loc.city) {
+                            const index = candidateQuery.employee.location.findIndex((obj => obj.city === loc.city));
+                            candidateQuery.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        }
+                    }
+                    updateCandidateUser['candidate.employee'] = candidateQuery.employee;
+                }
+            }
+
+            if (queryBody.unset_contractor) unset['candidate.contractor'] = 1;
+            else {
+                if (candidateQuery.contractor) {
+                    for (let loc of candidateQuery.contractor.location) {
+                        if (loc.city) {
+                            const index = candidateQuery.contractor.location.findIndex((obj => obj.city === loc.city));
+                            candidateQuery.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        }
+                    }
+                    updateCandidateUser['candidate.contractor'] = candidateQuery.contractor;
+                }
+            }
+
+            if (queryBody.unset_volunteer) unset['candidate.volunteer'] = 1;
+            else {
+                if (candidateQuery.volunteer) {
+                    for (let loc of candidateQuery.volunteer.location) {
+                        if (loc.city) {
+                            const index = candidateQuery.volunteer.location.findIndex((obj => obj.city === loc.city));
+                            candidateQuery.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
+                        }
+                    }
+                    updateCandidateUser['candidate.volunteer'] = candidateQuery.volunteer;
+                }
+            }
+
+            if (candidateQuery.why_work) updateCandidateUser['candidate.why_work'] = candidateQuery.why_work;
+            if (candidateQuery.description) updateCandidateUser['candidate.description'] = candidateQuery.description;
+
+            if (queryBody.unset_education_history) unset['candidate.education_history'] = 1;
+            else {
+                if (candidateQuery.education_history && candidateQuery.education_history.length > 0) {
+                    updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
+                }
+            }
+
+            if (queryBody.unset_work_history) unset['candidate.work_history'] = 1;
+            else {
+                if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
+                    updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+                }
+            }
+
+            if (candidateQuery.job_activity_status) {
+                let job_activity_status = candidateQuery.job_activity_status;
+                if (job_activity_status.new_work_opportunities) updateCandidateUser['candidate.job_activity_status.new_work_opportunities'] = job_activity_status.new_work_opportunities;
+
+                if (queryBody.unset_currently_employed) unset['candidate.job_activity_status.currently_employed'] = 1;
+                else {
+                    if (job_activity_status.currently_employed) updateCandidateUser['candidate.job_activity_status.currently_employed'] = job_activity_status.currently_employed;
+                }
+
+                if (queryBody.unset_leaving_current_employ_reasons) unset['candidate.job_activity_status.leaving_current_employ_reasons'] = 1;
+                else {
+                    if (job_activity_status.leaving_current_employ_reasons) updateCandidateUser['candidate.job_activity_status.leaving_current_employ_reasons'] = job_activity_status.leaving_current_employ_reasons;
+                }
+
+                if (queryBody.unset_other_reasons) unset['candidate.job_activity_status.other_reasons'] = 1;
+                else {
+                    if (job_activity_status.other_reasons) updateCandidateUser['candidate.job_activity_status.other_reasons'] = job_activity_status.other_reasons;
+                }
+
+                if (queryBody.unset_counter_offer) unset['candidate.job_activity_status.counter_offer'] = 1;
+                else {
+                    if (job_activity_status.counter_offer) updateCandidateUser['candidate.job_activity_status.counter_offer'] = job_activity_status.counter_offer;
+                }
+            }
+
+            if (candidateQuery.interest_areas) updateCandidateUser['candidate.interest_areas'] = candidateQuery.interest_areas;
+
+            if (queryBody.unset_curret_currency) {
+                unset['candidate.current_currency'] = 1;
+                unset['candidate.current_salary'] = 1;
+            }
+            else {
+                if (candidateQuery.current_currency && candidateQuery.current_salary) {
+                    updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
+                    updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
+                }
+            }
+
+            if (queryBody.unset_language) {
+                unset['candidate.programming_languages'] = 1;
+            } else {
+                if (candidateQuery.programming_languages && candidateQuery.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = candidateQuery.programming_languages;
+            }
+
+            if (queryBody.unset_education_history) {
+                unset['candidate.education_history'] = 1;
+            } else {
+                if (candidateQuery.education_history && candidateQuery.education_history.length > 0) updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
+            }
+
+            if (queryBody.unset_work_history) {
+                unset['candidate.work_history'] = 1;
+            } else {
+                if (candidateQuery.work_history && candidateQuery.work_history.length > 0) updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
+            }
+
+            if (queryBody.unset_github_account) {
+                unset['candidate.github_account'] = 1;
+            } else {
+                if (candidateQuery.github_account) updateCandidateUser['candidate.github_account'] = candidateQuery.github_account;
+            }
+
+            if (queryBody.unset_exchange_account) {
+                unset['candidate.stackexchange_account'] = 1;
+            } else {
+                if (candidateQuery.stackexchange_account) updateCandidateUser['candidate.stackexchange_account'] = candidateQuery.stackexchange_account;
+            }
+
+            if (queryBody.unset_linkedin_account) {
+                unset['candidate.linkedin_account'] = 1;
+            } else {
+                if (candidateQuery.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = candidateQuery.linkedin_account;
+            }
+
+            if (queryBody.unset_medium_account) {
+                unset['candidate.medium_account'] = 1;
+            } else {
+                if (candidateQuery.medium_account) updateCandidateUser['candidate.medium_account'] = candidateQuery.medium_account;
+            }
+            if (queryBody.unset_stackoverflow_url) {
+                unset['candidate.stackoverflow_url'] = 1;
+            } else {
+                if (candidateQuery.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = candidateQuery.stackoverflow_url;
+            }
+
+            if (queryBody.unset_personal_website_url) {
+                unset['candidate.personal_website_url'] = 1;
+            } else {
+                if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
+            }
+
+            if (queryBody.unset_commercial_platforms) {
+                unset['candidate.blockchain.commercial_platforms'] = 1;
+                unset['candidate.blockchain.description_commercial_platforms'] = 1;
+            } else {
+                if (blockChainCheck && blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
+                    updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
+                    if (queryBody.unset_description_commercial_platforms) unset['candidate.blockchain.description_commercial_platforms'] = 1;
+                    if (blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
+                }
+            }
+
+            if (queryBody.unset_experimented_platforms) {
+                unset['candidate.blockchain.experimented_platforms'] = 1;
+                unset['candidate.blockchain.description_experimented_platforms'] = 1;
+            } else {
+                if (blockChainCheck && blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
+                    updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
+                    if (queryBody.unset_description_experimented_platforms) unset['candidate.blockchain.description_experimented_platforms'] = 1;
+                    if (blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
+                }
+            }
+
+            if (queryBody.unset_commercial_skills) {
+                unset['candidate.blockchain.commercial_skills'] = 1;
+                unset['candidate.blockchain.description_commercial_skills'] = 1;
+            } else {
+                if (blockChainCheck && blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
+                    updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
+                    if (queryBody.unset_description_commercial_skills) unset['candidate.blockchain.description_commercial_skills'] = 1;
+                    if (blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
+                }
+            }
         }
 
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
         if (queryBody.last_name) updateCandidateUser.last_name = queryBody.last_name;
         if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
         if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
-        if (candidateQuery.base_city) updateCandidateUser['candidate.base_city'] = candidateQuery.base_city;
-        if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
         if (queryBody.hear_about_wob) updateCandidateUser.hear_about_wob = queryBody.hear_about_wob;
         if (queryBody.hear_about_wob_other_info) updateCandidateUser.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
         if (queryBody.unset_hear_about_wob_other_info) unset['hear_about_wob_other_info'] = 1;
-
-        if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
-            updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
-        }
-        else unset['candidate.current_currency'] = 1;
-
-        if (candidateQuery.current_salary) updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
-        else unset['candidate.current_salary'] = 1;
-
-        if(queryBody.unset_employee) unset['candidate.employee'] = 1;
-        else {
-            if(candidateQuery.employee) {
-                for(let loc of candidateQuery.employee.location) {
-                    if(loc.city) {
-                        const index = candidateQuery.employee.location.findIndex((obj => obj.city === loc.city));
-                        candidateQuery.employee.location[index].city = mongoose.Types.ObjectId(loc.city);
-                    }
-                }
-                updateCandidateUser['candidate.employee'] = candidateQuery.employee;
-            }
-        }
-
-        if(queryBody.unset_contractor) unset['candidate.contractor'] = 1;
-        else {
-            if(candidateQuery.contractor) {
-                for(let loc of candidateQuery.contractor.location) {
-                    if(loc.city) {
-                        const index = candidateQuery.contractor.location.findIndex((obj => obj.city === loc.city));
-                        candidateQuery.contractor.location[index].city = mongoose.Types.ObjectId(loc.city);
-                    }
-                }
-                updateCandidateUser['candidate.contractor'] = candidateQuery.contractor;
-            }
-        }
-
-        if(queryBody.unset_volunteer) unset['candidate.volunteer'] = 1;
-        else {
-            if(candidateQuery.volunteer) {
-                for(let loc of candidateQuery.volunteer.location) {
-                    if(loc.city) {
-                        const index = candidateQuery.volunteer.location.findIndex((obj => obj.city === loc.city));
-                        candidateQuery.volunteer.location[index].city = mongoose.Types.ObjectId(loc.city);
-                    }
-                }
-                updateCandidateUser['candidate.volunteer'] = candidateQuery.volunteer;
-            }
-        }
-
-        if (candidateQuery.why_work) updateCandidateUser['candidate.why_work'] = candidateQuery.why_work;
-        if (candidateQuery.description) updateCandidateUser['candidate.description'] = candidateQuery.description;
-
-        if (queryBody.unset_education_history) unset['candidate.education_history'] = 1;
-        else{
-            if (candidateQuery.education_history && candidateQuery.education_history.length > 0) {
-                updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
-            }
-        }
-
-        if(queryBody.unset_work_history) unset['candidate.work_history'] = 1;
-        else{
-            if (candidateQuery.work_history && candidateQuery.work_history.length > 0) {
-                updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
-            }
-        }
-
-        if(candidateQuery.job_activity_status) {
-            let job_activity_status = candidateQuery.job_activity_status;
-            if (job_activity_status.new_work_opportunities) updateCandidateUser['candidate.job_activity_status.new_work_opportunities'] = job_activity_status.new_work_opportunities;
-
-            if(queryBody.unset_currently_employed) unset['candidate.job_activity_status.currently_employed'] = 1;
-            else{
-                if (job_activity_status.currently_employed) updateCandidateUser['candidate.job_activity_status.currently_employed'] = job_activity_status.currently_employed;
-            }
-
-            if(queryBody.unset_leaving_current_employ_reasons) unset['candidate.job_activity_status.leaving_current_employ_reasons'] = 1;
-            else{
-                if (job_activity_status.leaving_current_employ_reasons) updateCandidateUser['candidate.job_activity_status.leaving_current_employ_reasons'] = job_activity_status.leaving_current_employ_reasons;
-            }
-
-            if(queryBody.unset_other_reasons) unset['candidate.job_activity_status.other_reasons'] = 1;
-            else{
-                if (job_activity_status.other_reasons) updateCandidateUser['candidate.job_activity_status.other_reasons'] = job_activity_status.other_reasons;
-            }
-
-            if(queryBody.unset_counter_offer) unset['candidate.job_activity_status.counter_offer'] = 1;
-            else{
-                if (job_activity_status.counter_offer) updateCandidateUser['candidate.job_activity_status.counter_offer'] = job_activity_status.counter_offer;
-            }
-        }
-
-        if (candidateQuery.interest_areas) updateCandidateUser['candidate.interest_areas'] = candidateQuery.interest_areas;
-
-        if (queryBody.unset_curret_currency) {
-            unset['candidate.current_currency'] = 1;
-            unset['candidate.current_salary'] = 1;
-        }
-        else{
-            if (candidateQuery.current_currency && candidateQuery.current_salary) {
-                updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
-                updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
-            }
-        }
-
-        if (queryBody.unset_commercial_platforms) {
-            unset['candidate.blockchain.commercial_platforms'] = 1;
-            unset['candidate.blockchain.description_commercial_platforms'] = 1;
-        } else {
-            if (blockChainCheck && blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
-                updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
-                if(queryBody.unset_description_commercial_platforms) unset['candidate.blockchain.description_commercial_platforms'] = 1;
-                if(blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
-            }
-        }
-
-        if (queryBody.unset_experimented_platforms) {
-            unset['candidate.blockchain.experimented_platforms'] = 1;
-            unset['candidate.blockchain.description_experimented_platforms'] = 1;
-        } else {
-            if (blockChainCheck && blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
-                updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
-                if(queryBody.unset_description_experimented_platforms) unset['candidate.blockchain.description_experimented_platforms'] = 1;
-                if(blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
-            }
-        }
-
-        if (queryBody.unset_commercial_skills) {
-            unset['candidate.blockchain.commercial_skills'] = 1;
-            unset['candidate.blockchain.description_commercial_skills'] = 1;
-        } else {
-            if (blockChainCheck && blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
-                updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
-                if(queryBody.unset_description_commercial_skills) unset['candidate.blockchain.description_commercial_skills'] = 1;
-                if(blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
-            }
-        }
-        if (queryBody.unset_language) {
-            unset['candidate.programming_languages'] = 1;
-        } else {
-            if (candidateQuery.programming_languages && candidateQuery.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = candidateQuery.programming_languages;
-        }
-
-        if (queryBody.unset_education_history) {
-            unset['candidate.education_history'] = 1;
-        } else {
-            if (candidateQuery.education_history && candidateQuery.education_history.length > 0) updateCandidateUser['candidate.education_history'] = candidateQuery.education_history;
-        }
-
-        if (queryBody.unset_work_history) {
-            unset['candidate.work_history'] = 1;
-        } else {
-            if (candidateQuery.work_history && candidateQuery.work_history.length > 0) updateCandidateUser['candidate.work_history'] = candidateQuery.work_history;
-        }
-
-        if (queryBody.unset_github_account) {
-            unset['candidate.github_account'] = 1;
-        } else {
-            if (candidateQuery.github_account) updateCandidateUser['candidate.github_account'] = candidateQuery.github_account;
-        }
-
-        if (queryBody.unset_exchange_account) {
-            unset['candidate.stackexchange_account'] = 1;
-        } else {
-            if (candidateQuery.stackexchange_account) updateCandidateUser['candidate.stackexchange_account'] = candidateQuery.stackexchange_account;
-        }
-
-        if (queryBody.unset_linkedin_account) {
-            unset['candidate.linkedin_account'] = 1;
-        } else {
-            if (candidateQuery.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = candidateQuery.linkedin_account;
-        }
-
-        if (queryBody.unset_medium_account) {
-            unset['candidate.medium_account'] = 1;
-        } else {
-            if (candidateQuery.medium_account) updateCandidateUser['candidate.medium_account'] = candidateQuery.medium_account;
-        }
-        if (queryBody.unset_stackoverflow_url) {
-            unset['candidate.stackoverflow_url'] = 1;
-        } else {
-            if (candidateQuery.stackoverflow_url) updateCandidateUser['candidate.stackoverflow_url'] = candidateQuery.stackoverflow_url;
-        }
-
-        if (queryBody.unset_personal_website_url) {
-            unset['candidate.personal_website_url'] = 1;
-        } else {
-            if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
-        }
     }
 
     let timestamp = new Date();
