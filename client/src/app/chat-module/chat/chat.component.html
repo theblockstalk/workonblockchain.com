@@ -290,8 +290,7 @@
                           </p>
                         </li>
                         <div class="chat_company">
-                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
-
+                          {{msg.date_created | date : 'h:mm a'}} {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}}
                         </div>
                       </ng-container>
                       <ng-template #second>
@@ -480,8 +479,7 @@
                           </p>
                         </li>
                         <div class="chat_user">
-                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
-                        </div>
+                          {{msg.date_created | date : 'h:mm a'}} {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}}</div>
                       </ng-template>
                     </div>
                     <div class = "offers_b"></div>

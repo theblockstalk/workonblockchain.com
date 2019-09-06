@@ -3,8 +3,8 @@ const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 const crypto = require('../crypto');
 const mongooseUsers = require('../../../model/mongoose/users');
-const mongooseCompany = require('../../../model/mongoose/company');
-const mongooseReferral = require('../../../model/mongoose/referral');
+const mongooseCompany = require('../../../model/mongoose/companies');
+const mongooseReferral = require('../../../model/mongoose/referrals');
 
 
 module.exports = async function() {

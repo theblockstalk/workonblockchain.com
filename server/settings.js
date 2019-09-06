@@ -75,7 +75,7 @@ if (isLiveApplication()) {
         config.mongo.databaseName = config.mongo.databaseName + '-default';
     }
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
-        + config.mongo.port + "/" + config.mongo.databaseName;
+        + config.mongo.port + "/" + config.mongo.databaseName + '-default';
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
     settings.SENDGRID = {

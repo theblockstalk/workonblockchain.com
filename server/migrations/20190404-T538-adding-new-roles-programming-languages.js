@@ -1,6 +1,6 @@
 const logger = require('../controller/services/logger');
 const users = require('../model/mongoose/users');
-const companies = require('../model/mongoose/company');
+const companies = require('../model/mongoose/companies');
 const cities = require('../model/mongoose/cities');
 const objects = require('../controller/services/objects');
 

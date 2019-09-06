@@ -1,34 +1,22 @@
-let Templates = require('../email_templates');
+const mongoose = require('mongoose');
+const emailSchema = require('../schemas/email_templates');
+const defaultMongoose = require('../defaultMongoose');
 
-module.exports.insert = async function insert(data) {
-    let newDoc = new Templates(data);
+let Model = mongoose.model('email_templates', emailSchema);
 
-    await newDoc.save();
+let mongooseFunctions = defaultMongoose(Model);
 
-    return newDoc._doc;
+mongooseFunctions.findAll = async function findAll() {
+    return await Model.find().lean();
 }
 
-module.exports.findAll = async function findAll() {
-    return await Templates.find().lean();
+mongooseFunctions.findOneAndSort = async function findOne(selector) {
+    return await Model.findOne(selector).sort({updated_date : -1}).lean();
 }
 
-module.exports.findOne = async function findOne(selector) {
-    return await Templates.findOne(selector).lean();
+// TODO: need to change this to updateOne()
+mongooseFunctions.update = async function update(selector, updateObj) {
+    await Model.findOneAndUpdate(selector, updateObj, {runValidators: true});
 }
 
-module.exports.findOneAndSort = async function findOne(selector) {
-    return await Templates.findOne(selector).sort({updated_date : -1}).lean();
-}
-
-module.exports.findOneById = async function findOneById(id) {
-    return await Templates.findById(id).lean();
-}
-
-
-module.exports.update = async function update(selector, updateObj) {
-    await Templates.findOneAndUpdate(selector, updateObj, { runValidators: true });
-}
-
-module.exports.deleteOne = async function deleteOne(selector) {
-    await Templates.find(selector).remove();
-}
+module.exports = mongooseFunctions;

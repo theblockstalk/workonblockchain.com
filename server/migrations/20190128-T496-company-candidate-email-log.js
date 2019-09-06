@@ -1,5 +1,5 @@
 const users = require('../model/mongoose/users');
-const companies = require('../model/mongoose/company');
+const companies = require('../model/mongoose/companies');
 const logger = require('../controller/services/logger');
 const csv = require('csvtojson');
 const candidateEmailsPath = __dirname + '/files/T496-candidates-sent.csv';

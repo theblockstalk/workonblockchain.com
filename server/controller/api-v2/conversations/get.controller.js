@@ -3,7 +3,7 @@ const Schema = require('mongoose').Schema;
 const users = require('../../../model/mongoose/users');
 const messages = require('../../../model/mongoose/messages');
 const filterReturnData = require('../users/filterReturnData');
-const company = require('../../../model/mongoose/company');
+const company = require('../../../model/mongoose/companies');
 const errors = require('../../services/errors');
 const logger = require('../../services/logger');
 

@@ -5,9 +5,9 @@ const errors = require('../../../services/errors');
 const crypto = require('../../../services/crypto');
 const jwtToken = require('../../../services/jwtToken');
 
-const companies = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/companies');
 const Users = require('../../../../model/mongoose/users');
-const referral = require('../../../../model/mongoose/referral');
+const referral = require('../../../../model/mongoose/referrals');
 const verify_send_email = require('../auth/verify_send_email');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
 

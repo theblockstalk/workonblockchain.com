@@ -1,5 +1,5 @@
 const users = require('../../../../model/mongoose/users');
-const companies = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/companies');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const errors = require('../../../services/errors');
 

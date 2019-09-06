@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
-const users = require('../../../../model/users');
+const users = require('../../../../model/mongoose/users');
 const docGenerator = require('../../../helpers/docGenerator-v2');
 const candidateHelper = require('./candidateHelpers');
 const userHelper = require('../../otherHelpers/usersHelpers');
@@ -29,11 +29,11 @@ describe('update candidate profile', function () {
 
             await candidateHelper.candidateProfile(candidate, profileData);
 
-            let  candidateUserDoc = await users.findOne({email: candidate.email}).lean();
+            let  candidateUserDoc = await users.findOne({email: candidate.email});
             const candidateEditProfileData = docGenerator.candidateProfileUpdate();
 
             const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
-            candidateUserDoc = await users.findOne({email: candidate.email}).lean();
+            candidateUserDoc = await users.findOne({email: candidate.email});
             const blockchainSkills = candidateUserDoc.candidate.blockchain;
             console.log(candidateUserDoc);
             candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.candidate.github_account);
@@ -53,6 +53,29 @@ describe('update candidate profile', function () {
             blockchainSkills.commercial_platforms[0].exp_year.should.equal(candidateEditProfileData.candidate.blockchain.commercial_platforms[0].exp_year);
             blockchainSkills.description_commercial_platforms.should.equal(candidateEditProfileData.candidate.blockchain.description_commercial_platforms);
             blockchainSkills.description_experimented_platforms.should.equal(candidateEditProfileData.candidate.blockchain.description_experimented_platforms);
+        });
+
+        it('it should update link sites', async function() {
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGenerator.candidateProfile();
+
+            await candidateHelper.candidateProfile(candidate, profileData);
+
+            let  candidateUserDoc = await users.findOne({email: candidate.email});
+            let candidateEditProfileData = docGenerator.candidateProfileUpdate();
+
+            const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
+
+            candidateEditProfileData = {
+                candidate: {
+                    base_city: 'Islamabad'
+                },
+                unset_github_account: true,
+                unset_linkedin_account: true
+            };
+            const resNew = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
+
         })
     })
 });
