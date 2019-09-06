@@ -52,7 +52,6 @@ export class PricingComponent implements OnInit {
   }
 
   price_plan(){
-    console.log('clicked');
     if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
   }
 
