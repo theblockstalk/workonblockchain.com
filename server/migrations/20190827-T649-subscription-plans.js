@@ -19,6 +19,7 @@ module.exports.up = async function() {
                 const employerDoc = await companies.findOne({_creator : userDoc._id});
                 if(employerDoc){
                     set['discount'] = referralDoc.discount;
+                    logger.debug('set object: ', set);
                     await companies.update({_id: employerDoc._id}, {$set: set});
                     logger.debug('employer doc id: ' + employerDoc._id);
                     totalModified++;
@@ -59,6 +60,7 @@ module.exports.up = async function() {
 
         logger.debug('companyDoc doc id: ' + companyDoc._id);
         pushObj.$set = set;
+        logger.debug('pushObj object: ', pushObj);
         await companies.update({ _id: companyDoc._id },pushObj);
         totalModified++;
     });
@@ -80,6 +82,7 @@ module.exports.down = async function() {
             'discount': 1
         };
         logger.debug('employer doc id: ' + companyDoc._id);
+        logger.debug('unset object: ', unset);
         await companies.update({_id : companyDoc._id}, {$unset: unset});
         totalModified++;
     });
@@ -100,6 +103,7 @@ module.exports.down = async function() {
             'pricing_plan': 1
         };
         logger.debug('employer doc id: ' + companyDoc._id);
+        logger.debug('unset object: ', unset);
         await companies.update({_id : companyDoc._id}, {$unset: unset});
         totalModified++;
     });
