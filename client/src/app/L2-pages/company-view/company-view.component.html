@@ -56,7 +56,7 @@
           </div>
         </section>
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="userDoc['discount'] || referred_name || userDoc['price_plan']">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="userDoc['discount'] || referred_name || userDoc['pricing_plan']">
           <div class="row">
             <div class="col-md-6">
               <h2>
@@ -73,8 +73,8 @@
             <div class="col-md-6 mb-3" *ngIf="referred_name">
               <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
             </div>
-            <div class="col-md-6" *ngIf="userDoc['price_plan']">
-              <app-c-formv-text label="Plan:" [value]="userDoc['price_plan']"></app-c-formv-text>
+            <div class="col-md-6" *ngIf="userDoc['pricing_plan']">
+              <app-c-formv-text label="Plan:" [value]="userDoc['pricing_plan']"></app-c-formv-text>
             </div>
           </div>
           <div class="row">
@@ -228,39 +228,25 @@
               </div>
 
               <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
-                <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
-                  <label>Work place (city/remote):</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
-                      <div *ngIf="country.name === 'Remote'">
-                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                      <div *ngIf="country.type === 'city'">
-                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <app-c-formv-list
+                  label="Work place (city/remote):"
+                  [value]="getLocation(searches.location)"
+                >
+                </app-c-formv-list>
 
                 <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
                   <div class="form-group mt-3">
                     <p>Only show candidates that require a work visa</p>
-
                   </div>
-
                 </div>
               </div>
 
               <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
-                <div class="form-group">
-                  <label>Commercial blockchain experience:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let blockchain of searches.blockchain">
-                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{blockchain}}.png" alt="{{blockchain}} Logo">
-                      {{blockchain}}
-                    </div>
-                  </div>
-                </div>
+                <app-c-formv-list
+                  label="Commercial blockchain experience:"
+                  [value]="createBlockchainLogos(searches.blockchain)"
+                >
+                </app-c-formv-list>
               </div>
 
               <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
@@ -287,21 +273,17 @@
               </div>
 
               <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
-                <div class="form-group">
-                  <label>Annual salary:</label>
-                  <p>
-                    {{searches.current_currency}} {{searches.current_salary}}
-                  </p>
-                </div>
+                <app-c-formv-text
+                  label="Annual salary:"
+                  [value]="makeCurrencySalary(searches.current_salary, searches.current_currency)"
+                ></app-c-formv-text>
               </div>
 
               <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
-                <div class="form-group">
-                  <label>Hourly rate:</label>
-                  <p>
-                    {{searches.current_currency}} {{searches.expected_hourly_rate}}
-                  </p>
-                </div>
+                <app-c-formv-text
+                  label="Hourly rate:"
+                  [value]="makeCurrencySalary(searches.expected_hourly_rate, searches.current_currency)"
+                ></app-c-formv-text>
               </div>
 
               <div class="col-md-12 mb-3" *ngIf="searches.other_technologies">

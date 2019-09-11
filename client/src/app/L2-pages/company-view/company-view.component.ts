@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
+import { createLocationsListStrings } from  '../../../services/object';
 
 declare var $: any;
 
@@ -68,7 +69,9 @@ export class CompanyViewComponent implements OnInit {
       this.countries = this.filter_array(this.countries);
     }
     console.log(this.countries);
-    return this.countries;
+    let newCountries = [];
+    newCountries = createLocationsListStrings(this.countries);
+    return newCountries;
   }
 
   filter_array(arr) {
@@ -78,6 +81,19 @@ export class CompanyViewComponent implements OnInit {
       var match = Boolean(hashTable[key]);
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  createBlockchainLogos(commercial){
+    let newCommercials = [];
+    for(let commercials of commercial){
+      let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+commercials+'.png" alt="'+commercials+' Logo"> ' + commercials;
+      newCommercials.push(img);
+    }
+    return newCommercials;
+  }
+
+  makeCurrencySalary(salary, currency){
+    return (currency+' '+salary);
   }
 
 }

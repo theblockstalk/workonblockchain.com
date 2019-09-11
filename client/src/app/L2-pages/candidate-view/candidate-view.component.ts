@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {changeLocationDisplayFormat, getNameFromValue, copyObject} from '../../../services/object';
+import {changeLocationDisplayFormat, getNameFromValue, copyObject, createLocationsListStrings} from '../../../services/object';
 import { ApproachOfferRateComponent } from '../../L1-items/candidate/approach-offer-rate/approach-offer-rate.component';
 import {candidateBadge, candidateProgress} from '../../../services/candidate';
 
@@ -151,10 +151,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].employee) {
       this.employee.value = copyObject(this.userDoc['candidate'].employee);
       const locationArray = changeLocationDisplayFormat(this.employee.value.location);
-      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
+      const newNoVisaPlaceArray = createLocationsListStrings(locationArray.noVisaArray);
       this.employee.noVisaArray = newNoVisaPlaceArray;
 
-      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
+      let newVisaRequiredArray = createLocationsListStrings(locationArray.visaRequiredArray);
       this.employee.visaRequiredArray = newVisaRequiredArray;
 
       let rolesValue = [];
@@ -173,10 +173,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].contractor) {
       this.contractor.value = copyObject(this.userDoc['candidate'].contractor);
       const locationArray = changeLocationDisplayFormat(this.contractor.value.location);
-      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
+      const newNoVisaPlaceArray = createLocationsListStrings(locationArray.noVisaArray);
       this.contractor.noVisaArray = newNoVisaPlaceArray;
 
-      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
+      let newVisaRequiredArray = createLocationsListStrings(locationArray.visaRequiredArray);
       this.contractor.visaRequiredArray = newVisaRequiredArray;
 
       let rolesValue = [];
@@ -199,10 +199,10 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].volunteer) {
       this.volunteer.value = copyObject(this.userDoc['candidate'].volunteer);
       const locationArray = changeLocationDisplayFormat(this.volunteer.value.location);
-      const newNoVisaPlaceArray = this.createLocationsListStrings(locationArray.noVisaArray);
+      const newNoVisaPlaceArray = createLocationsListStrings(locationArray.noVisaArray);
       this.volunteer.noVisaArray = newNoVisaPlaceArray;
 
-      let newVisaRequiredArray = this.createLocationsListStrings(locationArray.visaRequiredArray);
+      let newVisaRequiredArray = createLocationsListStrings(locationArray.visaRequiredArray);
       this.volunteer.visaRequiredArray = newVisaRequiredArray;
 
       let rolesValue = [];
@@ -910,26 +910,6 @@ export class CandidateViewComponent implements OnInit {
         }
       );
     }
-  }
-
-  createLocationsListStrings(locationArray){
-    let placesArray = [];
-
-    for (let noVisaPlace of locationArray) {
-      if (noVisaPlace.name === 'Remote') {
-        let remote = '<i class="fas fa-laptop"></i> ' + noVisaPlace.name;
-        placesArray.push(remote);
-      }
-      if (noVisaPlace.type === 'city') {
-        let city = '<i class="fas fa-city"></i> ' + noVisaPlace.name;
-        placesArray.push(city);
-      }
-      if (noVisaPlace.type === 'country') {
-        let country = '<i class="fas fa-flag"></i> ' + noVisaPlace.name;
-        placesArray.push(country);
-      }
-    }
-    return placesArray;
   }
 
   sendEmailValue(event){
