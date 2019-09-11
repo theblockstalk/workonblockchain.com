@@ -1,6 +1,6 @@
 const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const messages = require('../../../../model/messages');
+const messages = require('../../../../model/mongoose/messages');
 const mongoose = require('mongoose');
 const errors = require('../../../services/errors');
 
@@ -40,12 +40,13 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
     }
 
-    const messageDocs = await messages.find({
+    //this will get sorted result from DB
+    let messageDocs = await messages.findSortLimitSkip({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
         ]
-    }).sort({date_created: 1}).lean();
+    }, {date_created: 'ascending'});
 
     let jobOfferStatus = '';
     if (messageDocs.length === 0) {

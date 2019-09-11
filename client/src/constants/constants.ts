@@ -451,7 +451,7 @@ export const constants = {
     {value:19, name:'19+ years'},{value:20, name:'20+ years'}
   ],
   work_types: [
-    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-secret fa-4x', checked: false},
+    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-tie fa-4x', checked: false},
     {name: 'Contractor/Freelancer', value: 'contractor', iconClass: 'fas fa-address-card fa-4x', checked: false},
     {name: 'Temporary volunteer', value: 'volunteer', iconClass: 'fas fa-user-check fa-4x', checked: false}
   ],
@@ -483,6 +483,12 @@ export const constants = {
     {name: 'Social media', value: "Social media"}, {name: 'Attended a WOB event', value: "Attended a WOB event"},
     {name: 'Contacted by WOB', value: "Contacted by WOB"}, {name: 'Word of mouth', value: "Word of mouth"},
     {name: 'Internet search', value: "Internet search"}, {name: 'Other', value: "Other"}
+  ],
+  number_of_days:[
+    {name: 1, value: 1},{name: 2, value: 2},{name: 3, value: 3},
+    {name: 5, value: 5},{name: 10, value: 10},{name: 15, value: 15},
+    {name: 20, value: 20},{name: 30, value: 30},{name: 45, value: 45},
+    {name: 60, value: 60}
   ]
 
 };

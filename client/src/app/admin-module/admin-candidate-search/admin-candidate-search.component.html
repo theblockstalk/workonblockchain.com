@@ -38,6 +38,13 @@
             <hr/>
 
             <div class = "form-group">
+              <select title="Last message (days)" class="selectpicker form-control " name="number_of_days" [(ngModel)]="number_of_days" (ngModelChange)="search_days($event)" >
+                <option *ngFor='let options of numberOfDays'  [value]="options.value" selected>{{options.name}}</option>
+              </select>
+            </div>
+            <hr/>
+
+            <div class = "form-group">
               <select title="Email verification" class="selectpicker form-control " name="candidate_status" [(ngModel)]="candidate_status" (ngModelChange)="search_account_status($event)" >
                 <option *ngFor='let options of admin_checks_email_verify'  [value]="options.value" selected>{{options.name}}</option>
               </select>

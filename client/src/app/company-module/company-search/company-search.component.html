@@ -40,12 +40,12 @@
             </div>
 
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Talent requirements</h4>
+              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user-tie" aria-hidden="true"></i> Talent requirements</h4>
               <div class="form-group px-1">
                 <div class="form-check" *ngFor="let types of workTypes">
                   <label class="form-check-label simple-radio-button" >
                     <input class="form-check-input" type="radio" name="types" [checked]="types.checked" [(ngModel)]="selectedWorkType" value="{{types.value}}" (ngModelChange)="searchdata('type', $event)">
-                    <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                    <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                     <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                     <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                     {{types.name}}
@@ -308,7 +308,7 @@
                   <div class="form-check" >
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" [(ngModel)]="approach_work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                       <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                       {{types.name}}
@@ -545,7 +545,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <h4 class="pt-2 "><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+                <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Job requirements</h4>
               </div>
             </div>
 
@@ -556,7 +556,7 @@
                   <div class="form-check" *ngFor="let types of workTypes">
                     <label class="form-check-label simple-radio-button" >
                       <input class="form-check-input" type="radio" name="work_type" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                      <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                      <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                       <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                       <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                       {{types.name}}

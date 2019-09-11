@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: '', loadChildren: './L3-URLs/talent.module#TalentModule'},
   { path: '', loadChildren: './L3-URLs/pages/pages.module#PagesModule'},
   { path: '', loadChildren: './L3-URLs/users/users.module#UsersModule'},
+  { path: '', loadChildren: './L3-URLs/pricing/pricing.module#PricingModule'},
   { path: '**', component: PageNotFoundComponent}
 ];
 

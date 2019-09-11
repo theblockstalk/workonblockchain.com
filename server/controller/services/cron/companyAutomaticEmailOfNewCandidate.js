@@ -1,4 +1,4 @@
-const company = require('../../../model/mongoose/company');
+const company = require('../../../model/mongoose/companies');
 const users = require('../../../model/mongoose/users');
 
 const candidateSearch = require('../../api-v2/users/candidates/search/searchCandidates');

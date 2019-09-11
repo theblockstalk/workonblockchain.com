@@ -1,0 +1,20 @@
+<app-p-pricing
+  *ngIf="companyDoc && viewBy === 'company'"
+  [viewBy]=viewBy
+  [showNavbar]="showNavbar"
+  [companyDoc]="companyDoc"
+>
+</app-p-pricing>
+
+<!--for candidate & admin-->
+<app-p-pricing
+  *ngIf="viewBy === 'candidate'"
+  [viewBy]=viewBy
+>
+</app-p-pricing>
+
+<app-p-pricing
+  *ngIf="viewBy === 'general'"
+  [viewBy]=viewBy
+>
+</app-p-pricing>

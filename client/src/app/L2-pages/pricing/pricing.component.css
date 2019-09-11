@@ -1,0 +1,71 @@
+.default-bg{
+  background-color: #72D8EA;
+  border-radius: 7px
+}
+
+.low-fee{
+  left: -5px;
+}
+
+.price{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.recruitment-agency{
+  color: red;
+}
+
+.employee-img{
+  height: 150px;
+}
+
+.card{
+  height: 450px;
+}
+
+.first_td {
+  width: 200px !important;
+}
+
+.btn_th {
+  padding: 1px;
+  font-size: 1.25rem;
+}
+
+.tb_btn {
+  width: 100px;
+  margin-top: 10px;
+  text-decoration: none !important;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.card-img-top {
+  width: 85px;
+  margin: auto;
+}
+
+.row_a {
+  height: 20px;
+}
+
+.row_1 {
+  min-height: 150px;
+  position: relative;
+}
+
+
+@media (min-width: 768px) {
+  .mobile-row {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px){
+  .desktop_row {
+    display: none !important;
+  }
+}

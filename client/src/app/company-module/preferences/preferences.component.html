@@ -21,6 +21,12 @@
               Talent requirements
             </a>
           </li>
+          <li class="nav-item">
+            <a routerLink="/users/company/wizard/pricing" class="nav-link">
+              <i class="{{price_plan_active_class}}"></i>
+              Price plan
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -69,7 +75,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <h4 class="pt-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Requirements</h4>
+                      <h4 class="pt-2 mb-3"><i class="fas fa-user-tie" aria-hidden="true"></i> Requirements</h4>
                     </div>
                   </div>
                   <div class="row">
@@ -78,7 +84,7 @@
                         <div class="form-check" *ngFor="let types of workTypes">
                           <label class="form-check-label simple-radio-button" >
                             <input class="form-check-input" type="radio" formControlName="work_type" value="{{types.value}}" (change)="refreshSelectBox()" >
-                            <i *ngIf="types.value === 'employee'" class="fas fa-user-secret"></i>
+                            <i *ngIf="types.value === 'employee'" class="fas fa-user-tie"></i>
                             <i *ngIf="types.value === 'contractor'" class="fas fa-address-card"></i>
                             <i *ngIf="types.value === 'volunteer'" class="fas fa-user-check"></i>
                             {{types.name}}
@@ -291,7 +297,7 @@
               <div class="form-group">
                 <div class = "text-right mt-3">
                   <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
-                  <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                  <button type="submit" class = "btn btn-primary ml-1">Next</button>
                 </div>
               </div>
             </div>
@@ -310,26 +316,4 @@
     </div>
 
   </div>
-
-
 </section>
-
-<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
-        </h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
-      </div>
-    </div>
-  </div>
-</div>

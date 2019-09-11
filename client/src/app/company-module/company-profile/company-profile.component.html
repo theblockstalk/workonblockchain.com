@@ -50,6 +50,39 @@
           </div>
         </section>
 
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="discount || referred_name || price_plan">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                Account info
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngIf="discount">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="referred_name">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+            <div class="col-md-6" *ngIf="price_plan">
+              <app-c-formv-text label="Plan:" [value]="price_plan"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-c-button-normal
+                level = "primary"
+                alignment="float-right"
+                label="Change plan"
+                [routeUrl]="pricePlanLink"
+              ></app-c-button-normal>
+            </div>
+          </div>
+        </section>
+
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
@@ -98,7 +131,7 @@
           <div class="row">
             <div class="col-md-6">
               <h2>
-                <i class="fas fa-user icon" aria-hidden="true"></i>
+                <i class="fas fa-user-tie icon" aria-hidden="true"></i>
                 Company administration
               </h2>
             </div>
@@ -175,7 +208,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <h4 class="pt-2 "><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+                <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Job requirements</h4>
               </div>
             </div>
 

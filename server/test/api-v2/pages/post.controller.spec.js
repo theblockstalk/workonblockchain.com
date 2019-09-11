@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
-const Users = require('../../../model/mongoose/users');
+const users = require('../../../model/mongoose/users');
 const pages = require('../../../model/mongoose/pages');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../otherHelpers/companyHelpers');
@@ -24,7 +24,7 @@ describe('POST /pages', function () {
         it('it should insert html data in db', async function () {
             const company = docGenerator.company();
             await companyHelper.signupAdminCompany(company);
-            const companyDoc = await Users.findOne({email: company.email});
+            const companyDoc = await users.findOne({email: company.email});
 
             const info = docGenerator.cmsContent();
             const cmsRes = await pagesHelper.addPages(info , companyDoc.jwt_token);

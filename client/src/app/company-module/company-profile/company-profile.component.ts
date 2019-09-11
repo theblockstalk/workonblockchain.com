@@ -43,7 +43,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   selectedValueArray = [];
   countries;
   when_receive_email_notitfications;
-  country_code;
+  country_code;discount;referred_name;price_plan;
+  pricePlanLink = '/pricing';
 
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
@@ -139,7 +140,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.router.navigate(['/company_wizard']);
             }
 
-
             else if(!data['company_founded'] || !data['no_of_employees'] || !data['company_funded'] || !data['company_description'] )
             {
               this.router.navigate(['/about_comp']);
@@ -148,6 +148,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
             else if(((new Date(data['_creator'].created_date) > new Date('2018/11/28')) && (!data['saved_searches'] || data['saved_searches'].length === 0))) {
               this.router.navigate(['/preferences']);
             }
+
+            else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
 
             else
             {
@@ -191,6 +193,13 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.company_funded=data['company_funded'];
               this.no_of_employees=data['no_of_employees'];
               this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
+              if(data['discount']) this.discount = data['discount']+'%';
+
+              if (data['name']) this.referred_name = data['name'];
+              else if(data['_creator'].referred_email) this.referred_name = data['_creator'].referred_email;
+
+              if (data['pricing_plan']) this.price_plan = data['pricing_plan'];
+
               if(data['company_logo'] != null )
               {
                 this.imgPath =  data['company_logo'];

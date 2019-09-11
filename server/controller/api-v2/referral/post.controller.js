@@ -1,5 +1,5 @@
 const Schema = require('mongoose').Schema;
-const mongooseReferral = require('../../../model/mongoose/referral');
+const mongooseReferral = require('../../../model/mongoose/referrals');
 const errors = require('../../services/errors');
 const crypto = require('../../services/crypto');
 const regexes = require('../../../model/regexes');
