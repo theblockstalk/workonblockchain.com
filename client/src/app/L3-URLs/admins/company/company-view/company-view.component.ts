@@ -27,7 +27,6 @@ export class CompanyViewComponent implements OnInit {
         .subscribe(
           data =>
           {
-            console.log(data);
             this.companyDoc = data;
           },
           error =>

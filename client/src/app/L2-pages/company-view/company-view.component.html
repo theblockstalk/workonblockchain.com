@@ -67,6 +67,32 @@
           </div>
 
           <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <app-c-formv-text label="Account created date:" [value]="userDoc['_creator'].created_date"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <ng-container *ngIf="userDoc['_creator'].is_verify === 1;else no_verify">
+                <app-c-formv-text label="Email verified:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_verify>
+                <app-c-formv-text label="Email verified:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <ng-container *ngIf="userDoc['_creator'].is_approved !== '';else no_approve">
+                <app-c-formv-text label="Approved by admin:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_approve>
+                <app-c-formv-text label="Approved by admin:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['_creator'].dissable_account_timestamp">
+              <app-c-formv-text label="Account enabled/disabled timestamp:" [value]="userDoc['_creator'].dissable_account_timestamp"></app-c-formv-text>
+            </div>
+
             <div class="col-md-6 mb-3" *ngIf="userDoc['discount']">
               <app-c-formv-text label="Discount:" [value]="userDoc['discount']"></app-c-formv-text>
             </div>

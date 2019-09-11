@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import { createLocationsListStrings } from  '../../../services/object';
+import { DatePipe } from '@angular/common';
 
 declare var $: any;
 
@@ -17,7 +18,7 @@ export class CompanyViewComponent implements OnInit {
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
 
-  constructor(private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
+  constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
     console.log(this.viewBy);
@@ -27,8 +28,12 @@ export class CompanyViewComponent implements OnInit {
     if (this.userDoc['name']) this.referred_name = this.userDoc['name'];
     else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
 
+    if(this.viewBy === 'admin'){
+      this.userDoc['_creator'].created_date = this.datePipe.transform(this.userDoc['_creator'].created_date, 'dd-MMMM-yyyy');
+      this.userDoc['_creator'].dissable_account_timestamp = this.datePipe.transform(this.userDoc['_creator'].dissable_account_timestamp, 'short');
+    }
+
     this.company_name = this.userDoc['first_name'].charAt(0).toUpperCase()+''+this.userDoc['first_name'].slice(1)+' '+this.userDoc['last_name'].charAt(0).toUpperCase()+''+this.userDoc['last_name'].slice(1)
-    console.log(this.company_name);
 
     let company_phone = '';
     let country_code;
@@ -84,7 +89,6 @@ export class CompanyViewComponent implements OnInit {
       this.countries.splice(0, 0, remoteValue);
       this.countries = this.filter_array(this.countries);
     }
-    console.log(this.countries);
     let newCountries = [];
     newCountries = createLocationsListStrings(this.countries);
     return newCountries;
