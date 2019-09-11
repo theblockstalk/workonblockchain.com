@@ -1,3 +1,353 @@
-<p>
-  company-view works!
-</p>
+<section class = "wob-bg-primary2 py-5 mt-5">
+  <div class="container pt-2">
+    <div class="row" *ngIf="viewBy === 'company'">
+      <div class="col-md-12">
+        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn btn-secondary float-right" >What happens next?</button>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="viewBy === 'admin'">
+      <div class="col-md-12">
+        <button [routerLink]="['/update-company-profile']" [queryParams]="{company: userDoc['_creator']._id }" class = "btn btn-primary float-right">Edit Profile</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-image [image]="imgPath"></app-c-formv-image>
+              <div class="mt-3">
+                <span><h2 class="text-capitalize">{{company_name}}</h2></span>
+                <app-c-formv-textarea [value]="userDoc['company_description']"></app-c-formv-textarea>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <ul class="list-group list-group-flush float-right">
+                <li class="list-group-item">
+                  <span><i class="fas fa-building mr-2"></i></span>
+                  <span><a [href]="userDoc['company_website']" target="_blank">{{userDoc['company_website']}}</a></span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >Country: {{userDoc['company_country']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span class = "li_txt">City: {{userDoc['company_city']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-id-card mr-2"></i></span>
+                  <span class = "li_txt">Postcode: {{userDoc['company_postcode']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span class = "li_txt"> Phone: {{userDoc['company_phone']}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="about_you"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="userDoc['discount'] || referred_name || userDoc['price_plan']">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                Account info
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngIf="userDoc['discount']">
+              <app-c-formv-text label="Discount:" [value]="userDoc['discount']"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="referred_name">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+            <div class="col-md-6" *ngIf="userDoc['price_plan']">
+              <app-c-formv-text label="Plan:" [value]="userDoc['price_plan']"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-c-button-normal
+                level = "primary"
+                alignment="float-right"
+                label="Change plan"
+                [routeUrl]="pricePlanLink"
+              ></app-c-button-normal>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building" aria-hidden="true"></i>
+                Company info
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="company_info"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text
+                label="When was the company founded:"
+                [value]="userDoc['company_founded']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text
+                label="How is the company funded:"
+                [value]="userDoc['company_funded']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6 ">
+              <app-c-formv-text
+                label="Number of employees:"
+                [value]="userDoc['no_of_employees']"
+              ></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user-tie icon" aria-hidden="true"></i>
+                Company administration
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="information"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-2">
+              <app-c-formv-text
+                [value]="company_name"
+              ></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-text
+                label="Job title:"
+                [value]="userDoc['job_title']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6">
+              <app-c-formv-text
+                label="Email:"
+                [value]="userDoc['_creator'].email"
+              ></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "bg-white border rounded mt-4 py-3 px-5" *ngIf = "userDoc['saved_searches'] && userDoc['saved_searches'].length > 0">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-search" aria-hidden="true"></i>
+                Saved searches
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="prefrences"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h4><i class="fas fa-envelope "></i> Notifications</h4>
+            </div>
+            <div class="col-md-12">
+              {{userDoc['when_receive_email_notitfications']}}
+            </div>
+          </div>
+          <hr class="bg-dark" />
+
+          <div *ngFor="let searches of userDoc['saved_searches']; let i = index ">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="pt-2 mb-3"> Work search name: {{searches.name}}</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Job requirements</h4>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-12 mb-3" *ngIf="searches.work_type">
+                <app-c-formv-text
+                  label="Work type:"
+                  [value]="searches.work_type"
+                ></app-c-formv-text>
+              </div>
+              <div class="col-md-12 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
+                <app-c-formv-list
+                  label="Type:"
+                  [value]="searches.job_type"
+                >
+                </app-c-formv-list>
+              </div>
+              <div class="col-md-12 mb-3" *ngIf="searches.position && searches.position.length > 0">
+                <app-c-formv-list
+                  label="Role:"
+                  [value]="searches.position"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+                <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
+                  <label>Work place (city/remote):</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
+                  <div class="form-group mt-3">
+                    <p>Only show candidates that require a work visa</p>
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+                <div class="form-group">
+                  <label>Commercial blockchain experience:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let blockchain of searches.blockchain">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/{{blockchain}}.png" alt="{{blockchain}} Logo">
+                      {{blockchain}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
+                <app-c-formv-list
+                  label="Languages:"
+                  [value]="searches.skills"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
+                <app-c-formv-text
+                  label="Years of experience:"
+                  [value]="searches.years_exp_min"
+                ></app-c-formv-text>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+                <app-c-formv-list
+                  label="Residence/base country:"
+                  [value]="searches.residence_country"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
+                <div class="form-group">
+                  <label>Annual salary:</label>
+                  <p>
+                    {{searches.current_currency}} {{searches.current_salary}}
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
+                <div class="form-group">
+                  <label>Hourly rate:</label>
+                  <p>
+                    {{searches.current_currency}} {{searches.expected_hourly_rate}}
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.other_technologies">
+                <app-c-formv-text
+                  label="Other requirements:"
+                  [value]="searches.other_technologies"
+                ></app-c-formv-text>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="searches.order_preferences && searches.order_preferences.length > 0">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-align-justify"></i> Job preferences</h4>
+              </div>
+              <div class="col-md-12 mt-3">
+                <app-c-formv-list
+                  label="Commercial blockchain experience:"
+                  [value]="searches.order_preferences"
+                >
+                </app-c-formv-list>
+              </div>
+            </div>
+            <hr *ngIf="i < (userDoc['saved_searches'].length - 1)" class="bg-dark"/>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="whatHappensNextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h2 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mo btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
