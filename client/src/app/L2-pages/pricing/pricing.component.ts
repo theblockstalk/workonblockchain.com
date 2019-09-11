@@ -52,7 +52,6 @@ export class PricingComponent implements OnInit {
   }
 
   price_plan(){
-    console.log('clicked');
     if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
   }
 
@@ -79,7 +78,10 @@ export class PricingComponent implements OnInit {
       .subscribe(
         data =>{
           if(data) {
-            if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+            if(this.showNavbar){
+              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+            }
+            else this.router.navigate(['/company_profile']);
           }
         },
         error => {

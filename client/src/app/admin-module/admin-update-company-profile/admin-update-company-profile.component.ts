@@ -393,7 +393,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     }
 
     if(this.discount && !this.checkNumber(this.discount)) count = 1;
-    console.log(profileForm);
 
     if(!this.country_code){
       this.country_code_log = 'Please select country code';
