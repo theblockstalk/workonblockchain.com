@@ -77,7 +77,7 @@
               <app-c-formv-text label="Plan:" [value]="userDoc['pricing_plan']"></app-c-formv-text>
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="viewBy === 'company'">
             <div class="col-md-12">
               <app-c-button-normal
                 level = "primary"
