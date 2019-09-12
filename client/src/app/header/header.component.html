@@ -1,4 +1,53 @@
-<div class = "container-fluid">
+<section class="navbar-top">
+  <nav class="navbar navbar-expand-md bg-white navbar-dark pt-3">
+    <div class="container">
+      <!-- Brand -->
+      <a class="navbar-brand" routerLink="/">
+        <img src="/assets/images/navbar_imgs/logo/logo_woc.png" alt="wob_logo">
+      </a>
+
+      <!-- Toggler/collapsibe Button -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" *ngIf="currentUser">
+            <a class="nav-link" routerLink="chat">Chat</a>
+          </li>
+          <li class="nav-item" [ngClass]="currentUser && currentUser.type === 'candidate' ? 'd-none' : ''">
+            <a class="nav-link" routerLink="companies">Companies</a>
+          </li>
+          <li class="nav-item" *ngIf="(currentUser && is_admin === 1)">
+            <a class="nav-link" routerLink="admin-dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="referral">Referral £ reward</a>
+          </li>
+          <a routerLink="signup" class="btn btn-signup" *ngIf="!currentUser"> Signup </a>
+          <a *ngIf="!currentUser" routerLink="login" class="btn btn-Login">Login</a>
+
+          <li class="nav-item dropdown pr-2" *ngIf="(currentUser)">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+            <div class="dropdown-menu ml-3">
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="users/talent">Profile</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="users/talent/edit">Edit profile</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="company_profile">Profile</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit profile</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search candidate</a>
+              <a class="dropdown-item" routerLink="account-settings">Settings</a>
+              <a class="dropdown-item" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<!--<div class = "container-fluid">
   <div class = "row ">
     <div class = "col-md-12">
       <nav class="navbar navbar-expand-lg fixed-top bg-white px-lg-5 px-2">
@@ -38,19 +87,14 @@
                 <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search candidate</a>
                 <a class="dropdown-item text-dark" routerLink="account-settings">Settings</a>
                 <a class="dropdown-item text-dark" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
-                <!--<div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>-->
               </div>
             </li>
           </ul>
         </div>
       </nav>
-
-      <!-- <L0-alerts alertClass="alert-success" aligmentClass="error_msg mx-auto" *ngIf = "msg && close && !success" [alertMsg]="msg" ></L0-alerts>
- -->
     </div>
   </div>
-</div>
+</div>-->
 
 <!-- Modal -->
 <div id="popModalForTerms" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
