@@ -2,7 +2,7 @@ const users = require('../../../../../../model/mongoose/users');
 const jwtToken = require('../../../../../services/jwtToken');
 const errors = require('../../../../../services/errors');
 const forgotPasswordEmail = require('../../../../../services/email/emails/forgotPassword');
-const companies = require('../../../../../../model/mongoose/company');
+const companies = require('../../../../../../model/mongoose/companies');
 const Schema = require('mongoose').Schema;
 const regexes = require('../../../../../../model/regexes');
 

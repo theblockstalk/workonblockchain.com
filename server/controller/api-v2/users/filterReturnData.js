@@ -1,4 +1,4 @@
-const Messages = require('../../../model/messages');
+const messages = require('../../../model/mongoose/messages');
 
 const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc,sendOptions)
 {
@@ -65,24 +65,15 @@ function filterWhiteListFields(obj, whitelist) {
 
 const createInitials = module.exports.createInitials = function createInitials(first_name, last_name) {
     return first_name.charAt(0).toUpperCase() + last_name.charAt(0).toUpperCase();
-}
+};
 
 
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
-    const acceptedApproachOffer = await Messages.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'approach_accepted'})
-    if (acceptedApproachOffer && acceptedApproachOffer.length>0)
+    const acceptedApproachOffer = await messages.findOne({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'approach_accepted'});
+    if (acceptedApproachOffer)
         return removeSensativeData(candidateDoc);
     else
         return anonymousSearchCandidateData(candidateDoc);
 
-};
-
-const isEmptyObject = module.exports.isEmptyObject = function isEmptyObject(obj) {
-    for(let prop in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-            return false;
-        }
-    }
-    return true;
 }

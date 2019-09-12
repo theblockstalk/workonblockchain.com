@@ -1,6 +1,6 @@
 const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const companies = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/companies');
 const Users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const filterReturnData = require('../filterReturnData');

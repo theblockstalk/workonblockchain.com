@@ -6,4 +6,6 @@ export const urls = {
   admin_talent_view: 'admins/talent/:user_id',
   company_talent_view: 'users/talent/:user_id',
   candidate_talent_view: 'users/talent',
+  price_plan: 'pricing', //for general users
+  company_wizard_price_plan: 'users/company/wizard/pricing' //for company wizard & edit company price plan
 };

@@ -42,7 +42,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   pref_disable;
   imagePreviewLink;
   prefil_image;
-  hear_about_wob;otherReasons;
+  hear_about_wob;otherReasons;price_plan_active_class;
 
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
@@ -112,6 +112,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.pref_disable = '';
               this.about_active_class = 'fa fa-check-circle text-success';
             }
+            if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
           },
           error =>

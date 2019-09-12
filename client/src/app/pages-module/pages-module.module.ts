@@ -4,7 +4,6 @@ import { SharedModule } from '../app-shared.module';
 import { PagesModuleRoutingModule } from './pages-module-routing.module';
 
 import { ContactUsComponent } from './contact-us/contact-us.component';
-import { FeesComponent } from './fees/fees.component';
 
 @NgModule({
   imports: [
@@ -14,7 +13,6 @@ import { FeesComponent } from './fees/fees.component';
   ],
   declarations: [
     ContactUsComponent,
-    FeesComponent,
   ]
 })
 export class PagesModuleModule { }

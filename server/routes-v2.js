@@ -49,7 +49,6 @@ const endpoints = [
 
 const validateInputs = function(request, inputSchemas) {
     if (inputSchemas) {
-        console.log('in validating inputs');
         const validationTypes = ['query', 'params', 'body'];
         const modelName = request.type.toUpperCase() + request.path;
         const models = {

@@ -77,7 +77,10 @@ export const constants = {
     {name: "3+ months notice period", value: "Longer than 3 months" }
   ],
   year: [
-    "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
+    "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007",
+    "2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990",
+    "1989","1988","1987","1986","1985","1984","1983","1982","1981","1980","1979","1978","1977","1976","1975","1974","1973",
+    "1972","1971","1970"
   ],
   workBlockchainInterests: [
     {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
@@ -448,7 +451,7 @@ export const constants = {
     {value:19, name:'19+ years'},{value:20, name:'20+ years'}
   ],
   work_types: [
-    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-secret fa-4x', checked: false},
+    {name: 'Employee (full/part time)', value: 'employee', iconClass: 'fas fa-user-tie fa-4x', checked: false},
     {name: 'Contractor/Freelancer', value: 'contractor', iconClass: 'fas fa-address-card fa-4x', checked: false},
     {name: 'Temporary volunteer', value: 'volunteer', iconClass: 'fas fa-user-check fa-4x', checked: false}
   ],
@@ -480,6 +483,12 @@ export const constants = {
     {name: 'Social media', value: "Social media"}, {name: 'Attended a WOB event', value: "Attended a WOB event"},
     {name: 'Contacted by WOB', value: "Contacted by WOB"}, {name: 'Word of mouth', value: "Word of mouth"},
     {name: 'Internet search', value: "Internet search"}, {name: 'Other', value: "Other"}
+  ],
+  number_of_days:[
+    {name: 1, value: 1},{name: 2, value: 2},{name: 3, value: 3},
+    {name: 5, value: 5},{name: 10, value: 10},{name: 15, value: 15},
+    {name: 20, value: 20},{name: 30, value: 30},{name: 45, value: 45},
+    {name: 60, value: 60}
   ]
 
 };

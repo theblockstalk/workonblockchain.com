@@ -1,8 +1,6 @@
-const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 
-const Schema = mongoose.Schema;
-
-const EmailTemplateSchema = new Schema({
+module.exports = new Schema({
     name:{
         type:String,
         required:true,
@@ -25,9 +23,3 @@ const EmailTemplateSchema = new Schema({
         required:true,
     }
 });
-
-module.exports = mongoose.model('email_templates', EmailTemplateSchema);
-
-
-
-

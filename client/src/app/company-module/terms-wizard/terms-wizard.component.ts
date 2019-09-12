@@ -24,7 +24,7 @@ export class TermsWizardComponent implements OnInit {
   preference;
   pref_active_class;
   pref_disable;
-  privacy_id;
+  privacy_id;price_plan_active_class;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -94,6 +94,7 @@ export class TermsWizardComponent implements OnInit {
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
             }
+            if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
           },
           error =>
