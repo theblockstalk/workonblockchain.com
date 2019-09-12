@@ -50,8 +50,7 @@ describe('create new candidate', function () {
         it('it should add new candidate to the sync queue', async function () {
             const candidate = docGenerator.candidate();
 
-            const res = await
-            candidateHelper.signupCandidate(candidate);
+            const res = await candidateHelper.signupCandidate(candidate);
 
             const syncDoc = await syncQueue.findOne({"user.email": candidate.email});
 

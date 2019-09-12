@@ -37,7 +37,11 @@ module.exports.generateAuthTokenfromRefreshToken = async function() {
 const zohoAPIparse = async function (module, type, input) {
     input.module = module;
     const response = await zcrm.API.MODULES[type](input);
-    return JSON.parse(response.body).data;
+    const body = JSON.parse(response.body);
+    if (body.status === "errro") {
+        throw new Error(body);
+    }
+    return body.data;
 }
 
 // https://www.zoho.com/crm/developer/docs/nodejs-sdk/module-samples.html?src=get_single_record
@@ -62,9 +66,9 @@ const zohoModuleAPI = function (module) {
         },
 
         // https://www.zoho.com/crm/developer/docs/api/upsert-records.html
-        // upsert: async function (input) {
-        //     return await zohoAPIparse(module, "post", input)
-        // },
+        upsert: async function (input) {
+            return await zohoAPIparse(module+"/upsert", "post", input)
+        },
 
         // https://www.zoho.com/crm/developer/docs/api/update-records.html
         putMany: async function (input) {

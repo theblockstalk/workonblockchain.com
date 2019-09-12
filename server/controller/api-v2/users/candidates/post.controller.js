@@ -153,7 +153,7 @@ module.exports.endpoint = async function (req, res) {
         verifyEmail.sendEmail(candidateUserCreated.email, candidateUserCreated.first_name, verifyEmailToken);
     }
 
-    await serviceSync.pushToQueue("candidate", "POST", candidateUserCreated);
+    await serviceSync.pushToQueue("POST", candidateUserCreated);
 
     res.send({
         _id: candidateUserCreated._id,

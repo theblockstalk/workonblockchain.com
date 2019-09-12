@@ -38,7 +38,8 @@
     "unreadMessagesTick": "30 12 * * 1-7",
     "autoNotification" : "30 9 * * 1-7",
     "syncSendgrid": "00 8 * * 1-7",
-    "newMessagesEmail": "* * * * 1-7"
+    "newMessagesEmail": "* * * * 1-7",
+    "serviceQueue": "* * * * 1-7"
   },
   "slack": {
     "username": "PRODUCTION bug reporter",
