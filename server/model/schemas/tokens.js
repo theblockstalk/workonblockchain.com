@@ -1,9 +1,6 @@
-const mongoose = require('mongoose');
-const enumerations = require('./enumerations');
+const Schema = require('mongoose').Schema;
 
-const Schema = mongoose.Schema;
-
-const TokenSchema = new Schema({
+module.exports = new Schema({
     token_type: {
         type: String,
         enum: ['zoho'],
@@ -21,6 +18,6 @@ const TokenSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Tokens',TokenSchema);
+module.exports =
 
 
