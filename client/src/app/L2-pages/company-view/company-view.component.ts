@@ -32,6 +32,12 @@ export class CompanyViewComponent implements OnInit {
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
     if(this.userDoc['company_logo'] != null ) this.imgPath =  this.userDoc['company_logo'];
 
+    if (this.userDoc['name']) {
+      this.referred_name = this.userDoc['name'];
+      this.referred_name = this.referred_name.charAt(0).toUpperCase()+''+this.referred_name.slice(1)
+    }
+    else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
+
     if(this.viewBy === 'admin'){
       this.date_created = copyObject(this.userDoc['_creator'].created_date);
       this.date_created = this.datePipe.transform(this.date_created, 'dd-MMMM-yyyy');
@@ -39,11 +45,7 @@ export class CompanyViewComponent implements OnInit {
       if(this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
       if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
 
-      if (this.userDoc['name']) {
-        this.referred_name = this.userDoc['name'];
-        this.referred_link = this.userDoc['user_id'];
-      }
-      else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
+      if (this.userDoc['name']) this.referred_link = this.userDoc['user_id'];
     }
 
     this.company_name = this.userDoc['first_name'].charAt(0).toUpperCase()+''+this.userDoc['first_name'].slice(1)+' '+this.userDoc['last_name'].charAt(0).toUpperCase()+''+this.userDoc['last_name'].slice(1)
