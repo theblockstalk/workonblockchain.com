@@ -11,10 +11,13 @@ declare var $:any;
 export class FooterComponent implements OnInit {
 
   is_cookie;
-  display_cookie = 0;
+  display_cookie = 0;year;
   constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
+    let today = new Date();
+    this.year = today.getFullYear();
+    console.log(this.year);
     this.is_cookie = this.cookieService.check('wob_cookie');
     if(this.is_cookie){
       this.display_cookie = 1;
