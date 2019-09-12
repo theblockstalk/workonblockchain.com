@@ -21,6 +21,37 @@
               <div class="mt-3">
                 <span><h2 class="text-capitalize">{{company_name}}</h2></span>
                 <app-c-formv-textarea [value]="userDoc['company_description']"></app-c-formv-textarea>
+                <span *ngIf="viewBy === 'admin'">
+				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: userDoc['_creator']._id , type : userDoc['_creator'].type}" >Show Chat With Candidates</a>
+				 		    </span>
+                <span *ngIf="viewBy === 'admin'">
+                  <form #approve_form="ngForm" >
+                    <input type="hidden" name="id" [ngModel]="userDoc['_creator']._id">
+								    <div class="my-3">
+                      <app-c-button-normal
+                        *ngIf = "(userDoc['_creator'].is_verify === 1 && userDoc['_creator'].is_approved === 0)"
+                        level="primary"
+                        buttonType="submit"
+                        label="Approve"
+                        (click) = "approveClick($event , approve_form)"
+                      ></app-c-button-normal>
+                      <app-c-button-normal
+                        *ngIf = "(userDoc['_creator'].is_verify === 1 && userDoc['_creator'].is_approved === 1)"
+                        level="primary"
+                        buttonType="submit"
+                        label="Disapprove"
+                        (click) = "approveClick($event , approve_form)"
+                      ></app-c-button-normal>
+                      <app-c-button-normal
+                        *ngIf = "userDoc['_creator'].is_verify === 0"
+                        level="primary"
+                        buttonType="submit"
+                        label="Approve"
+                        [disabled]="disabled"
+                      ></app-c-button-normal>
+                    </div>
+							    </form>
+                </span>
               </div>
             </div>
             <div class="col-md-5">

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import { createLocationsListStrings } from  '../../../services/object';
 import { DatePipe } from '@angular/common';
+import {NgForm} from '@angular/forms';
 
 declare var $: any;
 
@@ -17,6 +18,7 @@ export class CompanyViewComponent implements OnInit {
 
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
+  error;is_approve;disabled=true;
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
@@ -114,6 +116,45 @@ export class CompanyViewComponent implements OnInit {
 
   makeCurrencySalary(salary, currency){
     return (currency+' '+salary);
+  }
+
+  approveClick(event , approveForm: NgForm) {
+    this.error = '';
+    if(event.srcElement.innerHTML ==='Approve' ) this.is_approve = 1;
+    else if(event.srcElement.innerHTML ==='Disapprove') this.is_approve =0;
+
+    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+    .subscribe(
+      data =>
+      {
+        if(data['success'] === true){
+          if(event.srcElement.innerHTML ==='Approve' ) {
+            event.srcElement.innerHTML="Disapprove";
+          }
+          else if(event.srcElement.innerHTML ==='Disapprove') {
+            event.srcElement.innerHTML="Approve";
+          }
+        }
+        else if(data['is_approved'] === 0) {
+          if(event.srcElement.innerHTML ==='Approve' ) {
+            event.srcElement.innerHTML="Disapprove";
+          }
+          else if(event.srcElement.innerHTML ==='Disapprove') {
+            event.srcElement.innerHTML="Approve";
+          }
+        }
+      },
+      error =>
+      {
+        if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)  {
+          this.error = error['error']['message'];
+        }
+        if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+          this.error = error['error']['message'];
+        }
+        else this.error = "Something went wrong";
+      }
+    );
   }
 
 }
