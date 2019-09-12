@@ -1,12 +1,5 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../../user.service';
-import {User} from '../../Model/user';
-import {NgForm} from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-
-
 
 @Component({
   selector: 'app-admin-company-detail',
