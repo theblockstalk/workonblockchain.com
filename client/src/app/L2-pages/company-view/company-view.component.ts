@@ -18,7 +18,7 @@ export class CompanyViewComponent implements OnInit {
 
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
-  error;is_approve;disabled=true;
+  error;is_approve;disabled=true;referred_link;detail_link;
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
@@ -26,13 +26,20 @@ export class CompanyViewComponent implements OnInit {
     console.log(this.viewBy);
     console.log('in company view page level');
     console.log(this.userDoc);
+    this.referred_name = '';
     if(this.userDoc['company_logo'] != null ) this.imgPath =  this.userDoc['company_logo'];
-    if (this.userDoc['name']) this.referred_name = this.userDoc['name'];
-    else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
 
     if(this.viewBy === 'admin'){
       this.userDoc['_creator'].created_date = this.datePipe.transform(this.userDoc['_creator'].created_date, 'dd-MMMM-yyyy');
       this.userDoc['_creator'].dissable_account_timestamp = this.datePipe.transform(this.userDoc['_creator'].dissable_account_timestamp, 'short');
+      if(this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
+      if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
+
+      if (this.userDoc['name']) {
+        this.referred_name = this.userDoc['name'];
+        this.referred_link = this.userDoc['user_id'];
+      }
+      else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
     }
 
     this.company_name = this.userDoc['first_name'].charAt(0).toUpperCase()+''+this.userDoc['first_name'].slice(1)+' '+this.userDoc['last_name'].charAt(0).toUpperCase()+''+this.userDoc['last_name'].slice(1)

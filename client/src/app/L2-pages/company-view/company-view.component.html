@@ -56,6 +56,16 @@
             </div>
             <div class="col-md-5">
               <ul class="list-group list-group-flush float-right">
+                <li class="list-group-item" *ngIf="referred_name !== ''">
+                  <span ><i class="fas fa-user-tie mr-2"></i> </span>
+                  <ng-container *ngIf="referred_link ; else noLink">
+                    <span >Refered By: <a class="text-capitalize" [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+					 				</span>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span class="text-capitalize">Refered By: {{referred_name}}</span>
+                  </ng-template>
+                </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-building mr-2"></i></span>
                   <span><a [href]="userDoc['company_website']" target="_blank">{{userDoc['company_website']}}</a></span>
