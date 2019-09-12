@@ -1,18 +1,18 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const mongo = require('../helpers/mongo');
+const mongo = require('../../helpers/mongo');
 
 
 const server = require('../../../server');
-const users = require('../../model/mongoose/users');
-const zoho = require('../../controller/services/zoho/zoho');
+const users = require('../../../model/mongoose/users');
+const zoho = require('../../../controller/services/zoho/zoho');
 
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('zoho', function () {
+describe('zoho tokens', function () {
     this.timeout(7000);
 
     afterEach(async function () {
@@ -22,18 +22,18 @@ describe('zoho', function () {
 
     describe('using Zoho CRM API', function () {
 
-        it('should get a new refresh token', async function () {
+        it('should get a new auth token and call the API', async function () {
             await zoho.initialize();
             await zoho.generateAuthTokenfromRefreshToken();
 
-            let contact = await zoho.contacts.getMany({
+            const contacts = await zoho.contacts.getMany({
                 params: {
                     page: 0,
                     per_page: 1
                 }
             });
 
-            console.log(contact)
+            assert(contacts.length === 1, "No contacts founds");
         })
     })
 });

@@ -12,7 +12,7 @@ const config = {
     client_secret: "ac997b24a847c640c0a136b636714617247f97c9d8",
     redirect_url: "https://workonblockchain.com/test2callback",
     refresh_token: "1000.7213c235eef5884a2ebb530b5ea1047c.774f03692be9d98bec22c039b218ca41",
-    mysql_module: "../../../../controller/services/zoho/zohoTokens"
+    mysql_module: "../../../../controller/services/zoho/mysql_module"
 };
 
 module.exports.initialize = async function () {

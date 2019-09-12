@@ -22,10 +22,14 @@ module.exports.throwError = function throwError(message, code) {
     throw error;
 };
 
-process.on('unhandledRejection', (reason, p) => {
+process.on('unhandledRejection', function(error) {
     logger.error({
-        message: "Unhandled Promise Rejection: ", p,
-        reason: reason
+        message: "Unhandled Promise Rejection",
+        error: {
+            code: error.code,
+            message: error.message,
+            stack: error.stack
+        }
     })
-    // application specific logging, throwing an error, or other logic here
+    console.log(error);
 });
