@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     let today = new Date();
     this.year = today.getFullYear();
-    console.log(this.year);
     this.is_cookie = this.cookieService.check('wob_cookie');
     if(this.is_cookie){
       this.display_cookie = 1;
