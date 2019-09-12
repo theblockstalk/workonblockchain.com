@@ -42,8 +42,8 @@ export class CompanyViewComponent implements OnInit {
       this.date_created = copyObject(this.userDoc['_creator'].created_date);
       this.date_created = this.datePipe.transform(this.date_created, 'dd-MMMM-yyyy');
       this.userDoc['_creator'].dissable_account_timestamp = this.datePipe.transform(this.userDoc['_creator'].dissable_account_timestamp, 'short');
-      if(this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
-      if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
+      if(this.userDoc['user_type'] === 'company') this.detail_link = '/admins/company';
+      if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admins/talent';
 
       if (this.userDoc['name']) this.referred_link = this.userDoc['user_id'];
     }
