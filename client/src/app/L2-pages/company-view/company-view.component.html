@@ -88,7 +88,7 @@
                 </li>
               </ul>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1" *ngIf="viewBy === 'company'">
               <app-c-forme-edit-link-icon
                 routerUrl="edit_company_profile"
                 section="about_you"
@@ -195,7 +195,7 @@
                 Company info
               </h2>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
               <app-c-forme-edit-link-icon
                 routerUrl="edit_company_profile"
                 section="company_info"
@@ -233,7 +233,7 @@
                 Company administration
               </h2>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
               <app-c-forme-edit-link-icon
                 routerUrl="edit_company_profile"
                 section="information"
@@ -272,7 +272,7 @@
                 Saved searches
               </h2>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
               <app-c-forme-edit-link-icon
                 routerUrl="edit_company_profile"
                 section="prefrences"

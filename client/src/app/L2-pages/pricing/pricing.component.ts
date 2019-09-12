@@ -81,7 +81,7 @@ export class PricingComponent implements OnInit {
             if(this.showNavbar){
               if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
             }
-            else this.router.navigate(['/company_profile']);
+            else this.router.navigate(['/users/company']);
           }
         },
         error => {

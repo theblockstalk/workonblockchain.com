@@ -85,8 +85,8 @@
                       <img *ngIf="data.company_logo" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.company_logo}}" alt="">
 
                       <div class="ml-4">
-                        <a *ngIf="data._creator._id" [routerLink]="['/admin-company-detail']"  [queryParams]="{user: data._creator._id }"><h2 class="">{{data.company_name}} </h2></a>
-                        <a *ngIf="data.users && data.users[0]._id" [routerLink]="['/admin-company-detail']"  [queryParams]="{user: data.users[0]._id }"><h2 class="">{{data.company_name}} </h2></a>
+                        <a *ngIf="data._creator._id" routerLink="/admins/company/{{data._creator._id}}"><h2 class="">{{data.company_name}} </h2></a>
+                        <a *ngIf="data.users && data.users[0]._id" routerLink="/admins/company/{{data.users[0]._id}}"><h2 class="">{{data.company_name}} </h2></a>
 
                       </div>
 
