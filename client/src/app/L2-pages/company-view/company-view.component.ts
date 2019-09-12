@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { createLocationsListStrings } from  '../../../services/object';
+import { createLocationsListStrings,copyObject } from  '../../../services/object';
 import { DatePipe } from '@angular/common';
 import {NgForm} from '@angular/forms';
 
@@ -18,7 +18,8 @@ export class CompanyViewComponent implements OnInit {
 
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
-  error;is_approve;disabled=true;referred_link;detail_link;
+  error;is_approve;disabled=true;referred_link;detail_link;discount='';
+  company_phone;date_created;
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
@@ -27,10 +28,13 @@ export class CompanyViewComponent implements OnInit {
     console.log('in company view page level');
     console.log(this.userDoc);
     this.referred_name = '';
+    this.discount='';
+    if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
     if(this.userDoc['company_logo'] != null ) this.imgPath =  this.userDoc['company_logo'];
 
     if(this.viewBy === 'admin'){
-      this.userDoc['_creator'].created_date = this.datePipe.transform(this.userDoc['_creator'].created_date, 'dd-MMMM-yyyy');
+      this.date_created = copyObject(this.userDoc['_creator'].created_date);
+      this.date_created = this.datePipe.transform(this.date_created, 'dd-MMMM-yyyy');
       this.userDoc['_creator'].dissable_account_timestamp = this.datePipe.transform(this.userDoc['_creator'].dissable_account_timestamp, 'short');
       if(this.userDoc['user_type'] === 'company') this.detail_link = '/admin-company-detail';
       if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admin-candidate-detail';
@@ -44,21 +48,19 @@ export class CompanyViewComponent implements OnInit {
 
     this.company_name = this.userDoc['first_name'].charAt(0).toUpperCase()+''+this.userDoc['first_name'].slice(1)+' '+this.userDoc['last_name'].charAt(0).toUpperCase()+''+this.userDoc['last_name'].slice(1)
 
-    let company_phone = '';
+    this.company_phone = '';
     let country_code;
-    let contact_number = this.userDoc['company_phone'];
+    let contact_number = copyObject(this.userDoc['company_phone']);
     contact_number = contact_number.replace(/^00/, '+');
     contact_number = contact_number.split(" ");
     if(contact_number.length>1) {
       for (let i = 0; i < contact_number.length; i++) {
         if (i === 0) country_code = '('+contact_number[i]+')';
-        else company_phone = company_phone+''+contact_number[i];
+        else this.company_phone = this.company_phone+''+contact_number[i];
       }
-      company_phone = country_code+' '+company_phone
+      this.company_phone = country_code+' '+this.company_phone
     }
-    else company_phone = contact_number[0];
-
-    this.userDoc['company_phone'] = company_phone;
+    else this.company_phone = contact_number[0];
 
     if(this.viewBy === 'company'){
       this.authenticationService.get_page_content('Company popup message')

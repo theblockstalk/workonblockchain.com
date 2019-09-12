@@ -19,7 +19,7 @@
             <div class="col-md-6">
               <app-c-formv-image [image]="imgPath"></app-c-formv-image>
               <div class="mt-3">
-                <span><h2 class="text-capitalize">{{company_name}}</h2></span>
+                <span><h2 class="text-capitalize">{{userDoc['company_name']}}</h2></span>
                 <app-c-formv-textarea [value]="userDoc['company_description']"></app-c-formv-textarea>
                 <span *ngIf="viewBy === 'admin'">
 				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: userDoc['_creator']._id , type : userDoc['_creator'].type}" >Show Chat With Candidates</a>
@@ -84,7 +84,7 @@
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-phone mr-2"></i></span>
-                  <span class = "li_txt"> Phone: {{userDoc['company_phone']}}</span>
+                  <span class = "li_txt"> Phone: {{company_phone}}</span>
                 </li>
               </ul>
             </div>
@@ -109,7 +109,7 @@
 
           <div class="row mt-3">
             <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
-              <app-c-formv-text label="Account created date:" [value]="userDoc['_creator'].created_date"></app-c-formv-text>
+              <app-c-formv-text label="Account created date:" [value]="date_created"></app-c-formv-text>
             </div>
 
             <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
@@ -134,8 +134,8 @@
               <app-c-formv-text label="Account enabled/disabled timestamp:" [value]="userDoc['_creator'].dissable_account_timestamp"></app-c-formv-text>
             </div>
 
-            <div class="col-md-6 mb-3" *ngIf="userDoc['discount']">
-              <app-c-formv-text label="Discount:" [value]="userDoc['discount']"></app-c-formv-text>
+            <div class="col-md-6 mb-3" *ngIf="discount">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
             </div>
             <div class="col-md-6 mb-3" *ngIf="referred_name">
               <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
@@ -152,6 +152,37 @@
                 label="Change plan"
                 [routeUrl]="pricePlanLink"
               ></app-c-button-normal>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin' && userDoc['history'] && userDoc['history'].length > 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-history"></i> Account history </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor="let history of userDoc['history']; let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label *ngIf="history.pricing_plan" class="border border-success p-2 text-success rounded font-weight-normal">
+                  Plan: {{history.pricing_plan}}
+                </label>
+                <label *ngIf="history.discount" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  Discount: {{history.discount}}%
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <hr *ngIf="i < (userDoc['history'].length - 1)"  />
             </div>
           </div>
         </section>
