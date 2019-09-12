@@ -30,6 +30,6 @@ process.on('unhandledRejection', function(error) {
             message: error.message,
             stack: error.stack
         }
-    })
+    });
     console.log(error);
 });

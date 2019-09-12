@@ -7,6 +7,7 @@ const multer = require('../../../../controller/middleware/multer');
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../filterReturnData');
 const objects = require('../../../services/objects');
+const serviceSync = require('../../../services/serviceSync');
 
 module.exports.request = {
     type: 'patch',
@@ -615,7 +616,9 @@ module.exports.endpoint = async function (req, res) {
         updateObj.$unset =  unset;
     }
 
-    await users.update({_id: userId}, updateObj);
+    await users.updateOne({_id: userId}, updateObj);
+
+    // await serviceSync.pushToQueue("candidate", "PATCH", updatedDoc);
 
     const filterData = filterReturnData.removeSensativeData(userDoc);
     res.send(filterData);

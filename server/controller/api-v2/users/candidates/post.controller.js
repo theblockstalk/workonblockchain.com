@@ -10,6 +10,7 @@ const errors = require('../../../services/errors');
 const google = require('../../../services/google');
 const linkedin = require('../../../services/linkedin');
 const enumerations = require('../../../../model/enumerations');
+const serviceSync = require('../../../services/serviceSync');
 
 module.exports.request = {
     type: 'post',
@@ -151,6 +152,8 @@ module.exports.endpoint = async function (req, res) {
     else {
         verifyEmail.sendEmail(candidateUserCreated.email, candidateUserCreated.first_name, verifyEmailToken);
     }
+
+    await serviceSync.pushToQueue("candidate", "POST", candidateUserCreated);
 
     res.send({
         _id: candidateUserCreated._id,
