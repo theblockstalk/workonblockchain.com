@@ -112,7 +112,7 @@
                 <div class="checkbox">
                   <label>
                     <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                    I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
+                    I have read and accepted the <a  routerLink="/pages/privacy-notice" target="_blank" >Privacy notice</a>.
                   </label>
                 </div>
                 <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
