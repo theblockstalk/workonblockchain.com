@@ -42,7 +42,7 @@ body {
   position: absolute;
   right: 140px;
   top: 75px;
-  background-image: url('/assets/images/home/developer.svg');
+  background-image: url('../../assets/images/home/developer.svg');
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -109,7 +109,7 @@ body {
 }
 
 .center-msg {
-  background-image: url('/assets/images/home/class-pic.png');
+  background-image: url('../../assets/images/home/class-pic.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -144,7 +144,7 @@ body {
 }
 
 .telant {
-  background-image: url('/assets/images/home/talent-background.svg');
+  background-image: url('../../assets/images/home/talent-background.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -442,7 +442,7 @@ body {
   }
 
   .navbar-dark .navbar-toggler-icon {
-    background-image: url('/assets/images/navbar_imgs/logo/menu-icon.png') !important;
+    background-image: url('../../assets/images/navbar_imgs/logo/menu-icon.png') !important;
   }
 
   .telant p {
