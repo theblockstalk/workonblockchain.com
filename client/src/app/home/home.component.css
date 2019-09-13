@@ -382,12 +382,6 @@ body {
 
 
 @media (max-width: 768px){
-
-  .btn-signup{
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
   .introduction{
     padding: 10px 0px;
   }
@@ -439,10 +433,6 @@ body {
 
   .hd_main::after {
     height: 2px;
-  }
-
-  .navbar-dark .navbar-toggler-icon {
-    background-image: url('../../assets/images/navbar_imgs/logo/menu-icon.png') !important;
   }
 
   .telant p {

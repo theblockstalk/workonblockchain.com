@@ -28,3 +28,14 @@
   background-color: transparent !Important;
   border: 1px solid #000;
 }
+
+@media (max-width: 768px) {
+  .btn-signup{
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-dark .navbar-toggler-icon {
+    background-image: url('../../assets/images/navbar_imgs/logo/menu-icon.png') !important;
+  }
+}
