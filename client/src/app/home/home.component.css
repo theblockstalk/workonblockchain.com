@@ -340,7 +340,7 @@ body {
   }
   .newsletter-form span {
     line-height: 30px;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
   }
 }
 
@@ -381,7 +381,7 @@ body {
 }
 
 
-@media (max-width: 768px){
+@media (max-width: 767px){
   .introduction{
     padding: 10px 0px;
   }
