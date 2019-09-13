@@ -340,7 +340,7 @@ body {
   }
   .newsletter-form span {
     line-height: 30px;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
   }
 }
 
