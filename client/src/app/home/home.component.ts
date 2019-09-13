@@ -34,8 +34,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void
   {
     if (isPlatformBrowser(this.platformId)) {
-      $('.carousel').carousel({
-        interval: 3500
+      $(document).ready(function(){
+        $('.customer-logos').slick({
+          slidesToShow: 6,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 1500,
+          arrows: false,
+          dots: false,
+          pauseOnHover: false,
+          responsive: [{
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 4
+            }
+          }, {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 3
+            }
+          }, {
+            breakpoint: 520,
+            settings: {
+              slidesToShow: 1
+            }
+          }]
+        });
       });
     }
     window.scrollTo(0, 0);
