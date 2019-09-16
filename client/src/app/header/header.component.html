@@ -33,7 +33,7 @@
             <div class="dropdown-menu ml-3">
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="users/talent">Profile</a>
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="users/talent/edit">Edit profile</a>
-              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="company_profile">Profile</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="users/company">Profile</a>
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit profile</a>
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search candidate</a>
               <a class="dropdown-item" routerLink="account-settings">Settings</a>

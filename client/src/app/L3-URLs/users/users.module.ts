@@ -6,6 +6,7 @@ import { EditCandidateProfileComponent } from './talent/edit/edit-candidate-prof
 import { CandidateDetailsComponent } from './companies/candidate-details/candidate-details.component';
 import { CandidateProfileComponent } from './talent/view/candidate-profile/candidate-profile.component';
 import { ProfileResolver } from '../../incomplete-profile.resolver';
+import { ViewComponent } from './companies/view/view.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ProfileResolver } from '../../incomplete-profile.resolver';
   declarations: [
     EditCandidateProfileComponent,
     CandidateDetailsComponent,
-    CandidateProfileComponent
+    CandidateProfileComponent,
+    ViewComponent
   ],
   providers: [
     ProfileResolver
