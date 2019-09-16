@@ -47,6 +47,7 @@ module.exports.pullFromQueue = async function() {
 
         await syncQueue.deleteMany({_id: { $in: docIds}});
     } catch (error) {
+        console.log(error);
         const errorId = crypto.getRandomString(10);
         logger.error("Sync service error", {
             error: {
@@ -68,8 +69,8 @@ const toZohoContact = function (syncDoc) {
     const userDoc = syncDoc.user;
 
     let contact = {
-        Contact_Status: "converted",
-        Contact_Type: userDoc.type,
+        // Contact_Status: "converted",
+        // Contact_Type: userDoc.type,
         Email: userDoc.email,
         First_Name: userDoc.first_name,
         Last_Name: userDoc.last_name,
