@@ -68,7 +68,6 @@ export class PricingComponent implements OnInit {
         plan = this.free_plan.value;
         planSelected = this.free_plan.name;
       }
-      console.log(plan);
       if (isPlatformBrowser(this.platformId)) {
         $(".pr-col").removeClass("table-info");
         $("#div-" + plan).addClass("table-info");

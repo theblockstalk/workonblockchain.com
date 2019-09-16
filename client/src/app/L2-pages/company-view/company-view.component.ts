@@ -24,9 +24,6 @@ export class CompanyViewComponent implements OnInit {
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
-    console.log(this.viewBy);
-    console.log('in company view page level');
-    console.log(this.userDoc);
     this.referred_name = '';
     this.discount='';
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
@@ -131,10 +128,8 @@ export class CompanyViewComponent implements OnInit {
 
   approveClick(event , approveForm: NgForm) {
     this.error = '';
-    console.log(event.srcElement.innerText);
     if(event.srcElement.innerText === 'Approve' ) this.is_approve = 1;
     else if(event.srcElement.innerText === 'Disapprove') this.is_approve = 0;
-    console.log(this.is_approve);
 
     this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
     .subscribe(

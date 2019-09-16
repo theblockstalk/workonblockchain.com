@@ -13,14 +13,12 @@ export class ViewComponent implements OnInit {
   constructor(private authenticationService: UserService,private router: Router) { }
 
   ngOnInit() {
-    console.log('in ViewComponent for comp');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) this.router.navigate(['/login']);
     if(this.currentUser && this.currentUser.type === 'company'){
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
       .subscribe(
         data =>{
-          console.log(data);
           if(!data['terms_id']) this.router.navigate(['/company_wizard']);
           else if(!data['company_founded'] || !data['no_of_employees'] || !data['company_funded'] || !data['company_description'] )
             this.router.navigate(['/about_comp']);

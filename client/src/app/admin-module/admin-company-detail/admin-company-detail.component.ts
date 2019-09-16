@@ -13,7 +13,6 @@ export class AdminCompanyDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
-      console.log(this.user_id);
       this.router.navigate(['/admins/company/' + this.user_id]);
     });
   }

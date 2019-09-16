@@ -18,7 +18,6 @@ export class CompanyViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('in CompanyViewComponent');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
