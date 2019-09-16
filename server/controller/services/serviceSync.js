@@ -1,5 +1,6 @@
 const syncQueue = require('../../model/mongoose/sync_queue');
 const logger = require('./logger');
+const objects = require('./objects');
 const errors = require('./errors');
 const crypto = require('./crypto');
 const zoho = require('./zoho/zoho');
@@ -37,15 +38,39 @@ module.exports.pullFromQueue = async function() {
         }
 
         const input = {
-            data: syncQueues.zoho.contacts
+            body: {
+                data: syncQueues.zoho.contacts
+            },
+            duplicate_check_fields: [ "Email" ]
         };
-        const res = await zoho.contacts.postMany(input);
+        const res = await zoho.contacts.upsert(input);
+
+        let docsToDelete = [], i = 0;
+        for (let recordData of res) {
+            if (recordData.status === "error") {
+                const errorId = crypto.getRandomString(10);
+                let message = "Zoho CRM record message: " + recordData.message;
+                if (!objects.isEmpty(recordData.details)) message = message + ", details: " + JSON.stringify(recordData.details);
+                logger.error(message, {
+                    error_id: errorId,
+                    code: recordData.code
+                });
+                await syncQueue.updateOne({ _id: docIds[i] }, {
+                    $set: {
+                        status: "error",
+                        error_id: errorId
+                    }
+                });
+            } else {
+                docsToDelete.push(docIds[i]);
+            }
+            i++;
+        }
+
+        await syncQueue.deleteMany({_id: { $in: docIds}});
 
         // sync to amplitude
         // sync to sendgrid?
-
-
-        await syncQueue.deleteMany({_id: { $in: docIds}});
     } catch (error) {
         console.log(error);
         const errorId = crypto.getRandomString(10);
@@ -69,15 +94,65 @@ const toZohoContact = function (syncDoc) {
     const userDoc = syncDoc.user;
 
     let contact = {
-        // Contact_Status: "converted",
-        // Contact_Type: userDoc.type,
+        Contact_Status: "converted",
+        Contact_Type: userDoc.type,
         Email: userDoc.email,
         First_Name: userDoc.first_name,
         Last_Name: userDoc.last_name,
+        Synced_from_server: true,
+        ID: userDoc._id.toString(),
+        Email_verified: userDoc.is_verify === 1,
+        Account_disabled: userDoc.disable_account
     };
 
-    let companyDoc;
-    if (syncDoc.company) companyDoc = syncDoc.company;
+    if (userDoc.session_started) contact.Last_login = convertZohoDate(userDoc.session_started);
+    if (userDoc.nationality) contact.Nationalities = userDoc.nationality.map((nat) => { return nat + "\n"});
+    if (userDoc.first_approved_date) contact.First_approved = convertZohoDate(userDoc.first_approved_date);
+    if (userDoc.marketing_emails) contact.Marketing_emails = userDoc.marketing_emails;
+
+    if (userDoc.type === "candidate" && userDoc.candidate) {
+        const candidateDoc = userDoc.candidate;
+        contact.Candidate_status = candidateDoc.latest_status.status;
+        contact.Candidate_status_last_updated = convertZohoDate(candidateDoc.latest_status.timestamp);
+        contact.Created = convertZohoDate(candidateDoc.history[candidateDoc.history.length-1].timestamp);
+
+        if (candidateDoc.base_country) contact.Mailing_country = candidateDoc.base_country;
+        if (candidateDoc.base_city) contact.Mailing_city = candidateDoc.base_city;
+        if (candidateDoc.job_activity_status) {
+            const employed = candidateDoc.job_activity_status.currently_employed;
+            if (employed) contact.Currently_employed = employed === "yes";
+        }
+        if (candidateDoc.programming_languages) contact.Programming_languages = candidateDoc.programming_languages.map( (lan) => {
+            return lan.language + "\n";
+        })
+        if (candidateDoc.description) contact.Bio = candidateDoc.description;
+    }
+
+    // let companyDoc;
+    // if (syncDoc.company) companyDoc = syncDoc.company;
 
     return contact;
+};
+
+const convertZohoDate = function(date) {
+    // TODO: convert dates based on current user time zone...
+    if (date) return toISOString(date);
+    // if (date) return date.toISOString();
+}
+
+const toISOString = function(date) {
+    function pad(number) {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
+    }
+
+    return date.getUTCFullYear() +
+        '-' + pad(date.getUTCMonth() + 1) +
+        '-' + pad(date.getUTCDate()) +
+        'T' + pad(date.getUTCHours()) +
+        ':' + pad(date.getUTCMinutes()) +
+        ':' + pad(date.getUTCSeconds()) +
+        '+00:00';
 };

@@ -14,6 +14,12 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
+const testContact = {
+    email: "testingemail@workonblockchain.com",
+    first_name: "PART OF AUTOMATIC UNIT TESTS",
+    last_name: "WILL DELETE AUTOMATICALLY"
+};
+
 describe('service syncronization', function () {
     beforeEach(async function() {
         await zoho.initialize();
@@ -21,23 +27,31 @@ describe('service syncronization', function () {
     })
 
     afterEach(async function () {
+        console.log('removing test contact');
+        const res = await zoho.contacts.search({
+            params: {
+                email: testContact.email
+            }
+        });
+        await zoho.contacts.deleteOne({
+            id: res[0].id
+        });
         console.log('dropping database');
         await mongo.drop();
     })
 
     describe('sync different documents', function () {
 
-        it('should sync for a POST candidate', async function () {
+        it('should sync a new candidate', async function () {
             const candidate = docGenerator.candidate();
 
             await candidateHelper.signupCandidate(candidate);
-            // const userDoc = await users.findOneByEmail(candidate.email);
 
             await syncQueue.updateOne({"user.email": candidate.email}, {
                 $set: {
-                    "user.email": "testingemail@workonblockchain.com",
-                    "user.first_name": "PART OF AUTOMATIC UNIT TESTS",
-                    "user.last_name": "WILL DELETE AUTOMATICALLY"
+                    "user.email": testContact.email,
+                    "user.first_name": testContact.first_name,
+                    "user.last_name": testContact.last_name
                 }
             });
             await serviceSync.pullFromQueue();

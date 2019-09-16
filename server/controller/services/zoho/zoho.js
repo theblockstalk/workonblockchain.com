@@ -38,6 +38,7 @@ const zohoAPIparse = async function (module, type, input) {
     input.module = module;
     const response = await zcrm.API.MODULES[type](input);
     const body = JSON.parse(response.body);
+
     if (body.status === "error") {
         let err = new Error();
         err.code = body.code;
