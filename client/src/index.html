@@ -38,11 +38,13 @@
   <link rel = "stylesheet" href = "./assets/css/footer.css"/>
   <link rel = "stylesheet" href = "./assets/css/switch.css"/>
   <link rel = "stylesheet" href = "./assets/css/bootstrap-social.css"/>
+  <link rel="stylesheet" href="./assets/fonts/font-awesome/css/all.css"/>
+  <link rel="stylesheet" href="./assets/css/slick-slider.css"/>
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="./assets/js/bootstrap.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Quicksand" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/bootstrap-select.css" />
@@ -61,6 +63,7 @@
 <!-- jqeury and js links-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
 
   <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -100,14 +103,44 @@
       }
     };
 
-    $("#myCarousel1").carousel();
-
     $(function() {
       $(document).click(function (event) {
         $('.navbar-collapse').collapse('hide');
       });
     });
 
+  </script>
+
+  <script>
+    'use strict';
+    $(document).ready(function(){
+      'use strict';
+      $('.customer-logos').slick({
+        slidesToShow: 6,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 1500,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [{
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 4
+          }
+        }, {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 3
+          }
+        }, {
+          breakpoint: 520,
+          settings: {
+            slidesToShow: 1
+          }
+        }]
+      });
+    });
   </script>
 </body>
 </html>

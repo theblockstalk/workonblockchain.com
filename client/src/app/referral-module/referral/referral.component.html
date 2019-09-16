@@ -1,5 +1,5 @@
 <ng-container *ngIf="show_refreal == 10 ;else no_show">
-  <section class="wob-bg-primary2 py-5 mt-5">
+  <section class="wob-bg-primary2 py-5">
     <div class = "container pt-2">
       <div class="row">
         <div class="col"></div>
@@ -74,7 +74,7 @@
   </section>
 </ng-container>
 <ng-template #no_show>
-  <section class="wob-bg-primary2 py-5 mt-5">
+  <section class="wob-bg-primary2 py-5">
     <div class = "container pt-2">
       <div class="row">
         <div class="col"></div>
@@ -112,7 +112,7 @@
                 <div class="checkbox">
                   <label>
                     <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                    I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
+                    I have read and accepted the <a  routerLink="/pages/privacy-notice" target="_blank" >Privacy notice</a>.
                   </label>
                 </div>
                 <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
