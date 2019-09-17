@@ -16,6 +16,7 @@ import {PagerService} from '../pager.service';
 import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
 import { CompaniesLandingPageComponent } from './companies-landing-page/companies-landing-page.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { GDPRComplianceComponent } from './gdpr-compliance/gdpr-compliance.component';
 
 import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular/material';
 
@@ -43,7 +44,8 @@ import { MatInputModule, MatSelectModule , MatAutocompleteModule} from '@angular
     PreferencesComponent,
     CompanyVerifyEmailComponent,
     CompaniesLandingPageComponent,
-    CandidateDetailComponent
+    CandidateDetailComponent,
+    GDPRComplianceComponent
   ],
   providers : [PagerService]
 })

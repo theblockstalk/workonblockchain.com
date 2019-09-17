@@ -44,3 +44,5 @@ module.exports.leavingCurrentEmployReasons = ['Higher salary', 'More responsibil
 module.exports.hearAboutWob = ['Social media', 'Attended a WOB event', 'Contacted by WOB', 'Word of mouth', 'Internet search', 'Other'];
 
 module.exports.pricingPlans = ["Starter", "Essential", "Unlimited", "Free till you hire"];
+
+module.exports.euCountries = ["Andorra","Argentina","Austria","Azores","Belgium","Bulgaria","Canary Islands","Channel Isles","Croatia","Cyprus","Czech Republic", "Denmark","England","Estonia","Faroe Islands","Finland","France","French Guiana","Germany","Greece","Guadeloupe","Guernsey","Hungary", "Ireland","Isle of Man","Israel","Italy","Japan","Jersey","Latvia","Lithuania","Luxembourg","Madeira","Malta","Martinique","Mayotte", "Netherlands","New Zealand","Northern Ireland","Poland","Portugal","Reunion","Romania","Saint Martin","Scotland","Slovakia","Slovenia", "Spain","Sweden","Switzerland","United Kingdom","Uruguay","Wales"];
