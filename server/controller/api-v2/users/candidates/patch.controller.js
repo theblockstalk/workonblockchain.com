@@ -617,9 +617,10 @@ module.exports.endpoint = async function (req, res) {
     }
 
     await users.updateOne({_id: userId}, updateObj);
+    const updatedUserDoc = await users.findOne({_id: userId});
 
-    // await serviceSync.pushToQueue("candidate", "PATCH", updatedDoc);
+    await serviceSync.pushToQueue("PATCH", updatedUserDoc);
 
-    const filterData = filterReturnData.removeSensativeData(userDoc);
+    const filterData = filterReturnData.removeSensativeData(updatedUserDoc);
     res.send(filterData);
 }

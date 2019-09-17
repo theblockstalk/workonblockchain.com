@@ -60,16 +60,15 @@ describe('service syncronization', function () {
 
             await serviceSync.pullFromQueue();
 
-            console.log('pulled')
             const userDoc = await users.findOneByEmail(candidate.email);
-            console.log(userDoc)
             const zohoContact = await zoho.contacts.search({
                 params: {
                     email: syncTestEmail
                 }
             });
-            console.log(zohoContact)
-            // userDoc.first_name.should.equal(zohoContact.)
+            zohoContact[0].First_Name.should.be(userDoc.first_name);
+            zohoContact[0].Candidate_status.should.be(userDoc.candidate.latest_status.status);
+            zohoContact[0].Last_Name.should.be(userDoc.last_name);
         })
 
         it('should sync a patched candidate', async function () {
@@ -83,14 +82,19 @@ describe('service syncronization', function () {
 
             await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
 
-            await syncQueue.updateOne({"user.email": candidate.email}, {
-                $set: {
-                    "user.email": testContact.email,
-                    "user.first_name": testContact.first_name,
-                    "user.last_name": testContact.last_name
+            await serviceSync.pullFromQueue();
+
+            let syncDocCount = await syncQueue.count({status: 'pending'});
+            expect(syncDocCount).to.be(3);
+            const userDoc = await users.findOneByEmail(candidate.email);
+            const zohoContact = await zoho.contacts.search({
+                params: {
+                    email: syncTestEmail
                 }
             });
-            await serviceSync.pullFromQueue();
+            zohoContact[0].First_Name.should.be(userDoc.first_name);
+            zohoContact[0].Candidate_status.should.be(userDoc.candidate.latest_status.status);
+            zohoContact[0].Last_Name.should.be(userDoc.last_name);
         })
     })
 })
