@@ -11,6 +11,7 @@ export class GDPRComplianceComponent implements OnInit {
 
   currentUser;terms_active_class;about_active_class;pref_active_class;
   price_plan_active_class;gdpr_compliance_active_class;
+  wizardLinks = [];
 
   constructor( private router: Router, private authenticationService: UserService) { }
 
@@ -25,13 +26,48 @@ export class GDPRComplianceComponent implements OnInit {
           data =>
           {
             console.log(data);
-            if(data['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
-            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
-            if (data['saved_searches'] && data['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
-            if (data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
-            if(data['dta_doc_link']){
-              this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+            if(data['terms_id']) {
+              let termsLink = {
+                'activeClass': true,
+                'routeLink' : '/company_wizard',
+                'linkText' : 'Summary of T&Cs'
+              };
+              this.wizardLinks.push(termsLink);
             }
+            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description']) {
+              let aboutCompLink = {
+                'activeClass': true,
+                'routeLink' : '/about_comp',
+                'linkText' : 'About the company'
+              };
+              this.wizardLinks.push(aboutCompLink);
+            }
+            if (data['saved_searches'] && data['saved_searches'].length > 0) {
+              let preferencesLink = {
+                'activeClass': true,
+                'routeLink' : '/preferences',
+                'linkText' : 'Talent requirements'
+              };
+              this.wizardLinks.push(preferencesLink);
+            }
+            if (data['pricing_plan']) {
+              let pricingLink = {
+                'activeClass': true,
+                'routeLink' : '/users/company/wizard/pricing',
+                'linkText' : 'Price plan'
+              };
+              this.wizardLinks.push(pricingLink);
+            }
+            let gdprLink = {
+              'activeClass': false,
+              'routeLink' : '/gdpr-compliance',
+              'linkText' : 'GDPR compliance'
+            };
+            if(data['dta_doc_link']){
+              gdprLink.activeClass = true;
+              this.wizardLinks.push(gdprLink);
+            }
+            else this.wizardLinks.push(gdprLink);
           },
           error =>
           {
