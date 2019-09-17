@@ -16,7 +16,6 @@ module.exports.up = async function() {
         totalProcessed++;
         const employerDoc = await companies.findOne({_creator : userDoc._id, company_country: { $exists: true}});
         if(employerDoc){
-            console.log('employerDoc: ' + employerDoc.company_country);
             if (enums.euCountries.indexOf(employerDoc.company_country) > -1) {
                 //In the array!
                 logger.debug('EU country');

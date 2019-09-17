@@ -1,3 +1,37 @@
-<p>
-  gdpr-compliance works!
-</p>
+<section class="wob-bg-primary2 pb-5 pt-3">
+  <div class="container">
+    <div class="row" *ngIf="viewBy === 'company' && showNavbar">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about_comp" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/preferences" class="nav-link">
+              <i class="{{pref_active_class}}"></i>
+              Talent requirements
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/pricing" class="nav-link">
+              <i class="{{price_plan_active_class}}"></i>
+              Price plan
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row p-4 border bg-white">
+    </div>
+  </div>
+</section>

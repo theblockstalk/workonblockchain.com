@@ -96,6 +96,13 @@ module.exports.endpoint = async function (req, res) {
             referred_email : queryBody.referred_email,
             is_approved: 1
         };
+        if (enumerations.euCountries.indexOf(queryBody.company_country) > -1) {
+            //In the array! EU country Approve it
+        } else {
+            //Not EU country
+            newCompanyDoc.is_approved = 0;
+        }
+
         const companyUserCreated =  await Users.insert(newCompanyDoc);
         if(companyUserCreated)
         {
