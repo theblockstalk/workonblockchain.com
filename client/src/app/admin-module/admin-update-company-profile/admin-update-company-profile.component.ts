@@ -593,7 +593,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/admin-company-detail'], { queryParams: { user: this.company_id } });
+              this.router.navigate(['/admins/company/'+ this.company_id]);
             }
 
           },

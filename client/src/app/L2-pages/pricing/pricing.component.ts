@@ -68,7 +68,6 @@ export class PricingComponent implements OnInit {
         plan = this.free_plan.value;
         planSelected = this.free_plan.name;
       }
-      console.log(plan);
       if (isPlatformBrowser(this.platformId)) {
         $(".pr-col").removeClass("table-info");
         $("#div-" + plan).addClass("table-info");
@@ -81,7 +80,7 @@ export class PricingComponent implements OnInit {
             if(this.showNavbar){
               if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
             }
-            else this.router.navigate(['/company_profile']);
+            else this.router.navigate(['/users/company']);
           }
         },
         error => {

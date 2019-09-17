@@ -6,11 +6,13 @@ import { CandidateProfileComponent } from './talent/view/candidate-profile/candi
 import { ProfileResolver } from '../../incomplete-profile.resolver';
 import { VerifyEmailMiddleware } from '../../auth-module/verify-email-middleware';
 import { EditCandidateProfileComponent } from './talent/edit/edit-candidate-profile.component';
+import { ViewComponent } from './companies/view/view.component';
 
 const routes: Routes = [
   { path: urls.users_talent_edit , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
   { path: urls.company_talent_view, component: CandidateDetailsComponent, canActivate : [VerifyEmailMiddleware]},
   { path: urls.candidate_talent_view, component: CandidateProfileComponent, canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
+  { path: urls.company_profile_view, component: ViewComponent, canActivate : [VerifyEmailMiddleware] }
 ];
 
 @NgModule({
