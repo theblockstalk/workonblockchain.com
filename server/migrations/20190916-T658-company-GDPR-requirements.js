@@ -22,9 +22,8 @@ module.exports.up = async function() {
             } else {
                 //Not in the array
                 set['is_approved'] = 0;
-                logger.debug('set object: ', set);
                 await users.update({_id: userDoc._id}, {$set: set});
-                logger.debug('user doc id: ' + userDoc._id);
+                logger.debug('user doc id: ' + userDoc._id, {$set: set});
                 totalModified++;
             }
         }

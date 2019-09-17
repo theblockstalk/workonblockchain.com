@@ -10,7 +10,7 @@ import {UserService} from '../../user.service';
 export class GDPRComplianceComponent implements OnInit {
 
   currentUser;terms_active_class;about_active_class;pref_active_class;
-  price_plan_active_class;
+  price_plan_active_class;gdpr_compliance_active_class;
 
   constructor( private router: Router, private authenticationService: UserService) { }
 
@@ -24,11 +24,14 @@ export class GDPRComplianceComponent implements OnInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             if(data['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
             if (data['saved_searches'] && data['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
             if (data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
-
+            if(data['dta_doc_link']){
+              this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+            }
           },
           error =>
           {
@@ -46,6 +49,10 @@ export class GDPRComplianceComponent implements OnInit {
           });
     }
     else this.router.navigate(['/not_found']);
+  }
+
+  gdprCompliance(){
+    console.log('submitted');
   }
 
 }

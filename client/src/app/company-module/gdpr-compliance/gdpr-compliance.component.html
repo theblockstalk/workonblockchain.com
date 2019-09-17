@@ -1,6 +1,6 @@
 <section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
-    <div class="row" *ngIf="viewBy === 'company' && showNavbar">
+    <div class="row">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard mb-3">
           <li class="nav-item">
@@ -22,9 +22,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="/pricing" class="nav-link">
+            <a routerLink="/users/company/wizard/pricing" class="nav-link">
               <i class="{{price_plan_active_class}}"></i>
               Price plan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/gdpr-compliance" class="nav-link">
+              <i class="{{gdpr_compliance_active_class}}"></i>
+              GDPR compliance
             </a>
           </li>
         </ul>
@@ -32,6 +38,57 @@
     </div>
 
     <div class="row p-4 border bg-white">
+      <div class="row">
+        <div class="col-md-12">
+          <h3><i class="fas fa-gavel fa-rotate-270"></i> Data protection</h3>
+          <p>
+            Your company is not registered within an EU approved zone so we need to check a few
+            things to ensure our compliance with the General Data Protection Regulation(GDPR).
+            This exists to protect the data of the people that use our platform.
+          </p>
+          <form  (submit)="gdprCompliance()">
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company a commercial Canadian company (not a non-for profit or other
+                    non-commercial company)?
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="commercial_canada_check" value="true" />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" name="commercial_canada_check" value="false"/>
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company registered with the US Privacy Shield framework?
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class = "text-right mt-3">
+                    <a routerLink="/users/company/wizard/pricing" class = "btn btn-warning text-white">Back</a>
+                    <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </section>

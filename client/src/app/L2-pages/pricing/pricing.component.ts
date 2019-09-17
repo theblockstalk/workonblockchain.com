@@ -77,8 +77,14 @@ export class PricingComponent implements OnInit {
       .subscribe(
         data =>{
           if(data) {
+            console.log(data);
             if(this.showNavbar){
-              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              if(data['_creator'].is_approved === 1){
+                if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              }
+              else {
+                this.router.navigate(['/gdpr-compliance']);
+              }
             }
             else this.router.navigate(['/users/company']);
           }

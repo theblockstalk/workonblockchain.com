@@ -24,7 +24,8 @@ export class TermsWizardComponent implements OnInit {
   preference;
   pref_active_class;
   pref_disable;
-  privacy_id;price_plan_active_class;
+  privacy_id;price_plan_active_class;gdpr_compliance_active_class;
+  gdpr_disable;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -37,6 +38,7 @@ export class TermsWizardComponent implements OnInit {
     this.pref_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+    this.gdpr_disable = "disabled";
     if(!this.currentUser)
     {
       this.router.navigate(['/login']);
@@ -67,6 +69,7 @@ export class TermsWizardComponent implements OnInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             this.marketing_emails = data['marketing_emails'];
             if(data['terms_id'])
             {
@@ -96,6 +99,10 @@ export class TermsWizardComponent implements OnInit {
             }
             if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
+            if(data['dta_doc_link']){
+              this.gdpr_disable = '';
+              this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+            }
           },
           error =>
           {
