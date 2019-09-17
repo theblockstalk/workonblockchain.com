@@ -7,7 +7,8 @@ const docGenerator = require('../helpers/docGenerator-v2');
 const candidateHelper = require('../api-v2/users/candidates/candidateHelpers');
 const syncQueue = require('../../model/mongoose/sync_queue');
 const users = require('../../model/mongoose/users');
-const serviceSync = require('../../controller/services/serviceSync')
+const serviceSync = require('../../controller/services/serviceSync');
+const sendgrid = require('../../controller/services/email/sendGrid');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -19,6 +20,7 @@ const testContact = {
     first_name: "PART OF AUTOMATIC UNIT TESTS",
     last_name: "WILL DELETE AUTOMATICALLY"
 };
+const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
 
 describe('service syncronization', function () {
     beforeEach(async function() {
@@ -30,7 +32,7 @@ describe('service syncronization', function () {
         console.log('removing test contact');
         const res = await zoho.contacts.search({
             params: {
-                email: testContact.email
+                email: syncTestEmail
             }
         });
         await zoho.contacts.deleteOne({
@@ -43,9 +45,43 @@ describe('service syncronization', function () {
     describe('sync different documents', function () {
 
         it('should sync a new candidate', async function () {
+            const zohoContact2 = await zoho.contacts.search({
+                params: {
+                    email: testContact.email
+                }
+            });
+
             const candidate = docGenerator.candidate();
+            candidate.email = testContact.email;
+            candidate.first_name = testContact.first_name;
+            candidate.last_name = testContact.last_name;
 
             await candidateHelper.signupCandidate(candidate);
+
+            await serviceSync.pullFromQueue();
+
+            console.log('pulled')
+            const userDoc = await users.findOneByEmail(candidate.email);
+            console.log(userDoc)
+            const zohoContact = await zoho.contacts.search({
+                params: {
+                    email: syncTestEmail
+                }
+            });
+            console.log(zohoContact)
+            // userDoc.first_name.should.equal(zohoContact.)
+        })
+
+        it('should sync a patched candidate', async function () {
+            const candidate = docGenerator.candidate();
+            const profileData = docGenerator.candidateProfile();
+
+            await candidateHelper.candidateProfile(candidate, profileData);
+
+            let  candidateUserDoc = await users.findOne({email: candidate.email});
+            const candidateEditProfileData = docGenerator.candidateProfileUpdate();
+
+            await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
 
             await syncQueue.updateOne({"user.email": candidate.email}, {
                 $set: {

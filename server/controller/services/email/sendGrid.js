@@ -55,28 +55,36 @@ async function apiRequest(request) {
     }
 }
 
-module.exports.addEmailEnvironment = function addEmailEnvironment(email) {
-    const at = email.search("@");
-    const plus = email.search(/\+/g); // "+" symbol
-    let name;
-    if (plus !== -1) {
-        name = email.substring(0,at) + "_" + environmentName;
+module.exports.addEmailEnvironment = function (email) {
+    if (settings.ENVIRONMENT !== "production") {
+        const at = email.search("@");
+        const plus = email.search(/\+/g); // "+" symbol
+        let name;
+        if (plus !== -1) {
+            name = email.substring(0,at) + "_" + environmentName;
+        } else {
+            name = email.substring(0,at) + "+" + environmentName;
+        }
+        const domain = email.substring(at+1);
+        return name + "@" + domain;
     } else {
-        name = email.substring(0,at) + "+" + environmentName;
+        return email;
     }
-    const domain = email.substring(at+1);
-    return name + "@" + domain;
 };
 
-module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
-    const at = email.search("@");
-    const env = email.search(environmentName);
-    const name = email.substring(0, env - 1);
-    const domain = email.substring(env + environmentName.length + 1);
-    return name + "@" + domain;
+module.exports.removeEmailEnvironment = function (email) {
+    if (settings.ENVIRONMENT !== "production") {
+        const at = email.search("@");
+        const env = email.search(environmentName);
+        const name = email.substring(0, env - 1);
+        const domain = email.substring(env + environmentName.length + 1);
+        return name + "@" + domain;
+    } else {
+        return email;
+    }
 };
 
-module.exports.getList = async function getList(listName) {
+module.exports.getList = async function (listName) {
     let lists = await getAllLists();
 
     for (const list of lists.lists) {

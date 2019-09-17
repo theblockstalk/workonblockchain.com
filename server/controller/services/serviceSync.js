@@ -4,6 +4,8 @@ const objects = require('./objects');
 const errors = require('./errors');
 const crypto = require('./crypto');
 const zoho = require('./zoho/zoho');
+const sendgrid = require('./email/sendGrid');
+const settings = require('../../settings');
 
 module.exports.pushToQueue = async function(operation, userDoc, companyDoc) {
     let syncDoc = {
@@ -33,6 +35,7 @@ module.exports.pullFromQueue = async function() {
 
     try {
         for (let syncDoc of syncDocs) {
+            syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
             const zohoContact = toZohoContact(syncDoc);
             syncQueues.zoho.contacts.push(zohoContact);
         }
@@ -95,20 +98,22 @@ const toZohoContact = function (syncDoc) {
 
     let contact = {
         Contact_Status: "converted",
-        Contact_Type: userDoc.type,
+        Contact_type: [userDoc.type],
         Email: userDoc.email,
         First_Name: userDoc.first_name,
         Last_Name: userDoc.last_name,
         Synced_from_server: true,
-        ID: userDoc._id.toString(),
+        Platform_ID: userDoc._id.toString(),
         Email_verified: userDoc.is_verify === 1,
-        Account_disabled: userDoc.disable_account
+        Account_disabled: userDoc.disable_account,
+        Environment: settings.ENVIRONMENT,
     };
 
     if (userDoc.session_started) contact.Last_login = convertZohoDate(userDoc.session_started);
     if (userDoc.nationality) contact.Nationalities = userDoc.nationality.map((nat) => { return nat + "\n"});
     if (userDoc.first_approved_date) contact.First_approved = convertZohoDate(userDoc.first_approved_date);
     if (userDoc.marketing_emails) contact.Marketing_emails = userDoc.marketing_emails;
+    if (userDoc.contact_number) contact.Phone = userDoc.contact_number;
 
     if (userDoc.type === "candidate" && userDoc.candidate) {
         const candidateDoc = userDoc.candidate;
