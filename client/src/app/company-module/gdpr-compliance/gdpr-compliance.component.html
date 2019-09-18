@@ -3,38 +3,6 @@
     <div class="row">
       <div class="col-md-12">
         <app-c-nav-wizard [items]="wizardLinks"></app-c-nav-wizard>
-        <!--<ul class="nav justify-content-center wizard mb-3">
-          <li class="nav-item">
-            <a routerLink="/company_wizard" class="nav-link">
-              <i class="{{terms_active_class}}"></i>
-              Summary of T&Cs
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/about_comp" class="nav-link">
-              <i class="{{about_active_class}}"></i>
-              About the company
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/preferences" class="nav-link">
-              <i class="{{pref_active_class}}"></i>
-              Talent requirements
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/users/company/wizard/pricing" class="nav-link">
-              <i class="{{price_plan_active_class}}"></i>
-              Price plan
-            </a>
-          </li>
-          <li class="nav-item">
-            <a routerLink="/gdpr-compliance" class="nav-link">
-              <i class="{{gdpr_compliance_active_class}}"></i>
-              GDPR compliance
-            </a>
-          </li>
-        </ul>-->
       </div>
     </div>
 
@@ -48,7 +16,7 @@
             This exists to protect the data of the people that use our platform.
           </p>
           <form  (submit)="gdprCompliance()">
-            <div class="row mt-3">
+            <div class="row mt-3" *ngIf="companyDoc['company_country'] === 'Canada'">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>
@@ -57,23 +25,52 @@
                   </label>
                   <br>
                   <label>
-                    <input type="radio" name="commercial_canada_check" value="true" />
+                    <input type="radio" [(ngModel)]="commercial_canada" name="commercial_canada_check" value="true" />
                     Yes
                   </label><br>
                   <label>
-                    <input type="radio" name="commercial_canada_check" value="false"/>
+                    <input type="radio" [(ngModel)]="commercial_canada" name="commercial_canada_check" value="false"/>
                     No
                   </label>
                 </div>
               </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3" *ngIf="companyDoc['company_country'] === 'United States'">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>
                     Is your company registered with the US Privacy Shield framework?
                   </label>
+                  <br>
+                  <label>
+                    <input type="radio" [(ngModel)]="us_privacy_shield" name="us_privacy_shield_check" value="true" />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" [(ngModel)]="us_privacy_shield" name="us_privacy_shield_check" value="false"/>
+                    No
+                  </label>
                 </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <p>
+                  You are required to sign the Data Transfer Agreement (DTA) with us to ensure our
+                  compliance with the General Data Protection Regulation (GDPR). This exists to
+                  protect the data of the people that use our platform.
+                </p>
+                <p class="mt-4">
+                  Please download the pdf document below, fill out all parts highlighted in
+                  yellow and then upload it again.
+                </p>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <a href="assets/DTA_doc/Data-Transfer-Agreement-(unmodified).pdf" target="_blank">Data transfer agreement.pdf</a>
               </div>
             </div>
 

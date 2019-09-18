@@ -9,9 +9,8 @@ import {UserService} from '../../user.service';
 })
 export class GDPRComplianceComponent implements OnInit {
 
-  currentUser;terms_active_class;about_active_class;pref_active_class;
-  price_plan_active_class;gdpr_compliance_active_class;
-  wizardLinks = [];
+  currentUser;about_active_class;wizardLinks = [];us_privacy_shield;
+  commercial_canada;companyDoc;
 
   constructor( private router: Router, private authenticationService: UserService) { }
 
@@ -25,7 +24,8 @@ export class GDPRComplianceComponent implements OnInit {
         .subscribe(
           data =>
           {
-            console.log(data);
+            this.companyDoc = data;
+            console.log(this.companyDoc);
             if(data['terms_id']) {
               let termsLink = {
                 'activeClass': true,
@@ -89,6 +89,8 @@ export class GDPRComplianceComponent implements OnInit {
 
   gdprCompliance(){
     console.log('submitted');
+    console.log(this.commercial_canada);
+    console.log(this.us_privacy_shield);
   }
 
 }
