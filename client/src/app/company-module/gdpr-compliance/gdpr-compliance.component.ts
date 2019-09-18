@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import {UserService} from '../../user.service';
 
@@ -10,9 +10,10 @@ import {UserService} from '../../user.service';
 export class GDPRComplianceComponent implements OnInit {
 
   currentUser;about_active_class;wizardLinks = [];us_privacy_shield;
-  commercial_canada;companyDoc;
+  commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
+  commercial_canada_error;
 
-  constructor( private router: Router, private authenticationService: UserService) { }
+  constructor(private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
   ngOnInit() {
     console.log('in GDPRComplianceComponent');
@@ -88,9 +89,44 @@ export class GDPRComplianceComponent implements OnInit {
   }
 
   gdprCompliance(){
+    this.gdprCompliance_log = '';
     console.log('submitted');
-    console.log(this.commercial_canada);
-    console.log(this.us_privacy_shield);
+    let errorCount = 0;
+    if(this.companyDoc['company_country'] === 'Canada' && this.commercial_canada && this.commercial_canada === 'no'){
+      console.log(this.commercial_canada);
+    }
+    else {
+      errorCount = 1;
+      this.commercial_canada_error = 'Please choose an option';
+    }
+
+    if(errorCount === 0){
+      let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
+      let fileCount: number = inputEl.files.length;
+      let formData = new FormData();
+      if (fileCount > 0) {
+        let toArray = inputEl.files.item(0).type.split("/");
+        if (inputEl.files.item(0).type === 'application/pdf') {
+          formData.append('photo', inputEl.files.item(0));
+        }
+        else {
+          this.gdprCompliance_log = 'Only pdf document is allowed';
+        }
+      }
+      else {
+        this.gdprCompliance_log = 'Please upload signed DTA document';
+      }
+    }
+  }
+
+  upload_dtaDOc(){
+    this.gdprCompliance_log = '';
+    console.log('changed');
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
+    let fileCount: number = inputEl.files.length;
+    if (fileCount > 0){
+      this.file_name = inputEl.files.item(0).name;
+    }
   }
 
 }
