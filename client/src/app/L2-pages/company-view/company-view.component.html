@@ -162,7 +162,7 @@
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['dta_doc_link'] && (userDoc['canadian_commercial_company'] === false || userDoc['usa_privacy_shield'] === false)">
               <div class="form-group">
-                <label>Signed DTA document</label>
+                <label>Signed DTA document: </label>
                 <p>
                   <a class="text-capitalize" href="{{userDoc['dta_doc_link']}}" target="_blank">DTA document</a>
                 </p>

@@ -106,7 +106,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   imagePreviewLink;
   prefil_image;
   hear_about_wob;otherReasons;discount;
-  discount_log;
+  discount_log;usa_privacy_shield;us_privacy_shield_error;
+  canadian_commercial_company;commercial_canada_error;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute,
@@ -319,6 +320,12 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               });
 
             }
+
+            if(data['usa_privacy_shield'] === true) this.usa_privacy_shield = 'yes';
+            if(data['usa_privacy_shield'] === false) this.usa_privacy_shield = 'no';
+
+            if(data['canadian_commercial_company'] === true) this.canadian_commercial_company = 'yes';
+            if(data['canadian_commercial_company'] === false) this.canadian_commercial_company = 'no';
           },
           error =>
           {
@@ -357,6 +364,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   expected_hourly_rate_log;
   company_profile(profileForm: NgForm)
   {
+    console.log(profileForm.value);
     let count = 0;
     this.error_msg = "";
     this.contact_number_log = '';

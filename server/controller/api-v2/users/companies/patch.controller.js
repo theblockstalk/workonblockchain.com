@@ -246,7 +246,7 @@ module.exports.endpoint = async function (req, res) {
         let unset = {};
         if((queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
             if(req.file && req.file.path) employerUpdate.dta_doc_link = req.file.path;
-            userUpdate.is_approved = 0;
+            if (!req.query.admin) userUpdate.is_approved = 0;
             if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no')
                 employerUpdate.canadian_commercial_company = false;
 
