@@ -35,5 +35,10 @@ describe('zoho tokens', function () {
 
             assert(contacts.length === 1, "No contacts founds");
         })
+
+        it('should get new auth token', async function () {
+            await zoho.initialize();
+            await zoho.generateAuthTokens();
+        })
     })
 });

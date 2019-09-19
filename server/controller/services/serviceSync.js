@@ -55,7 +55,7 @@ const syncZoho = async function (operation, syncDocs) {
     try {
         for (let syncDoc of syncDocs) {
             syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
-            const zohoContact = toZohoContact(syncDoc);
+            const zohoContact = await toZohoContact(syncDoc);
             if (operation === "PATCH" && !zohoContact.id) {
                 let userDoc = await users.findOne({_id: syncDoc.user._id});
                 if (!userDoc.zohocrm_contact_id) throw new Error("No zohocrm contact id found on user: " + userDoc._id)
@@ -125,7 +125,7 @@ const syncZoho = async function (operation, syncDocs) {
 }
 
 
-const toZohoContact = function (syncDoc) {
+const toZohoContact = async function (syncDoc) {
     const userDoc = syncDoc.user;
 
     let contact = {
@@ -172,8 +172,14 @@ const toZohoContact = function (syncDoc) {
     return contact;
 };
 
-const convertZohoDate = function(date) {
+let currentUserUTCOffsetHours;
+
+const convertZohoDate = async function(date) {
     // TODO: convert dates based on current user time zone...
+    if (!currentUserUTCOffsetHours) {
+        const res = await zoho.users.getCurrentUser()
+        currentUserUTCOffsetHours = res.users[0].offset / (1000*60*60);
+    }
     if (date) return toISOString(date);
     // if (date) return date.toISOString();
 }
