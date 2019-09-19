@@ -104,3 +104,23 @@
     </div>
   </div>
 </section>
+
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

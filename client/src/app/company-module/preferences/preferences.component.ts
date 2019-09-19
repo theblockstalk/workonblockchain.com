@@ -49,6 +49,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   workTypes = constants.workTypes;
   expected_hourly_rate_log;
   locationArray = [];price_plan_active_class;
+  gdpr_compliance_active_class;gdpr_disable;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -141,6 +142,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngOnInit() {
     $('.selectpicker').selectpicker('refresh');
+    this.gdpr_disable = 'disabled';
     this.prefData=[];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) {
@@ -232,6 +234,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             }
             if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
+
+            if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+              if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
+                this.gdpr_disable = '';
+                this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+              }
+            }
           },
           error =>
           {

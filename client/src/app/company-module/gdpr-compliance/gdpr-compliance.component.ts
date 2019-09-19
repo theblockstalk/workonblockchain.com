@@ -1,6 +1,8 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import {UserService} from '../../user.service';
+import {isPlatformBrowser} from "@angular/common";
+declare var $:any;
 
 @Component({
   selector: 'app-gdpr-compliance',
@@ -12,12 +14,9 @@ export class GDPRComplianceComponent implements OnInit {
   currentUser;about_active_class;wizardLinks = [];us_privacy_shield;
   commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
   commercial_canada_error;us_privacy_shield_error;
-  radio_options: [
-    {name: 'Yes', value: 'yes', checked: false},
-    {name: 'No', value: 'no', checked: false}
-  ];
+  companyMsgTitle;companyMsgBody;
 
-  constructor(private router: Router, private authenticationService: UserService, private el: ElementRef) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
   ngOnInit() {
     console.log('in GDPRComplianceComponent');
@@ -26,74 +25,85 @@ export class GDPRComplianceComponent implements OnInit {
     if(!this.currentUser) this.router.navigate(['/login']);
     else if(this.currentUser && this.currentUser.type=='company') {
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
-        .subscribe(
-          data =>
-          {
-            this.companyDoc = data;
-            console.log(this.companyDoc);
-            if(data['terms_id']) {
-              let termsLink = {
-                'activeClass': true,
-                'routeLink' : '/company_wizard',
-                'linkText' : 'Summary of T&Cs'
-              };
-              this.wizardLinks.push(termsLink);
-            }
-            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description']) {
-              let aboutCompLink = {
-                'activeClass': true,
-                'routeLink' : '/about_comp',
-                'linkText' : 'About the company'
-              };
-              this.wizardLinks.push(aboutCompLink);
-            }
-            if (data['saved_searches'] && data['saved_searches'].length > 0) {
-              let preferencesLink = {
-                'activeClass': true,
-                'routeLink' : '/preferences',
-                'linkText' : 'Talent requirements'
-              };
-              this.wizardLinks.push(preferencesLink);
-            }
-            if (data['pricing_plan']) {
-              let pricingLink = {
-                'activeClass': true,
-                'routeLink' : '/users/company/wizard/pricing',
-                'linkText' : 'Price plan'
-              };
-              this.wizardLinks.push(pricingLink);
-            }
-            let gdprLink = {
-              'activeClass': false,
-              'routeLink' : '/gdpr-compliance',
-              'linkText' : 'GDPR compliance'
+      .subscribe(
+        data =>
+        {
+          this.companyDoc = data;
+          console.log(this.companyDoc);
+          if(data['terms_id']) {
+            let termsLink = {
+              'activeClass': true,
+              'routeLink' : '/company_wizard',
+              'linkText' : 'Summary of T&Cs'
             };
-            if((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']){
-              if(data['usa_privacy_shield'] === true) this.us_privacy_shield = 'yes';
-              if(data['usa_privacy_shield'] === false) this.us_privacy_shield = 'no';
+            this.wizardLinks.push(termsLink);
+          }
+          if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description']) {
+            let aboutCompLink = {
+              'activeClass': true,
+              'routeLink' : '/about_comp',
+              'linkText' : 'About the company'
+            };
+            this.wizardLinks.push(aboutCompLink);
+          }
+          if (data['saved_searches'] && data['saved_searches'].length > 0) {
+            let preferencesLink = {
+              'activeClass': true,
+              'routeLink' : '/preferences',
+              'linkText' : 'Talent requirements'
+            };
+            this.wizardLinks.push(preferencesLink);
+          }
+          if (data['pricing_plan']) {
+            let pricingLink = {
+              'activeClass': true,
+              'routeLink' : '/users/company/wizard/pricing',
+              'linkText' : 'Price plan'
+            };
+            this.wizardLinks.push(pricingLink);
+          }
+          let gdprLink = {
+            'activeClass': false,
+            'routeLink' : '/gdpr-compliance',
+            'linkText' : 'GDPR compliance'
+          };
+          if((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']){
+            if(data['usa_privacy_shield'] === true) this.us_privacy_shield = 'yes';
+            if(data['usa_privacy_shield'] === false) this.us_privacy_shield = 'no';
 
-              if(data['canadian_commercial_company'] === true) this.commercial_canada = 'yes';
-              if(data['canadian_commercial_company'] === false) this.commercial_canada = 'no';
+            if(data['canadian_commercial_company'] === true) this.commercial_canada = 'yes';
+            if(data['canadian_commercial_company'] === false) this.commercial_canada = 'no';
 
-              gdprLink.activeClass = true;
-              this.wizardLinks.push(gdprLink);
-            }
-            else this.wizardLinks.push(gdprLink);
-          },
-          error =>
-          {
-            if(error['message'] === 500 || error['message'] === 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
+            gdprLink.activeClass = true;
+            this.wizardLinks.push(gdprLink);
+          }
+          else this.wizardLinks.push(gdprLink);
+        },
+        error =>
+        {
+          if(error['message'] === 500 || error['message'] === 401) {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
 
-            if(error['message'] === 403) this.router.navigate(['/not_found']);
-          });
+          if(error['message'] === 403) this.router.navigate(['/not_found']);
+        }
+      );
+
+      this.authenticationService.get_page_content('Company popup message')
+      .subscribe(
+        data => {
+          if(data){
+            this.companyMsgTitle= data['page_title'];
+            this.companyMsgBody = data['page_content'];
+          }
+        }
+      );
     }
     else this.router.navigate(['/not_found']);
   }
@@ -172,7 +182,9 @@ export class GDPRComplianceComponent implements OnInit {
     this.authenticationService.edit_company_profile(this.currentUser._id ,data , false)
     .subscribe(
       data => {
-        if (data) {}
+        if (data) {
+          if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+        }
       },
       error => {
         if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
@@ -201,6 +213,11 @@ export class GDPRComplianceComponent implements OnInit {
   selected_us_privacy_shield(event){
     this.us_privacy_shield = event.target.value;
     this.us_privacy_shield_error = '';
+  }
+
+  redirectToCompany() {
+    if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('hide');
+    this.router.navigate(['/candidate-search']);
   }
 
 }

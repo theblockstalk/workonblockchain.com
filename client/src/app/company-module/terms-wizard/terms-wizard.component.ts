@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { constants } from "../../../constants/constants";
 
 @Component({
   selector: 'app-terms-wizard',
@@ -99,9 +100,12 @@ export class TermsWizardComponent implements OnInit {
             }
             if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
-            if(data['dta_doc_link']){
-              this.gdpr_disable = '';
-              this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+            console.log(constants.eu_countries.indexOf(data['company_country']));
+            if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+              if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
+                this.gdpr_disable = '';
+                this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+              }
             }
           },
           error =>
