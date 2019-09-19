@@ -40,20 +40,19 @@ const zohoAPIparse = async function (module, type, input) {
     let response = await zcrm.API.MODULES[type](input);
     if (typeof response === "string") {
         response = JSON.parse(response);
-    }
-    const body = JSON.parse(response.body);
-
-    if (body) {
-        if (body.status === "error") {
-            let err = new Error();
-            err.code = body.code;
-            err.message = "Zoho CRM message: " + body.message;
-            if (!objects.isEmpty(body.details)) err.message = err.message + ", details: " + JSON.stringify(body.details);
-            throw err;
-        }
-        return body.data;
-    } else {
         logger.warn("No body in response from Zoho CRM", {response: response});
+    } else {
+        const body = JSON.parse(response.body);
+        if (body) {
+            if (body.status === "error") {
+                let err = new Error();
+                err.code = body.code;
+                err.message = "Zoho CRM message: " + body.message;
+                if (!objects.isEmpty(body.details)) err.message = err.message + ", details: " + JSON.stringify(body.details);
+                throw err;
+            }
+            return body.data;
+        }
     }
 }
 

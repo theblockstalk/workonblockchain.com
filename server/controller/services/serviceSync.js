@@ -9,45 +9,73 @@ const sendgrid = require('./email/sendGrid');
 const settings = require('../../settings');
 
 module.exports.pushToQueue = async function(operation, userDoc, companyDoc) {
+    const timestamp = Date.now();
     let syncDoc = {
         queue: userDoc.type,
         operation: operation,
         status: 'pending',
-        added_to_queue: Date.now()
+        added_to_queue: timestamp
     };
 
     if (userDoc) syncDoc.user = userDoc;
     if (companyDoc) syncDoc.company = companyDoc;
 
-    await syncQueue.insert(syncDoc);
+    if (operation === "PATCH") {
+        const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
+
+        if (existingSyncDoc) {
+            delete syncDoc.queue;
+            delete syncDoc.operation;
+            delete syncDoc.status;
+            await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
+        } else {
+            await syncQueue.insert(syncDoc);
+        }
+    } else {
+        await syncQueue.insert(syncDoc);
+    }
 }
 
 module.exports.pullFromQueue = async function() {
-    const syncDocs = await syncQueue.findSortLimitSkip({status: 'pending'}, {added_to_queue: "ascending"}, 100, null);
 
+    let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
+    await syncZoho("POST", syncDocs);
+
+    syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
+    await syncZoho("PATCH", syncDocs);
+
+    // sync to amplitude
+    // sync to sendgrid?
+}
+
+const syncZoho = async function (operation, syncDocs) {
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
-    let syncQueues = {
-        zoho: {
-            contacts: [],
-
-        }
-    };
-
+    let zohoData = [];
     try {
         for (let syncDoc of syncDocs) {
             syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
             const zohoContact = toZohoContact(syncDoc);
-            syncQueues.zoho.contacts.push(zohoContact);
+            if (operation === "PATCH" && !zohoContact.id) {
+                let userDoc = await users.findOne({_id: syncDoc.user._id});
+                if (!userDoc.zohocrm_contact_id) throw new Error("No zohocrm contact id found on user: " + userDoc._id)
+                zohoContact.id = userDoc.zohocrm_contact_id;
+            }
+            zohoData.push(zohoContact);
         }
 
-        const input = {
+        let input = {
             body: {
-                data: syncQueues.zoho.contacts
+                data: zohoData
             },
-            duplicate_check_fields: [ "Email" ]
+            duplicate_check_fields: ["Email"]
         };
-        const res = await zoho.contacts.upsert(input);
+        let res;
+        if (operation === "POST") {
+            res = await zoho.contacts.upsert(input);
+        } else {
+            res = await zoho.contacts.putMany(input);
+        }
 
         let docsToDelete = [], i = 0;
         for (let contactRecord of res) {
@@ -59,15 +87,16 @@ module.exports.pullFromQueue = async function() {
                     error_id: errorId,
                     code: contactRecord.code
                 });
-                await syncQueue.updateOne({ _id: docIds[i] }, {
+                await
+                syncQueue.updateOne({_id: docIds[i]}, {
                     $set: {
                         status: "error",
                         error_id: errorId
                     }
                 });
             } else {
-                if (syncQueues.zoho.contacts[i].operation === "POST") {
-                    await users.updateOne({_id: syncQueues.zoho.contacts[i].user._id}, {$set: { zohocrm_contact_id: contactRecord.id}})
+                if (operation === "POST") {
+                    await users.updateOne({_id: syncDocs[i].user._id}, {$set: {zohocrm_contact_id: contactRecord.details.id}})
                 }
                 docsToDelete.push(docIds[i]);
             }
@@ -75,9 +104,6 @@ module.exports.pullFromQueue = async function() {
         }
 
         await syncQueue.deleteMany({_id: { $in: docIds}});
-
-        // sync to amplitude
-        // sync to sendgrid?
     } catch (error) {
         console.log(error);
         const errorId = crypto.getRandomString(10);
@@ -95,7 +121,9 @@ module.exports.pullFromQueue = async function() {
         });
 
     }
+
 }
+
 
 const toZohoContact = function (syncDoc) {
     const userDoc = syncDoc.user;
@@ -110,7 +138,7 @@ const toZohoContact = function (syncDoc) {
         Platform_ID: userDoc._id.toString(),
         Email_verified: userDoc.is_verify === 1,
         Account_disabled: userDoc.disable_account,
-        Environment: settings.ENVIRONMENT,
+        Environment: settings.ENVIRONMENT
     };
 
     if (userDoc.session_started) contact.Last_login = convertZohoDate(userDoc.session_started);
@@ -118,6 +146,7 @@ const toZohoContact = function (syncDoc) {
     if (userDoc.first_approved_date) contact.First_approved = convertZohoDate(userDoc.first_approved_date);
     if (userDoc.marketing_emails) contact.Marketing_emails = userDoc.marketing_emails;
     if (userDoc.contact_number) contact.Phone = userDoc.contact_number;
+    if (userDoc.zohocrm_contact_id) contact.id = userDoc.zohocrm_contact_id;
 
     if (userDoc.type === "candidate" && userDoc.candidate) {
         const candidateDoc = userDoc.candidate;

@@ -68,6 +68,9 @@ describe('service syncronization', function () {
 
         it('should sync a patched candidate', async function () {
             const candidate = docGenerator.candidate();
+            candidate.email = testContact.email;
+            candidate.first_name = testContact.first_name;
+            candidate.last_name = testContact.last_name;
             const profileData = docGenerator.candidateProfile();
 
             await candidateHelper.candidateProfile(candidate, profileData);
@@ -77,19 +80,21 @@ describe('service syncronization', function () {
 
             await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
 
-            await serviceSync.pullFromQueue();
-
             let syncDocCount = await syncQueue.count({status: 'pending'});
-            expect(syncDocCount).to.be(3);
+            expect(syncDocCount).to.equal(2, "1x POST and 1x PATCH should be found");
+
+            await serviceSync.pullFromQueue();
+            syncDocCount = await syncQueue.count({status: 'pending'});
+            expect(syncDocCount).to.equal(0);
+
             const userDoc = await users.findOneByEmail(candidate.email);
             const zohoContact = await zoho.contacts.search({
                 params: {
-                    email: syncTestEmail
+                    email: getSyncTestEmail
                 }
             });
-            zohoContact[0].First_Name.should.be(userDoc.first_name);
-            zohoContact[0].Candidate_status.should.be(userDoc.candidate.latest_status.status);
-            zohoContact[0].Last_Name.should.be(userDoc.last_name);
+            zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+            zohoContact[0].Last_Name.should.equal(userDoc.last_name);
         })
     })
 })
