@@ -1,4 +1,5 @@
 const syncQueue = require('../../model/mongoose/sync_queue');
+const users = require('../../model/mongoose/users');
 const logger = require('./logger');
 const objects = require('./objects');
 const errors = require('./errors');
@@ -22,7 +23,7 @@ module.exports.pushToQueue = async function(operation, userDoc, companyDoc) {
 }
 
 module.exports.pullFromQueue = async function() {
-    const syncDocs = await syncQueue.findSortLimitSkip({status: 'pending'}, null, 100, null);
+    const syncDocs = await syncQueue.findSortLimitSkip({status: 'pending'}, {added_to_queue: "ascending"}, 100, null);
 
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
@@ -49,14 +50,14 @@ module.exports.pullFromQueue = async function() {
         const res = await zoho.contacts.upsert(input);
 
         let docsToDelete = [], i = 0;
-        for (let recordData of res) {
-            if (recordData.status === "error") {
+        for (let contactRecord of res) {
+            if (contactRecord.status === "error") {
                 const errorId = crypto.getRandomString(10);
-                let message = "Zoho CRM record message: " + recordData.message;
-                if (!objects.isEmpty(recordData.details)) message = message + ", details: " + JSON.stringify(recordData.details);
+                let message = "Zoho CRM record message: " + contactRecord.message;
+                if (!objects.isEmpty(contactRecord.details)) message = message + ", details: " + JSON.stringify(contactRecord.details);
                 logger.error(message, {
                     error_id: errorId,
-                    code: recordData.code
+                    code: contactRecord.code
                 });
                 await syncQueue.updateOne({ _id: docIds[i] }, {
                     $set: {
@@ -65,6 +66,9 @@ module.exports.pullFromQueue = async function() {
                     }
                 });
             } else {
+                if (syncQueues.zoho.contacts[i].operation === "POST") {
+                    await users.updateOne({_id: syncQueues.zoho.contacts[i].user._id}, {$set: { zohocrm_contact_id: contactRecord.id}})
+                }
                 docsToDelete.push(docIds[i]);
             }
             i++;

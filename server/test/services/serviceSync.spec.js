@@ -21,6 +21,7 @@ const testContact = {
     last_name: "WILL DELETE AUTOMATICALLY"
 };
 const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
+const getSyncTestEmail = syncTestEmail.replace("+","%2B");
 
 describe('service syncronization', function () {
     beforeEach(async function() {
@@ -32,7 +33,7 @@ describe('service syncronization', function () {
         console.log('removing test contact');
         const res = await zoho.contacts.search({
             params: {
-                email: syncTestEmail
+                email: getSyncTestEmail
             }
         });
         await zoho.contacts.deleteOne({
@@ -45,12 +46,6 @@ describe('service syncronization', function () {
     describe('sync different documents', function () {
 
         it('should sync a new candidate', async function () {
-            const zohoContact2 = await zoho.contacts.search({
-                params: {
-                    email: testContact.email
-                }
-            });
-
             const candidate = docGenerator.candidate();
             candidate.email = testContact.email;
             candidate.first_name = testContact.first_name;
@@ -63,12 +58,12 @@ describe('service syncronization', function () {
             const userDoc = await users.findOneByEmail(candidate.email);
             const zohoContact = await zoho.contacts.search({
                 params: {
-                    email: syncTestEmail
+                    email: getSyncTestEmail
                 }
             });
-            zohoContact[0].First_Name.should.be(userDoc.first_name);
-            zohoContact[0].Candidate_status.should.be(userDoc.candidate.latest_status.status);
-            zohoContact[0].Last_Name.should.be(userDoc.last_name);
+            zohoContact[0].First_Name.should.equal(userDoc.first_name);
+            zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+            zohoContact[0].Last_Name.should.equal(userDoc.last_name);
         })
 
         it('should sync a patched candidate', async function () {
