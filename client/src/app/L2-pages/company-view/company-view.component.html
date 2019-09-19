@@ -160,7 +160,7 @@
                 <app-c-formv-text label="Commercial Canadian company:" value="No"></app-c-formv-text>
               </ng-template>
             </div>
-            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['dta_doc_link']">
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['dta_doc_link'] && (userDoc['canadian_commercial_company'] === false || userDoc['usa_privacy_shield'] === false)">
               <div class="form-group">
                 <label>Signed DTA document</label>
                 <p>
