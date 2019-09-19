@@ -12,6 +12,10 @@ export class GDPRComplianceComponent implements OnInit {
   currentUser;about_active_class;wizardLinks = [];us_privacy_shield;
   commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
   commercial_canada_error;us_privacy_shield_error;
+  radio_options: [
+    {name: 'Yes', value: 'yes', checked: false},
+    {name: 'No', value: 'no', checked: false}
+  ];
 
   constructor(private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
@@ -64,7 +68,13 @@ export class GDPRComplianceComponent implements OnInit {
               'routeLink' : '/gdpr-compliance',
               'linkText' : 'GDPR compliance'
             };
-            if(data['dta_doc_link']){
+            if((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']){
+              if(data['usa_privacy_shield'] === true) this.us_privacy_shield = 'yes';
+              if(data['usa_privacy_shield'] === false) this.us_privacy_shield = 'no';
+
+              if(data['canadian_commercial_company'] === true) this.commercial_canada = 'yes';
+              if(data['canadian_commercial_company'] === false) this.commercial_canada = 'no';
+
               gdprLink.activeClass = true;
               this.wizardLinks.push(gdprLink);
             }
@@ -186,6 +196,11 @@ export class GDPRComplianceComponent implements OnInit {
     if (fileCount > 0){
       this.file_name = inputEl.files.item(0).name;
     }
+  }
+
+  selected_us_privacy_shield(event){
+    this.us_privacy_shield = event.target.value;
+    this.us_privacy_shield_error = '';
   }
 
 }
