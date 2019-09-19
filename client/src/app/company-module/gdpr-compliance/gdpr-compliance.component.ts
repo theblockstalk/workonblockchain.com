@@ -11,7 +11,7 @@ export class GDPRComplianceComponent implements OnInit {
 
   currentUser;about_active_class;wizardLinks = [];us_privacy_shield;
   commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
-  commercial_canada_error;
+  commercial_canada_error;us_privacy_shield_error;
 
   constructor(private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
@@ -92,31 +92,90 @@ export class GDPRComplianceComponent implements OnInit {
     this.gdprCompliance_log = '';
     console.log('submitted');
     let errorCount = 0;
-    if(this.companyDoc['company_country'] === 'Canada' && this.commercial_canada && this.commercial_canada === 'no'){
-      console.log(this.commercial_canada);
-    }
-    else {
-      errorCount = 1;
-      this.commercial_canada_error = 'Please choose an option';
+    let formData = new FormData();
+    if(this.companyDoc['company_country'] === 'Canada') {
+      if (this.commercial_canada && this.commercial_canada === 'no') {
+        console.log(this.commercial_canada);
+        formData.append('canadian_commercial_company', this.commercial_canada);
+      }
+      else {
+        errorCount = 1;
+        this.commercial_canada_error = 'Please choose an option';
+      }
+      if (this.commercial_canada && this.commercial_canada === 'yes') {
+        errorCount = 0;
+        formData.append('canadian_commercial_company', this.commercial_canada);
+      }
     }
 
-    if(errorCount === 0){
+    if(this.companyDoc['company_country'] === 'United States') {
+      if(this.us_privacy_shield && this.us_privacy_shield === 'no') {
+        console.log(this.us_privacy_shield);
+        formData.append('usa_privacy_shield', this.us_privacy_shield);
+      }
+      else {
+        console.log('in else of usa_privacy_shield');
+        errorCount = 1;
+        this.us_privacy_shield_error = 'Please choose an option';
+      }
+      if (this.us_privacy_shield && this.us_privacy_shield === 'yes') {
+        errorCount = 0;
+        formData.append('usa_privacy_shield', this.us_privacy_shield);
+      }
+    }
+
+    console.log('before 0 if');
+    console.log(errorCount);
+    if(errorCount === 0 && (this.us_privacy_shield === 'no' || this.commercial_canada === 'no')){
       let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
-      let formData = new FormData();
+      console.log('in 0 if');
       if (fileCount > 0) {
         let toArray = inputEl.files.item(0).type.split("/");
         if (inputEl.files.item(0).type === 'application/pdf') {
-          formData.append('photo', inputEl.files.item(0));
+          console.log(inputEl.files.item(0));
+          formData.append('company_logo', inputEl.files.item(0));
+          console.log('send in DB a with file');
+          this.sendDTADoc(formData);
         }
         else {
           this.gdprCompliance_log = 'Only pdf document is allowed';
         }
       }
       else {
+        console.log('in else doc');
         this.gdprCompliance_log = 'Please upload signed DTA document';
       }
     }
+    if(this.us_privacy_shield === 'yes' || this.commercial_canada === 'yes'){
+      console.log('go in db yes with no file');
+      //formData.append('company_logo', '');
+      this.sendDTADoc(formData);
+      //call a ftn
+      //
+    }
+  }
+
+  sendDTADoc(data){
+    console.log('in sendDTADoc ftn');
+    console.log(data);
+    this.authenticationService.edit_company_profile(this.currentUser._id ,data , false)
+    .subscribe(
+      data => {
+        if (data) {}
+      },
+      error => {
+        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+      }
+    );
   }
 
   upload_dtaDOc(){

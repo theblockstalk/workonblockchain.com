@@ -70,6 +70,18 @@ const bodySchema = new Schema({
         type: String,
         maxlength: 3000
     },
+    canadian_commercial_company: {
+        type: String,
+        enum: ['yes', 'no']
+    },
+    usa_privacy_shield: {
+        type: String,
+        enum: ['yes', 'no']
+    },
+    dta_doc_link: {
+        type: String,
+        validate: regexes.url
+    },
     discount: Number,
     pricing_plan: {
         type: String,
@@ -197,6 +209,7 @@ module.exports.inputValidation = {
 
 module.exports.files = async function(req) {
     await multer.uploadOneFile(req, "company_logo");
+    //await multer.uploadOneFile(req, "dta_doc");
 }
 
 module.exports.auth = async function (req) {
@@ -231,8 +244,27 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
+        if((queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
+            if(req.file && req.file.path) employerUpdate.dta_doc_link = req.file.path;
+            userUpdate.is_approved = 0;
+            if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no')
+                employerUpdate.canadian_commercial_company = false;
+
+            if(queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')
+                employerUpdate.usa_privacy_shield = false;
+        }
+        if((!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
+            employerUpdate.company_logo = req.file.path;
         else {
+            if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'yes') {
+                employerUpdate.canadian_commercial_company = true;
+                userUpdate.is_approved = 1;
+            }
+            if(queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'yes') {
+                employerUpdate.usa_privacy_shield = true;
+                userUpdate.is_approved = 1;
+            }
+
             if(queryBody.hear_about_wob) userUpdate.hear_about_wob = queryBody.hear_about_wob;
             if(queryBody.hear_about_wob_other_info) userUpdate.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
             if(queryBody.unset_hear_about_wob_other_info) unset['hear_about_wob_other_info'] = 1;
