@@ -16,11 +16,8 @@ module.exports.up = async function() {
         totalProcessed++;
         const employerDoc = await companies.findOne({_creator : userDoc._id, company_country: { $exists: true}});
         if(employerDoc){
-            if (enums.euCountries.indexOf(employerDoc.company_country) > -1) {
-                //In the array!
-                logger.debug('EU country');
-            } else {
-                //Not in the array
+            if (enums.euCountries.indexOf(employerDoc.company_country) === -1) {
+                //Not EU country
                 set['is_approved'] = 0;
                 await users.update({_id: userDoc._id}, {$set: set});
                 logger.debug('user doc id: ' + userDoc._id, {$set: set});
