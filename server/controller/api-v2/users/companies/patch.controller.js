@@ -7,6 +7,7 @@ const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
+const dtaDocEmail = require('../../../services/email/emails/dtaDocEmail');
 
 module.exports.request = {
     type: 'patch',
@@ -245,7 +246,11 @@ module.exports.endpoint = async function (req, res) {
         let userUpdate = {};
         let unset = {};
         if(enumerations.euCountries.indexOf(queryBody.company_country) === -1 || (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
-            if(req.file && req.file.path) employerUpdate.dta_doc_link = req.file.path;
+            if(req.file && req.file.path) {
+                //to do send email to Jack
+                //dtaDocEmail.sendEmail(employerDoc['company_name'], req.file.path, 'Tayyab');
+                employerUpdate.dta_doc_link = req.file.path;
+            }
             if (!req.query.admin) userUpdate.is_approved = 0;
             if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no')
                 employerUpdate.canadian_commercial_company = false;
