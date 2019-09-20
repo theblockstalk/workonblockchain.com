@@ -247,8 +247,7 @@ module.exports.endpoint = async function (req, res) {
         let unset = {};
         if(enumerations.euCountries.indexOf(queryBody.company_country) === -1 || (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
             if(req.file && req.file.path) {
-                //to do send email to Jack
-                //dtaDocEmail.sendEmail(employerDoc['company_name'], req.file.path, 'Tayyab');
+                dtaDocEmail.sendEmail(employerDoc['company_name'],employerDoc['company_country'],req.file.path, userId);
                 employerUpdate.dta_doc_link = req.file.path;
             }
             if (!req.query.admin) userUpdate.is_approved = 0;
