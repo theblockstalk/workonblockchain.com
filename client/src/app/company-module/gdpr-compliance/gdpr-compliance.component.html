@@ -60,7 +60,7 @@
               </div>
             </div>
 
-            <div class="row mt-3" *ngIf="(companyDoc['company_country'] === 'Canada' && commercial_canada === 'no') || (companyDoc['company_country'] === 'United States' && us_privacy_shield === 'no')">
+            <div class="row mt-3" *ngIf="euCountry || (companyDoc['company_country'] === 'Canada' && commercial_canada === 'no') || (companyDoc['company_country'] === 'United States' && us_privacy_shield === 'no')">
               <div class="col-md-12">
                 <p>
                   You are required to sign the Data Transfer Agreement (DTA) with us to ensure our

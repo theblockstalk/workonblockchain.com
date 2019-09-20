@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, Inject, PLATFORM_ID } from '@angular/cor
 import { Router } from '@angular/router';
 import {UserService} from '../../user.service';
 import {isPlatformBrowser} from "@angular/common";
+import {constants} from '../../../constants/constants';
 declare var $:any;
 
 @Component({
@@ -15,6 +16,7 @@ export class GDPRComplianceComponent implements OnInit {
   commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
   commercial_canada_error;us_privacy_shield_error;
   companyMsgTitle;companyMsgBody;
+  euCountry = true;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
@@ -78,6 +80,17 @@ export class GDPRComplianceComponent implements OnInit {
             this.wizardLinks.push(gdprLink);
           }
           else this.wizardLinks.push(gdprLink);
+
+          if(constants.eu_countries.indexOf(data['company_country']) === -1){
+            if(data['company_country'] === 'Canada' || data['company_country'] === 'United States'){
+              console.log('not eu country but US or Canada');
+              this.euCountry = false;
+            }
+            else {
+              console.log('not eu country not US or Canada');
+              this.euCountry = true;
+            }
+          }
         },
         error =>
         {
@@ -144,9 +157,11 @@ export class GDPRComplianceComponent implements OnInit {
       }
     }
 
+    //
     console.log('before 0 if');
     console.log(errorCount);
-    if(errorCount === 0 && (this.us_privacy_shield === 'no' || this.commercial_canada === 'no')){
+    if(errorCount === 0 && (constants.eu_countries.indexOf(this.companyDoc['company_country']) || this.us_privacy_shield === 'no' || this.commercial_canada === 'no')){
+      console.log('in if top');
       let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
       console.log('in 0 if');

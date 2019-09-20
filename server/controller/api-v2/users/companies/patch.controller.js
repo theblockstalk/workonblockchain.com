@@ -244,7 +244,7 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if((queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
+        if(enumerations.euCountries.indexOf(queryBody.company_country) === -1 || (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
             if(req.file && req.file.path) employerUpdate.dta_doc_link = req.file.path;
             if (!req.query.admin) userUpdate.is_approved = 0;
             if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no')
@@ -253,7 +253,7 @@ module.exports.endpoint = async function (req, res) {
             if(queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')
                 employerUpdate.usa_privacy_shield = false;
         }
-        if((!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
+        if((!(enumerations.euCountries.indexOf(queryBody.company_country) === -1) && !queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
             employerUpdate.company_logo = req.file.path;
         else {
             if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'yes') {
