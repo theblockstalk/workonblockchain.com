@@ -147,7 +147,6 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         first_name: "Sara",
         last_name: "khan",
         job_title: "Developer",
-        company_name: "Mwan Mobile",
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
         company_country: "Pakistan",
@@ -161,6 +160,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         when_receive_email_notitfications : 'Daily',
 
         saved_searches : [{
+            name: random.string(),
             location: [
                 {remote:true },
                 {_id : '5c4aa17468cc293450c14c04'}

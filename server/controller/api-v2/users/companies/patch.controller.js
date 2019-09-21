@@ -29,9 +29,6 @@ const bodySchema = new Schema({
     job_title: {
         type:String
     },
-    company_name: {
-        type:String
-    },
     company_website: {
         type:String,
         validate: regexes.url

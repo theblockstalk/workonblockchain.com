@@ -37,7 +37,7 @@ let defaultFunctions = function(model) {
         },
 
         updateOne: async function (selector, updateObj) {
-            return await model.findOneAndUpdate(selector, updateObj, { runValidators: true });
+            return await model.findOneAndUpdate(selector, updateObj, { runValidators: true, useFindAndModify: false });
         },
 
         deleteOne: async function (selector) {
@@ -47,7 +47,7 @@ let defaultFunctions = function(model) {
         count: async function (selector) {
             return new Promise(function (resolve, reject) {
                 try {
-                    model.count(selector, function (err1, result) {
+                    model.countDocuments(selector, function (err1, result) {
                         if (err1) reject(err1);
                         resolve(result);
                     })

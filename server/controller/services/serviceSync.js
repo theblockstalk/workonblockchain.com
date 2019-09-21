@@ -194,6 +194,8 @@ const toZohoContact = async function (syncDoc) {
             contact.Candidate_status_last_updated = await convertZohoDate(candidateDoc.latest_status.timestamp);
             contact.Created = await convertZohoDate(candidateDoc.history[candidateDoc.history.length-1].timestamp);
 
+            if (candidateDoc.description) contact.Description = candidateDoc.description;
+            if (candidateDoc.linkedin_account) contact.Linkedin_UR = candidateDoc.linkedin_account;
             if (candidateDoc.base_country) contact.Mailing_country = candidateDoc.base_country;
             if (candidateDoc.base_city) contact.Mailing_city = candidateDoc.base_city;
             if (candidateDoc.job_activity_status) {
@@ -233,7 +235,11 @@ const toZohoAccount = async function (syncDoc) {
         Created: created
     };
 
+    if (companyDoc.company_website) account.Website = companyDoc.company_website;
     if (companyDoc.company_country) account.Billing_Country = companyDoc.company_country;
+    if (companyDoc.company_city) account.Billing_City = companyDoc.company_city;
+    if (companyDoc.company_funded) account.How_is_company_funded = companyDoc.company_funded;
+    if (companyDoc.company_description) account.Description = companyDoc.company_description;
     if (companyDoc.zohocrm_account_id) account.id = companyDoc.zohocrm_account_id;
 
     return account;
