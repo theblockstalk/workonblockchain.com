@@ -7,6 +7,7 @@ const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
+const serviceSync = require('../../../services/serviceSync');
 
 module.exports.request = {
     type: 'patch',
@@ -333,6 +334,11 @@ module.exports.endpoint = async function (req, res) {
         else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
+
+        await serviceSync.pushToQueue("PATCH", {
+            user: updatedEmployerDoc,
+            company: updatedEmployerDoc._creator
+        });
         res.send(updatedEmployerDoc);
     }
     else {

@@ -619,7 +619,7 @@ module.exports.endpoint = async function (req, res) {
     await users.updateOne({_id: userId}, updateObj);
     const updatedUserDoc = await users.findOne({_id: userId});
 
-    await serviceSync.pushToQueue("PATCH", updatedUserDoc);
+    await serviceSync.pushToQueue("PATCH", {user: updatedUserDoc});
 
     const filterData = filterReturnData.removeSensativeData(updatedUserDoc);
     res.send(filterData);

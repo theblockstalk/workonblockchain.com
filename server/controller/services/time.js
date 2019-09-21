@@ -2,7 +2,7 @@ module.exports.now = function now() {
     return Date.now();
 };
 
-module.exports.sleep = function sleep(ms){
+module.exports.sleep = async function sleep(ms){
     return new Promise(resolve => {
         setTimeout(resolve, ms)
     })

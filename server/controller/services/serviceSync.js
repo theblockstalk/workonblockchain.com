@@ -4,35 +4,41 @@ const logger = require('./logger');
 const objects = require('./objects');
 const errors = require('./errors');
 const crypto = require('./crypto');
+const time = require('./time');
 const zoho = require('./zoho/zoho');
 const sendgrid = require('./email/sendGrid');
 const settings = require('../../settings');
 
-module.exports.pushToQueue = async function(operation, userDoc, companyDoc) {
+module.exports.pushToQueue = async function(operation, obj) {
     const timestamp = Date.now();
     let syncDoc = {
-        queue: userDoc.type,
         operation: operation,
         status: 'pending',
         added_to_queue: timestamp
     };
 
-    if (userDoc) syncDoc.user = userDoc;
-    if (companyDoc) syncDoc.company = companyDoc;
+    if (obj.userDoc) {
+        let userDoc = obj.user;
 
-    if (operation === "PATCH") {
-        const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
+        syncDoc.queue = userDoc.type;
+        if (userDoc) syncDoc.user = userDoc;
+        if (obj.company) syncDoc.company = obj.company;
 
-        if (existingSyncDoc) {
-            delete syncDoc.queue;
-            delete syncDoc.operation;
-            delete syncDoc.status;
-            await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
+        if (operation === "PATCH") {
+            const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
+
+            if (existingSyncDoc) {
+                delete syncDoc.queue;
+                delete syncDoc.operation;
+                delete syncDoc.status;
+                await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
+            } else {
+                await syncQueue.insert(syncDoc);
+            }
         } else {
             await syncQueue.insert(syncDoc);
         }
-    } else {
-        await syncQueue.insert(syncDoc);
+
     }
 }
 
@@ -40,6 +46,8 @@ module.exports.pullFromQueue = async function() {
 
     let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
     await syncZoho("POST", syncDocs);
+
+    await time.sleep(1000);
 
     syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
     await syncZoho("PATCH", syncDocs);
@@ -49,6 +57,8 @@ module.exports.pullFromQueue = async function() {
 }
 
 const syncZoho = async function (operation, syncDocs) {
+    if (!syncDocs || syncDocs.length < 1) return;
+
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
     let zohoData = [];

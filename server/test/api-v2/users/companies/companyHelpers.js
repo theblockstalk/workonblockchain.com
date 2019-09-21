@@ -8,7 +8,6 @@ const signupCompany = module.exports.signupCompany = async function signupCompan
     const res = await chai.request(server)
         .post('/v2/users/companies')
         .send(company);
-    res.should.have.status(200);
     return res;
 }
 
