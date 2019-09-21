@@ -33,13 +33,23 @@ describe('service syncronization', function () {
 
     afterEach(async function () {
         console.log('removing test contact');
-        const res = await zoho.contacts.search({
+        let res = await zoho.contacts.search({
             params: {
                 email: getSyncTestEmail
             }
         });
         if (res && res.length > 0) {
             await zoho.contacts.deleteOne({
+                id: res[0].id
+            });
+        }
+        res = await zoho.accounts.search({
+            params: {
+                criteria: "((Account_Name:equals:" + company.company_name + "))"
+            }
+        });
+        if (res && res.length > 0) {
+            await zoho.accounts.deleteOne({
                 id: res[0].id
             });
         }
@@ -110,7 +120,7 @@ describe('service syncronization', function () {
             await serviceSync.pullFromQueue();
 
             const userDoc = await users.findOneByEmail(company.email);
-            const companyDoc = await companies.findOneByEmail(company.email);
+            const companyDoc = await companies.findOne({company_name: company.company_name});
             const zohoContact = await zoho.contacts.search({
                 params: {
                     email: getSyncTestEmail
