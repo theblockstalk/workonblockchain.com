@@ -2,9 +2,6 @@ const zcrm = require('zcrmsdk');
 const objects = require('../objects');
 const logger = require('../logger');
 // https://www.npmjs.com/package/@trifoia/zcrmsdk
-// TODO:
-// 1. write WOB userDoc to zoho parser
-// 2. github sdk upsert
 
 const user_identifier = "zcrm_default_user";
 
@@ -51,7 +48,7 @@ const zohoAPIparse = async function (zcrmFn, module, input) {
                 if (!objects.isEmpty(body.details)) err.message = err.message + ", details: " + JSON.stringify(body.details);
                 throw err;
             }
-            return body.data;
+            return body;
         }
     }
 }

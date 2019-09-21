@@ -4,7 +4,7 @@ const server = require('../../../../server');
 const userHelpers = require('../../otherHelpers/usersHelpers');
 chai.use(chaiHttp);
 
-const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
+const signupCompany = module.exports.signupCompany = async function (company) {
     const res = await chai.request(server)
         .post('/v2/users/companies')
         .send(company);

@@ -17,11 +17,10 @@ module.exports.pushToQueue = async function(operation, obj) {
         added_to_queue: timestamp
     };
 
-    if (obj.userDoc) {
-        let userDoc = obj.user;
-
+    let userDoc = obj.user;
+    if (userDoc) {
         syncDoc.queue = userDoc.type;
-        if (userDoc) syncDoc.user = userDoc;
+        syncDoc.user = userDoc;
         if (obj.company) syncDoc.company = obj.company;
 
         if (operation === "PATCH") {
@@ -45,20 +44,19 @@ module.exports.pushToQueue = async function(operation, obj) {
 module.exports.pullFromQueue = async function() {
 
     let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
-    await syncZoho("POST", syncDocs);
+    if (syncDocs && syncDocs.length > 0) await syncZoho("POST", syncDocs);
 
-    await time.sleep(1000);
 
     syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
-    await syncZoho("PATCH", syncDocs);
-
+    if (syncDocs && syncDocs.length > 0) {
+        await time.sleep(1000);
+        await syncZoho("PATCH", syncDocs);
+    }
     // sync to amplitude
     // sync to sendgrid?
 }
 
 const syncZoho = async function (operation, syncDocs) {
-    if (!syncDocs || syncDocs.length < 1) return;
-
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
     let zohoContacts = [], zohoAccounts = [];
@@ -66,9 +64,9 @@ const syncZoho = async function (operation, syncDocs) {
         for (let syncDoc of syncDocs) {
             syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
             const zohoContact = await toZohoContact(syncDoc);
-            let zohoAccount;
+
             if (syncDoc.company) {
-                zohoAccount = await toZohoAccount(syncDoc);
+                let zohoAccount = await toZohoAccount(syncDoc);
 
                 if (operation === "PATCH" && !zohoAccount.id) {
                     let companyDoc = await companies.findOne({_id: syncDoc.company._id});
@@ -93,16 +91,17 @@ const syncZoho = async function (operation, syncDocs) {
             if (module === "contacts") input.duplicate_check_fields = ["Email"];
             if (module === "accounts") input.duplicate_check_fields = ["Account_Name"];
 
-            let res;
+            let res, records;
             if (operation === "POST") {
                 res = await zoho[module].upsert(input);
             } else {
                 res = await zoho[module].putMany(input);
             }
+            records = res.data;
 
             let docsToDelete = [], i = 0;
             let errorIndexes = [];
-            for (let record of res) {
+            for (let record of records) {
                 if (record.status === "error") {
                     const errorId = crypto.getRandomString(10);
                     let message = "Zoho CRM " + module + " record error: " + record.message;
@@ -159,11 +158,8 @@ const syncZoho = async function (operation, syncDocs) {
             status: "error",
             error_id: errorId
         });
-
     }
-
 }
-
 
 const toZohoContact = async function (syncDoc) {
     const userDoc = syncDoc.user;
@@ -173,42 +169,47 @@ const toZohoContact = async function (syncDoc) {
         Contact_Status: "converted",
         Contact_type: [userDoc.type],
         Email: userDoc.email,
-        First_Name: userDoc.first_name,
-        Last_Name: userDoc.last_name,
         Synced_from_server: true,
         Platform_ID: userDoc._id.toString(),
-        Platform_URL: settings.CLIENT.URL + "admins/talent/" + userDoc._id.toString(),
+        Platform_URL: convertZohoURL(settings.CLIENT.URL + "admins/talent/" + userDoc._id.toString()),
         Email_verified: userDoc.is_verify === 1,
         Account_disabled: userDoc.disable_account,
         Environment: settings.ENVIRONMENT
     };
 
-    if (userDoc.session_started) contact.Last_login = convertZohoDate(userDoc.session_started);
-    if (userDoc.nationality) contact.Nationalities = userDoc.nationality.map((nat) => { return nat + "\n"});
-    if (userDoc.first_approved_date) contact.First_approved = convertZohoDate(userDoc.first_approved_date);
+    if (userDoc.session_started) contact.Last_login = await convertZohoDate(userDoc.session_started);
     if (userDoc.marketing_emails) contact.Marketing_emails = userDoc.marketing_emails;
-    if (userDoc.contact_number) contact.Phone = userDoc.contact_number;
     if (userDoc.zohocrm_contact_id) contact.id = userDoc.zohocrm_contact_id;
 
-    if (userDoc.type === "candidate" && userDoc.candidate) {
-        const candidateDoc = userDoc.candidate;
-        contact.Candidate_status = candidateDoc.latest_status.status;
-        contact.Candidate_status_last_updated = convertZohoDate(candidateDoc.latest_status.timestamp);
-        contact.Created = convertZohoDate(candidateDoc.history[candidateDoc.history.length-1].timestamp);
+    if (userDoc.type === "candidate") {
+        contact.First_Name = userDoc.first_name;
+        contact.Last_Name =userDoc.last_name;
+        if (userDoc.contact_number) contact.Phone = userDoc.contact_number;
+        if (userDoc.nationality) contact.Nationalities = userDoc.nationality.map((nat) => { return nat + "\n"});
+        if (userDoc.first_approved_date) contact.First_approved = await convertZohoDate(userDoc.first_approved_date);
 
-        if (candidateDoc.base_country) contact.Mailing_country = candidateDoc.base_country;
-        if (candidateDoc.base_city) contact.Mailing_city = candidateDoc.base_city;
-        if (candidateDoc.job_activity_status) {
-            const employed = candidateDoc.job_activity_status.currently_employed;
-            if (employed) contact.Currently_employed = employed === "yes";
-        }
-        if (candidateDoc.programming_languages) contact.Programming_languages = candidateDoc.programming_languages.map( (lan) => {
-            return lan.language + "\n";
+        const candidateDoc = userDoc.candidate;
+        if (candidateDoc) {
+            contact.Candidate_status = candidateDoc.latest_status.status;
+            contact.Candidate_status_last_updated = await convertZohoDate(candidateDoc.latest_status.timestamp);
+            contact.Created = await convertZohoDate(candidateDoc.history[candidateDoc.history.length-1].timestamp);
+
+            if (candidateDoc.base_country) contact.Mailing_country = candidateDoc.base_country;
+            if (candidateDoc.base_city) contact.Mailing_city = candidateDoc.base_city;
+            if (candidateDoc.job_activity_status) {
+                const employed = candidateDoc.job_activity_status.currently_employed;
+                if (employed) contact.Currently_employed = employed === "yes";
+            }
+            if (candidateDoc.programming_languages) contact.Programming_languages = candidateDoc.programming_languages.map( (lan) => {
+                return lan.language + "\n";
         })
-        if (candidateDoc.description) contact.Bio = candidateDoc.description;
-    } else {
-        contact.Created = convertZohoDate(companyDoc.created_date)
-        contact.Account_Name = convertZohoDate(companyDoc.company_name)
+            if (candidateDoc.description) contact.Bio = candidateDoc.description;
+        }
+    }  else {
+        contact.First_Name = companyDoc.first_name;
+        contact.Last_Name = companyDoc.last_name;
+        contact.Created = await convertZohoDate(userDoc.created_date)
+        contact.Account_Name = companyDoc.company_name
     }
 
     return contact;
@@ -218,10 +219,11 @@ const toZohoAccount = async function (syncDoc) {
     const userDoc = syncDoc.user;
     const companyDoc = syncDoc.company;
 
+    const created = await convertZohoDate(userDoc.created_date);
     let account = {
         Account_Name: companyDoc.company_name,
         Platform_ID: companyDoc._id.toString(),
-        Platform_URL: settings.CLIENT.URL + "admin-company-detail?user=" + userDoc._id.toString(),
+        Platform_URL: convertZohoURL(settings.CLIENT.URL + "admin-company-detail?user=" + userDoc._id.toString()),
         Account_Types: ["Client"],
         Synced_from_server: true,
         Environment: settings.ENVIRONMENT,
@@ -229,7 +231,7 @@ const toZohoAccount = async function (syncDoc) {
         Platform_Status: companyDoc.is_approved === 1 ? "approved" : "not approved",
         Account_status: "Active",
         Account_disabled: userDoc.disable_account,
-        Created: convertZohoDate(companyDoc.created_date)
+        Created: created
     };
 
     if (companyDoc.company_country) account.Billing_Country = companyDoc.company_country;
@@ -238,27 +240,34 @@ const toZohoAccount = async function (syncDoc) {
     return account;
 }
 
+const convertZohoURL = function(url) {
+    if (!settings.isLiveApplication()) return url.replace(settings.CLIENT.URL, "https://test.workonblockchain.com/");
+    return url;
+};
+
 let zohoUserOffsetSeconds;
 
 const convertZohoDate = async function(date) {
     // TODO: convert dates based on current user time zone...
-    if (!zohoUserOffsetSeconds) {
-        const res = await zoho.users.getCurrentUser()
-        zohoUserOffsetSeconds = res.users[0].offset / 1000;
-    }
-    if (date) {
-        let now = new Date.now();
-        const localOffsetSeconds = now.getTimezoneOffset() * 60;
-        logger.debug("Date offsets", {
-            localHour: localOffsetSeconds/(60*60),
-            zohoUserHour: zohoUserOffsetSeconds/(60*60)
-        });
-        const diff = localOffsetSeconds - zohoUserOffsetSeconds
-        if (diff !== 0) {
-            time.addSeconds(date, diff);
-        }
+    // if (!zohoUserOffsetSeconds) {
+    //     const res = await zoho.users.getCurrentUser();
+    //     const user = res.users[0];
+    //     zohoUserOffsetSeconds = user.offset / 1000;
+    // }
+    // if (date) {
+    //     let now = new Date();
+    //     const localOffsetSeconds = now.getTimezoneOffset() * 60;
+    //     logger.debug("Date offsets", {
+    //         localHour: localOffsetSeconds/(60*60),
+    //         zohoUserHour: zohoUserOffsetSeconds/(60*60)
+    //     });
+    //     const diff = localOffsetSeconds - zohoUserOffsetSeconds
+    //     if (diff !== 0) {
+    //         time.addSeconds(date, diff);
+    //     }
+        time.addSeconds(date, 0*60*60);
         return toISOString(date)
-    }
+    // }
     // if (date) return date.toISOString(); // does not work
 }
 

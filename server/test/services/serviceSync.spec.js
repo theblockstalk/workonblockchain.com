@@ -11,6 +11,7 @@ const users = require('../../model/mongoose/users');
 const companies = require('../../model/mongoose/companies');
 const serviceSync = require('../../controller/services/serviceSync');
 const sendgrid = require('../../controller/services/email/sendGrid');
+const settings = require('../../settings');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -19,8 +20,8 @@ chai.use(chaiHttp);
 
 const testContact = {
     email: "testingemail@workonblockchain.com",
-    first_name: "PART OF AUTOMATIC UNIT TESTS",
-    company_name: "PART OF AUTOMATIC UNIT TESTS"
+    first_name: "PART OF AUTOMATIC UNIT TESTS - " + settings.ENVIRONMENT,
+    company_name: "PART OF AUTOMATIC UNIT TESTS - " + settings.ENVIRONMENT
 };
 const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
 const getSyncTestEmail = syncTestEmail.replace("+","%2B");
