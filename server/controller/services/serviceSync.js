@@ -61,7 +61,7 @@ const syncZoho = async function (operation, syncDocs) {
 
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
-    let zohoContacts = [], zohoAccounts;
+    let zohoContacts = [], zohoAccounts = [];
     try {
         for (let syncDoc of syncDocs) {
             syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
@@ -88,44 +88,60 @@ const syncZoho = async function (operation, syncDocs) {
             zohoContacts.push(zohoContact);
         }
 
-        let input = {
-            body: {
-                data: zohoContacts
-            },
-            duplicate_check_fields: ["Email"]
-        };
-        let res;
-        if (operation === "POST") {
-            res = await zoho.contacts.upsert(input);
-        } else {
-            res = await zoho.contacts.putMany(input);
+        const zohoModuleSync = async function(data, module, deleteSyncDoc) {
+            let input = { body: { data: data } };
+            if (module === "contacts") input.duplicate_check_fields = ["Email"];
+            if (module === "accounts") input.duplicate_check_fields = ["Account_Name"];
+
+            let res;
+            if (operation === "POST") {
+                res = await zoho[module].upsert(input);
+            } else {
+                res = await zoho[module].putMany(input);
+            }
+
+            let docsToDelete = [], i = 0;
+            let errorIndexes = [];
+            for (let record of res) {
+                if (record.status === "error") {
+                    const errorId = crypto.getRandomString(10);
+                    let message = "Zoho CRM " + module + " record error: " + record.message;
+                    if (!objects.isEmpty(record.details)) message = message + ", details: " + JSON.stringify(record.details);
+                    logger.error(message, {
+                        error_id: errorId,
+                        code: record.code
+                    });
+                    await syncQueue.updateOne({_id: docIds[i]}, {
+                        $set: {
+                            status: "error",
+                            error_id: errorId
+                        }
+                    });
+                    errorIndexes.push(i);
+                } else {
+                    if (operation === "POST") {
+                        if (module === "contacts") {
+                            await users.updateOne({_id: syncDocs[i].user._id}, {$set: {zohocrm_contact_id: record.details.id}})
+                        } else if (module === "accounts") {
+                            await companies.updateOne({_id: syncDocs[i].company._id}, {$set: {zohocrm_account_id: record.details.id}})
+                        }
+                    }
+                    if (deleteSyncDoc) docsToDelete.push(docIds[i]);
+                }
+                i++;
+            }
+            return errorIndexes;
         }
 
-        let docsToDelete = [], i = 0;
-        for (let contactRecord of res) {
-            if (contactRecord.status === "error") {
-                const errorId = crypto.getRandomString(10);
-                let message = "Zoho CRM record message: " + contactRecord.message;
-                if (!objects.isEmpty(contactRecord.details)) message = message + ", details: " + JSON.stringify(contactRecord.details);
-                logger.error(message, {
-                    error_id: errorId,
-                    code: contactRecord.code
-                });
-                await
-                syncQueue.updateOne({_id: docIds[i]}, {
-                    $set: {
-                        status: "error",
-                        error_id: errorId
-                    }
-                });
-            } else {
-                if (operation === "POST") {
-                    await users.updateOne({_id: syncDocs[i].user._id}, {$set: {zohocrm_contact_id: contactRecord.details.id}})
-                }
-                docsToDelete.push(docIds[i]);
+        if (zohoAccounts.length > 0) {
+            let errorIndexes = await zohoModuleSync(zohoAccounts, "accounts", false);
+            let count = 0;
+            for (let i of errorIndexes) {
+                zohoContacts.splice(i-count, 1);
+                count++;
             }
-            i++;
         }
+        await zohoModuleSync(zohoContacts, "contacts", true);
 
         await syncQueue.deleteMany({_id: { $in: docIds}});
     } catch (error) {
