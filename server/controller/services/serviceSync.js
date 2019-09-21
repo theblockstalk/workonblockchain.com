@@ -1,8 +1,8 @@
 const syncQueue = require('../../model/mongoose/sync_queue');
 const users = require('../../model/mongoose/users');
+const companies = require('../../model/mongoose/companies');
 const logger = require('./logger');
 const objects = require('./objects');
-const errors = require('./errors');
 const crypto = require('./crypto');
 const time = require('./time');
 const zoho = require('./zoho/zoho');
@@ -61,22 +61,36 @@ const syncZoho = async function (operation, syncDocs) {
 
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
-    let zohoData = [];
+    let zohoContacts = [], zohoAccounts;
     try {
         for (let syncDoc of syncDocs) {
             syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
             const zohoContact = await toZohoContact(syncDoc);
+            let zohoAccount;
+            if (syncDoc.company) {
+                zohoAccount = await toZohoAccount(syncDoc);
+
+                if (operation === "PATCH" && !zohoAccount.id) {
+                    let companyDoc = await companies.findOne({_id: syncDoc.company._id});
+                    if (!companyDoc.zohocrm_account_id) throw new Error("No zohocrm account id found on company: " + companyDoc._id)
+                    zohoAccount.id = companyDoc.zohocrm_account_id;
+                }
+
+                zohoAccounts.push(zohoAccount);
+            }
+
             if (operation === "PATCH" && !zohoContact.id) {
                 let userDoc = await users.findOne({_id: syncDoc.user._id});
                 if (!userDoc.zohocrm_contact_id) throw new Error("No zohocrm contact id found on user: " + userDoc._id)
                 zohoContact.id = userDoc.zohocrm_contact_id;
             }
-            zohoData.push(zohoContact);
+
+            zohoContacts.push(zohoContact);
         }
 
         let input = {
             body: {
-                data: zohoData
+                data: zohoContacts
             },
             duplicate_check_fields: ["Email"]
         };
@@ -137,6 +151,7 @@ const syncZoho = async function (operation, syncDocs) {
 
 const toZohoContact = async function (syncDoc) {
     const userDoc = syncDoc.user;
+    const companyDoc = syncDoc.company;
 
     let contact = {
         Contact_Status: "converted",
@@ -146,6 +161,7 @@ const toZohoContact = async function (syncDoc) {
         Last_Name: userDoc.last_name,
         Synced_from_server: true,
         Platform_ID: userDoc._id.toString(),
+        Platform_URL: settings.CLIENT.URL + "admins/talent/" + userDoc._id.toString(),
         Email_verified: userDoc.is_verify === 1,
         Account_disabled: userDoc.disable_account,
         Environment: settings.ENVIRONMENT
@@ -174,24 +190,60 @@ const toZohoContact = async function (syncDoc) {
             return lan.language + "\n";
         })
         if (candidateDoc.description) contact.Bio = candidateDoc.description;
+    } else {
+        contact.Created = convertZohoDate(companyDoc.created_date)
+        contact.Account_Name = convertZohoDate(companyDoc.company_name)
     }
 
-    // let companyDoc;
-    // if (syncDoc.company) companyDoc = syncDoc.company;
-
     return contact;
-};
+}
 
-let currentUserUTCOffsetHours;
+const toZohoAccount = async function (syncDoc) {
+    const userDoc = syncDoc.user;
+    const companyDoc = syncDoc.company;
+
+    let account = {
+        Account_Name: companyDoc.company_name,
+        Platform_ID: companyDoc._id.toString(),
+        Platform_URL: settings.CLIENT.URL + "admin-company-detail?user=" + userDoc._id.toString(),
+        Account_Types: ["Client"],
+        Synced_from_server: true,
+        Environment: settings.ENVIRONMENT,
+        Account_disabled: userDoc.disable_account,
+        Platform_Status: companyDoc.is_approved === 1 ? "approved" : "not approved",
+        Account_status: "Active",
+        Account_disabled: userDoc.disable_account,
+        Created: convertZohoDate(companyDoc.created_date)
+    };
+
+    if (companyDoc.company_country) account.Billing_Country = companyDoc.company_country;
+    if (companyDoc.zohocrm_account_id) account.id = companyDoc.zohocrm_account_id;
+
+    return account;
+}
+
+let zohoUserOffsetSeconds;
 
 const convertZohoDate = async function(date) {
     // TODO: convert dates based on current user time zone...
-    if (!currentUserUTCOffsetHours) {
+    if (!zohoUserOffsetSeconds) {
         const res = await zoho.users.getCurrentUser()
-        currentUserUTCOffsetHours = res.users[0].offset / (1000*60*60);
+        zohoUserOffsetSeconds = res.users[0].offset / 1000;
     }
-    if (date) return toISOString(date);
-    // if (date) return date.toISOString();
+    if (date) {
+        let now = new Date.now();
+        const localOffsetSeconds = now.getTimezoneOffset() * 60;
+        logger.debug("Date offsets", {
+            localHour: localOffsetSeconds/(60*60),
+            zohoUserHour: zohoUserOffsetSeconds/(60*60)
+        });
+        const diff = localOffsetSeconds - zohoUserOffsetSeconds
+        if (diff !== 0) {
+            time.addSeconds(date, diff);
+        }
+        return toISOString(date)
+    }
+    // if (date) return date.toISOString(); // does not work
 }
 
 const toISOString = function(date) {

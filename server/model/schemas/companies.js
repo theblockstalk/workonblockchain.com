@@ -63,6 +63,7 @@ module.exports = new Schema({
         type: String,
         maxlength: 3000
     },
+    zohocrm_account_id: String,
     discount: Number,
     pricing_plan: {
         type: String,
