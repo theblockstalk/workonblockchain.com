@@ -38,7 +38,7 @@ describe('zoho tokens', function () {
 
         it('should get new auth token', async function () {
             await zoho.initialize();
-            await zoho.generateAuthTokens();
+            // await zoho.generateAuthTokens();
         })
     })
 });
