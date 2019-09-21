@@ -46,7 +46,7 @@ describe('service syncronization', function () {
         }
         res = await zoho.accounts.search({
             params: {
-                criteria: "((Account_Name:equals:" + company.company_name + "))"
+                criteria: "((Account_Name:equals:" + testContact.company_name + "))"
             }
         });
         if (res && res.length > 0) {
@@ -122,21 +122,26 @@ describe('service syncronization', function () {
 
             const userDoc = await users.findOneByEmail(company.email);
             const companyDoc = await companies.findOne({company_name: company.company_name});
-            const zohoContact = await zoho.contacts.search({
+            let res = await zoho.contacts.search({
                 params: {
                     email: getSyncTestEmail
                 }
             });
-            const zohoAccount = await zoho.accounts.search({
+            const zohoContact = res.data[0];
+            res = await zoho.accounts.search({
                 params: {
                     criteria: "((Account_Name:equals:" + company.company_name + "))"
                 }
             });
-            zohoContact[0].First_Name.should.equal(userDoc.first_name);
-            zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
-            zohoContact[0].Last_Name.should.equal(userDoc.last_name);
-            zohoAccount[0].Account_Name.should.equal(companyDoc.company_name);
-            zohoAccount[0].Account_Name.should.equal(companyDoc.company_name);
+            const zohoAccount = res.data[0];
+            zohoContact.First_Name.should.equal(companyDoc.first_name);
+            zohoContact.Last_Name.should.equal(companyDoc.last_name);
+            zohoContact.Contact_type[0].should.equal("company");
+            zohoContact.Account_Name.id.should.equal(zohoAccount.id);
+
+            zohoAccount.Account_Name.should.equal(companyDoc.company_name);
+            zohoAccount.Account_status.should.equal("Active");
+            zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
         })
     })
 })

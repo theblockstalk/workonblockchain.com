@@ -227,7 +227,6 @@ const toZohoAccount = async function (syncDoc) {
         Account_Types: ["Client"],
         Synced_from_server: true,
         Environment: settings.ENVIRONMENT,
-        Account_disabled: userDoc.disable_account,
         Platform_Status: companyDoc.is_approved === 1 ? "approved" : "not approved",
         Account_status: "Active",
         Account_disabled: userDoc.disable_account,
