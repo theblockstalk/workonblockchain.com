@@ -52,5 +52,9 @@
   "linkedinConfig" : {
     "clientId": "861pkvi3iz4wp2",
     "redirectUrl": "https://workonblockchain.com/linkedin-auth"
+  },
+  "zoho":  {
+    "client_id": "1000.4V7222FWHZA801116DRCZI5B33ZPAH",
+    "redirect_url": "https://workonblockchain.com/zohoCallback"
   }
 }

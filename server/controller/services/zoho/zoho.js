@@ -1,15 +1,16 @@
 const zcrm = require('zcrmsdk');
 const objects = require('../objects');
 const logger = require('../logger');
+const settings = require('../../../settings');
 // https://www.npmjs.com/package/@trifoia/zcrmsdk
 
 const user_identifier = "zcrm_default_user";
 
 const config = {
-    client_id: "1000.GP605I5C44F549062Y0ILIZMN9C79H",
-    client_secret: "ac997b24a847c640c0a136b636714617247f97c9d8",
-    redirect_url: "https://workonblockchain.com/test2callback",
-    refresh_token: "1000.cbee596d5eb6ce577c906c22c3511707.215021531ec1240e0e3b96b02ecd6fab",
+    client_id: settings.ZOHO.client_id,
+    client_secret: settings.ZOHO.client_secret,
+    redirect_url: settings.ZOHO.redirect_url,
+    refresh_token: settings.ZOHO.refresh_token,
     mysql_module: "../../../../controller/services/zoho/mysql_module"
 };
 
@@ -18,7 +19,7 @@ module.exports.initialize = async function () {
 }
 
 module.exports.generateAuthTokens = async function () {
-    const grant_token = "1000.2f5a14e7786da2c47121a55f8f91f5ac.f7090f8d6013cd91eecd96c9ceeafc6e"; // valid for max 10 mins
+    const grant_token = "1000.ba59c76cc16887ae9d474dfe8a73234f.7ce1091d0c78affad4daae908316f444"; // valid for max 10 mins
     const auth_response = await  zcrm.generateAuthTokens(user_identifier, grant_token);
 
     console.log(auth_response);
