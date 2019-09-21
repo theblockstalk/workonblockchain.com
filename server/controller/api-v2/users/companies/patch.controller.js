@@ -331,13 +331,13 @@ module.exports.endpoint = async function (req, res) {
             pushObj.$set = employerUpdate;
             await companies.update({ _id: employerDoc._id },pushObj);
         }
-        else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+        else await companies.updateOne({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
 
         await serviceSync.pushToQueue("PATCH", {
-            user: updatedEmployerDoc,
-            company: updatedEmployerDoc._creator
+            user: updatedEmployerDoc._creator,
+            company: updatedEmployerDoc
         });
         res.send(updatedEmployerDoc);
     }
