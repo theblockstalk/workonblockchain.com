@@ -245,20 +245,35 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if(enumerations.euCountries.indexOf(queryBody.company_country) === -1 || (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no') || (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')) {
-            if(req.file && req.file.path) {
-                dtaDocEmail.sendEmail(employerDoc['company_name'],employerDoc['company_country'],req.file.path, userId);
-                employerUpdate.dta_doc_link = req.file.path;
-            }
-            if (!req.query.admin) userUpdate.is_approved = 0;
-            if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no')
-                employerUpdate.canadian_commercial_company = false;
+        if(queryBody.company_country && enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
+            userUpdate.is_approved = 1;
 
-            if(queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no')
-                employerUpdate.usa_privacy_shield = false;
+            const requireDta = function() {
+                if(req.file && req.file.path) {
+                    dtaDocEmail.sendEmail(queryBody.company_name, queryBody.company_country, req.file.path, userId);
+                    employerUpdate.dta_doc_link = req.file.path;
+                    userUpdate.is_approved = 0;
+                } else {
+                    errors.throwError("DTA document upload required", 400)
+                }
+            }
+
+            if (queryBody.company_country === "Canada") {
+                if (!queryBody.canadian_commercial_company) errors.throwError("Must answer question as a Canadian company", 400);
+                if (queryBody.canadian_commercial_company === 'no') requireDta()
+            } else if (queryBody.company_country === "United States") {
+                if (!queryBody.usa_privacy_shield) errors.throwError("Must answer question as a US company", 400);
+                if (queryBody.usa_privacy_shield === 'no') requireDta()
+            } else {
+                requireDta()
+            }
+
+            if (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'no' ) employerUpdate.canadian_commercial_company = false;
+            if (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'no' ) employerUpdate.usa_privacy_shield = false;
         }
-        if((!(enumerations.euCountries.indexOf(queryBody.company_country) === -1) && !queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
+        if((!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
             employerUpdate.company_logo = req.file.path;
+
         else {
             if(queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'yes') {
                 employerUpdate.canadian_commercial_company = true;

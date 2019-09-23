@@ -126,6 +126,7 @@ export class GDPRComplianceComponent implements OnInit {
     console.log('submitted');
     let errorCount = 0;
     let formData = new FormData();
+    formData.append('company_country', this.companyDoc['company_country']);
     if(this.companyDoc['company_country'] === 'Canada') {
       if (this.commercial_canada && this.commercial_canada === 'no') {
         console.log(this.commercial_canada);
@@ -136,7 +137,7 @@ export class GDPRComplianceComponent implements OnInit {
         this.commercial_canada_error = 'Please choose an option';
       }
       if (this.commercial_canada && this.commercial_canada === 'yes') {
-        errorCount = 0;
+        errorCount = 1;
         formData.append('canadian_commercial_company', this.commercial_canada);
       }
     }
@@ -152,7 +153,7 @@ export class GDPRComplianceComponent implements OnInit {
         this.us_privacy_shield_error = 'Please choose an option';
       }
       if (this.us_privacy_shield && this.us_privacy_shield === 'yes') {
-        errorCount = 0;
+        errorCount = 1;
         formData.append('usa_privacy_shield', this.us_privacy_shield);
       }
     }
@@ -161,6 +162,7 @@ export class GDPRComplianceComponent implements OnInit {
     console.log('before 0 if');
     console.log(errorCount);
     if(errorCount === 0 && (constants.eu_countries.indexOf(this.companyDoc['company_country']) || this.us_privacy_shield === 'no' || this.commercial_canada === 'no')){
+      console.log('go in db yes with file');
       console.log('in if top');
       let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
