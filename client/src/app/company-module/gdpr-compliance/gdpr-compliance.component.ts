@@ -194,8 +194,19 @@ export class GDPRComplianceComponent implements OnInit {
   }
 
   sendDTADoc(data){
-    console.log('in sendDTADoc ftn');
-    console.log(data);
+    if(data.get('usa_privacy_shield') === 'yes') {
+      data.set('usa_privacy_shield', true);
+    }
+    if(data.get('usa_privacy_shield') === 'no') {
+      data.set('usa_privacy_shield', false);
+    }
+
+    if(data.get('canadian_commercial_company') === 'yes') {
+      data.set('canadian_commercial_company', true);
+    }
+    if(data.get('canadian_commercial_company') === 'no') {
+      data.set('canadian_commercial_company', false);
+    }
     this.authenticationService.edit_company_profile(this.currentUser._id ,data , false)
     .subscribe(
       data => {
