@@ -148,7 +148,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         company_name: "Mwan Mobile",
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
-        company_country: "Pakistan",
+        company_country: "Canada",
         company_postcode: "44000",
         company_city: "rawalpindi",
         company_founded:2013,
@@ -400,6 +400,7 @@ module.exports.companyGDPRDOc = function companyGDPRDOc(){
 
 module.exports.companyGDPR = function companyGDPR(){
     return {
+        'company_country': "Canada",
         'canadian_commercial_company': 'no'
     }
 }

@@ -77,6 +77,7 @@ module.exports.companygdprData = async function companygdprData(user_id, jwtToke
     const res = await chai.request(server)
         .patch('/v2/users/companies?user_id='+ user_id)
         .set('Authorization', jwtToken)
+        .field('company_country', gdprData.company_country)
         .field('canadian_commercial_company', gdprData.canadian_commercial_company)
         .attach('company_logo', myFile, gdprDoc.name);
     res.should.have.status(200);
