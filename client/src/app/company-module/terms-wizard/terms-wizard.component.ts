@@ -25,7 +25,7 @@ export class TermsWizardComponent implements OnInit {
   preference;
   pref_active_class;
   pref_disable;
-  privacy_id;price_plan_active_class;gdpr_compliance_active_class;
+  privacy_id;price_plan_active_class;gdpr_compliance_active_class;pricing_disable
   gdpr_disable;
 
   constructor(private route: ActivatedRoute,
@@ -37,6 +37,7 @@ export class TermsWizardComponent implements OnInit {
   ngOnInit() {
     this.about_disable= "disabled";
     this.pref_disable = "disabled";
+    this.pricing_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     this.gdpr_disable = "disabled";
@@ -98,7 +99,10 @@ export class TermsWizardComponent implements OnInit {
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
+            if(data['pricing_plan']) {
+              this.pricing_disable = "";
+              this.price_plan_active_class = 'fa fa-check-circle text-success';
+            }
 
             console.log(constants.eu_countries.indexOf(data['company_country']));
             if(constants.eu_countries.indexOf(data['company_country']) === -1) {

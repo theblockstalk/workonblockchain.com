@@ -8,6 +8,7 @@ const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
 const dtaDocEmail = require('../../../services/email/emails/dtaDocEmail');
+const filterReturnData = require('../filterReturnData');
 
 module.exports.request = {
     type: 'patch',
@@ -367,7 +368,10 @@ module.exports.endpoint = async function (req, res) {
         else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
-        res.send(updatedEmployerDoc);
+        const employerProfileRemovedData = filterReturnData.removeSensativeData(JSON.parse(JSON.stringify(updatedEmployerDoc._creator)));
+        let employerCreatorRes = updatedEmployerDoc;
+        employerCreatorRes._creator = employerProfileRemovedData;
+        res.send(employerCreatorRes);
     }
     else {
         errors.throwError("Company account not found", 404);

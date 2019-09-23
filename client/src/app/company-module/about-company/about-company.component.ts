@@ -45,6 +45,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   prefil_image;
   hear_about_wob;otherReasons;price_plan_active_class;
   gdpr_disable;gdpr_compliance_active_class;
+  pricing_disable = "";
 
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
@@ -72,6 +73,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     this.gdpr_disable = 'disabled';
+    this.pricing_disable='disabled';
     this.pref_disable='disabled';
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
 
@@ -114,7 +116,10 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.pref_disable = '';
               this.about_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
+            if(data['pricing_plan']) {
+              this.pricing_disable = '';
+              this.price_plan_active_class = 'fa fa-check-circle text-success';
+            }
 
             if(constants.eu_countries.indexOf(data['company_country']) === -1) {
               if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
