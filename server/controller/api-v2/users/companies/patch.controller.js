@@ -368,7 +368,7 @@ module.exports.endpoint = async function (req, res) {
         else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
-        const employerProfileRemovedData = filterReturnData.removeSensativeData(JSON.parse(JSON.stringify(updatedEmployerDoc._creator)));
+        const employerProfileRemovedData = filterReturnData.removeSensativeData(objects.copyObject(updatedEmployerDoc._creator));
         let employerCreatorRes = updatedEmployerDoc;
         employerCreatorRes._creator = employerProfileRemovedData;
         res.send(employerCreatorRes);
