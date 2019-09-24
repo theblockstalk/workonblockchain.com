@@ -252,11 +252,11 @@ module.exports.endpoint = async function (req, res) {
             }
 
             if (queryBody.company_country === "Canada") {
-                if (!queryBody.canadian_commercial_company) errors.throwError("Must answer question as a Canadian company", 400);
-                if (queryBody.canadian_commercial_company && queryBody.canadian_commercial_company === 'false') requireDta()
+                if (!queryBody.canadian_commercial_company && queryBody.canadian_commercial_company !== false) errors.throwError("Must answer question as a Canadian company", 400);
+                if (queryBody.canadian_commercial_company === 'false') requireDta()
             } else if (queryBody.company_country === "United States") {
-                if (!queryBody.usa_privacy_shield) errors.throwError("Must answer question as a US company", 400);
-                if (queryBody.usa_privacy_shield && queryBody.usa_privacy_shield === 'false') requireDta()
+                if (!queryBody.usa_privacy_shield  && queryBody.usa_privacy_shield !== false) errors.throwError("Must answer question as a US company", 400);
+                if (queryBody.usa_privacy_shield === 'false') requireDta()
             } else {
                 requireDta();
             }
