@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /admin-dashboard
+Disallow: /admin-candidate-search
+Disallow: /admin-display-chat
+Disallow: /admin-company-search
+Disallow: /admin-company-detail
+Disallow: /update-candidate-profile
+Disallow: /style-guide
+Disallow: /update-company-profile
+Disallow: /admin-candidate-detail
+Disallow: /admins/talent/*/edit
+Disallow: /admins/pages/*/edit
+Disallow: /admins/talent/*
+Disallow: /admins/company/*
