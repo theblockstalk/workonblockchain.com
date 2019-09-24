@@ -4,7 +4,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
 
 <url>
@@ -13,27 +12,32 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/</loc>
+  <loc>https://workonblockchain.com/companies</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/companies</loc>
+  <loc>https://workonblockchain.com/signup</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/referral</loc>
+  <loc>https://workonblockchain.com/contact-us</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/signup</loc>
+  <loc>https://workonblockchain.com/pages/candidate-terms</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/login</loc>
+  <loc>https://workonblockchain.com/pages/company-terms</loc>
+  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://workonblockchain.com/pages/faq</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
@@ -43,37 +47,7 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://workonblockchain.com/production/contact-us</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/pages/candidate-terms</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/pages/company-terms</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/pages/faq</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/pages/privacy-notice</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/pricing</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/production/forgot_password</loc>
+  <loc>https://workonblockchain.com/forgot_password</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.64</priority>
 </url>
@@ -89,11 +63,6 @@
 </url>
 <url>
   <loc>https://workonblockchain.com/pricing</loc>
-  <lastmod>2019-09-24T05:32:40+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://workonblockchain.com/pages/company-terms</loc>
   <lastmod>2019-09-24T05:32:40+00:00</lastmod>
   <priority>0.64</priority>
 </url>
