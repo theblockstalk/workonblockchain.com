@@ -596,6 +596,12 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
+      if(profileForm.value.usa_privacy_shield === 'yes') profileForm.value.usa_privacy_shield === true;
+      if(profileForm.value.usa_privacy_shield === 'no') profileForm.value.usa_privacy_shield === false;
+
+      if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company === true;
+      if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company === false;
+
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
