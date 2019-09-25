@@ -38,6 +38,9 @@ const bodySchema = new Schema({
     country_code: {
         type:String
     },
+    company_name:{
+        type:String
+    },
     company_phone: {
         type:String
     },
