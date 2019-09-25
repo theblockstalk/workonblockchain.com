@@ -10,6 +10,7 @@ const Users = require('../../../../model/mongoose/users');
 const referral = require('../../../../model/mongoose/referrals');
 const verify_send_email = require('../auth/verify_send_email');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
+const serviceSync = require('../../../services/serviceSync');
 
 module.exports.request = {
     type: 'post',
@@ -167,6 +168,12 @@ module.exports.endpoint = async function (req, res) {
                 referedCompanyEmail.sendEmail(data, false);
             }
             //end
+            companyUserCreated.session_started = set.session_started;
+            await serviceSync.pushToQueue("POST", {
+                user: companyUserCreated,
+                company: employerDoc
+            });
+
             res.send({
                 company_id:employerDoc._id,
                 _id: companyUserCreated._id,

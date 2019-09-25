@@ -5,11 +5,10 @@ const userHelpers = require('../../otherHelpers/usersHelpers');
 const fs = require('fs');
 chai.use(chaiHttp);
 
-const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
+const signupCompany = module.exports.signupCompany = async function (company) {
     const res = await chai.request(server)
         .post('/v2/users/companies')
         .send(company);
-    res.should.have.status(200);
     return res;
 }
 

@@ -311,23 +311,6 @@ module.exports = {
             },
         }
     },
-    status:{ //DELETE ME
-        type:[{
-            status: {
-                type: String,
-                enum: enumerations.candidateStatus,
-                required:true,
-            },
-            reason: {
-                type: String,
-                enum: enumerations.statusReasons
-            },
-            timestamp: {
-                type: Date,
-                required:true,
-            }
-        }]
-    },
     history : {
         type : [{
             status:{

@@ -7,6 +7,7 @@ const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
+const serviceSync = require('../../../services/serviceSync');
 const dtaDocEmail = require('../../../services/email/emails/dtaDocEmail');
 const filterReturnData = require('../filterReturnData');
 
@@ -28,9 +29,6 @@ const bodySchema = new Schema({
         type:String
     },
     job_title: {
-        type:String
-    },
-    company_name: {
         type:String
     },
     company_website: {
@@ -366,9 +364,14 @@ module.exports.endpoint = async function (req, res) {
             pushObj.$set = employerUpdate;
             await companies.update({ _id: employerDoc._id },pushObj);
         }
-        else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+        else await companies.updateOne({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
+
+        await serviceSync.pushToQueue("PATCH", {
+            user: updatedEmployerDoc._creator,
+            company: updatedEmployerDoc
+        });
         const employerProfileRemovedData = filterReturnData.removeSensativeData(objects.copyObject(updatedEmployerDoc._creator));
         let employerCreatorRes = updatedEmployerDoc;
         employerCreatorRes._creator = employerProfileRemovedData;

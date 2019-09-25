@@ -63,6 +63,7 @@ module.exports = new Schema({
         type: String,
         maxlength: 3000
     },
+    zohocrm_account_id: String,
     canadian_commercial_company: Boolean,
     usa_privacy_shield: Boolean,
     dta_doc_link: {

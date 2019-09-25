@@ -30,6 +30,9 @@ module.exports = new Schema({
     sendgrid_id: {
         type: String
     },
+    zohocrm_contact_id: {
+        type: String
+    },
     linkedin_id : {
         type: String
     },

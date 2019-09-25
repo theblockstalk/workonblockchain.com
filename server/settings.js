@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const isLiveApplication = settings.isLiveApplication = function () {
     return settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging'
-}
+};
 
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
@@ -65,7 +65,7 @@ if (isLiveApplication()) {
     settings.AMPLITUDE = {
         API_KEY: process.env.AMPLITUDE_API_KEY,
         SECRET_API_KEY: process.env.AMPLITUDE_SECRET_API_KEY
-    }
+    };
 } else if (settings.ENVIRONMENT === 'migrate') {
     settings.MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 
@@ -88,8 +88,13 @@ settings.CRON = {
     UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
     AUTO_NOTIFICATION: config.cron.autoNotification,
     SYNC_SENDGRID: config.cron.syncSendgrid,
-    NEW_MESSAGES_EMAIL: config.cron.newMessagesEmail
+    NEW_MESSAGES_EMAIL: config.cron.newMessagesEmail,
+    SERVICE_QUEUE: config.cron.serviceQueue
 };
+
+settings.ZOHO = config.zoho;
+settings.ZOHO.client_secret = process.env.ZOHO_CLIENT_SECRET;
+settings.ZOHO.refresh_token = process.env.ZOHO_REFRESH_TOKEN;
 
 settings.googleCredentials = config.googleConfig;
 

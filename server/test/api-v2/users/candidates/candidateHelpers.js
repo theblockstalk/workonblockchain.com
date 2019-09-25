@@ -7,11 +7,9 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const signupCandidate = module.exports.signupCandidate = async function signupCandidate(candidate) {
-    const res = await chai.request(server)
+    return await chai.request(server)
         .post('/v2/users/candidates')
         .send(candidate);
-    res.should.have.status(200);
-    return res;
 }
 
 

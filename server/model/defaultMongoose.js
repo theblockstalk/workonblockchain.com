@@ -5,10 +5,6 @@ let defaultFunctions = function(model) {
     }
 
     return {
-        findSortLimitSkip: async function(selector, sorter, limit, skip){
-            return await model.find(selector).sort(sorter).limit(limit).skip(skip).lean();
-        },
-
         insert: async function (data) {
             let newDoc = new model(data);
 
@@ -25,6 +21,10 @@ let defaultFunctions = function(model) {
             return await model.findById(id).lean();
         },
 
+        findSortLimitSkip: async function(selector, sorter, limit, skip){
+            return await model.find(selector).sort(sorter).limit(limit).skip(skip).lean();
+        },
+
         findWithCursor: findWithCursor,
 
         findAndIterate: async function (selector, fn) {
@@ -36,14 +36,18 @@ let defaultFunctions = function(model) {
             }
         },
 
+        updateOne: async function (selector, updateObj) {
+            return await model.findOneAndUpdate(selector, updateObj, { runValidators: true, useFindAndModify: false });
+        },
+
         deleteOne: async function (selector) {
-            await model.findOne(selector).remove();
+            return await model.findOne(selector).remove();
         },
 
         count: async function (selector) {
             return new Promise(function (resolve, reject) {
                 try {
-                    model.count(selector, function (err1, result) {
+                    model.countDocuments(selector, function (err1, result) {
                         if (err1) reject(err1);
                         resolve(result);
                     })
@@ -53,6 +57,6 @@ let defaultFunctions = function(model) {
             })
         }
     }
-}
+};
 
 module.exports = defaultFunctions;
