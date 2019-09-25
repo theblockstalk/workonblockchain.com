@@ -10,6 +10,9 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'migrate') {
     settings.ENVIRONMENT = 'migrate';
     config = require('./config/default.json');
+} else if (process.env.NODE_ENV === 'test-all') {
+    settings.ENVIRONMENT = 'test-all';
+    config = require('./config/default.json');
 } else {
     process.env.NODE_ENV = 'test';
     settings.ENVIRONMENT = 'test';

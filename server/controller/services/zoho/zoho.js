@@ -6,6 +6,13 @@ const settings = require('../../../settings');
 
 const user_identifier = "zcrm_default_user";
 
+// const config = {
+//     client_id: "1000.MACIVJL4B1EX42195CBNNAKZRJYF5H",//settings.ZOHO.client_id,
+//     client_secret: "35942e0447b929f9b4b22069430b7cb52f4760df2e",//settings.ZOHO.client_secret,
+//     redirect_url: "https://wob.com/call",//settings.ZOHO.redirect_url,
+//     refresh_token: settings.ZOHO.refresh_token,
+//     mysql_module: "../../../../controller/services/zoho/mysql_module"
+// };
 const config = {
     client_id: settings.ZOHO.client_id,
     client_secret: settings.ZOHO.client_secret,
@@ -19,7 +26,7 @@ module.exports.initialize = async function () {
 }
 
 module.exports.generateAuthTokens = async function () {
-    const grant_token = "1000.ba59c76cc16887ae9d474dfe8a73234f.7ce1091d0c78affad4daae908316f444"; // valid for max 10 mins
+    const grant_token = "1000.0c4a3d0ca5ec92ac9eed9895618eaec6.08822d04c79353d1241e11f321b18bf6"; // valid for max 10 mins
     const auth_response = await  zcrm.generateAuthTokens(user_identifier, grant_token);
 
     console.log(auth_response);
@@ -61,7 +68,7 @@ const zohoModuleAPI = function (module) {
         // https://www.zoho.com/crm/developer/docs/api/get-records.html
         getMany: async function (input) {
             if (input.id) throw new Error("Cannot provide record id");
-            return await zohoAPIparse(module, input);
+            return await zohoAPIparse(zcrm.API.MODULES.get, module, input);
         },
 
         // https://www.zoho.com/crm/developer/docs/api/get-specific-record.html
