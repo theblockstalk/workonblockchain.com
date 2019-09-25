@@ -37,8 +37,7 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
 
         afterEach(async function () {
             console.log('removing test contact');
-            let res = await
-            zoho.contacts.search({
+            let res = await zoho.contacts.search({
                 params: {
                     email: getSyncTestEmail
                 }
@@ -48,15 +47,13 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                     id: res.data[0].id
                 });
             }
-            res = await
-            zoho.accounts.search({
+            res = await zoho.accounts.search({
                 params: {
                     criteria: "((Account_Name:equals:" + testContact.company_name + "))"
                 }
             });
             if (res.data && res.data.length > 0) {
-                await
-                zoho.accounts.deleteOne({
+                await zoho.accounts.deleteOne({
                     id: res.data[0].id
                 });
             }
@@ -76,14 +73,15 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 await serviceSync.pullFromQueue();
 
                 const userDoc = await users.findOneByEmail(candidate.email);
-                const zohoContact = await zoho.contacts.search({
+                const res = await zoho.contacts.search({
                     params: {
                         email: getSyncTestEmail
                     }
                 });
-                zohoContact[0].First_Name.should.equal(userDoc.first_name);
-                zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
-                zohoContact[0].Last_Name.should.equal(userDoc.last_name);
+                const zohoContact = res.data[0];
+                zohoContact.First_Name.should.equal(userDoc.first_name);
+                zohoContact.Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+                zohoContact.Last_Name.should.equal(userDoc.last_name);
             })
 
             it('should sync a patched candidate', async function () {
@@ -107,13 +105,14 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 expect(syncDocCount).to.equal(0);
 
                 const userDoc = await users.findOneByEmail(candidate.email);
-                const zohoContact = await zoho.contacts.search({
+                const res = await zoho.contacts.search({
                     params: {
                         email: getSyncTestEmail
                     }
                 });
-                zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
-                zohoContact[0].Last_Name.should.equal(userDoc.last_name);
+                const zohoContact = res.data[0];
+                zohoContact.Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+                zohoContact.Last_Name.should.equal(userDoc.last_name);
             })
 
             it('should sync a new company', async function () {
