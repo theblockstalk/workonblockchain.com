@@ -6,20 +6,20 @@ const settings = require('../../../settings');
 
 const user_identifier = "zcrm_default_user";
 
-const config = {
-    client_id: "1000.MACIVJL4B1EX42195CBNNAKZRJYF5H",//settings.ZOHO.client_id,
-    client_secret: "35942e0447b929f9b4b22069430b7cb52f4760df2e",//settings.ZOHO.client_secret,
-    redirect_url: "https://wob.com/call",//settings.ZOHO.redirect_url,
-    refresh_token: settings.ZOHO.refresh_token,
-    mysql_module: "../../../../controller/services/zoho/mysql_module"
-};
 // const config = {
-//     client_id: settings.ZOHO.client_id,
-//     client_secret: settings.ZOHO.client_secret,
-//     redirect_url: settings.ZOHO.redirect_url,
+//     client_id: "1000.MACIVJL4B1EX42195CBNNAKZRJYF5H",//settings.ZOHO.client_id,
+//     client_secret: "35942e0447b929f9b4b22069430b7cb52f4760df2e",//settings.ZOHO.client_secret,
+//     redirect_url: "https://wob.com/call",//settings.ZOHO.redirect_url,
 //     refresh_token: settings.ZOHO.refresh_token,
 //     mysql_module: "../../../../controller/services/zoho/mysql_module"
 // };
+const config = {
+    client_id: settings.ZOHO.client_id,
+    client_secret: settings.ZOHO.client_secret,
+    redirect_url: settings.ZOHO.redirect_url,
+    refresh_token: settings.ZOHO.refresh_token,
+    mysql_module: "../../../../controller/services/zoho/mysql_module"
+};
 
 module.exports.initialize = async function () {
     await zcrm.initialize(config);
