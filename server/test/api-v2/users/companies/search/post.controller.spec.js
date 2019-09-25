@@ -67,7 +67,7 @@ describe('admin search company by filter', function () {
             const userDoc = await Users.findOne({email: company.email});
 
             const data = {
-                is_approved : 1
+                is_approved : 0
             };
             const getAllCompanies = await companyHelper.getCompanies(data,userDoc.jwt_token);
 
