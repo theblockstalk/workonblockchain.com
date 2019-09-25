@@ -176,6 +176,7 @@ describe('service syncronization', function () {
                 const companyUserDoc = await users.findOneByEmail(company.email);
 
                 const updatedData = await docGenerator.companyUpdateProfile();
+                delete updatedData.company_name;
                 await companyHelper.companyProfileData(companyUserDoc._creator, companyUserDoc.jwt_token , updatedData);
 
                 let syncDocCount = await syncQueue.count({status: 'pending'});
