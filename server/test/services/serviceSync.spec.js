@@ -26,8 +26,10 @@ const testContact = {
 const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
 const getSyncTestEmail = syncTestEmail.replace("+","%2B");
 
-if (settings.ENVIRONMENT === 'test-all') {
+// if (settings.ENVIRONMENT === 'test-all') {
     describe('service syncronization', function () {
+        this.timeout(7000);
+
         beforeEach(async function() {
             await zoho.initialize();
             await zoho.generateAuthTokenfromRefreshToken();
@@ -35,35 +37,31 @@ if (settings.ENVIRONMENT === 'test-all') {
 
         afterEach(async function () {
             console.log('removing test contact');
-            if (settings.isLiveApplication()) {
-                let res = await
-                zoho.contacts.search({
-                    params: {
-                        email: getSyncTestEmail
-                    }
-                });
-                if (res.data && res.data.length > 0) {
-                    await
-                    zoho.contacts.deleteOne({
-                        id: res[0].id
-                    });
+            let res = await
+            zoho.contacts.search({
+                params: {
+                    email: getSyncTestEmail
                 }
-                res = await
-                zoho.accounts.search({
-                    params: {
-                        criteria: "((Account_Name:equals:" + testContact.company_name + "))"
-                    }
+            });
+            if (res.data && res.data.length > 0) {
+                await zoho.contacts.deleteOne({
+                    id: res.data[0].id
                 });
-                if (res.data && res.data.length > 0) {
-                    await
-                    zoho.accounts.deleteOne({
-                        id: res[0].id
-                    });
-                }
-                console.log('dropping database');
-                await
-                mongo.drop();
             }
+            res = await
+            zoho.accounts.search({
+                params: {
+                    criteria: "((Account_Name:equals:" + testContact.company_name + "))"
+                }
+            });
+            if (res.data && res.data.length > 0) {
+                await
+                zoho.accounts.deleteOne({
+                    id: res.data[0].id
+                });
+            }
+            console.log('dropping database');
+            await mongo.drop();
         })
 
         describe('sync different documents', function () {
@@ -197,4 +195,4 @@ if (settings.ENVIRONMENT === 'test-all') {
             })
         })
     })
-}
+// }

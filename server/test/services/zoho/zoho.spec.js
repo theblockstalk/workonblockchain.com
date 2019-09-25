@@ -1,3 +1,4 @@
+const server = require('../../../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
@@ -10,7 +11,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-if (settings.ENVIRONMENT === 'test-all') {
+// if (settings.ENVIRONMENT === 'test-all') {
     describe('zoho tokens', function () {
         this.timeout(7000);
 
@@ -41,4 +42,4 @@ if (settings.ENVIRONMENT === 'test-all') {
             })
         })
     });
-}
+// }
