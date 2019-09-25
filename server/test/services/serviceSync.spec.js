@@ -26,166 +26,175 @@ const testContact = {
 const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
 const getSyncTestEmail = syncTestEmail.replace("+","%2B");
 
-describe('service syncronization', function () {
-    beforeEach(async function() {
-        await zoho.initialize();
-        await zoho.generateAuthTokenfromRefreshToken();
-    })
+if (settings.ENVIRONMENT === 'test-all') {
+    describe('service syncronization', function () {
+        beforeEach(async function() {
+            await zoho.initialize();
+            await zoho.generateAuthTokenfromRefreshToken();
+        })
 
-    afterEach(async function () {
-        console.log('removing test contact');
-        let res = await zoho.contacts.search({
-            params: {
-                email: getSyncTestEmail
+        afterEach(async function () {
+            console.log('removing test contact');
+            if (settings.isLiveApplication()) {
+                let res = await
+                zoho.contacts.search({
+                    params: {
+                        email: getSyncTestEmail
+                    }
+                });
+                if (res.data && res.data.length > 0) {
+                    await
+                    zoho.contacts.deleteOne({
+                        id: res[0].id
+                    });
+                }
+                res = await
+                zoho.accounts.search({
+                    params: {
+                        criteria: "((Account_Name:equals:" + testContact.company_name + "))"
+                    }
+                });
+                if (res.data && res.data.length > 0) {
+                    await
+                    zoho.accounts.deleteOne({
+                        id: res[0].id
+                    });
+                }
+                console.log('dropping database');
+                await
+                mongo.drop();
             }
-        });
-        if (res.data && res.data.length > 0) {
-            await zoho.contacts.deleteOne({
-                id: res[0].id
-            });
-        }
-        res = await zoho.accounts.search({
-            params: {
-                criteria: "((Account_Name:equals:" + testContact.company_name + "))"
-            }
-        });
-        if (res.data && res.data.length > 0) {
-            await zoho.accounts.deleteOne({
-                id: res[0].id
-            });
-        }
-        console.log('dropping database');
-        await mongo.drop();
-    })
-
-    describe('sync different documents', function () {
-
-        it('should sync a new candidate', async function () {
-            const candidate = docGenerator.candidate();
-            candidate.email = testContact.email;
-            candidate.first_name = testContact.first_name;
-
-            await candidateHelper.signupCandidate(candidate);
-
-            await serviceSync.pullFromQueue();
-
-            const userDoc = await users.findOneByEmail(candidate.email);
-            const zohoContact = await zoho.contacts.search({
-                params: {
-                    email: getSyncTestEmail
-                }
-            });
-            zohoContact[0].First_Name.should.equal(userDoc.first_name);
-            zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
-            zohoContact[0].Last_Name.should.equal(userDoc.last_name);
         })
 
-        it('should sync a patched candidate', async function () {
-            const candidate = docGenerator.candidate();
-            candidate.email = testContact.email;
-            candidate.first_name = testContact.first_name;
-            const profileData = docGenerator.candidateProfile();
+        describe('sync different documents', function () {
 
-            await candidateHelper.candidateProfile(candidate, profileData);
+            it('should sync a new candidate', async function () {
+                const candidate = docGenerator.candidate();
+                candidate.email = testContact.email;
+                candidate.first_name = testContact.first_name;
 
-            let  candidateUserDoc = await users.findOne({email: candidate.email});
-            const candidateEditProfileData = docGenerator.candidateProfileUpdate();
+                await candidateHelper.signupCandidate(candidate);
 
-            await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
+                await serviceSync.pullFromQueue();
 
-            let syncDocCount = await syncQueue.count({status: 'pending'});
-            expect(syncDocCount).to.equal(2, "1x POST and 1x PATCH should be found");
+                const userDoc = await users.findOneByEmail(candidate.email);
+                const zohoContact = await zoho.contacts.search({
+                    params: {
+                        email: getSyncTestEmail
+                    }
+                });
+                zohoContact[0].First_Name.should.equal(userDoc.first_name);
+                zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+                zohoContact[0].Last_Name.should.equal(userDoc.last_name);
+            })
 
-            await serviceSync.pullFromQueue();
-            syncDocCount = await syncQueue.count({status: 'pending'});
-            expect(syncDocCount).to.equal(0);
+            it('should sync a patched candidate', async function () {
+                const candidate = docGenerator.candidate();
+                candidate.email = testContact.email;
+                candidate.first_name = testContact.first_name;
+                const profileData = docGenerator.candidateProfile();
 
-            const userDoc = await users.findOneByEmail(candidate.email);
-            const zohoContact = await zoho.contacts.search({
-                params: {
-                    email: getSyncTestEmail
-                }
-            });
-            zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
-            zohoContact[0].Last_Name.should.equal(userDoc.last_name);
-        })
+                await candidateHelper.candidateProfile(candidate, profileData);
 
-        it('should sync a new company', async function () {
-            const company = docGenerator.company();
-            company.email = testContact.email;
-            company.first_name = testContact.first_name;
-            company.company_name = testContact.company_name;
+                let  candidateUserDoc = await users.findOne({email: candidate.email});
+                const candidateEditProfileData = docGenerator.candidateProfileUpdate();
 
-            await companyHelper.signupCompany(company);
+                await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
 
-            await serviceSync.pullFromQueue();
+                let syncDocCount = await syncQueue.count({status: 'pending'});
+                expect(syncDocCount).to.equal(2, "1x POST and 1x PATCH should be found");
 
-            const userDoc = await users.findOneByEmail(company.email);
-            const companyDoc = await companies.findOne({company_name: company.company_name});
-            let res = await zoho.contacts.search({
-                params: {
-                    email: getSyncTestEmail
-                }
-            });
-            const zohoContact = res.data[0];
-            res = await zoho.accounts.search({
-                params: {
-                    criteria: "((Account_Name:equals:" + company.company_name + "))"
-                }
-            });
-            const zohoAccount = res.data[0];
-            zohoContact.First_Name.should.equal(companyDoc.first_name);
-            zohoContact.Last_Name.should.equal(companyDoc.last_name);
-            zohoContact.Contact_type[0].should.equal("company");
-            zohoContact.Account_Name.id.should.equal(zohoAccount.id);
-            zohoContact.Platform_ID.should.equal(userDoc.id.toString());
+                await serviceSync.pullFromQueue();
+                syncDocCount = await syncQueue.count({status: 'pending'});
+                expect(syncDocCount).to.equal(0);
 
-            zohoAccount.Account_Name.should.equal(companyDoc.company_name);
-            zohoAccount.Account_status.should.equal("Active");
-            zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
-        })
+                const userDoc = await users.findOneByEmail(candidate.email);
+                const zohoContact = await zoho.contacts.search({
+                    params: {
+                        email: getSyncTestEmail
+                    }
+                });
+                zohoContact[0].Candidate_status.should.equal(userDoc.candidate.latest_status.status);
+                zohoContact[0].Last_Name.should.equal(userDoc.last_name);
+            })
 
-        it('should sync an updated company', async function () {
-            const company = docGenerator.company();
-            company.email = testContact.email;
-            company.first_name = testContact.first_name;
-            company.company_name = testContact.company_name;
+            it('should sync a new company', async function () {
+                const company = docGenerator.company();
+                company.email = testContact.email;
+                company.first_name = testContact.first_name;
+                company.company_name = testContact.company_name;
 
-            await companyHelper.signupCompany(company);
-            const companyUserDoc = await users.findOneByEmail(company.email);
+                await companyHelper.signupCompany(company);
 
-            const updatedData = await docGenerator.companyUpdateProfile();
-            await companyHelper.companyProfileData(companyUserDoc._creator, companyUserDoc.jwt_token , updatedData);
+                await serviceSync.pullFromQueue();
 
-            let syncDocCount = await syncQueue.count({status: 'pending'});
-            expect(syncDocCount).to.equal(2, "1x POST and 1x PATCH should be found");
+                const userDoc = await users.findOneByEmail(company.email);
+                const companyDoc = await companies.findOne({company_name: company.company_name});
+                let res = await zoho.contacts.search({
+                    params: {
+                        email: getSyncTestEmail
+                    }
+                });
+                const zohoContact = res.data[0];
+                res = await zoho.accounts.search({
+                    params: {
+                        criteria: "((Account_Name:equals:" + company.company_name + "))"
+                    }
+                });
+                const zohoAccount = res.data[0];
+                zohoContact.First_Name.should.equal(companyDoc.first_name);
+                zohoContact.Last_Name.should.equal(companyDoc.last_name);
+                zohoContact.Contact_type[0].should.equal("company");
+                zohoContact.Account_Name.id.should.equal(zohoAccount.id);
+                zohoContact.Platform_ID.should.equal(userDoc.id.toString());
 
-            await serviceSync.pullFromQueue();
+                zohoAccount.Account_Name.should.equal(companyDoc.company_name);
+                zohoAccount.Account_status.should.equal("Active");
+                zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
+            })
 
-            syncDocCount = await syncQueue.count({status: 'pending'});
-            expect(syncDocCount).to.equal(0);
+            it('should sync an updated company', async function () {
+                const company = docGenerator.company();
+                company.email = testContact.email;
+                company.first_name = testContact.first_name;
+                company.company_name = testContact.company_name;
 
-            const companyDoc = await companies.findOne({company_name: company.company_name});
-            let res = await zoho.contacts.search({
-                params: {
-                    email: getSyncTestEmail
-                }
-            });
-            const zohoContact = res.data[0];
-            res = await zoho.accounts.search({
-                params: {
-                    criteria: "((Account_Name:equals:" + company.company_name + "))"
-                }
-            });
-            const zohoAccount = res.data[0];
-            zohoContact.First_Name.should.equal(companyDoc.first_name);
-            zohoContact.Last_Name.should.equal(companyDoc.last_name);
-            zohoContact.Contact_type[0].should.equal("company");
-            zohoContact.Account_Name.id.should.equal(zohoAccount.id);
+                await companyHelper.signupCompany(company);
+                const companyUserDoc = await users.findOneByEmail(company.email);
 
-            zohoAccount.Account_Name.should.equal(companyDoc.company_name);
-            zohoAccount.Account_status.should.equal("Active");
-            zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
+                const updatedData = await docGenerator.companyUpdateProfile();
+                await companyHelper.companyProfileData(companyUserDoc._creator, companyUserDoc.jwt_token , updatedData);
+
+                let syncDocCount = await syncQueue.count({status: 'pending'});
+                expect(syncDocCount).to.equal(2, "1x POST and 1x PATCH should be found");
+
+                await serviceSync.pullFromQueue();
+
+                syncDocCount = await syncQueue.count({status: 'pending'});
+                expect(syncDocCount).to.equal(0);
+
+                const companyDoc = await companies.findOne({company_name: company.company_name});
+                let res = await zoho.contacts.search({
+                    params: {
+                        email: getSyncTestEmail
+                    }
+                });
+                const zohoContact = res.data[0];
+                res = await zoho.accounts.search({
+                    params: {
+                        criteria: "((Account_Name:equals:" + company.company_name + "))"
+                    }
+                });
+                const zohoAccount = res.data[0];
+                zohoContact.First_Name.should.equal(companyDoc.first_name);
+                zohoContact.Last_Name.should.equal(companyDoc.last_name);
+                zohoContact.Contact_type[0].should.equal("company");
+                zohoContact.Account_Name.id.should.equal(zohoAccount.id);
+
+                zohoAccount.Account_Name.should.equal(companyDoc.company_name);
+                zohoAccount.Account_status.should.equal("Active");
+                zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
+            })
         })
     })
-})
+}

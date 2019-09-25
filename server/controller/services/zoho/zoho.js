@@ -61,7 +61,7 @@ const zohoModuleAPI = function (module) {
         // https://www.zoho.com/crm/developer/docs/api/get-records.html
         getMany: async function (input) {
             if (input.id) throw new Error("Cannot provide record id");
-            return await zohoAPIparse(module, input);
+            return await zohoAPIparse(zcrm.API.MODULES.get, module, input);
         },
 
         // https://www.zoho.com/crm/developer/docs/api/get-specific-record.html
