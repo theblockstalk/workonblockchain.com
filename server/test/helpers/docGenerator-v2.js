@@ -393,4 +393,18 @@ api.updateEmailTemplate = function updateEmailTemplate() {
     }
 }
 
+module.exports.companyGDPRDOc = function companyGDPRDOc(){
+    return {
+        name: 'doc.pdf',
+        path: __dirname + '/doc.pdf'
+    }
+}
+
+module.exports.companyGDPR = function companyGDPR(){
+    return {
+        'company_country': "Canada",
+        'canadian_commercial_company': false
+    }
+}
+
 module.exports = api;

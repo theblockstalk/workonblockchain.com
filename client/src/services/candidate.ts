@@ -12,7 +12,7 @@ export const candidateBadge = function(candidate){
 
     if (latest_status === 'reviewed') {
       for (let item of candidateDoc.history) {
-        if (item.status.status === 'wizard completed' || item.status.status === 'updated') {
+        if (item.status && (item.status.status === 'wizard completed' || item.status.status === 'updated')) {
           last_status_date = item.timestamp;
           break;
         }

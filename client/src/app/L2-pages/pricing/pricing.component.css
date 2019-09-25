@@ -39,10 +39,6 @@
   text-decoration: none !important;
 }
 
-a {
-  text-decoration: underline;
-}
-
 .card-img-top {
   width: 85px;
   margin: auto;

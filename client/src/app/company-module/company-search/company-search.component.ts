@@ -299,39 +299,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.router.navigate(['/company_profile']);
             }
             else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
+
+            else if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+              if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
+                this.mapData(data);
+              }
+              else this.router.navigate(['/gdpr-compliance']);
+            }
+
             else {
-              this.is_approved = data['_creator'].is_approved;
-              this.display_name = data['company_name'];
-
-              if (this.is_approved === 0) {
-                this.disabled = true;
-                this.msg = "You can access this page when your account has been approved by an admin.";
-                this.log = '';
-              }
-              else if (data['_creator'].disable_account == true) {
-                this.disabled = true;
-                this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
-                this.log = '';
-
-              }
-              else {
-                this.disabled = false;
-                if (data['saved_searches'] && data['saved_searches'].length > 0) {
-                  this.savedSearches = data['saved_searches'];
-                  for (let i = 0; i < data['saved_searches'].length; i++) {
-                    this.searchName.push(data['saved_searches'][i].name);
-                  }
-                  if (isPlatformBrowser(this.platformId)) {
-                    setTimeout(() => {
-                      $('.selectpicker').selectpicker('refresh');
-                    }, 300);
-                  }
-
-                }
-                if (!this.no_value) {
-                  this.getVerrifiedCandidate();
-                }
-              }
+              this.mapData(data);
             }
 
           },
@@ -1419,5 +1396,40 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   convertNumber(string) {
     return Number(string);
+  }
+
+  mapData(data){
+    this.is_approved = data['_creator'].is_approved;
+    this.display_name = data['company_name'];
+
+    if (this.is_approved === 0) {
+      this.disabled = true;
+      this.msg = "You can access this page when your account has been approved by an admin.";
+      this.log = '';
+    }
+    else if (data['_creator'].disable_account == true) {
+      this.disabled = true;
+      this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
+      this.log = '';
+
+    }
+    else {
+      this.disabled = false;
+      if (data['saved_searches'] && data['saved_searches'].length > 0) {
+        this.savedSearches = data['saved_searches'];
+        for (let i = 0; i < data['saved_searches'].length; i++) {
+          this.searchName.push(data['saved_searches'][i].name);
+        }
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 300);
+        }
+
+      }
+      if (!this.no_value) {
+        this.getVerrifiedCandidate();
+      }
+    }
   }
 }

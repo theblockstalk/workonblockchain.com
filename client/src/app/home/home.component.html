@@ -1,385 +1,337 @@
-<div class = "container-fluid w-100 main_banner mt-4 pt-5">
-  <div class = "row">
-    <div class = "col-12">
-      <h1 class = "text-center text-light">Learn and work on blockchain, DLT and cryptocurrency</h1>
-    </div>
-  </div>
-  
-  <div class = "row">
-    <div class = "col-md-12 text-center text-lg-left">
-      <div class = "row row-main">
-        <div class = "col-md-7 pl-5 overflow-hidden h-100">
-          <h2 class = "text-light">Have top blockchain <br>
-            companies apply to you.
-          </h2>
-          <p class = "text-light global">Global blockchain agnostic hiring platform for developers, designers, product managers, CTO's and interns who are passionate about public and enterprise blockchain technology and cryptocurrencies.</p>
-
-          <div class = "col-md-12 my-5 float-left px-0">
-            <button type="button" class="btn btn-warning text-light mr-2 mb-3 mb-md-0" (click)="internalRoute('signup','candidate')"><h5>FIND A JOB</h5></button>
-            <button type="button" class="btn btn-light mb-3 mb-md-0"  routerLink="/companies"><h5>START HIRING</h5></button>
-          </div>
-        </div>
-
-        <div class = "col-md-5 pl-5 overflow-hidden h-100">
-          <h2 class = "text-light">Learn blockchain technology</h2>
-          <p class = "text-light ">Come to one of our supported event for developers and learn blockchain technology with us!</p>
-          <p class = "my-3">
-            <a class="btn btn-warning text-light  mr-2 mb-3 mb-md-0" target="_blank" href="https://www.eventbrite.com/o/workonblockchaincom-12888307012"><h5>DEVELOPER EVENTS</h5></a></p>
-        </div>
+<section class="introduction">
+  <div class="container">
+    <div class="row py-3 py-md-5">
+      <div class="col-12 col-md-8">
+        <h1>Have Top Blockchain Companies <br> Apply To You</h1>
+        <p class="my-3 my-md-5 f-300">
+          Global blockchain agnostic hiring platform that put's the talent in control. For blockchain engineers as well all technical talent such as devops, CTOs, interners, designers and more that are passionate about public and enterprise blockchain technologies and cryptocurrencies.
+        </p>
+        <p>
+          <a (click)="internalRoute('signup','candidate')" class="btn btn-yellow text-uppercase mr-3 text-dark shadow-sm f-500">
+            Find a job
+          </a>
+          <a routerLink="/companies" class="btn btn-primary text-uppercase mr-3 shadow-sm f-500">
+            Start hiring
+          </a>
+        </p>
       </div>
     </div>
   </div>
-</div>
-
-<!--/main banner home -->
-
-<!--companies section-->
-<div class = "container py-3">
-  <h2 class = "text-center">Some of the companies hiring with us</h2>
-  <div class = "row text-center py-5">
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://www.nexusmutual.com.au/" target="_blank">
-        <img src = "/assets/images/companies_logos/nexus-mutual.png" class = "w-75" alt = "nexus-mutual-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://filmchain.co/" target="_blank">
-        <img src = "/assets/images/companies_logos/film_chain.png" class = "w-75" alt = "filmchain-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://ixtechnology.com/" target="_blank">
-        <img src = "/assets/images/companies_logos/iXGroup.png" class = "w-75" alt = "ixtechnology-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3">
-      <a href = "https://www.bitfinex.com/" target="_blank">
-        <img src = "/assets/images/companies_logos/bitf_logo.png" class = "w-75" alt = "bitfinex-logo"/>
-      </a>
-    </div>
-  </div>
-  <div class = "row text-center py-3">
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://walletconnect.org/" target="_blank">
-        <img src = "/assets/images/companies_logos/wallet-connect.png" class = "w-75" alt = "wallet-connect-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://www.tokenanalyst.io/" target="_blank">
-        <img src = "/assets/images/companies_logos/tokenanalyst.png" class = "w-75" alt = "tokenanalyst-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "http://nethermind.io/" target="_blank">
-        <img src = "/assets/images/companies_logos/nethermind.png" class = "w-75" alt = "nethermind-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://www.alt36.com/" target="_blank">
-        <img src = "/assets/images/companies_logos/alt-thirty-six.png" class = "w-75" alt = "alt36-logo"/>
-      </a>
-    </div>
-  </div>
-</div>
-<!--/companies section-->
-
-<!--section one-->
-
-<div class = "container py-5 mb-5">
-  <h2 class = "text-center">How does it work?</h2>
-  <div class = "row work mt-5 ">
-    <div class = "col-md-6 col-lg-3 text-center text-lg-left">
-      <img class="icon" src="/assets/images/reliability.svg" alt="">
-      <h5><b>Create your blockchain profile</b></h5>
-
-      <p class = "mt-4">
-        Create a profile in minutes that lets companies know why you are so excited about blockchain.
-      </p>
-
-    </div>
-
-    <div class = "col-md-6 col-lg-3 text-center text-lg-left">
-      <img class="icon" src="/assets/images/global.svg" alt="">
-      <h5><b>Get approached with work offers</b></h5>
-
-      <p class = "mt-4">
-        Companies will send you work offers for employment, contracting, freelancing or volunteering.
-      </p>
-    </div>
-
-    <div class = "col-md-6 col-lg-3 text-center text-lg-left">
-      <img class="icon" src="/assets/images/reliability.svg" alt="">
-      <h5><b>Choose which offers to accept</b></h5>
-
-      <p class = "mt-4">
-        Choose the offers that you are interested in and then set up an interview or a call with the company.
-      </p>
-    </div>
-
-    <div class = "col-md-6 col-lg-3 text-center text-lg-left">
-      <img class="icon" src="/assets/images/partnerships.svg" alt="">
-      <h5><b>Become a blockchain wizard</b></h5>
-
-      <p class = "mt-4">
-        Congratulations and enjoy your new job! Time to work on blockchain.
-      </p>
-    </div>
-
-  </div>
-</div>
-
-<!--/section one-->
-
-<!--section company slider-->
-<section class = "coursal-compnay px-3">
-  <h2 class="text-center">What our clients have to say about us?</h2>
-  <div class = "container">
-
-    <div class = "row bg-white position-relative rounded px-0">
-
-      <div class = "col-md-4 p-3">
-        <div id="text"></div>
-      </div>
-
-      <div class = "col-md-8">
-        <div id="carousel-example-captions" class="carousel slide text-left w-75 w-sm pl-0 pl-lg-5 mt-4 mt-lg-3 ml-0 ml-lg-3" data-ride="carousel">
-          <div class="carousel-inner slider-text com_slider">
-
-            <div class="item carousel-item active">
-              <p class = "my-0 my-lg-4">This is the best place for you to look for blockchain talent, delivered by people who understand the industry</p>
-              <p>
-                <a href="http://nethermind.io/" target = "_blank" class="">Tomasz K. Stańczak, Founder & CTO at Nethermind.io</a>
-              </p>
-
-              <div class="carousel-caption">
-                <div class="car-content">
-                  <img src="/assets/images/nethermind.png" alt="extropy-logo" class = "w-100">
-                </div>
-              </div>
-
-            </div>
-
-            <div class="item carousel-item">
-              <p class = "my-0 my-lg-4">Was really helpful when we wanted to expand our team and gave us top blockchain talent from London and the European region. These people have become some of our most valuable developers and team members.</p>
-              <p>
-                <a href="https://indorse.io/"  target = "_blank" class="">Gaurang Torvekar, Co-Founder and CEO, Indorse.io </a>
-              </p>
-
-              <div class="carousel-caption">
-                <div class="car-content">
-                  <img src="/assets/images/indorse.png" alt="extropy-logo" class = "w-100">
-                </div>
-              </div>
-            </div>
-
-            <div class="item carousel-item">
-              <p class = "my-0 my-lg-4">I have some great developers in my team thanks to these guys, and their extensive developer network keeps me in contact with the real experts in the blockchain space</p>
-              <p>
-                <a href="http://extropy.io/" target = "_blank" class="">Laurence Kirk, Founder and CEO, Extropy.io </a>
-              </p>
-
-              <div class="carousel-caption">
-                <div class="car-content">
-                  <img src="/assets/images/extropy.png" alt="extropy-logo" class = "w-100">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!--/section company slider-->
-
-    </div>
-  </div>
-
 </section>
 
-<!--/section company slider-->
+<section class="compnies py-3 py-md-5 bg-lite">
+  <div class="container text-center">
+    <h4 class="f-500 hd_main">Popular blockchain technologies companies work with</h4>
+    <div class="row mt-5 mt-md-0 py-3 py-md-5">
 
-<!--section three-->
-
-<section class = "lower-page">
-  <div class = "row mr-0">
-    <div class = "col-md-12 pt-5 mt-5">
-      <div class = "container">
-        <div class = "col-md-12 w-50 my-5">
-          <h2>Get on your dream blockchain project in days!</h2>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/bitcoin.svg">
+          <h6>BITCOIN</h6>
         </div>
-        <div class = "row pt-5" id = "security">
+      </div>
 
-          <div class = "col-md-6 content">
-            <h5 class = "my-3"><b>HOW TO JOIN?</b></h5>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/ethereum-1.svg" class = "dis-img">
+          <h6>ETHEREUM</h6>
+        </div>
+      </div>
 
-            <p>
-              Simplicity is key. Simply sign up in under one minute. Companies will then apply to you once your profile is approved.
-            </p>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/Image7.png">
+          <h6>HYPERLEDGER</h6>
+        </div>
+      </div>
 
-          </div>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/Image8@2x.png" class="dis-img">
+          <h6>EOSIO</h6>
+        </div>
+      </div>
 
-          <div class = "col-md-6 figure">
-            <h5 class = "my-3"><b>I'm very busy and don't have a lot of time?</b></h5>
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/Logo-small.svg">
+          <h6>QUORUM</h6>
+        </div>
+      </div>
 
-            <p>
-              You're in control, workonblockchain.com is built around you. You decide when to make your profile visible to companies. You decide whether to accept or reject approach.
-
-            </p>
-
-          </div>
-
-          <div class = "col-md-6 figure2">
-            <h5 class = "my-5"><b>ARE YOU A RECRUITMENT AGENCY?</b></h5>
-
-            <p>
-              No. On workonblockchian.com, companies reach out directly to you. You're in complete control. Our teams are always available to help and advise you when needed.
-            </p>
-
-          </div>
-
-          <div class = "col-md-6 content2">
-            <h5 class = "my-5"><b>I DON'T HAVE ANY BLOCKCHAIN EXPERIENCE</b></h5>
-
-            <p>
-              You don't need blockchain experience to create a profile, you just need to bring the passion!
-            </p>
-
-          </div>
-
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="comp_card">
+          <img src="/assets/images/navbar_imgs/logo/companies/crda-logo@2x.png">
+          <h6>CORDA</h6>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!--/section three-->
-
-<!--section four-->
-
-<section class = "candidate-slider">
-  <h2 class = "text-center text-light my-3">What our user have to say about us</h2>
-  <div class = "container text-light">
-    <div class = "row">
-      <div class = "col-md-12 mb-5">
-
-        <!--start slider here-->
-        <div id="myCarousel1" class="carousel slide text-center" data-ride="carousel">
-
-          <!-- Indicators -->
-          <ol class="carousel-indicators slider-indicator">
-            <li data-target="#myCarousel1" data-slide-to="0" class="active rounded-circle"></li>
-            <li data-target="#myCarousel1" data-slide-to="1" class="rounded-circle"></li>
-            <li data-target="#myCarousel1" data-slide-to="2" class="rounded-circle"></li>
-            <li data-target="#myCarousel1" data-slide-to="3" class="rounded-circle"></li>
-          </ol>
-
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner slider-inner">
-            <div class="item carousel-item active">
-              <div class = "cand-img">
-                <img src = "/assets/images/Rachel-Black.jpg" alt = "candidate-1">
-              </div>
-              <h3 class = "text-center mt-5 mb-2">Rachel Black</h3>
-              <span>Frontend Developer, Yoti</span>
-              <p class = "slider_p mt-4">"Well connected in the blockchain development space, highly recommended"</p>
-            </div>
-
-            <div class="item carousel-item">
-              <div class = "cand-img">
-                <img src = "/assets/images/Haresh-Gedia.jpg" alt = "candidate-2">
-              </div>
-              <h3 class = "text-center mt-5 mb-2">Haresh Gedia</h3>
-              <span>Senior Developer, Indorse.io</span>
-              <p class = "slider_p mt-4">"Work on Blockchain are connected with some of the most exciting projects in the blockchain space and I highly recommend them"</p>
-            </div>
-
-            <div class="item carousel-item">
-              <div class = "cand-img">
-                <img src = "/assets/images/Stephan-Yue.jpeg" alt = "candidate-3">
-              </div>
-              <h3 class = "text-center mt-5 mb-2">Stephan Yue</h3>
-              <span>Full-stack Developer, Extropy.io </span>
-              <p class = "slider_p mt-4">"I have been able to achieve my career goal of becoming a blockchain engineer working on the cutting-edge of this new emerging industry thanks to the amazing network of Work on Blockchain"</p>
-            </div>
-
-            <div class="item carousel-item">
-              <div class = "cand-img">
-                <img src = "/assets/images/Theodor-Port.jpeg" alt = "candidate-3">
-              </div>
-              <h3 class = "text-center mt-5 mb-2">Theodor Port</h3>
-              <span> Blockchain Developer, ixledger.com </span>
-              <p class = "slider_p mt-4">"Strongly connected in the blockchain industry and are very active in supporting developers by doing developer workshops, highly recommended"</p>
-            </div>
-
-          </div>
-
-        </div>
-
+<section class="center-msg">
+  <div class="container text-center">
+    <div class="row py-3 py-md-5">
+      <div class="col-12 text-white">
+        <!--<img src="images/home/etherium.svg"  class = "mb-3" alt="icon_img">-->
+        <h1 class="f-400">Learn Blockchain Technology</h1>
+        <p>
+          Come to one of our supported event for developers and learn blockchain <br>
+          technology with us!
+        </p>
+        <a target="_blank" href="https://www.eventbrite.com/o/workonblockchaincom-12888307012" class="btn text-uppercase text-dark mt-3 py-2 px-5">
+          Developer Events
+        </a>
       </div>
     </div>
   </div>
-  <div class="bottom-img">
-    <img src="/assets/images/blue_bg.png" alt="cover-bg">
-  </div>
-
 </section>
 
-<!--/section four-->
 
-<!--section five Education partners-->
-<div class = "position-relative py-3 wob-bg-primary2 w-100 float-left" style = "z-index:999;">
-  <h2 class = "text-dark text-center">Education partners</h2>
-  <div class = "row text-center py-5 m-0">
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "https://blockacademy.net/" target="_blank">
-        <img src = "/assets/images/logo-black.png" class = "w-75" alt = "partners-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a class="text-dark" href = "https://www.meetup.com/london-ethereum-codeup/" target="_blank">
-        <h3>London Ethereum Codeup</h3>
-      </a>
-    </div>
-    <div class="col-md-3 mb-5 mb-md-0">
-      <a href = "http://www.blockchaintrainingalliance.com/?rfsn=2386252.5d0737" target="_blank">
-        <img src = "/assets/images/Blockchain_Traning_Alliance.png" class = "w-75" alt = "partners-logo"/>
-      </a>
-    </div>
-    <div class="col-md-3">
-      <a href = "https://www.solidity.services/" target="_blank">
-        <img src = "/assets/images/solidity_services_logo.png" class = "w-75" alt = "partners-logo"/>
-      </a>
+<section class="compnies py-3 py-md-5">
+  <div class="container text-center">
+    <h4 class="f-500 hd_main">Companies hiring with <span> workonblockchain.com </span> </h4>
+    <div class="row py-3 py-md-5">
+      <div class="col-12 pt-3 pt-md-0">
+        <section class="customer-logos slider">
+          <div class="slide">
+            <a href="https://filmchain.co/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/filmchain@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://www.bitfinex.com/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/bitfinex@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://www.nexusmutual.com.au/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/Image1@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://walletconnect.org/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/wallet-connect@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="http://nethermind.io/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/nethermind@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/iXGroup@2x.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://trippki.com/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/logo2.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://www.tokenanalyst.io/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/logo_desktop.png"></a>
+          </div>
+          <div class="slide">
+            <a href="https://www.cryptocompare.com/" target="_blank"><img src="/assets/images/navbar_imgs/logo/companies/cc-logo.png"></a>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
-  <div class = "row text-center m-0">
-    <div class="col-md-12">
-      <a href = "https://obws.io/" target="_blank">
-        <img src = "/assets/images/obswsio.png"  alt = "partners-logo"/>
-      </a>
-    </div>
-  </div>
-</div>
-<!--/section five-->
+</section>
 
-<!--section six newsletter-->
-<div class = "position-relative py-3 wob-bg-white w-100 float-left" style = "z-index:999;">
-  <h4 class = "text-dark text-center">Sign up for our newsletter!</h4>
-  <div class = "row text-center py-1 m-0">
-    <div class="col-md-12 text-center">
-      <form (submit)="subscribe_modal_show(subscribeForm)" #subscribeForm = ngForm class="form-inline justify-content-center align-items-center my-4">
-        <div class = "form-group">
-          <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" name="email" required [(ngModel)]="credentials.email" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
-        </div>
-        <div class = "form-group">
-          <input type="submit" class="form-control mb-2 mr-sm-2 btn-warning text-light" id="email4" value="Subscribe" [disabled]="!subscribeForm.valid">
-        </div>
-        <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
-          Enter email in correct format like myemail@gmail.com.
-        </div>
-      </form>
+
+<section class="how_work py-4">
+  <div class="container text-center">
+    <h4 class="f-500 hd_main">
+      How does it work
+    </h4>
+    <div class="row py-5">
+      <div class="col-md-4 text-center">
+        <img src="assets/images/home/profile.svg" class = "mb-5" alt="profile_icon">
+        <h6 class="f-500">Creat your blockchain profile</h6>
+        <p>
+          Create a profile in minutes that lets companies know why you are so excited about blockchain.
+        </p>
+      </div>
+      <div class="col-md-4 text-center">
+        <img src="assets/images/home/job.svg" class = "mb-5" alt="job_icon">
+        <h6  class="f-500">Get approached with work offers</h6>
+        <p>
+          Companies will send you work offers for employment, contracting, freelancing or volunteering.
+        </p>
+      </div>
+      <div class="col-md-4 text-center">
+        <img src="assets/images/home/handshake.svg" class = "mb-5" alt="handshake_icon">
+        <h6  class="f-500">Choose which offers to accept</h6>
+        <p>
+          Choose the job offers that interest you and then set up an interview or a call with the company.
+        </p>
+      </div>
     </div>
   </div>
-</div>
-<!--/section five-->
+</section>
+
+
+<section class="telant text-white py-3">
+  <div class="container">
+    <div class="row py-3 py-md-5">
+      <div class="col-md-6 offset-md-3">
+        <h4 class="f-500">For all types of talent and jobs</h4>
+        <div class="row text-left mt-5">
+          <div class="col-6">
+            <p class="f-400">Blockchain engineers</p>
+            <p class="f-400">Front/back end</p>
+            <p class="f-400">Devops</p>
+            <p class="f-400 mb-0">and more...</p>
+          </div>
+          <div class="col-6">
+            <p class="f-400">Full/part time jobs</p>
+            <p class="f-400">Freelancers</p>
+            <p class="f-400">Development agencies</p>
+            <p class="f-400 mb-0">Volunteer/interns</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-3">
+  <div class="container text-center edu_partner py-3">
+    <h4 class="f-500 hd_main">
+      Education partners
+    </h4>
+    <div class="row py-3 py-md-5">
+      <div class="col-12">
+        <ul class="nav justify-content-center my-4">
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://blockchaintrainingalliance.com/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/Blockchain_Traning_Alliance@2x.png"
+                   alt="blockchain-traning-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://blockacademy.net/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/logo-black@2x.png"
+                   alt="black-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://solidity.services/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/solidity_services_logo@2x.png"
+                   alt="solidity-services-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://obws.io/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/obswsio@2x.png"
+                   alt="obwsio-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://tezos.com/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/tz.svg"
+                   alt="tz-logo" class = "tz-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://www.goquorum.com/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/Logo-small.svg"
+                   alt="blockchain-goquorum-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="http://blockchain.cs.ucl.ac.uk/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/Image 5@2x.png"
+                   alt="ucl-cbt-logo" class="ucl-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://www.kcl.ac.uk/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/kcl-logo.svg"
+                   alt="kcl-logo" class="kcl-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://www.imperial.ac.uk/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/Image 6@2x.png"
+                   alt="imperial-college-logo" class="college-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://www.blockchain.com/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/blockchain-new.png"
+                   alt="blockchain-2-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://stakezero.com/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/stakezero.png"
+                   alt="stakezero-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://binarydistrict.com/" target="_blank">
+              <img class="ucl-logo" src="assets/images/navbar_imgs/logo/education-partner/binary_district.png"
+                   alt="binarydistrict-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="https://extropy.io/" target="_blank">
+              <img class="ucl-logo" src="assets/images/navbar_imgs/logo/education-partner/Extropy_logo.png"
+                   alt="Extropy-logo">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="http://nethermind.io/" target="_blank">
+              <img src="assets/images/navbar_imgs/logo/education-partner/Nethermind_logo.png"
+                   alt="nethermind-logo">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center sub-newsletter py-3">
+    <div class="row py-3">
+
+      <div class="col-md-6">
+        <div class="newsletter-form">
+          <h5 class="f-500 hd_main">
+            Sign up for our newsletter!
+          </h5>
+          <p class="mt-5">
+						<span>
+							Hiring tips and guides
+						</span>
+            <span>
+							Platform and updates
+						</span>
+            <span>
+							Events and more
+						</span>
+          </p>
+          <form (submit)="subscribe_modal_show(subscribeForm)" #subscribeForm = ngForm class="form-inline mt-4">
+            <div class="form-group col-sm-8">
+              <input type="text"class="form-contorl w-100" placeholder="Email" name="email" required [(ngModel)]="credentials.email" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+            </div>
+            <div class="form-group col-sm-4 px-md-0">
+              <input type="submit" class="btn form-control text-white w-100 from-btn" id="email4" value="Subscribe" [disabled]="!subscribeForm.valid">
+            </div>
+            <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+              Enter email in correct format like myemail@gmail.com.
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="join-slack">
+          <h5 class="f-500 hd_main">
+            Are you a developer?
+          </h5>
+          <p class = "mt-5">
+            Join our blockchain knowledge sharing <a href="https://wob-learnblockchain.slack.com/" target = "_blank">
+            <img src="/assets/images/navbar_imgs/logo/companies/slack-2.svg" alt="slack-btn"></a>
+            Channel
+          </p>
+          <p>
+            <button type = "button" data-toggle="modal" data-target="#joinModal" class="btn btn-join">Join</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!--Modal for subscribe-->
 <div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="subscribeModalLabel" aria-hidden="true">
@@ -438,6 +390,36 @@
             </app-c-alert>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal for salck email-->
+<div class="modal fade" id="joinModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h2 class="modal-title text-center mo">
+          Join our blockchain knowledge sharing slack channel!
+        </h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Please send an email to slack@workonblockchain.com with your:
+        </p>
+        <ul>
+          <li>name</li>
+          <li>area of interest</li>
+          <li>github account and</li>
+          <li>linkedin</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mo btn-primary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

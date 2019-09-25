@@ -1,4 +1,4 @@
-<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
+<section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -22,9 +22,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="/users/company/wizard/pricing" class="nav-link">
+            <a routerLink="/users/company/wizard/pricing" class="nav-link btn {{pricing_disable}}">
               <i class="{{price_plan_active_class}}"></i>
               Price plan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/gdpr-compliance" class="nav-link btn {{gdpr_disable}}">
+              <i class="{{gdpr_compliance_active_class}}"></i>
+              GDPR compliance
             </a>
           </li>
         </ul>

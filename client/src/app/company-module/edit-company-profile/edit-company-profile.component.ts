@@ -571,7 +571,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/company_profile']);
+              this.router.navigate(['/users/company']);
             }
 
           },

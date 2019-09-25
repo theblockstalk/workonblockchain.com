@@ -106,7 +106,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   imagePreviewLink;
   prefil_image;
   hear_about_wob;otherReasons;discount;
-  discount_log;
+  discount_log;usa_privacy_shield;us_privacy_shield_error;
+  canadian_commercial_company;commercial_canada_error;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute,
@@ -319,6 +320,12 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               });
 
             }
+
+            if(data['usa_privacy_shield'] === true) this.usa_privacy_shield = 'yes';
+            if(data['usa_privacy_shield'] === false) this.usa_privacy_shield = 'no';
+
+            if(data['canadian_commercial_company'] === true) this.canadian_commercial_company = 'yes';
+            if(data['canadian_commercial_company'] === false) this.canadian_commercial_company = 'no';
           },
           error =>
           {
@@ -588,12 +595,19 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
+      if(profileForm.value.usa_privacy_shield || profileForm.value.canadian_commercial_company) profileForm.value.gdpr_compliance = true;
+      if(profileForm.value.usa_privacy_shield === 'yes') profileForm.value.usa_privacy_shield === true;
+      if(profileForm.value.usa_privacy_shield === 'no') profileForm.value.usa_privacy_shield === false;
+
+      if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company === true;
+      if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company === false;
+
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/admin-company-detail'], { queryParams: { user: this.company_id } });
+              this.router.navigate(['/admins/company/'+ this.company_id]);
             }
 
           },

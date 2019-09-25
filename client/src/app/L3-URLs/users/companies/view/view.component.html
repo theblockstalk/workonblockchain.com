@@ -1,0 +1,13 @@
+<ng-container *ngIf="userDoc ; else loader">
+  <app-p-company-view
+    *ngIf="userDoc"
+    viewBy="company"
+    [userDoc]="userDoc"
+  >
+  </app-p-company-view>
+</ng-container>
+<ng-template #loader>
+  <div class="col-md-12 text-center" >
+    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+  </div>
+</ng-template>

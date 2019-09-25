@@ -1,4 +1,4 @@
-<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
+<section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
     <div class="row" *ngIf="viewBy === 'company' && showNavbar">
       <div class="col-md-12">
@@ -25,6 +25,12 @@
             <a routerLink="/pricing" class="nav-link">
               <i class="{{price_plan_active_class}}"></i>
               Price plan
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/gdpr-compliance" class="nav-link btn {{gdpr_disable}}">
+              <i class="{{gdpr_compliance_active_class}}"></i>
+              GDPR compliance
             </a>
           </li>
         </ul>
@@ -133,7 +139,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <div class="price"> &#163; 39.90</div>
+                <div class="price"> &#163; 49.90</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -154,7 +160,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <div class="price"> &#163; 59.90 </div>
+                <div class="price"> &#163; 69.90 </div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -219,13 +225,17 @@
 
           <div class="row mt-5">
             <div class="col-md-8 offset-md-2">
-              <h6>Engagements fees</h6>
+              <b>Engagements fees</b>
               <ul>
                 <li>Calculated from the annual salary or contracting rate</li>
                 <li>Paid every month for 24 months while they remain commercially engaged</li>
                 <li>No rebate period applies (as you only pay while the candidate is engaged)</li>
                 <li>Fee rate is determined by the selected plan on the date when the first approach is made</li>
                 <li>Startups enquire about discounts</li>
+              </ul>
+              <b>All plans</b>
+              <ul>
+                <li>You can change or cancel your plan at any time</li>
               </ul>
               <p>
                 See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
@@ -260,12 +270,13 @@
               <p class="font-weight-bold">Starter</p>
             </div>
             <div class = "text-center py-4">
-              <p>&#10003;</p>
+              <p>3</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-4">
+              <p>&#10003;</p>
             </div>
             <div class = "text-center py-4">
             </div>
@@ -277,10 +288,7 @@
               <p class="font-weight-bold">Essential</p>
             </div>
             <div class = "text-center py-4">
-              <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
-              <p>&#10003;</p>
+              <p>9</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -288,7 +296,10 @@
             <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-2">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -300,10 +311,7 @@
               <p class="font-weight-bold">Unlimited</p>
             </div>
             <div class = "text-center py-4">
-              <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
-              <p>&#10003;</p>
+              <p>Unlimited</p>
             </div>
             <div class = "text-center py-4">
               <p>&#10003;</p>
@@ -311,7 +319,10 @@
             <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
+              <p>&#10003;</p>
+            </div>
+            <div class = "text-center py-2">
               <p>&#10003;</p>
             </div>
             <div class = "text-center py-3">
@@ -323,12 +334,13 @@
               <p class="font-weight-bold">Free</p>
             </div>
             <div class = "text-center py-4">
+              <p>0</p>
+            </div>
+            <div class = "text-center py-4">
               <p>&#10003;</p>
             </div>
-            <div class = "text-center py-3">
+            <div class = "text-center py-4">
               <p>&#10003;</p>
-            </div>
-            <div class = "text-center py-3">
             </div>
             <div class = "text-center py-3">
             </div>

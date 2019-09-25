@@ -1,4 +1,4 @@
-<section class = "wob-bg-primary2 mt-5">
+<section class = "wob-bg-primary2">
 <div class="container pt-2">
   <div class = "row">
     <div class="col-md-12 wob-bg-primary1 p-2">
@@ -85,8 +85,8 @@
                       <img *ngIf="data.company_logo" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.company_logo}}" alt="">
 
                       <div class="ml-4">
-                        <a *ngIf="data._creator._id" [routerLink]="['/admin-company-detail']"  [queryParams]="{user: data._creator._id }"><h2 class="">{{data.company_name}} </h2></a>
-                        <a *ngIf="data.users && data.users[0]._id" [routerLink]="['/admin-company-detail']"  [queryParams]="{user: data.users[0]._id }"><h2 class="">{{data.company_name}} </h2></a>
+                        <a *ngIf="data._creator._id" routerLink="/admins/company/{{data._creator._id}}"><h2 class="">{{data.company_name}} </h2></a>
+                        <a *ngIf="data.users && data.users[0]._id" routerLink="/admins/company/{{data.users[0]._id}}"><h2 class="">{{data.company_name}} </h2></a>
 
                       </div>
 
