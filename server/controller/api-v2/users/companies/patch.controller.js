@@ -265,7 +265,7 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.canadian_commercial_company || queryBody.canadian_commercial_company === 'false' ) employerUpdate.canadian_commercial_company = queryBody.canadian_commercial_company;
             if (queryBody.usa_privacy_shield || queryBody.usa_privacy_shield === 'false' ) employerUpdate.usa_privacy_shield = queryBody.usa_privacy_shield;
         }
-        if(!(enumerations.euCountries.indexOf(queryBody.company_country) === -1) && (!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
+        if((!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
             employerUpdate.company_logo = req.file.path;
 
         else {
