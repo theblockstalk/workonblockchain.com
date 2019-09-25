@@ -150,6 +150,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
         company_country: "Pakistan",
+        company_name: "My Company",
         company_postcode: "44000",
         company_city: "rawalpindi",
         company_founded:2013,
@@ -393,14 +394,14 @@ api.updateEmailTemplate = function updateEmailTemplate() {
     }
 }
 
-module.exports.companyGDPRDOc = function companyGDPRDOc(){
+api.companyGDPRDOC = function companyGDPRDOC(){
     return {
         name: 'doc.pdf',
         path: __dirname + '/doc.pdf'
     }
 }
 
-module.exports.companyGDPR = function companyGDPR(){
+api.companyGDPR = function companyGDPR(){
     return {
         'company_country': "Canada",
         'canadian_commercial_company': false

@@ -64,7 +64,7 @@ describe('update profile as company', function () {
             const companyUserDoc = await Users.findOneByEmail(company.email);
 
             const updatedData = await docGenerator.companyUpdateProfile();
-            const gdprDoc = docGenerator.companyGDPRDOc();
+            const gdprDoc = docGenerator.companyGDPRDOC();
             const gdprData = docGenerator.companyGDPR();
             const updateRes = await companyHelper.companygdprData(companyUserDoc._creator, companyUserDoc.jwt_token , gdprDoc, gdprData);
             gdprData.canadian_commercial_company.should.equal(gdprData.canadian_commercial_company);
