@@ -71,7 +71,6 @@ export class TermsWizardComponent implements OnInit {
         .subscribe(
           data =>
           {
-            console.log(data);
             this.marketing_emails = data['marketing_emails'];
             if(data['terms_id'])
             {
@@ -104,7 +103,6 @@ export class TermsWizardComponent implements OnInit {
               this.price_plan_active_class = 'fa fa-check-circle text-success';
             }
 
-            console.log(constants.eu_countries.indexOf(data['company_country']));
             if(constants.eu_countries.indexOf(data['company_country']) === -1) {
               if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
                 this.gdpr_disable = '';

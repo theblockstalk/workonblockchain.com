@@ -364,7 +364,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   expected_hourly_rate_log;
   company_profile(profileForm: NgForm)
   {
-    console.log(profileForm.value);
     let count = 0;
     this.error_msg = "";
     this.contact_number_log = '';

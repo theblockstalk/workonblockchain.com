@@ -42,7 +42,6 @@ export class PricingComponent implements OnInit {
       if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
-      console.log(constants.eu_countries.indexOf(this.companyDoc['company_country']));
       if(constants.eu_countries.indexOf(this.companyDoc['company_country']) === -1) {
         if ((this.companyDoc['canadian_commercial_company'] === true || this.companyDoc['canadian_commercial_company'] === false) || (this.companyDoc['usa_privacy_shield'] === true || this.companyDoc['usa_privacy_shield'] === false) || this.companyDoc['dta_doc_link']) {
           this.gdpr_disable = '';
@@ -88,7 +87,6 @@ export class PricingComponent implements OnInit {
       .subscribe(
         data =>{
           if(data) {
-            console.log(data);
             if(this.showNavbar){
               if(constants.eu_countries.indexOf(data['company_country']) === -1) {
                 //non EU, go to gdpr compliance page

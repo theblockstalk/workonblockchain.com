@@ -24,7 +24,6 @@ export class CompanyViewComponent implements OnInit {
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
-    console.log(this.userDoc);
     this.referred_name = '';
     this.discount='';
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
