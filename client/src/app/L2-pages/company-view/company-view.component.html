@@ -122,7 +122,7 @@
             </div>
 
             <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
-              <ng-container *ngIf="userDoc['_creator'].is_approved !== '';else no_approve">
+              <ng-container *ngIf="userDoc['_creator'].is_approved === 1;else no_approve">
                 <app-c-formv-text label="Approved by admin:" value="Yes"></app-c-formv-text>
               </ng-container>
               <ng-template #no_approve>
@@ -142,6 +142,31 @@
             </div>
             <div class="col-md-6" *ngIf="userDoc['pricing_plan']">
               <app-c-formv-text label="Plan:" [value]="userDoc['pricing_plan']"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && (userDoc['usa_privacy_shield'] === true || userDoc['usa_privacy_shield'] === false)">
+              <ng-container *ngIf="userDoc['usa_privacy_shield'] === true;else no_privacy_shield">
+                <app-c-formv-text label="Registered with the US Privacy Shield framework:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_privacy_shield>
+                <app-c-formv-text label="Registered with the US Privacy Shield framework:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && (userDoc['canadian_commercial_company'] === true || userDoc['canadian_commercial_company'] === false)">
+              <ng-container *ngIf="userDoc['canadian_commercial_company'] === true;else no_commercial_company">
+                <app-c-formv-text label="Commercial Canadian company:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_commercial_company>
+                <app-c-formv-text label="Commercial Canadian company:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['dta_doc_link']">
+              <div class="form-group">
+                <label>Signed DTA document: </label>
+                <p>
+                  <a class="text-capitalize" href="{{userDoc['dta_doc_link']}}" target="_blank">DTA document</a>
+                </p>
+              </div>
             </div>
           </div>
           <div class="row" *ngIf="viewBy === 'company'">

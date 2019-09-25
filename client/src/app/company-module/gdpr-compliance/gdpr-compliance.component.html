@@ -1,0 +1,126 @@
+<section class="wob-bg-primary2 pb-5 pt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <app-c-nav-wizard [items]="wizardLinks"></app-c-nav-wizard>
+      </div>
+    </div>
+
+    <div class="row p-4 border bg-white">
+      <div class="row">
+        <div class="col-md-12">
+          <h3><i class="fas fa-gavel fa-rotate-270"></i> Data protection</h3>
+          <p>
+            Your company is not registered within an EU approved zone so we need to check a few
+            things to ensure our compliance with the General Data Protection Regulation(GDPR).
+            This exists to protect the data of the people that use our platform.
+          </p>
+          <form  (submit)="gdprCompliance()">
+            <div class="row mt-3" *ngIf="companyDoc['company_country'] === 'Canada'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company a commercial Canadian company (not a non-for profit or other
+                    non-commercial company)?
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" [(ngModel)]="commercial_canada" name="commercial_canada_check" value='yes' />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" [(ngModel)]="commercial_canada" name="commercial_canada_check" value='no' />
+                    No
+                  </label>
+                  <div class = "invalid-feedback d-inline-block" *ngIf="!commercial_canada">
+                    {{commercial_canada_error}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="companyDoc['company_country'] === 'United States'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company registered with the US Privacy Shield framework?
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" [(ngModel)]="us_privacy_shield" name="us_privacy_shield_check" value="yes" />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" [(ngModel)]="us_privacy_shield" name="us_privacy_shield_check" value="no"/>
+                    No
+                  </label>
+                  <div class = "invalid-feedback d-inline-block" *ngIf="!us_privacy_shield">
+                    {{us_privacy_shield_error}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3" *ngIf="euCountry || (companyDoc['company_country'] === 'Canada' && commercial_canada === 'no') || (companyDoc['company_country'] === 'United States' && us_privacy_shield === 'no')">
+              <div class="col-md-12">
+                <p>
+                  You are required to sign the Data Transfer Agreement (DTA) with us to ensure our
+                  compliance with the General Data Protection Regulation (GDPR). This exists to
+                  protect the data of the people that use our platform.
+                </p>
+                <p class="mt-4">
+                  Please download the pdf document below, fill out all parts highlighted in
+                  yellow and then upload it again.
+                </p>
+              </div>
+
+              <div class="col-md-12">
+                <a href="assets/DTA_doc/Data-Transfer-Agreement-(unmodified).pdf" target="_blank">Data transfer agreement.pdf</a>
+              </div>
+
+              <div class="col-md-12 upload-btn-wrapper mt-3">
+                <button class="btn-upload">Upload signed DTA</button>
+                <input id="my_aa" #Image type="file" (change) ="upload_dtaDOc()" name="file" [(ngModel)]="dta_contract" accept="application/pdf"/>
+
+                <p *ngIf="file_name" class="mt-3">{{file_name}}</p>
+                <div class = "invalid-feedback d-inline-block mt-2">
+                  {{gdprCompliance_log}}
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class = "text-right mt-3">
+                    <a routerLink="/users/company/wizard/pricing" class = "btn btn-warning text-white">Back</a>
+                    <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

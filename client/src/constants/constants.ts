@@ -489,6 +489,7 @@ export const constants = {
     {name: 5, value: 5},{name: 10, value: 10},{name: 15, value: 15},
     {name: 20, value: 20},{name: 30, value: 30},{name: 45, value: 45},
     {name: 60, value: 60}
-  ]
+  ],
+  eu_countries: ['Andorra', 'Argentina', 'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Israel', 'Italy', 'Japan', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'New Zealand', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United Kingdom', 'Uruguay'],
 
 };

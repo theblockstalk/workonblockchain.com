@@ -390,3 +390,17 @@ module.exports.updateEmailTemplate = function updateEmailTemplate() {
         body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry update.</p>",
     }
 }
+
+module.exports.companyGDPRDOc = function companyGDPRDOc(){
+    return {
+        name: 'doc.pdf',
+        path: __dirname + '/doc.pdf'
+    }
+}
+
+module.exports.companyGDPR = function companyGDPR(){
+    return {
+        'company_country': "Canada",
+        'canadian_commercial_company': false
+    }
+}

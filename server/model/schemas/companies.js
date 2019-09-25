@@ -63,6 +63,12 @@ module.exports = new Schema({
         type: String,
         maxlength: 3000
     },
+    canadian_commercial_company: Boolean,
+    usa_privacy_shield: Boolean,
+    dta_doc_link: {
+        type: String,
+        validate: regexes.url
+    },
     discount: Number,
     pricing_plan: {
         type: String,

@@ -12,6 +12,7 @@ declare var $:any;
 const URL = environment.backend_url;
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
+import { constants } from "../../../constants/constants";
 
 @Component({
   selector: 'app-about-company',
@@ -43,6 +44,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   imagePreviewLink;
   prefil_image;
   hear_about_wob;otherReasons;price_plan_active_class;
+  gdpr_disable;gdpr_compliance_active_class;
   pricing_disable = "";
 
   constructor(private route: ActivatedRoute,private datePipe: DatePipe,
@@ -70,6 +72,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    this.gdpr_disable = 'disabled';
     this.pricing_disable='disabled';
     this.pref_disable='disabled';
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
@@ -118,6 +121,12 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.price_plan_active_class = 'fa fa-check-circle text-success';
             }
 
+            if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+              if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
+                this.gdpr_disable = '';
+                this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+              }
+            }
           },
           error =>
           {

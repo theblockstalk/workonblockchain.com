@@ -7,6 +7,8 @@ const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
+const dtaDocEmail = require('../../../services/email/emails/dtaDocEmail');
+const filterReturnData = require('../filterReturnData');
 
 module.exports.request = {
     type: 'patch',
@@ -69,6 +71,12 @@ const bodySchema = new Schema({
     company_description: {
         type: String,
         maxlength: 3000
+    },
+    canadian_commercial_company: Boolean,
+    usa_privacy_shield: Boolean,
+    dta_doc_link: {
+        type: String,
+        validate: regexes.url
     },
     discount: Number,
     pricing_plan: {
@@ -187,7 +195,8 @@ const bodySchema = new Schema({
         enum: enumerations.hearAboutWob
     },
     hear_about_wob_other_info:  String,
-    unset_hear_about_wob_other_info: Boolean
+    unset_hear_about_wob_other_info: Boolean,
+    gdpr_compliance: Boolean
 });
 
 module.exports.inputValidation = {
@@ -196,7 +205,8 @@ module.exports.inputValidation = {
 };
 
 module.exports.files = async function(req) {
-    await multer.uploadOneFile(req, "company_logo");
+    await multer.uploadOneFile(req, "company_logo"); //fot DTA doc too
+    //await multer.uploadOneFile(req, "dta_doc");
 }
 
 module.exports.auth = async function (req) {
@@ -231,7 +241,33 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
+        if(queryBody.gdpr_compliance && queryBody.company_country && enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
+            userUpdate.is_approved = 1;
+
+            const requireDta = function() {
+                if(!req.file || !req.file.path) errors.throwError("DTA document upload required", 400);
+
+                dtaDocEmail.sendEmail(queryBody.company_name, queryBody.company_country, req.file.path, userId);
+                employerUpdate.dta_doc_link = req.file.path;
+                userUpdate.is_approved = 0;
+            }
+
+            if (queryBody.company_country === "Canada") {
+                if (!queryBody.canadian_commercial_company && queryBody.canadian_commercial_company !== false) errors.throwError("Must answer question as a Canadian company", 400);
+                if (queryBody.canadian_commercial_company === 'false') requireDta()
+            } else if (queryBody.company_country === "United States") {
+                if (!queryBody.usa_privacy_shield  && queryBody.usa_privacy_shield !== false) errors.throwError("Must answer question as a US company", 400);
+                if (queryBody.usa_privacy_shield === 'false') requireDta()
+            } else {
+                requireDta();
+            }
+
+            if (queryBody.canadian_commercial_company || queryBody.canadian_commercial_company === 'false' ) employerUpdate.canadian_commercial_company = queryBody.canadian_commercial_company;
+            if (queryBody.usa_privacy_shield || queryBody.usa_privacy_shield === 'false' ) employerUpdate.usa_privacy_shield = queryBody.usa_privacy_shield;
+        }
+        if(!(enumerations.euCountries.indexOf(queryBody.company_country) === -1) && (!queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path)
+            employerUpdate.company_logo = req.file.path;
+
         else {
             if(queryBody.hear_about_wob) userUpdate.hear_about_wob = queryBody.hear_about_wob;
             if(queryBody.hear_about_wob_other_info) userUpdate.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
@@ -333,7 +369,10 @@ module.exports.endpoint = async function (req, res) {
         else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
-        res.send(updatedEmployerDoc);
+        const employerProfileRemovedData = filterReturnData.removeSensativeData(objects.copyObject(updatedEmployerDoc._creator));
+        let employerCreatorRes = updatedEmployerDoc;
+        employerCreatorRes._creator = employerProfileRemovedData;
+        res.send(employerCreatorRes);
     }
     else {
         errors.throwError("Company account not found", 404);

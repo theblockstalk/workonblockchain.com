@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../user.service' ;
+import {constants} from '../../../../../constants/constants';
 
 @Component({
   selector: 'app-u-users-companies-view',
@@ -25,6 +26,12 @@ export class ViewComponent implements OnInit {
           else if(((new Date(data['_creator'].created_date) > new Date('2018/11/28')) && (!data['saved_searches'] || data['saved_searches'].length === 0)))
             this.router.navigate(['/preferences']);
           else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
+          else if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+            if ((data['canadian_commercial_company'] === true || data['canadian_commercial_company'] === false) || (data['usa_privacy_shield'] === true || data['usa_privacy_shield'] === false) || data['dta_doc_link']) {
+              this.userDoc = data;
+            }
+            else this.router.navigate(['/gdpr-compliance']);
+          }
           else this.userDoc = data;
         },
         error => {

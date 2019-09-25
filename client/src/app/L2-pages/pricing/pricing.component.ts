@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {isPlatformBrowser} from "@angular/common";
 import {UserService} from '../../user.service';
 import { Title, Meta } from '@angular/platform-browser';
+import { constants } from "../../../constants/constants";
 declare var $:any;
 
 @Component({
@@ -16,7 +17,8 @@ export class PricingComponent implements OnInit {
   @Input() showNavbar: boolean; //to show navbar for comp wizard
 
   terms_active_class;about_active_class;pref_active_class;companyMsgTitle;
-  companyMsgBody;price_plan_active_class;log;
+  companyMsgBody;price_plan_active_class;log;gdpr_compliance_active_class;
+  gdpr_disable;
 
   free_plan: any;
   starter = "Starter";
@@ -28,6 +30,7 @@ export class PricingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.gdpr_disable = 'disabled';
     this.newMeta.updateTag({ name: 'description', content: 'Pricing for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
     this.newMeta.updateTag({ name: 'keywords', content: 'Pricing workonblockchain.com' });
     this.free_plan = {
@@ -38,6 +41,13 @@ export class PricingComponent implements OnInit {
       if (this.companyDoc['company_founded'] && this.companyDoc['no_of_employees'] && this.companyDoc['company_funded'] && this.companyDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
+
+      if(constants.eu_countries.indexOf(this.companyDoc['company_country']) === -1) {
+        if ((this.companyDoc['canadian_commercial_company'] === true || this.companyDoc['canadian_commercial_company'] === false) || (this.companyDoc['usa_privacy_shield'] === true || this.companyDoc['usa_privacy_shield'] === false) || this.companyDoc['dta_doc_link']) {
+          this.gdpr_disable = '';
+          this.gdpr_compliance_active_class = 'fa fa-check-circle text-success';
+        }
+      }
 
       this.authenticationService.get_page_content('Company popup message')
       .subscribe(
@@ -78,7 +88,13 @@ export class PricingComponent implements OnInit {
         data =>{
           if(data) {
             if(this.showNavbar){
-              if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              if(constants.eu_countries.indexOf(data['company_country']) === -1) {
+                //non EU, go to gdpr compliance page
+                this.router.navigate(['/gdpr-compliance']);
+              }
+              else{
+                if (isPlatformBrowser(this.platformId)) $('#whatHappensNextModal').modal('show');
+              }
             }
             else this.router.navigate(['/users/company']);
           }

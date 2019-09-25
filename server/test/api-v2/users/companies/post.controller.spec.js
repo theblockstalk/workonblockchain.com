@@ -31,7 +31,7 @@ describe('create new company', function () {
             const userDoc = await Users.findOne({email: company.email});
             userDoc.email.should.equal(company.email);
             userDoc.is_verify.should.equal(0);
-            userDoc.is_approved.should.equal(1);
+            userDoc.is_approved.should.equal(0);
             userDoc.is_admin.should.equal(0);
             userDoc.disable_account.should.equal(false);
             userDoc.type.should.equal("company");
