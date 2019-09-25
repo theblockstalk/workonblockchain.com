@@ -67,10 +67,7 @@ describe('update profile as company', function () {
             const gdprDoc = docGenerator.companyGDPRDOc();
             const gdprData = docGenerator.companyGDPR();
             const updateRes = await companyHelper.companygdprData(companyUserDoc._creator, companyUserDoc.jwt_token , gdprDoc, gdprData);
-            let response;
-            if(updateRes.body.canadian_commercial_company === true) response = 'yes';
-            if(updateRes.body.canadian_commercial_company === false) response = 'no';
-            gdprData.canadian_commercial_company.should.equal(response);
+            gdprData.canadian_commercial_company.should.equal(gdprData.canadian_commercial_company);
         });
     })
 });

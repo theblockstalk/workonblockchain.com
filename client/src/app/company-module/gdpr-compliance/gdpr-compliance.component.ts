@@ -194,6 +194,7 @@ export class GDPRComplianceComponent implements OnInit {
   }
 
   sendDTADoc(data){
+    data.set('gdpr_compliance',true);
     if(data.get('usa_privacy_shield') === 'yes') {
       data.set('usa_privacy_shield', true);
     }
@@ -207,6 +208,7 @@ export class GDPRComplianceComponent implements OnInit {
     if(data.get('canadian_commercial_company') === 'no') {
       data.set('canadian_commercial_company', false);
     }
+    console.log(data.get('gdpr_compliance'));
     this.authenticationService.edit_company_profile(this.currentUser._id ,data , false)
     .subscribe(
       data => {

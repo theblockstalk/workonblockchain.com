@@ -195,7 +195,8 @@ const bodySchema = new Schema({
         enum: enumerations.hearAboutWob
     },
     hear_about_wob_other_info:  String,
-    unset_hear_about_wob_other_info: Boolean
+    unset_hear_about_wob_other_info: Boolean,
+    gdpr_compliance: Boolean
 });
 
 module.exports.inputValidation = {
@@ -240,7 +241,7 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if(queryBody.company_country && enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
+        if(queryBody.gdpr_compliance && queryBody.company_country && enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
             userUpdate.is_approved = 1;
 
             const requireDta = function() {

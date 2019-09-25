@@ -79,6 +79,7 @@ module.exports.companygdprData = async function companygdprData(user_id, jwtToke
         .set('Authorization', jwtToken)
         .field('company_country', gdprData.company_country)
         .field('canadian_commercial_company', gdprData.canadian_commercial_company)
+        .field('gdpr_compliance', true)
         .attach('company_logo', myFile, gdprDoc.name);
     res.should.have.status(200);
     return res;
