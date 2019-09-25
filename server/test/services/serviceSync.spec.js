@@ -52,7 +52,7 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                     criteria: "((Account_Name:equals:" + testContact.company_name + "))"
                 }
             });
-            if (res.data && res.data.length > 0) {
+            if (res && res.data && res.data.length > 0) {
                 await zoho.accounts.deleteOne({
                     id: res.data[0].id
                 });
@@ -143,7 +143,7 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 zohoContact.Last_Name.should.equal(companyDoc.last_name);
                 zohoContact.Contact_type[0].should.equal("company");
                 zohoContact.Account_Name.id.should.equal(zohoAccount.id);
-                zohoContact.Platform_ID.should.equal(userDoc.id.toString());
+                zohoContact.Platform_ID.should.equal(userDoc._id.toString());
 
                 zohoAccount.Account_Name.should.equal(companyDoc.company_name);
                 zohoAccount.Account_status.should.equal("Active");
