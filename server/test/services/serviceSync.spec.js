@@ -26,16 +26,24 @@ const testContact = {
 const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
 const getSyncTestEmail = syncTestEmail.replace("+","%2B");
 
-// if (settings.ENVIRONMENT === 'test-all') {
-    describe('service syncronization', function () {
-        this.timeout(7000);
+const runTests = function() {
+    if (settings.ENVIRONMENT === 'test-all') {
+        return tests;
+    } else return function () {}
+};
 
-        beforeEach(async function() {
+describe('service syncronization', function () {
+    this.timeout(10000);
+
+    beforeEach(async function() {
+        if (settings.ENVIRONMENT === 'test-all') {
             await zoho.initialize();
             await zoho.generateAuthTokenfromRefreshToken();
-        })
+        }
+    })
 
-        afterEach(async function () {
+    afterEach(async function () {
+        if (settings.ENVIRONMENT === 'test-all') {
             console.log('removing test contact');
             let res = await zoho.contacts.search({
                 params: {
@@ -59,11 +67,13 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
             }
             console.log('dropping database');
             await mongo.drop();
-        })
+        }
+    })
 
-        describe('sync different documents', function () {
+    describe('sync different documents', function () {
 
-            it('should sync a new candidate', async function () {
+        it('should sync a new candidate', async function () {
+            if (settings.ENVIRONMENT === 'test-all') {
                 const candidate = docGenerator.candidate();
                 candidate.email = testContact.email;
                 candidate.first_name = testContact.first_name;
@@ -82,9 +92,11 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 zohoContact.First_Name.should.equal(userDoc.first_name);
                 zohoContact.Candidate_status.should.equal(userDoc.candidate.latest_status.status);
                 zohoContact.Last_Name.should.equal(userDoc.last_name);
-            })
+            }
+        })
 
-            it('should sync a patched candidate', async function () {
+        it('should sync a patched candidate', async function () {
+            if (settings.ENVIRONMENT === 'test-all') {
                 const candidate = docGenerator.candidate();
                 candidate.email = testContact.email;
                 candidate.first_name = testContact.first_name;
@@ -113,9 +125,11 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 const zohoContact = res.data[0];
                 zohoContact.Candidate_status.should.equal(userDoc.candidate.latest_status.status);
                 zohoContact.Last_Name.should.equal(userDoc.last_name);
-            })
+            }
+        })
 
-            it('should sync a new company', async function () {
+        it('should sync a new company', async function () {
+            if (settings.ENVIRONMENT === 'test-all') {
                 const company = docGenerator.company();
                 company.email = testContact.email;
                 company.first_name = testContact.first_name;
@@ -148,9 +162,11 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 zohoAccount.Account_Name.should.equal(companyDoc.company_name);
                 zohoAccount.Account_status.should.equal("Active");
                 zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
-            })
+            }
+        })
 
-            it('should sync an updated company', async function () {
+        it('should sync an updated company', async function () {
+            if (settings.ENVIRONMENT === 'test-all') {
                 const company = docGenerator.company();
                 company.email = testContact.email;
                 company.first_name = testContact.first_name;
@@ -191,7 +207,7 @@ const getSyncTestEmail = syncTestEmail.replace("+","%2B");
                 zohoAccount.Account_Name.should.equal(companyDoc.company_name);
                 zohoAccount.Account_status.should.equal("Active");
                 zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
-            })
+            }
         })
     })
-// }
+})

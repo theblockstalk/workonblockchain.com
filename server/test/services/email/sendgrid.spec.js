@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const sendgrid = require('../../../controller/services/email/sendGrid');
+const settings = require('../../../settings');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -14,23 +15,23 @@ describe('sendgrid service', function () {
         it('it should add environment to regular email', async function() {
             let email = "jack@example.com";
             let newEmail = sendgrid.addEmailEnvironment(email);
-            newEmail.should.equal("jack+wob_test_environment@example.com");
+            newEmail.should.equal("jack+wob_"+settings.ENVIRONMENT+"_environment@example.com");
         })
 
         it('it should add environment to email with +', async function() {
             let email = "jack+test1@example.com";
             let newEmail = sendgrid.addEmailEnvironment(email);
-            newEmail.should.equal("jack+test1_wob_test_environment@example.com");
+            newEmail.should.equal("jack+test1_wob_"+settings.ENVIRONMENT+"_environment@example.com");
         })
 
         it('it should remove environment to regular email', async function() {
-            let email = "jack+wob_test_environment@example.com";
+            let email = "jack+wob_"+settings.ENVIRONMENT+"_environment@example.com";
             let newEmail = sendgrid.removeEmailEnvironment(email);
             newEmail.should.equal("jack@example.com");
         })
 
         it('it should remove environment to email with +', async function() {
-            let email = "jack+test1_wob_test_environment@example.com";
+            let email = "jack+test1_wob_"+settings.ENVIRONMENT+"_environment@example.com";
             let newEmail = sendgrid.removeEmailEnvironment(email);
             newEmail.should.equal("jack+test1@example.com");
         })
