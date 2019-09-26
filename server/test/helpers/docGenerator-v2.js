@@ -168,7 +168,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : random.enum(enumerations.currencies),
-            current_salary : random.integer(1),
+            current_salary : random.integer(10000, 100000),
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             residence_country : ['Pakistan']
