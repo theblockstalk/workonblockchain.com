@@ -35,7 +35,6 @@ describe('update profile as company', function () {
             companyUpdatedDoc.first_name.should.equal(updatedData.first_name);
             companyUpdatedDoc.last_name.should.equal(updatedData.last_name);
             companyUpdatedDoc.job_title.should.equal(updatedData.job_title);
-            companyUpdatedDoc.company_name.should.equal(updatedData.company_name);
             companyUpdatedDoc.company_website.should.equal(updatedData.company_website);
             companyUpdatedDoc.company_country.should.equal(updatedData.company_country);
             companyUpdatedDoc.company_postcode.should.equal(updatedData.company_postcode);
