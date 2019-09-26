@@ -150,7 +150,6 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
         company_country: "Pakistan",
-        company_name: "My Company",
         company_postcode: "44000",
         company_city: "rawalpindi",
         company_founded:2013,
