@@ -242,6 +242,7 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
+
         if(queryBody.gdpr_compliance && queryBody.company_country && enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
             userUpdate.is_approved = 1;
 
@@ -276,7 +277,12 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
             if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
             if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
-            if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
+            if (queryBody.company_name) {
+                const companyDoc = await companies.findOne({company_name: queryBody.company_name});
+                if (companyDoc) errors.throwError("Company with name " + queryBody.company_name + " already exists", 400);
+
+                employerUpdate.company_name = queryBody.company_name;
+            }
             if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
             if (queryBody.company_phone) employerUpdate.company_phone = queryBody.company_phone;
             if (queryBody.company_country) employerUpdate.company_country = queryBody.company_country;

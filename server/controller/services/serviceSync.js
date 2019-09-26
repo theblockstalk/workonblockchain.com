@@ -23,6 +23,8 @@ module.exports.pushToQueue = async function(operation, obj) {
         syncDoc.user = userDoc;
         if (obj.company) syncDoc.company = obj.company;
 
+        logger.debug("Adding to sync queue", { syncDoc: syncDoc,
+            tag: "sync_queue"});
         if (operation === "PATCH") {
             const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
 
@@ -57,6 +59,7 @@ module.exports.pullFromQueue = async function() {
 }
 
 const syncZoho = async function (operation, syncDocs) {
+    logger.debug(syncDocs.length + " items to syncronize of operation " + operation, {tag: "sync_queue"});
     const docIds = syncDocs.map((syncDoc) => { return syncDoc._id })
 
     let zohoContacts = [], zohoAccounts = [];
@@ -87,6 +90,7 @@ const syncZoho = async function (operation, syncDocs) {
         }
 
         const zohoModuleSync = async function(data, module, deleteSyncDoc) {
+            logger.debug("Syncing to Zoho " + module, { data: data, tag: "sync_queue"});
             let input = { body: { data: data } };
             if (module === "contacts") input.duplicate_check_fields = ["Email"];
             if (module === "accounts") input.duplicate_check_fields = ["Account_Name"];
@@ -108,7 +112,8 @@ const syncZoho = async function (operation, syncDocs) {
                     if (!objects.isEmpty(record.details)) message = message + ", details: " + JSON.stringify(record.details);
                     logger.error(message, {
                         error_id: errorId,
-                        code: record.code
+                        code: record.code,
+                        tag: "sync_queue"
                     });
                     await syncQueue.updateOne({_id: docIds[i]}, {
                         $set: {
@@ -152,7 +157,8 @@ const syncZoho = async function (operation, syncDocs) {
                 code: error.code,
                 message: error.message,
                 stack: error.stack
-            }
+            },
+            tag: "sync_queue"
         });
         await syncQueue.updateMany({_id: { $in: docIds}}, {
             status: "error",
