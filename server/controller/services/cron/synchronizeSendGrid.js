@@ -1,5 +1,6 @@
 const settings = require('../../../settings');
 const sendGrid = require('../email/sendGrid');
+const serviceSync = require('../serviceSync');
 const logger = require('../logger');
 const crypto = require('../crypto');
 const mongooseUsers = require('../../../model/mongoose/users');
@@ -36,7 +37,7 @@ async function syncListToDatabase(listId, recipientCount) {
             logger.debug('(' + i + '/' + recipientCount + ') Checking that ' + recipient.email + ' is in database');
             let emailToSearch;
             if (settings.ENVIRONMENT !== "production") {
-                emailToSearch = sendGrid.removeEmailEnvironment(recipient.email);
+                emailToSearch = serviceSync.removeEmailEnvironment(recipient.email);
             } else {
                 emailToSearch = recipient.email;
             }

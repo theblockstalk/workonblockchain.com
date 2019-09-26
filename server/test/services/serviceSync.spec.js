@@ -23,14 +23,8 @@ const testContact = {
     first_name: "PART OF AUTOMATIC UNIT TESTS - " + settings.ENVIRONMENT,
     company_name: "PART OF AUTOMATIC UNIT TESTS - " + settings.ENVIRONMENT
 };
-const syncTestEmail = sendgrid.addEmailEnvironment(testContact.email);
+const syncTestEmail = serviceSync.addEmailEnvironment(testContact.email);
 const getSyncTestEmail = syncTestEmail.replace("+","%2B");
-
-const runTests = function() {
-    if (settings.ENVIRONMENT === 'test-all') {
-        return tests;
-    } else return function () {}
-};
 
 describe('service syncronization', function () {
     this.timeout(10000);
@@ -210,5 +204,31 @@ describe('service syncronization', function () {
                 zohoAccount.Billing_Country.should.equal(companyDoc.company_country);
             }
         })
+    })
+})
+
+describe('email transformations', function() {
+    it('it should add environment to regular email', async function() {
+        let email = "jack@example.com";
+        let newEmail = serviceSync.addEmailEnvironment(email);
+        newEmail.should.equal("jack+wob_"+settings.ENVIRONMENT+"_environment@example.com");
+    })
+
+    it('it should add environment to email with +', async function() {
+        let email = "jack+test1@example.com";
+        let newEmail = serviceSync.addEmailEnvironment(email);
+        newEmail.should.equal("jack+test1_wob_"+settings.ENVIRONMENT+"_environment@example.com");
+    })
+
+    it('it should remove environment to regular email', async function() {
+        let email = "jack+wob_"+settings.ENVIRONMENT+"_environment@example.com";
+        let newEmail = serviceSync.removeEmailEnvironment(email);
+        newEmail.should.equal("jack@example.com");
+    })
+
+    it('it should remove environment to email with +', async function() {
+        let email = "jack+test1_wob_"+settings.ENVIRONMENT+"_environment@example.com";
+        let newEmail = serviceSync.removeEmailEnvironment(email);
+        newEmail.should.equal("jack+test1@example.com");
     })
 })
