@@ -21,6 +21,7 @@ module.exports.candidateProfile = async function candidateProfile(candidate, pro
 
 
 const candidateProfilePatch = module.exports.candidateProfilePatch = async function (user_id, jwt_token, inputQuery ) {
+    console.log(inputQuery);
     const res = await chai.request(server)
         .patch('/v2/users/candidates?user_id='+ user_id)
         .set('Authorization', jwt_token)
