@@ -9,50 +9,50 @@ const zoho = require('./zoho/zoho');
 const settings = require('../../settings');
 
 module.exports.pushToQueue = async function(operation, obj) {
-    const timestamp = Date.now();
-    let syncDoc = {
-        operation: operation,
-        status: 'pending',
-        added_to_queue: timestamp
-    };
-
-    let userDoc = obj.user;
-    if (userDoc) {
-        syncDoc.queue = userDoc.type;
-        syncDoc.user = userDoc;
-        if (obj.company) syncDoc.company = obj.company;
-
-        logger.debug("Adding to sync queue", { syncDoc: syncDoc,
-            tag: "sync_queue"});
-        if (operation === "PATCH") {
-            const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
-
-            if (existingSyncDoc) {
-                delete syncDoc.queue;
-                delete syncDoc.operation;
-                delete syncDoc.status;
-                await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
-            } else {
-                await syncQueue.insert(syncDoc);
-            }
-        } else {
-            await syncQueue.insert(syncDoc);
-        }
-
-    }
+    // const timestamp = Date.now();
+    // let syncDoc = {
+    //     operation: operation,
+    //     status: 'pending',
+    //     added_to_queue: timestamp
+    // };
+    //
+    // let userDoc = obj.user;
+    // if (userDoc) {
+    //     syncDoc.queue = userDoc.type;
+    //     syncDoc.user = userDoc;
+    //     if (obj.company) syncDoc.company = obj.company;
+    //
+    //     logger.debug("Adding to sync queue", { syncDoc: syncDoc,
+    //         tag: "sync_queue"});
+    //     if (operation === "PATCH") {
+    //         const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
+    //
+    //         if (existingSyncDoc) {
+    //             delete syncDoc.queue;
+    //             delete syncDoc.operation;
+    //             delete syncDoc.status;
+    //             await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
+    //         } else {
+    //             await syncQueue.insert(syncDoc);
+    //         }
+    //     } else {
+    //         await syncQueue.insert(syncDoc);
+    //     }
+    //
+    // }
 }
 
 module.exports.pullFromQueue = async function() {
-    logger.debug("Checking the sync queue", {tag: "sync_queue"});
-    let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
-    if (syncDocs && syncDocs.length > 0) await syncZoho("POST", syncDocs);
-
-
-    syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
-    if (syncDocs && syncDocs.length > 0) {
-        await time.sleep(1000);
-        await syncZoho("PATCH", syncDocs);
-    }
+    // logger.debug("Checking the sync queue", {tag: "sync_queue"});
+    // let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
+    // if (syncDocs && syncDocs.length > 0) await syncZoho("POST", syncDocs);
+    //
+    //
+    // syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
+    // if (syncDocs && syncDocs.length > 0) {
+    //     await time.sleep(1000);
+    //     await syncZoho("PATCH", syncDocs);
+    // }
     // sync to amplitude
     // sync to sendgrid?
 }
