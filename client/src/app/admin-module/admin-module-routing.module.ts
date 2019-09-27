@@ -10,6 +10,7 @@ import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-p
 import { StyleGuideComponent } from './style-guide/style-guide.component';
 import { AdminUpdateCompanyProfileComponent } from './admin-update-company-profile/admin-update-company-profile.component';
 import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
+import { AdminTimeframeSearchComponent } from './admin-timeframe-search/admin-timeframe-search.component';
 
 const routes: Routes = [
   {path : 'admin-dashboard' , component: AdminDashboardComponent},
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path : 'style-guide' , component : StyleGuideComponent},
   {path : 'update-company-profile' , component : AdminUpdateCompanyProfileComponent },
   {path : 'admin-candidate-detail' , component: AdminCandidateDetailComponent},
-
+  {path : 'admin-timeframe-search', component: AdminTimeframeSearchComponent},
 ];
 
 @NgModule({

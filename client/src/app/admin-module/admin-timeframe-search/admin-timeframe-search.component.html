@@ -1,0 +1,60 @@
+<section class = "wob-bg-primary2">
+  <div class="container pt-2">
+    <div class="row mt-2">
+      <div class = "col-md-12 p-0">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class = "row">
+            <div class="col-md-12">
+              <div class="form-row">
+                <div class="form-group w-100">
+                  <label>Number of days</label>
+                  <select title="(selcet one)" class="selectpicker form-control"  required name="timeframe" [(ngModel)]="timeframe" (change)="selected_timeframe()">
+                    <option class='option' *ngFor='let options of timeframe_list'  [value]="options.value" selected>{{options.name}}</option>
+                  </select>
+                  <div class="invalid-feedback d-inline" *ngIf="!timeframe">
+                    {{timeframe_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>New sent messages</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>New companies</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Pricing plan selected</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>New candidates</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Modified jobs</label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
