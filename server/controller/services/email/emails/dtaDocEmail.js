@@ -20,7 +20,7 @@ module.exports.sendEmail = function sendEmail(companyName,companyCountry,docLink
         templateData: {
             companyName: companyName,
             companyCountry: companyCountry,
-            docLink: docLink,
+            dtaUrl: docLink,
             companyAdminUrl: companyAdminUrl,
             environment: settings.ENVIRONMENT
         }
