@@ -200,7 +200,7 @@
                 <label *ngIf="history.pricing_plan" class="border border-success p-2 text-success rounded font-weight-normal">
                   Plan: {{history.pricing_plan}}
                 </label>
-                <label *ngIf="history.discount" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                <label *ngIf="history.discount || history.discount > -1" class="border border-warning p-2 text-warning rounded font-weight-normal">
                   Discount: {{history.discount}}%
                 </label>
               </div>
