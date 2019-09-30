@@ -122,7 +122,7 @@
             </div>
 
             <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
-              <ng-container *ngIf="userDoc['_creator'].is_approved === 1;else no_approve">
+              <ng-container *ngIf="is_approved !== '';else no_approve">
                 <app-c-formv-text label="Approved by admin:" value="Yes"></app-c-formv-text>
               </ng-container>
               <ng-template #no_approve>
@@ -381,10 +381,10 @@
               </div>
 
               <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
-                <app-c-formv-text
-                  label="Years of experience:"
-                  [value]="searches.years_exp_min"
-                ></app-c-formv-text>
+                <div class="form-group">
+                  <label>Years of experience:</label>
+                  <p> {{searches.years_exp_min}}+ </p>
+                </div>
               </div>
 
               <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">

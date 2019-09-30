@@ -428,7 +428,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            this.current_currency_log = "Please enter expected hours ";
+            this.current_currency_log = "Please enter expected renumeration ";
             count = 1;
           }
         }
@@ -447,7 +447,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            this.expected_hourly_rate_log = "Please enter expected hours ";
+            this.expected_hourly_rate_log = "Please enter expected renumeration ";
             count = 1;
           }
 

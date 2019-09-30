@@ -104,7 +104,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   imagePreviewLink;
   prefil_image;
   hear_about_wob;otherReasons;discount;
-  discount_log;usa_privacy_shield;us_privacy_shield_error;
+  discount_log;current_salary_log;
+  usa_privacy_shield;us_privacy_shield_error;
   canadian_commercial_company;commercial_canada_error;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
@@ -394,6 +395,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     }
 
     if(this.discount && !this.checkNumber(this.discount)) count = 1;
+    if(this.discount && !this.discountRange(this.discount)) count = 1;
 
     if(!this.country_code){
       this.country_code_log = 'Please select country code';
@@ -453,7 +455,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            this.current_currency_log = "Please enter expected hours ";
+            this.current_salary_log = 'Please enter annual salary';
+            this.current_currency_log = " ";
             count = 1;
           }
         }
@@ -472,7 +475,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            this.expected_hourly_rate_log = "Please enter expected hours ";
+            this.expected_hourly_rate_log = "Please enter expected renumeration";
             count = 1;
           }
 
@@ -593,6 +596,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company = 'true';
       if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company = 'false';
 
+      if(this.discount) profileForm.value.discount = parseInt(this.discount);
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
@@ -786,5 +790,11 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.imageCropData = {};
     }
     if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
+  }
+
+  discountRange(number){
+    if(number > -1 && number < 100)
+      return true;
+    else return false;
   }
 }
