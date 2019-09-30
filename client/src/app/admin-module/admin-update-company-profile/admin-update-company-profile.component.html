@@ -124,6 +124,9 @@
                     <div class = "invalid-feedback d-inline" *ngIf="discount && !checkNumber(discount)">
                       Only numbers are allowed
                     </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="discount && !discountRange(discount)">
+                      Enter number between 1 & 99
+                    </div>
                     <!--<div class="invalid-feedback d-inline" *ngIf="!discount">
                       {{discount}}
                     </div>-->

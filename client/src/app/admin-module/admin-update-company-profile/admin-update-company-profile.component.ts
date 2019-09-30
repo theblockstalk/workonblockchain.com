@@ -395,6 +395,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     }
 
     if(this.discount && !this.checkNumber(this.discount)) count = 1;
+    if(this.discount && !this.discountRange(this.discount)) count = 1;
 
     if(!this.country_code){
       this.country_code_log = 'Please select country code';
@@ -595,6 +596,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company = 'true';
       if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company = 'false';
 
+      if(this.discount) profileForm.value.discount = parseInt(this.discount);
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(
           data => {
@@ -788,5 +790,11 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.imageCropData = {};
     }
     if (isPlatformBrowser(this.platformId)) $('#imageModal').modal('hide');
+  }
+
+  discountRange(number){
+    if(number > -1 && number < 100)
+      return true;
+    else return false;
   }
 }

@@ -303,18 +303,21 @@ module.exports.endpoint = async function (req, res) {
                     }
                 }
             }
-            if(req.query.admin && queryBody.discount && (employerDoc.discount !== queryBody.discount)) {
+
+            if(req.query.admin && queryBody.discount > -1 && (employerDoc.discount !== queryBody.discount)) {
                 employerUpdate.discount = queryBody.discount;
-                let history = {
-                    discount: queryBody.discount,
-                    timestamp : timestamp,
-                    updated_by: updatedUserID,
-                };
-                pushObj = {
-                    $push: {
-                        'history': {
-                            $each: [history],
-                            $position: 0
+                if(queryBody.discount !== 0) {
+                    let history = {
+                        discount: queryBody.discount,
+                        timestamp: timestamp,
+                        updated_by: updatedUserID,
+                    };
+                    pushObj = {
+                        $push: {
+                            'history': {
+                                $each: [history],
+                                $position: 0
+                            }
                         }
                     }
                 }

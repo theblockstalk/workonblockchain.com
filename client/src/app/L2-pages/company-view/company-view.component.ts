@@ -18,14 +18,14 @@ export class CompanyViewComponent implements OnInit {
 
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
-  error;is_approve;disabled=true;referred_link;detail_link;discount='';
+  error;is_approve;disabled=true;referred_link;detail_link;discount;
   company_phone;date_created;is_approved = '';
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
     this.referred_name = '';
-    this.discount='';
+    this.discount = '0%';
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
     if(this.userDoc['company_logo'] != null ) this.imgPath =  this.userDoc['company_logo'];
 
