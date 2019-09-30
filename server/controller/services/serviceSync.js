@@ -6,54 +6,53 @@ const objects = require('./objects');
 const crypto = require('./crypto');
 const time = require('./time');
 const zoho = require('./zoho/zoho');
-const sendgrid = require('./email/sendGrid');
 const settings = require('../../settings');
 
 module.exports.pushToQueue = async function(operation, obj) {
-    const timestamp = Date.now();
-    let syncDoc = {
-        operation: operation,
-        status: 'pending',
-        added_to_queue: timestamp
-    };
-
-    let userDoc = obj.user;
-    if (userDoc) {
-        syncDoc.queue = userDoc.type;
-        syncDoc.user = userDoc;
-        if (obj.company) syncDoc.company = obj.company;
-
-        logger.debug("Adding to sync queue", { syncDoc: syncDoc,
-            tag: "sync_queue"});
-        if (operation === "PATCH") {
-            const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
-
-            if (existingSyncDoc) {
-                delete syncDoc.queue;
-                delete syncDoc.operation;
-                delete syncDoc.status;
-                await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
-            } else {
-                await syncQueue.insert(syncDoc);
-            }
-        } else {
-            await syncQueue.insert(syncDoc);
-        }
-
-    }
+    // const timestamp = Date.now();
+    // let syncDoc = {
+    //     operation: operation,
+    //     status: 'pending',
+    //     added_to_queue: timestamp
+    // };
+    //
+    // let userDoc = obj.user;
+    // if (userDoc) {
+    //     syncDoc.queue = userDoc.type;
+    //     syncDoc.user = userDoc;
+    //     if (obj.company) syncDoc.company = obj.company;
+    //
+    //     logger.debug("Adding to sync queue", { syncDoc: syncDoc,
+    //         tag: "sync_queue"});
+    //     if (operation === "PATCH") {
+    //         const existingSyncDoc = await syncQueue.findOne({"user._id": userDoc._id, status: 'pending', operation: operation});
+    //
+    //         if (existingSyncDoc) {
+    //             delete syncDoc.queue;
+    //             delete syncDoc.operation;
+    //             delete syncDoc.status;
+    //             await syncQueue.updateOne({_id: existingSyncDoc._id}, { $set: syncDoc });
+    //         } else {
+    //             await syncQueue.insert(syncDoc);
+    //         }
+    //     } else {
+    //         await syncQueue.insert(syncDoc);
+    //     }
+    //
+    // }
 }
 
 module.exports.pullFromQueue = async function() {
-
-    let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
-    if (syncDocs && syncDocs.length > 0) await syncZoho("POST", syncDocs);
-
-
-    syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
-    if (syncDocs && syncDocs.length > 0) {
-        await time.sleep(1000);
-        await syncZoho("PATCH", syncDocs);
-    }
+    // logger.debug("Checking the sync queue", {tag: "sync_queue"});
+    // let syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "POST"}, {added_to_queue: "ascending"}, 100, null);
+    // if (syncDocs && syncDocs.length > 0) await syncZoho("POST", syncDocs);
+    //
+    //
+    // syncDocs = await syncQueue.findSortLimitSkip({status: 'pending', operation: "PATCH"}, {added_to_queue: "ascending"}, 100, null);
+    // if (syncDocs && syncDocs.length > 0) {
+    //     await time.sleep(1000);
+    //     await syncZoho("PATCH", syncDocs);
+    // }
     // sync to amplitude
     // sync to sendgrid?
 }
@@ -65,7 +64,7 @@ const syncZoho = async function (operation, syncDocs) {
     let zohoContacts = [], zohoAccounts = [];
     try {
         for (let syncDoc of syncDocs) {
-            syncDoc.user.email = sendgrid.addEmailEnvironment(syncDoc.user.email);
+            syncDoc.user.email = addEmailEnvironment(syncDoc.user.email);
             const zohoContact = await toZohoContact(syncDoc);
 
             if (syncDoc.company) {
@@ -90,15 +89,16 @@ const syncZoho = async function (operation, syncDocs) {
         }
 
         const zohoModuleSync = async function(data, module, deleteSyncDoc) {
-            logger.debug("Syncing to Zoho " + module, { data: data, tag: "sync_queue"});
             let input = { body: { data: data } };
             if (module === "contacts") input.duplicate_check_fields = ["Email"];
             if (module === "accounts") input.duplicate_check_fields = ["Account_Name"];
 
             let res, records;
             if (operation === "POST") {
+                logger.debug("upsert to Zoho " + module, { input: input, tag: "sync_queue"});
                 res = await zoho[module].upsert(input);
             } else {
+                logger.debug("put to Zoho " + module, { input: input, tag: "sync_queue"});
                 res = await zoho[module].putMany(input);
             }
             records = res.data;
@@ -138,15 +138,25 @@ const syncZoho = async function (operation, syncDocs) {
         }
 
         if (zohoAccounts.length > 0) {
+            logger.debug("Syncing zoho accounts", {
+                data: zohoAccounts,
+                tag: "sync_queue"
+            });
             let errorIndexes = await zohoModuleSync(zohoAccounts, "accounts", false);
             let count = 0;
+            if (errorIndexes.length > 0) logger.debug("Error with account syncing", {indexes:errorIndexes, tag: "sync_queue"});
             for (let i of errorIndexes) {
                 zohoContacts.splice(i-count, 1);
                 count++;
             }
         }
+        logger.debug("Syncing zoho contacts", {
+            data: zohoContacts,
+            tag: "sync_queue"
+        });
         await zohoModuleSync(zohoContacts, "contacts", true);
 
+        logger.debug("Removin docs from sync queue", { docs: docIds, tag: "sync_queue"});
         await syncQueue.deleteMany({_id: { $in: docIds}});
     } catch (error) {
         console.log(error);
@@ -223,13 +233,52 @@ const toZohoContact = async function (syncDoc) {
     return contact;
 }
 
+const environmentName = "wob_" + settings.ENVIRONMENT + "_environment";
+
+const addEmailEnvironment = function(email) {
+    if (settings.ENVIRONMENT !== "production") {
+        const at = email.search("@");
+        const plus = email.search(/\+/g); // "+" symbol
+        let name;
+        if (plus !== -1) {
+            name = email.substring(0,at) + "_" + environmentName;
+        } else {
+            name = email.substring(0,at) + "+" + environmentName;
+        }
+        const domain = email.substring(at+1);
+        return name + "@" + domain;
+    } else {
+        return email;
+    }
+};
+module.exports.addEmailEnvironment = addEmailEnvironment;
+
+module.exports.removeEmailEnvironment = function (email) {
+    if (settings.ENVIRONMENT !== "production") {
+        const at = email.search("@");
+        const env = email.search(environmentName);
+        const name = email.substring(0, env - 1);
+        const domain = email.substring(env + environmentName.length + 1);
+        return name + "@" + domain;
+    } else {
+        return email;
+    }
+};
+
+const addNameEnvironment = function(name) {
+    if (settings.ENVIRONMENT !== "production") {
+        return settings.ENVIRONMENT.toUpperCase() + " - " + name;
+    }
+    return name;
+};
+
 const toZohoAccount = async function (syncDoc) {
     const userDoc = syncDoc.user;
     const companyDoc = syncDoc.company;
 
     const created = await convertZohoDate(userDoc.created_date);
     let account = {
-        Account_Name: companyDoc.company_name,
+        Account_Name: addNameEnvironment(companyDoc.company_name),
         Platform_ID: companyDoc._id.toString(),
         Platform_URL: convertZohoURL(settings.CLIENT.URL + "admin-company-detail?user=" + userDoc._id.toString()),
         Account_Types: ["Client"],
@@ -240,6 +289,7 @@ const toZohoAccount = async function (syncDoc) {
         Account_disabled: userDoc.disable_account,
         Created: created
     };
+
 
     if (companyDoc.company_website) account.Website = companyDoc.company_website;
     if (companyDoc.company_country) account.Billing_Country = companyDoc.company_country;

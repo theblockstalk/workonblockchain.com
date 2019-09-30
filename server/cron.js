@@ -22,15 +22,14 @@ module.exports.startCron = function startCron() {
 
         const serviceQueue = createCronJob(settings.CRON.SERVICE_QUEUE, serviceQueueCron);
 
-        logger.debug('Cron jobs', {
+        logger.debug('Cron jobs started', {
             newMessagesJob: newMessagesJob,
             unreadMessagesJob: unreadMessagesJob,
             syncSendgridJob: syncSendgrid,
             autoNotification : autoNotificationEmail,
-            serviceQueue: serviceQueue
+            serviceQueue: serviceQueue,
+            tag: "cron"
         });
-
-        logger.info('Cron jobs started');
     }
 };
 
@@ -47,7 +46,8 @@ const logOnError = function(fn) {
     return Promise.resolve(fn()).catch(function (error) {
         logger.error(error.message, {
             stack: error.stack,
-            name: error.name
+            name: error.name,
+            tag: "cron"
         });
     });
 };
