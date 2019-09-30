@@ -1,7 +1,9 @@
 const enumerations = require('../../model/enumerations');
 const random = require('./random');
 
-module.exports.messages = {
+let api = {};
+
+api.messages = {
     approach: function(user_id) {
         return {
             receiver_id: user_id,
@@ -114,7 +116,7 @@ module.exports.messages = {
     }
 };
 
-module.exports.messageFile = function messageFile() {
+api.messageFile = function messageFile() {
     return {
         message: 'file ',
         name: 'image.jpg',
@@ -122,7 +124,7 @@ module.exports.messageFile = function messageFile() {
     };
 };
 
-module.exports.company = function company() {
+api.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
@@ -140,15 +142,13 @@ module.exports.company = function company() {
 };
 
 
-module.exports.companyUpdateProfile = function companyUpdateProfile(){
+api.companyUpdateProfile = function companyUpdateProfile(){
     return {
         first_name: "Sara",
         last_name: "khan",
         job_title: "Developer",
-        company_name: "Mwan Mobile",
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
-        company_country: "Pakistan",
         company_postcode: "44000",
         company_city: "rawalpindi",
         company_founded:2013,
@@ -159,6 +159,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         when_receive_email_notitfications : 'Daily',
 
         saved_searches : [{
+            name: random.string(),
             location: [
                 {remote:true },
                 {_id : '5c4aa17468cc293450c14c04'}
@@ -166,7 +167,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : random.enum(enumerations.currencies),
-            current_salary : random.integer(1),
+            current_salary : random.integer(10000, 100000),
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             residence_country : ['Pakistan']
@@ -176,7 +177,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 }
 
 
-module.exports.candidate = function candidate() {
+api.candidate = function candidate() {
     return {
         first_name: random.string(5),
         last_name: random.string(5),
@@ -185,7 +186,7 @@ module.exports.candidate = function candidate() {
     };
 };
 
-module.exports.candidateProfile = function candidateProfile(){
+api.candidateProfile = function candidateProfile(){
     return {
         contact_number: '+92654654654',
         nationality: [random.enum(enumerations.nationalities)],
@@ -266,7 +267,7 @@ module.exports.candidateProfile = function candidateProfile(){
     }
 }
 
-module.exports.changeCandidateStatus = function changeCandidateStatus(){
+api.changeCandidateStatus = function changeCandidateStatus(){
     return {
         note : 'Note for this profile',
         email_html : '<p>Hi, i have just approved your profile</p>',
@@ -275,7 +276,7 @@ module.exports.changeCandidateStatus = function changeCandidateStatus(){
     }
 }
 
-module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
+api.candidateProfileUpdate = function candidateProfileUpdate(){
     return {
         contact_number: '+926246524',
         nationality: [random.enum(enumerations.nationalities)],
@@ -348,26 +349,26 @@ module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
     }
 }
 
-module.exports.accountSetting = function accountSetting(){
+api.accountSetting = function accountSetting(){
     return {
         marketing_emails : true,
         is_unread_msgs_to_send : false
     }
 }
 
-module.exports.termsAndConditions = function termsAndConditions(){
+api.termsAndConditions = function termsAndConditions(){
     return {
         marketing_emails: true
     }
 }
 
-module.exports.companyTnCWizard = function companyTnCWizard() {
+api.companyTnCWizard = function companyTnCWizard() {
     return {
         marketing_emails: true
     }
 }
 
-module.exports.cmsContentFroTC = function cmsContentFroTC() {
+api.cmsContentFroTC = function cmsContentFroTC() {
     return {
         page_title: "T&C for Company",
         page_content: "<p>These are Terms and Conditions for companies. We will not tolerate anything.</p>\n",
@@ -375,7 +376,7 @@ module.exports.cmsContentFroTC = function cmsContentFroTC() {
     }
 }
 
-module.exports.newEmailTemplate = function newEmailTemplate() {
+api.newEmailTemplate = function newEmailTemplate() {
     return {
         name: "Template 1",
         subject: "Template subject",
@@ -383,10 +384,26 @@ module.exports.newEmailTemplate = function newEmailTemplate() {
     }
 }
 
-module.exports.updateEmailTemplate = function updateEmailTemplate() {
+api.updateEmailTemplate = function updateEmailTemplate() {
     return {
         name: "Template 1 update",
         subject: "Template subject update",
         body: "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry update.</p>",
     }
 }
+
+api.companyGDPRDOC = function companyGDPRDOC(){
+    return {
+        name: 'doc.pdf',
+        path: __dirname + '/doc.pdf'
+    }
+}
+
+api.companyGDPR = function companyGDPR(){
+    return {
+        'company_country': "Canada",
+        'canadian_commercial_company': false
+    }
+}
+
+module.exports = api;

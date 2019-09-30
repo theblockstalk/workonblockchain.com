@@ -7,6 +7,9 @@ const objects = require('../../../services/objects');
 const companies = require('../../../../model/mongoose/companies');
 const errors = require('../../../services/errors');
 const users = require('../../../../model/mongoose/users');
+const serviceSync = require('../../../services/serviceSync');
+const dtaDocEmail = require('../../../services/email/emails/dtaDocEmail');
+const filterReturnData = require('../filterReturnData');
 
 module.exports.request = {
     type: 'patch',
@@ -28,9 +31,6 @@ const bodySchema = new Schema({
     job_title: {
         type:String
     },
-    company_name: {
-        type:String
-    },
     company_website: {
         type:String,
         validate: regexes.url
@@ -40,10 +40,6 @@ const bodySchema = new Schema({
     },
     company_phone: {
         type:String
-    },
-    company_country: {
-        type: String,
-        enum: enumerations.countries
     },
     company_city: {
         type:String
@@ -69,6 +65,12 @@ const bodySchema = new Schema({
     company_description: {
         type: String,
         maxlength: 3000
+    },
+    canadian_commercial_company: Boolean,
+    usa_privacy_shield: Boolean,
+    dta_doc_link: {
+        type: String,
+        validate: regexes.url
     },
     discount: Number,
     pricing_plan: {
@@ -187,7 +189,8 @@ const bodySchema = new Schema({
         enum: enumerations.hearAboutWob
     },
     hear_about_wob_other_info:  String,
-    unset_hear_about_wob_other_info: Boolean
+    unset_hear_about_wob_other_info: Boolean,
+    gdpr_compliance: Boolean
 });
 
 module.exports.inputValidation = {
@@ -196,7 +199,8 @@ module.exports.inputValidation = {
 };
 
 module.exports.files = async function(req) {
-    await multer.uploadOneFile(req, "company_logo");
+    await multer.uploadOneFile(req, "company_logo"); //fot DTA doc too
+    //await multer.uploadOneFile(req, "dta_doc");
 }
 
 module.exports.auth = async function (req) {
@@ -231,7 +235,36 @@ module.exports.endpoint = async function (req, res) {
         let employerUpdate = {};
         let userUpdate = {};
         let unset = {};
-        if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
+
+        if(queryBody.gdpr_compliance && employerDoc.company_country && enumerations.euCountries.indexOf(employerDoc.company_country) === -1) {
+            userUpdate.is_approved = 1;
+
+            const requireDta = function() {
+                if(!req.query.admin && (!req.file || !req.file.path)) errors.throwError("DTA document upload required", 400);
+
+                if(!req.query.admin){
+                    dtaDocEmail.sendEmail(employerDoc.company_name, employerDoc.company_country, req.file.path, userId);
+                    employerUpdate.dta_doc_link = req.file.path;
+                }
+
+                userUpdate.is_approved = 0;
+            }
+
+            if (employerDoc.company_country === "Canada") {
+                if (!queryBody.canadian_commercial_company && queryBody.canadian_commercial_company !== false) errors.throwError("Must answer question as a Canadian company", 400);
+                if (queryBody.canadian_commercial_company === 'false' || queryBody.canadian_commercial_company === false) requireDta()
+            } else if (employerDoc.company_country === "United States") {
+                if (!queryBody.usa_privacy_shield  && queryBody.usa_privacy_shield !== false) errors.throwError("Must answer question as a US company", 400);
+                if (queryBody.usa_privacy_shield === 'false' || queryBody.usa_privacy_shield === false) requireDta()
+            } else {
+                requireDta();
+            }
+
+            if (queryBody.canadian_commercial_company || queryBody.canadian_commercial_company === 'false' ) employerUpdate.canadian_commercial_company = queryBody.canadian_commercial_company;
+            if (queryBody.usa_privacy_shield || queryBody.usa_privacy_shield === 'false' ) employerUpdate.usa_privacy_shield = queryBody.usa_privacy_shield;
+        }
+        if((!queryBody.gdpr_compliance && !queryBody.canadian_commercial_company && !queryBody.usa_privacy_shield) && req.file && req.file.path) employerUpdate.company_logo = req.file.path;
+
         else {
             if(queryBody.hear_about_wob) userUpdate.hear_about_wob = queryBody.hear_about_wob;
             if(queryBody.hear_about_wob_other_info) userUpdate.hear_about_wob_other_info = queryBody.hear_about_wob_other_info;
@@ -239,10 +272,14 @@ module.exports.endpoint = async function (req, res) {
             if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
             if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
             if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
-            if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
+            if (queryBody.company_name) {
+                const companyDoc = await companies.findOne({company_name: queryBody.company_name});
+                if (companyDoc) errors.throwError("Company with name " + queryBody.company_name + " already exists", 400);
+
+                employerUpdate.company_name = queryBody.company_name;
+            }
             if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
             if (queryBody.company_phone) employerUpdate.company_phone = queryBody.company_phone;
-            if (queryBody.company_country) employerUpdate.company_country = queryBody.company_country;
             if (queryBody.company_city) employerUpdate.company_city = queryBody.company_city;
             if (queryBody.company_postcode) employerUpdate.company_postcode = queryBody.company_postcode;
             if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
@@ -330,10 +367,18 @@ module.exports.endpoint = async function (req, res) {
             pushObj.$set = employerUpdate;
             await companies.update({ _id: employerDoc._id },pushObj);
         }
-        else await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+        else await companies.updateOne({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
-        res.send(updatedEmployerDoc);
+
+        await serviceSync.pushToQueue("PATCH", {
+            user: updatedEmployerDoc._creator,
+            company: updatedEmployerDoc
+        });
+        const employerProfileRemovedData = filterReturnData.removeSensativeData(objects.copyObject(updatedEmployerDoc._creator));
+        let employerCreatorRes = updatedEmployerDoc;
+        employerCreatorRes._creator = employerProfileRemovedData;
+        res.send(employerCreatorRes);
     }
     else {
         errors.throwError("Company account not found", 404);

@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const settings = require('./settings');
 const logger = require('./controller/services/logger');
+const zoho = require('./controller/services/zoho/zoho');
 const sanitizer = require('./controller/middleware/sanitizer');
 const requestLogger = require('./controller/middleware/requestLogger');
 const errorHandler = require('./controller/middleware/errorHandler');
@@ -35,6 +36,9 @@ try {
 
     cron.startCron();
 
+    if (settings.isLiveApplication()) {
+        zoho.initialize();
+    }
     mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
     mongoose.connection.on('connected',function () {

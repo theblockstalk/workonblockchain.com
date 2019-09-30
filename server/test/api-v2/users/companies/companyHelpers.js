@@ -2,13 +2,13 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const userHelpers = require('../../otherHelpers/usersHelpers');
+const fs = require('fs');
 chai.use(chaiHttp);
 
-const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
+const signupCompany = module.exports.signupCompany = async function (company) {
     const res = await chai.request(server)
         .post('/v2/users/companies')
         .send(company);
-    res.should.have.status(200);
     return res;
 }
 
@@ -67,6 +67,19 @@ const companyFilter = module.exports.companyFilter = async function companyFilte
         .post('/v2/users/companies/search?admin=true')
         .set('Authorization', jwtToken)
         .send(filterData);
+    res.should.have.status(200);
+    return res;
+}
+
+module.exports.companygdprData = async function companygdprData(user_id, jwtToken, gdprDoc, gdprData) {
+    const myFile = fs.readFileSync(gdprDoc.path);
+    const res = await chai.request(server)
+        .patch('/v2/users/companies?user_id='+ user_id)
+        .set('Authorization', jwtToken)
+        .field('company_country', gdprData.company_country)
+        .field('canadian_commercial_company', gdprData.canadian_commercial_company)
+        .field('gdpr_compliance', true)
+        .attach('company_logo', myFile, gdprDoc.name);
     res.should.have.status(200);
     return res;
 }

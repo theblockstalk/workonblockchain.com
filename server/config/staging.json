@@ -37,7 +37,8 @@
     "unreadMessagesTick": "00 12 * * 1-7",
     "autoNotification" : "00 9 * * 1-7",
     "syncSendgrid": "00 7 * * 1-7",
-    "newMessagesEmail": "* * * * 1-7"
+    "newMessagesEmail": "* * * * 1-7",
+    "serviceQueue": "* * * * 1-7"
   },
   "slack": {
     "username": "STAGING bug reporter",
@@ -50,5 +51,9 @@
   "linkedinConfig" : {
     "clientId": "86q3xso6dxvymx",
     "redirectUrl": "https://staging.workonblockchain.com/linkedin-auth"
+  },
+  "zoho":  {
+    "client_id": "1000.T2WMCD06O19Q737207VZSXVGNB6UIH",
+    "redirect_url": "https://staging.workonblockchain.com/zohoCallback"
   }
 }

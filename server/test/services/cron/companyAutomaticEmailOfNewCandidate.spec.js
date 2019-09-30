@@ -37,6 +37,7 @@ describe('cron', function () {
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             updatedData.saved_searches = [{
+                name: 'update search name',
                 location: [
                     {remote: true}
                 ],
@@ -84,6 +85,7 @@ describe('cron', function () {
             const updatedData = await docGeneratorV2.companyUpdateProfile();
             console.log(updatedData);
             updatedData.saved_searches = [{
+                name: 'update search name',
                 location: [
                     {remote: true}
                 ],
@@ -125,7 +127,7 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
 
-        it('should only sent new approved candidates taht are approved after the saved search is updated', async function () {
+        it('should only sent new approved candidates that are approved after the saved search is updated', async function () {
 
             let candidate = [], profileData= [];
             for (let i = 0; i < 5; i++) {
@@ -142,6 +144,7 @@ describe('cron', function () {
             const updatedData = await docGeneratorV2.companyUpdateProfile();
 
             updatedData.saved_searches = [{
+                name: 'update search name',
                 location: [
                     {remote: true}
                 ],
@@ -151,7 +154,7 @@ describe('cron', function () {
                 position: [
                     profileData[0].candidate.employee.roles[0]
                 ],
-                current_currency: profileData[0].candidate.employee.currecny,
+                current_currency: profileData[0].candidate.employee.currency,
                 current_salary: profileData[0].candidate.employee.expected_annual_salary,
                 skills: [
                     profileData[0].candidate.programming_languages[0].language
@@ -182,6 +185,7 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email.length.should.equal(3);
 
             let newSavedSearch = [{
+                name: 'update search name again',
                 location: [
                     {remote: true}
                 ],

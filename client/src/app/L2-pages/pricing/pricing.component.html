@@ -27,6 +27,12 @@
               Price plan
             </a>
           </li>
+          <li class="nav-item">
+            <a routerLink="/gdpr-compliance" class="nav-link btn {{gdpr_disable}}">
+              <i class="{{gdpr_compliance_active_class}}"></i>
+              GDPR compliance
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -219,13 +225,17 @@
 
           <div class="row mt-5">
             <div class="col-md-8 offset-md-2">
-              <h6>Engagements fees</h6>
+              <b>Engagements fees</b>
               <ul>
                 <li>Calculated from the annual salary or contracting rate</li>
                 <li>Paid every month for 24 months while they remain commercially engaged</li>
                 <li>No rebate period applies (as you only pay while the candidate is engaged)</li>
                 <li>Fee rate is determined by the selected plan on the date when the first approach is made</li>
                 <li>Startups enquire about discounts</li>
+              </ul>
+              <b>All plans</b>
+              <ul>
+                <li>You can change or cancel your plan at any time</li>
               </ul>
               <p>
                 See <a class="nav-link" target="_blank" [routerLink]="'/pages/company-terms'" class = "text-dark"> Terms and Conditions</a> for full details.
