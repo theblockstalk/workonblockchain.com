@@ -56,10 +56,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   first_name_log;
   last_name_log;
   job_title_log;
-  company_name_log;
   company_website_log;
   company_phone_log;
-  company_country_log;
   company_city_log;
   image_log;
   preferncesForm : FormGroup;
@@ -215,7 +213,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
-    this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
@@ -380,9 +377,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
     if(!this.job_title) {
       this.job_title_log="Please enter job title";
     }
-    if(!this.company_name) {
-      this.company_name_log="Please enter company name";
-    }
     if(!this.company_website) {
       this.company_website_log="Please enter company website url";
     }
@@ -403,9 +397,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
     if(!this.country_code){
       this.country_code_log = 'Please select country code';
-    }
-    if(this.company_country === -1) {
-      this.company_country_log="Please select country";
     }
     if(!this.company_city) {
       this.company_city_log="Please enter city name";
@@ -508,8 +499,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
     if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
-      this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
-      this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
+      this.first_name && this.last_name && this.job_title && this.company_website &&
+      this.company_phone && this.country_code && this.company_city && this.company_postcode )  {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       if(this.howHearAboutWob.howHearAboutWOB) profileForm.value.hear_about_wob = this.howHearAboutWob.howHearAboutWOB;
       if(this.howHearAboutWob.howHearAboutWOB && this.howHearAboutWob.howHearAboutWOB === 'Other' && this.otherInfo.otherInfo) profileForm.value.hear_about_wob_other_info = this.otherInfo.otherInfo;
@@ -596,11 +587,11 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       profileForm.value.saved_searches = saved_searches;
 
       if(profileForm.value.usa_privacy_shield || profileForm.value.canadian_commercial_company) profileForm.value.gdpr_compliance = true;
-      if(profileForm.value.usa_privacy_shield === 'yes') profileForm.value.usa_privacy_shield === true;
-      if(profileForm.value.usa_privacy_shield === 'no') profileForm.value.usa_privacy_shield === false;
+      if(profileForm.value.usa_privacy_shield === 'yes') profileForm.value.usa_privacy_shield = 'true';
+      if(profileForm.value.usa_privacy_shield === 'no') profileForm.value.usa_privacy_shield = 'false';
 
-      if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company === true;
-      if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company === false;
+      if(profileForm.value.canadian_commercial_company === 'yes') profileForm.value.canadian_commercial_company = 'true';
+      if(profileForm.value.canadian_commercial_company === 'no') profileForm.value.canadian_commercial_company = 'false';
 
       this.authenticationService.edit_company_profile(this.company_id, profileForm.value, true)
         .subscribe(

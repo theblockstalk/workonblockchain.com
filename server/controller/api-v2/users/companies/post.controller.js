@@ -108,6 +108,7 @@ module.exports.endpoint = async function (req, res) {
     if(companyUserCreated)
     {
         const refDoc = await referral.findOneByEmail(queryBody.referred_email);
+        queryBody.company_phone = queryBody.country_code +' '+queryBody.company_phone;
 
         let employerDetail = {
             _creator : companyUserCreated._id,
