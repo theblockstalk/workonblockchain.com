@@ -5,6 +5,8 @@ import {isPlatformBrowser} from "@angular/common";
 import {constants} from '../../../constants/constants';
 declare var $:any;
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-gdpr-compliance',
   templateUrl: './gdpr-compliance.component.html',
@@ -16,7 +18,7 @@ export class GDPRComplianceComponent implements OnInit {
   commercial_canada;companyDoc;dta_contract;file_name;gdprCompliance_log;
   commercial_canada_error;us_privacy_shield_error;
   companyMsgTitle;companyMsgBody;
-  euCountry = true;
+  euCountry = true;DocLink = environment.GDPRDocLin;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router, private authenticationService: UserService, private el: ElementRef) { }
 
