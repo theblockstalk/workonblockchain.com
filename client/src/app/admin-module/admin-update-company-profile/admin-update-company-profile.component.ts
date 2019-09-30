@@ -106,7 +106,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   imagePreviewLink;
   prefil_image;
   hear_about_wob;otherReasons;discount;
-  discount_log;
+  discount_log;current_salary_log
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute,
@@ -455,7 +455,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            this.current_currency_log = "Please enter expected hours ";
+            this.current_salary_log = 'Please enter annual salary';
+            this.current_currency_log = " ";
             count = 1;
           }
         }
@@ -474,7 +475,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            this.expected_hourly_rate_log = "Please enter expected hours ";
+            this.expected_hourly_rate_log = "Please enter expected renumeration";
             count = 1;
           }
 
