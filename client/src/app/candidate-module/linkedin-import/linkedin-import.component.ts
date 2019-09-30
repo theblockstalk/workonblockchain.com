@@ -174,7 +174,7 @@ export class LinkedinImportComponent implements OnInit {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
       const csvToArray = CsvToArray.default;
       const moment = Moment['default'];
-      const unzipModule = Unzip.default;
+      const unzipModule = Unzip;
       linkedinToJsonResume = new LinkedInToJsonResume.default();
       // cancel event and hover styling
       fileDragHover(e);
