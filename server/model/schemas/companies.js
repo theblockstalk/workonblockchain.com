@@ -141,7 +141,6 @@ module.exports = new Schema({
             },
             current_currency: {
                 type: String,
-                required : true,
                 enum: enumerations.currencies
             },
             blockchain: {

@@ -18,14 +18,14 @@ export class CompanyViewComponent implements OnInit {
 
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
-  error;is_approve;disabled=true;referred_link;detail_link;discount='';
-  company_phone;date_created;
+  error;is_approve;disabled=true;referred_link;detail_link;discount;
+  company_phone;date_created;is_approved = '';
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
     this.referred_name = '';
-    this.discount='';
+    this.discount = '0%';
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
     if(this.userDoc['company_logo'] != null ) this.imgPath =  this.userDoc['company_logo'];
 
@@ -43,6 +43,7 @@ export class CompanyViewComponent implements OnInit {
       if(this.userDoc['user_type'] === 'candidate') this.detail_link = '/admins/talent';
 
       if (this.userDoc['name']) this.referred_link = this.userDoc['user_id'];
+      if(this.userDoc['_creator'].is_approved) this.is_approved = "Approved";
     }
 
     this.company_name = this.userDoc['first_name'].charAt(0).toUpperCase()+''+this.userDoc['first_name'].slice(1)+' '+this.userDoc['last_name'].charAt(0).toUpperCase()+''+this.userDoc['last_name'].slice(1)
@@ -138,17 +139,21 @@ export class CompanyViewComponent implements OnInit {
         if(data['success'] === true){
           if(event.srcElement.innerText ==='Approve' ) {
             event.srcElement.innerText="Disapprove";
+            this.is_approved = "Approved";
           }
           else if(event.srcElement.innerText ==='Disapprove') {
             event.srcElement.innerText="Approve";
+            this.is_approved = "";
           }
         }
         else if(data['is_approved'] === 0) {
           if(event.srcElement.innerText ==='Approve' ) {
             event.srcElement.innerText="Disapprove";
+            this.is_approved = "Approved";
           }
           else if(event.srcElement.innerText ==='Disapprove') {
             event.srcElement.innerText="Approve";
+            this.is_approved = "";
           }
         }
       },

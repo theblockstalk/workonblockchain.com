@@ -80,107 +80,108 @@ module.exports.inputValidation = {
 module.exports.endpoint = async function (req, res) {
     const queryBody = req.body;
 
-    const companyDoc = await Users.findOneByEmail(queryBody.email);
-    if(companyDoc){
+    const userDoc = await Users.findOneByEmail(queryBody.email);
+    if(userDoc){
         errors.throwError('Email "' + queryBody.email + '" is already taken', 400)
     }
-    else{
-        const salt = crypto.getRandomString(128);
-        const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
+    const companyDoc = await companies.findOne({company_name: queryBody.company_name});
+    if (companyDoc) errors.throwError("Company with name " + queryBody.company_name + " already exists", 400);
 
-        let newCompanyDoc = {
-            email: queryBody.email,
-            password_hash: hashedPasswordAndSalt,
-            salt : salt,
-            type: queryBody.type,
-            created_date: new Date(),
-            referred_email : queryBody.referred_email,
-            is_approved: 1
-        };
-        if (enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
-            //Not EU country
-            newCompanyDoc.is_approved = 0;
-        }
+    const salt = crypto.getRandomString(128);
+    const hashedPasswordAndSalt = crypto.createPasswordHash(queryBody.password, salt);
 
-        const companyUserCreated =  await Users.insert(newCompanyDoc);
-        if(companyUserCreated)
-        {
-            const refDoc = await referral.findOneByEmail(queryBody.referred_email);
-
-            let employerDetail = {
-                _creator : companyUserCreated._id,
-                first_name : queryBody.first_name,
-                last_name: queryBody.last_name,
-                job_title:queryBody.job_title,
-                company_name: queryBody.company_name,
-                company_website:queryBody.company_website,
-                company_phone:queryBody.company_phone,
-                company_country:queryBody.company_country,
-                company_city:queryBody.company_city,
-                company_postcode:queryBody.company_postcode
-            };
-
-            if(refDoc && refDoc.discount)
-                employerDetail.discount = refDoc.discount;
-
-            let employerDoc = await companies.insert(employerDetail);
-
-            let signOptions = {
-                expiresIn:  "1h",
-            };
-            let verifyEmailToken = jwtToken.createJwtToken(companyUserCreated, signOptions);
-            let jwtUserToken = jwtToken.createJwtToken(companyUserCreated);
-
-            var set = {
-                verify_email_key: verifyEmailToken,
-                jwt_token: jwtUserToken,
-                session_started: new Date()
-            };
-
-            await Users.update({ _id: companyUserCreated._id },{ $set: set });
-            verify_send_email(companyUserCreated.email, verifyEmailToken);
-
-            //sending email to referee
-
-            if(refDoc){
-                const companyDoc = await companies.findOne({_creator : companyUserCreated._id});
-                let data;
-                if(companyDoc && companyDoc.first_name)
-                {
-                    data = {
-                        fname: companyDoc.first_name,
-                        email: refDoc.email,
-                        fname_referred: queryBody.first_name,
-                        lname_referred: queryBody.last_name,
-                        company_name: queryBody.company_name
-                    }
-                }
-                else
-                {
-                    data = {
-                        email: refDoc.email,
-                        fname_referred: queryBody.first_name,
-                        lname_referred: queryBody.last_name,
-                        company_name: queryBody.company_name
-                    }
-
-                }
-                referedCompanyEmail.sendEmail(data, false);
-            }
-            //end
-            companyUserCreated.session_started = set.session_started;
-            await serviceSync.pushToQueue("POST", {
-                user: companyUserCreated,
-                company: employerDoc
-            });
-
-            res.send({
-                company_id:employerDoc._id,
-                _id: companyUserCreated._id,
-                type:companyUserCreated.type,
-                email: companyUserCreated.email,
-                jwt_token: jwtUserToken
-            });
-        }
+    let newCompanyDoc = {
+        email: queryBody.email,
+        password_hash: hashedPasswordAndSalt,
+        salt : salt,
+        type: queryBody.type,
+        created_date: new Date(),
+        referred_email : queryBody.referred_email,
+        is_approved: 1
+    };
+    if (enumerations.euCountries.indexOf(queryBody.company_country) === -1) {
+        //Not EU country
+        newCompanyDoc.is_approved = 0;
     }
-}
+
+    const companyUserCreated =  await Users.insert(newCompanyDoc);
+    if(companyUserCreated)
+    {
+        const refDoc = await referral.findOneByEmail(queryBody.referred_email);
+        queryBody.company_phone = queryBody.country_code +' '+queryBody.company_phone;
+
+        let employerDetail = {
+            _creator : companyUserCreated._id,
+            first_name : queryBody.first_name,
+            last_name: queryBody.last_name,
+            job_title:queryBody.job_title,
+            company_name: queryBody.company_name,
+            company_website:queryBody.company_website,
+            company_phone:queryBody.company_phone,
+            company_country:queryBody.company_country,
+            company_city:queryBody.company_city,
+            company_postcode:queryBody.company_postcode
+        };
+
+        if(refDoc && refDoc.discount)
+            employerDetail.discount = refDoc.discount;
+
+        let employerDoc = await companies.insert(employerDetail);
+
+        let signOptions = {
+            expiresIn:  "1h",
+        };
+        let verifyEmailToken = jwtToken.createJwtToken(companyUserCreated, signOptions);
+        let jwtUserToken = jwtToken.createJwtToken(companyUserCreated);
+
+        var set = {
+            verify_email_key: verifyEmailToken,
+            jwt_token: jwtUserToken,
+            session_started: new Date()
+        };
+
+        await Users.update({ _id: companyUserCreated._id },{ $set: set });
+        verify_send_email(companyUserCreated.email, verifyEmailToken);
+
+        //sending email to referee
+
+        if(refDoc){
+            const companyDoc = await companies.findOne({_creator : companyUserCreated._id});
+            let data;
+            if(companyDoc && companyDoc.first_name)
+            {
+                data = {
+                    fname: companyDoc.first_name,
+                    email: refDoc.email,
+                    fname_referred: queryBody.first_name,
+                    lname_referred: queryBody.last_name,
+                    company_name: queryBody.company_name
+                }
+            }
+            else
+            {
+                data = {
+                    email: refDoc.email,
+                    fname_referred: queryBody.first_name,
+                    lname_referred: queryBody.last_name,
+                    company_name: queryBody.company_name
+                }
+
+            }
+            referedCompanyEmail.sendEmail(data, false);
+        }
+        //end
+        companyUserCreated.session_started = set.session_started;
+        await serviceSync.pushToQueue("POST", {
+        user: companyUserCreated,
+        company: employerDoc
+    });
+
+        res.send({
+            company_id:employerDoc._id,
+            _id: companyUserCreated._id,
+            type:companyUserCreated.type,
+            email: companyUserCreated.email,
+            jwt_token: jwtUserToken
+        });
+    }}

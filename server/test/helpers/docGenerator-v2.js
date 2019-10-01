@@ -149,8 +149,6 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         job_title: "Developer",
         company_website: "www.mwanmobile.com",
         company_phone: "090078601",
-        company_country: "Pakistan",
-        company_name: "My Company",
         company_postcode: "44000",
         company_city: "rawalpindi",
         company_founded:2013,
@@ -169,7 +167,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : random.enum(enumerations.currencies),
-            current_salary : random.integer(1),
+            current_salary : random.integer(10000, 100000),
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             residence_country : ['Pakistan']
