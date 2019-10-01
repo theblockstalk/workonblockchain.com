@@ -10,6 +10,7 @@ import {getFilteredNames} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
 import {formatDate} from '@angular/common';
 import {candidateBadge} from '../../../services/candidate';
+import {getDateFromDays} from '../../../services/object';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -200,7 +201,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.number_of_days) queryBody.last_msg_received_day = this.number_of_days;
+      if(this.number_of_days) queryBody.last_msg_received_day = getDateFromDays(this.number_of_days);
       if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;

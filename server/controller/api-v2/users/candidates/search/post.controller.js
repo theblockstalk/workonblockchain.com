@@ -90,7 +90,8 @@ const bodySchema = new Schema({
         type: String
     },
     searchName: String,
-    last_msg_received_day: Date
+    last_msg_received_day: Date,
+    updatedAfter: Date
 });
 
 const querySchema = new Schema({
@@ -121,6 +122,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
         if (queryBody.disable_account || queryBody.disable_account === false) filter.disable_account = queryBody.disable_account;
         if(queryBody.last_msg_received_day) filter.last_msg_received_day = queryBody.last_msg_received_day;
+        if(queryBody.updatedAfter) filter.updatedAfter = queryBody.updatedAfter;
 
         let search = {};
         if (queryBody.name) {
