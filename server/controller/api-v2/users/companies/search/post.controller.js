@@ -33,8 +33,8 @@ const bodySchema = new Schema({
     search_word: {
         type:String
     },
-    last_msg_received_day: Date,
-    created_after: Date
+    last_msg_received_day: Number,
+    created_after: Number
 });
 
 const querySchema = new Schema({

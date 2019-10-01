@@ -90,8 +90,8 @@ const bodySchema = new Schema({
         type: String
     },
     searchName: String,
-    last_msg_received_day: Date,
-    updatedAfter: Date
+    last_msg_received_day: Number,
+    updatedAfter: Number
 });
 
 const querySchema = new Schema({
