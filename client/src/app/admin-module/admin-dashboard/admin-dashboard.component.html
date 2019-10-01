@@ -1,20 +1,82 @@
-<section class="wob-bg-primary2 py-5">
+<section class = "wob-bg-primary2 py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2 border p-3 bg-white">
+        <div class = "row">
+          <div class="col-md-12">
+            <div class="form-row">
+              <div class="form-group w-100">
+                <label>Number of days</label>
+                <select title="(selcet one)" class="selectpicker form-control"  required name="timeframe" [(ngModel)]="timeframe" (change)="selected_timeframe()">
+                  <option class='option' *ngFor='let options of timeframe_list'  [value]="options.value" selected>{{options.name}}</option>
+                </select>
+                <div class="invalid-feedback d-inline" *ngIf="!timeframe">
+                  {{timeframe_log}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>New sent messages</label>
+              <div *ngIf="companiesSendReceivermsgs.length>0">
+                <p *ngFor="let sendReceivermsgsComp of companiesSendReceivermsgs;">
+                  <a class="text-underline text-dark" routerLink="/admins/company/{{sendReceivermsgsComp._creator}}" target="_blank">{{sendReceivermsgsComp['company_name']}}</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>New companies</label>
+              <div *ngIf="newlyCreatedCompanies.length>0">
+                <p *ngFor="let newCompany of newlyCreatedCompanies;">
+                  <a class="text-underline text-dark" routerLink="/admins/company/{{newCompany._creator}}" target="_blank">{{newCompany['company_name']}}</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Pricing plan selected</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>New candidates</label>
+              <p *ngIf="wizard_completed_candidates">Wizard completed: {{wizard_completed_candidates.length}}</p>
+              <p *ngIf="reviewed_candidates">Reviewed: {{reviewed_candidates.length}}</p>
+              <p *ngIf="deferred_candidates">Deferred: {{deferred_candidates.length}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="wob-bg-primary2">
   <div class="container ">
     <div class="row">
-      <div class="col"></div>
-      <div class="col-md-9 border p-3 bg-white">
+      <div class="col-md-8 offset-md-2 border p-3 bg-white">
         <div class="row">
           <div class="col-md-6 p-5 border-bottom">
             <L1-dashboard linkText="Time Frame Search" routeLink="/admin-timeframe-search" iconClass="fas fa-calendar-alt fa-3x mb-3"></L1-dashboard>
           </div>
-          <div class="col-md-6 p-5 border-right border-bottom">
-            <L1-dashboard linkText="Company Search" routeLink="/admin-company-search" iconClass="fas fa-landmark fa-3x mb-3"></L1-dashboard>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-6 p-5 border-bottom">
             <L1-dashboard linkText="Candidate Search" routeLink="/admin-candidate-search" iconClass="fas fa-user-tie fa-3x mb-3"></L1-dashboard>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-6 p-5 border-right border-bottom">
             <L1-dashboard linkText="Privacy Page" routeLink="/admins/pages/privacy-notice/edit" iconClass="fas fa-file fa-3x mb-3"></L1-dashboard>
           </div>
