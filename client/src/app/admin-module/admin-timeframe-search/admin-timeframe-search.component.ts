@@ -43,8 +43,9 @@ export class AdminTimeframeSearchComponent implements OnInit {
     this.getCompaniesInfo(companyQueryBody);
 
     //getting newly created companies for the last said days
-    if(this.number_of_days) companyQueryBody.created_after = this.number_of_days;
-    this.getCompaniesInfo(companyQueryBody);
+    let companyQuery : any = {};
+    if(this.number_of_days) companyQuery.created_after = this.number_of_days;
+    this.getCompaniesInfo(companyQuery);
 
     //getting newly created candidates
     this.candidateStatus('wizard completed');
