@@ -1,3 +1,9 @@
+export const getDateFromDays = function (day) {
+  let lastMsgDate = new Date();
+  lastMsgDate.setTime(lastMsgDate.getTime() - (day*24*60*60*1000));
+  return lastMsgDate;
+}
+
 export const copyObject = function (object) {
   return JSON.parse(JSON.stringify(object));
 }

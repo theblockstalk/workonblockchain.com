@@ -39,13 +39,9 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
     }
     if(filters.last_msg_received_day){
-        let lastMsgDate = new Date();
-        lastMsgDate.setTime(lastMsgDate.getTime() - (filters.last_msg_received_day*24*60*60*1000));
-
         userQuery.push({
-            type: 'candidate',
             "conversations": {
-                "$elemMatch":{"last_message":{$gte:lastMsgDate}}
+                "$elemMatch":{"last_message":{$gte:filters.last_msg_received_day}}
             }
         });
     }

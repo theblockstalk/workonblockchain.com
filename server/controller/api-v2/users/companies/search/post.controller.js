@@ -5,6 +5,7 @@ const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
 const companies = require('../../../../../model/mongoose/companies');
+const objects = require('../../../../services/objects');
 
 module.exports.request = {
     type: 'post',
@@ -31,7 +32,9 @@ const bodySchema = new Schema({
     },
     search_word: {
         type:String
-    }
+    },
+    last_msg_received_day: Date,
+    created_after: Date
 });
 
 const querySchema = new Schema({
@@ -90,6 +93,16 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.search_word) {
         const nameFilter = { "company_name" : {'$regex' : queryBody.search_word, $options: 'i' } };
         queryString.push(nameFilter);
+    }
+    if(queryBody.last_msg_received_day) {
+        queryString.push({
+            "users.conversations": {
+                "$elemMatch":{"last_message":{$gte: objects.getDateFromDays(queryBody.last_msg_received_day)}}
+            }
+        });
+    }
+    if(queryBody.created_after){
+        queryString.push({"users.created_date": {$gte: objects.getDateFromDays(queryBody.created_after)}});
     }
 
     if(queryString.length>0) {

@@ -22,6 +22,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>New sent messages</label>
+                <p *ngFor="let sendReceivermsgs of candidateSendReceivermsgs;">
+                  <a class="text-underline text-dark" routerLink="/admins/talent/{{sendReceivermsgs._id}}" target="_blank">{{sendReceivermsgs['first_name']}} {{sendReceivermsgs['last_name']}}</a>
+                </p>
+                <p *ngFor="let sendReceivermsgsComp of companiesSendReceivermsgs;">
+                  <a class="text-underline text-dark" routerLink="/admins/company/{{sendReceivermsgsComp._creator}}" target="_blank">{{sendReceivermsgsComp['company_name']}}</a>
+                </p>
               </div>
             </div>
           </div>
@@ -29,6 +35,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>New companies</label>
+                <p *ngFor="let newCompany of newlyCreatedCompanies;">
+                  <a class="text-underline text-dark" routerLink="/admins/company/{{newCompany._creator}}" target="_blank">{{newCompany['company_name']}}</a>
+                </p>
               </div>
             </div>
           </div>
