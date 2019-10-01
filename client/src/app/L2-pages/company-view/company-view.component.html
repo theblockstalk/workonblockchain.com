@@ -1,0 +1,458 @@
+<section class = "wob-bg-primary2 py-5">
+  <div class="container pt-2">
+    <div class="row" *ngIf="viewBy === 'company'">
+      <div class="col-md-12">
+        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn btn-secondary float-right" >What happens next?</button>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="viewBy === 'admin'">
+      <div class="col-md-12">
+        <button [routerLink]="['/update-company-profile']" [queryParams]="{company: userDoc['_creator']._id }" class = "btn btn-primary float-right">Edit Profile</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-image [image]="imgPath"></app-c-formv-image>
+              <div class="mt-3">
+                <span><h2 class="text-capitalize">{{userDoc['company_name']}}</h2></span>
+                <app-c-formv-textarea [value]="userDoc['company_description']"></app-c-formv-textarea>
+                <span *ngIf="viewBy === 'admin'">
+				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: userDoc['_creator']._id , type : userDoc['_creator'].type}" >Show Chat With Candidates</a>
+				 		    </span>
+                <span *ngIf="viewBy === 'admin'">
+                  <form #approve_form="ngForm" >
+                    <input type="hidden" name="id" [ngModel]="userDoc['_creator']._id">
+								    <div class="my-3">
+                      <app-c-button-normal
+                        *ngIf = "(userDoc['_creator'].is_verify === 1 && userDoc['_creator'].is_approved === 0)"
+                        level="primary"
+                        buttonType="submit"
+                        label="Approve"
+                        (click) = "approveClick($event , approve_form)"
+                      ></app-c-button-normal>
+                      <app-c-button-normal
+                        *ngIf = "(userDoc['_creator'].is_verify === 1 && userDoc['_creator'].is_approved === 1)"
+                        level="primary"
+                        buttonType="submit"
+                        label="Disapprove"
+                        (click) = "approveClick($event , approve_form)"
+                      ></app-c-button-normal>
+                      <app-c-button-normal
+                        *ngIf = "userDoc['_creator'].is_verify === 0"
+                        level="primary"
+                        buttonType="submit"
+                        label="Approve"
+                        [disabled]="disabled"
+                      ></app-c-button-normal>
+                    </div>
+							    </form>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <ul class="list-group list-group-flush float-right">
+                <li class="list-group-item" *ngIf="referred_name !== ''">
+                  <span ><i class="fas fa-user-tie mr-2"></i> </span>
+                  <ng-container *ngIf="referred_link ; else noLink">
+                    <span >Referred by: <a class="text-capitalize" routerLink="{{detail_link}}/{{referred_link}}" target="_blank">{{referred_name}}</a>
+					 				</span>
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span class="text-capitalize">Referred by: {{referred_name}}</span>
+                  </ng-template>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-building mr-2"></i></span>
+                  <span><a [href]="userDoc['company_website']" target="_blank">{{userDoc['company_website']}}</a></span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >Country: {{userDoc['company_country']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span class = "li_txt">City: {{userDoc['company_city']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-id-card mr-2"></i></span>
+                  <span class = "li_txt">Postcode: {{userDoc['company_postcode']}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span class = "li_txt"> Phone: {{company_phone}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1" *ngIf="viewBy === 'company'">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="about_you"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="userDoc['discount'] || referred_name || userDoc['pricing_plan']">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                Account info
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <app-c-formv-text label="Account created date:" [value]="date_created"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <ng-container *ngIf="userDoc['_creator'].is_verify === 1;else no_verify">
+                <app-c-formv-text label="Email verified:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_verify>
+                <app-c-formv-text label="Email verified:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="viewBy === 'admin'">
+              <ng-container *ngIf="is_approved !== '';else no_approve">
+                <app-c-formv-text label="Approved by admin:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_approve>
+                <app-c-formv-text label="Approved by admin:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['_creator'].dissable_account_timestamp">
+              <app-c-formv-text label="Account enabled/disabled timestamp:" [value]="userDoc['_creator'].dissable_account_timestamp"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="discount">
+              <app-c-formv-text label="Discount:" [value]="discount"></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="referred_name">
+              <app-c-formv-text label="Referred by:" [value]="referred_name"></app-c-formv-text>
+            </div>
+            <div class="col-md-6" *ngIf="userDoc['pricing_plan']">
+              <app-c-formv-text label="Plan:" [value]="userDoc['pricing_plan']"></app-c-formv-text>
+            </div>
+
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && (userDoc['usa_privacy_shield'] === true || userDoc['usa_privacy_shield'] === false)">
+              <ng-container *ngIf="userDoc['usa_privacy_shield'] === true;else no_privacy_shield">
+                <app-c-formv-text label="Registered with the US Privacy Shield framework:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_privacy_shield>
+                <app-c-formv-text label="Registered with the US Privacy Shield framework:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && (userDoc['canadian_commercial_company'] === true || userDoc['canadian_commercial_company'] === false)">
+              <ng-container *ngIf="userDoc['canadian_commercial_company'] === true;else no_commercial_company">
+                <app-c-formv-text label="Commercial Canadian company:" value="Yes"></app-c-formv-text>
+              </ng-container>
+              <ng-template #no_commercial_company>
+                <app-c-formv-text label="Commercial Canadian company:" value="No"></app-c-formv-text>
+              </ng-template>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'admin' && userDoc['dta_doc_link']">
+              <div class="form-group">
+                <label>Signed DTA document: </label>
+                <p>
+                  <a class="text-capitalize" href="{{userDoc['dta_doc_link']}}" target="_blank">DTA document</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="viewBy === 'company'">
+            <div class="col-md-12">
+              <app-c-button-normal
+                level = "primary"
+                alignment="float-right"
+                label="Change plan"
+                [routeUrl]="pricePlanLink"
+              ></app-c-button-normal>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="viewBy === 'admin' && userDoc['history'] && userDoc['history'].length > 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h2> <i class="fas fa-history"></i> Account history </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor="let history of userDoc['history']; let i=index">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label *ngIf="history.pricing_plan" class="border border-success p-2 text-success rounded font-weight-normal">
+                  Plan: {{history.pricing_plan}}
+                </label>
+                <label *ngIf="history.discount || history.discount > -1" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                  Discount: {{history.discount}}%
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <hr *ngIf="i < (userDoc['history'].length - 1)"  />
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building" aria-hidden="true"></i>
+                Company info
+              </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="company_info"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text
+                label="When was the company founded:"
+                [value]="userDoc['company_founded']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6 mb-3">
+              <app-c-formv-text
+                label="How is the company funded:"
+                [value]="userDoc['company_funded']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6 ">
+              <app-c-formv-text
+                label="Number of employees:"
+                [value]="userDoc['no_of_employees']"
+              ></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user-tie icon" aria-hidden="true"></i>
+                Company administration
+              </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="information"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-2">
+              <app-c-formv-text
+                [value]="company_name"
+              ></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <app-c-formv-text
+                label="Job title:"
+                [value]="userDoc['job_title']"
+              ></app-c-formv-text>
+            </div>
+            <div class="col-md-6">
+              <app-c-formv-text
+                label="Email:"
+                [value]="userDoc['_creator'].email"
+              ></app-c-formv-text>
+            </div>
+          </div>
+        </section>
+
+        <section class = "bg-white border rounded mt-4 py-3 px-5" *ngIf = "userDoc['saved_searches'] && userDoc['saved_searches'].length > 0">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-search" aria-hidden="true"></i>
+                Saved searches
+              </h2>
+            </div>
+            <div class="col-md-6" *ngIf="viewBy === 'company'">
+              <app-c-forme-edit-link-icon
+                routerUrl="edit_company_profile"
+                section="prefrences"
+              ></app-c-forme-edit-link-icon>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h4><i class="fas fa-envelope "></i> Notifications</h4>
+            </div>
+            <div class="col-md-12">
+              {{userDoc['when_receive_email_notitfications']}}
+            </div>
+          </div>
+          <hr class="bg-dark" />
+
+          <div *ngFor="let searches of userDoc['saved_searches']; let i = index ">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="pt-2 mb-3"> Work search name: {{searches.name}}</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Job requirements</h4>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-12 mb-3" *ngIf="searches.work_type">
+                <app-c-formv-text
+                  label="Work type:"
+                  [value]="searches.work_type"
+                ></app-c-formv-text>
+              </div>
+              <div class="col-md-12 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
+                <app-c-formv-list
+                  label="Type:"
+                  [value]="searches.job_type"
+                >
+                </app-c-formv-list>
+              </div>
+              <div class="col-md-12 mb-3" *ngIf="searches.position && searches.position.length > 0">
+                <app-c-formv-list
+                  label="Role:"
+                  [value]="searches.position"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+                <app-c-formv-list
+                  label="Work place (city/remote):"
+                  [value]="getLocation(searches.location)"
+                >
+                </app-c-formv-list>
+
+                <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
+                  <div class="form-group mt-3">
+                    <p>Only show candidates that require a work visa</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+                <app-c-formv-list
+                  label="Commercial blockchain experience:"
+                  [value]="createBlockchainLogos(searches.blockchain)"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
+                <app-c-formv-list
+                  label="Languages:"
+                  [value]="searches.skills"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
+                <div class="form-group">
+                  <label>Years of experience:</label>
+                  <p> {{searches.years_exp_min}}+ </p>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+                <app-c-formv-list
+                  label="Residence/base country:"
+                  [value]="searches.residence_country"
+                >
+                </app-c-formv-list>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
+                <app-c-formv-text
+                  label="Annual salary:"
+                  [value]="makeCurrencySalary(searches.current_salary, searches.current_currency)"
+                ></app-c-formv-text>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
+                <app-c-formv-text
+                  label="Hourly rate:"
+                  [value]="makeCurrencySalary(searches.expected_hourly_rate, searches.current_currency)"
+                ></app-c-formv-text>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.other_technologies">
+                <app-c-formv-text
+                  label="Other requirements:"
+                  [value]="searches.other_technologies"
+                ></app-c-formv-text>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="searches.order_preferences && searches.order_preferences.length > 0">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-align-justify"></i> Job preferences</h4>
+              </div>
+              <div class="col-md-12 mt-3">
+                <app-c-formv-list
+                  label="Commercial blockchain experience:"
+                  [value]="searches.order_preferences"
+                >
+                </app-c-formv-list>
+              </div>
+            </div>
+            <hr *ngIf="i < (userDoc['saved_searches'].length - 1)" class="bg-dark"/>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="whatHappensNextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h2 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mo btn-primary" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

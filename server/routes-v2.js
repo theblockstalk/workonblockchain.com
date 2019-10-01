@@ -146,7 +146,7 @@ const register = function(endpoint) {
         sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
-        asyncMiddleware.thenNext(amplitudeTrack(endpoint.request)),
+        // asyncMiddleware.thenNext(amplitudeTrack(endpoint.request)),
         asyncMiddleware(endpoint.endpoint)
     );
 };

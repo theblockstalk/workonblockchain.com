@@ -51,10 +51,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   first_name_log;
   last_name_log;
   job_title_log;
-  company_name_log;
   company_website_log;
   company_phone_log;
-  company_country_log;
   company_city_log;
   image_log;
   preferncesForm : FormGroup;
@@ -203,7 +201,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   {
     if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
     this.prefData=[];
-    this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -357,9 +354,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     if(!this.job_title) {
       this.job_title_log="Please enter job title";
     }
-    if(!this.company_name) {
-      this.company_name_log="Please enter company name";
-    }
     if(!this.company_website) {
       this.company_website_log="Please enter company website url";
     }
@@ -378,9 +372,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
 
     if(!this.country_code) {
       this.country_code_log="Please select country code";
-    }
-    if(this.company_country === -1) {
-      this.company_country_log="Please select country";
     }
     if(!this.company_city) {
       this.company_city_log="Please enter city name";
@@ -437,7 +428,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].current_salary && this.preferncesForm.value.prefItems[i].current_currency) {
-            this.current_currency_log = "Please enter expected hours ";
+            this.current_currency_log = "Please enter expected renumeration ";
             count = 1;
           }
         }
@@ -456,7 +447,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             count = 1;
           }
           if(!this.preferncesForm.value.prefItems[i].expected_hourly_rate && this.preferncesForm.value.prefItems[i].currency) {
-            this.expected_hourly_rate_log = "Please enter expected hours ";
+            this.expected_hourly_rate_log = "Please enter expected renumeration ";
             count = 1;
           }
 
@@ -483,8 +474,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
 
     if(count === 0 && this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
-      this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
-      this.company_phone && this.country_code && this.company_country !== -1 && this.company_city && this.company_postcode )  {
+      this.first_name && this.last_name && this.job_title && this.company_website &&
+      this.company_phone && this.country_code && this.company_city && this.company_postcode )  {
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       if(this.imageCropData.image) {
         const file = this.dataURLtoFile(this.imageCropData.image, this.imageName);
@@ -571,7 +562,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
           data => {
             if(data && this.currentUser)
             {
-              this.router.navigate(['/company_profile']);
+              this.router.navigate(['/users/company']);
             }
 
           },

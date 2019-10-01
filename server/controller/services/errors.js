@@ -1,3 +1,5 @@
+const logger = require("./logger");
+
 class ApplicationError extends Error {
     constructor(message) {
         super(message);
@@ -19,3 +21,15 @@ module.exports.throwError = function throwError(message, code) {
     }
     throw error;
 };
+
+process.on('unhandledRejection', function(error) {
+    logger.error({
+        message: "Unhandled Promise Rejection",
+        error: {
+            code: error.code,
+            message: error.message,
+            stack: error.stack
+        }
+    });
+    console.log(error);
+});

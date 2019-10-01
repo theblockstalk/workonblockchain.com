@@ -21,12 +21,8 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Company name</label>
-                    <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Google Inc." required>
-                    <div class="invalid-feedback d-inline" *ngIf="!company_name">
-                      {{company_name_log}}
-                    </div>
+                    <input name="company_name" disabled [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Google Inc." required>
                   </div>
-
                 </div>
               </div>
 
@@ -54,12 +50,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Country name</label>
-                    <select title="Please choose country" class="selectpicker form-control"  required name="company_country" [(ngModel)]="company_country">
-                      <option class='option' *ngFor='let options of countries'  [value]="options.value" selected>{{options.name}}</option>
-                    </select>
-                    <div class="invalid-feedback d-inline" *ngIf="!company_country">
-                      {{company_country_log}}
-                    </div>
+                    <input name="company_country" disabled [(ngModel)]="company_country"  type="text" class="form-control" placeholder="United Kingdom" required>
                   </div>
                 </div>
               </div>
@@ -132,6 +123,9 @@
                     <input type="text" class="form-control" placeholder="10" name="discount" [(ngModel)]="discount">
                     <div class = "invalid-feedback d-inline" *ngIf="discount && !checkNumber(discount)">
                       Only numbers are allowed
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="discount && !discountRange(discount)">
+                      Only numbers between 1 and 99
                     </div>
                     <!--<div class="invalid-feedback d-inline" *ngIf="!discount">
                       {{discount}}
@@ -488,6 +482,12 @@
                       <div class = "form-group">
                         <label>Annual salary:</label>
                         <input type="text" formControlName="current_salary" [value] = "preferncesForm.value.prefItems[i].current_salary" class="form-control" placeholder="1000">
+                        <div class="invalid-feedback d-inline" #emptyInput *ngIf="!preferncesForm.value.prefItems[i].current_salary">
+                          {{current_salary_log}}
+                        </div>
+                        <div class="invalid-feedback d-inline" #emptyInput *ngIf="preferncesForm.value.prefItems[i].current_salary && !checkNumber(preferncesForm.value.prefItems[i].current_salary) ">
+                          Annual salary should be a number
+                        </div>
                       </div>
                     </div>
 
@@ -495,7 +495,6 @@
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "current_currency" >
-                          <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].current_currency?true:null">{{base_currency}}</option>
                         </select>
                         <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].current_currency && preferncesForm.value.prefItems[i].current_salary)|| (preferncesForm.value.prefItems[i].current_currency && !preferncesForm.value.prefItems[i].current_salary)" >
@@ -507,18 +506,17 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type &&preferncesForm.value.prefItems[i].work_type === 'contractor'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type &&preferncesForm.value.prefItems[i].work_type === 'contractor'">
                       <div class = "form-group">
                         <label>Hourly rate:</label>
                         <input type="text" formControlName="expected_hourly_rate" [value] = "preferncesForm.value.prefItems[i].expected_hourly_rate"  class="form-control" placeholder="100">
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-4" *ngIf="preferncesForm.value.prefItems[i].work_type &&preferncesForm.value.prefItems[i].work_type === 'contractor'">
+                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type &&preferncesForm.value.prefItems[i].work_type === 'contractor'">
                       <div class = "form-group">
                         <label class="invisible">Currency</label>
                         <select title="Currency" class="selectpicker form-control position-relative" formControlName = "currency" >
-                          <option value="-1" disabled>Currency</option>
                           <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.prefItems[i].currency?true:null">{{base_currency}}</option>
                         </select>
                         <div class = "invalid-feedback d-inline float-left" *ngIf="(!preferncesForm.value.prefItems[i].expected_hourly_rate && preferncesForm.value.prefItems[i].currency) || (preferncesForm.value.prefItems[i].expected_hourly_rate && !preferncesForm.value.prefItems[i].currency)  " >
@@ -586,6 +584,58 @@
 
           </section>
 
+          <section class="bg-white border rounded mt-4 py-3 px-5" id="information" *ngIf="company_country === 'Canada' || company_country === 'United States'">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h2>
+                  <i class="fas fa-gavel fa-rotate-270"></i> Data protection
+                </h2>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="company_country === 'Canada'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company a commercial Canadian company (not a non-for profit or other
+                    non-commercial company)?
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" [(ngModel)]="canadian_commercial_company" name="canadian_commercial_company" value='yes' />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" [(ngModel)]="canadian_commercial_company" name="canadian_commercial_company" value='no' />
+                    No
+                  </label>
+                  <div class = "invalid-feedback d-inline-block" *ngIf="!canadian_commercial_company">
+                    {{commercial_canada_error}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="company_country === 'United States'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>
+                    Is your company registered with the US Privacy Shield framework?
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" [(ngModel)]="usa_privacy_shield" name="usa_privacy_shield" value="yes" />
+                    Yes
+                  </label><br>
+                  <label>
+                    <input type="radio" [(ngModel)]="usa_privacy_shield" name="usa_privacy_shield" value="no"/>
+                    No
+                  </label>
+                  <div class = "invalid-feedback d-inline-block" *ngIf="!usa_privacy_shield">
+                    {{us_privacy_shield_error}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
           <div class="row mt-3">
             <div class = "col-md-12 float-right text-right">

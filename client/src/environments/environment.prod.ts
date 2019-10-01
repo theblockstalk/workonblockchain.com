@@ -6,6 +6,7 @@ export const environment = {
   linkedin_id: '861pkvi3iz4wp2',
   linkedin_redirect_url : 'https://workonblockchain.com/linkedin-auth',
   google_redirect_url : 'https://workonblockchain.com/google-auth',
-	baseHref: '/'
+	baseHref: '/',
+  GDPRDocLin: 'https://s3-eu-west-1.amazonaws.com/files.production.workonblockchain.com/Data+Transfer+Agreement+(unmodified).pdf'
 };
 //console.log(environment);

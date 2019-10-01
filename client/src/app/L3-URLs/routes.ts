@@ -7,5 +7,7 @@ export const urls = {
   company_talent_view: 'users/talent/:user_id',
   candidate_talent_view: 'users/talent',
   price_plan: 'pricing', //for general users
-  company_wizard_price_plan: 'users/company/wizard/pricing' //for company wizard & edit company price plan
+  company_wizard_price_plan: 'users/company/wizard/pricing', //for company wizard & edit company price plan
+  admin_company_view: 'admins/company/:user_id',
+  company_profile_view: 'users/company'
 };

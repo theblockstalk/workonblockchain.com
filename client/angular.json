@@ -18,7 +18,9 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              {"glob": "sitemap.xml", "input": "src/assets", "output": "/"},
+              {"glob": "robots.txt", "input": "src/assets", "output": "/"}
             ],
             "styles": [
               "src/custom-theme.scss",

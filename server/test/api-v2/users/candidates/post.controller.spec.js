@@ -6,6 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const users = require('../../../../model/mongoose/users');
 const docGenerator = require('../../../helpers/docGenerator-v2');
 const candidateHelper = require('./candidateHelpers');
+const syncQueue = require('../../../../model/mongoose/sync_queue');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -14,18 +15,18 @@ chai.use(chaiHttp);
 
 describe('create new candidate', function () {
 
-    afterEach(async () => {
+    afterEach(async function () {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('post /users/candidates', () => {
+    describe('post /users/candidates', function () {
 
-        it('it should create candidate profile', async () => {
+        it('it should create candidate profile', async function () {
             const candidate = docGenerator.candidate();
 
-            const res = await candidateHelper.signupCandidate(candidate);
-
+            const res = await
+            candidateHelper.signupCandidate(candidate);
             res.should.have.status(200);
 
             const userDoc = await users.findOneByEmail(candidate.email);
@@ -35,7 +36,7 @@ describe('create new candidate', function () {
             userDoc.is_admin.should.equal(0);
             userDoc.disable_account.should.equal(false);
             userDoc.type.should.equal("candidate");
-            should.exist(userDoc.jwt_token)
+            should.exist(userDoc.jwt_token);
 
             const salt = userDoc.salt;
             let hash = crypto.createHmac('sha512', salt);
@@ -44,6 +45,19 @@ describe('create new candidate', function () {
             userDoc.password_hash.should.equal(hashedPasswordAndSalt);
             userDoc.marketing_emails.should.equal(false);
 
+        })
+
+        it('it should add new candidate to the sync queue', async function () {
+            // const candidate = docGenerator.candidate();
+            //
+            // const res = await candidateHelper.signupCandidate(candidate);
+            //
+            // const syncDoc = await syncQueue.findOne({"user.email": candidate.email});
+            //
+            // syncDoc.queue.should.equal("candidate");
+            // syncDoc.operation.should.equal("POST");
+            // syncDoc.status.should.equal("pending");
+            // expect(syncDoc.added_to_queue).to.exist;
         })
     })
 });

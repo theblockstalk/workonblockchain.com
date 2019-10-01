@@ -8,6 +8,7 @@ import { ProfileResolver } from '../incomplete-profile.resolver';
 import { AdminTalentEditComponent } from './admins/talent/edit/admin-talent-edit.component';
 import { PagesEditComponent } from './admins/pages/pages-edit.component';
 import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view.component';
+import { CompanyViewComponent } from './admins/company/company-view/company-view.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view
   declarations: [
     AdminTalentEditComponent,
     PagesEditComponent,
-    AdminTalentViewComponent
+    AdminTalentViewComponent,
+    CompanyViewComponent
   ],
   providers: [
     ProfileResolver

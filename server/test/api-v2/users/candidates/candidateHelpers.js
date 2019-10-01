@@ -6,12 +6,10 @@ const userHelpers = require('../../otherHelpers/usersHelpers');
 const should = chai.should();
 chai.use(chaiHttp);
 
-const signupCandidate = module.exports.signupCandidate = async function signupCandidate(candidate) {
-    const res = await chai.request(server)
+const signupCandidate = module.exports.signupCandidate = async function (candidate) {
+    return await chai.request(server)
         .post('/v2/users/candidates')
         .send(candidate);
-    res.should.have.status(200);
-    return res;
 }
 
 
@@ -22,7 +20,8 @@ module.exports.candidateProfile = async function candidateProfile(candidate, pro
 }
 
 
-const candidateProfilePatch = module.exports.candidateProfilePatch = async function candidateProfilePatch(user_id, jwt_token, inputQuery ) {
+const candidateProfilePatch = module.exports.candidateProfilePatch = async function (user_id, jwt_token, inputQuery ) {
+    console.log(inputQuery);
     const res = await chai.request(server)
         .patch('/v2/users/candidates?user_id='+ user_id)
         .set('Authorization', jwt_token)
@@ -31,7 +30,7 @@ const candidateProfilePatch = module.exports.candidateProfilePatch = async funct
     return res;
 }
 
-const changeCandidateStatus = module.exports.changeCandidateStatus = async function changeCandidateStatus(user_id,inputQuery,jwtToken) {
+const changeCandidateStatus = module.exports.changeCandidateStatus = async function (user_id,inputQuery,jwtToken) {
 
     const res = await chai.request(server)
         .post('/v2/users/candidates/history?admin='+true+ '&user_id='+user_id)

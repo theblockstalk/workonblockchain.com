@@ -169,3 +169,23 @@ export const unCheckCheckboxes = function(array) {
 export const checkNumber = function(number) {
   return /^[0-9]*$/.test(number);
 }
+
+export const createLocationsListStrings = function(locationArray){
+  let placesArray = [];
+
+  for (let noVisaPlace of locationArray) {
+    if (noVisaPlace.name === 'Remote') {
+      let remote = '<i class="fas fa-laptop"></i> ' + noVisaPlace.name;
+      placesArray.push(remote);
+    }
+    if (noVisaPlace.type === 'city') {
+      let city = '<i class="fas fa-city"></i> ' + noVisaPlace.name;
+      placesArray.push(city);
+    }
+    if (noVisaPlace.type === 'country') {
+      let country = '<i class="fas fa-flag"></i> ' + noVisaPlace.name;
+      placesArray.push(country);
+    }
+  }
+  return placesArray;
+}

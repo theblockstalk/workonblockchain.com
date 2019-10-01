@@ -27,6 +27,12 @@
               Price plan
             </a>
           </li>
+          <li class="nav-item">
+            <a routerLink="/gdpr-compliance" class="nav-link btn {{gdpr_disable}}">
+              <i class="{{gdpr_compliance_active_class}}"></i>
+              GDPR compliance
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -133,7 +139,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <div class="price"> &#163; 39.90</div>
+                <div class="price"> &#163; 49.90</div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(starter) class = "btn btn-primary tb_btn select_btn" id="1">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>
@@ -154,7 +160,7 @@
               </div>
               <div class = "row_1 py-3">
                 just <br>
-                <div class="price"> &#163; 59.90 </div>
+                <div class="price"> &#163; 69.90 </div>
                 a month <br>
                 <button *ngIf="viewBy === 'company'" type="button" (click) = selectPlan(essential) class = "btn btn-primary tb_btn select_btn" id="2">Select</button>
                 <button *ngIf="viewBy === 'general'" type="button" (click)="internalRoute('signup','company')" class = "btn btn-primary tb_btn select_btn">Select</button>

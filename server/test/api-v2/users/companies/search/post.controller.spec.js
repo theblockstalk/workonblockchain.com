@@ -55,7 +55,7 @@ describe('admin search company by filter', function () {
                 search_word : updatedData.company_name
             };
             const companyFilterRes = await companyHelper.companyFilter(data , companyUserDoc.jwt_token);
-            companyFilterRes.body[0].company_name.should.equal(updatedData.company_name);
+            companyFilterRes.body[0].company_name.should.equal(company.company_name);
             companyUserDoc.is_approved.should.equal(1);
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
         });
@@ -67,7 +67,7 @@ describe('admin search company by filter', function () {
             const userDoc = await Users.findOne({email: company.email});
 
             const data = {
-                is_approved : 1
+                is_approved : 0
             };
             const getAllCompanies = await companyHelper.getCompanies(data,userDoc.jwt_token);
 

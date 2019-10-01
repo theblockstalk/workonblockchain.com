@@ -4,6 +4,7 @@ const companies = require('../../../../model/mongoose/companies');
 const Users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const filterReturnData = require('../filterReturnData');
+const objects = require('../../../services/objects');
 
 module.exports.request = {
     type: 'get',
@@ -34,7 +35,7 @@ module.exports.endpoint = async function (req, res) {
 
     const employerProfile = await companies.findOneAndPopulate(userId);
     if (employerProfile) {
-        const employerProfileRemovedData = filterReturnData.removeSensativeData(JSON.parse(JSON.stringify(employerProfile._creator)));
+        const employerProfileRemovedData = filterReturnData.removeSensativeData(objects.copyObject(employerProfile._creator));
         let employerCreatorRes = employerProfile;
         employerCreatorRes._creator = employerProfileRemovedData;
 
