@@ -34,7 +34,8 @@ const bodySchema = new Schema({
         type:String
     },
     last_msg_received_day: Number,
-    created_after: Number
+    created_after: Number,
+    pricing_plan_changed_after: Number
 });
 
 const querySchema = new Schema({
@@ -103,6 +104,16 @@ module.exports.endpoint = async function (req, res) {
     }
     if(queryBody.created_after){
         queryString.push({"users.created_date": {$gte: objects.getDateFromDays(queryBody.created_after)}});
+    }
+    if(queryBody.pricing_plan_changed_after) {
+        queryString.push({
+            "history": {
+                "$elemMatch":{
+                    "pricing_plan":{$in:['Starter','Essential','Unlimited','Free till you hire']},
+                    "timestamp":{$gte: objects.getDateFromDays(queryBody.pricing_plan_changed_after)}
+                }
+            }
+        });
     }
 
     if(queryString.length>0) {

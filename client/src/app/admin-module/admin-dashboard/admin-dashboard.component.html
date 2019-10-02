@@ -44,7 +44,12 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Pricing plan selected</label>
+              <label>Pricing plans selected</label>
+              <div *ngIf="pricePlanChanged.length>0">
+                <p *ngFor="let pricePlan of pricePlanChanged;">
+                  <a class="text-underline text-dark" routerLink="/admins/company/{{pricePlan['id']}}" target="_blank">{{pricePlan['company_name']}}</a> choose {{pricePlan['pricing_plan']}} plan
+                </p>
+              </div>
             </div>
           </div>
         </div>
