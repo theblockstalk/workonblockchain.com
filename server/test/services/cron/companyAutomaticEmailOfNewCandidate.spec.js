@@ -215,7 +215,7 @@ describe('cron', function () {
             //check that candidate 5 are also sent to the company but not candidate 4
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
-            companyDoc.candidates_sent_by_email.length.should.equal(4);
+            companyDoc.candidates_sent_by_email.length.should.equal(5);
 
         })
     })
