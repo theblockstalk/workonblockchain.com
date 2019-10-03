@@ -144,7 +144,7 @@ export class AdminDashboardComponent implements OnInit {
   candidateStatus(status){
     let candQueryBody : any = {};
     candQueryBody.status = status;
-    candQueryBody.updatedAfter = this.number_of_days;
+    candQueryBody.status_last_updated_day = this.number_of_days;
 
     this.wizard_completed_candidates = '';
     this.reviewed_candidates = '';

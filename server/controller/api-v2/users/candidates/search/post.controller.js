@@ -91,7 +91,7 @@ const bodySchema = new Schema({
     },
     searchName: String,
     last_msg_received_day: Date,
-    updatedAfter: Number
+    status_last_updated_day: Number
 });
 
 const querySchema = new Schema({
@@ -122,7 +122,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
         if (queryBody.disable_account || queryBody.disable_account === false) filter.disable_account = queryBody.disable_account;
         if(queryBody.last_msg_received_day) filter.last_msg_received_day = queryBody.last_msg_received_day;
-        if(queryBody.updatedAfter) filter.updatedAfter = queryBody.updatedAfter;
+        if(queryBody.status_last_updated_day) filter.status_last_updated_day = queryBody.status_last_updated_day;
 
         let search = {};
         if (queryBody.name) {
