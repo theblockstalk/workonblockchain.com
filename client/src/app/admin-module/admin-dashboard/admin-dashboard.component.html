@@ -57,9 +57,15 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>New candidates</label>
-              <p *ngIf="wizard_completed_candidates">Wizard completed: {{wizard_completed_candidates.length}}</p>
-              <p *ngIf="reviewed_candidates">Reviewed: {{reviewed_candidates.length}}</p>
-              <p *ngIf="deferred_candidates">Deferred: {{deferred_candidates.length}}</p>
+              <p *ngIf="wizard_completed_candidates">
+                <a class="text-underline text-dark" [routerLink]="['/admin-candidate-search']" [queryParams]="{status: candidate_status_wizard_completed, status_last_updated_day: number_of_days}" target="_blank">Wizard completed: {{wizard_completed_candidates.length}}</a>
+              </p>
+              <p *ngIf="reviewed_candidates">
+                <a class="text-underline text-dark" [routerLink]="['/admin-candidate-search']" [queryParams]="{status: candidate_status_reviewed, status_last_updated_day: number_of_days}" target="_blank">Reviewed: {{reviewed_candidates.length}}</a>
+              </p>
+              <p *ngIf="deferred_candidates">
+                <a class="text-underline text-dark" [routerLink]="['/admin-candidate-search']" [queryParams]="{status: candidate_status_deferred, status_last_updated_day: number_of_days}" target="_blank">Deferred: {{deferred_candidates.length}}</a>
+              </p>
             </div>
           </div>
         </div>
