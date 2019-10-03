@@ -21,7 +21,6 @@ const routes: Routes = [
   { path : 'style-guide' , component : StyleGuideComponent},
   {path : 'update-company-profile' , component : AdminUpdateCompanyProfileComponent },
   {path : 'admin-candidate-detail' , component: AdminCandidateDetailComponent},
-
 ];
 
 @NgModule({

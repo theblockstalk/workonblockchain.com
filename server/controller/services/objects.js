@@ -1,3 +1,9 @@
+module.exports.getDateFromDays = function (days) {
+    let lastMsgDate = new Date();
+    lastMsgDate.setTime(lastMsgDate.getTime() - (days*24*60*60*1000));
+    return lastMsgDate;
+}
+
 module.exports.isEmpty = function (obj) {
     for(let prop in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, prop)) {
