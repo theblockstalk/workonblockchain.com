@@ -20,7 +20,8 @@ export class AdminDashboardComponent implements OnInit {
   timeframe = 5;timeframe_log;number_of_days;
   companiesSendReceivermsgs;newlyCreatedCompanies;wizard_completed_candidates;
   reviewed_candidates;deferred_candidates;pricePlanChanged = [];
-  pricePlans;
+  pricePlans;candidate_status_wizard_completed;candidate_status_reviewed;
+  candidate_status_deferred;
 
   constructor(private router: Router,private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -31,7 +32,6 @@ export class AdminDashboardComponent implements OnInit {
         $('.selectpicker').selectpicker('refresh');
       }, 300);
     }
-    console.log('in AdminTimeframeSearchComponent');
     this.search(this.timeframe); //default 5 days
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -57,8 +57,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   selected_timeframe(){
-    console.log('changed');
-    console.log(this.timeframe);
     this.search(this.timeframe);
   }
 
@@ -87,7 +85,6 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getCompaniesInfo(companyQueryBody : any = {}){
-    console.log(companyQueryBody);
     this.companiesSendReceivermsgs = '';
     this.newlyCreatedCompanies = '';
     this.pricePlanChanged = [];
@@ -119,24 +116,7 @@ export class AdminDashboardComponent implements OnInit {
         },
         error =>
         {
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            /*this.response = "data";
-            this.length = '';
-            this.info = [];
-            this.page = '';
-            this.log = error['error']['message'];*/
-          }
-          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            /*this.response = "data";
-            this.length = '';
-            this.info = [];
-            this.page = '';
-            this.log = error['error']['message'];*/
-          }
-          else {
-            console.log('error');
-            //this.log = "Something went wrong";
-          }
+          console.log('error');
         }
       );
   }
@@ -153,30 +133,22 @@ export class AdminDashboardComponent implements OnInit {
       .subscribe(
         data =>
         {
-          if(status === 'wizard completed') this.wizard_completed_candidates = data;
-          if(status === 'reviewed') this.reviewed_candidates = data;
-          if(status === 'deferred') this.deferred_candidates = data;
+          if(status === 'wizard completed') {
+            this.candidate_status_wizard_completed = status;
+            this.wizard_completed_candidates = data;
+          }
+          if(status === 'reviewed') {
+            this.candidate_status_reviewed = status;
+            this.reviewed_candidates = data;
+          }
+          if(status === 'deferred') {
+            this.candidate_status_deferred = status;
+            this.deferred_candidates = data;
+          }
         },
         error =>
         {
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            /*this.response = "data";
-            this.length = '';
-            this.info = [];
-            this.page = '';
-            this.log = error['error']['message'];*/
-          }
-          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            /*this.response = "data";
-            this.length = '';
-            this.info = [];
-            this.page = '';
-            this.log = error['error']['message'];*/
-          }
-          else {
-            //this.log = "Something went wrong";
-            console.log('error');
-          }
+          console.log('error');
         }
       );
   }
