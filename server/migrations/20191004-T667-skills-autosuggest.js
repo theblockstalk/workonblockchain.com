@@ -47,14 +47,28 @@ module.exports.up = async function() {
         if(userDoc.candidate.blockchain) {
             console.log("candidate Doc id: " + userDoc._id);
             if(userDoc.candidate.blockchain.commercial_platforms){
-                let newCommercialPlatforms = mapToArray(userDoc.candidate.blockchain.commercial_platforms, 'name');
-                console.log(newCommercialPlatforms);
-                // find in skills collection
-                await skills.findAndIterate({name :  {$in: newCommercialPlatforms}}, async function(skillsDoc) {
-                    console.log('skillsDoc');
-                    console.log(skillsDoc);
-                    process.exit();
-                });
+                let oldcommercial_platforms = userDoc.candidate.blockchain.commercial_platforms;
+                let newCommercialPlatforms = [];
+                let commercialPlatforms = mapToArray(oldcommercial_platforms, 'name');
+                for(let j=0;j<oldcommercial_platforms.length;j++) {
+                    // find in skills collection
+                    await skills.findAndIterate({name: {$in: commercialPlatforms}}, async function (skillsDoc) {
+                        if (oldcommercial_platforms[j].name === skillsDoc.name) {
+                            newCommercialPlatforms.push({
+                                skills_id: skillsDoc._id,
+                                type: skillsDoc.type,
+                                name: skillsDoc.name,
+                                exp_year: oldcommercial_platforms[j].exp_year
+                            });
+                        }
+                    });
+                }
+
+                if(newCommercialPlatforms && newCommercialPlatforms.length > 0) {
+                    console.log("commercial_platforms: " + newCommercialPlatforms);
+                    await users.update({ _id: userDoc._id },{ $set: {'candidate.blockchain.commercial_platforms' : newCommercialPlatforms} });
+                    totalModified++;
+                }
             }
         }
         if(userDoc.candidate.programming_languages) {
@@ -64,6 +78,7 @@ module.exports.up = async function() {
 
     console.log('Total user document to process: ' + totalDocsToProcess);
     console.log('Total user processed document: ' + totalProcessed);
+    console.log('Total user modified document: ' + totalModified);
 };
 
 module.exports.down = async function() {

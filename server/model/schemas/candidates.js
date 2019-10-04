@@ -269,6 +269,11 @@ module.exports = {
         type: {
             commercial_platforms: {
                 type: [{
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
+                    type: String,
                     name: {
                         type: String,
                         enum: enumerations.blockchainPlatforms
