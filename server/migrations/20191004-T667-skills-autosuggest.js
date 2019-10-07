@@ -28,29 +28,18 @@ function convertExpToNum(exp_year) {
             return 2;
             break;
         case '2-4':
-            return 3;
+            return 4;
             break;
         case '4-6':
-            return 4;
+            return 6;
             break;
         default:
             return 6
     }
 }
 
-function makeObj(skill, exp_year){
-    let mappedObj = [];
-    mappedObj.push({
-        skills_id: skill._id,
-        name: skill.name,
-        type: skill.type,
-        exp_year: convertExpToNum(exp_year)
-    });
-    return mappedObj;
-}
-
 module.exports.up = async function() {
-    /*const now = new Date();
+    const now = new Date();
     const skillsJsonArray = await csv().fromFile(skillsFilePath);
     console.log("Total number of skills in csv: " + skillsJsonArray.length);
 
@@ -64,13 +53,14 @@ module.exports.up = async function() {
         await skills.insert(data);
         newDocs++;
     }
-    console.log("Number of skills added in skills collection: " + newDocs);*/
+    console.log("Number of skills added in skills collection: " + newDocs);
 
     totalDocsToProcess = await users.count({type : 'candidate'});
 
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
         let newCommercialSkills = [], newSkills = [], experimentedPlatforms = [];
+        let programmingLanguages = [];
 
         if (userDoc.candidate.blockchain) {
             const blockchain = userDoc.candidate.blockchain;
@@ -112,13 +102,20 @@ module.exports.up = async function() {
                     }
                 }
             }
-            // same for blockchain.commercial_skills
-            // same for blockchain.experimented_platforms but use newSkills and no exp_year
-            // same for userDoc.programming_languages
         }
-        /*if(userDoc.candidate.programming_languages) {
-            console.log(userDoc.candidate.programming_languages);
-        }*/
+        if(userDoc.candidate.programming_languages) {
+            for (let programming_language of userDoc.candidate.programming_languages) {
+                const skill = await skills.findOne({name: programming_language.language});
+                if(skill) {
+                    programmingLanguages.push({
+                        skills_id: skill._id,
+                        name: skill.name,
+                        type: skill.type,
+                        exp_year: convertExpToNum(programming_language.exp_year)
+                    });
+                }
+            }
+        }
 
         let setCandidate = {};
         if (newCommercialSkills.length > 0) {
@@ -127,7 +124,6 @@ module.exports.up = async function() {
                 setCandidate.description_commercial_platforms = userDoc.candidate.blockchain.description_commercial_platforms;
         }
         if (newSkills.length > 0) {
-            console.log(newSkills);process.exit();
             setCandidate.commercial_skills = newSkills;
             if(userDoc.candidate.blockchain.description_commercial_skills)
                 setCandidate.description_commercial_skills = userDoc.candidate.blockchain.description_commercial_skills;
@@ -137,9 +133,19 @@ module.exports.up = async function() {
             if(userDoc.candidate.blockchain.description_experimented_platforms)
                 setCandidate.description_experimented_platforms = userDoc.candidate.blockchain.description_experimented_platforms;
         }
+
+        let set = {};
+        if(programmingLanguages.length > 0){
+            set = {
+                'candidate.programming_languages': programmingLanguages
+            };
+        }
         if (!objects.isEmpty(setCandidate)) {
-            console.log({_id: userDoc._id}, {$set: {'candidate.blockchain': setCandidate}});
-            await users.update({_id: userDoc._id}, {$set: {'candidate.blockchain': setCandidate}});
+            set['candidate.blockchain'] = setCandidate;
+        }
+        if (!objects.isEmpty(set)) {
+            console.log({_id: userDoc._id}, {$set: {'set': set}});
+            await users.update({_id : userDoc._id}, {$set: set});
             totalModified++;
         }
     });
