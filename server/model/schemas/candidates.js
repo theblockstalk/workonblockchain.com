@@ -206,10 +206,7 @@ module.exports = {
                 type: String,
                 enum: enumerations.programmingLanguages
             },
-            exp_year: {
-                type: String,
-                enum: enumerations.experienceYears
-            }
+            exp_year: Number
         })]
     },
     description: {
@@ -278,10 +275,7 @@ module.exports = {
                         type: String,
                         enum: enumerations.blockchainPlatforms
                     },
-                    exp_year: {
-                        type: String,
-                        enum: enumerations.experienceYears
-                    }
+                    exp_year: Number
                 }]
             },
             description_commercial_platforms:{
@@ -304,10 +298,7 @@ module.exports = {
                         type: String,
                         enum: enumerations.otherSkills
                     },
-                    exp_year: {
-                        type: String,
-                        enum: enumerations.exp_years
-                    }
+                    exp_year: Number
                 }],
             },
             description_commercial_skills:{
