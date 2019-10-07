@@ -1,5 +1,6 @@
 const users = require('../model/mongoose/users');
 const skills = require('../model/mongoose/skills');
+const objects = require('../controller/services/objects');
 const csv = require('csvtojson');
 const skillsFilePath = __dirname + '/files/T667-skills-collection.csv';
 
@@ -18,9 +19,28 @@ function mapToArray(array,propertyName) {
     }
 }
 
+function convertExpToNum(exp_year) {
+    switch (exp_year) {
+        case '0-1':
+            return 1;
+            break;
+        case '1-2':
+            return 2;
+            break;
+        case '2-4':
+            return 3;
+            break;
+        case '4-6':
+            return 4;
+            break;
+        default:
+            return 6
+    }
+}
+
 module.exports.up = async function() {
     const now = new Date();
-    const skillsJsonArray = await csv().fromFile(skillsFilePath);
+    /*const skillsJsonArray = await csv().fromFile(skillsFilePath);
     console.log("Total number of skills in csv: " + skillsJsonArray.length);
 
     for(let skill of skillsJsonArray) {
@@ -33,37 +53,39 @@ module.exports.up = async function() {
         await skills.insert(data);
         newDocs++;
     }
-    console.log("Number of skills added in skills collection: " + newDocs);
+    console.log("Number of skills added in skills collection: " + newDocs);*/
 
     totalDocsToProcess = await users.count({type : 'candidate'});
 
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
-        if(userDoc.candidate.blockchain) {
-            console.log("candidate Doc id: " + userDoc._id);
-            if(userDoc.candidate.blockchain.commercial_platforms){
-                let oldcommercial_platforms = userDoc.candidate.blockchain.commercial_platforms;
-                let newCommercialPlatforms = [];
-                let commercialPlatforms = mapToArray(oldcommercial_platforms, 'name');
-                for(let j=0;j<oldcommercial_platforms.length;j++) {
-                    // find in skills collection
-                    await skills.findAndIterate({name: {$in: commercialPlatforms}}, async function (skillsDoc) {
-                        if (oldcommercial_platforms[j].name === skillsDoc.name) {
-                            newCommercialPlatforms.push({
-                                skills_id: skillsDoc._id,
-                                type: skillsDoc.type,
-                                name: skillsDoc.name,
-                                exp_year: oldcommercial_platforms[j].exp_year
-                            });
-                        }
+        let newCommercialSkills = [], newSkills = [];
+
+        if (userDoc.candidate.blockchain) {
+            const blockchain = userDoc.candidate.blockchain;
+            if (blockchain.commercial_platforms && blockchain.commercial_platforms.length > 0) {
+                for (let block_skill_commercial of blockchain.commercial_platforms) {
+                    const skill = await skills.findOne({name: block_skill_commercial.name});
+                    newCommercialSkills.push({
+                        skills_id: skill._id,
+                        name: skill.name,
+                        type: skill.type,
+                        exp_year: convertExpToNum(block_skill_commercial.exp_year)
                     });
                 }
+            }
+            // same for blockchain.commercial_skills
+            // same for blockchain.experimented_platforms but use newSkills and no exp_year
+            // same for userDoc.programming_languages
 
-                if(newCommercialPlatforms && newCommercialPlatforms.length > 0) {
-                    console.log("commercial_platforms: " + newCommercialPlatforms);
-                    await users.update({ _id: userDoc._id },{ $set: {'candidate.blockchain.commercial_platforms' : newCommercialPlatforms} });
-                    totalModified++;
-                }
+            let setCandidate = {};
+            if (newCommercialSkills.length > 0)
+                setCandidate.commercial_platforms = newCommercialSkills;
+            if (newSkills.length > 0)
+                setCandidate.commercial_skills = newSkills;
+            if (!objects.isEmpty(setCandidate)) {
+                console.log({_id: userDoc._id}, {$set: {'candidate.blockchain.commercial_platforms': setCandidate}});
+                await users.update({_id: userDoc._id}, {$set: {'candidate.blockchain.commercial_platforms': setCandidate}});
             }
         }
         if(userDoc.candidate.programming_languages) {
