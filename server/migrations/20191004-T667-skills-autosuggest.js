@@ -1,6 +1,5 @@
 const users = require('../model/mongoose/users');
 const skills = require('../model/mongoose/skills');
-const logger = require('../controller/services/logger');
 const csv = require('csvtojson');
 const skillsFilePath = __dirname + '/files/T667-skills-collection.csv';
 
@@ -12,33 +11,29 @@ function mapToArray(array,propertyName) {
     let mappedArray = [];
     if(propertyName){
         for (let i=0; i< array.length; i++){
-            mappedArray.push(array[i][propertyName]);
-        }
-        return mappedArray;
-    }
-    else{
-        for (let i=0; i< array.length; i++){
-            mappedArray.push(array[i]);
+            if(propertyName) mappedArray.push(array[i][propertyName]);
+            else mappedArray.push(array[i]);
         }
         return mappedArray;
     }
 }
 
 module.exports.up = async function() {
-    /*const skillsJsonArray = await csv().fromFile(skillsFilePath);
+    const now = new Date();
+    const skillsJsonArray = await csv().fromFile(skillsFilePath);
     console.log("Total number of skills in csv: " + skillsJsonArray.length);
 
     for(let skill of skillsJsonArray) {
         let data = {
             name : skill.Name,
             type : skill.Type,
-            created_date : new Date()
+            created_date : now
         };
-        logger.debug("skills document: ", data);
+        console.log(data);
         await skills.insert(data);
         newDocs++;
     }
-    console.log("Number of skills added in skills collection: " + newDocs);*/
+    console.log("Number of skills added in skills collection: " + newDocs);
 
     totalDocsToProcess = await users.count({type : 'candidate'});
 
