@@ -71,6 +71,8 @@ module.exports.up = async function() {
                             exp_year: convertExpToNum(block_skill_commercial.exp_year)
                         });
                     }
+                    else
+                        console.log("nothing found in commercial_platforms");
                 }
             }
             if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0) {
@@ -84,6 +86,8 @@ module.exports.up = async function() {
                             exp_year: convertExpToNum(commercial_skills.exp_year)
                         });
                     }
+                    else
+                        console.log("nothing found in commercial_skills");
                 }
             }
             if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0) {
@@ -96,6 +100,8 @@ module.exports.up = async function() {
                             type: skill.type
                         });
                     }
+                    else
+                        console.log("nothing found in experimented_platforms");
                 }
             }
         }
@@ -110,6 +116,8 @@ module.exports.up = async function() {
                         exp_year: convertExpToNum(programming_language.exp_year)
                     });
                 }
+                else
+                    console.log("nothing found in programming_languages");
             }
         }
 
