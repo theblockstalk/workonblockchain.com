@@ -143,24 +143,21 @@ module.exports = new Schema({
                 type: String,
                 enum: enumerations.currencies
             },
-            blockchain: {
+            blockchain: { //DELETE ME
                 type: [{
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                }]
+            },
+            skills: { //will containg blockchain & languages
+                type:[new Schema({
                     skills_id: {
                         type : Schema.Types.ObjectId,
                         ref: 'Skills'
                     },
                     type: String,
-                    name: {
-                        type: String,
-                        enum: enumerations.blockchainPlatforms
-                    }
-                }]
-            },
-            skills: {
-                type: [{
-                    type: String,
-                    enum: enumerations.programmingLanguages
-                }]
+                    name: String
+                })]
             },
             years_exp_min: {
                 type: Number,
