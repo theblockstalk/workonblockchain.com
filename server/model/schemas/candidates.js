@@ -200,15 +200,18 @@ module.exports = {
         min: 0
     },
     why_work: String,
-    /*programming_languages: { // will be removed
+    programming_languages: { // DELETE ME
         type:[new Schema({
             language: {
                 type: String,
                 enum: enumerations.programmingLanguages
             },
-            exp_year: Number
+            exp_year: {
+                type: String,
+                enum: enumerations.experienceYears
+            }
         })]
-    },*/
+    },
     description: {
         type:String,
         maxlength: 3000
@@ -262,43 +265,85 @@ module.exports = {
             enum: enumerations.workBlockchainInterests
         }]
     },
-    blockchain: {
+    commercial_skills : { //will contain commercial_platforms, commercial_skills & programming_languages
+        type: [{
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            },
+            exp_year: Number
+        }],
+    },
+    description_commercial_skills:{
+        type: String,
+        maxlength: 3000
+    },
+    skills: { //will contain experimented_platforms
+        type: [{
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            }
+        }],
+    },
+    skills_description:{
+        type: String,
+        maxlength: 3000
+    },
+    blockchain: { //DELETE ME
         type: {
-            commercial_skills : { //wi contain commercial_platforms, commercial_skills & programming_languages
+            commercial_platforms: {
                 type: [{
-                    skills_id: {
-                        type : Schema.Types.ObjectId,
-                        ref: 'Skills'
-                    },
-                    type: String,
                     name: {
                         type: String,
                         enum: enumerations.blockchainPlatforms
                     },
-                    exp_year: Number
+                    exp_year: {
+                        type: String,
+                        enum: enumerations.experienceYears
+                    }
+                }]
+            },
+            description_commercial_platforms:{
+                type: String,
+                maxlength: 3000
+            },
+            experimented_platforms: {
+                type: [{
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                }],
+            },
+            description_experimented_platforms:{
+                type: String,
+                maxlength: 3000
+            },
+            commercial_skills : {
+                type: [{
+                    skill: {
+                        type: String,
+                        enum: enumerations.otherSkills
+                    },
+                    exp_year: {
+                        type: String,
+                        enum: enumerations.exp_years
+                    }
                 }],
             },
             description_commercial_skills:{
                 type: String,
                 maxlength: 3000
             },
-            skills: { //will contain experimented_platforms
-                type: [{
-                    skills_id: {
-                        type : Schema.Types.ObjectId,
-                        ref: 'Skills'
-                    },
-                    type: String,
-                    name: {
-                        type: String,
-                        enum: enumerations.blockchainPlatforms
-                    }
-                }],
-            },
-            skills_description:{
-                type: String,
-                maxlength: 3000
-            }
         }
     },
     history : {

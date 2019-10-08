@@ -56,7 +56,11 @@ module.exports.up = async function() {
     totalDocsToProcess = await users.count({type : 'candidate'});
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
-        let newCommercialSkills = [], newSkills = [];
+        let newCommercialSkills = [], newSkills = [], set = {};
+        let unset = {
+            'candidate.blockchain': 1,
+            'candidate.programming_languages': 1
+        };
 
         if (userDoc.candidate.blockchain) {
             const blockchain = userDoc.candidate.blockchain;
@@ -72,7 +76,7 @@ module.exports.up = async function() {
                         });
                     }
                     else
-                        console.log("nothing found in commercial_platforms");
+                        console.error("Skill with name " + block_skill_commercial.name + " was not found");
                 }
             }
             if (blockchain.commercial_skills && blockchain.commercial_skills.length > 0) {
@@ -87,7 +91,7 @@ module.exports.up = async function() {
                         });
                     }
                     else
-                        console.log("nothing found in commercial_skills");
+                        console.error("Skill with name " + commercial_skills.skill + " was not found");
                 }
             }
             if (blockchain.experimented_platforms && blockchain.experimented_platforms.length > 0) {
@@ -101,9 +105,21 @@ module.exports.up = async function() {
                         });
                     }
                     else
-                        console.log("nothing found in experimented_platforms");
+                        console.error("Skill with name " + experimented_platforms + " was not found");
                 }
             }
+
+            if(userDoc.candidate.blockchain.description_commercial_platforms)
+                set['candidate.description_commercial_skills'] = userDoc.candidate.blockchain.description_commercial_platforms;
+            if(userDoc.candidate.blockchain.description_commercial_skills) {
+                if (set['candidate.description_commercial_skills'])
+                    set['candidate.description_commercial_skills'] = set['candidate.description_commercial_skills'] + ' \n ' + userDoc.candidate.blockchain.description_commercial_skills;
+                else
+                    set['candidate.description_commercial_skills'] = userDoc.candidate.blockchain.description_commercial_skills;
+            }
+
+            if(userDoc.candidate.blockchain.description_experimented_platforms)
+                set['candidate.skills_description'] = userDoc.candidate.blockchain.description_experimented_platforms;
         }
         if(userDoc.candidate.programming_languages) {
             for (let programming_language of userDoc.candidate.programming_languages) {
@@ -121,32 +137,12 @@ module.exports.up = async function() {
             }
         }
 
-        let setCandidate = {};
+        if (newCommercialSkills.length > 0)
+            set['candidate.commercial_skills'] = newCommercialSkills;
 
-        if (newCommercialSkills.length > 0) {
-            setCandidate.commercial_skills = newCommercialSkills;
-            if(userDoc.candidate.blockchain.description_commercial_platforms)
-                setCandidate.description_commercial_skills = userDoc.candidate.blockchain.description_commercial_platforms;
-            if(userDoc.candidate.blockchain.description_commercial_skills)
-                setCandidate.description_commercial_skills = setCandidate.description_commercial_skills+' '+userDoc.candidate.blockchain.description_commercial_skills;
-        }
-        if (newSkills.length > 0) {
-            setCandidate.skills = newSkills;
-            if(userDoc.candidate.blockchain.description_experimented_platforms)
-                setCandidate.skills_description = userDoc.candidate.blockchain.description_experimented_platforms;
-        }
+        if (newSkills.length > 0)
+            set['candidate.skills'] = newSkills;
 
-        let set = {};
-        let unset = {
-            'blockchain.commercial_platforms': 1,
-            'blockchain.description_commercial_platforms': 1,
-            'blockchain.experimented_platforms': 1,
-            'blockchain.description_experimented_platforms': 1,
-            'candidate.programming_languages': 1
-        };
-        if (!objects.isEmpty(setCandidate)) {
-            set['candidate.blockchain'] = setCandidate;
-        }
         if (!objects.isEmpty(set)) {
             let updateObj = {$set: set, $unset: unset};
             console.log({_id: userDoc._id}, {$set: {'set': set}});
