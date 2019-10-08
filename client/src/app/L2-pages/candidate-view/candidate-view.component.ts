@@ -378,7 +378,7 @@ export class CandidateViewComponent implements OnInit {
 
         let newCommercialsSkills = [];
         for (let commercialsSkills of this.commercial_skills) {
-          let skillName = getNameFromValue(constants.otherSkills,commercialsSkills.skill);
+          let skillName = getNameFromValue(constants.otherSkills,commercialsSkills.name);
           let img = skillName.name + ': ' + commercialsSkills.exp_year + ' years';
           newCommercialsSkills.push(img);
         }
@@ -421,14 +421,14 @@ export class CandidateViewComponent implements OnInit {
         if(this.experimented && this.experimented.length>0){
           if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
           this.experimented.sort(function(a, b){
-            if(a < b) { return -1; }
-            if(a > b) { return 1; }
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
             return 0;
           });
 
           let newExperimented = [];
           for(let experimented of this.experimented){
-            let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented+'.png" alt="'+experimented+' Logo"> '+experimented;
+            let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented.name+'.png" alt="'+experimented.name+' Logo"> '+experimented.name;
             newExperimented.push(img);
           }
           this.experimented = newExperimented;
