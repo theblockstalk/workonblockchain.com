@@ -94,6 +94,16 @@
           <div class="row">
             <div class="col-md-12">
               <h4>Technologies</h4>
+              <app-c-forme-dropdown-autosuggest
+                label="Locations"
+                (change)="selfValidate()"
+                placeholder="Commercial experience"
+                [controllerOptions]="controllerOptions"
+                [controller]="autoSuggestController"
+                [displayItems]="resultItemDisplay"
+                (selectedItems)="itemSelected($event)"
+                [errorMsg]="errorMsg"
+              ></app-c-forme-dropdown-autosuggest>
               <div class="form-group mt-4">
                 <label>Commercial experience</label>
                 <ul>

@@ -31,7 +31,13 @@ export class DropdownAutosuggestComponent implements OnInit {
       this.controller(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
+              //start from here
+              console.log(data['skills']);
               this.optionValues = this.displayItems(data);
+              console.log(this.optionValues);
+              for(let op of this.optionValues){
+                console.log(op.name);
+              }
             }
           },
           error =>

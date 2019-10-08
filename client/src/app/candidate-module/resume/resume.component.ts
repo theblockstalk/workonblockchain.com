@@ -5,7 +5,7 @@ import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {unCheckCheckboxes} from '../../../services/object';
+import {unCheckCheckboxes, filter_array} from '../../../services/object';
 
 @Component({
   selector: 'app-resume',
@@ -40,6 +40,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   experimented;
   exp_year;
   area_interested;
+  //new ones
+  errorMsg: string;
+  controllerOptions: any = {};
+  autoSuggestController;
+  resultItemDisplay;
+  object;
+  //end
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
               private authenticationService: UserService) { }
@@ -51,6 +58,37 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
+    //new ones
+    this.controllerOptions = true;
+    this.autoSuggestController = function (textValue, controllerOptions) {
+      //console.log(textValue);console.log(controllerOptions);
+      return this.authenticationService.autoSuggestSkills(textValue);
+    };
+    //console.log(this.autoSuggestController);
+
+    this.resultItemDisplay = function (data) {
+      const skillsInput = data;
+      let citiesOptions = [];
+      console.log(skillsInput['skills']);
+      for(let skill of skillsInput['skills']) {
+        citiesOptions.push({_id : skill['skills']._id , name : skill['skills'].name});
+
+        /*if(cities['remote'] === true) {
+          citiesOptions.push({ name: 'Remote'});
+        }
+        if(cities['city']) {
+          const cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+          citiesOptions.push({_id : cities['city']._id , name : cityString});
+        }
+        if(cities['country'] ) {
+          const countryString = cities['country']  + " (country)";
+          if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+            citiesOptions.push({name: countryString});
+        }*/
+      }
+      return filter_array(citiesOptions);
+    }
+    //end
     this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
     this.otherSkills = unCheckCheckboxes(constants.otherSkills);
     this.experimented = unCheckCheckboxes(constants.experimented);
@@ -676,6 +714,25 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       return 0;
     })
 
+  }
+
+  itemSelected(event){
+    //console.log(event);
+  }
+
+  selfValidate() {
+    //console.log('selfValidate');
+    /*if(this.selectedLocation && this.selectedLocation.length <= 0) {
+      this.errorMsg = "Please select atleast one location";
+      return false;
+    }
+    if(!this.selectedLocation) {
+      this.errorMsg = "Please select atleast one location";
+      return false;
+    }
+
+    delete this.errorMsg;*/
+    return true;
   }
 
 }
