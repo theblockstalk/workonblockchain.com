@@ -272,10 +272,7 @@ module.exports = {
                 ref: 'Skills'
             },
             type: String,
-            name: {
-                type: String,
-                enum: enumerations.blockchainPlatforms
-            },
+            name: String,
             exp_year: Number
         }],
     },
@@ -290,13 +287,10 @@ module.exports = {
                 ref: 'Skills'
             },
             type: String,
-            name: {
-                type: String,
-                enum: enumerations.blockchainPlatforms
-            }
+            name: String
         }],
     },
-    skills_description:{
+    description_skills:{
         type: String,
         maxlength: 3000
     },

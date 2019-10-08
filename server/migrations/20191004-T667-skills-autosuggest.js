@@ -56,6 +56,7 @@ module.exports.up = async function() {
     totalDocsToProcess = await users.count({type : 'candidate'});
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
+        console.log("Migrating candidate user_id: " + userDoc._id)
         let newCommercialSkills = [], newSkills = [], set = {};
         let unset = {
             'candidate.blockchain': 1,
@@ -119,7 +120,7 @@ module.exports.up = async function() {
             }
 
             if(userDoc.candidate.blockchain.description_experimented_platforms)
-                set['candidate.skills_description'] = userDoc.candidate.blockchain.description_experimented_platforms;
+                set['candidate.description_skills'] = userDoc.candidate.blockchain.description_experimented_platforms;
         }
         if(userDoc.candidate.programming_languages) {
             for (let programming_language of userDoc.candidate.programming_languages) {
@@ -133,7 +134,7 @@ module.exports.up = async function() {
                     });
                 }
                 else
-                    console.log("nothing found in programming_languages");
+                    console.error("Skill with name " + programming_language.language + " was not found");
             }
         }
 

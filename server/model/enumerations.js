@@ -1,4 +1,5 @@
 
+//blockchainPlatforms will be deleted
 module.exports.blockchainPlatforms = ['Bitcoin', 'Ethereum', 'Ripple','Stellar', 'Hyperledger Fabric','Hyperledger Sawtooth','Quorum','Corda','EOS','NEO','Waves','Steemit','Lisk','Quantum','Tezos','Cardano','Litecoin','Monero','ZCash','IOTA','NEM','NXT','Dash','Doge'];
 
 module.exports.currencies = ['€ EUR', '$ USD', '£ GBP'];
