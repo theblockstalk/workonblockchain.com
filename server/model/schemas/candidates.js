@@ -200,7 +200,7 @@ module.exports = {
         min: 0
     },
     why_work: String,
-    programming_languages: {
+    /*programming_languages: { // will be removed
         type:[new Schema({
             language: {
                 type: String,
@@ -208,7 +208,7 @@ module.exports = {
             },
             exp_year: Number
         })]
-    },
+    },*/
     description: {
         type:String,
         maxlength: 3000
@@ -264,7 +264,7 @@ module.exports = {
     },
     blockchain: {
         type: {
-            commercial_platforms: {
+            commercial_skills : { //wi contain commercial_platforms, commercial_skills & programming_languages
                 type: [{
                     skills_id: {
                         type : Schema.Types.ObjectId,
@@ -276,13 +276,13 @@ module.exports = {
                         enum: enumerations.blockchainPlatforms
                     },
                     exp_year: Number
-                }]
+                }],
             },
-            description_commercial_platforms:{
+            description_commercial_skills:{
                 type: String,
                 maxlength: 3000
             },
-            experimented_platforms: {
+            skills: { //will contain experimented_platforms
                 type: [{
                     skills_id: {
                         type : Schema.Types.ObjectId,
@@ -295,23 +295,10 @@ module.exports = {
                     }
                 }],
             },
-            description_experimented_platforms:{
+            skills_description:{
                 type: String,
                 maxlength: 3000
-            },
-            commercial_skills : {
-                type: [{
-                    skill: {
-                        type: String,
-                        enum: enumerations.otherSkills
-                    },
-                    exp_year: Number
-                }],
-            },
-            description_commercial_skills:{
-                type: String,
-                maxlength: 3000
-            },
+            }
         }
     },
     history : {

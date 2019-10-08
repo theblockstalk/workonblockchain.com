@@ -9,13 +9,11 @@ let totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
 
 function mapToArray(array,propertyName) {
     let mappedArray = [];
-    if(propertyName){
-        for (let i=0; i< array.length; i++){
-            if(propertyName) mappedArray.push(array[i][propertyName]);
-            else mappedArray.push(array[i]);
-        }
-        return mappedArray;
+    for (let i=0; i< array.length; i++){
+        if(propertyName) mappedArray.push(array[i][propertyName]);
+        else mappedArray.push(array[i]);
     }
+    return mappedArray;
 }
 
 function convertExpToNum(exp_year) {
@@ -38,7 +36,7 @@ function convertExpToNum(exp_year) {
 }
 
 module.exports.up = async function() {
-    const now = new Date();
+    /*const now = new Date();
     const skillsJsonArray = await csv().fromFile(skillsFilePath);
     console.log("Total number of skills in csv: " + skillsJsonArray.length);
 
@@ -52,14 +50,13 @@ module.exports.up = async function() {
         await skills.insert(data);
         newDocs++;
     }
-    console.log("Number of skills added in skills collection: " + newDocs);
+    console.log("Number of skills added in skills collection: " + newDocs);*/
 
     //for candidate
     totalDocsToProcess = await users.count({type : 'candidate'});
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
-        let newCommercialSkills = [], newSkills = [], experimentedPlatforms = [];
-        let programmingLanguages = [];
+        let newCommercialSkills = [], newSkills = [];
 
         if (userDoc.candidate.blockchain) {
             const blockchain = userDoc.candidate.blockchain;
@@ -80,7 +77,7 @@ module.exports.up = async function() {
                 for (let commercial_skills of blockchain.commercial_skills) {
                     const skill = await skills.findOne({name: commercial_skills.skill});
                     if(skill) {
-                        newSkills.push({
+                        newCommercialSkills.push({
                             skills_id: skill._id,
                             name: skill.name,
                             type: skill.type,
@@ -93,7 +90,7 @@ module.exports.up = async function() {
                 for (let experimented_platforms of blockchain.experimented_platforms) {
                     const skill = await skills.findOne({name: experimented_platforms});
                     if(skill) {
-                        experimentedPlatforms.push({
+                        newSkills.push({
                             skills_id: skill._id,
                             name: skill.name,
                             type: skill.type
@@ -106,7 +103,7 @@ module.exports.up = async function() {
             for (let programming_language of userDoc.candidate.programming_languages) {
                 const skill = await skills.findOne({name: programming_language.language});
                 if(skill) {
-                    programmingLanguages.push({
+                    newCommercialSkills.push({
                         skills_id: skill._id,
                         name: skill.name,
                         type: skill.type,
@@ -117,40 +114,41 @@ module.exports.up = async function() {
         }
 
         let setCandidate = {};
+
         if (newCommercialSkills.length > 0) {
-            setCandidate.commercial_platforms = newCommercialSkills;
+            setCandidate.commercial_skills = newCommercialSkills;
             if(userDoc.candidate.blockchain.description_commercial_platforms)
-                setCandidate.description_commercial_platforms = userDoc.candidate.blockchain.description_commercial_platforms;
+                setCandidate.description_commercial_skills = userDoc.candidate.blockchain.description_commercial_platforms;
+            if(userDoc.candidate.blockchain.description_commercial_skills)
+                setCandidate.description_commercial_skills = setCandidate.description_commercial_skills+' '+userDoc.candidate.blockchain.description_commercial_skills;
         }
         if (newSkills.length > 0) {
-            setCandidate.commercial_skills = newSkills;
-            if(userDoc.candidate.blockchain.description_commercial_skills)
-                setCandidate.description_commercial_skills = userDoc.candidate.blockchain.description_commercial_skills;
-        }
-        if (experimentedPlatforms.length > 0) {
-            setCandidate.experimented_platforms = experimentedPlatforms;
+            setCandidate.skills = newSkills;
             if(userDoc.candidate.blockchain.description_experimented_platforms)
-                setCandidate.description_experimented_platforms = userDoc.candidate.blockchain.description_experimented_platforms;
+                setCandidate.skills_description = userDoc.candidate.blockchain.description_experimented_platforms;
         }
 
         let set = {};
-        if(programmingLanguages.length > 0){
-            set = {
-                'candidate.programming_languages': programmingLanguages
-            };
-        }
+        let unset = {
+            'blockchain.commercial_platforms': 1,
+            'blockchain.description_commercial_platforms': 1,
+            'blockchain.experimented_platforms': 1,
+            'blockchain.description_experimented_platforms': 1,
+            'candidate.programming_languages': 1
+        };
         if (!objects.isEmpty(setCandidate)) {
             set['candidate.blockchain'] = setCandidate;
         }
         if (!objects.isEmpty(set)) {
+            let updateObj = {$set: set, $unset: unset};
             console.log({_id: userDoc._id}, {$set: {'set': set}});
-            await users.update({_id : userDoc._id}, {$set: set});
+            await users.update({_id : userDoc._id}, updateObj);
             totalModified++;
         }
     });
 
     //for company
-    totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
+    /*totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
 
     totalDocsToProcess = await users.count({type : 'company'});
     await users.findAndIterate({type : 'company'}, async function(userDoc) {
@@ -179,7 +177,7 @@ module.exports.up = async function() {
             await companies.update({ _id: employerDoc._id },{ $set: {"saved_searches": savedSearches} });
             totalModified++;
         }
-    });
+    });*/
 
     console.log('Total companies document to process: ' + totalDocsToProcess);
     console.log('Total companies processed document: ' + totalProcessed);
