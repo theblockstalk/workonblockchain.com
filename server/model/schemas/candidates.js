@@ -284,8 +284,15 @@ module.exports = {
             },
             experimented_platforms: {
                 type: [{
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
                     type: String,
-                    enum: enumerations.blockchainPlatforms
+                    name: {
+                        type: String,
+                        enum: enumerations.blockchainPlatforms
+                    }
                 }],
             },
             description_experimented_platforms:{

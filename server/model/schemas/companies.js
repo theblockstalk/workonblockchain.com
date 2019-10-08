@@ -145,8 +145,15 @@ module.exports = new Schema({
             },
             blockchain: {
                 type: [{
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
                     type: String,
-                    enum: enumerations.blockchainPlatforms
+                    name: {
+                        type: String,
+                        enum: enumerations.blockchainPlatforms
+                    }
                 }]
             },
             skills: {

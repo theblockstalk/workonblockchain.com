@@ -1,12 +1,11 @@
 const users = require('../model/mongoose/users');
 const skills = require('../model/mongoose/skills');
 const objects = require('../controller/services/objects');
+const companies = require('../model/mongoose/companies');
 const csv = require('csvtojson');
 const skillsFilePath = __dirname + '/files/T667-skills-collection.csv';
 
 let totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
-let totalCompanyProcessed=0, totalCompanyModified=0, totalCompanyIncompleteDoc = 0;
-let newDocs= 0, totalIncompleteDoc = 0;
 
 function mapToArray(array,propertyName) {
     let mappedArray = [];
@@ -55,8 +54,8 @@ module.exports.up = async function() {
     }
     console.log("Number of skills added in skills collection: " + newDocs);
 
+    //for candidate
     totalDocsToProcess = await users.count({type : 'candidate'});
-
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
         let newCommercialSkills = [], newSkills = [], experimentedPlatforms = [];
@@ -150,9 +149,41 @@ module.exports.up = async function() {
         }
     });
 
-    console.log('Total user document to process: ' + totalDocsToProcess);
-    console.log('Total user processed document: ' + totalProcessed);
-    console.log('Total user modified document: ' + totalModified);
+    //for company
+    totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
+
+    totalDocsToProcess = await users.count({type : 'company'});
+    await users.findAndIterate({type : 'company'}, async function(userDoc) {
+        let employerDoc = await companies.findOne({_creator : userDoc._id, saved_searches: { $exists: true}});
+        if(employerDoc){
+            let savedSearchBlockchain = [];
+            let savedSearches = employerDoc.saved_searches;
+            for (let savedSearch of savedSearches) {
+                for(let blockchain of savedSearch.blockchain){
+                    const skill = await skills.findOne({name: blockchain});
+                    if(skill) {
+                        savedSearchBlockchain.push({
+                            skills_id: skill._id,
+                            name: skill.name,
+                            type: skill.type
+                        });
+                    }
+                }
+                savedSearch.blockchain = [];
+                savedSearch.blockchain = savedSearchBlockchain;
+            }
+
+            //employerDoc.saved_searches = savedSearches;
+            //console.log(employerDoc.saved_searches);process.exit();
+            //console.log({_id: employerDoc._id}, {$set: {'employerDoc.saved_searches': employerDoc.saved_searches}});
+            await companies.update({ _id: employerDoc._id },{ $set: {"saved_searches": savedSearches} });
+            totalModified++;
+        }
+    });
+
+    console.log('Total companies document to process: ' + totalDocsToProcess);
+    console.log('Total companies processed document: ' + totalProcessed);
+    console.log('Total companies modified document: ' + totalModified);
 };
 
 module.exports.down = async function() {
