@@ -5,6 +5,7 @@ const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 const enumerations = require('../../../../../model/enumerations');
 const companies = require('../../../../../model/mongoose/companies');
+const objects = require('../../../../services/objects');
 
 module.exports.request = {
     type: 'post',
@@ -31,7 +32,10 @@ const bodySchema = new Schema({
     },
     search_word: {
         type:String
-    }
+    },
+    last_msg_received_day: Number,
+    created_after: Number,
+    pricing_plan_changed_after: Number
 });
 
 const querySchema = new Schema({
@@ -90,6 +94,26 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.search_word) {
         const nameFilter = { "company_name" : {'$regex' : queryBody.search_word, $options: 'i' } };
         queryString.push(nameFilter);
+    }
+    if(queryBody.last_msg_received_day) {
+        queryString.push({
+            "users.conversations": {
+                "$elemMatch":{"last_message":{$gte: objects.getDateFromDays(queryBody.last_msg_received_day)}}
+            }
+        });
+    }
+    if(queryBody.created_after){
+        queryString.push({"users.created_date": {$gte: objects.getDateFromDays(queryBody.created_after)}});
+    }
+    if(queryBody.pricing_plan_changed_after) {
+        queryString.push({
+            "history": {
+                "$elemMatch":{
+                    "pricing_plan":{$in:['Starter','Essential','Unlimited','Free till you hire']},
+                    "timestamp":{$gte: objects.getDateFromDays(queryBody.pricing_plan_changed_after)}
+                }
+            }
+        });
     }
 
     if(queryString.length>0) {

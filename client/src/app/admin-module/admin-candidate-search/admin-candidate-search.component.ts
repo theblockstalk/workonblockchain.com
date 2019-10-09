@@ -10,6 +10,7 @@ import {getFilteredNames} from "../../../services/object";
 import {isPlatformBrowser} from "@angular/common";
 import {formatDate} from '@angular/common';
 import {candidateBadge} from '../../../services/candidate';
+import {getDateFromDays} from '../../../services/object';
 
 @Component({
   selector: 'app-admin-candidate-search',
@@ -43,9 +44,15 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   pagedItems: any[];
   msgTagsOptions = constants.chatMsgTypes;
   numberOfDays = constants.number_of_days;
-  number_of_days;
+  number_of_days;status_last_updated_day;
 
-  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
+    this.route.queryParams.subscribe(params => {
+      this.status_last_updated_day = params['status_last_updated_day'];
+      this.approve = params['status'];
+      this.search(this.approve);
+    });
+  }
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
@@ -72,8 +79,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
     if(this.currentUser && this.admin_log )
     {
-      if(this.admin_log.is_admin === 1)
-        this.getAllCandidate();
+      if(this.admin_log.is_admin === 1) {
+        if (!this.status_last_updated_day)
+          this.getAllCandidate();
+      }
       else
         this.router.navigate(['/not_found']);
     }
@@ -146,6 +155,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   }
 
+  status_last_update_days(event){
+    this.status_last_updated_day =event;
+    this.search(this.status_last_updated_day);
+  }
+
   search_days(event){
     this.number_of_days =event;
     this.search(this.number_of_days);
@@ -200,7 +214,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       let queryBody : any = {};
-      if(this.number_of_days) queryBody.last_msg_received_day = this.number_of_days;
+      if(this.status_last_updated_day) queryBody.status_last_updated_day = this.status_last_updated_day;
+      if(this.number_of_days) queryBody.last_msg_received_day = getDateFromDays(this.number_of_days);
       if(this.approve) queryBody.status = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.name = this.searchWord;
