@@ -117,8 +117,14 @@ export class CompanyViewComponent implements OnInit {
   createBlockchainLogos(commercial){
     let newCommercials = [];
     for(let commercials of commercial){
-      let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+commercials+'.png" alt="'+commercials+' Logo"> ' + commercials;
-      newCommercials.push(img);
+      if(commercials.type === 'blockchain') {
+        let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name;
+        newCommercials.push(img);
+      }
+      else{
+        let img = commercials.name+': ' +commercials.exp_year +' years';
+        newCommercials.push(img);
+      }
     }
     return newCommercials;
   }
