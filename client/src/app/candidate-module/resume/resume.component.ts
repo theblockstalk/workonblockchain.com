@@ -73,24 +73,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
     this.resultItemDisplay = function (data) {
       const skillsInput = data;
-      let citiesOptions = [];
+      let skillsOptions = [];
       for(let skill of skillsInput) {
-        citiesOptions.push({_id : skill['skill']._id , name : skill['skill'].name, type : skill['skill'].type});
-
-        /*if(cities['remote'] === true) {
-          citiesOptions.push({ name: 'Remote'});
-        }
-        if(cities['city']) {
-          const cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-          citiesOptions.push({_id : cities['city']._id , name : cityString});
-        }
-        if(cities['country'] ) {
-          const countryString = cities['country']  + " (country)";
-          if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-            citiesOptions.push({name: countryString});
-        }*/
+        skillsOptions.push({_id : skill['skill']._id , name : skill['skill'].name, type : skill['skill'].type});
       }
-      return filter_array(citiesOptions);
+      return filter_array(skillsOptions);
     }
     //end
     this.commercially = unCheckCheckboxes(constants.blockchainPlatforms);
@@ -721,6 +708,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   }
 
   itemSelected(skillObj){
+    let objectMap = {};
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');
@@ -729,19 +717,14 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(this.selectedSkill.find(x => x['name'] === skillObj.name)) {
       this.errorMsg = 'This skills has already been selected';
       return false;
-      if (isPlatformBrowser(this.platformId)) {
-        setInterval(() => {
-          delete this.errorMsg;
-          return true;
-        }, 3000);
-      }
     }
     else {
-      if(skillObj) this.selectedSkill.push({_id:skillObj._id ,  name: skillObj.name, type: skillObj.type});
+      objectMap = {_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
+      if(skillObj) this.selectedSkill.push(objectMap);
       else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
-    this.selectedSkillExpYear = copyObject(this.selectedSkill);
-    console.log(this.selectedSkill);
+    this.selectedSkillExpYear.push(objectMap);
+    console.log(this.selectedSkillExpYear);
   }
 
   selfValidate() {
