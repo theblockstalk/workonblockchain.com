@@ -3,11 +3,12 @@ const companies = require('../../../model/mongoose/companies');
 
 const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
+const time = require('../time');
 
 module.exports = async function () {
     logger.debug('Running unread chat messages cron');
     let timeMinus1hr = new Date();
-    timeMinus1hr.setSeconds(timeMinus1hr.getSeconds() - 3620); //-1 hour 20 Secs
+    time.addSeconds(timeMinus1hr, -(60*60 + 20)); // -1hr and 20s
 
     let userDoc = await users.find({
         "conversations": {
