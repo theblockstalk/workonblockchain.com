@@ -1,3 +1,26 @@
-<p>
-  skills-auto-suggest works!
-</p>
+<app-c-forme-dropdown-autosuggest
+  label="Locations"
+  (change)="selfValidate()"
+  placeholder="Commercial experience"
+  [controllerOptions]="controllerOptions"
+  [controller]="autoSuggestController"
+  [displayItems]="resultItemDisplay"
+  (selectedItems)="itemSelected($event)"
+  [errorMsg]="errorMsg"
+></app-c-forme-dropdown-autosuggest>
+<div *ngIf="selectedSkill && selectedSkill.length > 0">
+  <div class="row">
+    <div  *ngFor="let value of selectedSkill; let i = index" class="col-md-8 p-2 mt-2">
+      <div class="ml-0 row">
+        <div class = "col-5">
+          <label >{{value.name}}</label>
+        </div>
+        <div class = "col-4" *ngIf="value.type === 'language' || value.type === 'blockchain'">
+          <select class="selectpicker form-control " name="skills_years_exp" [(ngModel)]="skills_years_exp" title="(select one)" (change)="skillsExpYearOptions($event , value)">
+            <option *ngFor="let opt of years_exp_min_new" [value]="opt.value">{{opt.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

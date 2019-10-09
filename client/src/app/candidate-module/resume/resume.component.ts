@@ -5,7 +5,7 @@ import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {unCheckCheckboxes, filter_array, copyObject} from '../../../services/object';
+import {unCheckCheckboxes, filter_array} from '../../../services/object';
 import { isPlatformBrowser } from '@angular/common';
 declare var $: any;
 
@@ -51,6 +51,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   years_exp_min_new = constants.years_exp_min_new;
   skills_years_exp;selectedSkillExpYear=[];
   //end
+  skillsFromDB;selectedSkillsNew;
+
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
               private authenticationService: UserService,
