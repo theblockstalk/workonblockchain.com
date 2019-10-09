@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
 import {unCheckCheckboxes} from '../../../services/object';
+import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
 
 @Component({
   selector: 'app-resume',
@@ -13,6 +14,7 @@ import {unCheckCheckboxes} from '../../../services/object';
   styleUrls: ['./resume.component.css']
 })
 export class ResumeComponent implements OnInit,AfterViewInit {
+  @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
 
   experimented_platform = [];
   commercially_worked = [];
@@ -373,6 +375,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     let flag_commercial_desc = true;
     let flag_experimented_desc = true;
     let flag_commercialSkills_desc = true;
+
+    if(!this.skillsAutoSuggestComp.selfValidate()){
+      console.log('in resume valid error');
+    }
+    else{
+      console.log(this.selectedSkillsNew);
+    }
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.commercially_worked.length !== this.commercial_expYear.length )
