@@ -104,6 +104,23 @@
                 (selectedItems)="itemSelected($event)"
                 [errorMsg]="errorMsg"
               ></app-c-forme-dropdown-autosuggest>
+              <div *ngIf="selectedSkill && selectedSkill.length > 0">
+                <div class="row">
+                  <div  *ngFor="let value of selectedSkill; let i = index" class="col-md-8 p-2 mt-2">
+                    <div class="px-1 py-3 ml-2 row">
+                      <div class = "col-5">
+                        <label >{{value.name}}</label>
+                      </div>
+                      <div class = "col-4" *ngIf="value.type === 'language' || value.type === 'blockchain'">
+                        <select class="selectpicker form-control " name="skills_years_exp" [(ngModel)]="skills_years_exp" title="(select one)" (change)="skillsExpYearOptions($event , value)">
+                          <option *ngFor="let opt of years_exp_min_new" [value]="opt.value">{{opt.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="form-group mt-4">
                 <label>Commercial experience</label>
                 <ul>

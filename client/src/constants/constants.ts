@@ -495,6 +495,11 @@ export const constants = {
     {name: '1 day', value: 1},{name: '2 days', value: 2},{name: '3 days', value: 3},
     {name: '4 days', value: 4},{name: '5 days', value: 5},{name: '10 days', value: 10},
     {name: '15 days', value: 15},{name: '30 days', value: 30},{name: '60 days', value: 60}
+  ],
+  years_exp_min_new: [
+    {value:1, name:'1+ years'},{value:2, name:'2+ years'},
+    {value:3, name:'3+ years'},{value:4, name:'4+ years'},
+    {value:5, name:'5+ years'},{value:6, name:'6+ years'}
   ]
 
 };

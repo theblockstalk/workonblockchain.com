@@ -1,11 +1,13 @@
-import { Component, OnInit,AfterViewInit  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
 import {constants} from '../../../constants/constants';
-import {unCheckCheckboxes, filter_array} from '../../../services/object';
+import {unCheckCheckboxes, filter_array, copyObject} from '../../../services/object';
+import { isPlatformBrowser } from '@angular/common';
+declare var $: any;
 
 @Component({
   selector: 'app-resume',
@@ -45,11 +47,14 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   controllerOptions: any = {};
   autoSuggestController;
   resultItemDisplay;
-  object;
+  object;selectedSkill=[];
+  years_exp_min_new = constants.years_exp_min_new;
+  skills_years_exp;selectedSkillExpYear=[];
   //end
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
-              private authenticationService: UserService) { }
+              private authenticationService: UserService,
+              @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngAfterViewInit(): void
   {
@@ -69,9 +74,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     this.resultItemDisplay = function (data) {
       const skillsInput = data;
       let citiesOptions = [];
-      console.log(skillsInput['skills']);
-      for(let skill of skillsInput['skills']) {
-        citiesOptions.push({_id : skill['skills']._id , name : skill['skills'].name});
+      for(let skill of skillsInput) {
+        citiesOptions.push({_id : skill['skill']._id , name : skill['skill'].name, type : skill['skill'].type});
 
         /*if(cities['remote'] === true) {
           citiesOptions.push({ name: 'Remote'});
@@ -716,23 +720,82 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   }
 
-  itemSelected(event){
-    //console.log(event);
+  itemSelected(skillObj){
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+    }
+    if(this.selectedSkill.find(x => x['name'] === skillObj.name)) {
+      this.errorMsg = 'This skills has already been selected';
+      return false;
+      if (isPlatformBrowser(this.platformId)) {
+        setInterval(() => {
+          delete this.errorMsg;
+          return true;
+        }, 3000);
+      }
+    }
+    else {
+      if(skillObj) this.selectedSkill.push({_id:skillObj._id ,  name: skillObj.name, type: skillObj.type});
+      else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
+    }
+    this.selectedSkillExpYear = copyObject(this.selectedSkill);
+    console.log(this.selectedSkill);
   }
 
   selfValidate() {
-    //console.log('selfValidate');
-    /*if(this.selectedLocation && this.selectedLocation.length <= 0) {
-      this.errorMsg = "Please select atleast one location";
+    console.log('selfValidate');
+    if(this.selectedSkill && this.selectedSkill.length < 0) {
+      this.errorMsg = "Please select atleast one skill";
       return false;
     }
-    if(!this.selectedLocation) {
-      this.errorMsg = "Please select atleast one location";
+    if(!this.selectedSkill) {
+      this.errorMsg = "Please select atleast one skill";
       return false;
     }
 
-    delete this.errorMsg;*/
+    delete this.errorMsg;
     return true;
+  }
+
+  skillsExpYearOptions(event, value){
+    console.log(this.selectedSkillExpYear);
+    let updateItem = this.findObjectByKey(this.selectedSkillExpYear, 'name', value.name);
+    let index = this.selectedSkillExpYear.indexOf(updateItem);
+    console.log(index);
+
+    if(index > -1) {
+      this.value=value;
+      this.selectedSkillExpYear.splice(index, 1);
+      this.referringData = {
+        _id: this.value._id,
+        name : this.value.name,
+        type : this.value.type,
+        exp_year: parseInt(event.target.value)
+      };
+      //this.selectedSkillExpYear.splice(index, 1, this.referringData);
+      this.selectedSkillExpYear.push(this.referringData);
+
+    }
+    else {
+      this.value=value;
+      this.referringData = {
+        _id: this.value._id,
+        name : this.value.name,
+        type : this.value.type,
+        exp_year: parseInt(event.target.value)
+      };
+      this.selectedSkillExpYear.push(this.referringData);
+      //this.selectedSkillExpYear.splice(index, 1, this.referringData);
+    }
+    /*this.selectedSkill.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });*/
+
+    console.log(this.selectedSkillExpYear);
   }
 
 }
