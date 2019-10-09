@@ -181,12 +181,14 @@ module.exports.up = async function() {
                         savedSearchBlockchain.push({
                             skills_id: skill._id,
                             name: skill.name,
-                            type: skill.type
+                            type: skill.type,
+                            exp_year: savedSearch.years_exp_min
                         });
                     }
                 }
                 savedSearch.blockchain = [];
-                savedSearch['skills'] = savedSearchBlockchain;
+                savedSearch.skills = [];
+                savedSearch['requiredSkills'] = savedSearchBlockchain;
             }
 
             console.log({_id: employerDoc._id}, {$set: {'employerDoc.saved_searches': employerDoc.saved_searches}});
