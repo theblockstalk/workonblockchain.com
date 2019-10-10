@@ -75,7 +75,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
       return false;
     }
 
-    if(this.selectedSkill && this.selectedSkill.length <= 0) {
+    if(this.selectedSkill && this.selectedSkill.length <= 0 && this.selectedSkillExpYear.length <= 0) {
       console.log('in if');
       this.errorMsg = "Please select atleast one skill";
       return false;
