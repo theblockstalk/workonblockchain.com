@@ -14,7 +14,7 @@
         <div class = "col-5">
           <label >{{value.name}}</label>
         </div>
-        <div class = "col-4" *ngIf="value.type === 'language' || value.type === 'blockchain'">
+        <div class = "col-4">
           <select class="selectpicker form-control " name="skills_years_exp" [(ngModel)]="skills_years_exp" title="(select one)" (change)="skillsExpYearOptions($event , value)">
             <option *ngFor="let opt of years_exp_min_new" [value]="opt.value">{{opt.name}}</option>
           </select>

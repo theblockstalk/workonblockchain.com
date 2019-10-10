@@ -70,7 +70,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
   selfValidate() {
     console.log('selfValidate');
     this.exp_year_error = '';
-    if(this.selectedSkillExpYear.find(x => (x['type'] === 'blockchain' || x['type'] === 'language') && (!x['exp_year']))) {
+    console.log(this.selectedSkill);
+    console.log(this.selectedSkillExpYear);
+    if(this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
       this.exp_year_error = 'Please select number of years';
       return false;
     }
