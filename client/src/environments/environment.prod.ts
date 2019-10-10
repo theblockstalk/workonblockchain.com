@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   backend_url:'https://production-api.workonblockchain.com/',
   frontend_url: 'https://workonblockchain.com/',
-  google_client_id : '699068166900-296254o3gj8i3vcvfojp4pbqselaav9k.apps.googleusercontent.com',
+  google_client_id : '991119316767-5f857b5eg4lr754ko6l32tec84rsq6u5.apps.googleusercontent.com',
   linkedin_id: '861pkvi3iz4wp2',
   linkedin_redirect_url : 'https://workonblockchain.com/linkedin-auth',
   google_redirect_url : 'https://workonblockchain.com/google-auth',
