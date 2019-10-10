@@ -4,6 +4,7 @@ module.exports.blockchainPlatforms = ['Bitcoin', 'Ethereum', 'Ripple','Stellar',
 
 module.exports.currencies = ['€ EUR', '$ USD', '£ GBP'];
 
+//programmingLanguages will be deleted
 module.exports.programmingLanguages = ['Java','C', 'C++','C#', 'Python','Visual Basic .NET',  'PHP','JavaScript',  'Delphi/Object Pascal','Swift', 'Perl','Ruby', 'Assembly language','R', 'Visual Basic','Objective-C', 'Go','MATLAB', 'PL/SQL','Scratch', 'Solidity','Serpent', 'LLL','Nodejs', 'Scala','Rust', 'Kotlin','Haskell','Erlang','Elixir', 'Angularjs', 'Reactjs', 'Vuejs'];
 
 module.exports.experienceYears = ['0-1', '1-2','2-4','4-6','6+'];

@@ -162,7 +162,6 @@ module.exports.up = async function() {
         let employerDoc = await companies.findOne({_creator : userDoc._id, saved_searches: { $exists: true}});
         if(employerDoc){
             let savedSearchBlockchain = [];
-            let pushObj = {};
             let savedSearches = employerDoc.saved_searches;
             for (let savedSearch of savedSearches) {
                 for(let blockchain of savedSearch.blockchain){
@@ -178,12 +177,13 @@ module.exports.up = async function() {
                 for(let skillDB of savedSearch.skills){
                     const skill = await skills.findOne({name: skillDB});
                     if(skill) {
-                        savedSearchBlockchain.push({
+                        let skillToAdd = {
                             skills_id: skill._id,
                             name: skill.name,
-                            type: skill.type,
-                            exp_year: savedSearch.years_exp_min
-                        });
+                            type: skill.type
+                        };
+                        if (savedSearch.years_exp_min) skillToAdd.exp_year = savedSearch.years_exp_min;
+                        savedSearchBlockchain.push(skillToAdd);
                     }
                 }
                 savedSearch.blockchain = [];

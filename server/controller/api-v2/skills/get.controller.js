@@ -27,7 +27,7 @@ module.exports.endpoint = async function (req, res) {
     let regex = new RegExp(filteredExp, 'i');
     let outputOptions = [];
 
-    let skillsDoc = await skills.findAndLimit4({name: {$regex: regex}});
+    let skillsDoc = await skills.findSortLimitSkip({name: {$regex: regex}});
     if(skillsDoc) {
         console.log(skillsDoc);
         for(let skill of skillsDoc) {
