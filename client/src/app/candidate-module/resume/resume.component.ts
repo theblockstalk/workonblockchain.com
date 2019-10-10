@@ -16,31 +16,10 @@ import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-sugge
 export class ResumeComponent implements OnInit,AfterViewInit {
   @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
 
-  experimented_platform = [];
-  commercially_worked = [];
-  expYear=[];
-  platform=[];expYear_db=[];
-  referringData;value;why_work;count=0;exp_class;
-  currentUser: User;commercial_expYear=[];db_valye=[];db_lang;
-  platforms=[];
-  active_class;
-  job_active_class;
-  exp_active_class;resume_active_class;
-  platformreferringData;
-  term_active_class;term_link;
-  exp_disable;
-  error_msg;
-  skill_expYear_db=[];
-  skillDbArray=[];
-  skillDb;
-  about_active_class;
-  description_commercial_platforms;
-  description_experimented_platforms;
-  description_commercial_skills;
-  commercially;
-  otherSkills;
-  experimented;
-  exp_year;selectedValue=[];
+  why_work;exp_class;currentUser: User;
+  active_class;job_active_class;exp_active_class;resume_active_class;
+  term_active_class;term_link;exp_disable;error_msg;about_active_class;
+  selectedValue=[];
   area_interested;why_work_log;interest_log;
   //new for skill component
   skillsFromDB;selectedSkillsNew;
