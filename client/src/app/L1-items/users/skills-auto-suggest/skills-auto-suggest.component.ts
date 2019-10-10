@@ -57,9 +57,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
       return false;
     }
     else {
-      objectMap = {_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
+      objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
       if(skillObj) this.selectedSkill.push(objectMap);
-      else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
+      //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
     this.selectedSkillExpYear.push(objectMap);
     console.log(this.selectedSkillExpYear);
@@ -94,7 +94,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
       this.value=value;
       this.selectedSkillExpYear.splice(index, 1);
       this.referringData = {
-        _id: this.value._id,
+        skills_id: this.value._id,
         name : this.value.name,
         type : this.value.type,
         exp_year: parseInt(event.target.value)
@@ -105,7 +105,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
     else {
       this.value=value;
       this.referringData = {
-        _id: this.value._id,
+        skills_id: this.value._id,
         name : this.value.name,
         type : this.value.type,
         exp_year: parseInt(event.target.value)

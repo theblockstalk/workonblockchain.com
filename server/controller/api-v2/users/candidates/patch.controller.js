@@ -208,7 +208,7 @@ const bodySchema = new Schema({
             min: 0
         },
         why_work: String,
-        programming_languages: [{
+        programming_languages: [{ // DELETE ME
             language: {
                 type: String,
                 enum: enumerations.programmingLanguages
@@ -258,7 +258,34 @@ const bodySchema = new Schema({
             type: String,
             enum: enumerations.workBlockchainInterests
         }],
-        blockchain: {
+        commercial_skills : [new Schema({ //will contain commercial_platforms, commercial_skills & programming_languages
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: String,
+            exp_year: Number
+        })],
+        description_commercial_skills:{
+            type: String,
+            maxlength: 3000
+        },
+        skills: { //will contain experimented_platforms
+            type: [{
+                skills_id: {
+                    type : Schema.Types.ObjectId,
+                    ref: 'Skills'
+                },
+                type: String,
+                name: String
+            }],
+        },
+        description_skills:{
+            type: String,
+            maxlength: 3000
+        },
+        blockchain: { // DELETE ME
             commercial_platforms: [{
                 name: {
                     type: String,
@@ -351,7 +378,6 @@ module.exports.auth = async function (req) {
 module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody;
-    let blockchainQuery,blockChainCheck = 0;
     let updateCandidateUser = {};
     let userDoc;
     let unset = {};
@@ -372,10 +398,6 @@ module.exports.endpoint = async function (req, res) {
         queryBody = req.body;
         if(queryBody.candidate) {
             let candidateQuery = queryBody.candidate;
-            if (candidateQuery.blockchain && !objects.isEmpty(candidateQuery.blockchain)) {
-                blockChainCheck = 1;
-                blockchainQuery = candidateQuery.blockchain;
-            }
             if (candidateQuery.base_city) updateCandidateUser['candidate.base_city'] = candidateQuery.base_city;
             if (candidateQuery.base_country) updateCandidateUser['candidate.base_country'] = candidateQuery.base_country;
             if (candidateQuery.current_currency && candidateQuery.current_currency !== "-1") {
@@ -533,38 +555,9 @@ module.exports.endpoint = async function (req, res) {
                 if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
             }
 
-            if (queryBody.unset_commercial_platforms) {
-                unset['candidate.blockchain.commercial_platforms'] = 1;
-                unset['candidate.blockchain.description_commercial_platforms'] = 1;
-            } else {
-                if (blockChainCheck && blockchainQuery.commercial_platforms && blockchainQuery.commercial_platforms.length > 0) {
-                    updateCandidateUser['candidate.blockchain.commercial_platforms'] = blockchainQuery.commercial_platforms;
-                    if (queryBody.unset_description_commercial_platforms) unset['candidate.blockchain.description_commercial_platforms'] = 1;
-                    if (blockchainQuery.description_commercial_platforms) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = blockchainQuery.description_commercial_platforms;
-                }
-            }
+            console.log(candidateQuery.commercial_skills);
+            if(candidateQuery.commercial_skills) updateCandidateUser['candidate.commercial_skills'] = candidateQuery.commercial_skills;
 
-            if (queryBody.unset_experimented_platforms) {
-                unset['candidate.blockchain.experimented_platforms'] = 1;
-                unset['candidate.blockchain.description_experimented_platforms'] = 1;
-            } else {
-                if (blockChainCheck && blockchainQuery.experimented_platforms && blockchainQuery.experimented_platforms.length > 0) {
-                    updateCandidateUser['candidate.blockchain.experimented_platforms'] = blockchainQuery.experimented_platforms;
-                    if (queryBody.unset_description_experimented_platforms) unset['candidate.blockchain.description_experimented_platforms'] = 1;
-                    if (blockchainQuery.description_experimented_platforms) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = blockchainQuery.description_experimented_platforms;
-                }
-            }
-
-            if (queryBody.unset_commercial_skills) {
-                unset['candidate.blockchain.commercial_skills'] = 1;
-                unset['candidate.blockchain.description_commercial_skills'] = 1;
-            } else {
-                if (blockChainCheck && blockchainQuery.commercial_skills && blockchainQuery.commercial_skills.length > 0) {
-                    updateCandidateUser['candidate.blockchain.commercial_skills'] = blockchainQuery.commercial_skills;
-                    if (queryBody.unset_description_commercial_skills) unset['candidate.blockchain.description_commercial_skills'] = 1;
-                    if (blockchainQuery.description_commercial_skills) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = blockchainQuery.description_commercial_skills;
-                }
-            }
         }
 
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;

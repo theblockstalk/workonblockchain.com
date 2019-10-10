@@ -369,112 +369,47 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   commercialSkills_desc_log;
   max_characters_limit = 40;
 
-  blockchain_exp(expForm: NgForm)
-  {
+  blockchain_exp(expForm: NgForm) {
     this.error_msg="";
     let flag_commercial_desc = true;
     let flag_experimented_desc = true;
     let flag_commercialSkills_desc = true;
-
-    if(!this.skillsAutoSuggestComp.selfValidate()){
-      console.log('in resume valid error');
-    }
-    else{
-      console.log(this.selectedSkillsNew);
-    }
-
+    let errorCount = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(this.commercially_worked.length !== this.commercial_expYear.length )
-    {
-      this.commercial_log = "Please fill year of experience";
-    }
-    if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
-    {
-      this.commercial_skill_log = "Please fill year of experience";
+
+    if(!this.skillsAutoSuggestComp.selfValidate()) {
+      console.log('in resume valid error');
+      errorCount = 1;
     }
 
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
-    if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < this.max_characters_limit){
+    /*if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < this.max_characters_limit){
       flag_commercial_desc = false;
       this.commercial_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
-    }
+    }*/
 
-    if(this.experimented_platform.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < this.max_characters_limit){
-      flag_experimented_desc = false;
-      this.experimented_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
-    }
-
-    if(this.commercialSkills.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < this.max_characters_limit){
-      flag_commercialSkills_desc = false;
-      this.commercialSkills_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
-    }
-
-    if(!this.why_work)
-    {
+    if(!this.why_work) {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
 
-    if(this.why_work && this.selectedValue.length > 0  && this.commercially_worked.length === this.commercial_expYear.length
-      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
-      && flag_commercial_desc && flag_experimented_desc && flag_commercialSkills_desc
-    )
-    {
+    if(errorCount === 0 && this.why_work && this.selectedValue.length > 0) {
       let inputQuery: any = {};
       let candidateQuery:any ={};
       let blockchainQuery:any ={};
 
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
-      if(this.commercially_worked.length === 0) {
-        inputQuery.unset_commercial_platforms = true;
-        expForm.value.unset_commercial_platforms = true;
-        expForm.value.commercial_platforms = [];
-      }
-      else {
-        blockchainQuery.commercial_platforms = this.commercial_expYear;
-        expForm.value.commercial_platforms = this.commercial_expYear;
-      }
+      candidateQuery.commercial_skills = this.selectedSkillsNew;
 
-      if(this.commercialSkills.length === 0) {
-        inputQuery.unset_commercial_skills = true;
-        expForm.value.unset_commercial_skills = true;
-        expForm.value.commercial_skills = [];
-      }
-      else {
-        blockchainQuery.commercial_skills = this.commercialSkillsExperienceYear;
-        expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
-      }
 
-      expForm.value.description_commercial_platforms = '';
+      /*expForm.value.description_commercial_platforms = '';
       if(this.description_commercial_platforms){
         blockchainQuery.description_commercial_platforms = this.description_commercial_platforms;
         expForm.value.description_commercial_platforms = this.description_commercial_platforms;
-      }
+      }*/
 
-      expForm.value.description_experimented_platforms = '';
-      if(this.description_experimented_platforms){
-        blockchainQuery.description_experimented_platforms = this.description_experimented_platforms;
-        expForm.value.description_experimented_platforms = this.description_experimented_platforms;
-      }
-
-      expForm.value.description_commercial_skills = '';
-      if(this.description_commercial_skills){
-        blockchainQuery.description_commercial_skills = this.description_commercial_skills;
-        expForm.value.description_commercial_skills = this.description_commercial_skills;
-      }
-
-      if(this.experimented_platform.length === 0) {
-        inputQuery.unset_experimented_platforms = true;
-        expForm.value.unset_experimented_platforms = true;
-      }
-      else {
-        blockchainQuery.experimented_platforms = this.experimented_platform;
-        expForm.value.experimented_platform = this.experimented_platform;
-      }
-
-      candidateQuery.blockchain = blockchainQuery;
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 4;
 
