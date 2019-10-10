@@ -20,7 +20,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   resultItemDisplay;object;
   years_exp_min_new = constants.years_exp_min_new;
   skills_years_exp;selectedSkillExpYear=[];value;
-  referringData;
+  referringData;exp_year_error = '';
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -69,6 +69,12 @@ export class SkillsAutoSuggestComponent implements OnInit {
 
   selfValidate() {
     console.log('selfValidate');
+    this.exp_year_error = '';
+    if(this.selectedSkillExpYear.find(x => (x['type'] === 'blockchain' || x['type'] === 'language') && (!x['exp_year']))) {
+      this.exp_year_error = 'Please select number of years';
+      return false;
+    }
+
     if(this.selectedSkill && this.selectedSkill.length <= 0) {
       console.log('in if');
       this.errorMsg = "Please select atleast one skill";
@@ -85,6 +91,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   }
 
   skillsExpYearOptions(event, value){
+    this.exp_year_error = '';
     console.log(this.selectedSkillExpYear);
     let updateItem = this.findObjectByKey(this.selectedSkillExpYear, 'name', value.name);
     let index = this.selectedSkillExpYear.indexOf(updateItem);
