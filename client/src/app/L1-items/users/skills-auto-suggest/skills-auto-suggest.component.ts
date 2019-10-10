@@ -94,7 +94,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
       this.value=value;
       this.selectedSkillExpYear.splice(index, 1);
       this.referringData = {
-        skills_id: this.value._id,
+        skills_id: this.value.skills_id,
         name : this.value.name,
         type : this.value.type,
         exp_year: parseInt(event.target.value)
@@ -105,7 +105,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
     else {
       this.value=value;
       this.referringData = {
-        skills_id: this.value._id,
+        skills_id: this.value.skills_id,
         name : this.value.name,
         type : this.value.type,
         exp_year: parseInt(event.target.value)
