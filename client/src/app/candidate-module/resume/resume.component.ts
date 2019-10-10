@@ -87,7 +87,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 }
               }
             }
-            console.log(this.selectedValue);
+            if(data['candidate'].commercial_skills){
+              this.skillsFromDB = data['candidate'].commercial_skills;
+              console.log(this.skillsFromDB);
+            }
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';
             }
@@ -136,6 +139,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       console.log('in resume valid error');
       errorCount = 1;
     }
+    else console.log(this.selectedSkillsNew);
 
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
