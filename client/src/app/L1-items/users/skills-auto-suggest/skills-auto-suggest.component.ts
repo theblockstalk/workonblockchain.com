@@ -19,8 +19,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   autoSuggestController;
   resultItemDisplay;object;
   years_exp_min_new = constants.years_exp_min_new;
-  skills_years_exp;selectedSkillExpYear=[];value;
-  referringData;exp_year_error = '';yearsErrMsg;
+  selectedSkillExpYear=[];value;exp_year_error = '';yearsErrMsg;
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -75,9 +74,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
       this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
-    //this.selectedSkillExpYear.push(objectMap);
     console.log(this.selectedSkillExpYear);
-    //console.log(this.selectedSkillExpYear);
     this.selectedItems.emit(this.selectedSkillExpYear);
     this.selfValidate();
   }
@@ -115,44 +112,6 @@ export class SkillsAutoSuggestComponent implements OnInit {
     this.selectedSkillExpYear[index].exp_year = parseInt(event.target.value);
     console.log(this.selectedSkillExpYear);
     this.selectedItems.emit(this.selectedSkillExpYear);
-    /*console.log(this.selectedSkillExpYear);
-    let updateItem = this.findObjectByKey(this.selectedSkillExpYear, 'name', value.name);
-    let index = this.selectedSkillExpYear.indexOf(updateItem);
-    console.log(index);
-
-    if(index > -1) {
-      this.value=value;
-      this.selectedSkillExpYear.splice(index, 1);
-      this.referringData = {
-        skills_id: this.value.skills_id,
-        name : this.value.name,
-        type : this.value.type,
-        exp_year: parseInt(event.target.value)
-      };
-      this.selectedSkillExpYear.push(this.referringData);
-
-    }
-    else {
-      this.value=value;
-      this.referringData = {
-        skills_id: this.value.skills_id,
-        name : this.value.name,
-        type : this.value.type,
-        exp_year: parseInt(event.target.value)
-      };
-      this.selectedSkillExpYear.push(this.referringData);
-    }
-
-    console.log(this.selectedSkillExpYear);
-    this.selectedItems.emit(this.selectedSkillExpYear);*/
-  }
-
-  findObjectByKey(array, key, value) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i][key] === value)
-        return array[i];
-    }
-    return null;
   }
 
 }
