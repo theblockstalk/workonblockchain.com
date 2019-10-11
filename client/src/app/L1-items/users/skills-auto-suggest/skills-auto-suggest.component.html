@@ -7,9 +7,9 @@
   (selectedItems)="itemSelected($event)"
   [errorMsg]="errorMsg"
 ></app-c-forme-dropdown-autosuggest>
-<div *ngIf="selectedSkill && selectedSkill.length > 0">
+<div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
   <div class="row">
-    <div  *ngFor="let value of selectedSkill; let i = index" class="col-md-8 p-2 mt-2">
+    <div  *ngFor="let value of selectedSkillExpYear; let i = index" class="col-md-8 p-2 mt-2">
       <div class="ml-0 row">
         <div class = "col-5">
           <label >{{value.name}}</label>

@@ -88,8 +88,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               }
             }
             if(data['candidate'].commercial_skills){
-              this.skillsFromDB = data['candidate'].commercial_skills;
-              console.log(this.skillsFromDB);
+              //this.skillsFromDB = data['candidate'].commercial_skills;
+              //console.log(this.skillsFromDB);
             }
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';

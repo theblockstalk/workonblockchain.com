@@ -34,7 +34,10 @@ export class SkillsAutoSuggestComponent implements OnInit {
       console.log('in if ngon');
       this.selectedSkill = [];
     }
-    else console.log(this.selectedSkill);
+    else {
+      console.log(this.selectedSkill);
+      this.selectedSkillExpYear = this.selectedSkill;
+    }
 
     this.controllerOptions = true;
     this.autoSuggestController = function (textValue, controllerOptions) {
@@ -58,38 +61,37 @@ export class SkillsAutoSuggestComponent implements OnInit {
         $('.selectpicker').selectpicker('refresh');
       }, 500);
     }
-    if(this.selectedSkill.find(x => x['name'] === skillObj.name)) {
+    if(this.selectedSkillExpYear.find(x => x['name'] === skillObj.name)) {
       this.errorMsg = 'This skills has already been selected';
       return false;
     }
     else {
       objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
-      if(skillObj) this.selectedSkill.push(objectMap);
+      this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
     //this.selectedSkillExpYear.push(objectMap);
-    console.log(this.selectedSkill);
+    console.log(this.selectedSkillExpYear);
     //console.log(this.selectedSkillExpYear);
-    this.selectedItems.emit(this.selectedSkill);
+    //this.selectedItems.emit(this.selectedSkillExpYear);
     this.selfValidate();
   }
 
   selfValidate() {
     console.log('selfValidate');
     this.exp_year_error = '';
-    console.log(this.selectedSkill);
-    console.log(this.selectedSkill);
-    if(this.selectedSkill.find(x => (!x['exp_year']))) {
+    console.log(this.selectedSkillExpYear);
+    if(this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
       this.exp_year_error = 'Please select number of years';
       return false;
     }
 
-    if(this.selectedSkill && this.selectedSkill.length <= 0) {
+    if(this.selectedSkillExpYear && this.selectedSkillExpYear.length <= 0) {
       console.log('in if');
       this.errorMsg = "Please select atleast one skill";
       return false;
     }
-    if(!this.selectedSkill) {
+    if(!this.selectedSkillExpYear) {
       console.log('in if 2nd');
       this.errorMsg = "Please select atleast one skill";
       return false;
