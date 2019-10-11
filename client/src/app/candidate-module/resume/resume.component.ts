@@ -22,7 +22,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   selectedValue=[];
   area_interested;why_work_log;interest_log;
   //new for skill component
-  commercialSkillsFromDB;selectedCommercialSkillsNew;
+  commercialSkillsFromDB;selectedCommercialSkillsNew;description_commercial_skills;
 
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
@@ -91,6 +91,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.commercialSkillsFromDB = data['candidate'].commercial_skills;
               console.log(this.commercialSkillsFromDB);
             }
+            if(data['candidate'].description_commercial_skills){
+              this.description_commercial_skills = data['candidate'].description_commercial_skills;
+            }
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';
             }
@@ -141,6 +144,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
     else console.log(this.selectedCommercialSkillsNew);
 
+    if(!this.skillsAutoSuggestComp.desValidate()){
+      console.log('error in desc');
+      errorCount = 1;
+    }
+    else console.log(this.skillsAutoSuggestComp.description);
+
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
@@ -161,7 +170,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
       candidateQuery.commercial_skills = this.selectedCommercialSkillsNew;
-
+      candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
 
       /*expForm.value.description_commercial_platforms = '';
       if(this.description_commercial_platforms){

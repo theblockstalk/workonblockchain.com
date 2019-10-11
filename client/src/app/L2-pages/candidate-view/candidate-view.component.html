@@ -646,10 +646,14 @@
               <app-c-formv-list label="Interest:" [value]="interest_area"></app-c-formv-list>
             </div>
           </div>
+        </section>
+        <!--Blockchain experience section ends-->
 
+        <!--skills section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row mt-2" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
             <div class="col-md-12 mb-2">
-              <h4>Technologies</h4>
+              <h4>Skills</h4>
             </div>
             <div class="col-md-12" *ngIf="commercial && commercial.length > 0">
               <app-c-formv-list label="Commercial skils:" [value]="commercial"></app-c-formv-list>
@@ -661,10 +665,10 @@
             </div>
           </div>
         </section>
-        <!--Blockchain experience section ends-->
+        <!--skills section ends-->
 
         <!--Languages experience section starts-->
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
               <h2> <i class="fas fa-code"></i> Experience </h2>

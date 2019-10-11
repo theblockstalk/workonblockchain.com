@@ -555,9 +555,8 @@ module.exports.endpoint = async function (req, res) {
                 if (candidateQuery.personal_website_url) updateCandidateUser['candidate.personal_website_url'] = candidateQuery.personal_website_url;
             }
 
-            console.log(candidateQuery.commercial_skills);
             if(candidateQuery.commercial_skills) updateCandidateUser['candidate.commercial_skills'] = candidateQuery.commercial_skills;
-
+            if(candidateQuery.description_commercial_skills) updateCandidateUser['candidate.description_commercial_skills'] = candidateQuery.description_commercial_skills;
         }
 
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;

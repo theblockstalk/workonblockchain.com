@@ -13,6 +13,7 @@ declare var $: any;
 export class SkillsAutoSuggestComponent implements OnInit {
   @Input() selectedSkill: Array<object>;
   @Input() placeHolder: string;
+  @Input() description: string;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   errorMsg: string;
@@ -21,6 +22,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   resultItemDisplay;object;
   years_exp_min_new = constants.years_exp_min_new;
   selectedSkillExpYear=[];value;exp_year_error = '';yearsErrMsg;
+  desErrMsg;
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -113,6 +115,20 @@ export class SkillsAutoSuggestComponent implements OnInit {
     this.selectedSkillExpYear[index].exp_year = parseInt(event.target.value);
     console.log(this.selectedSkillExpYear);
     this.selectedItems.emit(this.selectedSkillExpYear);
+  }
+
+  desValidate() {
+    if (this.selectedSkillExpYear) {
+      if (this.selectedSkillExpYear.length > 0) {
+        if (this.description && this.description.length < 40) {
+          this.desErrMsg = 'Please enter minimum 40 characters description';
+          return false;
+        }
+        delete this.desErrMsg;
+        return true;
+      }
+    }
+    return true;
   }
 
 }

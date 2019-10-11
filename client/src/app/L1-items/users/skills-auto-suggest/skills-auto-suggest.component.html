@@ -28,4 +28,18 @@
       {{exp_year_error}}
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <app-c-forme-text-area
+        rows="5"
+        placeholder="I studied economics as a major at Cambridge University and then went on to work in a cryptocurrency exchange for 3 years."
+        maxLength="3000"
+        label="Description of commercial skills (optional)"
+        [value]="description"
+        [errorMsg]="desErrMsg"
+        (textareaInput)="description = $event"
+        (change)="desValidate()"
+      ></app-c-forme-text-area>
+    </div>
+  </div>
 </div>
