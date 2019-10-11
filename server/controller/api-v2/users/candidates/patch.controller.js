@@ -327,8 +327,7 @@ const bodySchema = new Schema({
     unset_commercial_platforms: Boolean,
     unset_experimented_platforms: Boolean,
     unset_commercial_skills: Boolean,
-    unset_language: Boolean,
-    unset_language: Boolean,
+    unset_language: Boolean, //DELETE ME
     unset_education_history: Boolean,
     unset_work_history: Boolean,
     unset_github_account: Boolean,
@@ -349,9 +348,9 @@ const bodySchema = new Schema({
     unset_leaving_current_employ_reasons: Boolean,
     unset_other_reasons: Boolean,
     unset_counter_offer: Boolean,
-    unset_description_commercial_platforms: Boolean,
-    unset_description_experimented_platforms: Boolean,
-    unset_description_commercial_skills: Boolean,
+    unset_description_commercial_platforms: Boolean, //DELETE ME
+    unset_description_experimented_platforms: Boolean, //DELETE ME
+    unset_description_commercial_skills: Boolean, //DELETE ME
     unset_hear_about_wob_other_info: Boolean
 });
 
@@ -500,12 +499,6 @@ module.exports.endpoint = async function (req, res) {
                     updateCandidateUser['candidate.current_currency'] = candidateQuery.current_currency;
                     updateCandidateUser['candidate.current_salary'] = candidateQuery.current_salary;
                 }
-            }
-
-            if (queryBody.unset_language) {
-                unset['candidate.programming_languages'] = 1;
-            } else {
-                if (candidateQuery.programming_languages && candidateQuery.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = candidateQuery.programming_languages;
             }
 
             if (queryBody.unset_education_history) {
