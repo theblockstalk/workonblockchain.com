@@ -55,7 +55,14 @@ export class SkillsAutoSuggestComponent implements OnInit {
       const skillsInput = data;
       let skillsOptions = [];
       for(let skill of skillsInput) {
-        skillsOptions.push({_id : skill['skill']._id , name : skill['skill'].name, type : skill['skill'].type});
+        let obj = {
+          _id: skill['skill']._id,
+          name: skill['skill'].name,
+          type: skill['skill'].type
+        };
+        if(skill['skill'].type === 'blockchain')
+          obj['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skill['skill'].name+'.png" alt="'+skill['skill'].name+' Logo"> ';
+        skillsOptions.push(obj);
       }
       return filter_array(skillsOptions);
     }
@@ -74,6 +81,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
     }
     else {
       objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
+      if(skillObj.type === 'blockchain')
+        objectMap['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skillObj.name+'.png" alt="'+skillObj.name+' Logo"> ';
       this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
