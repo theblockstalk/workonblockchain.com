@@ -21,7 +21,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   term_active_class;term_link;exp_disable;error_msg;about_active_class;
   selectedValue=[];
   area_interested;why_work_log;interest_log;
-  //new for skill component
+  //new for commercial skills component
   commercialSkillsFromDB;selectedCommercialSkillsNew;description_commercial_skills;
 
   constructor(private route: ActivatedRoute, private http: HttpClient,
@@ -32,7 +32,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
   }
   ngOnInit() {
-    //get skills from DB and send to skills component
     this.area_interested = unCheckCheckboxes(constants.workBlockchainInterests);
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -132,31 +131,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   blockchain_exp(expForm: NgForm) {
     this.error_msg="";
-    let flag_commercial_desc = true;
-    let flag_experimented_desc = true;
-    let flag_commercialSkills_desc = true;
     let errorCount = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(!this.skillsAutoSuggestComp.selfValidate()) {
-      console.log('in resume valid error');
-      errorCount = 1;
-    }
-    else console.log(this.selectedCommercialSkillsNew);
+    if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
 
-    if(!this.skillsAutoSuggestComp.desValidate()){
-      console.log('error in desc');
-      errorCount = 1;
-    }
-    else console.log(this.skillsAutoSuggestComp.description);
+    if(!this.skillsAutoSuggestComp.desValidate()) errorCount = 1;
 
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
     }
-    /*if(this.commercially_worked.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < this.max_characters_limit){
-      flag_commercial_desc = false;
-      this.commercial_desc_log = 'Please enter minimum '+this.max_characters_limit+' characters description';
-    }*/
 
     if(!this.why_work) {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
@@ -165,18 +149,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(errorCount === 0 && this.why_work && this.selectedValue.length > 0) {
       let inputQuery: any = {};
       let candidateQuery:any ={};
-      let blockchainQuery:any ={};
 
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
       candidateQuery.commercial_skills = this.selectedCommercialSkillsNew;
       candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
-
-      /*expForm.value.description_commercial_platforms = '';
-      if(this.description_commercial_platforms){
-        blockchainQuery.description_commercial_platforms = this.description_commercial_platforms;
-        expForm.value.description_commercial_platforms = this.description_commercial_platforms;
-      }*/
 
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 4;
@@ -184,21 +161,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.authenticationService.edit_candidate_profile(this.currentUser._id , inputQuery,false)
         .subscribe(
           data => {
-            if(data && this.currentUser)
-            {
+            if(data && this.currentUser) {
               this.router.navigate(['/experience']);
               //window.location.href = '/experience';
             }
-
-
           },
           error => {
 
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.router.navigate(['/not_found']);
             }
-
           });
     }
     else {
