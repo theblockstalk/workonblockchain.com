@@ -1,3 +1,11 @@
+export const makeImgCode = function (object) {
+  return '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+object['name']+'.png" alt="'+object['name']+' Logo"> ';
+}
+
+export const makeIconCode = function () {
+  return '<i class="fas fa-code"></i> ';
+}
+
 export const getDateFromDays = function (day) {
   let lastMsgDate = new Date();
   lastMsgDate.setTime(lastMsgDate.getTime() - (day*24*60*60*1000));

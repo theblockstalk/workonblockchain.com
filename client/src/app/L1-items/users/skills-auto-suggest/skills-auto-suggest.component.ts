@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { UserService} from '../../../user.service';
-import {filter_array, copyObject} from '../../../../services/object';
+import {filter_array, copyObject, makeImgCode, makeIconCode} from '../../../../services/object';
 import {constants} from '../../../../constants/constants';
 import { isPlatformBrowser } from '@angular/common';
 declare var $: any;
@@ -44,9 +44,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
       });
       for(let skillDB of this.selectedSkill){
         if(skillDB['type'] === 'blockchain')
-          skillDB['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skillDB['name']+'.png" alt="'+skillDB['name']+' Logo"> ';
+          skillDB['img'] = makeImgCode(skillDB);
         if(skillDB['type'] === 'language')
-          skillDB['img'] = '<i class="fas fa-code"></i> ';
+          skillDB['img'] = makeIconCode();
       }
       console.log(this.selectedSkill);
       this.selectedSkillExpYear = copyObject(this.selectedSkill);
@@ -67,9 +67,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
           type: skill['skill'].type
         };
         if(skill['skill'].type === 'blockchain')
-          obj['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skill['skill'].name+'.png" alt="'+skill['skill'].name+' Logo"> ';
+          obj['img'] = makeImgCode(skill['skill']);
         if(skill['skill'].type === 'language')
-          obj['img'] = '<i class="fas fa-code"></i> ';
+          obj['img'] = makeIconCode();
         skillsOptions.push(obj);
       }
       return filter_array(skillsOptions);
@@ -90,9 +90,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
     else {
       objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
       if(skillObj.type === 'blockchain')
-        objectMap['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skillObj.name+'.png" alt="'+skillObj.name+' Logo"> ';
+        objectMap['img'] = makeImgCode(skillObj);
       if(skillObj.type === 'language')
-        objectMap['img'] = '<i class="fas fa-code"></i> ';
+        objectMap['img'] = makeIconCode();
       this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
