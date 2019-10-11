@@ -395,7 +395,7 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].description_commercial_skills) {
       this.description_commercial_platforms = this.userDoc['candidate'].description_commercial_skills;
       if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-        if(this.description_commercial_platforms && this.description_commercial_platforms.length < 100) blockchainMilestone = 0;
+        if(this.description_commercial_platforms && this.description_commercial_platforms.length < 40) blockchainMilestone = 0;
       }
     }
 
@@ -421,7 +421,7 @@ export class CandidateViewComponent implements OnInit {
     if(this.userDoc['candidate'].description_skills) {
       this.description_experimented_platforms = this.userDoc['candidate'].description_skills;
       if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-        if(this.description_experimented_platforms && this.description_experimented_platforms.length < 100) blockchainMilestone = 0;
+        if(this.description_experimented_platforms && this.description_experimented_platforms.length < 40) blockchainMilestone = 0;
       }
     }
 
