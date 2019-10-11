@@ -14,11 +14,20 @@
         <div class = "col-5">
           <label >{{value.name}}</label>
         </div>
-        <div class = "col-4">
-          <select class="selectpicker form-control " name="skills_years_exp" [(ngModel)]="skills_years_exp" title="(select one)" (change)="skillsExpYearOptions($event , value)">
+        <div class="col-4">
+          <app-c-forme-dropdown-single
+            [options]="years_exp_min_new"
+            [value]="value.exp_year"
+            [errorMsg]="yearsErrMsg"
+            (selectedValue)="value.exp_year = $event"
+            (change)="skillsExpYearOptions($event, value, i)"
+          ></app-c-forme-dropdown-single>
+        </div>
+        <!--<div class = "col-4">
+          <select class="selectpicker form-control " name="skills_years_exp" [(ngModel)]="skills_years_exp" title="(select one)" (change)="skillsExpYearOptions($event , value, i)">
             <option *ngFor="let opt of years_exp_min_new" [value]="opt.value">{{opt.name}}</option>
           </select>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class = "ml-4 invalid-feedback d-inline" *ngIf="exp_year_error">

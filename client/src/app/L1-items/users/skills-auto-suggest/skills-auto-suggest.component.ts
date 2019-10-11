@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { UserService} from '../../../user.service';
-import {filter_array, removeDuplication} from '../../../../services/object';
+import {filter_array, copyObject} from '../../../../services/object';
 import {constants} from '../../../../constants/constants';
 import { isPlatformBrowser } from '@angular/common';
 declare var $: any;
@@ -20,7 +20,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   resultItemDisplay;object;
   years_exp_min_new = constants.years_exp_min_new;
   skills_years_exp;selectedSkillExpYear=[];value;
-  referringData;exp_year_error = '';
+  referringData;exp_year_error = '';yearsErrMsg;
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -35,8 +35,13 @@ export class SkillsAutoSuggestComponent implements OnInit {
       this.selectedSkill = [];
     }
     else {
+      this.selectedSkill.sort(function(a, b){
+        if(a['name'] < b['name']) { return -1; }
+        if(a['name'] > b['name']) { return 1; }
+        return 0;
+      });
       console.log(this.selectedSkill);
-      this.selectedSkillExpYear = this.selectedSkill;
+      this.selectedSkillExpYear = copyObject(this.selectedSkill);
     }
 
     this.controllerOptions = true;
@@ -73,7 +78,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
     //this.selectedSkillExpYear.push(objectMap);
     console.log(this.selectedSkillExpYear);
     //console.log(this.selectedSkillExpYear);
-    //this.selectedItems.emit(this.selectedSkillExpYear);
+    this.selectedItems.emit(this.selectedSkillExpYear);
     this.selfValidate();
   }
 
@@ -101,23 +106,30 @@ export class SkillsAutoSuggestComponent implements OnInit {
     return true;
   }
 
-  skillsExpYearOptions(event, value){
+  skillsExpYearOptions(event, value, index){
+    console.log(event.target.value);
+    console.log(value);
+    console.log(index);
     this.exp_year_error = '';
-    console.log(this.selectedSkill);
-    let updateItem = this.findObjectByKey(this.selectedSkill, 'name', value.name);
-    let index = this.selectedSkill.indexOf(updateItem);
+
+    this.selectedSkillExpYear[index].exp_year = parseInt(event.target.value);
+    console.log(this.selectedSkillExpYear);
+    this.selectedItems.emit(this.selectedSkillExpYear);
+    /*console.log(this.selectedSkillExpYear);
+    let updateItem = this.findObjectByKey(this.selectedSkillExpYear, 'name', value.name);
+    let index = this.selectedSkillExpYear.indexOf(updateItem);
     console.log(index);
 
     if(index > -1) {
       this.value=value;
-      this.selectedSkill.splice(index, 1);
+      this.selectedSkillExpYear.splice(index, 1);
       this.referringData = {
         skills_id: this.value.skills_id,
         name : this.value.name,
         type : this.value.type,
         exp_year: parseInt(event.target.value)
       };
-      this.selectedSkill.push(this.referringData);
+      this.selectedSkillExpYear.push(this.referringData);
 
     }
     else {
@@ -128,16 +140,11 @@ export class SkillsAutoSuggestComponent implements OnInit {
         type : this.value.type,
         exp_year: parseInt(event.target.value)
       };
-      this.selectedSkill.push(this.referringData);
+      this.selectedSkillExpYear.push(this.referringData);
     }
-    /*this.selectedSkill.sort(function(a, b){
-      if(a.name < b.name) { return -1; }
-      if(a.name > b.name) { return 1; }
-      return 0;
-    });*/
 
-    console.log(this.selectedSkill);
-    this.selectedItems.emit(this.selectedSkill);
+    console.log(this.selectedSkillExpYear);
+    this.selectedItems.emit(this.selectedSkillExpYear);*/
   }
 
   findObjectByKey(array, key, value) {
