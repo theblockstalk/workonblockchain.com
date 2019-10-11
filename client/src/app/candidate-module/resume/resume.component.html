@@ -96,7 +96,7 @@
               <div class="form-group mt-4">
                 <label>Commercial skills</label>
               </div>
-              <app-i-forme-skills-auto-suggest *ngIf="commercialSkillsFromDB && commercialSkillsFromDB.length > 0"
+              <app-i-forme-skills-auto-suggest
                 [selectedSkill] = "commercialSkillsFromDB"
                 (selectedItems)="selectedCommercialSkillsNew = $event"
                 placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
