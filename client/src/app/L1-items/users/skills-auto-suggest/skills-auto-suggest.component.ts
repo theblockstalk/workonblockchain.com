@@ -12,6 +12,7 @@ declare var $: any;
 })
 export class SkillsAutoSuggestComponent implements OnInit {
   @Input() selectedSkill: Array<object>;
+  @Input() placeHolder: string;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   errorMsg: string;

@@ -22,7 +22,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   selectedValue=[];
   area_interested;why_work_log;interest_log;
   //new for skill component
-  skillsFromDB;selectedSkillsNew;
+  commercialSkillsFromDB;selectedCommercialSkillsNew;
 
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
@@ -88,8 +88,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               }
             }
             if(data['candidate'].commercial_skills){
-              this.skillsFromDB = data['candidate'].commercial_skills;
-              console.log(this.skillsFromDB);
+              this.commercialSkillsFromDB = data['candidate'].commercial_skills;
+              console.log(this.commercialSkillsFromDB);
             }
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day ) {
               this.job_active_class = 'fa fa-check-circle text-success';
@@ -139,7 +139,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       console.log('in resume valid error');
       errorCount = 1;
     }
-    else console.log(this.selectedSkillsNew);
+    else console.log(this.selectedCommercialSkillsNew);
 
     if(this.selectedValue.length<=0) {
       this.interest_log = "Please select at least one area of interest";
@@ -160,7 +160,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
-      candidateQuery.commercial_skills = this.selectedSkillsNew;
+      candidateQuery.commercial_skills = this.selectedCommercialSkillsNew;
 
 
       /*expForm.value.description_commercial_platforms = '';

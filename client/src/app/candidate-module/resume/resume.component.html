@@ -92,13 +92,14 @@
 
           <div class="row">
             <div class="col-md-12">
-              <h4>Technologies</h4>
+              <h4>Skills</h4>
               <div class="form-group mt-4">
-                <label>Commercial experience</label>
+                <label>Commercial skills</label>
               </div>
-              <app-i-forme-skills-auto-suggest *ngIf="skillsFromDB && skillsFromDB.length > 0"
-                [selectedSkill] = "skillsFromDB"
-                (selectedItems)="selectedSkillsNew = $event"
+              <app-i-forme-skills-auto-suggest *ngIf="commercialSkillsFromDB && commercialSkillsFromDB.length > 0"
+                [selectedSkill] = "commercialSkillsFromDB"
+                (selectedItems)="selectedCommercialSkillsNew = $event"
+                placeHolder="Commercial skills"
               ></app-i-forme-skills-auto-suggest>
             </div>
           </div>
