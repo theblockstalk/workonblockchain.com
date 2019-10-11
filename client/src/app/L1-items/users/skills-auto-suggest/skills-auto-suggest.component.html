@@ -27,6 +27,9 @@
             (change)="skillsExpYearOptions($event, value, i)"
           ></app-c-forme-dropdown-single>
         </div>
+        <div class = "col-4">
+          <a (click)="deleteRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+        </div>
       </div>
     </div>
     <div class = "ml-4 invalid-feedback d-inline" *ngIf="exp_year_error">

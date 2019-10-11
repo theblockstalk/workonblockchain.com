@@ -152,7 +152,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
-      candidateQuery.commercial_skills = this.selectedCommercialSkillsNew;
+      let newCommercialSkills = [];
+      for(let commercialSkill of this.selectedCommercialSkillsNew){
+        newCommercialSkills.push({
+          skills_id: commercialSkill.skills_id,
+          name: commercialSkill.name,
+          type: commercialSkill.type,
+          exp_year: commercialSkill.exp_year
+        });
+      }
+      candidateQuery.commercial_skills = newCommercialSkills;
       candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
 
       inputQuery.candidate = candidateQuery;

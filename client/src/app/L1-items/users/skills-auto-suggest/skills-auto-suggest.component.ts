@@ -156,4 +156,10 @@ export class SkillsAutoSuggestComponent implements OnInit {
     return true;
   }
 
+  deleteRow(index){
+    this.selectedSkillExpYear.splice(index, 1);
+    this.selectedItems.emit(this.selectedSkillExpYear);
+    this.selfValidate();
+  }
+
 }
