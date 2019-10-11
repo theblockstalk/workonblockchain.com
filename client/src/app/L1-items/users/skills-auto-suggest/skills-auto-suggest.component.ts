@@ -42,6 +42,12 @@ export class SkillsAutoSuggestComponent implements OnInit {
         if(a['name'] > b['name']) { return 1; }
         return 0;
       });
+      for(let skillDB of this.selectedSkill){
+        if(skillDB['type'] === 'blockchain')
+          skillDB['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skillDB['name']+'.png" alt="'+skillDB['name']+' Logo"> ';
+        if(skillDB['type'] === 'language')
+          skillDB['img'] = '<i class="fas fa-code"></i> ';
+      }
       console.log(this.selectedSkill);
       this.selectedSkillExpYear = copyObject(this.selectedSkill);
     }
@@ -62,6 +68,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
         };
         if(skill['skill'].type === 'blockchain')
           obj['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skill['skill'].name+'.png" alt="'+skill['skill'].name+' Logo"> ';
+        if(skill['skill'].type === 'language')
+          obj['img'] = '<i class="fas fa-code"></i> ';
         skillsOptions.push(obj);
       }
       return filter_array(skillsOptions);
@@ -83,6 +91,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
       objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
       if(skillObj.type === 'blockchain')
         objectMap['img'] = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+skillObj.name+'.png" alt="'+skillObj.name+' Logo"> ';
+      if(skillObj.type === 'language')
+        objectMap['img'] = '<i class="fas fa-code"></i> ';
       this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
