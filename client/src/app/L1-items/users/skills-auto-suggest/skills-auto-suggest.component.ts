@@ -46,7 +46,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
         if(skillDB['type'] === 'blockchain')
           skillDB['img'] = makeImgCode(skillDB);
         if(skillDB['type'] === 'language')
-          skillDB['img'] = makeIconCode();
+          skillDB['img'] = makeIconCode('fas fa-code');
+        if(skillDB['type'] === 'experience')
+          skillDB['img'] = makeIconCode('fas fa-user-friends');
       }
       console.log(this.selectedSkill);
       this.selectedSkillExpYear = copyObject(this.selectedSkill);
@@ -69,7 +71,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
         if(skill['skill'].type === 'blockchain')
           obj['img'] = makeImgCode(skill['skill']);
         if(skill['skill'].type === 'language')
-          obj['img'] = makeIconCode();
+          obj['img'] = makeIconCode('fas fa-code');
+        if(skill['skill'].type === 'experience')
+          obj['img'] = makeIconCode('fas fa-user-friends');
         skillsOptions.push(obj);
       }
       return filter_array(skillsOptions);
@@ -92,7 +96,9 @@ export class SkillsAutoSuggestComponent implements OnInit {
       if(skillObj.type === 'blockchain')
         objectMap['img'] = makeImgCode(skillObj);
       if(skillObj.type === 'language')
-        objectMap['img'] = makeIconCode();
+        objectMap['img'] = makeIconCode('fas fa-code');
+      if(skillObj.type === 'experience')
+        objectMap['img'] = makeIconCode('fas fa-user-friends');
       this.selectedSkillExpYear.push(objectMap);
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }

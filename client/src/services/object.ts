@@ -2,8 +2,8 @@ export const makeImgCode = function (object) {
   return '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+object['name']+'.png" alt="'+object['name']+' Logo"> ';
 }
 
-export const makeIconCode = function () {
-  return '<i class="fas fa-code"></i> ';
+export const makeIconCode = function (iconClass) {
+  return '<i class="'+iconClass+'"></i> ';
 }
 
 export const getDateFromDays = function (day) {

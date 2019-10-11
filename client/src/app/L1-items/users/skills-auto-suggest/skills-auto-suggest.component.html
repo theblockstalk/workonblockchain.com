@@ -8,9 +8,9 @@
 ></app-c-forme-dropdown-autosuggest>
 <div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
   <div class="row">
-    <div  *ngFor="let value of selectedSkillExpYear; let i = index" class="col-md-8 p-2 mt-2">
+    <div  *ngFor="let value of selectedSkillExpYear; let i = index" class="col-md-8 p-1">
       <div class="ml-0 row">
-        <div class = "col-5">
+        <div class = "col-4">
           <ng-container *ngIf="value.img;else noImg">
             <span [innerHTML] = " value.img | safeHtml ">{{value.img}}</span> <span>{{ value.name }}</span>
           </ng-container>
