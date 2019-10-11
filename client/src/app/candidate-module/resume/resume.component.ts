@@ -63,7 +63,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.job_active_class = 'fa fa-check-circle text-success';
             }
 
-            if(data['candidate'].why_work && data['candidate'].interest_areas ) {
+            if(data['candidate'].commercial_skills && data['candidate'].skills && data['candidate'].why_work && data['candidate'].interest_areas ) {
               this.exp_class = "/experience";
               this.exp_disable = "";
               this.resume_active_class='fa fa-check-circle text-success';
