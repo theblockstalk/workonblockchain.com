@@ -258,7 +258,7 @@ const bodySchema = new Schema({
             type: String,
             enum: enumerations.workBlockchainInterests
         }],
-        commercial_skills : [new Schema({ //will contain commercial_platforms, commercial_skills & programming_languages
+        commercial_skills : [new Schema({ //will contain commercial_platforms, commercial_skills & programming_languages, DELETE ME
             skills_id: {
                 type : Schema.Types.ObjectId,
                 ref: 'Skills'
@@ -267,7 +267,7 @@ const bodySchema = new Schema({
             name: String,
             exp_year: Number
         })],
-        description_commercial_skills:{
+        description_commercial_skills:{ //DELETE ME
             type: String,
             maxlength: 3000
         },
@@ -350,7 +350,7 @@ const bodySchema = new Schema({
     unset_counter_offer: Boolean,
     unset_description_commercial_platforms: Boolean, //DELETE ME
     unset_description_experimented_platforms: Boolean, //DELETE ME
-    unset_description_commercial_skills: Boolean, //DELETE ME
+    unset_description_commercial_skills: Boolean,
     unset_hear_about_wob_other_info: Boolean
 });
 
@@ -550,6 +550,8 @@ module.exports.endpoint = async function (req, res) {
 
             if(candidateQuery.commercial_skills) updateCandidateUser['candidate.commercial_skills'] = candidateQuery.commercial_skills;
             if(candidateQuery.description_commercial_skills) updateCandidateUser['candidate.description_commercial_skills'] = candidateQuery.description_commercial_skills;
+
+            if (queryBody.unset_description_commercial_skills) unset['candidate.description_commercial_skills'] = 1;
         }
 
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;

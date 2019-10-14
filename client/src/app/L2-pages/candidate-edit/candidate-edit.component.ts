@@ -33,7 +33,7 @@ import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activi
 import {constants} from '../../../constants/constants';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
-import {getNameFromValue} from '../../../services/object';
+import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -73,6 +73,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
   @ViewChild(HowHearAboutWobComponent) hearAboutWob: HowHearAboutWobComponent;
   @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
+  @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
@@ -123,6 +124,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   allData = 0;
   how_hear_about_wob;
   hear_about_wob_other_info;
+  //new for commercial skills component
+  commercialSkillsFromDB;selectedCommercialSkillsNew;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -209,7 +212,15 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
     if(candidateSubDoc.why_work) this.why_work = candidateSubDoc.why_work;
     if(candidateSubDoc.interest_areas) this.interest_areas = candidateSubDoc.interest_areas;
-    if(candidateSubDoc && candidateSubDoc.blockchain) {
+
+    if(candidateSubDoc.commercial_skills){
+      this.commercialSkillsFromDB = candidateSubDoc.commercial_skills;
+      console.log(this.commercialSkillsFromDB);
+    }
+    if(candidateSubDoc.description_commercial_skills){
+      this.description_commercial_skills = candidateSubDoc.description_commercial_skills;
+    }
+    /*if(candidateSubDoc && candidateSubDoc.blockchain) {
       if(candidateSubDoc.blockchain.commercial_platforms) {
         this.commercial_platforms = candidateSubDoc.blockchain.commercial_platforms;
         this.description_commercial_platforms = candidateSubDoc.blockchain.description_commercial_platforms;
@@ -223,10 +234,10 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
         this.description_commercial_skills = candidateSubDoc.blockchain.description_commercial_skills;
       }
 
-    }
-    if(candidateSubDoc.programming_languages) {
+    }*/
+    /*if(candidateSubDoc.programming_languages) {
       this.programming_languages = candidateSubDoc.programming_languages;
-    }
+    }*/
     if(candidateSubDoc.work_history) this.work_history = candidateSubDoc.work_history;
     if(candidateSubDoc.education_history) this.education_history = candidateSubDoc.education_history;
   }
@@ -240,6 +251,30 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     let candidateBody : any = {};
     let blockchainBody : any = {};
     let job_activity_statuses:any ={};
+
+    if(!this.skillsAutoSuggestComp.selfValidate()) errorCount++;
+    else {
+      let newCommercialSkills = [];
+      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
+        for (let commercialSkill of this.selectedCommercialSkillsNew) {
+          newCommercialSkills.push({
+            skills_id: commercialSkill.skills_id,
+            name: commercialSkill.name,
+            type: commercialSkill.type,
+            exp_year: commercialSkill.exp_year
+          });
+        }
+        candidateBody.commercial_skills = newCommercialSkills;
+      }
+    }
+
+    if(!this.skillsAutoSuggestComp.desValidate()) errorCount++;
+    else {
+      if(this.skillsAutoSuggestComp.description)
+        candidateBody.description_commercial_skills = this.skillsAutoSuggestComp.description;
+      else
+        queryBody.unset_description_commercial_skills = true;
+    }
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
     else errorCount++;
@@ -380,7 +415,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.interestType.selfValidate()) candidateBody.interest_areas = this.interestType.interest_areas;
     else errorCount++;
 
-    if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
+    /*if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
       if(this.commercialExp.selfValidate()) {
         blockchainBody.commercial_platforms = this.commercialExp.commercial_platforms;
         if(this.commercialExp.description_commercial_platforms) blockchainBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
@@ -429,7 +464,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       }
       else errorCount++;
     }
-    else queryBody.unset_language = true;
+    else queryBody.unset_language = true;*/
 
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {

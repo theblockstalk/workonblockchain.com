@@ -99,11 +99,14 @@ module.exports.up = async function() {
                 for (let experimented_platforms of blockchain.experimented_platforms) {
                     const skill = await skills.findOne({name: experimented_platforms});
                     if(skill) {
-                        newSkills.push({
-                            skills_id: skill._id,
-                            name: skill.name,
-                            type: skill.type
-                        });
+                        if(!newCommercialSkills.find((obj => obj.name === skill.name))) {
+                            newCommercialSkills.push({
+                                skills_id: skill._id,
+                                name: skill.name,
+                                type: skill.type,
+                                exp_year: 1
+                            });
+                        }
                     }
                     else
                         console.error("Skill with name " + experimented_platforms + " was not found");
@@ -119,8 +122,8 @@ module.exports.up = async function() {
                     set['candidate.description_commercial_skills'] = userDoc.candidate.blockchain.description_commercial_skills;
             }
 
-            if(userDoc.candidate.blockchain.description_experimented_platforms)
-                set['candidate.description_skills'] = userDoc.candidate.blockchain.description_experimented_platforms;
+            //if(userDoc.candidate.blockchain.description_experimented_platforms)
+               // set['candidate.description_skills'] = userDoc.candidate.blockchain.description_experimented_platforms;
         }
         if(userDoc.candidate.programming_languages) {
             for (let programming_language of userDoc.candidate.programming_languages) {
@@ -138,11 +141,12 @@ module.exports.up = async function() {
             }
         }
 
+        //storing all blockchain skills in commercial_skills obj
         if (newCommercialSkills.length > 0)
             set['candidate.commercial_skills'] = newCommercialSkills;
 
-        if (newSkills.length > 0)
-            set['candidate.skills'] = newSkills;
+        //if (newSkills.length > 0)
+            //set['candidate.skills'] = newSkills;
 
         if (!objects.isEmpty(set)) {
             let updateObj = {$set: set, $unset: unset};
@@ -164,26 +168,31 @@ module.exports.up = async function() {
             let savedSearchBlockchain = [];
             let savedSearches = employerDoc.saved_searches;
             for (let savedSearch of savedSearches) {
-                for(let blockchain of savedSearch.blockchain){
-                    const skill = await skills.findOne({name: blockchain});
-                    if(skill) {
-                        savedSearchBlockchain.push({
-                            skills_id: skill._id,
-                            name: skill.name,
-                            type: skill.type
-                        });
+                if(!savedSearch.name) savedSearch['name'] = 'MY search';
+                if( savedSearch.blockchain && savedSearch.blockchain.length > 0) {
+                    for (let blockchain of savedSearch.blockchain) {
+                        const skill = await skills.findOne({name: blockchain});
+                        if (skill) {
+                            savedSearchBlockchain.push({
+                                skills_id: skill._id,
+                                name: skill.name,
+                                type: skill.type
+                            });
+                        }
                     }
                 }
-                for(let skillDB of savedSearch.skills){
-                    const skill = await skills.findOne({name: skillDB});
-                    if(skill) {
-                        let skillToAdd = {
-                            skills_id: skill._id,
-                            name: skill.name,
-                            type: skill.type
-                        };
-                        if (savedSearch.years_exp_min) skillToAdd.exp_year = savedSearch.years_exp_min;
-                        savedSearchBlockchain.push(skillToAdd);
+                if( savedSearch.skills && savedSearch.skills.length > 0) {
+                    for (let skillDB of savedSearch.skills) {
+                        const skill = await skills.findOne({name: skillDB});
+                        if (skill) {
+                            let skillToAdd = {
+                                skills_id: skill._id,
+                                name: skill.name,
+                                type: skill.type
+                            };
+                            if (savedSearch.years_exp_min) skillToAdd.exp_year = savedSearch.years_exp_min;
+                            savedSearchBlockchain.push(skillToAdd);
+                        }
                     }
                 }
                 savedSearch.blockchain = [];

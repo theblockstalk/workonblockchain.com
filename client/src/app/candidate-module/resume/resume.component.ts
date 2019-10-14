@@ -63,7 +63,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.job_active_class = 'fa fa-check-circle text-success';
             }
 
-            if(data['candidate'].commercial_skills && data['candidate'].skills && data['candidate'].why_work && data['candidate'].interest_areas ) {
+            if(data['candidate'].commercial_skills && data['candidate'].why_work && data['candidate'].interest_areas ) {
               this.exp_class = "/experience";
               this.exp_disable = "";
               this.resume_active_class='fa fa-check-circle text-success';
@@ -153,16 +153,21 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
       let newCommercialSkills = [];
-      for(let commercialSkill of this.selectedCommercialSkillsNew){
-        newCommercialSkills.push({
-          skills_id: commercialSkill.skills_id,
-          name: commercialSkill.name,
-          type: commercialSkill.type,
-          exp_year: commercialSkill.exp_year
-        });
+      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
+        for (let commercialSkill of this.selectedCommercialSkillsNew) {
+          newCommercialSkills.push({
+            skills_id: commercialSkill.skills_id,
+            name: commercialSkill.name,
+            type: commercialSkill.type,
+            exp_year: commercialSkill.exp_year
+          });
+        }
+        candidateQuery.commercial_skills = newCommercialSkills;
       }
-      candidateQuery.commercial_skills = newCommercialSkills;
-      candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
+      if(this.skillsAutoSuggestComp.description)
+        candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
+      else
+        inputQuery.unset_description_commercial_skills = true;
 
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 4;

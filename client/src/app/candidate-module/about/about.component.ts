@@ -204,7 +204,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.resume_class="/resume";
             }
 
-            if(data['candidate'].commercial_skills && data['candidate'].skills && data['candidate'].why_work && data['candidate'].interest_areas )
+            if(data['candidate'].commercial_skills && data['candidate'].why_work && data['candidate'].interest_areas )
             {
               this.exp_disable = '';
               this.resume_class="/resume";

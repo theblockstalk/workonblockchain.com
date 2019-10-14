@@ -265,7 +265,7 @@ module.exports = {
             enum: enumerations.workBlockchainInterests
         }]
     },
-    commercial_skills : { //will contain commercial_platforms, commercial_skills & programming_languages
+    commercial_skills : { //will contain commercial_platforms, commercial_skills & programming_languages & skills
         type: [{
             skills_id: {
                 type : Schema.Types.ObjectId,
@@ -280,7 +280,7 @@ module.exports = {
         type: String,
         maxlength: 3000
     },
-    skills: { //will contain experimented_platforms
+    skills: { //will contain experimented_platforms (DELETE ME)
         type: [{
             skills_id: {
                 type : Schema.Types.ObjectId,
@@ -290,7 +290,7 @@ module.exports = {
             name: String
         }],
     },
-    description_skills:{
+    description_skills:{ // DELETE ME
         type: String,
         maxlength: 3000
     },
