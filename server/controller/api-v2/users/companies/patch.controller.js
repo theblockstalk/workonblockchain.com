@@ -150,23 +150,6 @@ const bodySchema = new Schema({
                     exp_year: Number
                 })]
             },
-            blockchain: { //DELETE ME
-                type: [{
-                    type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
-            },
-            skills: { //DELETE ME
-                type: [{
-                    type: String,
-                    enum: enumerations.programmingLanguages
-                }]
-            },
-            years_exp_min: { //DELETE ME
-                type: Number,
-                min: 1,
-                max: 20
-            },
             residence_country: {
                 type : [{
                     type: String,

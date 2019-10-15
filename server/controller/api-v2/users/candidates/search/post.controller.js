@@ -33,22 +33,16 @@ const bodySchema = new Schema({
     why_work: {
         type:String
     },
-    programming_languages: [{
-        type: String,
-        enum: enumerations.programmingLanguages
-    }],
-    years_exp_min: {
-        type: Number,
-        min: 1,
-        max: 20
-    },
     roles: [{
         type: String,
         enum: enumerations.workRoles
     }],
-    blockchains: [{
-        type: String,
-        enum: enumerations.blockchainPlatforms
+    required_skills : [{
+        name: {
+            type: String
+            required: true
+        },
+        exp_year: Number
     }],
     visa_needed: Boolean,
     blockchainOrder: [{

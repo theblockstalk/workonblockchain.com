@@ -36,7 +36,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
         const userIdsDistinct = makeDistinctSet(userIds);
         userQuery.push({_id : {$in : userIdsDistinct}});
-
     }
     if(filters.last_msg_received_day){
         userQuery.push({
