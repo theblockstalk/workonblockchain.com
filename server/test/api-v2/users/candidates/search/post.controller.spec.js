@@ -261,5 +261,57 @@ describe('POST /v2/users/candidates/search', function () {
             let userDoc = await Users.findOne({email: candidate.email});
             filterRes.body[0]._id.should.equal(userDoc._id.toString());
         })
+
+        it('it should return the candidate with required skills', async function () {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileLanguageExprData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const userDoc = await Users.findOne({email: candidate.email});
+            let params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name,
+                    exp_year: userDoc.candidate.commercial_skills[0].exp_year - 1
+                }]
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            let filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+            filterRes.body[0]._id.toString().should.equal(userDoc._id.toString());
+
+            params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name,
+                    exp_year: userDoc.candidate.commercial_skills[0].exp_year + 1
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404);
+
+            params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+            filterRes.body[0]._id.toString().should.equal(userDoc._id.toString());
+
+            params = {
+                required_skills: [{
+                    name: "not a skill name",
+                    exp_year: 1
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404);
+        })
     });
 });
