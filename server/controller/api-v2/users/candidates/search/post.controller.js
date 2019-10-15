@@ -38,10 +38,7 @@ const bodySchema = new Schema({
         enum: enumerations.workRoles
     }],
     required_skills : [{
-        name: {
-            type: String
-            required: true
-        },
+        name: String,
         exp_year: Number
     }],
     visa_needed: Boolean,
