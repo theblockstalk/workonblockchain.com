@@ -13,6 +13,7 @@ declare var $: any;
 export class SkillsAutoSuggestComponent implements OnInit {
   @Input() selectedSkill: Array<object>;
   @Input() placeHolder: string;
+  @Input() showDescription: Boolean;
   @Input() description: string;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
@@ -32,6 +33,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
         $('.selectpicker').selectpicker('refresh');
       }, 500);
     }
+
     if(!this.selectedSkill) {
       console.log('in if ngon');
       this.selectedSkill = [];
@@ -110,7 +112,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
   selfValidate() {
     console.log('selfValidate');
     this.exp_year_error = '';
-    console.log(this.selectedSkillExpYear);
+    this.errorMsg = '';
+    console.log(this.selectedSkillExpYear.length);
     if(this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
       this.exp_year_error = 'Please select number of years';
       return false;

@@ -139,19 +139,30 @@ const bodySchema = new Schema({
                 type:Number,
                 min: 0
             },
-            blockchain: {
+            requiredSkills: { //will containg blockchain & languages
+                type:[new Schema({
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
+                    type: String,
+                    name: String,
+                    exp_year: Number
+                })]
+            },
+            blockchain: { //DELETE ME
                 type: [{
                     type: String,
                     enum: enumerations.blockchainPlatforms
                 }]
             },
-            skills: {
+            skills: { //DELETE ME
                 type: [{
                     type: String,
                     enum: enumerations.programmingLanguages
                 }]
             },
-            years_exp_min: {
+            years_exp_min: { //DELETE ME
                 type: Number,
                 min: 1,
                 max: 20
