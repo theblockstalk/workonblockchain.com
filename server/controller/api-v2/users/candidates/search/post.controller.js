@@ -45,10 +45,6 @@ const bodySchema = new Schema({
         exp_year: Number
     }],
     visa_needed: Boolean,
-    blockchainOrder: [{
-        type: String,
-        enum: enumerations.blockchainPlatforms
-    }],
     locations: [{
         _id: {
             type: String
@@ -144,14 +140,13 @@ module.exports.endpoint = async function (req, res) {
             else errors.throwError("No candidate exists", 404);
         }
     }
-    else{
+    else {
         let userId = req.auth.user._id;
         let queryBody = req.body;
-        let search = {}, order = {};
+        let search = {};
         if (queryBody.work_type) search.work_type = queryBody.work_type;
         if (queryBody.why_work) search.why_work = queryBody.why_work;
-        if (queryBody.programming_languages) search.programming_languages = queryBody.programming_languages;
-        if (queryBody.years_exp_min) search.years_exp_min = queryBody.years_exp_min;
+        if (queryBody.required_skills) search.required_skills = queryBody.required_skills;
         if (queryBody.locations) {
             if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
                 const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
@@ -161,7 +156,6 @@ module.exports.endpoint = async function (req, res) {
         }
         if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
         if (queryBody.roles) search.roles = queryBody.roles;
-        if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
         if (queryBody.current_currency && queryBody.current_salary) {
             search.salary = {
                 current_currency: queryBody.current_currency,
@@ -177,13 +171,11 @@ module.exports.endpoint = async function (req, res) {
         }
         if(queryBody.base_country) search.base_country = queryBody.base_country;
 
-        if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
-
         let candidateDocs = await candidateSearch.candidateSearch({
             is_verify: 1,
             status: 'approved',
             disable_account: false
-        }, search, order);
+        }, search);
 
         let filterArray = [];
         for(let candidateDetail of candidateDocs.candidates) {
