@@ -87,8 +87,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
-  blockchain = constants.blockchainPlatforms;
-  language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
   residenceCountries = constants.countries;
   workTypes = constants.workTypes;
@@ -107,6 +105,8 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   discount_log;current_salary_log;
   usa_privacy_shield;us_privacy_shield_error;
   canadian_commercial_company;commercial_canada_error;
+  commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
+  skills_auto_suggest_error;skills_auto_suggest_years_error;
 
   constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router ,private route: ActivatedRoute,
@@ -158,20 +158,17 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       position: [''],
       current_currency: [''],
       current_salary: [''],
-      blockchain: [''],
-      skills: [''],
       other_technologies: [''],
-      order_preferences: [''],
       residence_country: [''],
       timestamp:[],
-      years_exp_min: []
+      requiredSkills: []
     });
   }
 
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies,years_exp_min: [i.years_exp_min] ,order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, other_technologies: i.other_technologies, requiredSkills: i.requiredSkills } ));
   }
 
   selectedCompanyLocation(location) {
@@ -232,18 +229,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       })
 
       this.roles.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
-      this.blockchain.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
-      this.language_opt.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
@@ -311,6 +296,10 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
                 }, 500);
               }
               this.prefData = data['saved_searches'];
+              for(let saved_search of this.prefData){
+                this.commercialSkillsFromDB.push(saved_search.requiredSkills);
+              }
+              console.log(this.commercialSkillsFromDB);
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(
                   this.preferncesFormData()
@@ -435,6 +424,121 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
+    //new code for auto suggest skills starts
+    this.skills_auto_suggest_years_error = '';
+    if(this.commercialSkillsFromDB.length !== this.preferncesForm.value.prefItems.length){
+      console.log('new search item added');
+      for(let i=0;i<this.preferncesForm.value.prefItems.length; i++) {
+        let skillsAdded = [];
+        this.preferncesForm.value.prefItems[i].requiredSkills = [];
+        if(i==0 && this.commercialSkillsFromDB.length > 0) {
+          console.log('in i if');
+          if(this.commercialSkillsFromDB.length > 0) {
+            for (let skill of this.commercialSkillsFromDB[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else count = 1;
+            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          if(skillsAdded && skillsAdded.length > 0)
+            this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+        else {
+          if(this.selectedCommercialSkillsNew.length < this.preferncesForm.value.prefItems.length){
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          else {
+            console.log('selected');
+            if(this.selectedCommercialSkillsNew[i] && this.selectedCommercialSkillsNew[i].length > 0) {
+              for (let skill of this.selectedCommercialSkillsNew[i]) {
+                if (skill.exp_year) {
+                  skillsAdded.push({
+                    skills_id: skill.skills_id,
+                    name: skill.name,
+                    type: skill.type,
+                    exp_year: skill.exp_year
+                  });
+                }
+                else {
+                  console.log('in else');
+                  this.skills_auto_suggest_years_error = 'Please select number of years';
+                  count = 1;
+                }
+              }
+            }
+            if(skillsAdded && skillsAdded.length > 0)
+              this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+          }
+        }
+      }
+      console.log(this.selectedCommercialSkillsNew[0]);
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB);
+    }
+    else {
+      console.log('old search item');
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB[0]);
+      let skillsAdded = [];
+      if(this.selectedCommercialSkillsNew.length === 0) {
+        console.log('in 0 if');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          for (let skill of this.commercialSkillsFromDB[i]) {
+            if(skill.exp_year) {
+              skillsAdded.push({
+                skills_id: skill.skills_id,
+                name: skill.name,
+                type: skill.type,
+                exp_year: skill.exp_year
+              });
+            }
+            else {
+              this.skills_auto_suggest_error = 'Please select number of years';
+              count = 1;
+            }
+          }
+
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      else{
+        console.log('do mapping using selectedCommercialSkillsNew obj');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          for (let skill of this.selectedCommercialSkillsNew[i]) {
+            if(skill.exp_year) {
+              skillsAdded.push({
+                skills_id: skill.skills_id,
+                name: skill.name,
+                type: skill.type,
+                exp_year: skill.exp_year
+              });
+            }
+            else {
+              this.skills_auto_suggest_error = 'Please select atleast one skill';
+              count = 1;
+            }
+          }
+
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      console.log(this.preferncesForm.value.prefItems);
+    }
+    //new code for auto suggest skills ends
+
     if(this.preferncesForm.value.prefItems.length > 0) {
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
         if(!this.preferncesForm.value.prefItems[i].name) {
@@ -483,12 +587,11 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
 
         if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
-          !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
-          !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
+          !this.preferncesForm.value.prefItems[i].visa_needed && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
           !this.preferncesForm.value.prefItems[i].expected_hourly_rate && !this.preferncesForm.value.prefItems[i].currency &&
-          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].years_exp_min &&
-          !this.preferncesForm.value.prefItems[i].order_preferences) {
+          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].years_exp_min
+        ) {
           this.search_log = 'Please fill atleast one field in job search';
           count = 1;
         }
@@ -544,10 +647,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
           else searchQuery.visa_needed = false;
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
-          if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
-          if(key['skills']) searchQuery.skills = key['skills'];
           if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
-          if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
           if(key['_id']) searchQuery._id = key['_id'];
 
           if(i < this.preferncesForm.value.prefItems.length) {
@@ -567,7 +667,6 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
 
           }
           if(key['name']) searchQuery.name = key['name'];
-          if(key['years_exp_min']) searchQuery.years_exp_min = key['years_exp_min'];
           if(key['work_type']) searchQuery.work_type = key['work_type'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
@@ -579,6 +678,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             searchQuery.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
+          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.requiredSkills = key['requiredSkills'][0];
           saved_searches.push(searchQuery);
           if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
 

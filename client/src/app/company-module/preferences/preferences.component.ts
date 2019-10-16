@@ -133,7 +133,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   email_notificaiton = constants.email_notificaiton;
   prefData;
   when_receive_email_notitfications;
-  years_exp = constants.years_exp_min;
 
   ngOnInit() {
     this.pricing_disable = "disabled";

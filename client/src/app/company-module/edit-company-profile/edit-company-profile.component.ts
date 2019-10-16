@@ -154,7 +154,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, other_technologies: i.other_technologies } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate , timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, other_technologies: i.other_technologies, requiredSkills: i.requiredSkills } ));
   }
 
   selectedCompanyLocation(location) {
@@ -635,7 +635,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
 
           }
           if(key['name']) searchQuery.name = key['name'];
-          if(key['years_exp_min']) searchQuery.years_exp_min = key['years_exp_min'];
           if(key['work_type']) searchQuery.work_type = key['work_type'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
@@ -647,14 +646,13 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             searchQuery.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
-          if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
           if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.requiredSkills = key['requiredSkills'][0];
           saved_searches.push(searchQuery);
+          if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
           i++;
         }
       }
 
-      console.log(saved_searches);
       profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 
