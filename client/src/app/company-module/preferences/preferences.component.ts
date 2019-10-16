@@ -49,7 +49,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   locationArray = [];price_plan_active_class;pricing_disable;
   gdpr_compliance_active_class;gdpr_disable;
   commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
-  skills_auto_suggest_error;
+  skills_auto_suggest_error;skills_auto_suggest_years_error;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -309,105 +309,123 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       count=1;
     }
 
-    if(this.preferncesForm.value.prefItems.length > 0) {
-      for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
-        /*console.log('this.preferncesForm.value.prefItems.length: ' + this.preferncesForm.value.prefItems.length);
-        console.log('this.selectedCommercialSkillsNew.length: ' + this.selectedCommercialSkillsNew.length);
-        if(this.selectedCommercialSkillsNew.length === 0) {
-          this.selectedCommercialSkillsNew[0] = this.skillsAutoSuggestComp.selectedSkill;
-          this.preferncesForm.value.prefItems[i].requiredSkills.push(this.selectedCommercialSkillsNew[0]);
-        }
-
-        console.log(this.preferncesForm.value.prefItems[i].requiredSkills);
-        console.log(this.selectedCommercialSkillsNew.length);
-
-        console.log(this.skillsAutoSuggestComp.selectedSkill);
-        /*if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
-          console.log(this.selectedCommercialSkillsNew.length);
-          console.log(this.selectedCommercialSkillsNew);
-          //commercialSkillsFromDB
-          //start from here
-          if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length !== this.preferncesForm.value.prefItems.length) {
-            this.skills_auto_suggest_error = 'error man';
-            console.log('2nd is empty');
-            count=1;
-          }
-          else {
-            console.log('not empty but check exp year');
-          }
-        }*/
-
-        console.log(this.selectedCommercialSkillsNew.length);
-        if(this.selectedCommercialSkillsNew.length === 0){
-          console.log('in 1st IF');
-          console.log(this.commercialSkillsFromDB[i]);
-          this.preferncesForm.value.prefItems[i].requiredSkills = [];
-          let newChangedSkills = [];
-          for(let newSkills of this.commercialSkillsFromDB[i]){
-            newChangedSkills.push({
-              skills_id: newSkills.skills_id,
-              name: newSkills.name,
-              type: newSkills.type,
-              exp_year: newSkills.exp_year
-            });
-          }
-          this.preferncesForm.value.prefItems[i].requiredSkills.push(newChangedSkills);
-        }
-
-        if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length !== this.preferncesForm.value.prefItems.length) {
-          if(this.selectedCommercialSkillsNew.length !== 0) {
-            this.skills_auto_suggest_error = 'Please select atleast one skill';
-            console.log('2nd is empty');
-            count = 1;
-          }
-        }
-        else {
-          this.preferncesForm.value.prefItems[i].requiredSkills = [];
-          console.log('not empty but check exp year');
-          console.log('nothing changed');
-          if(this.selectedCommercialSkillsNew[i].length === 0) {
-            console.log('in iiff');
-            count = 1;
-          }
-          let newChangedSkills = [];
-          for(let newSkills of this.selectedCommercialSkillsNew[i]){
-            console.log(newSkills);
-            if(newSkills.length === 0) {
-              count = 1;
-              console.log('2nd is empty again');
-            }
-            else{
-              console.log('in else else');
-              if(newSkills.exp_year) {
-                newChangedSkills.push({
-                  skills_id: newSkills.skills_id,
-                  name: newSkills.name,
-                  type: newSkills.type,
-                  exp_year: newSkills.exp_year
+    //new code for auto suggest skills starts
+    this.skills_auto_suggest_years_error = '';
+    if(this.commercialSkillsFromDB.length !== this.preferncesForm.value.prefItems.length){
+      console.log('new search item added');
+      for(let i=0;i<this.preferncesForm.value.prefItems.length; i++) {
+        let skillsAdded = [];
+        this.preferncesForm.value.prefItems[i].requiredSkills = [];
+        if(i==0 && this.commercialSkillsFromDB.length > 0) {
+          console.log('in i if');
+          if(this.commercialSkillsFromDB.length > 0) {
+            for (let skill of this.commercialSkillsFromDB[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
                 });
               }
-              else{
-                count = 1;
-                console.log('2nd is empty again, exp year is missing');
-              }
+              else count = 1;
             }
           }
-          //else {
-          console.log(newChangedSkills);
-            this.preferncesForm.value.prefItems[i].requiredSkills.push(newChangedSkills); //this.selectedCommercialSkillsNew[i]
-          //}
-
-          console.log(this.preferncesForm.value.prefItems[i].requiredSkills);
-          //else {
-          //this.preferncesForm.value.prefItems[i].requiredSkills = this.skillsAutoSuggestComp.selectedSkill;
-          //this.commercialSkillsFromDB[i];
-          //}
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          if(skillsAdded && skillsAdded.length > 0)
+            this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
         }
+        else {
+          if(this.selectedCommercialSkillsNew.length < this.preferncesForm.value.prefItems.length){
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          else {
+            console.log('selected');
+            if(this.selectedCommercialSkillsNew[i] && this.selectedCommercialSkillsNew[i].length > 0) {
+              for (let skill of this.selectedCommercialSkillsNew[i]) {
+                if (skill.exp_year) {
+                  skillsAdded.push({
+                    skills_id: skill.skills_id,
+                    name: skill.name,
+                    type: skill.type,
+                    exp_year: skill.exp_year
+                  });
+                }
+                else {
+                  console.log('in else');
+                  this.skills_auto_suggest_years_error = 'Please select number of years';
+                  count = 1;
+                }
+              }
+            }
+            if(skillsAdded && skillsAdded.length > 0)
+              this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+          }
+        }
+      }
+      console.log(this.selectedCommercialSkillsNew[0]);
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB);
+    }
+    else {
+      console.log('old search item');
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB[0]);
+      let skillsAdded = [];
+      if(this.selectedCommercialSkillsNew.length === 0) {
+        console.log('in 0 if');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          for (let skill of this.commercialSkillsFromDB[i]) {
+            if(skill.exp_year) {
+              skillsAdded.push({
+                skills_id: skill.skills_id,
+                name: skill.name,
+                type: skill.type,
+                exp_year: skill.exp_year
+              });
+            }
+            else {
+              this.skills_auto_suggest_error = 'Please select number of years';
+              count = 1;
+            }
+          }
 
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      else{
+        console.log('do mapping using selectedCommercialSkillsNew obj');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          for (let skill of this.selectedCommercialSkillsNew[i]) {
+            if(skill.exp_year) {
+              skillsAdded.push({
+                skills_id: skill.skills_id,
+                name: skill.name,
+                type: skill.type,
+                exp_year: skill.exp_year
+              });
+            }
+            else {
+              this.skills_auto_suggest_error = 'Please select atleast one skill';
+              count = 1;
+            }
+          }
 
-        if(!this.skillsAutoSuggestComp.selfValidate()) count=1;
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      console.log(this.preferncesForm.value.prefItems);
+    }
+    ////new code for auto suggest skills ends
 
-        console.log(count);
+    if(this.preferncesForm.value.prefItems.length > 0) {
+      for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
 
         if(!this.preferncesForm.value.prefItems[i].name) {
           this.name_log = "Please enter saved search name";
@@ -477,7 +495,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         }
       }
     }
-    console.log(this.preferncesForm.value.prefItems);
+
     if(count === 0) {
       let inputQuery : any ={};
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0) {
@@ -509,7 +527,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         }
       }
 
-      console.log(this.saved_searches);
       inputQuery.when_receive_email_notitfications = this.when_receive_email_notitfications;
       inputQuery.saved_searches = this.saved_searches;
 
@@ -705,6 +722,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   addNewSearch()
   {
     this.skills_auto_suggest_error = '';
+    this.skills_auto_suggest_years_error = '';
     setTimeout(() => {
       $('.selectpicker').selectpicker('');
       $('.selectpicker').selectpicker('refresh');

@@ -246,6 +246,9 @@
                       <div class = "invalid-feedback d-inline float-left" *ngIf="!selectedCommercialSkillsNew[i]" >
                         {{skills_auto_suggest_error}}
                       </div>
+                      <div class = "invalid-feedback d-inline float-left" *ngIf="skills_auto_suggest_years_error" >
+                        {{skills_auto_suggest_years_error}}
+                      </div>
                     </div>
                   </div>
 
