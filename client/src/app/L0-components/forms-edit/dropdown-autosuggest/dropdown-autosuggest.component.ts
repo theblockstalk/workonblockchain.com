@@ -31,11 +31,7 @@ export class DropdownAutosuggestComponent implements OnInit {
       this.controller(this.textValue, this.controllerOptions)
         .subscribe(data => {
             if (data) {
-              if(data['skills'])
-                this.optionValues = this.displayItems(data['skills']);
-
-              else
-                this.optionValues = this.displayItems(data);
+              this.optionValues = this.displayItems(data);
             }
           },
           error =>
