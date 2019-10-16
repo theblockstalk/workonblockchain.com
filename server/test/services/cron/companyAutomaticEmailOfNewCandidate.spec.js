@@ -49,8 +49,8 @@ describe('cron', function () {
                 ],
                 current_currency: profileData.candidate.employee.currency,
                 current_salary: profileData.candidate.employee.expected_annual_salary,
-                skills: [
-                    profileData.candidate.programming_languages[0].language
+                requiredSkills: [
+                    profileData.candidate.commercial_skills[0]
                 ]
             }];
 
@@ -97,8 +97,8 @@ describe('cron', function () {
                 ],
                 current_currency: profileData.candidate.employee.currency,
                 current_salary: profileData.candidate.employee.expected_annual_salary,
-                skills: [
-                    profileData.candidate.programming_languages[0].language
+                requiredSkills: [
+                    profileData.candidate.commercial_skills[0]
                 ]
             }];
 
@@ -156,8 +156,8 @@ describe('cron', function () {
                 ],
                 current_currency: profileData[0].candidate.employee.currency,
                 current_salary: profileData[0].candidate.employee.expected_annual_salary,
-                skills: [
-                    profileData[0].candidate.programming_languages[0].language
+                requiredSkills: [
+                    profileData[0].candidate.commercial_skills[0]
                 ]
             }];
 
@@ -197,8 +197,8 @@ describe('cron', function () {
                 ],
                 current_currency: profileData[1].candidate.employee.currency,
                 current_salary: profileData[1].candidate.employee.expected_annual_salary,
-                skills: [
-                    profileData[1].candidate.programming_languages[0].language
+                requiredSkills: [
+                    profileData[0].candidate.commercial_skills[0]
                 ]
             }];
 
