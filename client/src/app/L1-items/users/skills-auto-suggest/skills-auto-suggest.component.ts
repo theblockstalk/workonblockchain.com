@@ -18,6 +18,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   @Input() compSearch: Boolean;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
+  //[ngClass]="wizard.disableClass === true? 'disabled': ''"
   errorMsg: string;
   controllerOptions: any = {};
   autoSuggestController;
@@ -25,10 +26,19 @@ export class SkillsAutoSuggestComponent implements OnInit {
   years_exp_min_new = constants.years_exp_min_new;
   selectedSkillExpYear=[];value;exp_year_error = '';yearsErrMsg;
   desErrMsg;
+  //classes for search display proper
+  mainClass = 'col-md-8 p-1';nameClass = 'col-4';yearsClass='col-4';
+  deleteRowClass='col-4';
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
+    if(this.compSearch){
+      this.mainClass = 'col-md-12 p-1';
+      this.nameClass = 'col-12';
+      this.yearsClass='col-9';
+      this.deleteRowClass='col-2';
+    }
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');

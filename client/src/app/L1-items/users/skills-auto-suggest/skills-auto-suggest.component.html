@@ -8,9 +8,9 @@
 ></app-c-forme-dropdown-autosuggest>
 <div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
   <div class="row">
-    <div  *ngFor="let value of selectedSkillExpYear; let i = index" class="col-md-8 p-1">
+    <div *ngFor="let value of selectedSkillExpYear; let i = index" class="{{mainClass}}">
       <div class="ml-0 row">
-        <div class = "col-4">
+        <div class = "{{nameClass}}">
           <ng-container *ngIf="value.img;else noImg">
             <span [innerHTML] = " value.img | safeHtml ">{{value.img}}</span> <span>{{ value.name }}</span>
           </ng-container>
@@ -18,7 +18,7 @@
             <span>{{ value.name }}</span>
           </ng-template>
         </div>
-        <div class="col-4">
+        <div class="{{yearsClass}}">
           <app-c-forme-dropdown-single
             [options]="years_exp_min_new"
             [value]="value.exp_year"
@@ -27,7 +27,7 @@
             (change)="skillsExpYearOptions($event, value, i)"
           ></app-c-forme-dropdown-single>
         </div>
-        <div class = "col-4">
+        <div class = "{{deleteRowClass}}">
           <a (click)="deleteRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
         </div>
       </div>

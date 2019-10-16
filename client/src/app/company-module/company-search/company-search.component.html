@@ -53,19 +53,14 @@
                 </div>
               </div>
 
+              <!--start here-->
               <div class="form-group">
                 <app-i-forme-skills-auto-suggest
-                  [selectedSkill] = "commercialSkillsFromDB[i]"
-                  (selectedItems)="selectedCommercialSkillsNew[i] = $event"
+                  [selectedSkill] = "commercialSkillsFromDB"
+                  (selectedItems)="searchdata('requiredSkills',selectedCommercialSkillsNew = $event)"
                   placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
                   compSearch="true"
                 ></app-i-forme-skills-auto-suggest>
-                <!--<div class = "invalid-feedback d-inline float-left" *ngIf="!selectedCommercialSkillsNew[i]" >
-                  {{skills_auto_suggest_error}}
-                </div>
-                <div class = "invalid-feedback d-inline float-left" *ngIf="skills_auto_suggest_years_error" >
-                  {{skills_auto_suggest_years_error}}
-                </div>-->
               </div>
 
               <!--<div class="form-group">
