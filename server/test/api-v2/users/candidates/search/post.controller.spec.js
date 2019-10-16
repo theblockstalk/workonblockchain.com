@@ -18,15 +18,14 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get all users', function () {
+describe('POST /v2/users/candidates/search', function () {
 
-    afterEach(async () => {
+    afterEach(async function () {
         console.log('dropping database');
-    await mongo.drop();
-})
+        await mongo.drop();
+    })
 
-    describe('POST /v2/users/candidates/search', function() {
-
+    describe('admin search', function() {
         it('it should get all users for admin', async function() {
             const candidate = docGeneratorV2.candidate();
             const profileData = docGeneratorV2.candidateProfile();
@@ -90,26 +89,27 @@ describe('get all users', function () {
             candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
             candidateUserDoc.candidate.history[0].status.status.should.equal('approved');
             messageDoc.msg_tag.should.valueOf(data.msg_tags);
-        });
+        })
 
         it('it should return verified candidate', async function() {
-
             const company = docGenerator.company();
-        const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
-        const candidate = docGenerator.candidate();
-        const profileData = docGeneratorV2.candidateProfile();
+            const candidate = docGenerator.candidate();
+            const profileData = docGeneratorV2.candidateProfile();
 
-        await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
-        await userHelpers.approveCandidate(candidate.email);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelpers.approveCandidate(candidate.email);
 
-        let userDoc = await Users.findOne({email: company.email});
-        const filterRes = await candidateHelpers.verifiedCandidate(userDoc.jwt_token);
-        filterRes.body[0].is_verify.should.equal(1);
-        filterRes.body[0].disable_account.should.equal(false);
-        filterRes.body[0].type.should.equal("candidate");
+            let userDoc = await Users.findOne({email: company.email});
+            const filterRes = await candidateHelpers.verifiedCandidate(userDoc.jwt_token);
+            filterRes.body[0].is_verify.should.equal(1);
+            filterRes.body[0].disable_account.should.equal(false);
+            filterRes.body[0].type.should.equal("candidate");
+        })
     });
 
+    describe('company search', function() {
         it('it should return the candidate with position and location ', async function () {
 
             const company = docGenerator.company();
@@ -128,7 +128,7 @@ describe('get all users', function () {
             const params = {
                 roles: candidateUserDoc.candidate.roles,
                 locations: locations,
-            }
+            };
 
             const comapnyUserDoc = await Users.findOne({email: company.email});
             const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
@@ -136,7 +136,6 @@ describe('get all users', function () {
 
             let userDoc = await Users.findOne({email: candidate.email});
             filterRes.body[0]._id.should.equal(userDoc._id.toString());
-
         })
 
         it('it should return the candidate with currency search', async function () {
@@ -262,5 +261,57 @@ describe('get all users', function () {
             let userDoc = await Users.findOne({email: candidate.email});
             filterRes.body[0]._id.should.equal(userDoc._id.toString());
         })
-    })
+
+        it('it should return the candidate with required skills', async function () {
+
+            const company = docGenerator.company();
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
+
+            const candidate = docGenerator.candidate();
+            const profileLanguageExprData = docGeneratorV2.candidateProfile();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
+            await userHelpers.approveCandidate(candidate.email);
+
+            const userDoc = await Users.findOne({email: candidate.email});
+            let params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name,
+                    exp_year: userDoc.candidate.commercial_skills[0].exp_year - 1
+                }]
+            };
+
+            const comapnyUserDoc = await Users.findOne({email: company.email});
+            let filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+            filterRes.body[0]._id.toString().should.equal(userDoc._id.toString());
+
+            params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name,
+                    exp_year: userDoc.candidate.commercial_skills[0].exp_year + 1
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404);
+
+            params = {
+                required_skills: [{
+                    name: userDoc.candidate.commercial_skills[0].name
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(200);
+            filterRes.body[0]._id.toString().should.equal(userDoc._id.toString());
+
+            params = {
+                required_skills: [{
+                    name: "not a skill name",
+                    exp_year: 1
+                }]
+            };
+            filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
+            filterRes.status.should.equal(404);
+        })
+    });
 });

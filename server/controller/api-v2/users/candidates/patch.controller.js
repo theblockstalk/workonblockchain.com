@@ -208,16 +208,6 @@ const bodySchema = new Schema({
             min: 0
         },
         why_work: String,
-        programming_languages: [{ // DELETE ME
-            language: {
-                type: String,
-                enum: enumerations.programmingLanguages
-            },
-            exp_year: {
-                type: String,
-                enum: enumerations.experienceYears
-            }
-        }],
         description: {
             type:String,
             maxlength: 3000
@@ -267,10 +257,6 @@ const bodySchema = new Schema({
             name: String,
             exp_year: Number
         })],
-        description_commercial_skills:{ //DELETE ME
-            type: String,
-            maxlength: 3000
-        },
         skills: { //will contain experimented_platforms
             type: [{
                 skills_id: {
@@ -285,44 +271,6 @@ const bodySchema = new Schema({
             type: String,
             maxlength: 3000
         },
-        blockchain: { // DELETE ME
-            commercial_platforms: [{
-                name: {
-                    type: String,
-                    enum: enumerations.blockchainPlatforms
-                },
-                exp_year: {
-                    type: String,
-                    enum: enumerations.experienceYears
-                }
-
-            }],
-            description_commercial_platforms:{
-                type: String
-            },
-            experimented_platforms: [{
-                type: String,
-                enum: enumerations.blockchainPlatforms
-            }],
-            description_experimented_platforms:{
-                type: String
-            },
-            commercial_skills : [new Schema({
-                skill: {
-                    type: String,
-                    enum: enumerations.otherSkills
-                },
-                exp_year: {
-                    type: String,
-                    enum: enumerations.exp_years
-                }
-            })],
-            description_commercial_skills:{
-                type: String
-            },
-
-        }
-
     },
     unset_commercial_platforms: Boolean,
     unset_experimented_platforms: Boolean,
