@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { createLocationsListStrings,copyObject } from  '../../../services/object';
+import { createLocationsListStrings,copyObject,makeImgCode,makeIconCode } from  '../../../services/object';
 import { DatePipe } from '@angular/common';
 import {NgForm} from '@angular/forms';
 
@@ -117,14 +117,17 @@ export class CompanyViewComponent implements OnInit {
   createBlockchainLogos(commercial){
     let newCommercials = [];
     for(let commercials of commercial){
+      let img;
       if(commercials.type === 'blockchain') {
-        let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name;
-        newCommercials.push(img);
+        img = makeImgCode(commercials) + commercials.name+': ' +commercials.exp_year +' years';
       }
-      else{
-        let img = commercials.name+': ' +commercials.exp_year +' years';
-        newCommercials.push(img);
+      if(commercials.type === 'language') {
+        img = makeIconCode('fas fa-code') + commercials.name+': ' +commercials.exp_year +' years';
       }
+      if(commercials.type === 'experience') {
+        img = makeIconCode('fas fa-user-friends') + commercials.name+': ' +commercials.exp_year +' years';
+      }
+      newCommercials.push(img);
     }
     return newCommercials;
   }
