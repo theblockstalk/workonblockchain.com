@@ -422,7 +422,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       }
       console.log(this.preferncesForm.value.prefItems);
     }
-    ////new code for auto suggest skills ends
+    //new code for auto suggest skills ends
 
     if(this.preferncesForm.value.prefItems.length > 0) {
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
