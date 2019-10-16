@@ -36,11 +36,6 @@ export class SkillsAutoSuggestComponent implements OnInit {
 
     if(!this.selectedSkill) this.selectedSkill = [];
     else {
-      this.selectedSkill.sort(function(a, b){
-        if(a['name'] < b['name']) { return -1; }
-        if(a['name'] > b['name']) { return 1; }
-        return 0;
-      });
       for(let skillDB of this.selectedSkill){
         if(skillDB['type'] === 'blockchain')
           skillDB['img'] = makeImgCode(skillDB);
