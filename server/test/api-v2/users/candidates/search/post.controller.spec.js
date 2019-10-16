@@ -238,30 +238,6 @@ describe('POST /v2/users/candidates/search', function () {
             filterRes.status.should.equal(200)
         })
 
-        it('it should return the candidate with language expr', async function () {
-
-            const company = docGenerator.company();
-            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
-
-            const candidate = docGenerator.candidate();
-            const profileLanguageExprData = docGeneratorV2.candidateProfile();
-
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileLanguageExprData );
-            await userHelpers.approveCandidate(candidate.email);
-
-            const candidateUserDoc = await Users.findOne({email: candidate.email});
-            const params = {
-                years_exp_min: 1
-            };
-
-            const comapnyUserDoc = await Users.findOne({email: company.email});
-            const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
-            filterRes.status.should.equal(200);
-
-            let userDoc = await Users.findOne({email: candidate.email});
-            filterRes.body[0]._id.should.equal(userDoc._id.toString());
-        })
-
         it('it should return the candidate with required skills', async function () {
 
             const company = docGenerator.company();

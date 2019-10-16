@@ -263,7 +263,7 @@ module.exports.candidateSearch = async function (filters, search) {
                     }
                 }
                 userQuery.push({
-                    "canndidate.commercial_skills" : {
+                    "candidate.commercial_skills" : {
                         $elemMatch: skillMatch
                     }
                 });

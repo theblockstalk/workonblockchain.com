@@ -45,9 +45,9 @@ describe('admin get metrics', function () {
             const aggregrated = metrics.approvedEnabled.aggregated;
             console.log("blockchain");
             console.log(aggregrated.nationality);
-            console.log(profileData.nationality[0])
+            console.log(profileData.nationality[0]);
             aggregrated.nationality[profileData.nationality[0]].should.equal(1);
-            console.log(aggregrated)
+            console.log(aggregrated);
             aggregrated.employmentAvailability[profileData.candidate.employee.employment_availability].should.equal(1);
             aggregrated.baseCountry[profileData.candidate.base_country].should.equal(1);
             if(profileData.candidate.employee.currency === '€ EUR')
@@ -56,13 +56,8 @@ describe('admin get metrics', function () {
             aggregrated.employee.location[profileData.candidate.employee.location[1].country].count.should.equal(1);
             aggregrated.employee.location[profileData.candidate.employee.location[1].country].aggregate[profileData.candidate.employee.location[1].visa_needed].should.equal(1);
             aggregrated.employee.roles[profileData.candidate.employee.roles[0]].should.equal(1);
-            aggregrated.programmingLanguages[profileData.candidate.programming_languages[0].language].count.should.equal(1);
-            aggregrated.programmingLanguages[profileData.candidate.programming_languages[0].language].aggregate[profileData.candidate.programming_languages[0].exp_year].should.equal(1);
-            aggregrated.programmingLanguages[profileData.candidate.programming_languages[1].language].count.should.equal(1);
-            aggregrated.programmingLanguages[profileData.candidate.programming_languages[1].language].aggregate[profileData.candidate.programming_languages[1].exp_year].should.equal(1);
-            aggregrated.blockchain.experimented_platforms[profileData.candidate.blockchain.experimented_platforms[0]].should.equal(1);
-            aggregrated.blockchain.experimented_platforms[profileData.candidate.blockchain.experimented_platforms[1]].should.equal(1);
-            should.not.exist(aggregrated.blockchain.experimented_platforms["EOOS"]);
+            aggregrated.commercial_skills[profileData.candidate.commercial_skills[0].name].count.should.equal(1);
+            aggregrated.commercial_skills[profileData.candidate.commercial_skills[1].name].count.should.equal(1);
         });
 
         it('it should return statistics of active users', async function () {

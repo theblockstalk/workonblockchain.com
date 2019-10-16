@@ -257,17 +257,7 @@ const bodySchema = new Schema({
             name: String,
             exp_year: Number
         })],
-        skills: { //will contain experimented_platforms
-            type: [{
-                skills_id: {
-                    type : Schema.Types.ObjectId,
-                    ref: 'Skills'
-                },
-                type: String,
-                name: String
-            }],
-        },
-        description_skills:{
+        description_commercial_skills:{
             type: String,
             maxlength: 3000
         },
