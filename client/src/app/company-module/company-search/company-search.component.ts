@@ -118,6 +118,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   selectedWorkType;
   searchData;
   years_exp_value = '';
+  commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
@@ -1417,6 +1418,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.disabled = false;
       if (data['saved_searches'] && data['saved_searches'].length > 0) {
         this.savedSearches = data['saved_searches'];
+        console.log(this.savedSearches);
         for (let i = 0; i < data['saved_searches'].length; i++) {
           this.searchName.push(data['saved_searches'][i].name);
         }

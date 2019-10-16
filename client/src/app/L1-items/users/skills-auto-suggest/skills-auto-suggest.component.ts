@@ -15,6 +15,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   @Input() placeHolder: string;
   @Input() showDescription: Boolean;
   @Input() description: string;
+  @Input() compSearch: Boolean;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   errorMsg: string;
@@ -96,7 +97,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
     this.selectedItems.emit(this.selectedSkillExpYear);
-    this.selfValidate();
+    if(!this.compSearch)
+      this.selfValidate();
   }
 
   selfValidate() {
@@ -144,7 +146,8 @@ export class SkillsAutoSuggestComponent implements OnInit {
   deleteRow(index){
     this.selectedSkillExpYear.splice(index, 1);
     this.selectedItems.emit(this.selectedSkillExpYear);
-    this.selfValidate();
+    if(!this.compSearch)
+      this.selfValidate();
   }
 
 }

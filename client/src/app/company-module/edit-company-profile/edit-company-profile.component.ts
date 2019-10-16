@@ -468,19 +468,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         console.log('in 0 if');
         for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
           this.preferncesForm.value.prefItems[i].requiredSkills = [];
-          for (let skill of this.commercialSkillsFromDB[i]) {
-            if(skill.exp_year) {
-              skillsAdded.push({
-                skills_id: skill.skills_id,
-                name: skill.name,
-                type: skill.type,
-                exp_year: skill.exp_year
-              });
+          if(this.commercialSkillsFromDB[i].length > 0) {
+            for (let skill of this.commercialSkillsFromDB[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else {
+                this.skills_auto_suggest_error = 'Please select number of years';
+                count = 1;
+              }
             }
-            else {
-              this.skills_auto_suggest_error = 'Please select number of years';
-              count = 1;
-            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
           }
 
           this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
@@ -490,19 +496,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         console.log('do mapping using selectedCommercialSkillsNew obj');
         for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
           this.preferncesForm.value.prefItems[i].requiredSkills = [];
-          for (let skill of this.selectedCommercialSkillsNew[i]) {
-            if(skill.exp_year) {
-              skillsAdded.push({
-                skills_id: skill.skills_id,
-                name: skill.name,
-                type: skill.type,
-                exp_year: skill.exp_year
-              });
+          if(this.selectedCommercialSkillsNew[i].length > 0) {
+            for (let skill of this.selectedCommercialSkillsNew[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else {
+                this.skills_auto_suggest_error = 'Please select number of years';
+                count = 1;
+              }
             }
-            else {
-              this.skills_auto_suggest_error = 'Please select atleast one skill';
-              count = 1;
-            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
           }
 
           this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
