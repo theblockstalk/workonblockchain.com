@@ -139,7 +139,7 @@ const bodySchema = new Schema({
                 type:Number,
                 min: 0
             },
-            requiredSkills: { //will containg blockchain & languages
+            required_skills: { //will containg blockchain & languages
                 type:[new Schema({
                     skills_id: {
                         type : Schema.Types.ObjectId,
@@ -158,13 +158,6 @@ const bodySchema = new Schema({
             },
             other_technologies : {
                 type : String
-            },
-
-            order_preferences : {
-                type: [{
-                    type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
             },
             name: {
                 type: String

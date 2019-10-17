@@ -200,7 +200,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               }, 500);
               this.prefData = data['saved_searches'];
               for(let saved_search of this.prefData){
-                this.commercialSkillsFromDB.push(saved_search.requiredSkills);
+                this.commercialSkillsFromDB.push(saved_search.required_skills);
               }
               console.log(this.commercialSkillsFromDB);
 
@@ -533,7 +533,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             searchInput.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchInput.other_technologies = key['other_technologies'];
-          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchInput.requiredSkills = key['requiredSkills'][0];
+          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchInput.required_skills = key['requiredSkills'][0];
           this.saved_searches.push(searchInput);
         }
       }

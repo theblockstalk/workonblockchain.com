@@ -364,10 +364,10 @@
                 </div>
               </div>
 
-              <div class="col-md-12 mb-3" *ngIf="searches.requiredSkills && searches.requiredSkills.length >0">
+              <div class="col-md-12 mb-3" *ngIf="searches.required_skills && searches.required_skills.length >0">
                 <app-c-formv-list
                   label="Required skills:"
-                  [value]="createBlockchainLogos(searches.requiredSkills)"
+                  [value]="createBlockchainLogos(searches.required_skills)"
                 >
                 </app-c-formv-list>
               </div>

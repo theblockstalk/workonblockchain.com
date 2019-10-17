@@ -197,7 +197,7 @@ module.exports.up = async function() {
                 }
                 savedSearch.blockchain = [];
                 savedSearch.skills = [];
-                savedSearch['requiredSkills'] = savedSearchBlockchain;
+                savedSearch['required_skills'] = savedSearchBlockchain;
             }
 
             console.log({_id: employerDoc._id}, {$set: {'employerDoc.saved_searches': employerDoc.saved_searches}});

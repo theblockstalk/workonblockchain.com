@@ -248,7 +248,7 @@ const bodySchema = new Schema({
             type: String,
             enum: enumerations.workBlockchainInterests
         }],
-        commercial_skills : [new Schema({ //will contain commercial_platforms, commercial_skills & programming_languages, DELETE ME
+        commercial_skills : [new Schema({ //will contain commercial_platforms, commercial_skills & programming_languages
             skills_id: {
                 type : Schema.Types.ObjectId,
                 ref: 'Skills'
@@ -265,7 +265,6 @@ const bodySchema = new Schema({
     unset_commercial_platforms: Boolean,
     unset_experimented_platforms: Boolean,
     unset_commercial_skills: Boolean,
-    unset_language: Boolean, //DELETE ME
     unset_education_history: Boolean,
     unset_work_history: Boolean,
     unset_github_account: Boolean,
@@ -286,8 +285,6 @@ const bodySchema = new Schema({
     unset_leaving_current_employ_reasons: Boolean,
     unset_other_reasons: Boolean,
     unset_counter_offer: Boolean,
-    unset_description_commercial_platforms: Boolean, //DELETE ME
-    unset_description_experimented_platforms: Boolean, //DELETE ME
     unset_description_commercial_skills: Boolean,
     unset_hear_about_wob_other_info: Boolean
 });

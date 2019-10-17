@@ -280,7 +280,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
               }
               this.prefData = data['saved_searches'];
               for(let saved_search of this.prefData){
-                this.commercialSkillsFromDB.push(saved_search.requiredSkills);
+                this.commercialSkillsFromDB.push(saved_search.required_skills);
               }
               console.log(this.commercialSkillsFromDB);
               this.preferncesForm = this._fb.group({

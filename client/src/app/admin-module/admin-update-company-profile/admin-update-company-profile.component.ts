@@ -297,7 +297,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
               }
               this.prefData = data['saved_searches'];
               for(let saved_search of this.prefData){
-                this.commercialSkillsFromDB.push(saved_search.requiredSkills);
+                this.commercialSkillsFromDB.push(saved_search.required_skills);
               }
               console.log(this.commercialSkillsFromDB);
               this.preferncesForm = this._fb.group({
@@ -690,7 +690,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
             searchQuery.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
-          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.requiredSkills = key['requiredSkills'][0];
+          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.required_skills = key['requiredSkills'][0];
           saved_searches.push(searchQuery);
           if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
 
