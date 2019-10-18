@@ -168,7 +168,14 @@ module.exports = new Schema({
                 required: true
             }
         })]
-    },
+    }, // DELETE ME
+    jobs: [{
+        jobs_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'Jobs',
+            required: true
+        }
+    }],
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
