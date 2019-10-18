@@ -410,6 +410,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             for (let skill of this.commercialSkillsFromDB[i]) {
               if (skill.exp_year) {
                 skillsAdded.push({
+                  _id: skill._id,
                   skills_id: skill.skills_id,
                   name: skill.name,
                   type: skill.type,
@@ -437,6 +438,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
               for (let skill of this.selectedCommercialSkillsNew[i]) {
                 if (skill.exp_year) {
                   skillsAdded.push({
+                    _id: skill._id,
                     skills_id: skill.skills_id,
                     name: skill.name,
                     type: skill.type,
@@ -472,6 +474,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             for (let skill of this.commercialSkillsFromDB[i]) {
               if (skill.exp_year) {
                 skillsAdded.push({
+                  _id: skill._id,
                   skills_id: skill.skills_id,
                   name: skill.name,
                   type: skill.type,
@@ -500,6 +503,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             for (let skill of this.selectedCommercialSkillsNew[i]) {
               if (skill.exp_year) {
                 skillsAdded.push({
+                  _id: skill._id,
                   skills_id: skill.skills_id,
                   name: skill.name,
                   type: skill.type,
@@ -665,6 +669,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
         }
       }
 
+      console.log(saved_searches);
       profileForm.value.company_phone = this.country_code +' '+ this.company_phone;
       profileForm.value.saved_searches = saved_searches;
 

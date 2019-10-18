@@ -593,6 +593,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.location = this.filter_array(validatedLocation);
     }
     if (this.saveSearchName) queryBody.name = this.saveSearchName;
+    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
     if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange) {
       queryBody.current_currency = this.currencyChange;
       queryBody.current_salary = this.salary;
@@ -602,7 +603,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.expected_hourly_rate = this.hourly_rate;
       queryBody.current_currency = this.contractorCurrency;
     }
-    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
     if (!queryBody.location) queryBody.location = [];
     if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
