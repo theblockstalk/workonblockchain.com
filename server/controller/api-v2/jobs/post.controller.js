@@ -1,13 +1,13 @@
 const Schema = require('mongoose').Schema;
-const mongooseJobs = require('../../../model/mongoose/jobs');
-const mongooseCompanies = require('../../../model/mongoose/companies');
+const jobs = require('../../../model/mongoose/jobs');
+const companies = require('../../../model/mongoose/companies');
 const errors = require('../../services/errors');
 const auth = require('../../middleware/auth-v2');
 const enumerations = require('../../../model/enumerations');
 
 module.exports.request = {
     type: 'post',
-    path: '/jobs/'
+    path: '/jobs'
 };
 
 const querySchema = new Schema({
@@ -137,7 +137,8 @@ module.exports.endpoint = async function (req, res) {
     newJobDoc.created = timestamp;
     newJobDoc.modified = timestamp;
 
-    const jobDoc = await mongooseJobs.insert(newJobDoc);
+    const jobDoc = await jobs.insert(newJobDoc);
+    await companies.updateOne({_id: company_id}, {jobs: {$push: jobDoc._id}});
 
     res.send(jobDoc)
 }

@@ -1,18 +1,19 @@
 const Schema = require('mongoose').Schema;
-const mongooseJobs = require('../../../model/mongoose/jobs');
-const mongooseCompanies = require('../../../model/mongoose/companies');
+const jobs = require('../../../model/mongoose/jobs');
+const companies = require('../../../model/mongoose/companies');
 const errors = require('../../services/errors');
 const auth = require('../../middleware/auth-v2');
 const enumerations = require('../../../model/enumerations');
 
 module.exports.request = {
-    type: 'post',
-    path: '/jobs/'
+    type: 'patch',
+    path: '/jobs'
 };
 
 const querySchema = new Schema({
     admin: Boolean,
-    company_id: String
+    company_id: String,
+    job_id: String
 });
 
 const bodySchema = new Schema({
@@ -117,9 +118,10 @@ module.exports.endpoint = async function (req, res) {
     const timestamp = new Date();
 
     let jobDocUpdate = {};
+    const jobId = req.query.job_id;
     const jobUpdate = req.body;
 
-    const currentJobDoc = await jobs.findOneById(jobUpdate._id);
+    const currentJobDoc = await jobs.findOneById(jobId);
     if (currentJobDoc.company_id !== company_id)
         errors.throwError("Not authorized to edit this job", 400);
 
@@ -139,7 +141,7 @@ module.exports.endpoint = async function (req, res) {
     if (jobUpdate.job_type) jobDocUpdate.job_type = jobUpdate.job_type;
     jobDocUpdate.modified = timestamp;
 
-    await mongooseJobs.updateOne({_id: jobUpdate._id}, {$set: jobDocUpdate});
+    await jobs.updateOne({_id: jobId}, {$set: jobDocUpdate});
 
     res.send({})
 }
