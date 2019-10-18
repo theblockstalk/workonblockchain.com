@@ -93,7 +93,7 @@ module.exports = new Schema({
             }
         }]
     },
-    saved_searches: {
+    saved_searches: { // DELETE ME
         type:[new Schema({
             name: {
                 type: String,
