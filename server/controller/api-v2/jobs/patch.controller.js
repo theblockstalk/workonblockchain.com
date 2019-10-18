@@ -18,17 +18,14 @@ const querySchema = new Schema({
 const bodySchema = new Schema({
     name: {
         type: String,
-        required: true
     },
     status: {
         type: String,
         enum: enumerations.jobStatus
-        default: "open"
     },
     work_type : {
         type: String,
         enum: enumerations.workTypes
-        required: true
     },
     locations: {
         type: [{
@@ -36,12 +33,10 @@ const bodySchema = new Schema({
                 type : Schema.Types.ObjectId,
                 ref: 'Cities'
             },
-            city: String,
-            country: String,
+            name: String,
             remote: Boolean,
 
         }],
-        required: true
     },
     visa_needed: {
         type: Boolean,
@@ -58,13 +53,11 @@ const bodySchema = new Schema({
             type: String,
             required : true,
             enum: enumerations.workRoles
-        }],
-        required: true
+        }]
     },
     expected_salary_min: {
         type: Number,
         min: 0
-        required: true
     },
     expected_salary_max: {
         type: Number,
@@ -72,7 +65,6 @@ const bodySchema = new Schema({
     },
     num_people_desired: {
         type:Number,
-        required: true,
         min: 0
     },
     required_skills: {
@@ -99,14 +91,6 @@ const bodySchema = new Schema({
     description : {
         type : String,
         maxlength: 3000
-    },
-    created : {
-        type : Date,
-        required: true
-    },
-    modified : {
-        type : Date,
-        required: true
     }
 });
 
@@ -132,12 +116,30 @@ module.exports.endpoint = async function (req, res) {
     }
     const timestamp = new Date();
 
-    let newJobDoc = req.body;
-    newJobDoc.company_id = company_id;
-    newJobDoc.created = timestamp;
-    newJobDoc.modified = timestamp;
+    let jobDocUpdate = {};
+    const jobUpdate = req.body;
 
-    const jobDoc = await mongooseJobs.insert(newJobDoc);
+    const currentJobDoc = await jobs.findOneById(jobUpdate._id);
+    if (currentJobDoc.company_id !== company_id)
+        errors.throwError("Not authorized to edit this job", 400);
 
-    res.send(jobDoc)
+    if (jobUpdate.name) jobDocUpdate.name = jobUpdate.name;
+    if (jobUpdate.status) jobDocUpdate.status = jobUpdate.status;
+    if (jobUpdate.work_type) jobDocUpdate.work_type = jobUpdate.work_type;
+    if (jobUpdate.locations) jobDocUpdate.locations = jobUpdate.locations;
+    if (jobUpdate.visa_needed) jobDocUpdate.visa_needed = jobUpdate.visa_needed;
+    if (jobUpdate.job_type) jobDocUpdate.job_type = jobUpdate.job_type;
+    if (jobUpdate.positions) jobDocUpdate.positions = jobUpdate.positions;
+    if (jobUpdate.expected_salary_min) jobDocUpdate.expected_salary_min = jobUpdate.expected_salary_min;
+    if (jobUpdate.expected_salary_max) jobDocUpdate.expected_salary_max = jobUpdate.expected_salary_max;
+    if (jobUpdate.num_people_desired) jobDocUpdate.num_people_desired = jobUpdate.num_people_desired;
+    if (jobUpdate.required_skills) jobDocUpdate.required_skills = jobUpdate.required_skills;
+    if (jobUpdate.not_required_skills) jobDocUpdate.not_required_skills = jobUpdate.not_required_skills;
+    if (jobUpdate.description) jobDocUpdate.description = jobUpdate.description;
+    if (jobUpdate.job_type) jobDocUpdate.job_type = jobUpdate.job_type;
+    jobDocUpdate.modified = timestamp;
+
+    await mongooseJobs.updateOne({_id: jobUpdate._id}, {$set: jobDocUpdate});
+
+    res.send({})
 }
