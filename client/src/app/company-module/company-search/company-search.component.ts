@@ -182,7 +182,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skillsData = constants.programmingLanguages;
   residenceCountries = constants.countries;
   rolesData = constants.workRoles;
-  blockchainData = constants.blockchainPlatforms;
   years_exp = constants.years_exp_min;
 
   ngAfterViewInit() {
@@ -269,17 +268,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           return 1;
         }
         return 0;
-      })
-
-      this.blockchainData.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      })
+      });
 
 
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
@@ -425,6 +414,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if (key['residence_country'] && key['residence_country'].length > 0) this.residence_country = key['residence_country'];
         else this.residence_country = '';
+
+        if (key['required_skills'] && key['required_skills'].length > 0)
+          this.commercialSkillsFromDB = key['required_skills'];
+
         if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
       }
@@ -434,6 +427,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchdata(key, value) {
     console.log(key);
     console.log(value);
+    if (key === 'requiredSkills')
+      this.selectedCommercialSkillsNew = value;
+
     //console.log(this.selectedCommercialSkillsNew);
     this.searchData = false;
     this.newSearchLocation = [];
@@ -442,6 +438,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
+    console.log(this.commercialSkillsFromDB);
+    this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
+
     this.log = '';
     this.candidate_data = '';
     this.verify_msg = "";
@@ -576,13 +575,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else queryBody.job_type = [];
     if (this.role_value && this.role_value.length > 0) queryBody.position = this.role_value;
     else queryBody.position = [];
-    if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
-    else queryBody.blockchain = [];
-    if (this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-    else queryBody.skills = [];
     if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
     else queryBody.residence_country = [];
-    if (this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
     if (this._id) queryBody._id = this._id;
     if (this.selectedValueArray && this.selectedValueArray.length > 0) {
       let validatedLocation = [];
@@ -599,7 +593,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.location = this.filter_array(validatedLocation);
     }
     if (this.saveSearchName) queryBody.name = this.saveSearchName;
-    if (this.years_exp_value) queryBody.years_exp_min = this.years_exp_value;
     if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange) {
       queryBody.current_currency = this.currencyChange;
       queryBody.current_salary = this.salary;
@@ -611,8 +604,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
     if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
-    if (this.timestamp) queryBody.timestamp = this.timestamp;
     if (!queryBody.location) queryBody.location = [];
+    if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
+      queryBody.required_skills = this.selectedCommercialSkillsNew;
+    if (this.timestamp) queryBody.timestamp = this.timestamp;
+
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -1432,7 +1428,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.disabled = false;
       if (data['saved_searches'] && data['saved_searches'].length > 0) {
         this.savedSearches = data['saved_searches'];
-        console.log(this.savedSearches);
         for (let i = 0; i < data['saved_searches'].length; i++) {
           this.searchName.push(data['saved_searches'][i].name);
         }

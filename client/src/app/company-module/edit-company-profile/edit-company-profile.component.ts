@@ -658,7 +658,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
             searchQuery.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
-          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.requiredSkills = key['requiredSkills'][0];
+          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchQuery.required_skills = key['requiredSkills'][0];
           saved_searches.push(searchQuery);
           if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
           i++;
