@@ -696,7 +696,7 @@
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedSkills()" (ngModelChange)="newSelectedSkills($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
