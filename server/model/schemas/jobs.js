@@ -22,13 +22,14 @@ module.exports = new Schema({
         enum: enumerations.workTypes
         required: true
     },
-    location: {
+    locations: {
         type: [{
-            city: {
+            city_id: {
                 type : Schema.Types.ObjectId,
                 ref: 'Cities'
             },
-            name: String,
+            city: String,
+            country: String,
             remote: Boolean,
         }],
         required: true
@@ -41,7 +42,7 @@ module.exports = new Schema({
         type: String,
         enum: enumerations.employmentTypes
     }],
-    position: {
+    positions: {
         type: [{
             type: String,
             required : true,
@@ -51,8 +52,7 @@ module.exports = new Schema({
     },
     expected_salary_min: {
         type: Number,
-        min: 0,
-        required: true
+        min: 0
     },
     expected_salary_max: {
         type: Number,

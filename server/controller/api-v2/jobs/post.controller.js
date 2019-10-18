@@ -30,7 +30,7 @@ const bodySchema = new Schema({
         enum: enumerations.workTypes
         required: true
     },
-    location: {
+    locations: {
         type: [{
             city: {
                 type : Schema.Types.ObjectId,
@@ -52,7 +52,7 @@ const bodySchema = new Schema({
             enum: enumerations.employmentTypes
         }]
     },
-    position: {
+    positions: {
         type: [{
             type: String,
             required : true,
@@ -121,7 +121,6 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-
     let company_id;
     if (req.query.admin) {
         company_id = req.query.company_id
