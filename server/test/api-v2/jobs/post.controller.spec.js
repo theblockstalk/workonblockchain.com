@@ -4,7 +4,7 @@ const api = require('../api');
 const users = require('../../../model/mongoose/users');
 const skills = require('../../../model/mongoose/skills');
 
-const docGenerator = require('../../helpers/docGenerator');
+const docGenerator = require('../../helpers/docGenerator-v2');
 const companyHelper = require('../otherHelpers/companyHelpers');
 const skillsHelper = require('../skills/helpers');
 const citiesHelpers = require('../locations/helpers');
@@ -62,10 +62,8 @@ describe('POST /jobs', function () {
             //     type: String,
             //     name: String,
             // }],
-            // description : random.string(200)
+            description : random.string(200)
         };
-
-
     })
 
     afterEach(async function () {
@@ -82,6 +80,7 @@ describe('POST /jobs', function () {
 
             const job = res.body;
             job.name.should.equal(minJob.name);
+            // check company doc
         })
     });
 });

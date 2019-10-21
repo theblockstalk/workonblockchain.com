@@ -20,9 +20,10 @@ const getLocations = module.exports.getLocations = async function getLocations(a
 }
 
 module.exports.insertCity = async function() {
-    return await cities.insert({
+    const newCity = {
         city: random.string(),
         country: random.string(),
         active: true
-    })
+    }
+    return await cities.insert(newCity)
 }

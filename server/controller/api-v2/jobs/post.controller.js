@@ -22,12 +22,12 @@ const bodySchema = new Schema({
     },
     status: {
         type: String,
-        enum: enumerations.jobStatus
+        enum: enumerations.jobStatus,
         default: "open"
     },
     work_type : {
         type: String,
-        enum: enumerations.workTypes
+        enum: enumerations.workTypes,
         required: true
     },
     locations: {
@@ -63,7 +63,7 @@ const bodySchema = new Schema({
     },
     expected_salary_min: {
         type: Number,
-        min: 1
+        min: 1,
         required: true
     },
     expected_salary_max: {
@@ -130,7 +130,7 @@ module.exports.endpoint = async function (req, res) {
     newJobDoc.modified = timestamp;
 
     const jobDoc = await jobs.insert(newJobDoc);
-    await companies.updateOne({_id: company_id}, {jobs: {$push: jobDoc._id}});
+    await companies.updateOne({_id: company_id}, {job_ids: {$push: jobDoc._id}});
 
     res.send(jobDoc)
 }

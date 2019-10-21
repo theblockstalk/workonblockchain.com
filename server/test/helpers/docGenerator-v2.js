@@ -130,7 +130,7 @@ api.company = function company() {
         last_name: "Safdar",
         email: random.email(),
         job_title: "Designer",
-        company_name: "My Company",
+        company_name: random.string(),
         company_website: "my-web.com",
         company_phone: "926546456",
         company_country: "Pakistan",

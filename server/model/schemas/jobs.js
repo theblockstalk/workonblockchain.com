@@ -5,7 +5,7 @@ const enumerations = require('../enumerations');
 module.exports = new Schema({
     company_id: {
         type : Schema.Types.ObjectId,
-        ref: Company,
+        ref: "CompanyProfile",
         reqired: true
     },
     name: {
@@ -19,7 +19,7 @@ module.exports = new Schema({
     },
     work_type : {
         type: String,
-        enum: enumerations.workTypes
+        enum: enumerations.workTypes,
         required: true
     },
     locations: {

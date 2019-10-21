@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../../../../server');
+const server = require('../../../server');
 
 chai.use(chaiHttp);
 
@@ -10,9 +10,10 @@ const apiRequest = async function (method, path, jwtToken, query, body) {
 
     for (let key in query) {
         if (Object.prototype.hasOwnProperty.call(query, key)) {
-            path += key + "=" + query[key] + "&"
+            fullPath += key + "=" + query[key] + "&"
         }
     }
+
     return await chai.request(server)[method](fullPath).set('Authorization', jwtToken).send(body);
 }
 
@@ -21,16 +22,16 @@ let api = {
     jobs: {}
 };
 
-api.jobs.POST = asnc function (jwtToken, query) {
-    return apiRequest("post", "v2/jobs/", jwtToken, query, null)
+api.jobs.POST = async function (jwtToken, query, body) {
+    return await apiRequest("post", "/v2/jobs", jwtToken, query, body)
 }
 
-api.jobs.PATCH = asnc function (jwtToken, query) {
-    return apiRequest("patch", "v2/jobs/", jwtToken, query, null)
+api.jobs.PATCH = async function (jwtToken, query, body) {
+    return await apiRequest("patch", "/v2/jobs", jwtToken, query, body)
 }
 
-api.jobs.GET = asnc function (jwtToken, query) {
-    return apiRequest("get", "v2/jobs/", jwtToken, query, null)
+api.jobs.GET = async function (jwtToken, query) {
+    return await apiRequest("get", "/v2/jobs", jwtToken, query, null)
 }
 
-modules.export = api;
+module.exports = api;

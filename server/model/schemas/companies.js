@@ -169,12 +169,9 @@ module.exports = new Schema({
             }
         })]
     }, // DELETE ME
-    jobs: [{
-        jobs_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'Jobs',
-            required: true
-        }
+    jobs_ids: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Jobs',
     }],
     when_receive_email_notitfications : {
         type : String ,
