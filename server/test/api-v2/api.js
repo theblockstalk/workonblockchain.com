@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 
 const apiRequest = async function (method, path, jwtToken, query, body) {
     let fullPath = path;
-    if (query) path += "?";
+    if (query) fullPath += "?";
 
     for (let key in query) {
         if (Object.prototype.hasOwnProperty.call(query, key)) {

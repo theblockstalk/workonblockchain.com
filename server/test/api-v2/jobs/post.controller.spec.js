@@ -6,11 +6,8 @@ const companies = require('../../../model/mongoose/companies');
 
 const docGenerator = require('../../helpers/docGenerator-v2');
 const companyHelper = require('../otherHelpers/companyHelpers');
-const skillsHelper = require('../skills/helpers');
-const citiesHelpers = require('../locations/helpers');
-
-const enumerations = require('../../../model/enumerations');
-const random = require('../../helpers/random');
+const jobHelpers = require('./helpers');
+const userHelpers = require('../otherHelpers/usersHelpers');
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -18,52 +15,10 @@ const expect = chai.expect;
 const should = chai.should();
 
 describe('POST /jobs', function () {
-    let company, companyUserDoc, jwtToken;
-    let skills1, skills2, city1, city2;
-    let minJob;
+    let randomJob;
 
     beforeEach(async function () {
-        company = docGenerator.company();
-        await companyHelper.signupCompany(company);
-        companyUserDoc = await users.findOne({email: company.email});
-        jwtToken = companyUserDoc.jwt_token;
-
-        skills1 = await skillsHelper.createJob(companyUserDoc._id);
-        skills2 = await skillsHelper.createJob(companyUserDoc._id);
-
-        city1 = await citiesHelpers.insertCity();
-        city2 = await citiesHelpers.insertCity();
-
-        minJob = {
-            name: random.string(20),
-            status: "open",
-            work_type : "employee",
-            locations: [{
-                city_id: city1._id,
-                city: city1.city,
-                country: city1.country
-            }, {
-                remote: true
-            }],
-            // visa_needed: false,
-            job_type: "Full time",
-            positions: ['Backend Developer', 'Frontend Developer'],
-            expected_salary_min: 100000,
-            // expected_salary_max: 200000,
-            num_people_desired: 1,
-            // required_skills: [{
-            //     skills_id: ,
-            //     type: String,
-            //     name: String,
-            //     exp_year: Number
-            // }],
-            // not_required_skills:[{
-            //     skills_id: ,
-            //     type: String,
-            //     name: String,
-            // }],
-            description : random.string(200)
-        };
+        randomJob = await jobHelpers.randomJob();
     })
 
     afterEach(async function () {
@@ -75,13 +30,55 @@ describe('POST /jobs', function () {
     describe('positive tests', function () {
 
         it('it should create a job for a company', async function () {
-            const res = await api.jobs.POST(jwtToken, null, minJob)
+            const company = docGenerator.company();
+            await companyHelper.signupCompany(company);
+            const companyUserDoc = await users.findOne({email: company.email});
+
+            const res = await api.jobs.POST(companyUserDoc.jwt_token, null, randomJob)
             res.status.should.equal(200);
 
             const job = res.body;
-            job.name.should.equal(minJob.name);
+            job.name.should.equal(randomJob.name);
+            job.status.should.equal(randomJob.status);
+            job.work_type.should.equal(randomJob.work_type);
+            job.locations[0].city.should.equal(randomJob.locations[0].city);
+            job.locations[1].remote.should.equal(randomJob.locations[1].remote);
+            job.visa_needed.should.equal(randomJob.visa_needed);
+            job.job_type[0].should.equal(randomJob.job_type[0]);
+            job.positions[0].should.equal(randomJob.positions[0]);
+            job.positions[1].should.equal(randomJob.positions[1]);
+            job.expected_salary_min.should.equal(randomJob.expected_salary_min);
+            job.expected_salary_max.should.equal(randomJob.expected_salary_max);
+            job.required_skills[0].name.should.equal(randomJob.required_skills[0].name);
+            job.not_required_skills[0].skills_id.toString().should.equal(randomJob.not_required_skills[0].skills_id.toString());
+            job.num_people_desired.should.equal(randomJob.num_people_desired);
 
             const companyDoc = await companies.findOne({_creator: companyUserDoc._id})
+            companyDoc.job_ids[0].toString().should.equal(job._id.toString());
+        })
+
+        it('it should create a job for an admin', async function () {
+            const company = docGenerator.company();
+            await companyHelper.signupCompany(company);
+            const companyUserDoc = await users.findOne({email: company.email});
+            let companyDoc = await companies.findOne({_creator: companyUserDoc._id});
+
+            const company2 = docGenerator.company();
+            await companyHelper.signupCompany(company2);
+            const companyUserDoc2 = await users.findOne({email: company2.email});
+            await userHelpers.makeAdmin(company2.email);
+
+            const query = {
+                admin: true,
+                company_id: companyDoc._id
+            };
+            const res = await api.jobs.POST(companyUserDoc2.jwt_token, query, randomJob)
+            res.status.should.equal(200);
+
+            const job = res.body;
+            job.name.should.equal(randomJob.name);
+
+            companyDoc = await companies.findOne({_id: companyDoc._id})
             companyDoc.job_ids[0].toString().should.equal(job._id.toString());
         })
     });
