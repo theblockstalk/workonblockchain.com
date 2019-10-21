@@ -40,3 +40,6 @@ module.exports.pricingPlans = ["Starter", "Essential", "Unlimited", "Free till y
 module.exports.euCountries = ['Andorra', 'Argentina', 'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Israel', 'Italy', 'Japan', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'New Zealand', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United Kingdom', 'Uruguay']
 
 module.exports.jobStatus = ["open", "closed", "paused"];
+
+module.exports.skillsTpes = ["blockchain", "language", "experience"];
+

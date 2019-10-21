@@ -32,7 +32,7 @@ const bodySchema = new Schema({
     },
     locations: {
         type: [{
-            city: {
+            city_id: {
                 type : Schema.Types.ObjectId,
                 ref: 'Cities'
             },
@@ -63,17 +63,17 @@ const bodySchema = new Schema({
     },
     expected_salary_min: {
         type: Number,
-        min: 0
+        min: 1
         required: true
     },
     expected_salary_max: {
         type: Number,
-        min: 0
+        min: 1
     },
     num_people_desired: {
         type:Number,
         required: true,
-        min: 0
+        min: 1
     },
     required_skills: {
         type:[new Schema({
@@ -99,14 +99,6 @@ const bodySchema = new Schema({
     description : {
         type : String,
         maxlength: 3000
-    },
-    created : {
-        type : Date,
-        required: true
-    },
-    modified : {
-        type : Date,
-        required: true
     }
 });
 

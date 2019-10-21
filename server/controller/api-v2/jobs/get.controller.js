@@ -1,5 +1,6 @@
 const Schema = require('mongoose').Schema;
 const jobs = require('../../../model/mongoose/jobs');
+const companies = require('../../../model/mongoose/companies');
 const auth = require('../../middleware/auth-v2');
 const errors = require('../../services/errors');
 
