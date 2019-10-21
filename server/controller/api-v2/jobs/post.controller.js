@@ -130,7 +130,7 @@ module.exports.endpoint = async function (req, res) {
     newJobDoc.modified = timestamp;
 
     const jobDoc = await jobs.insert(newJobDoc);
-    await companies.updateOne({_id: company_id}, {job_ids: {$push: jobDoc._id}});
+    await companies.updateOne({_id: company_id}, {$push: {job_ids: jobDoc._id}});
 
     res.send(jobDoc)
 }

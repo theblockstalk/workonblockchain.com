@@ -52,7 +52,7 @@ module.exports.up = async function() {
             newJobIds.push(newJobDoc._id);
         }
         const update = {
-            $set: {jobs: newJobIds},
+            $set: {job_ids: newJobIds},
             $unset: {saved_searches: 1}
         };
         console.log("Updating company doc", update);

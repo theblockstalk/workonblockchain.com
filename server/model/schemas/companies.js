@@ -169,7 +169,7 @@ module.exports = new Schema({
             }
         })]
     }, // DELETE ME
-    jobs_ids: [{
+    job_ids: [{
         type: Schema.Types.ObjectId,
         ref: 'Jobs',
     }],

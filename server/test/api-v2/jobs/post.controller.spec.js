@@ -2,7 +2,7 @@ const mongo = require('../../helpers/mongo');
 const api = require('../api');
 
 const users = require('../../../model/mongoose/users');
-const skills = require('../../../model/mongoose/skills');
+const companies = require('../../../model/mongoose/companies');
 
 const docGenerator = require('../../helpers/docGenerator-v2');
 const companyHelper = require('../otherHelpers/companyHelpers');
@@ -72,15 +72,17 @@ describe('POST /jobs', function () {
     })
 
 
-    describe('create a job', function () {
+    describe('positive tests', function () {
 
-        it('it should create a job', async function () {
+        it('it should create a job for a company', async function () {
             const res = await api.jobs.POST(jwtToken, null, minJob)
             res.status.should.equal(200);
 
             const job = res.body;
             job.name.should.equal(minJob.name);
-            // check company doc
+
+            const companyDoc = await companies.findOne({_creator: companyUserDoc._id})
+            companyDoc.job_ids[0].toString().should.equal(job._id.toString());
         })
     });
 });
