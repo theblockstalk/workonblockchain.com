@@ -47,12 +47,10 @@ const bodySchema = new Schema({
         type: Boolean,
         default:false
     },
-    job_type: {
-        type: [{
-            type: String,
-            enum: enumerations.employmentTypes
-        }]
-    },
+    job_type: [{
+        type: String,
+        enum: enumerations.employmentTypes
+    }],
     positions: {
         type: [{
             type: String,

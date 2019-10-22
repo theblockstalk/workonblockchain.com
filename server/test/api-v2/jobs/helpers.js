@@ -21,15 +21,15 @@ module.exports.randomJob = async function() {
 
     return {
         name: random.string(20),
-            status: "open",
+        status: "open",
         work_type : "employee",
         locations: [{
-        city_id: city1._id,
-        city: city1.city,
-        country: city1.country
-    }, {
-        remote: true
-    }],
+            city_id: city1._id,
+            city: city1.city,
+            country: city1.country
+        }, {
+            remote: true
+        }],
         visa_needed: false,
         job_type: ["Full time"],
         positions: ['Backend Developer', 'Frontend Developer'],
@@ -37,16 +37,16 @@ module.exports.randomJob = async function() {
         expected_salary_max: 200000,
         num_people_desired: 1,
         required_skills: [{
-        skills_id: skills1._id,
-        type: skills1.type,
-        name: skills1.name,
-        exp_year: random.integer(1,6)
-    }],
+            skills_id: skills1._id,
+            type: skills1.type,
+            name: skills1.name,
+            exp_year: random.integer(1,6)
+        }],
         not_required_skills:[{
-        skills_id: skills2._id,
-        type: skills2.type,
-        name: skills2.name
-    }],
+            skills_id: skills2._id,
+            type: skills2.type,
+            name: skills2.name
+        }],
         description : random.string(200)
     };
 }

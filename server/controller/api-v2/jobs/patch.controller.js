@@ -2,6 +2,7 @@ const Schema = require('mongoose').Schema;
 const jobs = require('../../../model/mongoose/jobs');
 const companies = require('../../../model/mongoose/companies');
 const errors = require('../../services/errors');
+const objects = require('../../services/objects');
 const auth = require('../../middleware/auth-v2');
 const enumerations = require('../../../model/enumerations');
 
@@ -28,27 +29,23 @@ const bodySchema = new Schema({
         type: String,
         enum: enumerations.workTypes
     },
-    locations: {
-        type: [{
-            city: {
-                type : Schema.Types.ObjectId,
-                ref: 'Cities'
-            },
-            name: String,
-            remote: Boolean,
-
-        }],
-    },
+    locations: [{
+        city_id: {
+            type : Schema.Types.ObjectId,
+            ref: 'Cities'
+        },
+        city: String,
+        country: String,
+        remote: Boolean,
+    }],
     visa_needed: {
         type: Boolean,
         default:false
     },
-    job_type: {
-        type: [{
-            type: String,
-            enum: enumerations.employmentTypes
-        }]
-    },
+    job_type: [{
+        type: String,
+        enum: enumerations.employmentTypes
+    }],
     positions: {
         type: [{
             type: String,
@@ -92,7 +89,14 @@ const bodySchema = new Schema({
     description : {
         type : String,
         maxlength: 3000
-    }
+    },
+    unset_visa_needed: Boolean,
+    unset_job_type: Boolean,
+    unset_expected_salary_min: Boolean,
+    unset_expected_salary_max: Boolean,
+    unset_required_skills: Boolean,
+    unset_not_required_skills: Boolean
+
 });
 
 module.exports.inputValidation = {
@@ -122,7 +126,7 @@ module.exports.endpoint = async function (req, res) {
     const jobUpdate = req.body;
 
     const currentJobDoc = await jobs.findOneById(jobId);
-    if (currentJobDoc.company_id !== company_id)
+    if (currentJobDoc.company_id.toString() !== company_id.toString())
         errors.throwError("Not authorized to edit this job", 400);
 
     if (jobUpdate.name) jobDocUpdate.name = jobUpdate.name;
@@ -139,9 +143,21 @@ module.exports.endpoint = async function (req, res) {
     if (jobUpdate.not_required_skills) jobDocUpdate.not_required_skills = jobUpdate.not_required_skills;
     if (jobUpdate.description) jobDocUpdate.description = jobUpdate.description;
     if (jobUpdate.job_type) jobDocUpdate.job_type = jobUpdate.job_type;
+
+    let unset = {};
+    if (jobUpdate.unset_visa_needed) unset.visa_needed = 1;
+    if (jobUpdate.unset_job_type) unset.job_type = 1;
+    if (jobUpdate.unset_expected_salary_min) unset.expected_salary_min = 1;
+    if (jobUpdate.unset_expected_salary_max) unset.expected_salary_max = 1;
+    if (jobUpdate.unset_required_skills) unset.required_skills = 1;
+    if (jobUpdate.unset_not_required_skills) unset.not_required_skills = 1;
+
     jobDocUpdate.modified = timestamp;
 
-    await jobs.updateOne({_id: jobId}, {$set: jobDocUpdate});
+    let update = {$set: jobDocUpdate};
+    if (!objects.isEmpty(unset)) update.$unset = unset;
 
-    res.send({})
+    const jobRes = await jobs.updateOne({_id: jobId}, update);
+
+    res.send(jobRes._doc.toObject())
 }

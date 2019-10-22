@@ -15,10 +15,10 @@ const expect = chai.expect;
 const should = chai.should();
 
 describe('POST /jobs', function () {
-    let randomJob;
+    let jobPost;
 
     beforeEach(async function () {
-        randomJob = await jobHelpers.randomJob();
+        jobPost = await jobHelpers.randomJob();
     })
 
     afterEach(async function () {
@@ -34,24 +34,24 @@ describe('POST /jobs', function () {
             await companyHelper.signupCompany(company);
             const companyUserDoc = await users.findOne({email: company.email});
 
-            const res = await api.jobs.POST(companyUserDoc.jwt_token, null, randomJob)
+            const res = await api.jobs.POST(companyUserDoc.jwt_token, null, jobPost)
             res.status.should.equal(200);
 
             const job = res.body;
-            job.name.should.equal(randomJob.name);
-            job.status.should.equal(randomJob.status);
-            job.work_type.should.equal(randomJob.work_type);
-            job.locations[0].city.should.equal(randomJob.locations[0].city);
-            job.locations[1].remote.should.equal(randomJob.locations[1].remote);
-            job.visa_needed.should.equal(randomJob.visa_needed);
-            job.job_type[0].should.equal(randomJob.job_type[0]);
-            job.positions[0].should.equal(randomJob.positions[0]);
-            job.positions[1].should.equal(randomJob.positions[1]);
-            job.expected_salary_min.should.equal(randomJob.expected_salary_min);
-            job.expected_salary_max.should.equal(randomJob.expected_salary_max);
-            job.required_skills[0].name.should.equal(randomJob.required_skills[0].name);
-            job.not_required_skills[0].skills_id.toString().should.equal(randomJob.not_required_skills[0].skills_id.toString());
-            job.num_people_desired.should.equal(randomJob.num_people_desired);
+            job.name.should.equal(jobPost.name);
+            job.status.should.equal(jobPost.status);
+            job.work_type.should.equal(jobPost.work_type);
+            job.locations[0].city.should.equal(jobPost.locations[0].city);
+            job.locations[1].remote.should.equal(jobPost.locations[1].remote);
+            job.visa_needed.should.equal(jobPost.visa_needed);
+            job.job_type[0].should.equal(jobPost.job_type[0]);
+            job.positions[0].should.equal(jobPost.positions[0]);
+            job.positions[1].should.equal(jobPost.positions[1]);
+            job.expected_salary_min.should.equal(jobPost.expected_salary_min);
+            job.expected_salary_max.should.equal(jobPost.expected_salary_max);
+            job.required_skills[0].name.should.equal(jobPost.required_skills[0].name);
+            job.not_required_skills[0].skills_id.toString().should.equal(jobPost.not_required_skills[0].skills_id.toString());
+            job.num_people_desired.should.equal(jobPost.num_people_desired);
 
             const companyDoc = await companies.findOne({_creator: companyUserDoc._id})
             companyDoc.job_ids[0].toString().should.equal(job._id.toString());
@@ -72,11 +72,11 @@ describe('POST /jobs', function () {
                 admin: true,
                 company_id: companyDoc._id
             };
-            const res = await api.jobs.POST(companyUserDoc2.jwt_token, query, randomJob)
+            const res = await api.jobs.POST(companyUserDoc2.jwt_token, query, jobPost)
             res.status.should.equal(200);
 
             const job = res.body;
-            job.name.should.equal(randomJob.name);
+            job.name.should.equal(jobPost.name);
 
             companyDoc = await companies.findOne({_id: companyDoc._id})
             companyDoc.job_ids[0].toString().should.equal(job._id.toString());
