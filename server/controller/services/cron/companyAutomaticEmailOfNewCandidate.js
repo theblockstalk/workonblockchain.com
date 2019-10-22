@@ -61,15 +61,10 @@ module.exports = async function (companyId) {
                             visa_needed: jobDoc.visa_needed,
                             positions: jobDoc.position,
                             required_skills: jobDoc.required_skills,
-                            salary: {
-                                current_currency: jobDoc.current_currency,
-                                current_salary: jobDoc.current_salary
-                            },
-                            work_type : jobDoc.work_type,
-                            hourly_rate : {
-                                expected_hourly_rate: jobDoc.expected_hourly_rate,
-                                current_currency: jobDoc.current_currency
-                            }
+                            expected_salary_min: jobDoc.expected_salary_min,
+                            expected_hourly_rate_min: jobDoc.expected_hourly_rate_min,
+                            currency: jobDoc.currency,
+                            work_type : jobDoc.work_type
                         });
                         if (candidateDocs) {
                             logger.debug("Candidate ids in search", candidateDocs.candidates.map( (candidate) => candidate._id));

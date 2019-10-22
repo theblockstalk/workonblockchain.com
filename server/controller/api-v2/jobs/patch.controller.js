@@ -61,6 +61,15 @@ const bodySchema = new Schema({
         type: Number,
         min: 0
     },
+    expected_hourly_rate_min: {
+        type: Number,
+        min: 1,
+        required: true
+    },
+    expected_hourly_rate_max: {
+        type: Number,
+        min: 1
+    },
     currency: {
         type: String,
         enum: enumerations.currencies
@@ -142,6 +151,9 @@ module.exports.endpoint = async function (req, res) {
     if (jobUpdate.positions) jobDocUpdate.positions = jobUpdate.positions;
     if (jobUpdate.expected_salary_min) jobDocUpdate.expected_salary_min = jobUpdate.expected_salary_min;
     if (jobUpdate.expected_salary_max) jobDocUpdate.expected_salary_max = jobUpdate.expected_salary_max;
+    if (jobUpdate.expected_hourly_rate_min) jobDocUpdate.expected_hourly_rate_min = jobUpdate.expected_hourly_rate_min;
+    if (jobUpdate.expected_hourly_rate_max) jobDocUpdate.expected_hourly_rate_max = jobUpdate.expected_hourly_rate_max;
+    if (jobUpdate.currency) jobDocUpdate.currency = jobUpdate.currency;
     if (jobUpdate.num_people_desired) jobDocUpdate.num_people_desired = jobUpdate.num_people_desired;
     if (jobUpdate.required_skills) jobDocUpdate.required_skills = jobUpdate.required_skills;
     if (jobUpdate.not_required_skills) jobDocUpdate.not_required_skills = jobUpdate.not_required_skills;

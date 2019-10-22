@@ -68,6 +68,15 @@ const bodySchema = new Schema({
         type: Number,
         min: 1
     },
+    expected_hourly_rate_min: {
+        type: Number,
+        min: 1,
+        required: true
+    },
+    expected_hourly_rate_max: {
+        type: Number,
+        min: 1
+    },
     currency: {
         type: String,
         enum: enumerations.currencies,

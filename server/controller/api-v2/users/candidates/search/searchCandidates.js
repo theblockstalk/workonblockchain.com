@@ -30,14 +30,17 @@ search = {
     }],
     visa_needed: Boolean
     roles: [String],
-    salary: {
-        current_currency: String,
-        current_salary: Number
-    },
-    hourly_rate: {
-        current_currency: String,
-        expected_hourly_rate: Number
-    },
+    expected_salary_min: Number,
+    expected_hourly_rate_min: Number,
+    currency: String,
+    // salary: {
+    //     current_currency: String,
+    //     current_salary: Number
+    // },
+    // hourly_rate: {
+    //     current_currency: String,
+    //     expected_hourly_rate: Number
+    // },
     required_skills: [{
         name: String,
         exp_year: Number
@@ -243,7 +246,7 @@ module.exports.candidateSearch = async function (filters, search) {
 
         if (search.roles && search.roles.length > 0  ) {
             let rolesQuery =[];
-            const setRoleQuery = function (roleQuery){
+            const setRoleQuery = function (roleQuery) {
                 const rolesFilter = {[roleQuery]: {$in: search.roles}};
                 rolesQuery.push(rolesFilter);
             };
@@ -262,9 +265,9 @@ module.exports.candidateSearch = async function (filters, search) {
 
         }
 
-        if (search.salary && search.salary.current_currency && search.salary.current_salary) {
-            const curr = search.salary.current_currency;
-            const salary = search.salary.current_salary;
+        if (search.currency && search.expected_salary_min) {
+            const curr = search.currency;
+            const salary = search.expected_salary_min;
             const usd = [{'candidate.employee.currency' : "$ USD"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
             const gbp = [{'candidate.employee.currency': "£ GBP"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
             const eur = [{'candidate.employee.currency': "€ EUR"}, {'candidate.employee.expected_annual_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
@@ -275,9 +278,9 @@ module.exports.candidateSearch = async function (filters, search) {
             userQuery.push(currencyFiler);
         }
 
-        if (search.hourly_rate && search.hourly_rate.expected_hourly_rate && search.hourly_rate.current_currency) {
-            const curr = search.hourly_rate.currency;
-            const hourly_rate = search.hourly_rate.expected_hourly_rate;
+        if (search.currency && search.expected_hourly_rate_min) {
+            const curr = search.currency;
+            const hourly_rate = search.expected_hourly_rate_min;
             const usd = [{'candidate.contractor.currency' : "$ USD"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "$ USD", hourly_rate)}}];
             const gbp = [{'candidate.contractor.currency': "£ GBP"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "£ GBP", hourly_rate)}}];
             const eur = [{'candidate.contractor.currency': "€ EUR"}, {'candidate.contractor.expected_hourly_rate': {$lte: salaryFactor*currency.convert(curr, "€ EUR", hourly_rate)}}];

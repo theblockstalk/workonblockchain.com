@@ -58,6 +58,14 @@ module.exports = new Schema({
         type: Number,
         min: 0
     },
+    expected_hourly_rate_min: {
+        type: Number,
+        min: 0
+    },
+    expected_hourly_rate_max: {
+        type: Number,
+        min: 0
+    },
     currency: {
         type: String,
         enum: enumerations.currencies,

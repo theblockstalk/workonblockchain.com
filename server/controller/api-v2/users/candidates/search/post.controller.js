@@ -98,7 +98,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     if(req.query.admin) await auth.isAdmin(req);
-else await auth.isValidCompany(req);
+    else await auth.isValidCompany(req);
 }
 
 module.exports.endpoint = async function (req, res) {
@@ -149,25 +149,22 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.required_skills) search.required_skills = queryBody.required_skills;
         if (queryBody.locations) {
             if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
-                const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
+                const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'))
                 queryBody.locations[index] = {remote : true};
             }
             search.locations = queryBody.locations;
         }
         if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
         if (queryBody.roles) search.roles = queryBody.roles;
+
         if (queryBody.current_currency && queryBody.current_salary) {
-            search.salary = {
-                current_currency: queryBody.current_currency,
-                current_salary: queryBody.current_salary
-            }
+            search.currency = queryBody.current_currency;
+            search.expected_salary_min = queryBody.current_currency;
         }
 
         if (queryBody.expected_hourly_rate && queryBody.current_currency) {
-            search.hourly_rate = {
-                expected_hourly_rate: queryBody.expected_hourly_rate,
-                current_currency: queryBody.current_currency
-            }
+            search.currency = queryBody.current_currency;
+            search.expected_hourly_rate_min = queryBody.expected_hourly_rate;
         }
 
         let candidateDocs = await candidateSearch.candidateSearch({
