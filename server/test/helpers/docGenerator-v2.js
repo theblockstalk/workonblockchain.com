@@ -156,35 +156,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         company_funded:"i have no idea",
         company_description:"Global blockchain agnostic hiring platform for developers.",
 
-        when_receive_email_notitfications : 'Daily',
-
-        saved_searches : [{
-            name: random.string(),
-            location: [
-                {remote:true },
-                {_id : '5c4aa17468cc293450c14c04'}
-            ],
-            job_type : ['Full time'],
-            position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : '$ USD',
-            current_salary : 1000,
-            required_skills : [
-                {
-                    skills_id : "5d9b0ad8e70a001d20f216af",
-                    name : "Angularjs",
-                    type : "language",
-                    exp_year : 3
-                },
-                {
-                    skills_id : "5d9b0ad8e70a001d20f21688",
-                    name : "Cardano",
-                    type : "blockchain",
-                    exp_year : 6
-                },
-            ],
-            residence_country : ['Pakistan']
-        }]
-
+        when_receive_email_notitfications : 'Daily'
     }
 }
 

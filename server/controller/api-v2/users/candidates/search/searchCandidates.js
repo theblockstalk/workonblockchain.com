@@ -269,11 +269,6 @@ module.exports.candidateSearch = async function (filters, search) {
                 });
             }
         }
-
-        if (search.base_country && search.base_country.length > 0) {
-            const residenceCountryFilter = {"candidate.base_country": {$in: search.base_country}};
-            userQuery.push(residenceCountryFilter);
-        }
     }
 
     logger.debug("query", {query: userQuery});

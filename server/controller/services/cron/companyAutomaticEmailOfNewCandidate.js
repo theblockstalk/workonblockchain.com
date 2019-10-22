@@ -57,7 +57,6 @@ module.exports = async function (companyId) {
                             visa_needed: savedSearch.visa_needed,
                             positions: savedSearch.position,
                             required_skills: savedSearch.required_skills,
-                            residence_country: savedSearch.residence_country,
                             salary: {
                                 current_currency: savedSearch.current_currency,
                                 current_salary: savedSearch.current_salary

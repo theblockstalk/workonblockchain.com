@@ -72,10 +72,6 @@ const bodySchema = new Schema({
         type : Number,
         min:0,
     },
-    base_country: [{
-            type: String,
-            enum: enumerations.countries
-    }],
     work_type: {
         type: String,
         enum: enumerations.workTypes
@@ -173,7 +169,6 @@ module.exports.endpoint = async function (req, res) {
                 current_currency: queryBody.current_currency
             }
         }
-        if(queryBody.base_country) search.base_country = queryBody.base_country;
 
         let candidateDocs = await candidateSearch.candidateSearch({
             is_verify: 1,
