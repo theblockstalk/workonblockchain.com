@@ -19,7 +19,14 @@ const apiRequest = async function (method, path, jwtToken, query, body) {
 
 let api = {
     conversations: {},
-    jobs: {}
+    jobs: {},
+    users: {
+        auth: {},
+        candidates: {},
+        companies: {},
+        email: {},
+        settings: {}
+    }
 };
 
 api.jobs.POST = async function (jwtToken, query, body) {
@@ -32,6 +39,10 @@ api.jobs.PATCH = async function (jwtToken, query, body) {
 
 api.jobs.GET = async function (jwtToken, query) {
     return await apiRequest("get", "/v2/jobs", jwtToken, query, null)
+}
+
+api.users.companies.GET = async function (jwtToken, query) {
+    return await apiRequest("get", "/v2/users/companies", jwtToken, query, null)
 }
 
 module.exports = api;

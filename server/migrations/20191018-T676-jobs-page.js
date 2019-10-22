@@ -47,7 +47,8 @@ module.exports.up = async function() {
                     })
                 }
             }
-            savedSearch.locations = newLocations;
+            newJob.locations = newLocations;
+
             const newJobDoc = await jobs.insert(newJob);
             newJobIds.push(newJobDoc._id);
         }
