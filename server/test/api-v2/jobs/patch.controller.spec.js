@@ -37,6 +37,7 @@ describe('POST /jobs', function () {
             positions:  ['UI Developer', 'UX Designer'],
             expected_salary_min: 50000,
             expected_salary_max: 100000,
+            currency: randomJob2.currency,
             num_people_desired: 2,
             required_skills: [{
                 skills_id: randomJob2.required_skills[0].skills_id,
@@ -86,6 +87,7 @@ describe('POST /jobs', function () {
             job.positions[1].should.equal(jobPatch.positions[1]);
             job.expected_salary_min.should.equal(jobPatch.expected_salary_min);
             job.expected_salary_max.should.equal(jobPatch.expected_salary_max);
+            job.currency.should.equal(jobPatch.currency);
             job.required_skills[0].name.should.equal(jobPatch.required_skills[0].name);
             job.not_required_skills[0].skills_id.toString().should.equal(jobPatch.not_required_skills[0].skills_id.toString());
             job.num_people_desired.should.equal(jobPatch.num_people_desired);

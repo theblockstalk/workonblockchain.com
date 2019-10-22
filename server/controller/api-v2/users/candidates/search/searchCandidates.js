@@ -9,6 +9,42 @@ const objects = require('../../../../services/objects');
 
 const salaryFactor = 1.1;
 
+/*
+filters = {
+    is_verify: 1 or 0,
+    status: String,
+    status_last_updated_day: Number,
+    disable_account: Boolean,
+    msg_tags: String,
+    last_msg_received_day: Date,
+    blacklist: [ObjectId]
+};
+
+search = {
+    work_type: String,
+    name: String,
+    why_work: String,
+    locations: [{
+        city: ObjectId,
+        remote: Boolean
+    }],
+    visa_needed: Boolean
+    roles: [String],
+    salary: {
+        current_currency: String,
+        current_salary: Number
+    },
+    hourly_rate: {
+        current_currency: String,
+        expected_hourly_rate: Number
+    },
+    required_skills: [{
+        name: String,
+        exp_year: Number
+    }]
+};
+*/
+
 module.exports.candidateSearch = async function (filters, search) {
     logger.debug("Doing new candidate search", {
         filters: filters,

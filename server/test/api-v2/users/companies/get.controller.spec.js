@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const docGenerator = require('../../../helpers/docGenerator');
+
 const api = require('../../api');
 const companyHelper = require('./helpers');
 const jobHelper = require('../../jobs/helpers');

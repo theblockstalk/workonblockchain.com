@@ -1,5 +1,6 @@
 const company = require('../../../model/mongoose/companies');
 const users = require('../../../model/mongoose/users');
+const jobs = require('../../../model/mongoose/jobs');
 
 const candidateSearch = require('../../api-v2/users/candidates/search/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
@@ -31,9 +32,10 @@ module.exports = async function (companyId) {
         if(userDoc && (userDoc.is_approved !== 1 || userDoc.disable_account) ) {
             logger.debug("Company is disabled, or not approved");
         }
-        else if(userDoc) {
+        else if (userDoc) {
             logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
             const timestamp = Date.now();
+
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
                 let blacklist = [];
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
@@ -44,27 +46,29 @@ module.exports = async function (companyId) {
 
                 let candidateDocs;
                 let foundCandidates = [];
-                for (let savedSearch of companyDoc.saved_searches) {
+                for (let job_id of companyDoc.job_ids) {
                     try {
+                        const jobDoc = await jobs.findOneById(job_id);
+
                         candidateDocs = await candidateSearch.candidateSearch({
                             is_verify: 1,
                             status: 'approved',
                             disable_account: false,
                             blacklist: blacklist,
-                            updatedAfter: savedSearch.timestamp
+                            updatedAfter: jobDoc.modified
                         }, {
-                            locations: savedSearch.location,
-                            visa_needed: savedSearch.visa_needed,
-                            positions: savedSearch.position,
-                            required_skills: savedSearch.required_skills,
+                            locations: jobDoc.location,
+                            visa_needed: jobDoc.visa_needed,
+                            positions: jobDoc.position,
+                            required_skills: jobDoc.required_skills,
                             salary: {
-                                current_currency: savedSearch.current_currency,
-                                current_salary: savedSearch.current_salary
+                                current_currency: jobDoc.current_currency,
+                                current_salary: jobDoc.current_salary
                             },
-                            work_type : savedSearch.work_type,
+                            work_type : jobDoc.work_type,
                             hourly_rate : {
-                                expected_hourly_rate: savedSearch.expected_hourly_rate,
-                                current_currency: savedSearch.current_currency
+                                expected_hourly_rate: jobDoc.expected_hourly_rate,
+                                current_currency: jobDoc.current_currency
                             }
                         });
                         if (candidateDocs) {

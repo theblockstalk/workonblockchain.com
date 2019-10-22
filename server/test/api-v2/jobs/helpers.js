@@ -35,6 +35,7 @@ module.exports.jobPost = async function() {
         positions: ['Backend Developer', 'Frontend Developer'],
         expected_salary_min: 100000,
         expected_salary_max: 200000,
+        currency: random.enum(enumerations.currencies),
         num_people_desired: 1,
         required_skills: [{
             skills_id: skills1._id,

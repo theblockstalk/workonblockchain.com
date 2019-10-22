@@ -49,6 +49,7 @@ describe('POST /jobs', function () {
             job.positions[1].should.equal(jobPost.positions[1]);
             job.expected_salary_min.should.equal(jobPost.expected_salary_min);
             job.expected_salary_max.should.equal(jobPost.expected_salary_max);
+            job.currency.should.equal(jobPost.currency);
             job.required_skills[0].name.should.equal(jobPost.required_skills[0].name);
             job.not_required_skills[0].skills_id.toString().should.equal(jobPost.not_required_skills[0].skills_id.toString());
             job.num_people_desired.should.equal(jobPost.num_people_desired);

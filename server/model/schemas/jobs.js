@@ -58,6 +58,11 @@ module.exports = new Schema({
         type: Number,
         min: 0
     },
+    currency: {
+        type: String,
+        enum: enumerations.currencies,
+        required: true
+    },
     num_people_desired: {
         type:Number,
         min: 0,
