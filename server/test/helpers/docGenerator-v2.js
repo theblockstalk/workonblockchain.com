@@ -166,9 +166,9 @@ api.companyUpdateProfile = function companyUpdateProfile(){
             ],
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : random.enum(enumerations.currencies),
-            current_salary : random.integer(10000, 100000),
-            requiredSkills : [
+            current_currency : '$ USD',
+            current_salary : 1000,
+            required_skills : [
                 {
                     skills_id : "5d9b0ad8e70a001d20f216af",
                     name : "Angularjs",

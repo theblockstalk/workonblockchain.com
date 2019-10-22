@@ -37,7 +37,7 @@
     "unreadMessagesTick": "00 12 * * 1-7",
     "autoNotification" : "00 9 * * 1-7",
     "syncSendgrid": "00 7 * * 1-7",
-    "newMessagesEmail": "* * * * 1-7",
+    "newMessagesEmail": "*/20 * * * * *",
     "serviceQueue": "* * * * 1-7"
   },
   "slack": {
@@ -45,7 +45,7 @@
     "channel": "#1_server_bugs_staging"
   },
   "googleConfig": {
-    "clientId": "699068166900-h9dp76b47mh4biq33e8c31ju8tvfgvqj.apps.googleusercontent.com",
+    "clientId": "991119316767-m1m39sjm106epol8nuceh6pq57btp28p.apps.googleusercontent.com",
     "redirectUrl": "https://staging.workonblockchain.com/google-auth"
   },
   "linkedinConfig" : {

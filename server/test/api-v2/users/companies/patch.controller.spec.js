@@ -49,8 +49,8 @@ describe('update profile as company', function () {
             companyUpdatedDoc.saved_searches[0].current_currency.should.equal(updatedData.saved_searches[0].current_currency);
             companyUpdatedDoc.saved_searches[0].current_salary.should.equal(updatedData.saved_searches[0].current_salary);
             companyUpdatedDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
-            companyUpdatedDoc.saved_searches[0].requiredSkills[0].name.should.valueOf(updatedData.saved_searches[0].requiredSkills[0].name);
-            companyUpdatedDoc.saved_searches[0].requiredSkills[0].exp_year.should.valueOf(updatedData.saved_searches[0].requiredSkills[0].exp_year);
+            companyUpdatedDoc.saved_searches[0].required_skills[0].name.should.valueOf(updatedData.saved_searches[0].required_skills[0].name);
+            companyUpdatedDoc.saved_searches[0].required_skills[0].exp_year.should.valueOf(updatedData.saved_searches[0].required_skills[0].exp_year);
             companyUpdatedDoc.saved_searches[0].residence_country.should.valueOf(updatedData.saved_searches[0].residence_country);
 
         });

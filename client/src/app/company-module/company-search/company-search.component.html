@@ -663,7 +663,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.work_type === 'contractor'">
+              <div class="col-md-12 mt-2" *ngIf="preferncesForm.value.work_type === 'contractor'">
                 <div class = "form-group w-auto">
                   <input type="text" formControlName="expected_hourly_rate"  [value] = "preferncesForm.value.expected_hourly_rate"  class="form-control w-50 float-left mt-3" placeholder="Hourly rate">
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "currency" >
@@ -678,35 +678,52 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mt-2" >
-                <div class="form-group">
-                  <select multiple formControlName="position" title="Role" class="form-control selectpicker">
-                    <option *ngFor='let role of rolesData'   [value]="role.value" selected>{{role.name}}</option>
-                  </select>
-                </div>
-              </div>
+              <div class="col-md-6" *ngIf="preferncesForm.value.work_type === 'employee' || preferncesForm.value.work_type === 'contractor'"></div>
 
-              <!--<div class="col-md-6 mt-2">
+              <div class="col-md-12 mt-4">
                 <div class="form-group">
                   <div>
                     <datalist id="skillsList">
                       <select class="form-control">
-                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}}
+                        <option *ngFor = "let skill of newSkills" [attr.data-value]="skill._id" value="{{skill.name}}" text="{{preferncesForm.value.required_skills}}">{{skill.name}}
                         </option>
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Work place (city/remote)" class="form-control" formControlName = "location" (input)="suggestedSkills()" (ngModelChange)="newSelectedSkills($event)">
-                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
-                      {{error}}
-                    </div>
-
-                    <div *ngIf="newSearchLocation.length > 0">
-                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteNewLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                    <input type="text" list="skillsList" autocomplete="off" placeholder="Skills" class="form-control" formControlName = "required_skills" (input)="suggestedSkills()" (ngModelChange)="newSelectedSkills($event)">
+                    <div class="invalid-feedback d-inline" *ngIf="errorSkills;else emptyInput">
+                      {{errorSkills}}
                     </div>
                   </div>
                 </div>
-              </div>-->
+              </div>
+              <div *ngIf="newSkillsSelected && newSkillsSelected.length > 0" class="col-md-12">
+                <div class="row">
+                  <div *ngFor="let value of newSkillsSelected; let i = index" class="col-md-8 p-1">
+                    <div class="ml-0 row">
+                      <div class = "col-4 mt-1">
+                        <span>{{ value.name }}</span>
+                      </div>
+                      <div class="col-4">
+                        <app-c-forme-dropdown-single
+                          [options]="years_exp_min_new"
+                          [value]="value.exp_year"
+                          [errorMsg]="yearsErrMsg"
+                          (selectedValue)="value.exp_year = $event"
+                          (change)="skillsExpYearOptions($event, value, i)"
+                        ></app-c-forme-dropdown-single>
+                      </div>
+                      <div class = "col-4">
+                        <a (click)="deleteskills(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class = "ml-4 invalid-feedback d-inline" *ngIf="exp_year_error">
+                    {{exp_year_error}}
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div>

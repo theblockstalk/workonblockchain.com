@@ -4,6 +4,7 @@ import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
+import { makeIconCode, makeImgCode, copyObject } from '../../../services/object';
 import {isPlatformBrowser} from "@angular/common";
 declare var $:any;
 
@@ -117,6 +118,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchData;
   years_exp_value = '';
   commercialSkillsFromDB;selectedCommercialSkillsNew;
+  newSkills = []; newSkillsSelected = [];
+  errorSkills;exp_year_error;
+  years_exp_min_new = constants.years_exp_min_new;
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
@@ -156,6 +160,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.hourly_rate = this.urlParameters.expected_hourly_rate;
             this.contractorCurrency = this.urlParameters.currency;
           }
+          if (this.urlParameters.required_skills && this.urlParameters.required_skills.length > 0) {
+            this.commercialSkillsFromDB = this.urlParameters.required_skills;
+            this.selectedCommercialSkillsNew = this.urlParameters.required_skills;
+          }
           this.searchdata("urlQuery", this.urlParameters);
         }
       }
@@ -190,7 +198,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-
+    this.newSkillsSelected = [];
     this.preferncesForm = new FormGroup({
       _id: new FormControl(),
       work_type: new FormControl(),
@@ -206,6 +214,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: new FormControl(),
       residence_country: new FormControl(),
       timestamp: new FormControl(),
+      required_skills: new FormControl()
     });
 
     this.success_msg = '';
@@ -312,12 +321,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       expected_hourly_rate: [this.hourly_rate],
       currency: [this.contractorCurrency],
       other_technologies: [],
-      residence_country: [this.residence_country]
+      residence_country: [this.residence_country],
+      required_skills: []
     });
   }
 
   fillFields(searches, name) {
     this.selectedValueArray = [];
+    this.commercialSkillsFromDB = [];
+    this.selectedCommercialSkillsNew = [];
     for (let key of searches) {
       if (key['name'] === name) {
         this.saveSearchName = name;
@@ -371,8 +383,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['residence_country'] && key['residence_country'].length > 0) this.residence_country = key['residence_country'];
         else this.residence_country = '';
 
-        if (key['required_skills'] && key['required_skills'].length > 0)
+        if (key['required_skills'] && key['required_skills'].length > 0) {
           this.commercialSkillsFromDB = key['required_skills'];
+          this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
+        }
 
         if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
@@ -383,10 +397,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchdata(key, value) {
     console.log(key);
     console.log(value);
-    if (key === 'requiredSkills')
-      this.selectedCommercialSkillsNew = value;
 
-    //console.log(this.selectedCommercialSkillsNew);
     this.searchData = false;
     this.newSearchLocation = [];
     this.success_msg = '';
@@ -394,8 +405,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
-    console.log(this.commercialSkillsFromDB);
-    this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
 
     this.log = '';
     this.candidate_data = '';
@@ -424,6 +433,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else {
       this.not_found = '';
       let queryBody: any = {};
+
+      //if(this.commercialSkillsFromDB && this.commercialSkillsFromDB.length > 0)
+        //this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
+
+      console.log(this.selectedCommercialSkillsNew);
+
       if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
       if (this.searchWord) queryBody.why_work = this.searchWord;
       if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
@@ -444,7 +459,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         let requiredSkills = [];
         for (let skill of this.selectedCommercialSkillsNew){
           let obj = {
-            name: skill.name
+            name: skill.name,
+            skills_id: skill.skills_id,
+            type: skill.type
           };
           if(skill.exp_year)
             obj['exp_year'] = skill.exp_year;
@@ -464,8 +481,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
       });
 
+      console.log(this.selectedCommercialSkillsNew);
       console.log(queryBody);
-      /*this.authenticationService.filterSearch(queryBody)
+      this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {
             this.candidate_data = data;
@@ -492,7 +510,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.log = 'Something went wrong';
             }
 
-          });*/
+          });
     }
   }
 
@@ -511,6 +529,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.selectedWorkType = '';
     this.hourly_rate = '';
     this.contractorCurrency = '';
+    this.commercialSkillsFromDB = [];
+    this.selectedCommercialSkillsNew = [];
 
     if (isPlatformBrowser(this.platformId)) {
       $('.selectpicker').val('default');
@@ -521,6 +541,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   savedSearch() {
+    console.log(this.selectedCommercialSkillsNew);
     let queryBody: any = {};
     let index = this.savedSearches.findIndex((obj => obj.name === this.saveSearchName));
     if (this.visa_check) queryBody.visa_needed = this.visa_check;
@@ -563,6 +584,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.required_skills = this.selectedCommercialSkillsNew;
     if (this.timestamp) queryBody.timestamp = this.timestamp;
 
+    console.log(queryBody);
     this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
       for (let searches of this.savedSearches) {
@@ -620,6 +642,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           });
     }
     else {
+      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
+        this.newSkillsSelected = this.selectedCommercialSkillsNew;
+
       $('#saveNewSearch').modal('show');
       setInterval(() => {
         this.error_msg = "";
@@ -653,7 +678,20 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   current_currency_log;
 
   savedNewSearch() {
+    this.errorSkills = '';
+    this.exp_year_error = '';
+    console.log(this.newSkillsSelected);
     let queryBody: any = {};
+    let errorCount = 0;
+
+    if(this.newSkillsSelected && this.newSkillsSelected.length <= 0) {
+      this.errorSkills = 'Please select at least one skill';
+      errorCount = 1;
+    }
+    if(this.newSkillsSelected.find(x => (!x['exp_year']))) {
+      this.exp_year_error = 'Please select number of years';
+      errorCount = 1;
+    }
 
     if (this.newSearchLocation && this.newSearchLocation.length > 0) {
       let validatedLocation = [];
@@ -667,12 +705,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       queryBody.location = this.filter_array(validatedLocation);
     }
+
     if (this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
     if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
     if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if (this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
-    let errorCount = 0;
     if (this.preferncesForm.value.work_type === 'employee' ) {
       if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
         const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
@@ -730,9 +768,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     if (errorCount === 0) {
-
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
+      queryBody.required_skills = this.newSkillsSelected;
+      console.log(queryBody);
       if (index < 0 && this.preferncesForm.value.name) {
         this.savedSearches.push(queryBody);
         for (let searches of this.savedSearches) {
@@ -1311,6 +1350,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.newSearchLocation = this.filter_array(this.newSearchLocation);
           }
           this.selectedValueArray = this.newSearchLocation;
+          console.log(this.selectedValueArray);
           //this.searchdata('locations' , this.selectedValueArray);
         }
       }
@@ -1396,10 +1436,79 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   //new code
   suggestedSkills(){
+    if(this.preferncesForm.value.required_skills) {
+      let textValue = this.preferncesForm.value.required_skills;
+      console.log(textValue);
+      this.newSkills = [];
+      this.authenticationService.autoSuggestSkills(textValue)
+        .subscribe(
+          data => {
+            if (data) {
+              const skillsInput = data;
+              let skillsOptions = [];
+              for (let skill of skillsInput['skills']) {
+                let obj = {
+                  _id: skill['skill']._id,
+                  name: skill['skill'].name,
+                  type: skill['skill'].type
+                };
+                skillsOptions.push(obj);
+              }
+              this.newSkills = this.filter_array(skillsOptions);
+              console.log(this.newSkills);
+            }
 
+          },
+          error => {
+            if (error['message'] === 500 || error['message'] === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+
+            if (error.message === 403) {
+              this.router.navigate(['/not_found']);
+            }
+
+          });
+    }
   }
 
-  newSelectedSkills(){
+  newSelectedSkills(e){
+    console.log(this.newSkillsSelected);
+    if(this.newSkills && this.newSkills.length > 0) {
+      if(this.newSkills.find(x => x.name === e)) {
+        this.preferncesForm.get('required_skills').setValue('');
+        if (this.newSkillsSelected.find(x => x.name === e)) {
+          this.errorSkills = 'This skills has already been selected';
+          this.newSkills = [];
+          setInterval(() => {
+            this.errorSkills = "" ;
+          }, 5000);
+        }
+        else {
+          console.log('selected: ' + e);
+          console.log(this.newSkills);
+          let mapSkill = this.newSkills.find(x => x.name === e);
+          this.newSkillsSelected.push(mapSkill);
+          console.log(this.newSkillsSelected);
+          this.newSkills = [];
+        }
+      }
+    }
+  }
 
+  skillsExpYearOptions(event, value, index){
+    this.exp_year_error = '';
+
+    this.newSkillsSelected[index].exp_year = parseInt(event.target.value);
+  }
+
+  deleteskills(index){
+    this.newSkillsSelected.splice(index, 1);
   }
 }

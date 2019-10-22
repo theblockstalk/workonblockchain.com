@@ -39,7 +39,14 @@ const bodySchema = new Schema({
     }],
     required_skills : [{
         name: String,
-        exp_year: Number
+        exp_year: Number,
+        type: {
+            type: String
+        },
+        skills_id: {
+            type : Schema.Types.ObjectId,
+            ref: 'Skills'
+        }
     }],
     visa_needed: Boolean,
     locations: [{

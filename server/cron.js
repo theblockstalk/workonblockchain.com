@@ -43,11 +43,13 @@ const createCronJob = function (cronTime, cronFunction) {
 };
 
 const logOnError = function(fn) {
-    return Promise.resolve(fn()).catch(function (error) {
-        logger.error(error.message, {
-            stack: error.stack,
-            name: error.name,
-            tag: "cron"
+    return function () {
+        Promise.resolve(fn()).catch(function (error) {
+            logger.error(error.message, {
+                stack: error.stack,
+                name: error.name,
+                tag: "cron"
+            });
         });
-    });
+    }
 };
