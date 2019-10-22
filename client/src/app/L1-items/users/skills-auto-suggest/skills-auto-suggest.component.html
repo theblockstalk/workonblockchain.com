@@ -1,0 +1,53 @@
+<app-c-forme-dropdown-autosuggest
+  [placeholder]="placeHolder"
+  [controllerOptions]="controllerOptions"
+  [controller]="autoSuggestController"
+  [displayItems]="resultItemDisplay"
+  (selectedItems)="itemSelected($event)"
+  [errorMsg]="errorMsg"
+></app-c-forme-dropdown-autosuggest>
+<div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
+  <div class="row">
+    <div *ngFor="let value of selectedSkillExpYear; let i = index" class="{{mainClass}}">
+      <div class="ml-0 row">
+        <div class = "{{nameClass}}">
+          <ng-container *ngIf="value.img;else noImg">
+            <span [innerHTML] = " value.img | safeHtml ">{{value.img}}</span> <span>{{ value.name }}</span>
+          </ng-container>
+          <ng-template #noImg>
+            <span>{{ value.name }}</span>
+          </ng-template>
+        </div>
+        <div class="{{yearsClass}}">
+          <app-c-forme-dropdown-single
+            [options]="years_exp_min_new"
+            [value]="value.exp_year"
+            [errorMsg]="yearsErrMsg"
+            (selectedValue)="value.exp_year = $event"
+            (change)="skillsExpYearOptions($event, value, i)"
+          ></app-c-forme-dropdown-single>
+        </div>
+        <div class = "{{deleteRowClass}}">
+          <a (click)="deleteRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+        </div>
+      </div>
+    </div>
+    <div class = "ml-4 invalid-feedback d-inline" *ngIf="exp_year_error">
+      {{exp_year_error}}
+    </div>
+  </div>
+  <div class="row mt-4" *ngIf="showDescription">
+    <div class="col-md-12">
+      <app-c-forme-text-area
+        rows="5"
+        placeholder="I studied economics as a major at Cambridge University and then went on to work in a cryptocurrency exchange for 3 years."
+        maxLength="3000"
+        label="Description of commercial skills (optional)"
+        [value]="description"
+        [errorMsg]="desErrMsg"
+        (textareaInput)="description = $event"
+        (change)="desValidate()"
+      ></app-c-forme-text-area>
+    </div>
+  </div>
+</div>

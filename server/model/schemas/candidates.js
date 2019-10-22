@@ -200,7 +200,7 @@ module.exports = {
         min: 0
     },
     why_work: String,
-    programming_languages: {
+    programming_languages: { // DELETE ME
         type:[new Schema({
             language: {
                 type: String,
@@ -265,7 +265,36 @@ module.exports = {
             enum: enumerations.workBlockchainInterests
         }]
     },
-    blockchain: {
+    commercial_skills : { //will contain commercial_platforms, commercial_skills & programming_languages & skills
+        type: [{
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: String,
+            exp_year: Number
+        }],
+    },
+    description_commercial_skills:{
+        type: String,
+        maxlength: 3000
+    },
+    skills: { //will contain experimented_platforms (DELETE ME)
+        type: [{
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: String
+        }],
+    },
+    description_skills:{ // DELETE ME
+        type: String,
+        maxlength: 3000
+    },
+    blockchain: { //DELETE ME
         type: {
             commercial_platforms: {
                 type: [{

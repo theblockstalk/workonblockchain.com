@@ -20,9 +20,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 {
   EducationForm: FormGroup;
   ExperienceForm: FormGroup;
-  language=[]; roles=[];yearselected;shown; work_experience_year;
+  roles=[];yearselected;shown; work_experience_year;
   today = Date.now();
-  currentdate;currentyear;currentUser: User;language_checked;language_exp=[];expYear_db=[];expYearRole_db=[];
+  currentdate;currentyear;currentUser: User;expYear_db=[];expYearRole_db=[];
   value;referringData;expYear=[];expYearRole=[];start_month;start_year;salary;db_lang;
   companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;
   currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
@@ -83,10 +83,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   message;
   current_work_check=[];
 
-  ngOnInit()
-  {
-    this.language_opt = unCheckCheckboxes(constants.programmingLanguages);
-
+  ngOnInit() {
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
@@ -110,19 +107,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     {
       this.router.navigate(['/login']);
     }
-    if(this.currentUser && this.currentUser.type == 'candidate')
-    {
-      this.language_opt.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+    if(this.currentUser && this.currentUser.type == 'candidate') {
       this.authenticationService.getCandidateProfileById(this.currentUser._id, false)
         .subscribe(
           data => {
-
-            if(data['candidate'].terms_id)
-            {
+            if(data['candidate'].terms_id) {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
@@ -138,7 +127,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             }
             if(data['candidate'].description) this.Intro = data['candidate'].description;
 
-            if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
+            if(data['candidate'].work_history || data['candidate'].education_history)
             {
               if(data['candidate'].work_history && data['candidate'].work_history.length>0)
               {
@@ -166,71 +155,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     this.education_data()
                   )
                 });
-
               }
-
-              if(data['candidate'].programming_languages && data['candidate'].programming_languages.length>0)
-              {
-                this.expYear = data['candidate'].programming_languages;
-                for (let key of data['candidate'].programming_languages)
-                {
-                  for(var i in key)
-                  {
-
-
-                    for(let option of this.language_opt)
-                    {
-
-                      if(option.value == key[i])
-                      {
-                        option.checked=true;
-                        this.db_valye.push(key[i]);
-                        this.db_lang= ({value: key[i]});
-                        this.language.push(this.db_lang);
-                      }
-                      else
-                      {
-
-                      }
-
-                    }
-
-                    for(let option of this.exp_year)
-                    {
-
-                      if(option.value == key[i])
-                      {
-                        option.checked=true;
-                        this.expYear_db.push(key[i]);
-                      }
-
-                    }
-
-                  }
-                }
-              }
-
             }
             this.Intro =data['candidate'].description;
-
-
-            if(!data['candidate'].why_work && data['candidate'].interest_areas)
-            {
+            if(!data['candidate'].why_work && data['candidate'].interest_areas) {
               this.router.navigate(['/resume']);
             }
-
-
-
-            else
-            {
+            else {
               //this.router.navigate(['/resume']);
             }
-
           },
           error=>
           {
-            if(error['message'] === 500 || error['message'] === 401)
-            {
+            if(error['message'] === 500 || error['message'] === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -267,52 +204,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
 
   current_work = constants.current_work;
-  language_opt = constants.programmingLanguages;
   exp_year = constants.experienceYears;
   year = constants.year;
   month = constants.calen_month;
 
-  onExpOptions(obj)
-  {
-
-    let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
-    let index = this.language.indexOf(updateItem);
-    if(index > -1)
-    {
-      this.language.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.expYear, 'language', obj.value);
-      let index2 = this.expYear.indexOf(updateItem2);
-
-      if(index2 > -1)
-      {
-
-        this.expYear.splice(index2, 1);
-
-      }
-    }
-    else
-    {
-      obj.checked =true;
-      this.language.push(obj);
-    }
-
-  }
-
-
-  findIndexToUpdate(obj)
-  {
-    return obj.value === this;
-  }
-
-
-  onJobSelected(event)
-  {
+  onJobSelected(event) {
     this.yearselected= event.target.value;
     //this.position = event.target.value;
   }
 
-  initItemRows()
-  {
+  initItemRows() {
     return this._fb.group({
       uniname: [''],
       degreename:[''],
@@ -321,8 +222,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     });
   }
 
-  initItemRows_db()
-  {
+  initItemRows_db() {
     return this._fb.group({
       uniname: [this.uniname],
       degreename:[this.degreename],
@@ -331,9 +231,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     });
   }
 
-
-  initExpRows()
-  {
+  initExpRows() {
     return this._fb.group({
       companyname:[''],
       positionname:[''],
@@ -346,35 +244,29 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       start_date:[],
       enddate:[],
       currentwork:[false],
-
     });
   }
 
-  addNewExpRow()
-  {
+  addNewExpRow() {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
         $('.selectpicker').selectpicker();
         $('.selectpicker').selectpicker('refresh');
       }, 100);
     }
-
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
   }
 
-  deleteExpRow(index: number)
-  {
+  deleteExpRow(index: number) {
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.removeAt(index);
   }
 
   get DynamicWorkFormControls() {
-
     return <FormArray>this.ExperienceForm.get('ExpItems');
   }
-  addNewRow()
-  {
+  addNewRow() {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
         $('.selectpicker').selectpicker();
@@ -385,15 +277,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     control.push(this.initItemRows());
   }
 
-  deleteRow(index: number)
-  {
-
+  deleteRow(index: number) {
     const control = <FormArray>this.EducationForm.controls['itemRows'];
     control.removeAt(index);
   }
 
   get DynamicEduFormControls() {
-
     return <FormArray>this.EducationForm.get('itemRows');
   }
 
@@ -414,20 +303,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   exp_count=0;edu_count=0;
   start_date_year_log;
   end_date_year_log;
-  experience_submit(searchForm: NgForm)
-  {
+  experience_submit(searchForm: NgForm) {
     this.error_msg="";
     this.edu_count=0;
     this.exp_count =0;
     this.button_status = 'submit';
     this.dateValidation= '';
 
-
-    if(this.expYear.length !== this.language.length)
-    {
-
-      this.exp_lang_log="Please fill year of experience";
-    }
     if(!this.Intro)
     {
 
@@ -577,7 +459,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     }
 
-    if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
+    if(this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
       this.verify = true;
     }
 
@@ -648,18 +530,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       }
     }
 
-    if(this.language.length === 0) {
-      searchForm.value.language = [];
-    }
-    else {
-      searchForm.value.language_experience_year = this.expYear;
-    }
-
     let inputQuery : any = {};
     let candidateQuery:any ={};
-
-    if(this.expYear && this.expYear.length>0) candidateQuery.programming_languages = this.expYear;
-    else inputQuery.unset_language = true;
 
     if(this.education_json_array && this.education_json_array.length>0) candidateQuery.education_history =  this.education_json_array;
     else inputQuery.unset_education_history = true;
@@ -703,58 +575,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   {
     if (isPlatformBrowser(this.platformId)) $('#popModal').modal('hide');
     this.router.navigate(['/users/talent']);
-  }
-  selectedValue;langValue;
-  onExpYearOptions(e, value)
-  {
-    this.selectedValue = e.target.value;
-    this.langValue = value;
-
-
-    let updateItem = this.findObjectByKey(this.expYear, 'language', value);
-    let index = this.expYear.indexOf(updateItem);
-
-    if(index > -1)
-    {
-
-      this.expYear.splice(index, 1);
-      this.value=value;
-      this.referringData = { language :this.value, exp_year: e.target.value};
-      this.expYear.push(this.referringData);
-    }
-    else
-    {
-      this.value=value;
-      this.referringData = { language :this.value, exp_year: e.target.value};
-      this.expYear.push(this.referringData);
-
-    }
-    this.expYear.sort(function(a, b){
-      if(a.language < b.language) { return -1; }
-      if(a.language > b.language) { return 1; }
-      return 0;
-    })
-  }
-
-  findObjectByKey(array, key, value)
-  {
-    for (var i = 0; i < array.length; i++)
-    {
-      if (array[i][key] === value)
-      {
-        return array[i];
-      }
-
-    }
-    return null;
-  }
-
-  onRoleYearOptions(e, value)
-  {
-    this.value=value;
-    this.referringData = { platform_name:this.value, exp_year: e.target.value};
-    this.expYearRole.push(this.referringData);
-
   }
 
   work_start_data(e)

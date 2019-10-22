@@ -6,7 +6,12 @@
 
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of optionValues" [value]="option.name">
-      <span>{{ option.name }}</span>
+      <ng-container *ngIf="option.img;else noImg">
+        <span [innerHTML] = " option.img | safeHtml ">{{option.img}}</span> <span>{{ option.name }}</span>
+      </ng-container>
+      <ng-template #noImg>
+        <span>{{ option.name }}</span>
+      </ng-template>
     </mat-option>
   </mat-autocomplete>
 

@@ -155,38 +155,6 @@
 
                     <div class="col-md-6 mt-3">
                       <div class="form-group">
-                        <label>Commercial blockchain experience:</label>
-                        <select multiple formControlName="blockchain" title="(select multiple)" class="form-control selectpicker">
-                          <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
-                        </select>
-                        <small class="text-secondary" >Only select this if essential for the job</small>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6" >
-                      <div class = "form-group" [ngClass]="preferncesForm.value.prefItems[i].work_type !== 'employee'? 'mt-2' : ''">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
-                          <label class="form-check-label" for="defaultCheck1">
-                            Only show candidates that require a work visa
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'"></div>
-                    <div class="col-md-6 mt-2">
-                      <div class="form-group">
-                        <label>Languages:</label>
-                        <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker" (change)="refreshSelectBox()">
-                          <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
-                        </select>
-                        <div class="invalid-feedback d-inline" #emptyInput *ngIf="!preferncesForm.value.prefItems[i].skills || (preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length <= 0)">
-                          {{language_log}}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6 mt-2">
-                      <div class="form-group">
                         <label>Residence/base country:</label>
                         <select multiple class="form-control selectpicker" title="(select multiple)" required  formControlName="residence_country">
                           <option *ngFor='let country of residenceCountries' [value]="country.value" [attr.selected]="country.value === preferncesForm.value.prefItems[i].residence_country ? true : null" >{{country.name}}</option>
@@ -197,14 +165,17 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].skills && preferncesForm.value.prefItems[i].skills.length > 0">
+                    <div class="col-md-6" >
                       <div class = "form-group">
-                        <label>Years experience:</label>
-                        <select title="1" class="selectpicker form-control position-relative" formControlName = "years_exp_min" >
-                          <option *ngFor='let years_exp_min of years_exp' [value]="years_exp_min.value" [attr.selected]=" years_exp_min.value === preferncesForm.value.prefItems[i].years_exp_min?true:null">{{years_exp_min.name}}</option>
-                        </select>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
+                          <label class="form-check-label" for="defaultCheck1">
+                            Only show candidates that require a work visa
+                          </label>
+                        </div>
                       </div>
                     </div>
+                    <div class="col-md-6" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'"></div>
 
                     <div class="col-md-6 mt-2" *ngIf="preferncesForm.value.prefItems[i].work_type === 'employee'">
                       <div class = "form-group">
@@ -261,23 +232,25 @@
                         <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.prefItems[i].other_technologies"  class="form-control">
                       </div>
                     </div>
-                  </div>
 
-                  <div class="row my-2">
-                    <div class="col-md-12">
-                      <h4 class="pt-2"><i class="fas fa-align-justify"></i> Good to have (but not required)</h4>
-                    </div>
-                  </div>
-
-                  <div class="row my-3">
-                    <div class="col-md-6">
+                    <div class="col-md-12 my-2">
                       <div class="form-group">
-                        <select multiple formControlName="order_preferences" title="Commercial blockchain experience" class="form-control selectpicker">
-                          <option *ngFor='let blockchain of blockchain' [selected] = "blockchainOrderSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
-                        </select>
+                        <label>Commercial skills</label>
+                        <app-i-forme-skills-auto-suggest
+                          [selectedSkill] = "commercialSkillsFromDB[i]"
+                          (selectedItems)="selectedCommercialSkillsNew[i] = $event"
+                          placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                        ></app-i-forme-skills-auto-suggest>
+                      </div>
+                      <div class = "invalid-feedback d-inline float-left" *ngIf="!selectedCommercialSkillsNew[i]" >
+                        {{skills_auto_suggest_error}}
+                      </div>
+                      <div class = "invalid-feedback d-inline float-left" *ngIf="skills_auto_suggest_years_error" >
+                        {{skills_auto_suggest_years_error}}
                       </div>
                     </div>
                   </div>
+
                   <div class="row mt-3" *ngIf="i>0">
                     <div class="col-md-12">
                       <div class = "form-group text-right">

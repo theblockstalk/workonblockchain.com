@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit, AfterViewChecked, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit , AfterViewInit, AfterViewChecked, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -7,6 +7,7 @@ import {NgForm,FormGroup,FormControl,FormBuilder,FormArray} from '@angular/forms
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {isPlatformBrowser} from "@angular/common";
+import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
 
 @Component({
   selector: 'app-preferences',
@@ -14,6 +15,8 @@ import {isPlatformBrowser} from "@angular/common";
   styleUrls: ['./preferences.component.css']
 })
 export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChecked {
+  @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
+
   preferncesForm : FormGroup;
   saved_searches=[];
   location_log;
@@ -21,8 +24,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   position_log;
   current_currency_log;
   current_salary_log;
-  blockchain_log;
-  skills_log;
   email_notification_log;
   error_msg;
   log;
@@ -36,9 +37,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   locationSelected = [];
   jobTypesSelected = [];
   index;
-  blockchainSelected = [];
-  order_preferences= [];
-  languageSelected = [];
   other_technologies;
   pref_active_class;
   cities;
@@ -50,6 +48,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   expected_hourly_rate_log;
   locationArray = [];price_plan_active_class;pricing_disable;
   gdpr_compliance_active_class;gdpr_disable;
+  commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
+  skills_auto_suggest_error;skills_auto_suggest_years_error;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -84,19 +84,16 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       position: [''],
       current_currency: [''],
       current_salary: [''],
-      blockchain: [''],
-      skills: [''],
       other_technologies: [''],
-      order_preferences: [''],
       residence_country: [''],
-      years_exp_min: ['']
+      requiredSkills: []
     });
   }
 
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], years_exp_min: i.years_exp_min ,other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ work_type: i.work_type , currency: i.current_currency, expected_hourly_rate: i.expected_hourly_rate, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, other_technologies: i.other_technologies, requiredSkills: i.requiredSkills } ));
   }
 
   selectedCompanyLocation(location) {
@@ -133,12 +130,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   job_types = constants.job_type;
   roles = constants.workRoles;
   currency = constants.currencies;
-  blockchain = constants.blockchainPlatforms;
-  language_opt = constants.programmingLanguages;
   email_notificaiton = constants.email_notificaiton;
   prefData;
   when_receive_email_notitfications;
-  years_exp = constants.years_exp_min;
 
   ngOnInit() {
     this.pricing_disable = "disabled";
@@ -160,20 +154,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
-      })
-
-      this.blockchain.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
-      this.language_opt.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
+      });
 
       this.preferncesForm = new FormGroup({
         name :  new FormControl(),
@@ -183,16 +164,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         position: new FormControl(),
         current_currency: new FormControl(),
         current_salary: new FormControl(),
-        blockchain: new FormControl(),
-        skills: new FormControl(),
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
-        order_preferences: new FormControl(),
         residence_country: new FormControl(),
         expected_hourly_rate: new FormControl(),
         currency: new FormControl(),
         work_type: new FormControl(),
-        years_exp_min: new FormControl()
+        requiredSkills: new FormControl()
       });
 
       this.preferncesForm = this._fb.group({
@@ -221,6 +199,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 $('.selectpicker').selectpicker('refresh');
               }, 500);
               this.prefData = data['saved_searches'];
+              for(let saved_search of this.prefData){
+                this.commercialSkillsFromDB.push(saved_search.required_skills);
+              }
+              console.log(this.commercialSkillsFromDB);
+
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(
                   this.preferncesFormData()
@@ -325,8 +308,136 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       count=1;
     }
 
+    //new code for auto suggest skills starts
+    this.skills_auto_suggest_years_error = '';
+    if(this.commercialSkillsFromDB.length !== this.preferncesForm.value.prefItems.length){
+      console.log('new search item added');
+      for(let i=0;i<this.preferncesForm.value.prefItems.length; i++) {
+        let skillsAdded = [];
+        this.preferncesForm.value.prefItems[i].requiredSkills = [];
+        if(i==0 && this.commercialSkillsFromDB.length > 0) {
+          console.log('in i if');
+          if(this.commercialSkillsFromDB.length > 0) {
+            for (let skill of this.commercialSkillsFromDB[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else count = 1;
+            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          if(skillsAdded && skillsAdded.length > 0)
+            this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+        else {
+          if(this.selectedCommercialSkillsNew.length < this.preferncesForm.value.prefItems.length){
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+          else {
+            console.log('selected');
+            if(this.selectedCommercialSkillsNew[i] && this.selectedCommercialSkillsNew[i].length > 0) {
+              for (let skill of this.selectedCommercialSkillsNew[i]) {
+                if (skill.exp_year) {
+                  skillsAdded.push({
+                    skills_id: skill.skills_id,
+                    name: skill.name,
+                    type: skill.type,
+                    exp_year: skill.exp_year
+                  });
+                }
+                else {
+                  console.log('in else');
+                  this.skills_auto_suggest_years_error = 'Please select number of years';
+                  count = 1;
+                }
+              }
+            }
+            if(skillsAdded && skillsAdded.length > 0)
+              this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+          }
+        }
+      }
+      console.log(this.selectedCommercialSkillsNew[0]);
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB);
+    }
+    else {
+      console.log('old search item');
+      console.log(this.selectedCommercialSkillsNew);
+      console.log(this.commercialSkillsFromDB[0]);
+      let skillsAdded = [];
+      if(this.selectedCommercialSkillsNew.length === 0) {
+        console.log('in 0 if');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          if(this.commercialSkillsFromDB[i].length > 0) {
+            for (let skill of this.commercialSkillsFromDB[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else {
+                this.skills_auto_suggest_error = 'Please select number of years';
+                count = 1;
+              }
+            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      else{
+        console.log('do mapping using selectedCommercialSkillsNew obj');
+        for (let i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].requiredSkills = [];
+          if(this.selectedCommercialSkillsNew[i].length > 0) {
+            for (let skill of this.selectedCommercialSkillsNew[i]) {
+              if (skill.exp_year) {
+                skillsAdded.push({
+                  skills_id: skill.skills_id,
+                  name: skill.name,
+                  type: skill.type,
+                  exp_year: skill.exp_year
+                });
+              }
+              else {
+                this.skills_auto_suggest_error = 'Please select number of years';
+                count = 1;
+              }
+            }
+          }
+          else {
+            this.skills_auto_suggest_error = 'Please select atleast one skill';
+            count = 1;
+          }
+
+          this.preferncesForm.value.prefItems[i].requiredSkills.push(skillsAdded);
+        }
+      }
+      console.log(this.preferncesForm.value.prefItems);
+    }
+    //new code for auto suggest skills ends
+
     if(this.preferncesForm.value.prefItems.length > 0) {
       for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
+
         if(!this.preferncesForm.value.prefItems[i].name) {
           this.name_log = "Please enter saved search name";
           count=1;
@@ -334,11 +445,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
         if(!this.preferncesForm.value.prefItems[i].work_type) {
           this.work_type_log = "Please select work type";
-          count=1;
-        }
-
-        if(!this.preferncesForm.value.prefItems[i].skills || (this.preferncesForm.value.prefItems[i].skills && this.preferncesForm.value.prefItems[i].skills.length<=0)) {
-          this.language_log = "Please select languages";
           count=1;
         }
 
@@ -400,24 +506,21 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         }
       }
     }
+
     if(count === 0) {
       let inputQuery : any ={};
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0) {
         let i = 0;
-        let searchInput : any = {};
         for (let key of this.preferncesForm.value.prefItems) {
+          let searchInput : any = {};
           if(key['visa_needed']) searchInput.visa_needed = key['visa_needed'];
           else searchInput.visa_needed = false;
           if(key['job_type']) searchInput.job_type = key['job_type'];
           if(key['position']) searchInput.position = key['position'];
-          if(key['blockchain']) searchInput.blockchain = key['blockchain'];
-          if(key['skills']) searchInput.skills = key['skills'];
           if(key['residence_country']) searchInput.residence_country = key['residence_country'];
-          if(key['order_preferences']) searchInput.order_preferences = key['order_preferences'];
           searchInput.location = this.validatedLocation;
 
           if(key['name']) searchInput.name = key['name'];
-          if(key['years_exp_min']) searchInput.years_exp_min = key['years_exp_min'];
 
           if(key['work_type']) searchInput.work_type = key['work_type'];
           if(key['work_type'] === 'employee' && key['current_currency'] && key['current_currency'] !== 'Currency' && key['current_salary']) {
@@ -430,9 +533,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             searchInput.current_currency = key['currency'];
           }
           if(key['other_technologies']) searchInput.other_technologies = key['other_technologies'];
+          if(key['requiredSkills'] && key['requiredSkills'].length > 0) searchInput.required_skills = key['requiredSkills'][0];
           this.saved_searches.push(searchInput);
         }
       }
+
       inputQuery.when_receive_email_notitfications = this.when_receive_email_notitfications;
       inputQuery.saved_searches = this.saved_searches;
 
@@ -487,38 +592,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   positionSelectedOptions(position) {
     this.index = this.positionSelected.indexOf(position);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
-  blockchainSelectedOptions(blockchainName) {
-    this.index = this.blockchainSelected.indexOf(blockchainName);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
-  blockchainOrderSelectedOptions(blockchainName) {
-    this.index = this.order_preferences.indexOf(blockchainName);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
-  languageSelectedOptions(lang) {
-    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length>0){}
-    else this.preferncesForm.value.years_exp_min = '';
-    this.index = this.languageSelected.indexOf(lang);
     if(this.index > -1) {
       return 'selected';
     }
@@ -659,6 +732,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   addNewSearch()
   {
+    this.skills_auto_suggest_error = '';
+    this.skills_auto_suggest_years_error = '';
     setTimeout(() => {
       $('.selectpicker').selectpicker('');
       $('.selectpicker').selectpicker('refresh');
@@ -667,8 +742,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     control.push(this.initPrefRows());
   }
 
-  deletePrefRow(index: number)
-  {
+  deletePrefRow(index: number) {
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.removeAt(index);
   }

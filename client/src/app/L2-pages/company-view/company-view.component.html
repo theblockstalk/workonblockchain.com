@@ -364,10 +364,10 @@
                 </div>
               </div>
 
-              <div class="col-md-12 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+              <div class="col-md-12 mb-3" *ngIf="searches.required_skills && searches.required_skills.length >0">
                 <app-c-formv-list
-                  label="Commercial blockchain experience:"
-                  [value]="createBlockchainLogos(searches.blockchain)"
+                  label="Required skills:"
+                  [value]="createBlockchainLogos(searches.required_skills)"
                 >
                 </app-c-formv-list>
               </div>
@@ -380,12 +380,12 @@
                 </app-c-formv-list>
               </div>
 
-              <div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
+              <!--<div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
                 <div class="form-group">
                   <label>Years of experience:</label>
                   <p> {{searches.years_exp_min}}+ </p>
                 </div>
-              </div>
+              </div>-->
 
               <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
                 <app-c-formv-list

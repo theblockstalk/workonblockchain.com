@@ -69,15 +69,16 @@ export class LinkedinImportComponent implements OnInit {
               this.link= "/work";
             }
 
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].current_salary )
+            if(data['candidate'].employee || data['candidate'].contractor || data['candidate'].volunteer)
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data['candidate'].why_work )
+            if(data['candidate'].commercial_skills && data['candidate'].why_work && data['candidate'].interest_areas )
             {
+              console.log('in if');
               this.exp_disable = '';
               this.resume_class="/resume";
               this.exp_class = "/experience";

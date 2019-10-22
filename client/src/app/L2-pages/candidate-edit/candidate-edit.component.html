@@ -177,35 +177,25 @@
 
             <div class="row">
               <div class="col-md-12">
-                <h4>Technologies</h4>
+                <h2><i class="fas fa-user-friends"></i> Skills</h2>
               </div>
             </div>
 
-            <app-i-forme-commercial-experience [commercial_platforms]="commercial_platforms" [description_commercial_platforms]="description_commercial_platforms"></app-i-forme-commercial-experience>
-            <app-i-forme-experimented-with [experimented_platforms]="experimented_platforms" [description_experimented_platforms]="description_experimented_platforms"></app-i-forme-experimented-with>
-
-            <div class="row">
+            <div class="row mt-4">
               <div class="col-md-12">
-                <h4>Skills</h4>
+                <div class="form-group">
+                  <label>Commercial skills</label>
+                </div>
+                <app-i-forme-skills-auto-suggest
+                  [selectedSkill] = "commercialSkillsFromDB"
+                  (selectedItems)="selectedCommercialSkillsNew = $event"
+                  placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                  [description]="description_commercial_skills"
+                  showDescription="true"
+                ></app-i-forme-skills-auto-suggest>
               </div>
             </div>
-
-            <app-i-forme-commercial-skills [commercial_skills]="commercial_skills" [description_commercial_skills]="description_commercial_skills"></app-i-forme-commercial-skills>
-
           </section>
-          <!--resume job form end here-->
-
-          <!--experience form start here-->
-          <section class="border rounded bg-white mt-4 py-3 px-5" id="experience">
-            <div class="row">
-              <div class="col-md-12">
-                <h2><i class="fas fa-briefcase"></i> Experience</h2>
-              </div>
-            </div>
-            <app-i-forme-languages [programming_languages]="programming_languages"></app-i-forme-languages>
-
-          </section>
-          <!--experience form end here-->
 
           <section class="border rounded bg-white mt-4 py-3 px-5" id="work_history">
             <app-i-forme-work-history [historyData]="work_history"></app-i-forme-work-history>

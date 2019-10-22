@@ -139,22 +139,16 @@ const bodySchema = new Schema({
                 type:Number,
                 min: 0
             },
-            blockchain: {
-                type: [{
+            required_skills: { //will containg blockchain & languages
+                type:[new Schema({
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
                     type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
-            },
-            skills: {
-                type: [{
-                    type: String,
-                    enum: enumerations.programmingLanguages
-                }]
-            },
-            years_exp_min: {
-                type: Number,
-                min: 1,
-                max: 20
+                    name: String,
+                    exp_year: Number
+                })]
             },
             residence_country: {
                 type : [{
@@ -164,13 +158,6 @@ const bodySchema = new Schema({
             },
             other_technologies : {
                 type : String
-            },
-
-            order_preferences : {
-                type: [{
-                    type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
             },
             name: {
                 type: String

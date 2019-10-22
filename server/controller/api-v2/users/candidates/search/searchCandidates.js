@@ -9,7 +9,7 @@ const objects = require('../../../../services/objects');
 
 const salaryFactor = 1.1;
 
-module.exports.candidateSearch = async function (filters, search, orderPreferences) {
+module.exports.candidateSearch = async function (filters, search) {
     logger.debug("Doing new candidate search", {
         filters: filters,
         search: search
@@ -30,13 +30,12 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         if (!messageDocs) {
             errors.throwError("No users matched the search", 404);
         }
-        for (messageDoc of messageDocs) {
+        for (let messageDoc of messageDocs) {
             userIds.push(messageDoc.sender_id.toString());
             userIds.push(messageDoc.receiver_id.toString());
         }
         const userIdsDistinct = makeDistinctSet(userIds);
         userQuery.push({_id : {$in : userIdsDistinct}});
-
     }
     if(filters.last_msg_received_day){
         userQuery.push({
@@ -226,15 +225,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             }
 
         }
-        if (search.blockchains && search.blockchains.length > 0 ) {
-            const platformFilter = {
-                $or: [
-                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
-                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
-                ]
-            };
-            userQuery.push(platformFilter);
-        }
 
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
@@ -262,74 +252,39 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(hourlyRateFilter);
         }
 
-        if (search.programming_languages && search.programming_languages.length > 0) {
-            let skillsFilterNew;
-            if (search.years_exp_min) {
-                let skillsAndExpFilter = [];
-                for (let skills of search.programming_languages) {
-                    skillsAndExpFilter = {
-                        "candidate.programming_languages": {
-                            $elemMatch: {
-                                "language": skills,
-                                "exp_year": {$in: minExpToArray(search.years_exp_min)}
-                            }
-                        }
-                    };
-                    skillsFilterNew = {$or: [skillsAndExpFilter]}
+        if (search.required_skills && search.required_skills.length > 0) {
+            for (let skill of search.required_skills) {
+                let skillMatch = {
+                    name: skill.name
+                };
+                if (skill.exp_year) {
+                    skillMatch.exp_year = {
+                        $gte: skill.exp_year
+                    }
                 }
-            }
-            else{
-                const skillsFilter = {"candidate.programming_languages.language": {$in: search.programming_languages}};
-                userQuery.push(skillsFilter);
-            }
-            if(skillsFilterNew){
-                userQuery.push(skillsFilterNew);
+                userQuery.push({
+                    "candidate.commercial_skills" : {
+                        $elemMatch: skillMatch
+                    }
+                });
             }
         }
-
-
 
         if (search.base_country && search.base_country.length > 0) {
             const residenceCountryFilter = {"candidate.base_country": {$in: search.base_country}};
             userQuery.push(residenceCountryFilter);
         }
-
     }
 
-    let orderBy;
-
-    if(orderPreferences) {
-        if (orderPreferences.blockchainOrder && orderPreferences.blockchainOrder.length > 0 ) {
-            orderBy = {
-                $or: [
-                    {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchainOrder}},
-                    {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchainOrder}}
-                ]
-            };
-        }
-    }
     logger.debug("query", {query: userQuery});
     let searchQuery = {$and: userQuery};
     let sort = {"candidate.latest_status.timestamp" : -1};
     const userDocs = await users.findAndSort(searchQuery, sort);
     if(userDocs && userDocs.length > 0) {
-        if(orderBy) {
-            userQuery.push(orderBy);
-            searchQuery = {$and: userQuery};
-            const userDocsOrderBy = await users.findAndSort(searchQuery, sort);
-            let sortedDocs = userDocsOrderBy.concat(userDocs);
-            sortedDocs = objects.removeDuplicates(sortedDocs , '_id');
-            return {
-                count: sortedDocs.length,
-                candidates: sortedDocs
-            };
-        }
-        else {
-            return {
-                count: userDocs.length,
-                candidates: userDocs
-            };
-        }
+        return {
+            count: userDocs.length,
+            candidates: userDocs
+        };
 
     }
     else {

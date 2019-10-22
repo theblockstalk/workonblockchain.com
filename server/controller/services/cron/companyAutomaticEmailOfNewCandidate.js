@@ -53,11 +53,10 @@ module.exports = async function (companyId) {
                             blacklist: blacklist,
                             updatedAfter: savedSearch.timestamp
                         }, {
-                            skills: savedSearch.skills,
                             locations: savedSearch.location,
                             visa_needed: savedSearch.visa_needed,
                             positions: savedSearch.position,
-                            blockchains: savedSearch.blockchain,
+                            required_skills: savedSearch.required_skills,
                             residence_country: savedSearch.residence_country,
                             salary: {
                                 current_currency: savedSearch.current_currency,
@@ -67,10 +66,7 @@ module.exports = async function (companyId) {
                             hourly_rate : {
                                 expected_hourly_rate: savedSearch.expected_hourly_rate,
                                 current_currency: savedSearch.current_currency
-                            },
-                            years_exp_min: savedSearch.years_exp_min
-                        }, {
-                            blockchainOrder: savedSearch.order_preferences
+                            }
                         });
                         if (candidateDocs) {
                             logger.debug("Candidate ids in search", candidateDocs.candidates.map( (candidate) => candidate._id));

@@ -29,7 +29,7 @@ export class DropdownSingleComponent implements OnInit {
       }, 300);
     }
     if(!this.label) {
-      this.labelClass = 'invisible';
+      this.labelClass = 'd-none';
       this.label = "Don't show";
     }
   }

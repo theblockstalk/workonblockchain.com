@@ -25,13 +25,13 @@
           <li class="nav-item">
             <a routerLink="/work" class="nav-link">
               <i class="{{job_active_class}}"></i>
-              Work
+              Preference
             </a>
           </li>
           <li class="nav-item px-2">
             <a routerLink="/resume" class="nav-link">
               <i class="{{resume_active_class}}"></i>
-              Blockchain
+              Skills
             </a>
           </li>
           <li class="nav-item">
@@ -90,165 +90,20 @@
             </div>
           </div>
 
-
           <div class="row">
             <div class="col-md-12">
-              <h4>Technologies</h4>
+              <h4><i class="fas fa-user-friends"></i> Skills</h4>
               <div class="form-group mt-4">
-                <label>Commercial experience</label>
-                <ul>
-                  <li>Technologies you have commercially worked with or done university projects on</li>
-                </ul>
-                <div class="checkbox">
-                  <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/blockchain/{{option.name}}.png" alt="{{option.name}} Logo">
-                        {{option.name}}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <input type="text" class="form-control d-none" [(ngModel)]='commercially_worked' name="commercially_worked">
+                <label>Commercial skills</label>
               </div>
+              <app-i-forme-skills-auto-suggest
+                [selectedSkill] = "commercialSkillsFromDB"
+                (selectedItems)="selectedCommercialSkillsNew = $event"
+                placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                [description]="description_commercial_skills"
+                showDescription="true"
+              ></app-i-forme-skills-auto-suggest>
             </div>
-          </div>
-
-          <div class="row" *ngIf="commercially_worked?.length > 0">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Years of experience</label>
-              </div>
-            </div>
-            <div class = "col-md-12" *ngFor="let option of commercially_worked; let i = index ">
-              <div class="form-group">
-                <p>{{option.value}}</p>
-                <div class="form-check form-check-inline">
-                  <div *ngFor="let exp of exp_year; let i_ind =index">
-                    <input type="radio" class="d-none" id = "rg{{option.value}}{{i_ind}}" name="radiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
-                    <label  for="rg{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                      {{exp.name}}
-                    </label>
-                  </div>
-                  <input type="text" class="form-control d-none" name="commercial_platforms" [(ngModel)]='commercial_expYear' >
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked.length !== commercial_expYear.length">
-            {{commercial_log}}
-          </div>
-
-          <!-- description for commercial exp -->
-          <div class="row" *ngIf="commercially_worked?.length > 0">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Description of experience (optional)</label>
-                <textarea placeholder="I have spent 3 years using the web3 API as a back end developer, as well as helping to design smart contracts." rows="4" cols="100" maxlength="3000" name="description_commercial_platforms" class="form-control" [(ngModel)]="description_commercial_platforms" style="resize:none"> </textarea>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked?.length > 0 && this.description_commercial_platforms && this.description_commercial_platforms.length < 100">
-            {{commercial_desc_log}}
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Experimented with </label>
-                <ul>
-                  <li>Technologies you have used or tested</li>
-                  <li>E.g. sending some Zcash to an exchange, or reading the white paper</li>
-                </ul>
-                <div class="checkbox">
-                  <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions($event)"  />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/blockchain/{{option.name}}.png" alt="{{option.value}} Logo">
-                        {{option.value}}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <input type="text" class="form-control d-none" [(ngModel)]='experimented_platform' name="experimented_platforms" >
-              </div>
-            </div>
-          </div>
-          <!-- description for experimented with -->
-          <div class="row" *ngIf="experimented_platform?.length > 0">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Description of experimentation (optional)</label>
-                <textarea placeholder="I have used Bitcoin and Zcash to send money to some friends and family. I used several exchanges. I use the Luno wallet." rows="4" cols="100" maxlength="3000" name="description_experimented_platforms" class="form-control" [(ngModel)]="description_experimented_platforms" style="resize:none"> </textarea>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="experimented_platform?.length > 0 && this.description_experimented_platforms && this.description_experimented_platforms.length < 100">
-            {{experimented_desc_log}}
-          </div>
-
-          <!-- commercial skills -->
-          <div class="row">
-            <div class="col-md-12">
-              <h4>Skills</h4>
-              <div class="form-group mt-4">
-                <label>Commercial experience </label>
-                <ul>
-                  <li>Skills and areas you have commercially worked in or done university projects in</li>
-                </ul>
-                <div class="checkbox">
-                  <div class="row m-0">
-                    <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
-                        {{option.name}}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <input type="text" class="form-control d-none" [(ngModel)]='commercialSkills' name="commercial_skills_name">
-            </div>
-          </div>
-
-          <div class="row" *ngIf="commercialSkills?.length > 0">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Years of experience</label>
-              </div>
-            </div>
-            <div class = "col-md-12" *ngFor="let option of commercialSkills; let i = index ">
-              <div class="form-group">
-                <p>{{option.name}}</p>
-                <div class="form-check form-check-inline">
-                  <div *ngFor="let exp of exp_year; let i_ind =index">
-                    <input type="radio" class="d-none" id = "skill{{option.value}}{{i_ind}}" name="commercialradiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value" >
-                    <label  for="skill{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                      {{exp.name}}
-                    </label>
-                  </div>
-                  <input type="text" class="form-control d-none" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
-            {{commercial_skill_log}}
-          </div>
-          <!-- description for commercial skills -->
-          <div class="row" *ngIf="commercialSkills?.length > 0">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Description of commercial experience (optional)</label>
-                <textarea placeholder="I studied economics as a major at Cambridge University and then went on to work in a cryptocurrency exchange for 3 years." rows="5" maxlength="3000" name="description_commercial_skills" class="form-control" [(ngModel)]="description_commercial_skills" style="resize:none"> </textarea>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills?.length > 0 && this.description_commercial_skills && this.description_commercial_skills.length < 100">
-            {{commercialSkills_desc_log}}
           </div>
 
           <div class = "form-group text-right">
