@@ -18,7 +18,7 @@ describe('POST /jobs', function () {
     let jobPost;
 
     beforeEach(async function () {
-        jobPost = await jobHelpers.randomJob();
+        jobPost = await jobHelpers.jobPost();
     })
 
     afterEach(async function () {

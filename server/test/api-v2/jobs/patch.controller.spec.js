@@ -18,9 +18,9 @@ describe('POST /jobs', function () {
     let jobPost, jobPatch;
 
     beforeEach(async function () {
-        jobPost = await jobHelpers.randomJob();
+        jobPost = await jobHelpers.jobPost();
 
-        const randomJob2 = await jobHelpers.randomJob();
+        const randomJob2 = await jobHelpers.jobPost();
         jobPatch = {
             name: randomJob2.name,
             status: "closed",

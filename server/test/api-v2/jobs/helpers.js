@@ -9,7 +9,7 @@ const citiesHelpers = require('../locations/helpers');
 const enumerations = require('../../../model/enumerations');
 const random = require('../../helpers/random');
 
-module.exports.randomJob = async function() {
+module.exports.jobPost = async function() {
     const company = docGenerator.company();
     await companyHelper.signupCompany(company);
     const companyUserDoc = await users.findOne({email: company.email});
