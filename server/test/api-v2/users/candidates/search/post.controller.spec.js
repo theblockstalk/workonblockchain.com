@@ -235,7 +235,7 @@ describe('POST /v2/users/candidates/search', function () {
 
             const comapnyUserDoc = await Users.findOne({email: company.email});
             const filterRes = await candidateHelpers.companyFilter(params , comapnyUserDoc.jwt_token);
-            filterRes.status.should.equal(200)
+            filterRes.status.should.equal(200);
         })
 
         it('it should return the candidate with required skills', async function () {
