@@ -155,6 +155,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   }
 
+  status_last_update_days(event){
+    this.status_last_updated_day =event;
+    this.search(this.status_last_updated_day);
+  }
+
   search_days(event){
     this.number_of_days =event;
     this.search(this.number_of_days);

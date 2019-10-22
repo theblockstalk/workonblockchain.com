@@ -38,6 +38,13 @@
             <hr/>
 
             <div class = "form-group">
+              <select title="Status last updated (days)" class="selectpicker form-control " name="status_last_updated_day" [(ngModel)]="status_last_updated_day" (ngModelChange)="status_last_update_days($event)" >
+                <option *ngFor='let options of numberOfDays'  [value]="options.value" selected>{{options.name}}</option>
+              </select>
+            </div>
+            <hr/>
+
+            <div class = "form-group">
               <select title="Last message (days)" class="selectpicker form-control " name="number_of_days" [(ngModel)]="number_of_days" (ngModelChange)="search_days($event)" >
                 <option *ngFor='let options of numberOfDays'  [value]="options.value" selected>{{options.name}}</option>
               </select>
