@@ -157,7 +157,7 @@ module.exports.endpoint = async function (req, res) {
     let update = {$set: jobDocUpdate};
     if (!objects.isEmpty(unset)) update.$unset = unset;
 
-    const jobRes = await jobs.updateOne({_id: jobId}, update);
-
-    res.send(jobRes._doc.toObject())
+    await jobs.updateOne({_id: jobId}, update);
+    const jobDoc = await jobs.findOne({_id: jobId});
+    res.send(jobDoc)
 }

@@ -39,13 +39,13 @@ describe('POST /jobs', function () {
             expected_salary_max: 100000,
             num_people_desired: 2,
             required_skills: [{
-                skills_id: randomJob2.required_skills[0]._id,
+                skills_id: randomJob2.required_skills[0].skills_id,
                 type: randomJob2.required_skills[0].type,
                 name: randomJob2.required_skills[0].name,
                 exp_year: randomJob2.required_skills[0].exp_year
             }],
             not_required_skills: [{
-                skills_id: randomJob2.not_required_skills[0]._id,
+                skills_id: randomJob2.not_required_skills[0].skills_id,
                 type: randomJob2.not_required_skills[0].type,
                 name: randomJob2.not_required_skills[0].name
             }],
