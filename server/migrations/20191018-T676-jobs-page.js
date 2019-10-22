@@ -23,7 +23,6 @@ module.exports.up = async function() {
                 status: "open",
                 work_type : savedSearch.work_type,
                 positions: savedSearch.position,
-                expected_salary_min: savedSearch.expected_hourly_rate,
                 num_people_desired: 1,
                 required_skills: savedSearch.required_skills,
                 description : '',
@@ -32,6 +31,9 @@ module.exports.up = async function() {
             },
             if (savedSearch.visa_needed) newJob.visa_needed = savedSearch.visa_needed;
             if (savedSearch.job_type) newJob.job_type = savedSearch.job_type;
+            if (savedSearch.current_salary) newJob.expected_salary_min = savedSearch.current_salary;
+            if (savedSearch.expected_hourly_rate) newJob.expected_hourly_rate_min = savedSearch.expected_hourly_rate;
+            if (savedSearch.current_currency) newJob.currency = savedSearch.current_currency;
             let newLocations = [];
             for (let location of savedSearch.location) {
                 if (location.remote) {

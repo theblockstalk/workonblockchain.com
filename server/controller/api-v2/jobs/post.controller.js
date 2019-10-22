@@ -61,8 +61,7 @@ const bodySchema = new Schema({
     },
     expected_salary_min: {
         type: Number,
-        min: 1,
-        required: true
+        min: 1
     },
     expected_salary_max: {
         type: Number,
@@ -70,8 +69,7 @@ const bodySchema = new Schema({
     },
     expected_hourly_rate_min: {
         type: Number,
-        min: 1,
-        required: true
+        min: 1
     },
     expected_hourly_rate_max: {
         type: Number,
