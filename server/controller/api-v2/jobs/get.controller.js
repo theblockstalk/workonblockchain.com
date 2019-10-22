@@ -37,7 +37,7 @@ module.exports.endpoint = async function (req, res) {
     const jobId = req.query.job_id;
 
     const jobDoc = await jobs.findOneById(jobId);
-    if (jobDoc.company_id !== company_id)
+    if (jobDoc.company_id.toString() !== company_id.toString())
         errors.throwError("Not authorized to get this job", 400);
 
     res.send(jobDoc)

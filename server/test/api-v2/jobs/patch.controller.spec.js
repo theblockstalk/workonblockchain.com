@@ -58,7 +58,6 @@ describe('POST /jobs', function () {
         await mongo.drop();
     })
 
-
     describe('positive tests', function () {
 
         it('it should patch a job as company', async function () {
@@ -91,33 +90,51 @@ describe('POST /jobs', function () {
             job.not_required_skills[0].skills_id.toString().should.equal(jobPatch.not_required_skills[0].skills_id.toString());
             job.num_people_desired.should.equal(jobPatch.num_people_desired);
 
-            const companyDoc = await companies.findOne({_creator: companyUserDoc._id})
-            companyDoc.job_ids[0].toString().should.equal(job._id.toString());
+            const jobUnpatch = {
+                unset_visa_needed: true,
+                unset_job_type: true,
+                unset_expected_salary_min: true,
+                unset_expected_salary_max: true,
+                unset_required_skills: true,
+                unset_not_required_skills: true
+            };
+            res = await api.jobs.PATCH(companyUserDoc.jwt_token, query, jobUnpatch);
+            res.status.should.equal(200);
+
+            job = res.body;
+            expect(job.visa_needed).to.not.exist;
+            expect(job.job_type).to.not.exist;
+            expect(job.expected_salary_min).to.not.exist;
+            expect(job.expected_salary_max).to.not.exist;
+            expect(job.required_skills).to.not.exist;
+            expect(job.not_required_skills).to.not.exist;
         })
 
-        it('it should create a job for an admin', async function () {
+        it('it should patch a job as an admin', async function () {
             const company = docGenerator.company();
             await companyHelper.signupCompany(company);
             const companyUserDoc = await users.findOne({email: company.email});
             let companyDoc = await companies.findOne({_creator: companyUserDoc._id});
+
+            let res = await api.jobs.POST(companyUserDoc.jwt_token, null, jobPost);
+            let job = res.body;
+
+            const query = {
+                job_id: job._id,
+                admin: true,
+                company_id: companyDoc._id
+            };
 
             const company2 = docGenerator.company();
             await companyHelper.signupCompany(company2);
             const companyUserDoc2 = await users.findOne({email: company2.email});
             await userHelpers.makeAdmin(company2.email);
 
-            const query = {
-                admin: true,
-                company_id: companyDoc._id
-            };
-            const res = await api.jobs.POST(companyUserDoc2.jwt_token, query, jobPost)
+            res = await api.jobs.PATCH(companyUserDoc2.jwt_token, query, jobPatch)
             res.status.should.equal(200);
 
-            const job = res.body;
-            job.name.should.equal(jobPost.name);
-
-            companyDoc = await companies.findOne({_id: companyDoc._id})
-            companyDoc.job_ids[0].toString().should.equal(job._id.toString());
+            job = res.body;
+            job.name.should.equal(jobPatch.name);
         })
     });
 });
