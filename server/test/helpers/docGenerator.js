@@ -5,7 +5,7 @@ module.exports.candidate = function candidate() {
     return {
         first_name: "Tayyab",
         last_name: "Hussain",
-        email: 'tayyab@test.com',
+        email: random.email(),
         password: "Password1",
         type: "candidate"
     };
@@ -15,7 +15,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: 'salman@test.com',
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
@@ -35,8 +35,8 @@ module.exports.initialJobOffer = function initialJobOffer() {
         message: "",
         description: "this is for test case",
         job_title: "job title for test case",
-        salary: 150,
-        currency: '£ GBP',
+        salary: random.integer(1),
+        currency: random.enum(enumerations.currencies),
         date_of_joining: "",
         job_type: "Part Time",
         is_company_reply: 0,
