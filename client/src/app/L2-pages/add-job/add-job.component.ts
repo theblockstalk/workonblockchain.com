@@ -24,7 +24,9 @@ export class AddJobComponent implements OnInit {
   employment_type_log;position_type = constants.job_type;min_salary_log;
   annual_salary_currency_log;currency = constants.currencies;
   num_people_desired;num_people_desired_log;resources = constants.resources;
-  min_hourly_log;hourly_currency_log;
+  min_hourly_log;hourly_currency_log;employment_type;min_annual_salary;
+  max_annual_salary;annual_currency;hourly_rate_currency;max_hourly_rate;
+  min_hourly_rate;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -49,31 +51,31 @@ export class AddJobComponent implements OnInit {
       errorCount = 1;
     }
     if(this.employeeCheck) {
-      if(!this.employee.employment_type) {
+      if(!this.employment_type) {
         this.employment_type_log = "Please choose position type";
         errorCount = 1;
       }
-      if(!this.employee.min_annual_salary) {
+      if(!this.min_annual_salary) {
         this.min_salary_log = "Please enter minimum annual salary";
         errorCount = 1;
       }
-      if(this.employee.max_annual_salary && !checkNumber(this.employee.max_annual_salary))
+      if(this.max_annual_salary && !checkNumber(this.max_annual_salary))
         errorCount = 1;
 
-      if(!this.employee.currency || this.employee.currency === 'Currency') {
+      if(!this.annual_currency || this.annual_currency === 'Currency') {
         this.annual_salary_currency_log = "Please choose currency";
         errorCount = 1;
       }
     }
     if(this.contractorCheck) {
-      if(!this.contractor.min_hourly_rate) {
+      if(!this.min_hourly_rate) {
         this.min_hourly_log = "Please enter minimum hourly rate";
         errorCount = 1;
       }
-      if(this.contractor.max_hourly_rate && !checkNumber(this.contractor.max_hourly_rate))
+      if(this.max_hourly_rate && !checkNumber(this.max_hourly_rate))
         errorCount = 1;
 
-      if(!this.contractor.currency || this.contractor.currency === 'Currency') {
+      if(!this.hourly_rate_currency || this.hourly_rate_currency === 'Currency') {
         this.hourly_currency_log = "Please choose currency";
         errorCount = 1;
       }
@@ -84,7 +86,8 @@ export class AddJobComponent implements OnInit {
     }
 
     if(errorCount === 0) {
-      console.log(this.num_people_desired);
+      console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
+      console.log(this.employment_type);
       console.log(this.job_status);
       console.log('add job ftn');
     }

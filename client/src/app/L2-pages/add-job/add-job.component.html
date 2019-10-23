@@ -100,10 +100,10 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Position type:</label>
-                  <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
+                  <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employment_type" >
                     <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="!employee.employment_type">
+                  <div class = "invalid-feedback d-inline" *ngIf="!employment_type">
                     {{employment_type_log}}
                   </div>
                 </div>
@@ -116,29 +116,29 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <input type="text" #min_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_annual_salary" placeholder=" Min" [(ngModel)]="employee.min_annual_salary">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.min_annual_salary; else expected_validation">
+                  <input type="text" #min_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_annual_salary" placeholder=" Min" [(ngModel)]="min_annual_salary">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!min_annual_salary; else expected_validation">
                     {{min_salary_log}}
                   </div>
-                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="min_salary.errors && employee.min_annual_salary">
+                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="min_salary.errors && min_annual_salary">
                     Minimum salary should be a number.
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <input type="text" #max_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_annual_salary" placeholder=" Max" [(ngModel)]="employee.max_annual_salary">
-                  <div class = "invalid-feedback d-inline"  #max_salary_validation  *ngIf="max_salary.errors && employee.max_annual_salary">
+                  <input type="text" #max_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_annual_salary" placeholder=" Max" [(ngModel)]="max_annual_salary">
+                  <div class = "invalid-feedback d-inline"  #max_salary_validation  *ngIf="max_salary.errors && max_annual_salary">
                     Maximum salary should be a number.
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
-                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
+                  <select [(ngModel)]="annual_currency" class="selectpicker" title="Currency" required name="annual_currency" >
+                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === annual_currency  ? true : null" >{{baseCurrency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency || employee.currency === 'Currency'">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!annual_currency || annual_currency === 'Currency'">
                     {{annual_salary_currency_log}}
                   </div>
                 </div>
@@ -153,29 +153,29 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <input type="text" #min_hourly_rate="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_hourly_rate" placeholder="Min" [(ngModel)]="contractor.min_hourly_rate">
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.min_hourly_rate; else min_hourly_rate_validation">
+                  <input type="text" #min_hourly_rate_valid="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_hourly_rate" placeholder="Min" [(ngModel)]="min_hourly_rate">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!min_hourly_rate; else min_hourly_rate_validation">
                     {{min_hourly_log}}
                   </div>
-                  <div class = "invalid-feedback d-inline"  #min_hourly_rate_validation  *ngIf="min_hourly_rate.errors && contractor.min_hourly_rate">
+                  <div class = "invalid-feedback d-inline"  #min_hourly_rate_validation  *ngIf="min_hourly_rate_valid.errors && min_hourly_rate">
                     Minimum hourly rate should be a number.
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <input type="text" #max_hourly_rate="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_hourly_rate" placeholder="Min" [(ngModel)]="contractor.max_hourly_rate">
-                  <div class = "invalid-feedback d-inline"  #max_hourly_rate_validation  *ngIf="max_hourly_rate.errors && contractor.max_hourly_rate">
+                  <input type="text" #max_hourly_rate_valid="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_hourly_rate" placeholder="Max" [(ngModel)]="max_hourly_rate">
+                  <div class = "invalid-feedback d-inline"  #max_hourly_rate_validation  *ngIf="max_hourly_rate_valid.errors && max_hourly_rate">
                     Maximum hourly rate should be a number.
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <select [(ngModel)]="contractor.currency" class="selectpicker" title="Currency" required name="houlry_currency" >
-                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === contractor.currency  ? true : null" >{{baseCurrency}}</option>
+                  <select [(ngModel)]="hourly_rate_currency" class="selectpicker" title="Currency" required name="houlry_currency" >
+                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === hourly_rate_currency  ? true : null" >{{baseCurrency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!contractor.currency || contractor.currency === 'Currency'">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!hourly_rate_currency || hourly_rate_currency === 'Currency'">
                     {{hourly_currency_log}}
                   </div>
                 </div>
