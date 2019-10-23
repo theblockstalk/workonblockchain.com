@@ -9,5 +9,8 @@ export const urls = {
   price_plan: 'pricing', //for general users
   company_wizard_price_plan: 'users/company/wizard/pricing', //for company wizard & edit company price plan
   admin_company_view: 'admins/company/:user_id',
-  company_profile_view: 'users/company'
+  company_profile_view: 'users/company',
+  //new for jobs pages
+  admin_jobs_add: 'admins/company/:company_id/jobs', ///admins/company/{company_id}/jobs/new
+  company_jobs_add: 'users/company/jobs/new'
 };
