@@ -19,6 +19,10 @@ export class AddJobComponent implements OnInit {
   jobNameErrMsg;error_msg;workTypes = constants.workTypes;
   work_type;work_type_log;employeeCheck = false;selected_work_type=[];
   contractorCheck = false;volunteerCheck = false;
+  employee: any = {}; contractor: any = {}; volunteer: any = {};
+  employment_type_log;position_type = constants.job_type;min_salary_log;
+  max_salary_log;annual_salary_currency_log;currency = constants.currencies;
+  num_people_desired;num_people_desired_log;resources = constants.resources;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -42,9 +46,32 @@ export class AddJobComponent implements OnInit {
       this.work_type_log = "Please select work type";
       errorCount = 1;
     }
+    if(this.employeeCheck) {
+      if (!this.employee.employment_type) {
+        this.employment_type_log = "Please choose position type";
+        errorCount = 1;
+      }
+    }
+    if(!this.employee.min_annual_salary) {
+      this.min_salary_log = "Please enter minimum annual salary";
+      errorCount = 1;
+    }
+    if(!this.employee.max_annual_salary) {
+      this.max_salary_log = "Please enter maximum annual salary";
+      errorCount = 1;
+    }
+    if(!this.employee.currency || this.employee.currency === 'Currency') {
+      this.annual_salary_currency_log = "Please choose currency";
+      errorCount = 1;
+    }
+    if (!this.num_people_desired) {
+      this.num_people_desired_log = "Please choose a number";
+      errorCount = 1;
+    }
 
     if(errorCount === 0) {
-      console.log(this.work_type);
+      console.log(this.num_people_desired);
+      console.log(this.job_status);
       console.log('add job ftn');
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";

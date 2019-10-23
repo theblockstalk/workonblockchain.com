@@ -34,20 +34,22 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label>Job name</label>
                   <input type="text" name="job_name" class="form-control" placeholder="Full stack Java in London" required [(ngModel)]="job_name">
-                </div>
-                <div class = "invalid-feedback d-inline" *ngIf="!job_name">
-                  {{jobNameErrMsg}}
+                  <div class = "invalid-feedback d-inline" *ngIf="!job_name">
+                    {{jobNameErrMsg}}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
-                <app-c-forme-dropdown-single
-                  [options]="job_status_options"
-                  [value]="job_status"
-                  (selectedValue)="job_status = $event"
-                ></app-c-forme-dropdown-single>
-                <div class = "invalid-feedback d-inline" *ngIf="!job_status">
-                  {{jobStatusErrMsg}}
+                <div class="form-group">
+                  <label>Status</label>
+                  <select [(ngModel)]="job_status" class="selectpicker" title="(Job status)" required name="job_status" >
+                    <option *ngFor='let status of job_status_options' [attr.selected]="status.value === job_status ? true : null" >{{status.name}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!job_status">
+                    {{jobStatusErrMsg}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -86,6 +88,72 @@
                   </div>
                   <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
                     {{work_type_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="employeeCheck">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Position type:</label>
+                  <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
+                    <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!employee.employment_type">
+                    {{employment_type_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mt-2">
+                <div class="form-group">
+                  <label>Annual salary:</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <input type="text" #min_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" Min" [(ngModel)]="employee.min_annual_salary">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.min_annual_salary; else expected_validation">
+                    {{min_salary_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="min_salary.errors && employee.min_annual_salary">
+                    Minimum salary should be a number.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <input type="text" #max_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" Max" [(ngModel)]="employee.max_annual_salary">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.max_annual_salary; else expected_validation_max">
+                    {{max_salary_log}}
+                  </div>
+                  <div class = "invalid-feedback d-inline"  #expected_validation_max  *ngIf="max_salary.errors && employee.max_annual_salary">
+                    Maximum salary should be a number.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" required name="base_currency" >
+                    <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === employee.currency  ? true : null" >{{baseCurrency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency || employee.currency === 'Currency'">
+                    {{annual_salary_currency_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Number of people you are looking for this role</label>
+                  <select [(ngModel)]="num_people_desired" class="selectpicker" title="(select one)" required name="num_people_desired" >
+                    <option *ngFor='let resource of resources' [attr.selected]="resource.value === num_people_desired  ? true : null" >{{resource.name}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!num_people_desired">
+                    {{num_people_desired_log}}
                   </div>
                 </div>
               </div>
