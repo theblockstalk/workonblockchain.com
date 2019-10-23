@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Inject, PLATFORM_ID } from '@angular/core';
 import {isPlatformBrowser} from "@angular/common";
 
 import {constants} from '../../../constants/constants';
+import {checkNumber} from '../../../services/object';
 declare var $:any;
 
 @Component({
@@ -21,8 +22,9 @@ export class AddJobComponent implements OnInit {
   contractorCheck = false;volunteerCheck = false;
   employee: any = {}; contractor: any = {}; volunteer: any = {};
   employment_type_log;position_type = constants.job_type;min_salary_log;
-  max_salary_log;annual_salary_currency_log;currency = constants.currencies;
+  annual_salary_currency_log;currency = constants.currencies;
   num_people_desired;num_people_desired_log;resources = constants.resources;
+  min_hourly_log;hourly_currency_log;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -47,22 +49,34 @@ export class AddJobComponent implements OnInit {
       errorCount = 1;
     }
     if(this.employeeCheck) {
-      if (!this.employee.employment_type) {
+      if(!this.employee.employment_type) {
         this.employment_type_log = "Please choose position type";
         errorCount = 1;
       }
+      if(!this.employee.min_annual_salary) {
+        this.min_salary_log = "Please enter minimum annual salary";
+        errorCount = 1;
+      }
+      if(this.employee.max_annual_salary && !checkNumber(this.employee.max_annual_salary))
+        errorCount = 1;
+
+      if(!this.employee.currency || this.employee.currency === 'Currency') {
+        this.annual_salary_currency_log = "Please choose currency";
+        errorCount = 1;
+      }
     }
-    if(!this.employee.min_annual_salary) {
-      this.min_salary_log = "Please enter minimum annual salary";
-      errorCount = 1;
-    }
-    if(!this.employee.max_annual_salary) {
-      this.max_salary_log = "Please enter maximum annual salary";
-      errorCount = 1;
-    }
-    if(!this.employee.currency || this.employee.currency === 'Currency') {
-      this.annual_salary_currency_log = "Please choose currency";
-      errorCount = 1;
+    if(this.contractorCheck) {
+      if(!this.contractor.min_hourly_rate) {
+        this.min_hourly_log = "Please enter minimum hourly rate";
+        errorCount = 1;
+      }
+      if(this.contractor.max_hourly_rate && !checkNumber(this.contractor.max_hourly_rate))
+        errorCount = 1;
+
+      if(!this.contractor.currency || this.contractor.currency === 'Currency') {
+        this.hourly_currency_log = "Please choose currency";
+        errorCount = 1;
+      }
     }
     if (!this.num_people_desired) {
       this.num_people_desired_log = "Please choose a number";
