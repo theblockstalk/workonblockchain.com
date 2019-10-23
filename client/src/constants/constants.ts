@@ -500,6 +500,10 @@ export const constants = {
     {value:1, name:'1+ years'},{value:2, name:'2+ years'},
     {value:3, name:'3+ years'},{value:4, name:'4+ years'},
     {value:5, name:'5+ years'},{value:6, name:'6+ years'}
+  ],
+  job_status: [
+    {value:'Open', name:'Open'},{value:'Closed', name:'Closed'},
+    {value:'Paused', name:'Paused'}
   ]
 
 };

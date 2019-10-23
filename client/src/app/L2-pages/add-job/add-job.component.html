@@ -1,3 +1,116 @@
-<p>
-  add-job works!
-</p>
+<section class="wob-bg-primary2 pb-5 pt-3">
+  <div class="container">
+
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <h3 class="text-center">Talent search requirements</h3>
+        <div class="row my-3">
+          <div class="col-md-12">
+            <div class = "form-group w-100 mb-0">
+              <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
+              <div class="form-check form-check-inline">
+                <div *ngFor="let receive of email_notificaiton;">
+                  <input type="radio" id="radio - {{receive}}" name="when_receive_email_notitfications" class="d-none" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
+                  <label  for="radio - {{receive}}" class="border border py-2 px-lg-5 px-2">
+                    {{receive}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+              {{email_notification_log}}
+            </div>
+          </div>
+        </div>
+        <hr class="bg-dark" />
+
+        <form (ngSubmit)="addJob()">
+          <section class = "p-2" id = "information">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="pt-2 mb-3"><i class="fas fa-briefcase"></i> Job </h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input type="text" name="job_name" class="form-control" placeholder="Full stack Java in London" required [(ngModel)]="job_name">
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="!job_name">
+                  {{jobNameErrMsg}}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <app-c-forme-dropdown-single
+                  [options]="job_status_options"
+                  [value]="job_status"
+                  (selectedValue)="job_status = $event"
+                ></app-c-forme-dropdown-single>
+                <div class = "invalid-feedback d-inline" *ngIf="!job_status">
+                  {{jobStatusErrMsg}}
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Work type:</label>
+                  <div class="row mt-4">
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-user-tie fa-4x"></i><br/>
+                      <div class="form-check mt-2">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
+                          Employee (full/part time)
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-address-card fa-4x"></i><br/>
+                      <div class="form-check mt-2">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
+                          Contractor/Freelancer
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fas fa-user-tie fa-4x"></i><br/>
+                      <div class="form-check mt-2">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
+                          Temporary volunteer
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
+                    {{work_type_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class = "text-right mt-3">
+                    <button type="submit" class = "btn btn-primary ml-1">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="error_msg">
+              <div class="col-md-12">
+                <div class = "invalid-feedback float-right d-inline w-auto" >
+                  {{error_msg}}
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
