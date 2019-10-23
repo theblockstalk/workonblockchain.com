@@ -21,7 +21,6 @@ export class CompanyAddJobComponent implements OnInit {
         .subscribe(
           data =>{
             this.userDoc = data;
-            console.log(this.userDoc);
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
