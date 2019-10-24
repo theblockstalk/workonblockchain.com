@@ -58,9 +58,8 @@
             </div>
           </div>
         </div>
-        <hr class="bg-dark" />
 
-        <form (ngSubmit)="candidate_prefernces()">
+        <!--<form (ngSubmit)="candidate_prefernces()">
           <div [formGroup]="preferncesForm">
             <div formArrayName="prefItems">
               <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
@@ -271,16 +270,6 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <div class = "text-right mt-3">
-                  <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
-                  <button type="submit" class = "btn btn-primary ml-1">Next</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <div class="row" *ngIf="error_msg">
             <div class="col-md-12">
@@ -290,7 +279,62 @@
             </div>
           </div>
 
-        </form>
+        </form>-->
+
+        <section class = "p-2" id = "information">
+          <div class="row">
+            <div class="col-md-12">
+              <h4><i class="fas fa-briefcase"></i> My jobs</h4>
+            </div>
+          </div>
+          <div class="row mt-3 border-bottom border-dark">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Job name</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Status</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Date</label>
+              </div>
+            </div>
+          </div>
+          <div class="row border-bottom pt-3" *ngFor="let job of myJobs">
+            <div class="col-md-3">
+              <p>{{job.name}}</p>
+            </div>
+            <div class="col-md-3">
+              <p class="text-capitalize {{getClass(job.status)}}">{{job.status}}</p>
+            </div>
+            <div class="col-md-3">
+              <p>
+                {{job.created | date : 'dd'}} {{job.created | date : 'MMM'}} {{job.created | date : 'yyyy'}}
+              </p>
+            </div>
+            <div class="col-md-3 mb-2">
+              <app-c-button-normal
+                level = "primary"
+                label="View job"
+                routeUrl="/users/company"
+              ></app-c-button-normal>
+            </div>
+          </div>
+        </section>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class = "text-right mt-3">
+                <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

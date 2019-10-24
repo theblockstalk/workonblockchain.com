@@ -50,6 +50,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   gdpr_compliance_active_class;gdpr_disable;
   commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
   skills_auto_suggest_error;skills_auto_suggest_years_error;
+  myJobs = [];
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
@@ -192,13 +193,22 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
             this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
 
-            if(data['saved_searches'] && data['saved_searches'].length > 0) {
+            if(data['job_ids'] && data['job_ids'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               setTimeout(() => {
                 $('.selectpicker').selectpicker();
                 $('.selectpicker').selectpicker('refresh');
               }, 500);
-              console.log(data['saved_searches']);
+              this.myJobs = data['job_ids'];
+              console.log(data['job_ids']);
+            }
+            /*if(data['saved_searches'] && data['saved_searches'].length > 0) {
+              this.pref_active_class = 'fa fa-check-circle text-success';
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
+
               this.prefData = data['saved_searches'];
               for(let saved_search of this.prefData){
                 this.commercialSkillsFromDB.push(saved_search.required_skills);
@@ -215,7 +225,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }, 400);
               }
 
-            }
+            }*/
             if(data['pricing_plan']) {
               this.pricing_disable = '';
               this.price_plan_active_class = 'fa fa-check-circle text-success';
@@ -745,6 +755,12 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   deletePrefRow(index: number) {
     const control = <FormArray>this.preferncesForm.controls['prefItems'];
     control.removeAt(index);
+  }
+
+  getClass(value){
+    if(value === 'open') return 'text-success';
+    if(value === 'closed') return 'text-danger';
+    else return 'text-warning';
   }
 
 }
