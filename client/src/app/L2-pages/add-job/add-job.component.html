@@ -99,7 +99,7 @@
             <div class="row mt-2" *ngIf="employeeCheck">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Position type:</label>
+                  <label>Employment type</label>
                   <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employment_type" >
                     <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
                   </select>
@@ -111,7 +111,7 @@
 
               <div class="col-md-12 mt-2">
                 <div class="form-group">
-                  <label>Annual salary:</label>
+                  <label>Annual salary</label>
                 </div>
               </div>
               <div class="col-md-4">
@@ -131,6 +131,9 @@
                   <div class = "invalid-feedback d-inline"  #max_salary_validation  *ngIf="max_salary.errors && max_annual_salary">
                     Maximum salary should be a number.
                   </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(min_annual_salary) > convertNumber(max_annual_salary) ">
+                    Maximum salary should be greater the minimum salary
+                  </div>
                 </div>
               </div>
               <div class="col-md-4">
@@ -148,7 +151,7 @@
             <div class="row mt-2" *ngIf="contractorCheck">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Hourly rate:</label>
+                  <label>Hourly rate</label>
                 </div>
               </div>
               <div class="col-md-4">
@@ -167,6 +170,9 @@
                   <input type="text" #max_hourly_rate_valid="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_hourly_rate" placeholder="Max" [(ngModel)]="max_hourly_rate">
                   <div class = "invalid-feedback d-inline"  #max_hourly_rate_validation  *ngIf="max_hourly_rate_valid.errors && max_hourly_rate">
                     Maximum hourly rate should be a number.
+                  </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="convertNumber(min_hourly_rate) > convertNumber(max_hourly_rate) ">
+                    Maximum rate should be greater the minimum rate
                   </div>
                 </div>
               </div>

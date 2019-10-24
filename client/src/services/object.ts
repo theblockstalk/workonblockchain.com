@@ -1,3 +1,18 @@
+export const skillsMapping = function (array) {
+  let newCommercialSkills = [];
+  for (let commercialSkill of array) {
+    let obj = {};
+    obj = {
+      skills_id: commercialSkill.skills_id,
+      name: commercialSkill.name,
+      type: commercialSkill.type
+    };
+    if(commercialSkill.exp_year) obj['exp_year'] = commercialSkill.exp_year;
+    newCommercialSkills.push(obj);
+  }
+  return newCommercialSkills;
+}
+
 export const makeImgCode = function (object) {
   return '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+object['name']+'.png" alt="'+object['name']+' Logo"> ';
 }

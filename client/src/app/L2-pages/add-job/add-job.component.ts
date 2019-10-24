@@ -6,7 +6,7 @@ import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-sugge
 import { ContentComponent } from '../../L1-items/pages/content/content.component';
 
 import {constants} from '../../../constants/constants';
-import { checkNumber, unCheckCheckboxes } from '../../../services/object';
+import { checkNumber, unCheckCheckboxes, skillsMapping, getNameFromValue } from '../../../services/object';
 declare var $:any;
 
 @Component({
@@ -49,6 +49,7 @@ export class AddJobComponent implements OnInit {
     }
 
     console.log('add job page');
+    console.log(this.userDoc);
     //this.selectedCompanyLocation(employee.location);
     this.roles = unCheckCheckboxes(constants.workRoles);
     this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
@@ -82,6 +83,9 @@ export class AddJobComponent implements OnInit {
       if(this.max_annual_salary && !checkNumber(this.max_annual_salary))
         errorCount = 1;
 
+      if(Number(this.max_annual_salary) < Number(this.min_annual_salary))
+        errorCount = 1;
+
       if(!this.annual_currency || this.annual_currency === 'Currency') {
         this.annual_salary_currency_log = "Please choose currency";
         errorCount = 1;
@@ -93,6 +97,9 @@ export class AddJobComponent implements OnInit {
         errorCount = 1;
       }
       if(this.max_hourly_rate && !checkNumber(this.max_hourly_rate))
+        errorCount = 1;
+
+      if(Number(this.max_hourly_rate) < Number(this.min_hourly_rate))
         errorCount = 1;
 
       if(!this.hourly_rate_currency || this.hourly_rate_currency === 'Currency') {
@@ -117,8 +124,14 @@ export class AddJobComponent implements OnInit {
     else errorCount = 1;
 
     if(errorCount === 0) {
-      console.log(this.selected_work_type);
-      console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
+      let inputQuery : any ={};
+      inputQuery.name = this.job_name;
+      if(this.job_status) {
+        const filtered = this.job_status_options.filter( (item) => item.name === this.job_status)
+        inputQuery.status = filtered[0].value;
+      }
+      if(this.selected_work_type) inputQuery.work_type = this.selected_work_type;
+
       this.validatedLocation = [];
       for(let location of this.selectedLocation) {
         if(location.name.includes('city')) {
@@ -132,15 +145,56 @@ export class AddJobComponent implements OnInit {
         }
       }
       console.log(this.validatedLocation);
+      inputQuery.locations = this.validatedLocation;
+      if(this.visa_needed)inputQuery.visa_needed = this.visa_needed;
+      if(this.employeeCheck) {
+        if(this.employment_type)inputQuery.job_type = this.employment_type;
+        if(this.min_annual_salary)inputQuery.expected_salary_min = parseInt(this.min_annual_salary);
+        if(this.max_annual_salary)inputQuery.expected_salary_max = parseInt(this.max_annual_salary);
+      }
+      if(this.contractorCheck) {
+        if(this.min_hourly_rate)inputQuery.expected_hourly_rate_min = parseInt(this.min_hourly_rate);
+        if(this.max_hourly_rate)inputQuery.expected_hourly_rate_max = parseInt(this.max_hourly_rate);
+      }
+      if(this.user_roles)inputQuery.positions = this.user_roles;
+      if(this.annual_currency)inputQuery.currency = this.annual_currency;
+      if(this.hourly_rate_currency)inputQuery.currency = this.hourly_rate_currency;
+      if(this.num_people_desired)inputQuery.num_people_desired = parseInt(this.num_people_desired);
 
-      console.log(this.employment_type);
-      console.log(this.job_status);
-      console.log(this.user_roles);
       console.log(this.selectedCommercialSkillsNew);
+      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
+        inputQuery.required_skills = skillsMapping(this.selectedCommercialSkillsNew);
+      }
       if(this.selectedOptionalSkillsNew && this.selectedOptionalSkillsNew.length > 0) {
         console.log(this.selectedOptionalSkillsNew);
+        inputQuery.not_required_skills = skillsMapping(this.selectedOptionalSkillsNew);
       }
+      if(this.pageContent.content)inputQuery.description = this.pageContent.content;
+      console.log(inputQuery);
       console.log('add job ftn');
+      let admin = false;
+      if(this.viewBy === 'admin') admin = true;
+      this.authenticationService.postJob(inputQuery , this.userDoc['_id'], admin)
+      .subscribe(
+        data => {
+          if(data) {
+              console.log(data);
+          }
+        },
+        error=>
+        {
+          if(error['message'] === 500 || error['message'] === 401) {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          if(error.message === 403) this.router.navigate(['/not_found']);
+        }
+      );
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
   }
@@ -316,6 +370,10 @@ export class AddJobComponent implements OnInit {
       this.selectedLocation.push([]);
       return '';
     }
+  }
+
+  convertNumber(string) {
+    return Number(string);
   }
 
 }

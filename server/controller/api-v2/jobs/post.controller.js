@@ -77,8 +77,7 @@ const bodySchema = new Schema({
     },
     currency: {
         type: String,
-        enum: enumerations.currencies,
-        required: true
+        enum: enumerations.currencies
     },
     num_people_desired: {
         type:Number,

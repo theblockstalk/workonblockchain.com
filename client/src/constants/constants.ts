@@ -502,8 +502,8 @@ export const constants = {
     {value:5, name:'5+ years'},{value:6, name:'6+ years'}
   ],
   job_status: [
-    {value:'Open', name:'Open'},{value:'Closed', name:'Closed'},
-    {value:'Paused', name:'Paused'}
+    {value:'open', name:'Open'},{value:'closed', name:'Closed'},
+    {value:'paused', name:'Paused'}
   ],
   resources: [
     {name: 1, value: '1'},{name: 2, value: '2'},{name: 3, value: '3'},
