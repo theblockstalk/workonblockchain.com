@@ -204,7 +204,7 @@
                 <small>Only add minimum requirements that all candidates must meet</small>
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Location</label>
@@ -253,9 +253,11 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Role:</label>
+                  <label>Role</label>
                   <select multiple name="user_roles" [(ngModel)]="user_roles" title="(select multiple)" class="form-control selectpicker">
                     <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
                   </select>
@@ -263,6 +265,18 @@
                     {{roles_log}}
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Commercial experience</label>
+                </div>
+                <app-i-forme-skills-auto-suggest
+                  [selectedSkill] = "commercialSkillsFromDB"
+                  (selectedItems)="selectedCommercialSkillsNew = $event"
+                  placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                ></app-i-forme-skills-auto-suggest>
               </div>
             </div>
           </section>

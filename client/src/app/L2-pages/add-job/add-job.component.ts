@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Input, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import {isPlatformBrowser} from "@angular/common";
 import { Router } from '@angular/router';
 import {UserService} from '../../user.service';
+import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
 
 import {constants} from '../../../constants/constants';
 import { checkNumber, unCheckCheckboxes } from '../../../services/object';
@@ -13,6 +14,7 @@ declare var $:any;
   styleUrls: ['./add-job.component.css']
 })
 export class AddJobComponent implements OnInit {
+  @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "company"
 
@@ -30,6 +32,7 @@ export class AddJobComponent implements OnInit {
   max_annual_salary;annual_currency;hourly_rate_currency;max_hourly_rate;
   min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
+  commercialSkillsFromDB;selectedCommercialSkillsNew;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
@@ -92,6 +95,11 @@ export class AddJobComponent implements OnInit {
       this.location_log = "Please enter atleast one location";
       errorCount = 1;
     }
+    if(!this.user_roles || this.user_roles.length <= 0){
+      this.roles_log = "Please select atleast one role";
+      errorCount = 1;
+    }
+    if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
 
     if(errorCount === 0) {
       console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
@@ -99,6 +107,7 @@ export class AddJobComponent implements OnInit {
       console.log(this.employment_type);
       console.log(this.job_status);
       console.log(this.user_roles);
+      console.log(this.selectedCommercialSkillsNew);
       console.log('add job ftn');
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
