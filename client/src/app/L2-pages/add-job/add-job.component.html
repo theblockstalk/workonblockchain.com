@@ -28,7 +28,7 @@
     </section>
 
         <form (ngSubmit)="addJob()">
-          <section class="border rounded bg-white py-3 px-5 mt-4">
+          <section class="border rounded bg-white py-3 px-5 mt-4 mb-2">
             <div class="row">
               <div class="col-md-12">
                 <h3 class="pt-2 mb-3"><i class="fas fa-briefcase"></i> Job </h3>
@@ -228,12 +228,12 @@
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
-                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!selectedLocation || (selectedLocation && selectedLocation.length <= 0) ">
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!selectedValueArray || (selectedValueArray && selectedValueArray.length <= 0) ">
                       {{location_log}}
                     </div>
-                    <div *ngIf="selectedLocation && selectedLocation.length > 0">
-                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedLocation; let loc_i = index">{{value.name}} <a (click)="employeeDeleteLocationRow(loc_i)"><i class="fas fa-times text-white"></i></a></span>
-                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
+                    <div *ngIf="selectedValueArray && selectedValueArray.length > 0">
+                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let loc_i = index">{{value.name}} <a (click)="employeeDeleteLocationRow(loc_i)"><i class="fas fa-times text-white"></i></a></span>
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedValueArray || selectedValueArray.length <= 0">
                         {{location_log}}
                       </div>
                     </div>

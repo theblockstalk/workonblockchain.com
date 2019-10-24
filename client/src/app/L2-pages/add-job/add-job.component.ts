@@ -25,7 +25,7 @@ export class AddJobComponent implements OnInit {
   when_receive_email_notitfications;job_name;job_status;
   job_status_options = constants.job_status;jobStatusErrMsg;
   jobNameErrMsg;error_msg;workTypes = constants.workTypes;
-  work_type;work_type_log;employeeCheck = false;selected_work_type;
+  work_type_log;employeeCheck = false;selected_work_type;
   contractorCheck = false;volunteerCheck = false;
   employee: any = {}; contractor: any = {}; volunteer: any = {};
   employment_type_log;position_type = constants.job_type;min_salary_log;
@@ -33,7 +33,7 @@ export class AddJobComponent implements OnInit {
   num_people_desired;num_people_desired_log;resources = constants.resources;
   min_hourly_log;hourly_currency_log;employment_type;min_annual_salary;
   max_annual_salary;annual_currency;hourly_rate_currency;max_hourly_rate;
-  min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
+  min_hourly_rate;cities;selectedValueArray = [];error;
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
   commercialSkillsFromDB;selectedCommercialSkillsNew;optionalSkillsFromDB;
   selectedOptionalSkillsNew;description_content;validatedLocation = [];
@@ -50,7 +50,14 @@ export class AddJobComponent implements OnInit {
 
     console.log('add job page');
     console.log(this.userDoc);
-    //this.selectedCompanyLocation(employee.location);
+    /*this.selected_work_type = this.userDoc['job_ids'][0].work_type;
+    if(this.selected_work_type === 'employee') this.employeeCheck = true;
+    if(this.selected_work_type === 'contractor') this.contractorCheck = true;
+    if(this.selected_work_type === 'volunteer') this.volunteerCheck = true;
+
+    this.user_roles = this.userDoc['job_ids'][0].positions;
+    this.selectedCompanyLocation(this.userDoc['job_ids'][0].locations);*/
+
     this.roles = unCheckCheckboxes(constants.workRoles);
     this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
   }
@@ -111,7 +118,7 @@ export class AddJobComponent implements OnInit {
       this.num_people_desired_log = "Please choose a number";
       errorCount = 1;
     }
-    if(!this.selectedLocation || this.selectedLocation.length <= 0){
+    if(!this.selectedValueArray || this.selectedValueArray.length <= 0){
       this.location_log = "Please enter atleast one location";
       errorCount = 1;
     }
@@ -133,7 +140,7 @@ export class AddJobComponent implements OnInit {
       if(this.selected_work_type) inputQuery.work_type = this.selected_work_type;
 
       this.validatedLocation = [];
-      for(let location of this.selectedLocation) {
+      for(let location of this.selectedValueArray) {
         if(location.name.includes('city')) {
           this.validatedLocation.push({city_id: location._id, city: location.name});
         }
@@ -299,13 +306,12 @@ export class AddJobComponent implements OnInit {
           this.selectedValueArray.splice(0, 0, remoteValue);
           this.selectedValueArray = this.filter_array(this.selectedValueArray);
         }
-        this.selectedLocation = this.selectedValueArray;
       }
     }
   }
 
   employeeUpdateCitiesOptions(event) {
-    this.updateCitiesOptions(event.target.value ,event.target.checked, this.selectedLocation );
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.selectedValueArray );
   }
 
   updateCitiesOptions(input, check,array) {
@@ -315,7 +321,7 @@ export class AddJobComponent implements OnInit {
   }
 
   employeeDeleteLocationRow(index){
-    this.deleteLocationRow(this.selectedLocation, index);
+    this.deleteLocationRow(this.selectedValueArray, index);
   }
 
   deleteLocationRow(array, index){
@@ -352,8 +358,9 @@ export class AddJobComponent implements OnInit {
         }
 
         if (country1['city']) {
-          let city = country1['city'].city + ", " + country1['city'].country;
-          this.selectedValuesDB.push({_id:country1['_id'] ,city:country1['city']._id ,name: city });
+          //console.log(country1);
+          let city = country1['city'];// + ", " + country1['city'].country;
+          this.selectedValuesDB.push({_id:country1['_id'] ,city_id:country1['city_id'] ,name: city });
         }
       }
 
@@ -363,11 +370,12 @@ export class AddJobComponent implements OnInit {
         this.selectedValuesDB.splice(0, 0, remoteValue);
         this.selectedValuesDB = this.filter_array(this.selectedValuesDB);
       }
-      this.selectedLocation.push(this.selectedValuesDB);
+      this.selectedValueArray = this.selectedValuesDB;
+      for(let value of this.selectedValueArray) console.log(value);
       return '';
     }
     else {
-      this.selectedLocation.push([]);
+      this.selectedValueArray.push([]);
       return '';
     }
   }
