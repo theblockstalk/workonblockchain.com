@@ -25,7 +25,7 @@ export class AddJobComponent implements OnInit {
   when_receive_email_notitfications;job_name;job_status;
   job_status_options = constants.job_status;jobStatusErrMsg;
   jobNameErrMsg;error_msg;workTypes = constants.workTypes;
-  work_type;work_type_log;employeeCheck = false;selected_work_type=[];
+  work_type;work_type_log;employeeCheck = false;selected_work_type;
   contractorCheck = false;volunteerCheck = false;
   employee: any = {}; contractor: any = {}; volunteer: any = {};
   employment_type_log;position_type = constants.job_type;min_salary_log;
@@ -41,6 +41,8 @@ export class AddJobComponent implements OnInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
+    
     console.log('add job page');
     this.roles = unCheckCheckboxes(constants.workRoles);
     this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
@@ -108,6 +110,7 @@ export class AddJobComponent implements OnInit {
     else errorCount = 1;
 
     if(errorCount === 0) {
+      console.log(this.selected_work_type);
       console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
       console.log(this.selectedLocation);
       console.log(this.employment_type);
@@ -128,18 +131,24 @@ export class AddJobComponent implements OnInit {
         $('.selectpicker').selectpicker('refresh');
       }, 300);
     }
-    if(event.target.checked) this.selected_work_type.push(event.target.value);
-    else {
-      let updateItem = this.selected_work_type.find(x => x === event.target.value);
-      let index = this.selected_work_type.indexOf(updateItem);
-      this.selected_work_type.splice(index, 1);
-    }
 
-    if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
+    this.selected_work_type = '';
+    if(event.target.value === 'employee' && event.target.checked) {
+      this.employeeCheck = true;
+      this.selected_work_type = 'employee';
+    }
     else this.employeeCheck = false;
-    if(this.selected_work_type.indexOf('contractor') > -1) this.contractorCheck = true;
+
+    if(event.target.value === 'contractor' && event.target.checked) {
+      this.contractorCheck = true;
+      this.selected_work_type = 'contractor';
+    }
     else this.contractorCheck = false;
-    if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteerCheck = true;
+
+    if(event.target.value === 'volunteer' && event.target.checked) {
+      this.volunteerCheck = true;
+      this.selected_work_type = 'volunteer';
+    }
     else this.volunteerCheck = false;
   }
 
