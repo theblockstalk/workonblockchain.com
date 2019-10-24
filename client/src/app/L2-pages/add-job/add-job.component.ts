@@ -36,19 +36,26 @@ export class AddJobComponent implements OnInit {
   min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
   commercialSkillsFromDB;selectedCommercialSkillsNew;optionalSkillsFromDB;
-  selectedOptionalSkillsNew;description_content;
+  selectedOptionalSkillsNew;description_content;validatedLocation = [];
+  visa_needed = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
-    
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 300);
+    }
+
     console.log('add job page');
+    //this.selectedCompanyLocation(employee.location);
     this.roles = unCheckCheckboxes(constants.workRoles);
     this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
   }
 
   addJob(){
+    console.log(this.visa_needed);
     let errorCount = 0;
     this.error_msg = "";
     if(!this.job_name){
@@ -112,7 +119,20 @@ export class AddJobComponent implements OnInit {
     if(errorCount === 0) {
       console.log(this.selected_work_type);
       console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
-      console.log(this.selectedLocation);
+      this.validatedLocation = [];
+      for(let location of this.selectedLocation) {
+        if(location.name.includes('city')) {
+          this.validatedLocation.push({city_id: location._id, city: location.name});
+        }
+        if(location.name.includes('country')) {
+          this.validatedLocation.push({country: location.name.split(" (")[0]});
+        }
+        if(location.name === 'Remote') {
+          this.validatedLocation.push({remote: true});
+        }
+      }
+      console.log(this.validatedLocation);
+
       console.log(this.employment_type);
       console.log(this.job_status);
       console.log(this.user_roles);
@@ -223,7 +243,7 @@ export class AddJobComponent implements OnInit {
         if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
           let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
           this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = this.selectedValueArray;
+          this.selectedValueArray = this.filter_array(this.selectedValueArray);
         }
         this.selectedLocation = this.selectedValueArray;
       }
@@ -255,6 +275,47 @@ export class AddJobComponent implements OnInit {
       return 'selected';
     }
     else return;
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
+  }
+
+  selectedValuesDB = [];
+  selectedCompanyLocation(location) {
+    this.selectedValuesDB=[];
+    if(location && location.length > 0) {
+      for (let country1 of location)
+      {
+        if (country1['remote'] === true) {
+          this.selectedValuesDB.push({_id:country1['_id'] ,name: 'Remote' });
+        }
+
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country;
+          this.selectedValuesDB.push({_id:country1['_id'] ,city:country1['city']._id ,name: city });
+        }
+      }
+
+      this.selectedValuesDB.sort();
+      if(this.selectedValuesDB.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.selectedValuesDB.find((obj => obj.name === 'Remote'));
+        this.selectedValuesDB.splice(0, 0, remoteValue);
+        this.selectedValuesDB = this.filter_array(this.selectedValuesDB);
+      }
+      this.selectedLocation.push(this.selectedValuesDB);
+      return '';
+    }
+    else {
+      this.selectedLocation.push([]);
+      return '';
+    }
   }
 
 }
