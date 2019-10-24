@@ -3,6 +3,7 @@ import {isPlatformBrowser} from "@angular/common";
 import { Router } from '@angular/router';
 import {UserService} from '../../user.service';
 import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
+import { ContentComponent } from '../../L1-items/pages/content/content.component';
 
 import {constants} from '../../../constants/constants';
 import { checkNumber, unCheckCheckboxes } from '../../../services/object';
@@ -15,6 +16,8 @@ declare var $:any;
 })
 export class AddJobComponent implements OnInit {
   @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
+  @ViewChild(ContentComponent) pageContent: ContentComponent;
+
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "company"
 
@@ -33,7 +36,7 @@ export class AddJobComponent implements OnInit {
   min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
   commercialSkillsFromDB;selectedCommercialSkillsNew;optionalSkillsFromDB;
-  selectedOptionalSkillsNew;
+  selectedOptionalSkillsNew;description_content;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
@@ -101,6 +104,8 @@ export class AddJobComponent implements OnInit {
       errorCount = 1;
     }
     if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
+    if(this.pageContent.selfValidate()) console.log(this.pageContent.content);
+    else errorCount = 1;
 
     if(errorCount === 0) {
       console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
