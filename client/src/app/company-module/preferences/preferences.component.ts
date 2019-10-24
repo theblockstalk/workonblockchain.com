@@ -198,11 +198,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 $('.selectpicker').selectpicker();
                 $('.selectpicker').selectpicker('refresh');
               }, 500);
+              console.log(data['saved_searches']);
               this.prefData = data['saved_searches'];
               for(let saved_search of this.prefData){
                 this.commercialSkillsFromDB.push(saved_search.required_skills);
               }
-              console.log(this.commercialSkillsFromDB);
 
               this.preferncesForm = this._fb.group({
                 prefItems: this._fb.array(

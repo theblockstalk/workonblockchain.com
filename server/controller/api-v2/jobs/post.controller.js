@@ -11,7 +11,10 @@ module.exports.request = {
 };
 
 const querySchema = new Schema({
-    admin: Boolean,
+    admin: {
+        type: String,
+        enum: ['true', 'false']
+    },
     company_id: String
 });
 
@@ -118,13 +121,13 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
-    if (req.query.admin)  await auth.isAdmin(req);
+    if (req.query.admin === true || req.query.admin === 'true')  await auth.isAdmin(req);
     else  await auth.isCompanyType(req);
 }
 
 module.exports.endpoint = async function (req, res) {
     let company_id;
-    if (req.query.admin) {
+    if (req.query.admin === true || req.query.admin === 'true') {
         company_id = req.query.company_id
     }
     else {
