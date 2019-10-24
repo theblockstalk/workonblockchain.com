@@ -1,13 +1,5 @@
 
-//blockchainPlatforms will be deleted
-module.exports.blockchainPlatforms = ['Bitcoin', 'Ethereum', 'Ripple','Stellar', 'Hyperledger Fabric','Hyperledger Sawtooth','Quorum','Corda','EOS','NEO','Waves','Steemit','Lisk','Quantum','Tezos','Cardano','Litecoin','Monero','ZCash','IOTA','NEM','NXT','Dash','Doge'];
-
 module.exports.currencies = ['€ EUR', '$ USD', '£ GBP'];
-
-//programmingLanguages will be deleted
-module.exports.programmingLanguages = ['Java','C', 'C++','C#', 'Python','Visual Basic .NET',  'PHP','JavaScript',  'Delphi/Object Pascal','Swift', 'Perl','Ruby', 'Assembly language','R', 'Visual Basic','Objective-C', 'Go','MATLAB', 'PL/SQL','Scratch', 'Solidity','Serpent', 'LLL','Nodejs', 'Scala','Rust', 'Kotlin','Haskell','Erlang','Elixir', 'Angularjs', 'Reactjs', 'Vuejs'];
-
-module.exports.experienceYears = ['0-1', '1-2','2-4','4-6','6+'];
 
 module.exports.nationalities = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African','Curacao', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino','French Polynesia', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Gibraltar', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Hong Kong' , 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
@@ -18,8 +10,6 @@ module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Devel
 module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)',"I don't know"];
 
 module.exports.workAvailability = ['1 week', '2 weeks', '3 weeks' ,'1 month','Now','2 months','3 months','Longer than 3 months'];
-
-module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs', 'Currency exchanges'];
 
 module.exports.email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
@@ -48,3 +38,8 @@ module.exports.hearAboutWob = ['Social media', 'Attended a WOB event', 'Contacte
 module.exports.pricingPlans = ["Starter", "Essential", "Unlimited", "Free till you hire"];
 
 module.exports.euCountries = ['Andorra', 'Argentina', 'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Israel', 'Italy', 'Japan', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'New Zealand', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'United Kingdom', 'Uruguay']
+
+module.exports.jobStatus = ["open", "closed", "paused"];
+
+module.exports.skillsTpes = ["blockchain", "language", "experience"];
+

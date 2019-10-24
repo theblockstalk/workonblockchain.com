@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
 const users = require('../../../model/mongoose/users');
-const locationsHelpers = require('./locationsHelpers');
+const locationsHelpers = require('./helpers');
 const docGenerator = require('../../helpers/docGenerator-v2');
 const candidateHelper = require('../otherHelpers/candidateHelpers');
 

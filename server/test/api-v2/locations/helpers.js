@@ -2,6 +2,10 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 
+const cities = require('../../../model/mongoose/cities');
+const enumerations = require('../../../model/enumerations');
+const random = require('../../helpers/random');
+
 const should = chai.should();
 chai.use(chaiHttp);
 
@@ -13,4 +17,13 @@ const getLocations = module.exports.getLocations = async function getLocations(a
         .send();
     res.should.have.status(200);
     return res;
+}
+
+module.exports.insertCity = async function() {
+    const newCity = {
+        city: random.string(),
+        country: random.string(),
+        active: true
+    }
+    return await cities.insert(newCity)
 }

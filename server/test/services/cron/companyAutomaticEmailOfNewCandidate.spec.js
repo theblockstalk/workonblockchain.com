@@ -5,12 +5,15 @@ const companies = require('../../../model/mongoose/companies');
 const users = require('../../../model/mongoose/users');
 
 const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../../api-v2/otherHelpers/companyHelpers');
 const candidateHelper = require('../../api-v2/otherHelpers/candidateHelpers');
 const companyEmail = require('../../../controller/services/cron/companyAutomaticEmailOfNewCandidate');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
-const companiesHelperV2 = require('../../api-v2/users/companies/companyHelpers')
+const companiesHelperV2 = require('../../api-v2/users/companies/helpers')
 const userHelper = require('../../api-v2/otherHelpers/usersHelpers');
+
+const jobsHelpers = require('../../api-v2/jobs/helpers');
+const api = require('../../api-v2/api');
+
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -36,27 +39,35 @@ describe('cron', function () {
             let companyDoc = await users.findOneByEmail(company.email);
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
-            updatedData.saved_searches = [{
-                name: 'update search name',
-                location: [
-                    {remote: true}
-                ],
-                job_type: [
-                    "Part time"
-                ],
-                position: [
-                    profileData.candidate.employee.roles[0]
-                ],
-                current_currency: profileData.candidate.employee.currency,
-                current_salary: profileData.candidate.employee.expected_annual_salary,
-                required_skills: [
-                    profileData.candidate.commercial_skills[0]
-                ]
-            }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
+
+            const randomJobPost = await jobsHelpers.jobPost();
+            const jobPost = {
+                name: randomJobPost.name,
+                status: "open",
+                work_type: "employee",
+                // locations: [{
+                //     remote: true
+                // }],
+                // visa_needed: false,
+                // job_type: ["Part time"],
+                positions: [profileData.candidate.employee.roles[0]],
+                expected_salary_min: profileData.candidate.employee.expected_annual_salary,
+                // expected_salary_max: 200000,
+                currency: profileData.candidate.employee.currency,
+                num_people_desired: 1,
+                required_skills: [profileData.candidate.commercial_skills[0]],
+                // not_required_skills:[{
+                //     skills_id: skills2._id,
+                //     type: skills2.type,
+                //     name: skills2.name
+                // }],
+                description: randomJobPost.description
+            }
+            await api.jobs.POST(companyDoc.jwt_token, null, jobPost);
 
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
             await userHelper.approveCandidate(candidate.email);

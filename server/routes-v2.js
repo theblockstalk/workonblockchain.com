@@ -46,6 +46,9 @@ const endpoints = [
     require('./controller/api-v2/users/patch.controller'),
     require('./controller/api-v2/health/get.controller'),
     require('./controller/api-v2/skills/get.controller'),
+    require('./controller/api-v2/jobs/post.controller'),
+    require('./controller/api-v2/jobs/patch.controller'),
+    require('./controller/api-v2/jobs/get.controller'),
 ];
 
 const validateInputs = function(request, inputSchemas) {

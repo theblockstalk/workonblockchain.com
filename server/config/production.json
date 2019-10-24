@@ -31,8 +31,8 @@
   },
 
   "currencyRatesUSD": {
-    "GBP": 1.28,
-    "Euro": 1.14
+    "GBP": 1.30,
+    "Euro": 1.11
   },
   "cron": {
     "unreadMessagesTick": "30 12 * * 1-7",
