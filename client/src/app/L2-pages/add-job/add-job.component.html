@@ -47,7 +47,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Status</label>
-                  <select [(ngModel)]="job_status" class="selectpicker" title="(Job status)" required name="job_status" >
+                  <select [(ngModel)]="job_status" class="selectpicker form-control" title="(Job status)" required name="job_status" >
                     <option *ngFor='let status of job_status_options' [attr.selected]="status.value === job_status ? true : null" >{{status.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!job_status">
@@ -135,7 +135,7 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <select [(ngModel)]="annual_currency" class="selectpicker" title="Currency" required name="annual_currency" >
+                  <select [(ngModel)]="annual_currency" class="selectpicker form-control" title="Currency" required name="annual_currency" >
                     <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === annual_currency  ? true : null" >{{baseCurrency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!annual_currency || annual_currency === 'Currency'">
@@ -172,7 +172,7 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <select [(ngModel)]="hourly_rate_currency" class="selectpicker" title="Currency" required name="houlry_currency" >
+                  <select [(ngModel)]="hourly_rate_currency" class="selectpicker form-control" title="Currency" required name="houlry_currency" >
                     <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === hourly_rate_currency  ? true : null" >{{baseCurrency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!hourly_rate_currency || hourly_rate_currency === 'Currency'">
@@ -186,7 +186,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Number of people you are looking for this role</label>
-                  <select [(ngModel)]="num_people_desired" class="selectpicker" title="(select one)" required name="num_people_desired" >
+                  <select [(ngModel)]="num_people_desired" class="selectpicker form-control" title="(select one)" required name="num_people_desired" >
                     <option *ngFor='let resource of resources' [attr.selected]="resource.value === num_people_desired  ? true : null" >{{resource.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="!num_people_desired">
@@ -208,6 +208,60 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Location</label>
+                  <div>
+                    <mat-autocomplete #employeeAuto="matAutocomplete">
+                      <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                        <span>{{ loc.name }}</span>
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <mat-form-field floatLabel="always" class="w-100">
+                      <mat-label></mat-label>
+                      <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="country" name="country" (input)="suggestedOptions(country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                    </mat-form-field>
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="!selectedLocation || (selectedLocation && selectedLocation.length <= 0) ">
+                      {{location_log}}
+                    </div>
+
+                    <div *ngIf="selectedLocation && selectedLocation.length > 0">
+                      <div class="row">
+                        <div  *ngFor="let value of selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
+                          <div class="border px-1 py-3 ml-2 row">
+                            <div class = "col-8">
+                              <label >{{value.name}}</label>
+                            </div>
+                            <div class = "col-4 text-right">
+                              <a (click)="employeeDeleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                                <label class="form-check-label">
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="employeeUpdateCitiesOptions($event)" > Work visa required
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocation">
+                        {{location_log}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Role:</label>
+                  <select multiple name="user_roles" [(ngModel)]="user_roles" title="(select multiple)" class="form-control selectpicker">
+                    <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!user_roles || user_roles.length === 0">
+                    {{roles_log}}
+                  </div>
                 </div>
               </div>
             </div>

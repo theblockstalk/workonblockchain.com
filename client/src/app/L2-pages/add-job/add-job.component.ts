@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Inject, PLATFORM_ID } from '@angular/core';
 import {isPlatformBrowser} from "@angular/common";
+import { Router } from '@angular/router';
+import {UserService} from '../../user.service';
 
 import {constants} from '../../../constants/constants';
-import {checkNumber} from '../../../services/object';
+import { checkNumber, unCheckCheckboxes } from '../../../services/object';
 declare var $:any;
 
 @Component({
@@ -26,12 +28,14 @@ export class AddJobComponent implements OnInit {
   num_people_desired;num_people_desired_log;resources = constants.resources;
   min_hourly_log;hourly_currency_log;employment_type;min_annual_salary;
   max_annual_salary;annual_currency;hourly_rate_currency;max_hourly_rate;
-  min_hourly_rate;
+  min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
+  location_log;country;roles_log;roles;jobselected = [];user_roles = [];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
     console.log('add job page');
+    this.roles = unCheckCheckboxes(constants.workRoles);
     this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
   }
 
@@ -84,11 +88,17 @@ export class AddJobComponent implements OnInit {
       this.num_people_desired_log = "Please choose a number";
       errorCount = 1;
     }
+    if(!this.selectedLocation || this.selectedLocation.length <= 0){
+      this.location_log = "Please enter atleast one location";
+      errorCount = 1;
+    }
 
     if(errorCount === 0) {
       console.log('this.min_hourly_rate: ' + this.min_hourly_rate);
+      console.log(this.selectedLocation);
       console.log(this.employment_type);
       console.log(this.job_status);
+      console.log(this.user_roles);
       console.log('add job ftn');
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
@@ -113,6 +123,111 @@ export class AddJobComponent implements OnInit {
     else this.contractorCheck = false;
     if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteerCheck = true;
     else this.volunteerCheck = false;
+  }
+
+  suggestedOptions(inputParam) {
+    if(inputParam !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(inputParam , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
+                }
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
+                if(cities['country'] ) {
+                  let countryString = cities['country']  + " (country)";
+                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
+                }
+              }
+              this.cities = citiesOptions;
+            }
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+
+            if(error.message === 403) this.router.navigate(['/not_found']);
+
+          });
+    }
+    return this.cities;
+  }
+
+  employeeSelectedValueFunction(e) {
+    if(this.cities) {
+      const citiesExist = this.cities.find(x => x.name === e);
+      if(citiesExist) {
+        this.country = '';
+        this.cities = [];
+        if(this.selectedValueArray.find(x => x.name === e)) {
+          this.error = 'This location has already been selected';
+          setInterval(() => {
+            this.error = "" ;
+          }, 4000);
+        }
+        else {
+          if(citiesExist) this.selectedValueArray.push({_id:citiesExist._id ,  name: e, visa_needed:false});
+          else this.selectedValueArray.push({ name: e, visa_needed:false});
+        }
+      }
+      if(this.selectedValueArray.length > 0) {
+        this.selectedValueArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+          this.selectedValueArray.splice(0, 0, remoteValue);
+          this.selectedValueArray = this.selectedValueArray;
+        }
+        this.selectedLocation = this.selectedValueArray;
+      }
+    }
+  }
+
+  employeeUpdateCitiesOptions(event) {
+    this.updateCitiesOptions(event.target.value ,event.target.checked, this.selectedLocation );
+  }
+
+  updateCitiesOptions(input, check,array) {
+    let objIndex = array.findIndex((obj => obj.name === input));
+    array[objIndex].visa_needed = check;
+    return array;
+  }
+
+  employeeDeleteLocationRow(index){
+    this.deleteLocationRow(this.selectedLocation, index);
+  }
+
+  deleteLocationRow(array, index){
+    array.splice(index, 1);
+  }
+
+  index;
+  positionSelectedOptions(position) {
+    this.index = this.jobselected.indexOf(position);
+    if(this.index > -1) {
+      return 'selected';
+    }
+    else return;
   }
 
 }
