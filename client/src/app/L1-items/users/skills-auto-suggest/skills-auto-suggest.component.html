@@ -18,7 +18,7 @@
             <span>{{ value.name }}</span>
           </ng-template>
         </div>
-        <div class="{{yearsClass}}">
+        <div *ngIf="!noExpYears" class="{{yearsClass}}">
           <app-c-forme-dropdown-single
             [options]="years_exp_min_new"
             [value]="value.exp_year"

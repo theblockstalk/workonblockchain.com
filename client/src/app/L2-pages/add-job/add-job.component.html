@@ -281,6 +281,27 @@
             </div>
           </section>
 
+          <section class="border rounded bg-white py-3 px-5 mt-4" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="pt-2 mb-3"><i class="fas fa-check"></i> Good to have (not required) </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Skills</label>
+                </div>
+                <app-i-forme-skills-auto-suggest
+                  [selectedSkill] = "optionalSkillsFromDB"
+                  (selectedItems)="selectedOptionalSkillsNew = $event"
+                  placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                  noExpYears="true"
+                ></app-i-forme-skills-auto-suggest>
+              </div>
+            </div>
+          </section>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">

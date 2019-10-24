@@ -16,6 +16,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   @Input() showDescription: Boolean;
   @Input() description: string;
   @Input() compSearch: Boolean;
+  @Input() noExpYears: Boolean;
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   //[ngClass]="wizard.disableClass === true? 'disabled': ''"
@@ -114,7 +115,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   selfValidate() {
     this.exp_year_error = '';
     this.errorMsg = '';
-    if(this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
+    if(!this.noExpYears && this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
       this.exp_year_error = 'Please select number of years';
       return false;
     }

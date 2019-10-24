@@ -32,7 +32,8 @@ export class AddJobComponent implements OnInit {
   max_annual_salary;annual_currency;hourly_rate_currency;max_hourly_rate;
   min_hourly_rate;cities;selectedLocation = [];selectedValueArray = [];error;
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
-  commercialSkillsFromDB;selectedCommercialSkillsNew;
+  commercialSkillsFromDB;selectedCommercialSkillsNew;optionalSkillsFromDB;
+  selectedOptionalSkillsNew;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
@@ -108,6 +109,9 @@ export class AddJobComponent implements OnInit {
       console.log(this.job_status);
       console.log(this.user_roles);
       console.log(this.selectedCommercialSkillsNew);
+      if(this.selectedOptionalSkillsNew && this.selectedOptionalSkillsNew.length > 0) {
+        console.log(this.selectedOptionalSkillsNew);
+      }
       console.log('add job ftn');
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
