@@ -1349,7 +1349,10 @@ export class UserService {
 
   //for Jobs
   postJob(queryBody : any, company_id : any, admin: boolean) {
-    return this.http.post(URL+"v2/jobs?admin="+admin+"&company_id="+company_id, queryBody, {
+    let urlString = URL+'v2/jobs';
+    if(admin === true) urlString = URL+'v2/jobs?admin='+admin+'&company_id='+company_id;
+
+    return this.http.post(urlString, queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

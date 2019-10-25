@@ -47,10 +47,10 @@ export class AddJobComponent implements OnInit {
     }
 
     console.log('add job page');
-    console.log(this.userDoc);
     if(this.userDoc['job_ids'] && this.userDoc['job_ids'].length > 0)
       this.jobsAdded = 1;
 
+    //this is for edit logic
     /*this.selected_work_type = this.userDoc['job_ids'][0].work_type;
     if(this.selected_work_type === 'employee') this.employeeCheck = true;
     if(this.selected_work_type === 'contractor') this.contractorCheck = true;
@@ -63,7 +63,6 @@ export class AddJobComponent implements OnInit {
   }
 
   addJob(){
-    console.log(this.visa_needed);
     let errorCount = 0;
     this.error_msg = "";
     if(!this.job_name){
@@ -90,7 +89,7 @@ export class AddJobComponent implements OnInit {
       if(this.max_annual_salary && !checkNumber(this.max_annual_salary))
         errorCount = 1;
 
-      if(Number(this.max_annual_salary) < Number(this.min_annual_salary))
+      if(this.max_annual_salary && Number(this.max_annual_salary) < Number(this.min_annual_salary))
         errorCount = 1;
 
       if(!this.annual_currency || this.annual_currency === 'Currency') {
@@ -106,7 +105,7 @@ export class AddJobComponent implements OnInit {
       if(this.max_hourly_rate && !checkNumber(this.max_hourly_rate))
         errorCount = 1;
 
-      if(Number(this.max_hourly_rate) < Number(this.min_hourly_rate))
+      if(this.max_hourly_rate && Number(this.max_hourly_rate) < Number(this.min_hourly_rate))
         errorCount = 1;
 
       if(!this.hourly_rate_currency || this.hourly_rate_currency === 'Currency') {
@@ -127,8 +126,7 @@ export class AddJobComponent implements OnInit {
       errorCount = 1;
     }
     if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
-    if(this.pageContent.selfValidate()) console.log(this.pageContent.content);
-    else errorCount = 1;
+    if(!this.pageContent.selfValidate()) errorCount = 1;
 
     if(errorCount === 0) {
       let inputQuery : any ={};
@@ -151,7 +149,7 @@ export class AddJobComponent implements OnInit {
           this.validatedLocation.push({remote: true});
         }
       }
-      console.log(this.validatedLocation);
+
       inputQuery.locations = this.validatedLocation;
       if(this.visa_needed)inputQuery.visa_needed = this.visa_needed;
       if(this.employeeCheck) {
@@ -168,24 +166,21 @@ export class AddJobComponent implements OnInit {
       if(this.hourly_rate_currency)inputQuery.currency = this.hourly_rate_currency;
       if(this.num_people_desired)inputQuery.num_people_desired = parseInt(this.num_people_desired);
 
-      console.log(this.selectedCommercialSkillsNew);
       if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
         inputQuery.required_skills = skillsMapping(this.selectedCommercialSkillsNew);
       }
-      if(this.selectedOptionalSkillsNew && this.selectedOptionalSkillsNew.length > 0) {
-        console.log(this.selectedOptionalSkillsNew);
+      if(this.selectedOptionalSkillsNew && this.selectedOptionalSkillsNew.length > 0)
         inputQuery.not_required_skills = skillsMapping(this.selectedOptionalSkillsNew);
-      }
+
       if(this.pageContent.content)inputQuery.description = this.pageContent.content;
       console.log(inputQuery);
-      console.log('add job ftn');
+      console.log('add job ftn call BE');
       let admin = false;
       if(this.viewBy === 'admin') admin = true;
       this.authenticationService.postJob(inputQuery , this.userDoc['_id'], admin)
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
             else this.router.navigate(['/users/company']);
           }
@@ -360,8 +355,7 @@ export class AddJobComponent implements OnInit {
         }
 
         if (country1['city']) {
-          //console.log(country1);
-          let city = country1['city'];// + ", " + country1['city'].country;
+          let city = country1['city'];
           this.selectedValuesDB.push({_id:country1['_id'] ,city_id:country1['city_id'] ,name: city });
         }
       }
@@ -373,7 +367,6 @@ export class AddJobComponent implements OnInit {
         this.selectedValuesDB = this.filter_array(this.selectedValuesDB);
       }
       this.selectedValueArray = this.selectedValuesDB;
-      for(let value of this.selectedValueArray) console.log(value);
       return '';
     }
     else {

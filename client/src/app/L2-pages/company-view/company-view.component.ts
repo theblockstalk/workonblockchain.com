@@ -19,11 +19,12 @@ export class CompanyViewComponent implements OnInit {
   companyMsgTitle;companyMsgBody;imgPath;referred_name;
   pricePlanLink = '/pricing';company_name;countries; selectedValueArray = [];
   error;is_approve;disabled=true;referred_link;detail_link;discount;
-  company_phone;date_created;is_approved = '';
+  company_phone;date_created;is_approved = '';addJobPageURL;
 
   constructor(private datePipe: DatePipe, private route: ActivatedRoute, private router: Router,private authenticationService: UserService) { }
 
   ngOnInit() {
+    this.addJobPageURL = '/users/company/jobs/new';
     this.referred_name = '';
     this.discount = '0%';
     if(this.userDoc['discount']) this.discount = this.userDoc['discount']+'%';
@@ -36,6 +37,7 @@ export class CompanyViewComponent implements OnInit {
     else if(this.userDoc['_creator'].referred_email) this.referred_name = this.userDoc['_creator'].referred_email;
 
     if(this.viewBy === 'admin'){
+      this.addJobPageURL = '/admins/company/'+this.userDoc['_creator']._id+'/jobs/new';
       this.date_created = copyObject(this.userDoc['_creator'].created_date);
       this.date_created = this.datePipe.transform(this.date_created, 'dd-MMMM-yyyy');
       this.userDoc['_creator'].dissable_account_timestamp = this.datePipe.transform(this.userDoc['_creator'].dissable_account_timestamp, 'short');
