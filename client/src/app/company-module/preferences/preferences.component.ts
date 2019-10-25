@@ -20,7 +20,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   when_receive_email_notitfications;pricing_disable;gdpr_disable;
   about_active_class;terms_active_class;pref_active_class;
   price_plan_active_class;gdpr_compliance_active_class;myJobs;
-  jobsAdded = 0;errors;email_notification_log;
+  jobsAdded = 0;errors;email_notification_log;companyID;log;
 
   ngOnInit() {
     this.pricing_disable = "disabled";
@@ -36,6 +36,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
           data =>
           {
             console.log(data);
+            this.companyID = data['_id'];
             if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -89,9 +90,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
             }
           });
     }
-    else {
-      this.router.navigate(['/not_found']);
-    }
+    else this.router.navigate(['/not_found']);
   }
 
   ngAfterViewInit() {
@@ -125,8 +124,29 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       console.log('send in db');
       console.log(this.when_receive_email_notitfications);
       console.log('this.jobsAdded : ' + this.jobsAdded);
-      if (this.jobsAdded) this.router.navigate(['/users/company/wizard/pricing']);
-      else this.router.navigate(['/users/company/jobs/new']);
+      console.log('this.companyID: ' + this.companyID);
+      let inputQuery : any ={};
+      inputQuery.when_receive_email_notitfications = this.when_receive_email_notitfications;
+      this.authenticationService.edit_company_profile(this.currentUser['_id'], inputQuery, false)
+        .subscribe(
+          data =>{
+            if(data) {
+              if (this.jobsAdded) this.router.navigate(['/users/company/wizard/pricing']);
+              else this.router.navigate(['/users/company/jobs/new']);
+            }
+          },
+          error => {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+              this.router.navigate(['/not_found']);
+            }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+              this.router.navigate(['/not_found']);
+            }
+            else this.log = "Something went wrong";
+          }
+        )
     }
     else this.errors = 'One or more fields need to be completed.';
   }
