@@ -21,9 +21,7 @@ export class AddJobComponent implements OnInit {
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "company"
 
-  email_notificaiton = constants.email_notificaiton;
-  when_receive_email_notitfications;job_name;job_status;
-  job_status_options = constants.job_status;jobStatusErrMsg;
+  job_name;job_status;job_status_options = constants.job_status;jobStatusErrMsg;
   jobNameErrMsg;error_msg;workTypes = constants.workTypes;
   work_type_log;employeeCheck = false;selected_work_type;
   contractorCheck = false;volunteerCheck = false;
@@ -59,7 +57,6 @@ export class AddJobComponent implements OnInit {
     this.selectedCompanyLocation(this.userDoc['job_ids'][0].locations);*/
 
     this.roles = unCheckCheckboxes(constants.workRoles);
-    this.when_receive_email_notitfications = this.userDoc['when_receive_email_notitfications'];
   }
 
   addJob(){

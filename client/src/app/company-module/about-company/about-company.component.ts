@@ -102,7 +102,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               }
               this.preference  = '/preferences';
             }
-            if(data['saved_searches'] && data['saved_searches'].length > 0) {
+            if(data['job_ids'] && data['job_ids'].length > 0) {
 
               this.pref_active_class = 'fa fa-check-circle text-success';
             }

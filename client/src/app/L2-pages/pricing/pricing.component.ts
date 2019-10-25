@@ -39,7 +39,7 @@ export class PricingComponent implements OnInit {
     if (this.viewBy === 'company') {
       if (this.companyDoc['terms_id']) this.terms_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['company_founded'] && this.companyDoc['no_of_employees'] && this.companyDoc['company_funded'] && this.companyDoc['company_description']) this.about_active_class = 'fa fa-check-circle text-success';
-      if (this.companyDoc['saved_searches'] && this.companyDoc['saved_searches'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
+      if (this.companyDoc['job_ids'] && this.companyDoc['job_ids'].length > 0) this.pref_active_class = 'fa fa-check-circle text-success';
       if (this.companyDoc['pricing_plan']) this.price_plan_active_class = 'fa fa-check-circle text-success';
 
       if(constants.eu_countries.indexOf(this.companyDoc['company_country']) === -1) {

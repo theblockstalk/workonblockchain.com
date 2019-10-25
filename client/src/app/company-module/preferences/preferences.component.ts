@@ -20,6 +20,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   when_receive_email_notitfications;pricing_disable;gdpr_disable;
   about_active_class;terms_active_class;pref_active_class;
   price_plan_active_class;gdpr_compliance_active_class;myJobs;
+  jobsAdded = 0;errors;email_notification_log;
 
   ngOnInit() {
     this.pricing_disable = "disabled";
@@ -34,6 +35,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -46,6 +48,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
             this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
 
             if(data['job_ids'] && data['job_ids'].length > 0) {
+              this.jobsAdded = 1;
               this.pref_active_class = 'fa fa-check-circle text-success';
               setTimeout(() => {
                 $('.selectpicker').selectpicker();
@@ -108,6 +111,24 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     if(value === 'open') return 'text-success';
     if(value === 'closed') return 'text-danger';
     else return 'text-warning';
+  }
+
+  jobPreferences(){
+    this.errors = '';
+    let errorCount = 0;
+    if(!this.when_receive_email_notitfications) {
+      this.email_notification_log = "Please select when you want to receive email notification";
+      errorCount = 1;
+    }
+
+    if(errorCount === 0) {
+      console.log('send in db');
+      console.log(this.when_receive_email_notitfications);
+      console.log('this.jobsAdded : ' + this.jobsAdded);
+      if (this.jobsAdded) this.router.navigate(['/users/company/wizard/pricing']);
+      else this.router.navigate(['/users/company/jobs/new']);
+    }
+    else this.errors = 'One or more fields need to be completed.';
   }
 
 }

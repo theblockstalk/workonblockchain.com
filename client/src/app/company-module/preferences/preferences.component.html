@@ -39,81 +39,97 @@
 
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <h3 class="text-center">Talent search requirements</h3>
-        <div class="row my-3">
-          <div class="col-md-12">
-            <div class = "form-group w-100 mb-0">
-              <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
-              <div class="form-check form-check-inline">
-                <div *ngFor="let receive of email_notificaiton;">
-                  <input type="radio" id="radio - {{receive}}" name="when_receive_email_notitfications" class="d-none" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
-                  <label  for="radio - {{receive}}" class="border border py-2 px-lg-5 px-2">
-                    {{receive}}
-                  </label>
+        <form (ngSubmit)="jobPreferences()">
+          <h3 class="text-center">Talent search requirements</h3>
+          <div class="row my-3">
+            <div class="col-md-12">
+              <div class = "form-group w-100 mb-0">
+                <h4><i class="fas fa-envelope "></i> Get an email for new matches</h4>
+                <div class="form-check form-check-inline">
+                  <div *ngFor="let receive of email_notificaiton;">
+                    <input type="radio" id="radio - {{receive}}" name="when_receive_email_notitfications" class="d-none" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
+                    <label  for="radio - {{receive}}" class="border border py-2 px-lg-5 px-2">
+                      {{receive}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+                {{email_notification_log}}
+              </div>
+            </div>
+          </div>
+
+          <section class = "p-2" id = "information">
+            <div class="row">
+              <div class="col-md-6">
+                <h4><i class="fas fa-briefcase"></i> My jobs</h4>
+              </div>
+              <!--<div class="col-md-6 text-right">
+                <a routerLink="/users/company/jobs/new" class = "btn btn-primary text-white">Add job</a>
+              </div>-->
+            </div>
+            <div class="row mt-3 border-bottom border-dark" *ngIf="myJobs && myJobs.length > 0">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Job name</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Status</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Date</label>
                 </div>
               </div>
             </div>
-            <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
-              {{email_notification_log}}
+            <div class="row border-bottom pt-3" *ngFor="let job of myJobs">
+              <div class="col-md-3">
+                <p>{{job.name}}</p>
+              </div>
+              <div class="col-md-3">
+                <p class="text-capitalize {{getClass(job.status)}}">{{job.status}}</p>
+              </div>
+              <div class="col-md-3">
+                <p>
+                  {{job.created | date : 'dd'}} {{job.created | date : 'MMM'}} {{job.created | date : 'yyyy'}}
+                </p>
+              </div>
+              <div class="col-md-3 mb-2">
+                <app-c-button-normal
+                  level = "primary"
+                  label="View job"
+                  routeUrl="/users/company"
+                ></app-c-button-normal>
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <section class = "p-2" id = "information">
           <div class="row">
             <div class="col-md-12">
-              <h4><i class="fas fa-briefcase"></i> My jobs</h4>
-            </div>
-          </div>
-          <div class="row mt-3 border-bottom border-dark">
-            <div class="col-md-3">
               <div class="form-group">
-                <label>Job name</label>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Status</label>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Date</label>
+                <div class = "text-right mt-3">
+                  <a routerLink="/about_comp" class = "btn btn-warning text-white mr-2">Back</a>
+                  <app-c-button-normal
+                    level="primary"
+                    buttonType="submit"
+                    label="Next"
+                  ></app-c-button-normal>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row border-bottom pt-3" *ngFor="let job of myJobs">
-            <div class="col-md-3">
-              <p>{{job.name}}</p>
-            </div>
-            <div class="col-md-3">
-              <p class="text-capitalize {{getClass(job.status)}}">{{job.status}}</p>
-            </div>
-            <div class="col-md-3">
-              <p>
-                {{job.created | date : 'dd'}} {{job.created | date : 'MMM'}} {{job.created | date : 'yyyy'}}
-              </p>
-            </div>
-            <div class="col-md-3 mb-2">
-              <app-c-button-normal
-                level = "primary"
-                label="View job"
-                routeUrl="/users/company"
-              ></app-c-button-normal>
-            </div>
-          </div>
-        </section>
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <div class = "text-right mt-3">
-                <a routerLink="/about_comp" class = "btn btn-warning text-white mr-2">Back</a>
-                <a routerLink="/users/company/jobs/new" class = "btn btn-primary text-white">Add job</a>
+          <div class="row" *ngIf="errors">
+            <div class="col-md-12">
+              <div class = "invalid-feedback float-right d-inline w-auto" >
+                {{errors}}
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
