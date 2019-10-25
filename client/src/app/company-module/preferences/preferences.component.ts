@@ -5,6 +5,7 @@ import {User} from '../../Model/user';
 declare var $:any;
 import {constants} from '../../../constants/constants';
 import {isPlatformBrowser} from "@angular/common";
+import { getClass } from  '../../../services/object';
 
 @Component({
   selector: 'app-preferences',
@@ -105,10 +106,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getClass(value){
-    if(value === 'open') return 'text-success';
-    if(value === 'closed') return 'text-danger';
-    else return 'text-warning';
+  getClassName(value){
+    return getClass(value);
   }
 
   jobPreferences(){

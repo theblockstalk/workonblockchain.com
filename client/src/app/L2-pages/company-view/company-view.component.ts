@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { createLocationsListStrings,copyObject,makeImgCode,makeIconCode } from  '../../../services/object';
+import { createLocationsListStrings,copyObject,makeImgCode,makeIconCode,getClass } from  '../../../services/object';
 import { DatePipe } from '@angular/common';
 import {NgForm} from '@angular/forms';
 
@@ -177,6 +177,10 @@ export class CompanyViewComponent implements OnInit {
         else this.error = "Something went wrong";
       }
     );
+  }
+
+  getClassName(value){
+    return getClass(value);
   }
 
 }

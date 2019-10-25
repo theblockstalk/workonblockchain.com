@@ -1,3 +1,9 @@
+export const getClass = function (value) {
+  if(value === 'open') return 'text-success';
+  if(value === 'closed') return 'text-danger';
+  else return 'text-warning';
+}
+
 export const skillsMapping = function (array) {
   let newCommercialSkills = [];
   for (let commercialSkill of array) {
