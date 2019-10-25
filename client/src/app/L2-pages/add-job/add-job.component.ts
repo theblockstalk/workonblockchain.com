@@ -35,7 +35,7 @@ export class AddJobComponent implements OnInit {
   location_log;country;roles_log;roles;jobselected = [];user_roles = [];
   commercialSkillsFromDB;selectedCommercialSkillsNew;optionalSkillsFromDB;
   selectedOptionalSkillsNew;description_content;validatedLocation = [];
-  visa_needed = false;
+  visa_needed = false;jobsAdded = 0;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object,private router: Router,private authenticationService: UserService) { }
 
@@ -48,6 +48,9 @@ export class AddJobComponent implements OnInit {
 
     console.log('add job page');
     console.log(this.userDoc);
+    if(this.userDoc['job_ids'] && this.userDoc['job_ids'].length > 0)
+      this.jobsAdded = 1;
+
     /*this.selected_work_type = this.userDoc['job_ids'][0].work_type;
     if(this.selected_work_type === 'employee') this.employeeCheck = true;
     if(this.selected_work_type === 'contractor') this.contractorCheck = true;
@@ -182,7 +185,9 @@ export class AddJobComponent implements OnInit {
       .subscribe(
         data => {
           if(data) {
-              console.log(data);
+            console.log(data);
+            if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
+            else this.router.navigate(['/users/company']);
           }
         },
         error=>

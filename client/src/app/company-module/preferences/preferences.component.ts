@@ -20,7 +20,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   when_receive_email_notitfications;pricing_disable;gdpr_disable;
   about_active_class;terms_active_class;pref_active_class;
   price_plan_active_class;gdpr_compliance_active_class;myJobs;
-  jobsAdded = 0;errors;email_notification_log;companyID;log;
+  jobsAdded = 0;errors;email_notification_log;log;
 
   ngOnInit() {
     this.pricing_disable = "disabled";
@@ -36,7 +36,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
           data =>
           {
             console.log(data);
-            this.companyID = data['_id'];
             if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -124,7 +123,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       console.log('send in db');
       console.log(this.when_receive_email_notitfications);
       console.log('this.jobsAdded : ' + this.jobsAdded);
-      console.log('this.companyID: ' + this.companyID);
       let inputQuery : any ={};
       inputQuery.when_receive_email_notitfications = this.when_receive_email_notitfications;
       this.authenticationService.edit_company_profile(this.currentUser['_id'], inputQuery, false)
