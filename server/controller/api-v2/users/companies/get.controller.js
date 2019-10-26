@@ -53,7 +53,34 @@ module.exports.endpoint = async function (req, res) {
                 }
             }
         }
+        let jobs = employerCreatorRes.job_ids;
+        if (jobs && jobs.length > 0) {
+            jobs.sort(function (job1, job2) {
+                if (statusToNum(job1.status) > statusToNum(job2.status)) {
+                    return -1;
+                } else if (statusToNum(job1.status) < statusToNum(job2.status)) {
+                    return 1;
+                } else {
+                    if (job1.created > job1.created) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
+            })
+        }
         res.send(employerCreatorRes);
     }
     else errors.throwError("Company doc not found", 404);
+}
+
+const statusToNum = function (status) {
+    switch (status) {
+        case "open":
+            return 2;
+        case "paused":
+            return 1;
+        case "closed":
+            return 0;
+    }
 }
