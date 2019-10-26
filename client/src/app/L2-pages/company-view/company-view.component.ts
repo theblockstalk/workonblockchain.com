@@ -185,4 +185,9 @@ export class CompanyViewComponent implements OnInit {
     return getClass(value);
   }
 
+  getIdForLink(user, jobId, companyId){
+    if(user === 'company') return '/users/company/jobs/'+jobId;
+    if(user === 'admin') return '/admins/company/'+companyId+'/jobs/'+jobId;
+  }
+
 }

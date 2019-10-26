@@ -348,7 +348,7 @@
               <app-c-button-normal
                 level = "primary"
                 label="View job"
-                routeUrl="/users/company/jobs/{{job._id}}"
+                [routeUrl]="getIdForLink(viewBy,job._id,userDoc['_id'])"
               ></app-c-button-normal>
             </div>
           </div>

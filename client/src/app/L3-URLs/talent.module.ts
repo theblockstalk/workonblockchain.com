@@ -10,6 +10,7 @@ import { PagesEditComponent } from './admins/pages/pages-edit.component';
 import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view.component';
 import { CompanyViewComponent } from './admins/company/company-view/company-view.component';
 import { AddJobComponent } from './admins/company/jobs/add-job/add-job.component';
+import { ViewJobComponent } from './admins/company/jobs/view-job/view-job.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { AddJobComponent } from './admins/company/jobs/add-job/add-job.component
     PagesEditComponent,
     AdminTalentViewComponent,
     CompanyViewComponent,
-    AddJobComponent
+    AddJobComponent,
+    ViewJobComponent
   ],
   providers: [
     ProfileResolver
