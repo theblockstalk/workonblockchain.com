@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {getNameFromValue, createLocationsListStrings, makeImgCode, makeIconCode} from '../../../services/object';
+import {getNameFromValue, makeImgCode, makeIconCode} from '../../../services/object';
 import {constants} from '../../../constants/constants';
 
 @Component({
@@ -18,8 +18,6 @@ export class ViewJobComponent implements OnInit {
 
   ngOnInit() {
     console.log('on page level');
-    console.log(this.jobDoc);
-    console.log(this.viewBy);
     if(this.jobDoc['expected_salary_min']) {
       this.salary = this.jobDoc['currency'] + ' ' + this.jobDoc['expected_salary_min'] + ' per year';
       if(this.jobDoc['expected_salary_max'])
@@ -30,6 +28,7 @@ export class ViewJobComponent implements OnInit {
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
     }
+    console.log(this.mappedPositions);
   }
 
   createBlockchainLogos(commercial){
@@ -48,42 +47,6 @@ export class ViewJobComponent implements OnInit {
       newCommercials.push(img);
     }
     return newCommercials;
-  }
-
-  getLocation(location) {
-    this.selectedValueArray = [];
-    for (let country1 of location) {
-      let locObject : any = {};
-      if (country1['remote'] === true) {
-        this.selectedValueArray.push({name: 'Remote'});
-      }
-      if (country1['city']) {
-        let city = country1['city'];
-        locObject.name = city;
-        locObject.type = 'city';
-        this.selectedValueArray.push(locObject);
-      }
-      if (country1['country']) {
-        let country = country1['country'] + " (country)";
-        locObject.name = country;
-        locObject.type = 'country';
-        this.selectedValueArray.push(locObject);
-      }
-    }
-    this.countries = this.selectedValueArray;
-    this.countries.sort(function(a, b){
-      if(a.name < b.name) { return -1; }
-      if(a.name > b.name) { return 1; }
-      return 0;
-    });
-    if(this.countries.find((obj => obj.name === 'Remote'))) {
-      let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
-      this.countries.splice(0, 0, remoteValue);
-      this.countries = this.filter_array(this.countries);
-    }
-    let newCountries = [];
-    newCountries = createLocationsListStrings(this.countries);
-    return newCountries;
   }
 
   filter_array(arr) {

@@ -36,21 +36,33 @@
           </div>
           <div class="row mt-4">
             <div class="col-md-12">
-              <app-c-formv-list
-                label="Location:"
-                [value]="getLocation(jobDoc['locations'])"
-              >
-              </app-c-formv-list>
+              <div class="form-group">
+                <label>Location:</label>
+              </div>
+            </div>
+            <p *ngFor="let loc of jobDoc['locations']" class="ml-2">
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['remote'] === true">
+                Remote
+              </span>
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['city']">
+                {{loc['city']}}
+              </span>
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['country']">
+                {{loc['country']}} (country)
+              </span>
+            </p>
+            <div class="col-md-12">
               <small>A work visa can [not] be provided for these locations</small>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-md-12">
-              <app-c-formv-list
-                label="Role:"
-                [value]="mappedPositions"
-              >
-              </app-c-formv-list>
+              <div class="form-group">
+                <label>Role:</label>
+              </div>
+              <span class="badge badge-pill badge-primary mr-1" *ngFor="let position of mappedPositions">
+                {{position}}
+              </span>
             </div>
           </div>
           <div class="row mt-4">
