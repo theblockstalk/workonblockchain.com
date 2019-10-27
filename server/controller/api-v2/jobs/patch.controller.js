@@ -107,7 +107,9 @@ const bodySchema = new Schema({
     unset_expected_salary_min: Boolean,
     unset_expected_salary_max: Boolean,
     unset_required_skills: Boolean,
-    unset_not_required_skills: Boolean
+    unset_not_required_skills: Boolean,
+    unset_expected_hourly_rate_min: Boolean,
+    unset_expected_hourly_rate_max: Boolean
 
 });
 
@@ -164,7 +166,8 @@ module.exports.endpoint = async function (req, res) {
     if (jobUpdate.unset_job_type) unset.job_type = 1;
     if (jobUpdate.unset_expected_salary_min) unset.expected_salary_min = 1;
     if (jobUpdate.unset_expected_salary_max) unset.expected_salary_max = 1;
-    if (jobUpdate.unset_required_skills) unset.required_skills = 1;
+    if (jobUpdate.unset_expected_hourly_rate_min) unset.expected_hourly_rate_min = 1;
+    if (jobUpdate.unset_expected_hourly_rate_max) unset.expected_hourly_rate_max = 1;
     if (jobUpdate.unset_not_required_skills) unset.not_required_skills = 1;
 
     jobDocUpdate.modified = timestamp;

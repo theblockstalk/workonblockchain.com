@@ -108,14 +108,12 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group">
-              <select [(ngModel)]="annual_currency" class="selectpicker form-control" title="Currency" required name="annual_currency" >
-                <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === annual_currency  ? true : null" >{{baseCurrency}}</option>
-              </select>
-              <div class = "invalid-feedback d-inline"  *ngIf="!annual_currency || annual_currency === 'Currency'">
-                {{annual_salary_currency_log}}
-              </div>
-            </div>
+            <app-c-forme-dropdown-single
+              [options]="currency"
+              [value]="annual_currency"
+              [errorMsg]="annual_salary_currency_log"
+              (selectedValue)="annual_currency = $event"
+            ></app-c-forme-dropdown-single>
           </div>
         </div>
 

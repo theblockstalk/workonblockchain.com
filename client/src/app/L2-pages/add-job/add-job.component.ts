@@ -160,7 +160,9 @@ export class AddJobComponent implements OnInit {
       inputQuery.name = this.job_name;
       if(this.job_status) {
         const filtered = this.job_status_options.filter( (item) => item.name === this.job_status)
-        inputQuery.status = filtered[0].value;
+        if(filtered && filtered.length > 0)
+          inputQuery.status = filtered[0].value;
+        else inputQuery.status = this.job_status;
       }
       if(this.selected_work_type) inputQuery.work_type = this.selected_work_type;
 
@@ -184,9 +186,22 @@ export class AddJobComponent implements OnInit {
         if(this.min_annual_salary)inputQuery.expected_salary_min = parseInt(this.min_annual_salary);
         if(this.max_annual_salary)inputQuery.expected_salary_max = parseInt(this.max_annual_salary);
       }
+      else {
+        if(this.method === 'update') {
+          inputQuery.unset_job_type = true;
+          inputQuery.unset_expected_salary_min = true;
+          inputQuery.unset_expected_salary_max = true;
+        }
+      }
       if(this.contractorCheck) {
         if(this.min_hourly_rate)inputQuery.expected_hourly_rate_min = parseInt(this.min_hourly_rate);
         if(this.max_hourly_rate)inputQuery.expected_hourly_rate_max = parseInt(this.max_hourly_rate);
+      }
+      else {
+        if (this.method === 'update') {
+          inputQuery.unset_expected_hourly_rate_min = true;
+          inputQuery.unset_expected_hourly_rate_max = true;
+        }
       }
       if(this.user_roles)inputQuery.positions = this.user_roles;
       if(this.annual_currency)inputQuery.currency = this.annual_currency;
@@ -204,28 +219,52 @@ export class AddJobComponent implements OnInit {
       console.log('add job ftn call BE');
       let admin = false;
       if(this.viewBy === 'admin') admin = true;
-      /*this.authenticationService.postJob(inputQuery , this.userDoc['_id'], admin)
-      .subscribe(
-        data => {
-          if(data) {
-            if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
-            else this.router.navigate(['/users/company']);
-          }
-        },
-        error=>
-        {
-          if(error['message'] === 500 || error['message'] === 401) {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
-          if(error.message === 403) this.router.navigate(['/not_found']);
-        }
-      );*/
+      if(this.method === 'add') {
+        this.authenticationService.postJob(inputQuery, this.userDoc['_id'], admin)
+          .subscribe(
+            data => {
+              if (data) {
+                if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
+                else this.router.navigate(['/users/company']);
+              }
+            },
+            error => {
+              if (error['message'] === 500 || error['message'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) this.router.navigate(['/not_found']);
+            }
+          );
+      }
+      if(this.method === 'update') {
+        console.log('update baby');
+        this.authenticationService.updateJob(inputQuery, this.userDoc['company_id'], this.userDoc['_id'], admin)
+          .subscribe(
+            data => {
+              if (data) {
+                this.router.navigate(['/users/company']);
+              }
+            },
+            error => {
+              if (error['message'] === 500 || error['message'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              if (error.message === 403) this.router.navigate(['/not_found']);
+            }
+          );
+      }
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
   }

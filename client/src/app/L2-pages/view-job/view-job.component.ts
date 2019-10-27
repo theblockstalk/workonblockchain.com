@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import {getNameFromValue, makeImgCode, makeIconCode} from '../../../services/object';
 import {constants} from '../../../constants/constants';
 
@@ -7,12 +7,12 @@ import {constants} from '../../../constants/constants';
   templateUrl: './view-job.component.html',
   styleUrls: ['./view-job.component.css']
 })
-export class ViewJobComponent implements OnInit {
+export class ViewJobComponent implements OnInit, AfterViewInit {
   @Input() jobDoc: object;
   @Input() viewBy: string; // "admin", "company", "candidate"
 
   salary;selectedValueArray = [];countries = [];
-  mappedPositions = [];
+  mappedPositions = [];jobName;
 
   constructor() { }
 
@@ -28,6 +28,12 @@ export class ViewJobComponent implements OnInit {
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
     }
+    if(this.jobDoc['work_type'] === 'volunteer')
+      this.jobName = this.jobDoc['name']+' temporary volunteer';
+    if(this.jobDoc['work_type'] === 'employee')
+      this.jobName = this.jobDoc['name']+' '+this.jobDoc['job_type'][0];
+    if(this.jobDoc['work_type'] === 'contractor')
+      this.jobName = this.jobDoc['name']+' contractor';
   }
 
   createBlockchainLogos(commercial){
@@ -60,6 +66,10 @@ export class ViewJobComponent implements OnInit {
   getLink(user, jobId, companyId){
     if(user === 'company') return '/users/company/jobs/'+jobId+'/edit';
     if(user === 'admin') return '/admins/company/'+companyId+'/jobs/'+jobId;
+  }
+
+  ngAfterViewInit(): void {
+    window.scrollTo(0, 0);
   }
 
 }
