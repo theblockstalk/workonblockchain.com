@@ -67,11 +67,12 @@
           </div>
           <div class="row mt-4">
             <div class="col-md-12">
-              <app-c-formv-list
-                label="Commercial experience:"
-                [value]="createBlockchainLogos(jobDoc['required_skills'])"
-              >
-              </app-c-formv-list>
+              <div class="form-group">
+                <label>Commercial experience:</label>
+              </div>
+              <div *ngFor="let reqSkil of createBlockchainLogos(jobDoc['required_skills'])" [innerHTML] = " reqSkil | safeHtml " class="mb-3">
+                {{reqSkil}}
+              </div>
             </div>
           </div>
         </section>
