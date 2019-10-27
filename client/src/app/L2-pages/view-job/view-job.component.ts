@@ -24,6 +24,12 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
         this.salary = this.jobDoc['currency'] + ' ' + this.jobDoc['expected_salary_min'] + '-' + this.jobDoc['expected_salary_max'] + ' per year';
     }
 
+    if(this.jobDoc['expected_hourly_rate_min']) {
+      this.salary = this.jobDoc['currency'] + ' ' + this.jobDoc['expected_hourly_rate_min'] + ' per year';
+      if(this.jobDoc['expected_hourly_rate_max'])
+        this.salary = this.jobDoc['currency'] + ' ' + this.jobDoc['expected_hourly_rate_min'] + '-' + this.jobDoc['expected_hourly_rate_max'] + ' per year';
+    }
+
     for(let role of this.jobDoc['positions']){
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
@@ -65,7 +71,7 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
 
   getLink(user, jobId, companyId){
     if(user === 'company') return '/users/company/jobs/'+jobId+'/edit';
-    if(user === 'admin') return '/admins/company/'+companyId+'/jobs/'+jobId;
+    if(user === 'admin') return '/admins/company/'+companyId+'/jobs/'+jobId+'/edit';
   }
 
   ngAfterViewInit(): void {

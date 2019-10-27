@@ -15,5 +15,6 @@ export const urls = {
   company_jobs_add: 'users/company/jobs/new',
   company_jobs_view: 'users/company/jobs/:job_id',
   admin_jobs_view: 'admins/company/:company_id/jobs/:job_id',
-  company_edit_job: 'users/company/jobs/:job_id/edit'
+  company_edit_job: 'users/company/jobs/:job_id/edit',
+  admin_edit_job: 'admins/company/:company_id/jobs/:job_id/edit'
 };

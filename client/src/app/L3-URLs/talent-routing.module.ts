@@ -7,6 +7,7 @@ import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view
 import { CompanyViewComponent } from './admins/company/company-view/company-view.component';
 import { AddJobComponent } from './admins/company/jobs/add-job/add-job.component';
 import { ViewJobComponent } from './admins/company/jobs/view-job/view-job.component';
+import { EditJobComponent } from './admins/company/jobs/edit-job/edit-job.component';
 
 const routes: Routes = [
   { path: urls.admins_talent_edit , component: AdminTalentEditComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: urls.admin_company_view, component: CompanyViewComponent},
   { path: urls.admin_jobs_add, component: AddJobComponent},
   { path: urls.admin_jobs_view, component: ViewJobComponent},
+  { path: urls.admin_edit_job, component: EditJobComponent},
 ];
 
 @NgModule({

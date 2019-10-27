@@ -11,6 +11,7 @@ import { AdminTalentViewComponent } from './admins/talent/view/admin-talent-view
 import { CompanyViewComponent } from './admins/company/company-view/company-view.component';
 import { AddJobComponent } from './admins/company/jobs/add-job/add-job.component';
 import { ViewJobComponent } from './admins/company/jobs/view-job/view-job.component';
+import { EditJobComponent } from './admins/company/jobs/edit-job/edit-job.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ViewJobComponent } from './admins/company/jobs/view-job/view-job.compon
     AdminTalentViewComponent,
     CompanyViewComponent,
     AddJobComponent,
-    ViewJobComponent
+    ViewJobComponent,
+    EditJobComponent
   ],
   providers: [
     ProfileResolver
