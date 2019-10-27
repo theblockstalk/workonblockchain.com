@@ -1,9 +1,9 @@
-<ng-container *ngIf="companyDoc ; else loader">
+<ng-container *ngIf="jobDoc ; else loader">
   <app-p-add-job
-    *ngIf="companyDoc"
-    viewBy="admin"
-    method="add"
-    [userDoc]="companyDoc"
+    *ngIf="jobDoc"
+    viewBy="company"
+    method="update"
+    [userDoc]="jobDoc"
   >
   </app-p-add-job>
 </ng-container>

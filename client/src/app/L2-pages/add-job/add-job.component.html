@@ -18,15 +18,13 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group">
-              <label>Status</label>
-              <select [(ngModel)]="job_status" class="selectpicker form-control" title="(Job status)" required name="job_status" >
-                <option *ngFor='let status of job_status_options' [attr.selected]="status.value === job_status ? true : null" >{{status.name}}</option>
-              </select>
-              <div class = "invalid-feedback d-inline" *ngIf="!job_status">
-                {{jobStatusErrMsg}}
-              </div>
-            </div>
+            <app-c-forme-dropdown-single
+              label="Status"
+              [options]="job_status_options"
+              [value]="job_status"
+              [errorMsg]="jobStatusErrMsg"
+              (selectedValue)="job_status = $event"
+            ></app-c-forme-dropdown-single>
           </div>
         </div>
         <div class="row mt-3">
@@ -163,15 +161,13 @@
 
         <div class="row mt-2" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
           <div class="col-md-6">
-            <div class="form-group">
-              <label>Number of people you are looking for this role</label>
-              <select [(ngModel)]="num_people_desired" class="selectpicker form-control" title="(select one)" required name="num_people_desired" >
-                <option *ngFor='let resource of resources' [attr.selected]="resource.value === num_people_desired  ? true : null" >{{resource.name}}</option>
-              </select>
-              <div class = "invalid-feedback d-inline"  *ngIf="!num_people_desired">
-                {{num_people_desired_log}}
-              </div>
-            </div>
+            <app-c-forme-dropdown-single
+              label="Number of people you are looking for this role"
+              [options]="resources"
+              [value]="num_people_desired"
+              [errorMsg]="num_people_desired_log"
+              (selectedValue)="num_people_desired = $event"
+            ></app-c-forme-dropdown-single>
           </div>
         </div>
       </section>

@@ -9,6 +9,7 @@ import { ProfileResolver } from '../../incomplete-profile.resolver';
 import { ViewComponent } from './companies/view/view.component';
 import { CompanyAddJobComponent } from './companies/jobs/company-add-job/company-add-job.component';
 import { CompanyViewJobComponent } from './companies/jobs/company-view-job/company-view-job.component';
+import { CompanyEditJobComponent } from './companies/jobs/company-edit-job/company-edit-job.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { CompanyViewJobComponent } from './companies/jobs/company-view-job/compa
     CandidateProfileComponent,
     ViewComponent,
     CompanyAddJobComponent,
-    CompanyViewJobComponent
+    CompanyViewJobComponent,
+    CompanyEditJobComponent
   ],
   providers: [
     ProfileResolver

@@ -20,6 +20,7 @@ export class AddJobComponent implements OnInit {
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "company"
+  @Input() method: string; // "add", "update"
 
   job_name;job_status;job_status_options = constants.job_status;jobStatusErrMsg;
   jobNameErrMsg;error_msg;workTypes = constants.workTypes;
@@ -47,19 +48,45 @@ export class AddJobComponent implements OnInit {
     }
 
     console.log('add job page');
-    if(this.userDoc['job_ids'] && this.userDoc['job_ids'].length > 0)
-      this.jobsAdded = 1;
-
-    //this is for edit logic
-    /*this.selected_work_type = this.userDoc['job_ids'][0].work_type;
-    if(this.selected_work_type === 'employee') this.employeeCheck = true;
-    if(this.selected_work_type === 'contractor') this.contractorCheck = true;
-    if(this.selected_work_type === 'volunteer') this.volunteerCheck = true;
-
-    this.user_roles = this.userDoc['job_ids'][0].positions;
-    this.selectedCompanyLocation(this.userDoc['job_ids'][0].locations);*/
-
+    console.log(this.method);
     this.roles = unCheckCheckboxes(constants.workRoles);
+
+    if(this.method === 'add') {
+      if (this.userDoc['job_ids'] && this.userDoc['job_ids'].length > 0)
+        this.jobsAdded = 1;
+    }
+    if(this.method === 'update') {
+      console.log(this.userDoc);
+      this.selected_work_type = this.userDoc['work_type'];
+      if(this.selected_work_type === 'employee') {
+        this.employeeCheck = true;
+        this.employment_type = this.userDoc['job_type'];
+        this.min_annual_salary = this.userDoc['expected_salary_min'];
+        if(this.userDoc['expected_salary_max'])
+          this.max_annual_salary = this.userDoc['expected_salary_max'];
+
+        this.annual_currency = this.userDoc['currency'];
+      }
+      if(this.selected_work_type === 'contractor') {
+        this.contractorCheck = true;
+        this.min_hourly_rate = this.userDoc['expected_hourly_rate_min'];
+        this.max_hourly_rate = this.userDoc['expected_hourly_rate_max'];
+        this.hourly_rate_currency = this.userDoc['currency'];
+      }
+      if(this.selected_work_type === 'volunteer') this.volunteerCheck = true;
+
+      this.user_roles = this.userDoc['positions'];
+      this.selectedCompanyLocation(this.userDoc['locations']);
+
+      this.job_name = this.userDoc['name'];
+      this.job_status = this.userDoc['status'];
+      this.num_people_desired = this.userDoc['num_people_desired'].toString();
+      this.commercialSkillsFromDB = this.userDoc['required_skills'];
+      if(this.userDoc['not_required_skills'] && this.userDoc['not_required_skills'].length > 0)
+        this.optionalSkillsFromDB = this.userDoc['not_required_skills'];
+
+      this.description_content = this.userDoc['description'];
+    }
   }
 
   addJob(){
@@ -177,7 +204,7 @@ export class AddJobComponent implements OnInit {
       console.log('add job ftn call BE');
       let admin = false;
       if(this.viewBy === 'admin') admin = true;
-      this.authenticationService.postJob(inputQuery , this.userDoc['_id'], admin)
+      /*this.authenticationService.postJob(inputQuery , this.userDoc['_id'], admin)
       .subscribe(
         data => {
           if(data) {
@@ -198,7 +225,7 @@ export class AddJobComponent implements OnInit {
           }
           if(error.message === 403) this.router.navigate(['/not_found']);
         }
-      );
+      );*/
     }
     else this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
   }

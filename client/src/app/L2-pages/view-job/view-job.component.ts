@@ -28,7 +28,6 @@ export class ViewJobComponent implements OnInit {
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
     }
-    console.log(this.mappedPositions);
   }
 
   createBlockchainLogos(commercial){
@@ -56,6 +55,11 @@ export class ViewJobComponent implements OnInit {
       var match = Boolean(hashTable[key]);
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  getLink(user, jobId, companyId){
+    if(user === 'company') return '/users/company/jobs/'+jobId+'/edit';
+    if(user === 'admin') return '/admins/company/'+companyId+'/jobs/'+jobId;
   }
 
 }

@@ -10,6 +10,13 @@
                 {{jobDoc['name']}}
               </h2>
             </div>
+            <div class="col-md-6 text-right">
+              <app-c-button-normal
+                level = "primary"
+                label="Edit job"
+                [routeUrl]="getLink(viewBy,jobDoc['_id'],jobDoc['company_id'])"
+              ></app-c-button-normal>
+            </div>
           </div>
           <div class="row mt-5">
             <div class="col-md-12">
