@@ -11,7 +11,7 @@
         <div class = "row">
           <div class = "col-md-3 ">
             <div class="wob-bg-primary2 p-2 border">
-              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
+              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved jobs</h4>
               <input type="text" [(ngModel)]="_id" name="_id"  class="form-control d-none">
               <input type="text" [(ngModel)]="timestamp"  name = "timestamp"  class="form-control d-none">
               <input type="text" [(ngModel)]="pref_job_type" name="pref_job_type"  class="form-control d-none">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user-tie" aria-hidden="true"></i> Talent requirements</h4>
+              <h4 class="filter_heading p-2 mb-3"><i class="fas fa-user-tie" aria-hidden="true"></i> Requirements</h4>
               <div class="form-group px-1">
                 <div class="form-check" *ngFor="let types of workTypes">
                   <label class="form-check-label simple-radio-button" >
