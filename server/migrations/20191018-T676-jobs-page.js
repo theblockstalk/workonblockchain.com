@@ -28,7 +28,7 @@ module.exports.up = async function() {
                 description : '',
                 created : timestamp,
                 modified : timestamp
-            },
+            };
             if (savedSearch.visa_needed) newJob.visa_needed = savedSearch.visa_needed;
             if (savedSearch.job_type) newJob.job_type = savedSearch.job_type;
             if (savedSearch.current_salary) newJob.expected_salary_min = savedSearch.current_salary;
