@@ -23,10 +23,11 @@ export class EditJobComponent implements OnInit {
     console.log(this.job_id);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    console.log(this.currentUser);
 
     if(this.currentUser) {
       if (this.job_id && this.company_id && this.admin_log.is_admin === 1 && this.currentUser) {
-        this.authenticationService.getAJob(this.job_id)
+        this.authenticationService.getAJob(this.job_id, this.company_id, true)
           .subscribe(
             data =>{
               this.jobDoc = data;

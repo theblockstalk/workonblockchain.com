@@ -26,7 +26,7 @@ export class ViewJobComponent implements OnInit {
 
     if(this.currentUser) {
       if (this.job_id && this.company_id && this.admin_log.is_admin === 1 && this.currentUser) {
-        this.authenticationService.getAJob(this.job_id)
+        this.authenticationService.getAJob(this.job_id, this.company_id, true)
           .subscribe(
             data =>{
               this.jobDoc = data;

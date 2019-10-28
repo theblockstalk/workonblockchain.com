@@ -1377,8 +1377,10 @@ export class UserService {
     }));
   }
 
-  getAJob(job_id: string) {
-    return this.http.get(URL+'v2/jobs?job_id='+job_id, {
+  getAJob(job_id: string, company_id: any, admin: boolean) {
+    let urlString = URL+'v2/jobs?job_id='+job_id;
+    if(admin === true) urlString = URL+'v2/jobs?admin='+admin+'&job_id='+job_id+'&company_id='+company_id;
+    return this.http.get(urlString, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

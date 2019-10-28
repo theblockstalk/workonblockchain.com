@@ -21,7 +21,7 @@ export class CompanyEditJobComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) this.router.navigate(['/login']);
     if(this.currentUser && this.currentUser.type === 'company'){
-      this.authenticationService.getAJob(this.job_id)
+      this.authenticationService.getAJob(this.job_id, this.currentUser['_id'], false)
         .subscribe(
           data =>{
             this.jobDoc = data;

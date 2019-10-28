@@ -18,7 +18,8 @@ export class AddJobComponent implements OnInit {
   @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
   @ViewChild(ContentComponent) pageContent: ContentComponent;
 
-  @Input() userDoc: object;
+  @Input() userDoc: object; //for adding new job
+  @Input() jobDoc: object; //for updating current job
   @Input() viewBy: string; // "admin", "company"
   @Input() method: string; // "add", "update"
 
@@ -56,36 +57,36 @@ export class AddJobComponent implements OnInit {
         this.jobsAdded = 1;
     }
     if(this.method === 'update') {
-      console.log(this.userDoc);
-      this.selected_work_type = this.userDoc['work_type'];
+      console.log(this.jobDoc);
+      this.selected_work_type = this.jobDoc['work_type'];
       if(this.selected_work_type === 'employee') {
         this.employeeCheck = true;
-        this.employment_type = this.userDoc['job_type'];
-        this.min_annual_salary = this.userDoc['expected_salary_min'];
-        if(this.userDoc['expected_salary_max'])
-          this.max_annual_salary = this.userDoc['expected_salary_max'];
+        this.employment_type = this.jobDoc['job_type'];
+        this.min_annual_salary = this.jobDoc['expected_salary_min'];
+        if(this.jobDoc['expected_salary_max'])
+          this.max_annual_salary = this.jobDoc['expected_salary_max'];
 
-        this.annual_currency = this.userDoc['currency'];
+        this.annual_currency = this.jobDoc['currency'];
       }
       if(this.selected_work_type === 'contractor') {
         this.contractorCheck = true;
-        this.min_hourly_rate = this.userDoc['expected_hourly_rate_min'];
-        this.max_hourly_rate = this.userDoc['expected_hourly_rate_max'];
-        this.hourly_rate_currency = this.userDoc['currency'];
+        this.min_hourly_rate = this.jobDoc['expected_hourly_rate_min'];
+        this.max_hourly_rate = this.jobDoc['expected_hourly_rate_max'];
+        this.hourly_rate_currency = this.jobDoc['currency'];
       }
       if(this.selected_work_type === 'volunteer') this.volunteerCheck = true;
 
-      this.user_roles = this.userDoc['positions'];
-      this.selectedCompanyLocation(this.userDoc['locations']);
+      this.user_roles = this.jobDoc['positions'];
+      this.selectedCompanyLocation(this.jobDoc['locations']);
 
-      this.job_name = this.userDoc['name'];
-      this.job_status = this.userDoc['status'];
-      this.num_people_desired = this.userDoc['num_people_desired'].toString();
-      this.commercialSkillsFromDB = this.userDoc['required_skills'];
-      if(this.userDoc['not_required_skills'] && this.userDoc['not_required_skills'].length > 0)
-        this.optionalSkillsFromDB = this.userDoc['not_required_skills'];
+      this.job_name = this.jobDoc['name'];
+      this.job_status = this.jobDoc['status'];
+      this.num_people_desired = this.jobDoc['num_people_desired'].toString();
+      this.commercialSkillsFromDB = this.jobDoc['required_skills'];
+      if(this.jobDoc['not_required_skills'] && this.jobDoc['not_required_skills'].length > 0)
+        this.optionalSkillsFromDB = this.jobDoc['not_required_skills'];
 
-      this.description_content = this.userDoc['description'];
+      this.description_content = this.jobDoc['description'];
     }
   }
 
@@ -224,8 +225,12 @@ export class AddJobComponent implements OnInit {
           .subscribe(
             data => {
               if (data) {
-                if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
-                else this.router.navigate(['/users/company']);
+                if(admin)
+                  this.router.navigate(['/admins/company/'+data['company_id']+'/jobs/'+data['_id']]);
+                else {
+                  if (this.jobsAdded === 0) this.router.navigate(['/users/company/wizard/pricing']);
+                  else this.router.navigate(['/users/company']);
+                }
               }
             },
             error => {
@@ -244,11 +249,14 @@ export class AddJobComponent implements OnInit {
       }
       if(this.method === 'update') {
         console.log('update baby');
-        this.authenticationService.updateJob(inputQuery, this.userDoc['company_id'], this.userDoc['_id'], admin)
+        this.authenticationService.updateJob(inputQuery, this.jobDoc['company_id'], this.jobDoc['_id'], admin)
           .subscribe(
             data => {
               if (data) {
-                this.router.navigate(['/users/company']);
+                if(admin)
+                  this.router.navigate(['/admins/company/'+this.jobDoc['company_id']+'/jobs/'+this.jobDoc['_id']]);
+
+                else this.router.navigate(['/users/company']);
               }
             },
             error => {
