@@ -37,7 +37,7 @@ function convertExpToNum(exp_year) {
 
 module.exports.up = async function() {
     const now = new Date();
-    /*const skillsJsonArray = await csv().fromFile(skillsFilePath);
+    const skillsJsonArray = await csv().fromFile(skillsFilePath);
     console.log("Total number of skills in csv: " + skillsJsonArray.length);
 
     for(let skill of skillsJsonArray) {
@@ -50,7 +50,7 @@ module.exports.up = async function() {
         await skills.insert(data);
         newDocs++;
     }
-    console.log("Number of skills added in skills collection: " + newDocs);*/
+    console.log("Number of skills added in skills collection: " + newDocs);
 
     //for candidate
     totalDocsToProcess = await users.count({type : 'candidate'});
@@ -156,7 +156,7 @@ module.exports.up = async function() {
     });
 
     //for company
-    /*totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
+    totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
 
     totalDocsToProcess = await users.count({type : 'company'});
     await users.findAndIterate({type : 'company'}, async function(userDoc) {
@@ -205,7 +205,7 @@ module.exports.up = async function() {
             await companies.update({_id: employerDoc._id}, {$set: set});
             totalModified++;
         }
-    });*/
+    });
 
     console.log('Total companies document to process: ' + totalDocsToProcess);
     console.log('Total companies processed document: ' + totalProcessed);
