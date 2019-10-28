@@ -76,7 +76,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   information;
   not_found;
   visa_check;
-  residence_country;
   residence_log;
   workTypes = constants.workTypes;
   hourly_rate;
@@ -89,7 +88,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   other_technologies;
   successful_msg;
   new_error_msg;
-  residence_country_log;
   expected_hourly_rate_log;
   search_name_log;
   response;
@@ -148,9 +146,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
           if (this.urlParameters.roles) {
             this.role_value = this.urlParameters.roles;
-          }
-          if (this.urlParameters.base_country) {
-            this.residence_country = this.urlParameters.base_country;
           }
           if (this.urlParameters.current_salary && this.urlParameters.current_currency) {
             this.salary = this.urlParameters.current_salary;
@@ -212,7 +207,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       currency: new FormControl(),
       expected_hourly_rate: new FormControl(),
       other_technologies: new FormControl(),
-      residence_country: new FormControl(),
       timestamp: new FormControl(),
       required_skills: new FormControl()
     });
@@ -321,7 +315,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       expected_hourly_rate: [this.hourly_rate],
       currency: [this.contractorCurrency],
       other_technologies: [],
-      residence_country: [this.residence_country],
       required_skills: []
     });
   }
@@ -380,9 +373,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['work_type']) this.selectedWorkType = key['work_type'];
         else this.selectedWorkType = '';
 
-        if (key['residence_country'] && key['residence_country'].length > 0) this.residence_country = key['residence_country'];
-        else this.residence_country = '';
-
         if (key['required_skills'] && key['required_skills'].length > 0) {
           this.commercialSkillsFromDB = key['required_skills'];
           this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
@@ -426,10 +416,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
-    if (this.residence_country && this.residence_country.length > 50) {
-      this.residence_log = "Please select maximum 50 countries";
-    }
-
     else {
       this.not_found = '';
       let queryBody: any = {};
@@ -444,7 +430,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if (this.role_value && this.role_value.length > 0) queryBody.roles = this.role_value;
       if (this.visa_check) queryBody.visa_needed = this.visa_check;
-      if (this.residence_country && this.residence_country.length > 0) queryBody.base_country = this.residence_country;
 
       if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary = this.salary;
@@ -524,7 +509,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.role_value = '';
     this.currencyChange = '';
     this.visa_check = false;
-    this.residence_country = [];
     this.saveSearchName = '';
     this.selectedWorkType = '';
     this.hourly_rate = '';
@@ -550,8 +534,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else queryBody.job_type = [];
     if (this.role_value && this.role_value.length > 0) queryBody.position = this.role_value;
     else queryBody.position = [];
-    if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
-    else queryBody.residence_country = [];
     if (this._id) queryBody._id = this._id;
     if (this.selectedValueArray && this.selectedValueArray.length > 0) {
       let validatedLocation = [];
@@ -710,7 +692,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
     if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
     if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
-    if (this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
     if (this.preferncesForm.value.work_type === 'employee' ) {
       if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
         const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
@@ -760,10 +741,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if (!this.preferncesForm.value.name) {
       this.search_name_log = "Please enter saved search name";
-      errorCount = 1;
-    }
-    if (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
-      this.residence_country_log = "Please select maximum 50 countries";
       errorCount = 1;
     }
 

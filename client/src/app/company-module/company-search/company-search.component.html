@@ -62,18 +62,6 @@
                   compSearch="true"
                 ></app-i-forme-skills-auto-suggest>
               </div>
-
-              <!--<div class="form-group">
-                <select title="Skills" [disabled]="msg !== '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
-                  <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
-                </select>
-              </div>
-
-              <div class="form-group" *ngIf="skill_value && skill_value.length > 0" id="skills_exp">
-                <select title="Years experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="years_exp_value" name="years_exp" (ngModelChange)="searchdata('years_exp_min', $event)" class="selectpicker form-control" placeholder="Years experience">
-                  <option *ngFor = "let years of years_exp" [attr.selected] = "years.value === years_exp_value ? true : null" [value]="years.value">{{years.name}}</option>
-                </select>
-              </div>-->
               <hr/>
 
               <div class="form-group">
@@ -113,24 +101,6 @@
                 </select>
               </div>
               <hr/>
-              <!--<div class = "form-group">
-                <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
-                  <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
-                </select>
-                <small class="ml-3 text-secondary" >Only select this if essential for the job</small>
-
-              </div>
-              <hr/>-->
-
-              <div class="form-group">
-                <select class="form-control selectpicker" title="Residence/base country" [disabled]="msg !== '' ? true : false"  [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
-                  <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
-                </select>
-                <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
-                  {{residence_log}}
-                </div>
-
-              </div>
 
               <div class = "form-group" *ngIf="selectedWorkType === 'employee'">
 
@@ -153,15 +123,6 @@
               </div>
 
             </div>
-
-            <!--<div class="wob-bg-primary2 p-2 border mt-2">
-              <h4 class="filter_heading pt-2 px-2 mb-0"><i class="fas fa-align-justify"></i> Talent preferences</h4>
-              <div class = "form-group mt-3">
-                <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_order" name="blockchainsOrder" (ngModelChange)="searchdata('blockchainOrder', $event)" class="selectpicker form-control" multiple data-live-search="true">
-                  <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
-                </select>
-              </div>
-            </div>-->
           </div>
 
           <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -609,27 +570,6 @@
                     <div *ngIf="newSearchLocation.length > 0">
                       <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteNewLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--<div class="col-md-6 mt-2">
-                <div class="form-group">
-                  <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
-                    <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" selected>{{blockchain.name}}</option>
-                  </select>
-                  <small class="text-secondary" >Only select this if essential for the job</small>
-                </div>
-              </div>-->
-
-
-              <div class="col-md-6 mt-2">
-                <div class="form-group">
-                  <select multiple class="form-control selectpicker" title="Residence/base country" required  formControlName="residence_country">
-                    <option *ngFor='let country of residenceCountries'  [value]="country.value" >{{country.name}}</option>
-                  </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
-                    {{residence_country_log}}
                   </div>
                 </div>
               </div>
