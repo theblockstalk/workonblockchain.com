@@ -486,6 +486,7 @@ module.exports.endpoint = async function (req, res) {
             if(candidateQuery.commercial_skills) updateCandidateUser['candidate.commercial_skills'] = candidateQuery.commercial_skills;
             if(candidateQuery.description_commercial_skills) updateCandidateUser['candidate.description_commercial_skills'] = candidateQuery.description_commercial_skills;
 
+            if(queryBody.unset_commercial_skills) unset['candidate.commercial_skills'] = 1;
             if (queryBody.unset_description_commercial_skills) unset['candidate.description_commercial_skills'] = 1;
         }
 
@@ -507,8 +508,8 @@ module.exports.endpoint = async function (req, res) {
     }
     else {
         const candidateHistory = userDoc.candidate.history;
-            let wizardCompletedStatus = candidateHistory.filter(
-                (history) => history.status && history.status.status === 'wizard completed'
+        let wizardCompletedStatus = candidateHistory.filter(
+            (history) => history.status && history.status.status === 'wizard completed'
         );
 
         if (wizardCompletedStatus.length === 0) {

@@ -372,15 +372,16 @@ export class CandidateViewComponent implements OnInit {
         for(let commercials of this.commercial){
           let img = '';
           if(commercials.type === 'blockchain')
-            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name + ': ' + commercials.exp_year + ' years';
+            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name;
 
           if(commercials.type === 'experience') {
             let skillName = getNameFromValue(constants.otherSkills,commercials.name);
-            img = '<i class="fas fa-user-friends"></i> '+skillName.name + ': ' + commercials.exp_year + ' years';
+            img = '<i class="fas fa-user-friends"></i> '+skillName.name;
           }
           if(commercials.type === 'language')
-            img = '<i class="fas fa-code"></i> '+commercials.name+': ' +commercials.exp_year +' years';
+            img = '<i class="fas fa-code"></i> ' + commercials.name;
 
+          if(commercials.exp_year) img = img + ': ' + commercials.exp_year + ' years';
           newCommercials.push(img);
         }
         this.commercial = newCommercials;

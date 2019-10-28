@@ -108,17 +108,17 @@ export class SkillsAutoSuggestComponent implements OnInit {
       //else this.selectedSkill.push({ name: skillObj.name, visa_needed: false});
     }
     this.selectedItems.emit(this.selectedSkillExpYear);
-    if(!this.compSearch)
+    if(!this.compSearch && !this.showDescription)
       this.selfValidate();
   }
 
   selfValidate() {
     this.exp_year_error = '';
     this.errorMsg = '';
-    if(!this.noExpYears && this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
+    /*if(!this.noExpYears && this.selectedSkillExpYear.find(x => (!x['exp_year']))) {
       this.exp_year_error = 'Please select number of years';
       return false;
-    }
+    }*/
 
     if(this.selectedSkillExpYear && this.selectedSkillExpYear.length <= 0) {
       this.errorMsg = "Please select atleast one skill";
@@ -157,7 +157,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   deleteRow(index){
     this.selectedSkillExpYear.splice(index, 1);
     this.selectedItems.emit(this.selectedSkillExpYear);
-    if(!this.compSearch)
+    if(!this.compSearch && !this.showDescription)
       this.selfValidate();
   }
 

@@ -134,7 +134,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     let errorCount = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
+    //if(!this.skillsAutoSuggestComp.selfValidate()) errorCount = 1;
 
     if(!this.skillsAutoSuggestComp.desValidate()) errorCount = 1;
 
@@ -152,19 +152,18 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       candidateQuery.interest_areas = this.selectedValue;
       candidateQuery.why_work = this.why_work;
-      let newCommercialSkills = [];
-      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
-        for (let commercialSkill of this.selectedCommercialSkillsNew) {
-          newCommercialSkills.push({
-            skills_id: commercialSkill.skills_id,
-            name: commercialSkill.name,
-            type: commercialSkill.type,
-            exp_year: commercialSkill.exp_year
-          });
-        }
-        candidateQuery.commercial_skills = newCommercialSkills;
+      let setDesc = 1;
+
+      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
+        candidateQuery.commercial_skills = this.mapSkills(this.selectedCommercialSkillsNew);
+      else if(this.skillsAutoSuggestComp.selectedSkillExpYear && this.skillsAutoSuggestComp.selectedSkillExpYear.length > 0)
+        candidateQuery.commercial_skills = this.mapSkills(this.skillsAutoSuggestComp.selectedSkillExpYear);
+      else {
+        setDesc = 0;
+        inputQuery.unset_commercial_skills = true;
       }
-      if(this.skillsAutoSuggestComp.description)
+
+      if(setDesc && this.skillsAutoSuggestComp.description)
         candidateQuery.description_commercial_skills = this.skillsAutoSuggestComp.description;
       else
         inputQuery.unset_description_commercial_skills = true;
@@ -190,6 +189,20 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
+  }
+
+  mapSkills(skills){
+    let newCommercialSkills = [];
+    for (let skill of skills) {
+      let obj = {
+        skills_id: skill.skills_id,
+        name: skill.name,
+        type: skill.type
+      };
+      if(skill.exp_year) obj['exp_year'] = skill.exp_year;
+      newCommercialSkills.push(obj);
+    }
+    return newCommercialSkills;
   }
 
 }
