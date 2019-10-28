@@ -280,7 +280,7 @@ module.exports = {
         type: String,
         maxlength: 3000
     },
-    skills: { //will contain experimented_platforms (DELETE ME)
+    skills: { //will contain experimented_platforms
         type: [{
             skills_id: {
                 type : Schema.Types.ObjectId,
@@ -290,7 +290,7 @@ module.exports = {
             name: String
         }],
     },
-    description_skills:{ // DELETE ME
+    description_skills:{
         type: String,
         maxlength: 3000
     },

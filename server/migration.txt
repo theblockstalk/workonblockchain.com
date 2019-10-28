@@ -1,0 +1,21 @@
+Mongodb connection string: mongodb://localhost:27017/wob
+Connected to mongodb database
+Running migration up file: 20191004-T667-skills-autosuggest.js
+Migrating candidate user_id: 5d9aec86db262d0e284b83ed
+{ _id: 5d9aec86db262d0e284b83ed } { '$set': 
+   { set: 
+      { 'candidate.description_commercial_skills': 'These are my skills.These are my skills.These are my skills.These are my skills.These are my skills.These are my skills. \n Also in these.Also in these.Also in these.Also in these.Also in these.Also in these.Also in these.Also in these.Also in these.',
+        'candidate.description_skills': 'These too i can work in it.These too i can work in it.These too i can work in it.These too i can work in it.These too i can work in it.',
+        'candidate.commercial_skills': [Array],
+        'candidate.skills': [Array] } } }
+Migrating candidate user_id: 5d9aef0edb262d0e284b84a9
+{ _id: 5d9aef0edb262d0e284b84a9 } { '$set': 
+   { set: 
+      { 'candidate.description_commercial_skills': 'These are my skills.These are my skills.These are my skills.These are my skills.These are my skills.These are my skills.These are my skills. \n I can work in these.I can work in these.I can work in these.I can work in these.I can work in these.I can work in these.I can work in these.',
+        'candidate.description_skills': 'These are my also skills.I can work.These are my also skills.I can work.These are my also skills.I can work.These are my also skills.I can work.These are my also skills.I can work.These are my also skills.I can work.',
+        'candidate.commercial_skills': [Array],
+        'candidate.skills': [Array] } } }
+Total companies document to process: 2
+Total companies processed document: 2
+Total companies modified document: 2
+Finished
