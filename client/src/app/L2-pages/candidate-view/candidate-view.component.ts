@@ -71,7 +71,6 @@ export class CandidateViewComponent implements OnInit {
   contractor:any = {};
   volunteer: any = {};
   interest_area;
-  languages;
   work_history;
   education_history;
   already_approached = 0;
@@ -82,14 +81,11 @@ export class CandidateViewComponent implements OnInit {
   job_offer_log_success;
   job_title_log;
   location_log;
-  salary_log;
-  max_salary_log;
   salary_currency_log;
   employment_log;
   job_desc_log;
   contractor_location_log;
   hourly_rate_log;
-  max_hourly_rate_log;
   contract_desc_log;
   volunteer_location_log;
   volunteer_desc_log;
@@ -372,24 +368,23 @@ export class CandidateViewComponent implements OnInit {
           return 0;
         });
 
-        let newCommercials = [], newLanguages = [], newCommercialsSkills = [];
+        let newCommercials = [], newCommercialsSkills = [];
         for(let commercials of this.commercial){
-          if(commercials.type === 'blockchain') {
-            let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name + ': ' + commercials.exp_year + ' years';
-            newCommercials.push(img);
-          }
+          let img = '';
+          if(commercials.type === 'blockchain')
+            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name + ': ' + commercials.exp_year + ' years';
+
           if(commercials.type === 'experience') {
             let skillName = getNameFromValue(constants.otherSkills,commercials.name);
-            let img = '<i class="fas fa-user-friends"></i> '+skillName.name + ': ' + commercials.exp_year + ' years';
+            img = '<i class="fas fa-user-friends"></i> '+skillName.name + ': ' + commercials.exp_year + ' years';
             newCommercials.push(img);
           }
-          if(commercials.type === 'language') {
-            let img = commercials.name+': ' +commercials.exp_year +' years';
-            newLanguages.push(img);
-          }
+          if(commercials.type === 'language')
+            img = '<i class="fas fa-code"></i> '+commercials.name+': ' +commercials.exp_year +' years';
+
+          newCommercials.push(img);
         }
         this.commercial = newCommercials;
-        this.languages = newLanguages;
       }
     }
     if(this.userDoc['candidate'].description_commercial_skills) {
@@ -451,22 +446,6 @@ export class CandidateViewComponent implements OnInit {
         this.progress_bar_class = 'progress-bar bg-success';
       }
     }
-
-    /*this.languages = this.userDoc['candidate'].programming_languages;
-    if(this.languages && this.languages.length>0){
-      this.languages.sort(function(a, b){
-        if(a.language < b.language) { return -1; }
-        if(a.language > b.language) { return 1; }
-        return 0;
-      });
-
-      let newLanguages = [];
-      for(let languages of this.languages){
-        let img = languages.language+': ' +languages.exp_year +' years';
-        newLanguages.push(img);
-      }
-      this.languages = newLanguages;
-    }*/
 
     if(this.userDoc['candidate'].work_history) {
       this.work_history = this.userDoc['candidate'].work_history;
