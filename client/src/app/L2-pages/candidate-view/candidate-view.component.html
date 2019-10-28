@@ -667,6 +667,13 @@
               <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
             </div>
           </div>
+
+          <div class="row mt-2">
+            <div class="col-md-12" *ngIf="experimented && experimented.length > 0">
+              <app-c-formv-list label="Non commercial skills:" [value]="experimented"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
+            </div>
+          </div>
         </section>
         <!--Commercial skils/Languages section ends-->
 

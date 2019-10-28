@@ -377,7 +377,6 @@ export class CandidateViewComponent implements OnInit {
           if(commercials.type === 'experience') {
             let skillName = getNameFromValue(constants.otherSkills,commercials.name);
             img = '<i class="fas fa-user-friends"></i> '+skillName.name + ': ' + commercials.exp_year + ' years';
-            newCommercials.push(img);
           }
           if(commercials.type === 'language')
             img = '<i class="fas fa-code"></i> '+commercials.name+': ' +commercials.exp_year +' years';
