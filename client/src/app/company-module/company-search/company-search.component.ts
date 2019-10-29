@@ -157,10 +157,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   currency = constants.currencies;
   job_type = constants.job_type;
-  skillsData = constants.programmingLanguages;
-  residenceCountries = constants.countries;
   rolesData = constants.workRoles;
-  years_exp = constants.years_exp_min;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -453,13 +450,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   savedSearch() {
     if (this.saveSearchName) {
-      console.log(this.saveSearchName);
-      console.log(this._id);
-      console.log('update this job');
+      const filtered = this.savedSearches.filter( (item) => item.name === this.saveSearchName);
+      this.router.navigate(['/users/company/jobs/'+filtered[0]['_id']+'/edit']);
     }
-    else {
-      console.log('save new');
-    }
+    else this.router.navigate(['/users/company/jobs/new']);
   }
 
   prefillLocationFEFormat(location) {

@@ -429,10 +429,13 @@ export class AddJobComponent implements OnInit {
         if (country1['remote'] === true) {
           this.selectedValuesDB.push({_id:country1['_id'] ,name: 'Remote' });
         }
-
         if (country1['city']) {
           let city = country1['city'];
           this.selectedValuesDB.push({_id:country1['_id'] ,city_id:country1['city_id'] ,name: city });
+        }
+        if (country1['country']) {
+          let country = country1['country'] + ' (country)';
+          this.selectedValuesDB.push({_id: country1['_id'], name:  country});
         }
       }
 
