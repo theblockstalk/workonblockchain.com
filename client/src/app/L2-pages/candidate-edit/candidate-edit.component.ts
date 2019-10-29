@@ -34,6 +34,7 @@ import {constants} from '../../../constants/constants';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
 import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
+import {NotRequireSkillsComponent} from '../../L1-items/users/not-require-skills/not-require-skills.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -74,6 +75,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(HowHearAboutWobComponent) hearAboutWob: HowHearAboutWobComponent;
   @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
   @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
+  @ViewChild(NotRequireSkillsComponent) notRequiredSkills: NotRequireSkillsComponent;
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
@@ -119,6 +121,7 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   hear_about_wob_other_info;
   //new for commercial skills component
   commercialSkillsFromDB;selectedCommercialSkillsNew;description_commercial_skills
+  nonCommercialSkillsDB;selectedNonCommercialSkills;descriptionNonCommercialSkills;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -213,6 +216,9 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(candidateSubDoc.description_commercial_skills){
       this.description_commercial_skills = candidateSubDoc.description_commercial_skills;
     }
+    if(candidateSubDoc.skills) this.nonCommercialSkillsDB = candidateSubDoc.skills;
+    if(candidateSubDoc.description_skills) this.descriptionNonCommercialSkills = candidateSubDoc.description_skills;
+
     if(candidateSubDoc.work_history) this.work_history = candidateSubDoc.work_history;
     if(candidateSubDoc.education_history) this.education_history = candidateSubDoc.education_history;
   }
@@ -242,6 +248,25 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
         candidateBody.description_commercial_skills = this.skillsAutoSuggestComp.description;
       else
         queryBody.unset_description_commercial_skills = true;
+    }
+
+    //for non commercial skills
+    setDesc = 1;
+    if(this.selectedNonCommercialSkills && this.selectedNonCommercialSkills.length > 0)
+      candidateBody.skills = this.mapSkills(this.selectedNonCommercialSkills);
+    else if(this.notRequiredSkills.selectedSkillExpYear && this.notRequiredSkills.selectedSkillExpYear.length > 0)
+      candidateBody.skills = this.mapSkills(this.notRequiredSkills.selectedSkillExpYear);
+    else {
+      setDesc = 0;
+      queryBody.unset_skills = true;
+    }
+
+    if(!this.notRequiredSkills.desValidate()) errorCount++;
+    else {
+      if(setDesc && this.notRequiredSkills.description)
+        candidateBody.description_skills = this.notRequiredSkills.description;
+      else
+        queryBody.unset_description_skills = true;
     }
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
