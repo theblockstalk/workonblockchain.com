@@ -83,6 +83,7 @@ import { CompanyViewComponent } from './L2-pages/company-view/company-view.compo
 import { SkillsAutoSuggestComponent } from './L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
 import { AddJobComponent } from './L2-pages/add-job/add-job.component';
 import { ViewJobComponent } from './L2-pages/view-job/view-job.component';
+import { NotRequireSkillsComponent } from './L1-items/users/not-require-skills/not-require-skills.component';
 
 @NgModule({
   imports: [
@@ -105,7 +106,8 @@ import { ViewJobComponent } from './L2-pages/view-job/view-job.component';
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
     CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
     CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent,
-    PricingComponent, CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent
+    PricingComponent, CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent,
+    NotRequireSkillsComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -124,7 +126,7 @@ import { ViewJobComponent } from './L2-pages/view-job/view-job.component';
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
     CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
     ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent, PricingComponent,
-    CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent
+    CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent, NotRequireSkillsComponent
   ]
 })
 export class SharedModule { }

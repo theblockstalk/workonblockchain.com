@@ -261,6 +261,18 @@ const bodySchema = new Schema({
             type: String,
             maxlength: 3000
         },
+        skills : [new Schema({ //will contain experimented_platforms
+            skills_id: {
+                type : Schema.Types.ObjectId,
+                ref: 'Skills'
+            },
+            type: String,
+            name: String,
+        })],
+        description_skills:{
+            type: String,
+            maxlength: 3000
+        },
     },
     unset_commercial_platforms: Boolean,
     unset_experimented_platforms: Boolean,
@@ -286,7 +298,9 @@ const bodySchema = new Schema({
     unset_other_reasons: Boolean,
     unset_counter_offer: Boolean,
     unset_description_commercial_skills: Boolean,
-    unset_hear_about_wob_other_info: Boolean
+    unset_hear_about_wob_other_info: Boolean,
+    unset_description_skills: Boolean,
+    unset_skills: Boolean
 });
 
 module.exports.inputValidation = {
@@ -488,6 +502,13 @@ module.exports.endpoint = async function (req, res) {
 
             if(queryBody.unset_commercial_skills) unset['candidate.commercial_skills'] = 1;
             if (queryBody.unset_description_commercial_skills) unset['candidate.description_commercial_skills'] = 1;
+
+            //for non comm skills
+            if(candidateQuery.skills) updateCandidateUser['candidate.skills'] = candidateQuery.skills;
+            if(candidateQuery.description_skills) updateCandidateUser['candidate.description_skills'] = candidateQuery.description_skills;
+
+            if(queryBody.unset_skills) unset['candidate.skills'] = 1;
+            if (queryBody.unset_description_skills) unset['candidate.description_skills'] = 1;
         }
 
         if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;

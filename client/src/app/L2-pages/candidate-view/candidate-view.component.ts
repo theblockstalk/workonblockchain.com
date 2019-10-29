@@ -406,7 +406,15 @@ export class CandidateViewComponent implements OnInit {
 
         let newExperimented = [];
         for(let experimented of this.experimented){
-          let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented.name+'.png" alt="'+experimented.name+' Logo"> '+experimented.name;
+          let img = '';
+          if(experimented.type === 'blockchain')
+            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented.name+'.png" alt="'+experimented.name+' Logo"> '+experimented.name;
+          if(experimented.type === 'experience') {
+            let skillName = getNameFromValue(constants.otherSkills,experimented.name);
+            img = '<i class="fas fa-user-friends"></i> '+skillName.name;
+          }
+          if(experimented.type === 'language')
+            img = '<i class="fas fa-code"></i> ' + experimented.name;
           newExperimented.push(img);
         }
         this.experimented = newExperimented;
