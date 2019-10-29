@@ -294,13 +294,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['expected_salary_min']) this.salary = key['expected_salary_min'];
         else this.salary = '';
 
-        if (key['currency']) this.currencyChange = key['currency'];
+        if (key['expected_salary_min'] && key['currency']) this.currencyChange = key['currency'];
         else this.currencyChange = '';
 
         if (key['expected_hourly_rate_min']) this.hourly_rate = key['expected_hourly_rate_min'];
         else this.hourly_rate = '';
 
-        if (key['expected_hourly_rate'] && key['current_currency']) this.contractorCurrency = key['current_currency'];
+        if (key['expected_hourly_rate_min'] && key['currency']) this.contractorCurrency = key['currency'];
         else this.contractorCurrency = '';
 
         if (key['work_type']) this.selectedWorkType = key['work_type'];
