@@ -194,7 +194,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       inputQuery.candidate = candidateQuery;
       inputQuery.wizardNum = 4;
-      
+
       this.authenticationService.edit_candidate_profile(this.currentUser._id , inputQuery,false)
         .subscribe(
           data => {

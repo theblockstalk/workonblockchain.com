@@ -226,25 +226,19 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     let candidateBody : any = {};
     let job_activity_statuses:any ={};
 
-    if(!this.skillsAutoSuggestComp.selfValidate()) errorCount++;
+    let setDesc = 1;
+    if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
+      candidateBody.commercial_skills = this.mapSkills(this.selectedCommercialSkillsNew);
+    else if(this.skillsAutoSuggestComp.selectedSkillExpYear && this.skillsAutoSuggestComp.selectedSkillExpYear.length > 0)
+      candidateBody.commercial_skills = this.mapSkills(this.skillsAutoSuggestComp.selectedSkillExpYear);
     else {
-      let newCommercialSkills = [];
-      if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
-        for (let commercialSkill of this.selectedCommercialSkillsNew) {
-          newCommercialSkills.push({
-            skills_id: commercialSkill.skills_id,
-            name: commercialSkill.name,
-            type: commercialSkill.type,
-            exp_year: commercialSkill.exp_year
-          });
-        }
-        candidateBody.commercial_skills = newCommercialSkills;
-      }
+      setDesc = 0;
+      queryBody.unset_commercial_skills = true;
     }
 
     if(!this.skillsAutoSuggestComp.desValidate()) errorCount++;
     else {
-      if(this.skillsAutoSuggestComp.description)
+      if(setDesc && this.skillsAutoSuggestComp.description)
         candidateBody.description_commercial_skills = this.skillsAutoSuggestComp.description;
       else
         queryBody.unset_description_commercial_skills = true;
@@ -533,5 +527,19 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       }
     }
     return validatedLocation;
+  }
+
+  mapSkills(skills){
+    let newCommercialSkills = [];
+    for (let skill of skills) {
+      let obj = {
+        skills_id: skill.skills_id,
+        name: skill.name,
+        type: skill.type
+      };
+      if(skill.exp_year) obj['exp_year'] = skill.exp_year;
+      newCommercialSkills.push(obj);
+    }
+    return newCommercialSkills;
   }
 }
