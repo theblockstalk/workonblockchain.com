@@ -26,10 +26,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   company_postcode;image;email;company_postcode_log;first_name_log;
   last_name_log;job_title_log;company_website_log;company_phone_log;
   company_city_log;email_notification_log;error_msg;about_active_class;
-  companyMsgTitle;current_salary;index;other_technologies;
-  currentyear;yearValidation;cities;selectedValueArray=[];error;
+  companyMsgTitle;current_salary;index;other_technologies;yearVerification;
+  currentyear;yearValidation;cities;selectedValueArray=[];error;expected_validation;
   when_receive_email_notitfications;country_code;country_code_log;
-  email_notificaiton = constants.email_notificaiton;
+  email_notificaiton = constants.email_notificaiton;prefil_image;
   country_codes = constants.country_codes;contact_number_log;
   imagePreviewLink;commercialSkillsFromDB = [];selectedCommercialSkillsNew = [];
 
