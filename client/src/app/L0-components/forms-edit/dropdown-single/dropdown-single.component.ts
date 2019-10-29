@@ -32,6 +32,7 @@ export class DropdownSingleComponent implements OnInit {
       this.labelClass = 'invisible';
       this.label = "Don't show";
     }
+    if(this.label === 'auto suggest') this.labelClass = 'd-none';
   }
 
   valueChanged(event) {

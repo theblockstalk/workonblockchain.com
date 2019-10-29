@@ -20,7 +20,7 @@
         </div>
         <div *ngIf="!noExpYears" class="{{yearsClass}}">
           <app-c-forme-dropdown-single
-            label=""
+            label="auto suggest"
             [options]="years_exp_min_new"
             [value]="value.exp_year"
             [errorMsg]="yearsErrMsg"
