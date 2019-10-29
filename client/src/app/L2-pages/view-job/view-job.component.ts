@@ -54,7 +54,7 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
 
       if(commercials.type === 'experience')
         img = makeIconCode('fas fa-user-friends') + commercials.name;
-      
+
       if(commercials.exp_year) img = img +'&nbsp; &nbsp; min ' +commercials.exp_year +'+ years exp';
       newCommercials.push(img);
     }
