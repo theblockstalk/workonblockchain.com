@@ -47,14 +47,15 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
     for(let commercials of commercial){
       let img;
       if(commercials['type'] === 'blockchain')
-        img = makeImgCode(commercials) + ' ' + commercials['name']+'&nbsp; &nbsp; min ' +commercials.exp_year +'+ years exp';
+        img = makeImgCode(commercials) + ' ' + commercials['name'];
 
       if(commercials['type'] === 'language')
-        img = makeIconCode('fas fa-code') + commercials.name+'&nbsp; &nbsp; min ' +commercials.exp_year +'+ years exp';
+        img = makeIconCode('fas fa-code') + commercials.name;
 
       if(commercials.type === 'experience')
-        img = makeIconCode('fas fa-user-friends') + commercials.name+'&nbsp; &nbsp; min ' +commercials.exp_year +'+ years exp';
-
+        img = makeIconCode('fas fa-user-friends') + commercials.name;
+      
+      if(commercials.exp_year) img = img +'&nbsp; &nbsp; min ' +commercials.exp_year +'+ years exp';
       newCommercials.push(img);
     }
     return newCommercials;
