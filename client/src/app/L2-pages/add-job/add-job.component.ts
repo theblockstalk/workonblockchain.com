@@ -261,8 +261,7 @@ export class AddJobComponent implements OnInit {
               if (data) {
                 if(admin)
                   this.router.navigate(['/admins/company/'+this.jobDoc['company_id']+'/jobs/'+this.jobDoc['_id']]);
-
-                else this.router.navigate(['/users/company']);
+                else this.router.navigate(['/users/company/jobs/'+this.jobDoc['_id']]);
               }
             },
             error => {
@@ -313,7 +312,7 @@ export class AddJobComponent implements OnInit {
   suggestedOptions(inputParam) {
     if(inputParam !== '') {
       this.error='';
-      this.authenticationService.autoSuggestOptions(inputParam , true)
+      this.authenticationService.autoSuggestOptions(inputParam , false)
         .subscribe(
           data => {
             if(data) {
