@@ -36,7 +36,7 @@ export class AdminUpdateCompanyProfileComponent implements OnInit {
   when_receive_email_notitfications;email_notificaiton = constants.email_notificaiton;
   company_id;admin_log;yearVerification;country_code;
   country_code_log;contact_number_log;imagePreviewLink;prefil_image;
-  hear_about_wob;otherReasons;discount;
+  hear_about_wob;otherReasons;discount;country_codes = constants.country_codes;
   usa_privacy_shield;us_privacy_shield_error;
   canadian_commercial_company;commercial_canada_error;
 
