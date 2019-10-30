@@ -86,47 +86,49 @@ describe('cron', function () {
 
             const candidate = docGenerator.candidate();
             const profileData = docGeneratorV2.candidateProfile();
-            console.log(profileData);
-
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
-            console.log(companyDoc);
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
-            console.log(updatedData);
-            updatedData.saved_searches = [{
-                name: 'update search name',
-                location: [
-                    {remote: true}
-                ],
-                job_type: [
-                    "Part time"
-                ],
-                position: [
-                    profileData.candidate.employee.roles[0]
-                ],
-                current_currency: profileData.candidate.employee.currency,
-                current_salary: profileData.candidate.employee.expected_annual_salary,
-                required_skills: [
-                    profileData.candidate.commercial_skills[0]
-                ]
-            }];
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._id, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
+            const randomJobPost = await jobsHelpers.jobPost();
+            const jobPost = {
+                name: randomJobPost.name,
+                status: "open",
+                work_type: "employee",
+                // locations: [{
+                //     remote: true
+                // }],
+                // visa_needed: false,
+                // job_type: ["Part time"],
+                positions: [profileData.candidate.employee.roles[0]],
+                expected_salary_min: profileData.candidate.employee.expected_annual_salary,
+                // expected_salary_max: 200000,
+                currency: profileData.candidate.employee.currency,
+                num_people_desired: 1,
+                required_skills: [profileData.candidate.commercial_skills[0]],
+                // not_required_skills:[{
+                //     skills_id: skills2._id,
+                //     type: skills2.type,
+                //     name: skills2.name
+                // }],
+                description: randomJobPost.description
+            }
+            await api.jobs.POST(companyDoc.jwt_token, null, jobPost);
 
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData);
+            await userHelper.approveCandidate(candidate.email);
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
-            console.log(userCompanyDoc);
-            await companies.update({_creator: userCompanyDoc._id}, {$unset: {last_email_sent: 1}})
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
 
-            let userCandidateDoc = await users.findOneByEmail(candidate.email);
+            const userCandidateDoc = await users.findOneByEmail(candidate.email);
             console.log(userCandidateDoc);
             companyDoc.candidates_sent_by_email.length.should.equal(1);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());

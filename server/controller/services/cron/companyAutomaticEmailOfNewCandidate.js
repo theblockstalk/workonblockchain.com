@@ -20,7 +20,7 @@ module.exports = async function (companyId) {
     } else {
         let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
         companySelector = {_creator : {$in : userIds},
-            saved_searches: { $exists: true, $ne : [] },
+            job_ids: { $exists: true, $ne : [] },
             when_receive_email_notitfications: {$ne: "Never"}
         }
     }
@@ -36,13 +36,13 @@ module.exports = async function (companyId) {
             logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
             const timestamp = Date.now();
 
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.when_receive_email_notitfications) * 24*60*60*1000)) {
                 let blacklist = [];
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
                     blacklist.push(candidateSent.user);
                 }
 
-                logger.debug("Company preferences", companyDoc.saved_searches);
+                logger.debug("Company preferences", companyDoc.job_ids);
 
                 let candidateDocs;
                 let foundCandidates = [];

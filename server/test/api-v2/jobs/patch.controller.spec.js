@@ -97,7 +97,6 @@ describe('POST /jobs', function () {
                 unset_job_type: true,
                 unset_expected_salary_min: true,
                 unset_expected_salary_max: true,
-                unset_required_skills: true,
                 unset_not_required_skills: true
             };
             res = await api.jobs.PATCH(companyUserDoc.jwt_token, query, jobUnpatch);
@@ -108,7 +107,6 @@ describe('POST /jobs', function () {
             expect(job.job_type).to.not.exist;
             expect(job.expected_salary_min).to.not.exist;
             expect(job.expected_salary_max).to.not.exist;
-            expect(job.required_skills).to.not.exist;
             expect(job.not_required_skills).to.not.exist;
         })
 
