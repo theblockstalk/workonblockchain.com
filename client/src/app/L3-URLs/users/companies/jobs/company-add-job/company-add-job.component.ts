@@ -16,7 +16,8 @@ export class CompanyAddJobComponent implements OnInit {
     console.log('in company add job');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) this.router.navigate(['/login']);
-    if(this.currentUser && this.currentUser.type === 'company'){
+    else if(this.currentUser && this.currentUser.type === 'company'){
+      console.log('in 2nd if');
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
           data =>{
