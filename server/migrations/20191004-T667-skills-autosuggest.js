@@ -6,6 +6,7 @@ const csv = require('csvtojson');
 const skillsFilePath = __dirname + '/files/T667-skills-collection.csv';
 
 let totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
+let newDocs = 0;
 
 function mapToArray(array,propertyName) {
     let mappedArray = [];
