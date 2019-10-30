@@ -34,6 +34,9 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
     }
+
+    if(this.jobDoc['name']) this.jobName = this.jobDoc['name'];
+
     if(this.jobDoc['work_type'] === 'volunteer')
       this.jobName = this.jobDoc['name']+' (temporary volunteer)';
     if(this.jobDoc['work_type'] === 'employee') {
