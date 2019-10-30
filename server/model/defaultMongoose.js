@@ -37,7 +37,13 @@ let defaultFunctions = function(model) {
         },
 
         updateOne: async function (selector, updateObj) {
-            return await model.findOneAndUpdate(selector, updateObj, { runValidators: true, useFindAndModify: false });
+            return await model.findOneAndUpdate(selector, updateObj, {
+                runValidators: true,
+                // useFindAndModify: false,
+                // returnOriginal: false,
+                // new: true,
+                // returnNewDocument: true
+            });
         },
 
         deleteOne: async function (selector) {

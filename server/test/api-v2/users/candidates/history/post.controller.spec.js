@@ -7,7 +7,7 @@ const users = require('../../../../../model/mongoose/users');
 const docGenerator = require('../../../../helpers/docGenerator-v2');
 const candidateHelper = require('../candidateHelpers');
 const userHelper = require('../../../otherHelpers/usersHelpers');
-const companyHelper = require('../../companies/companyHelpers');
+const companyHelper = require('../../companies/helpers');
 
 const assert = chai.assert;
 const expect = chai.expect;

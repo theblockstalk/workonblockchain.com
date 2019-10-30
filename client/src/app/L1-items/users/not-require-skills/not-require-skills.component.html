@@ -1,0 +1,41 @@
+<app-c-forme-dropdown-autosuggest
+  [placeholder]="placeHolder"
+  [controllerOptions]="controllerOptions"
+  [controller]="autoSuggestController"
+  [displayItems]="resultItemDisplay"
+  (selectedItems)="itemSelected($event)"
+  [errorMsg]="errorMsg"
+></app-c-forme-dropdown-autosuggest>
+<div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
+  <div class="row">
+    <div *ngFor="let value of selectedSkillExpYear; let i = index" class="col-md-8 p-1">
+      <div class="ml-0 row">
+        <div class = "col-4">
+          <ng-container *ngIf="value.img;else noImg">
+            <span [innerHTML] = " value.img | safeHtml ">{{value.img}}</span> <span>{{ value.name }}</span>
+          </ng-container>
+          <ng-template #noImg>
+            <span>{{ value.name }}</span>
+          </ng-template>
+        </div>
+        <div class = "col-4">
+          <a (click)="deleteRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <app-c-forme-text-area
+        rows="5"
+        placeholder="I have used Bitcoin and Zcash to send money to some friends and family. I used several exchanges. I use the Luno wallet."
+        maxLength="3000"
+        label="Description of non commercial skills (optional)"
+        [value]="description"
+        [errorMsg]="desErrMsg"
+        (textareaInput)="description = $event"
+        (change)="desValidate()"
+      ></app-c-forme-text-area>
+    </div>
+  </div>
+</div>

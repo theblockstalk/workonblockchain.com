@@ -289,23 +289,23 @@
           </div>
         </section>
 
-        <section class = "bg-white border rounded mt-4 py-3 px-5" *ngIf = "userDoc['saved_searches'] && userDoc['saved_searches'].length > 0">
+        <section class = "bg-white border rounded mt-4 py-3 px-5">
           <div class="row">
             <div class="col-md-6">
               <h2>
-                <i class="fas fa-search" aria-hidden="true"></i>
-                Saved searches
+                <i class="fas fa-briefcase"></i> My jobs
               </h2>
             </div>
-            <div class="col-md-6" *ngIf="viewBy === 'company'">
-              <app-c-forme-edit-link-icon
-                routerUrl="edit_company_profile"
-                section="prefrences"
-              ></app-c-forme-edit-link-icon>
+            <div class="col-md-6 text-right">
+              <app-c-button-normal
+                level = "primary"
+                label="Add job"
+                [routeUrl]="addJobPageURL"
+              ></app-c-button-normal>
             </div>
           </div>
 
-          <div class="row mt-3">
+          <div class="row mt-3 border-bottom border-dark">
             <div class="col-md-12">
               <h4><i class="fas fa-envelope "></i> Notifications</h4>
             </div>
@@ -313,123 +313,44 @@
               {{userDoc['when_receive_email_notitfications']}}
             </div>
           </div>
-          <hr class="bg-dark" />
 
-          <div *ngFor="let searches of userDoc['saved_searches']; let i = index ">
-            <div class="row">
-              <div class="col-md-12">
-                <h3 class="pt-2 mb-3"> Work search name: {{searches.name}}</h3>
+          <div class="row mt-3 border-bottom border-dark">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Job name</label>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <h4 class="pt-2 "><i class="fas fa-user-tie" aria-hidden="true"></i> Job requirements</h4>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Status</label>
               </div>
             </div>
-
-            <div class="row mt-3">
-              <div class="col-md-12 mb-3" *ngIf="searches.work_type">
-                <app-c-formv-text
-                  label="Work type:"
-                  [value]="searches.work_type"
-                ></app-c-formv-text>
-              </div>
-              <div class="col-md-12 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
-                <app-c-formv-list
-                  label="Type:"
-                  [value]="searches.job_type"
-                >
-                </app-c-formv-list>
-              </div>
-              <div class="col-md-12 mb-3" *ngIf="searches.position && searches.position.length > 0">
-                <app-c-formv-list
-                  label="Role:"
-                  [value]="searches.position"
-                >
-                </app-c-formv-list>
-              </div>
-
-              <div class = "col-md-12 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
-                <app-c-formv-list
-                  label="Work place (city/remote):"
-                  [value]="getLocation(searches.location)"
-                >
-                </app-c-formv-list>
-
-                <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
-                  <div class="form-group mt-3">
-                    <p>Only show candidates that require a work visa</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-12 mb-3" *ngIf="searches.required_skills && searches.required_skills.length >0">
-                <app-c-formv-list
-                  label="Required skills:"
-                  [value]="createBlockchainLogos(searches.required_skills)"
-                >
-                </app-c-formv-list>
-              </div>
-
-              <div class="col-md-12 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
-                <app-c-formv-list
-                  label="Languages:"
-                  [value]="searches.skills"
-                >
-                </app-c-formv-list>
-              </div>
-
-              <!--<div class="col-md-12 mb-3" *ngIf = "searches.years_exp_min">
-                <div class="form-group">
-                  <label>Years of experience:</label>
-                  <p> {{searches.years_exp_min}}+ </p>
-                </div>
-              </div>-->
-
-              <div class="col-md-12 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
-                <app-c-formv-list
-                  label="Residence/base country:"
-                  [value]="searches.residence_country"
-                >
-                </app-c-formv-list>
-              </div>
-
-              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.current_salary">
-                <app-c-formv-text
-                  label="Annual salary:"
-                  [value]="makeCurrencySalary(searches.current_salary, searches.current_currency)"
-                ></app-c-formv-text>
-              </div>
-
-              <div class="col-md-12 mb-3" *ngIf="searches.current_currency && searches.expected_hourly_rate">
-                <app-c-formv-text
-                  label="Hourly rate:"
-                  [value]="makeCurrencySalary(searches.expected_hourly_rate, searches.current_currency)"
-                ></app-c-formv-text>
-              </div>
-
-              <div class="col-md-12 mb-3" *ngIf="searches.other_technologies">
-                <app-c-formv-text
-                  label="Other requirements:"
-                  [value]="searches.other_technologies"
-                ></app-c-formv-text>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Update date</label>
               </div>
             </div>
+          </div>
 
-            <div class="row" *ngIf="searches.order_preferences && searches.order_preferences.length > 0">
-              <div class="col-md-12">
-                <h4 class="pt-2 "><i class="fas fa-align-justify"></i> Job preferences</h4>
-              </div>
-              <div class="col-md-12 mt-3">
-                <app-c-formv-list
-                  label="Commercial blockchain experience:"
-                  [value]="searches.order_preferences"
-                >
-                </app-c-formv-list>
-              </div>
+          <div class="row border-bottom pt-3" *ngFor="let job of userDoc['job_ids']">
+            <div class="col-md-3">
+              <p>{{job.name}}</p>
             </div>
-            <hr *ngIf="i < (userDoc['saved_searches'].length - 1)" class="bg-dark"/>
+            <div class="col-md-3">
+              <p class="text-capitalize {{getClassName(job.status)}}">{{job.status}}</p>
+            </div>
+            <div class="col-md-3">
+              <p>
+                {{job.modified | date : 'dd'}} {{job.created | date : 'MMM'}} {{job.created | date : 'yyyy'}}
+              </p>
+            </div>
+            <div class="col-md-3 mb-2">
+              <app-c-button-normal
+                level = "primary"
+                label="View job"
+                [routeUrl]="getIdForLink(viewBy,job._id,userDoc['_id'])"
+              ></app-c-button-normal>
+            </div>
           </div>
         </section>
       </div>

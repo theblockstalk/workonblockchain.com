@@ -45,13 +45,13 @@ module.exports.approveUser = async function approveUser(user_id, params, jwtToke
     return res;
 }
 
-const getCurrentCompany = module.exports.getCurrentCompany = async function getCurrentCompany(companyId,jwtToken){
-    const res = await chai.request(server)
-        .get('/v2/users/companies?user_id=' + companyId)
-        .set('Authorization', jwtToken)
-    res.should.have.status(200);
-    return res;
-}
+// const getCurrentCompany = module.exports.getCurrentCompany = async function getCurrentCompany(companyId,jwtToken){
+//     const res = await chai.request(server)
+//         .get('/v2/users/companies?user_id=' + companyId)
+//         .set('Authorization', jwtToken)
+//     res.should.have.status(200);
+//     return res;
+// }
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(data,jwtToken){
     const res = await chai.request(server)

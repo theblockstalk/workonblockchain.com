@@ -104,6 +104,19 @@
                 showDescription="true"
               ></app-i-forme-skills-auto-suggest>
             </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Non commercial skills</label>
+              </div>
+              <app-i-forme-not-require-skills
+                [selectedSkill] = "nonCommercialSkillsDB"
+                (selectedItems)="selectedNonCommercialSkills = $event"
+                placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                [description]="descriptionNonCommercialSkills"
+                showDescription="true"
+              ></app-i-forme-not-require-skills>
+            </div>
           </div>
 
           <div class = "form-group text-right">

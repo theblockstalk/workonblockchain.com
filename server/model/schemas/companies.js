@@ -93,7 +93,7 @@ module.exports = new Schema({
             }
         }]
     },
-    saved_searches: {
+    saved_searches: { // DELETE ME
         type:[new Schema({
             name: {
                 type: String,
@@ -168,7 +168,11 @@ module.exports = new Schema({
                 required: true
             }
         })]
-    },
+    }, // DELETE ME
+    job_ids: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Jobs',
+    }],
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton

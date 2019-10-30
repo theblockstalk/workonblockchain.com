@@ -81,6 +81,9 @@ import { HearAboutWobOtherInfoComponent } from './L1-items/users/hear-about-wob-
 import { PricingComponent } from './L2-pages/pricing/pricing.component';
 import { CompanyViewComponent } from './L2-pages/company-view/company-view.component';
 import { SkillsAutoSuggestComponent } from './L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
+import { AddJobComponent } from './L2-pages/add-job/add-job.component';
+import { ViewJobComponent } from './L2-pages/view-job/view-job.component';
+import { NotRequireSkillsComponent } from './L1-items/users/not-require-skills/not-require-skills.component';
 
 @NgModule({
   imports: [
@@ -103,7 +106,8 @@ import { SkillsAutoSuggestComponent } from './L1-items/users/skills-auto-suggest
     TextPasswordComponent, ContentComponent, TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent,
     CandidateViewComponent, CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent,
     CandJobActivityComponent, ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent,
-    PricingComponent, CompanyViewComponent, SkillsAutoSuggestComponent
+    PricingComponent, CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent,
+    NotRequireSkillsComponent
   ],
   exports: [
     SafeHtmlPipe, FormsModule, CKEditorModule, ReactiveFormsModule, ImageCropperModule, MatInputModule, MatSelectModule,
@@ -122,7 +126,7 @@ import { SkillsAutoSuggestComponent } from './L1-items/users/skills-auto-suggest
     TitleComponent, PagesEditorComponent, PagesComponent, ImageComponent, CandidateViewComponent,
     CandidateProgressbarComponent, TextLinkedIconComponent, EditLinkIconComponent, CandJobActivityComponent,
     ApproachOfferRateComponent, HowHearAboutWobComponent, HearAboutWobOtherInfoComponent, PricingComponent,
-    CompanyViewComponent, SkillsAutoSuggestComponent
+    CompanyViewComponent, SkillsAutoSuggestComponent, AddJobComponent, ViewJobComponent, NotRequireSkillsComponent
   ]
 })
 export class SharedModule { }

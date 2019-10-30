@@ -39,6 +39,10 @@ try {
     if (settings.isLiveApplication()) {
         zoho.initialize();
     }
+
+    mongoose.set('useNewUrlParser', true);
+    mongoose.set('useFindAndModify', false);
+    mongoose.set('useUnifiedTopology', true);
     mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
     mongoose.connection.on('connected',function () {

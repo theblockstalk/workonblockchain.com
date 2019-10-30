@@ -1,5 +1,6 @@
 const company = require('../../../model/mongoose/companies');
 const users = require('../../../model/mongoose/users');
+const jobs = require('../../../model/mongoose/jobs');
 
 const candidateSearch = require('../../api-v2/users/candidates/search/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
@@ -19,7 +20,7 @@ module.exports = async function (companyId) {
     } else {
         let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
         companySelector = {_creator : {$in : userIds},
-            saved_searches: { $exists: true, $ne : [] },
+            job_ids: { $exists: true, $ne : [] },
             when_receive_email_notitfications: {$ne: "Never"}
         }
     }
@@ -31,42 +32,39 @@ module.exports = async function (companyId) {
         if(userDoc && (userDoc.is_approved !== 1 || userDoc.disable_account) ) {
             logger.debug("Company is disabled, or not approved");
         }
-        else if(userDoc) {
+        else if (userDoc) {
             logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
             const timestamp = Date.now();
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
+
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.when_receive_email_notitfications) * 24*60*60*1000)) {
                 let blacklist = [];
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
                     blacklist.push(candidateSent.user);
                 }
 
-                logger.debug("Company preferences", companyDoc.saved_searches);
+                logger.debug("Company preferences", companyDoc.job_ids);
 
                 let candidateDocs;
                 let foundCandidates = [];
-                for (let savedSearch of companyDoc.saved_searches) {
+                for (let job_id of companyDoc.job_ids) {
                     try {
+                        const jobDoc = await jobs.findOneById(job_id);
+
                         candidateDocs = await candidateSearch.candidateSearch({
                             is_verify: 1,
                             status: 'approved',
                             disable_account: false,
                             blacklist: blacklist,
-                            updatedAfter: savedSearch.timestamp
+                            updatedAfter: jobDoc.modified
                         }, {
-                            locations: savedSearch.location,
-                            visa_needed: savedSearch.visa_needed,
-                            positions: savedSearch.position,
-                            required_skills: savedSearch.required_skills,
-                            residence_country: savedSearch.residence_country,
-                            salary: {
-                                current_currency: savedSearch.current_currency,
-                                current_salary: savedSearch.current_salary
-                            },
-                            work_type : savedSearch.work_type,
-                            hourly_rate : {
-                                expected_hourly_rate: savedSearch.expected_hourly_rate,
-                                current_currency: savedSearch.current_currency
-                            }
+                            locations: jobDoc.location,
+                            visa_needed: jobDoc.visa_needed,
+                            positions: jobDoc.position,
+                            required_skills: jobDoc.required_skills,
+                            expected_salary_min: jobDoc.expected_salary_min,
+                            expected_hourly_rate_min: jobDoc.expected_hourly_rate_min,
+                            currency: jobDoc.currency,
+                            work_type : jobDoc.work_type
                         });
                         if (candidateDocs) {
                             logger.debug("Candidate ids in search", candidateDocs.candidates.map( (candidate) => candidate._id));

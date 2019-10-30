@@ -76,7 +76,7 @@ export class LinkedinImportComponent implements OnInit {
               this.resume_class="/resume";
             }
 
-            if(data['candidate'].commercial_skills && data['candidate'].why_work && data['candidate'].interest_areas )
+            if(data['candidate'].why_work && data['candidate'].interest_areas )
             {
               console.log('in if');
               this.exp_disable = '';

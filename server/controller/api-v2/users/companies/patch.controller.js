@@ -95,78 +95,6 @@ const bodySchema = new Schema({
             }
         })]
     },
-    saved_searches: {
-        type:[new Schema({
-            work_type : {
-                type: String,
-                enum: enumerations.workTypes
-            },
-            location: {
-                type: [new Schema({
-                    city: {
-                        type : Schema.Types.ObjectId
-                    },
-                    visa_needed: Boolean,
-                    remote: Boolean,
-                })]
-            },
-            visa_needed: {
-                type: Boolean,
-                default:false,
-            },
-            job_type: {
-                type: [{
-                    type: String,
-                    enum: enumerations.employmentTypes
-                }]
-
-            },
-            position: {
-                type: [{
-                    type: String,
-                    enum: enumerations.workRoles
-                }]
-            },
-            current_currency: {
-                type: String,
-                enum: enumerations.currencies
-            },
-            current_salary: {
-                type:Number,
-                min: 0
-            },
-            expected_hourly_rate: {
-                type:Number,
-                min: 0
-            },
-            required_skills: { //will containg blockchain & languages
-                type:[new Schema({
-                    skills_id: {
-                        type : Schema.Types.ObjectId,
-                        ref: 'Skills'
-                    },
-                    type: String,
-                    name: String,
-                    exp_year: Number
-                })]
-            },
-            residence_country: {
-                type : [{
-                    type: String,
-                    enum: enumerations.countries
-                }]
-            },
-            other_technologies : {
-                type : String
-            },
-            name: {
-                type: String
-            },
-            timestamp : {
-                type : Date
-            }
-        })]
-    },
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
@@ -307,40 +235,6 @@ module.exports.endpoint = async function (req, res) {
                     }
                 }
             }
-
-            if (queryBody.saved_searches) {
-                let patchSearches = queryBody.saved_searches;
-                let currentSearches = employerDoc.saved_searches;
-                for (let patchSearch of patchSearches) {
-                    if(currentSearches) {
-
-                        const currentSearch = currentSearches.filter( function (currentSearch) {
-                            if(patchSearch._id) {
-                                if(currentSearch._id.toString() === patchSearch._id.toString())
-                                    return currentSearch;
-                            }
-                        });
-
-                        if (currentSearch && currentSearch.length === 1) {
-                            if (!objects.compareObjects(currentSearch[0], patchSearch)) {
-                                // This is a modified search
-                                patchSearch.timestamp = timestamp;
-                            }
-
-                        } else {
-                            // This is a new search
-                            patchSearch.timestamp = timestamp;
-                        }
-                    }
-                    else {
-                        patchSearch.timestamp = timestamp;
-
-                    }
-
-                }
-                employerUpdate.saved_searches = queryBody.saved_searches;
-            }
-
         }
 
         let updateObj = {};

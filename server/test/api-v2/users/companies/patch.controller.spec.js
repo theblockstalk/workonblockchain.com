@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/mongoose/users');
 const Companies = require('../../../../model/mongoose/companies');
 const docGenerator = require('../../../helpers/docGenerator-v2');
-const companyHelper = require('./companyHelpers');
+const companyHelper = require('./helpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -43,16 +43,6 @@ describe('update profile as company', function () {
             companyUpdatedDoc.company_funded.should.equal(updatedData.company_funded);
             companyUpdatedDoc.company_description.should.equal(updatedData.company_description);
             companyUpdatedDoc.when_receive_email_notitfications.should.equal(updatedData.when_receive_email_notitfications);
-
-            companyUpdatedDoc.saved_searches[0].location.should.valueOf(updatedData.saved_searches[0].location);
-            companyUpdatedDoc.saved_searches[0].job_type.should.valueOf(updatedData.saved_searches[0].job_type);
-            companyUpdatedDoc.saved_searches[0].current_currency.should.equal(updatedData.saved_searches[0].current_currency);
-            companyUpdatedDoc.saved_searches[0].current_salary.should.equal(updatedData.saved_searches[0].current_salary);
-            companyUpdatedDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
-            companyUpdatedDoc.saved_searches[0].required_skills[0].name.should.valueOf(updatedData.saved_searches[0].required_skills[0].name);
-            companyUpdatedDoc.saved_searches[0].required_skills[0].exp_year.should.valueOf(updatedData.saved_searches[0].required_skills[0].exp_year);
-            companyUpdatedDoc.saved_searches[0].residence_country.should.valueOf(updatedData.saved_searches[0].residence_country);
-
         });
 
         it('it should update/add gdpr compliance of a company', async () => {

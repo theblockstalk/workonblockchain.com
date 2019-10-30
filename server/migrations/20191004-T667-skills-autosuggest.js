@@ -6,6 +6,7 @@ const csv = require('csvtojson');
 const skillsFilePath = __dirname + '/files/T667-skills-collection.csv';
 
 let totalDocsToProcess = 0, totalModified = 0, totalProcessed = 0;
+let newDocs = 0;
 
 function mapToArray(array,propertyName) {
     let mappedArray = [];
@@ -99,12 +100,11 @@ module.exports.up = async function() {
                 for (let experimented_platforms of blockchain.experimented_platforms) {
                     const skill = await skills.findOne({name: experimented_platforms});
                     if(skill) {
-                        if(!newCommercialSkills.find((obj => obj.name === skill.name))) {
-                            newCommercialSkills.push({
+                        if(!newSkills.find((obj => obj.name === skill.name))) {
+                            newSkills.push({
                                 skills_id: skill._id,
                                 name: skill.name,
-                                type: skill.type,
-                                exp_year: 1
+                                type: skill.type
                             });
                         }
                     }
@@ -122,8 +122,8 @@ module.exports.up = async function() {
                     set['candidate.description_commercial_skills'] = userDoc.candidate.blockchain.description_commercial_skills;
             }
 
-            //if(userDoc.candidate.blockchain.description_experimented_platforms)
-               // set['candidate.description_skills'] = userDoc.candidate.blockchain.description_experimented_platforms;
+            if(userDoc.candidate.blockchain.description_experimented_platforms)
+                set['candidate.description_skills'] = userDoc.candidate.blockchain.description_experimented_platforms;
         }
         if(userDoc.candidate.programming_languages) {
             for (let programming_language of userDoc.candidate.programming_languages) {
@@ -145,8 +145,8 @@ module.exports.up = async function() {
         if (newCommercialSkills.length > 0)
             set['candidate.commercial_skills'] = newCommercialSkills;
 
-        //if (newSkills.length > 0)
-            //set['candidate.skills'] = newSkills;
+        if (newSkills.length > 0)
+            set['candidate.skills'] = newSkills;
 
         if (!objects.isEmpty(set)) {
             let updateObj = {$set: set, $unset: unset};

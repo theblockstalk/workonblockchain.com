@@ -1,0 +1,13 @@
+<ng-container *ngIf="jobDoc ; else loader">
+  <app-p-view-job
+    *ngIf="jobDoc"
+    viewBy="admin"
+    [jobDoc]="jobDoc"
+  >
+  </app-p-view-job>
+</ng-container>
+<ng-template #loader>
+  <div class="col-md-12 text-center" >
+    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+  </div>
+</ng-template>
