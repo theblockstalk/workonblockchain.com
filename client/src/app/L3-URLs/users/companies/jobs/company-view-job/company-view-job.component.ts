@@ -21,7 +21,7 @@ export class CompanyViewJobComponent implements OnInit {
     console.log(this.job_id);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.currentUser) this.router.navigate(['/login']);
-    if(this.currentUser && this.currentUser.type === 'company'){
+    else if(this.currentUser && this.currentUser.type === 'company'){
       this.authenticationService.getAJob(this.job_id, this.currentUser['_id'], false)
         .subscribe(
           data =>{
