@@ -165,9 +165,9 @@ module.exports.up = async function() {
 
         let employerDoc = await companies.findOne({_creator : userDoc._id, saved_searches: { $exists: true}});
         if(employerDoc){
-            let savedSearchBlockchain = [];
             let savedSearches = employerDoc.saved_searches;
             for (let savedSearch of savedSearches) {
+                let savedSearchBlockchain = [];
                 if(!savedSearch.name) savedSearch['name'] = 'MY search';
                 if( savedSearch.blockchain && savedSearch.blockchain.length > 0) {
                     for (let blockchain of savedSearch.blockchain) {
@@ -199,7 +199,7 @@ module.exports.up = async function() {
                 savedSearch.skills = [];
                 savedSearch['required_skills'] = savedSearchBlockchain;
             }
-
+            
             console.log({_id: employerDoc._id}, {$set: {'employerDoc.saved_searches': employerDoc.saved_searches}});
             let set = {};
             set['saved_searches'] = employerDoc.saved_searches;
