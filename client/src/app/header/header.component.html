@@ -36,7 +36,7 @@
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="users/company">Profile</a>
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit profile</a>
               <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search candidate</a>
-              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="users/company/jobs/new">Add job</a>
+              <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="users/company/jobs/new">Post job</a>
               <a class="dropdown-item" routerLink="account-settings">Settings</a>
               <a class="dropdown-item" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
             </div>
