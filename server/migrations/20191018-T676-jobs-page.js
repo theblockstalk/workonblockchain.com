@@ -35,21 +35,23 @@ module.exports.up = async function() {
             if (savedSearch.expected_hourly_rate) newJob.expected_hourly_rate_min = savedSearch.expected_hourly_rate;
             if (savedSearch.current_currency) newJob.currency = savedSearch.current_currency;
             let newLocations = [];
-            for (let location of savedSearch.location) {
-                if (location.remote) {
-                    newLocations.push({
-                        remote: true
-                    })
-                } else {
-                    const cityDoc = await cities.findOneById(location.city);
-                    newLocations.push({
-                        city_id: cityDoc._id,
-                        city: cityDoc.city,
-                        country: cityDoc.country,
-                    })
+            if(savedSearch.location && savedSearch.location.length > 0) {
+                for (let location of savedSearch.location) {
+                    if (location.remote) {
+                        newLocations.push({
+                            remote: true
+                        })
+                    } else {
+                        const cityDoc = await cities.findOneById(location.city);
+                        newLocations.push({
+                            city_id: cityDoc._id,
+                            city: cityDoc.city,
+                            country: cityDoc.country,
+                        })
+                    }
                 }
+                newJob.locations = newLocations;
             }
-            newJob.locations = newLocations;
 
             const newJobDoc = await jobs.insert(newJob);
             newJobIds.push(newJobDoc._id);
