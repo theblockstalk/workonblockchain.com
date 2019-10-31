@@ -25,13 +25,13 @@
           <li class="nav-item">
             <a routerLink="/work" class="nav-link">
               <i class="{{active_class}}"></i>
-              Work
+              Preference
             </a>
           </li>
           <li class="nav-item px-2">
             <a routerLink="/resume" class="nav-link">
               <i class="{{active_class}}"></i>
-              Blockchain
+              Skills
             </a>
           </li>
           <li class="nav-item">
@@ -46,54 +46,6 @@
     <div class="row p-4 border bg-white">
       <div class="col-md-12">
         <form  (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
-          <div class="row">
-            <div class="col-md-12">
-              <h4><i class="fas fa-briefcase mr-1"></i>Technical experience</h4>
-            </div>
-          </div>
-
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Languages</label>
-                <div class="checkbox">
-                  <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)" required #lang  />
-                        {{option.name}}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
-
-              </div>
-            </div>
-          </div>
-
-          <div class="row" *ngIf="language?.length > 0">
-            <div class="col-md-12">
-              <strong>Years of experience</strong>
-            </div>
-            <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
-              <div class="form-group">
-                <p>{{lang_value.value}}</p>
-                <div class="form-check form-check-inline">
-                  <div *ngFor="let exp of exp_year; let i_ind =index">
-                    <input type="radio" class="d-none" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
-                    <label  for="{{lang_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                      {{exp.name}}
-                    </label>
-                  </div>
-                  <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class = "invalid-feedback d-inline"  *ngIf="expYear.length !== language.length">
-            {{exp_lang_log}}
-          </div>
 
           <div class="row">
             <div class="col-md-12">

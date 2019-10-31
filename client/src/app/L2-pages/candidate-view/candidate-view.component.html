@@ -647,44 +647,35 @@
             </div>
           </div>
 
-          <div class="row mt-2" *ngIf="(commercial && commercial.length > 0) || (experimented && experimented.length > 0) || (commercial_skills && commercial_skills.length > 0)">
-            <div class="col-md-12 mb-2">
-              <h4>Technologies</h4>
-            </div>
-            <div class="col-md-12" *ngIf="commercial && commercial.length > 0">
-              <app-c-formv-list label="Commercial experience:" [value]="commercial"></app-c-formv-list>
-              <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
-            </div>
-            <div class="col-md-12" *ngIf="experimented && experimented.length>0">
-              <app-c-formv-list label="Experimented with:" [value]="experimented"></app-c-formv-list>
-              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
-            </div>
-            <div class="col-md-12" *ngIf="commercial_skills && commercial_skills.length > 0">
-              <app-c-formv-list label="Skills:" [value]="commercial_skills"></app-c-formv-list>
-              <app-c-formv-textarea [value]="description_commercial_skills"></app-c-formv-textarea>
-            </div>
-          </div>
         </section>
         <!--Blockchain experience section ends-->
 
-        <!--Languages experience section starts-->
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+        <!--Commercial skils/Languages section starts-->
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="(commercial && commercial.length > 0) || experimented && experimented.length > 0">
           <div class="row">
             <div class="col-md-6">
-              <h2> <i class="fas fa-code"></i> Experience </h2>
+              <h2><i class="fas fa-user-friends"></i> Skills </h2>
             </div>
             <div class="col-md-6" *ngIf="viewBy === 'candidate'">
               <app-c-forme-edit-link-icon [routerUrl]="routerUrl" section="experience"></app-c-forme-edit-link-icon>
             </div>
           </div>
 
-          <div class="row mt-3">
-            <div class="col-md-12 mb-3">
-              <app-c-formv-list label="Languages:" [value]="languages"></app-c-formv-list>
+          <div class="row mt-4">
+            <div class="col-md-12" *ngIf="commercial && commercial.length > 0">
+              <app-c-formv-list label="Commercial skills:" [value]="commercial"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_commercial_platforms"></app-c-formv-textarea>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-12" *ngIf="experimented && experimented.length > 0">
+              <app-c-formv-list label="Non commercial skills:" [value]="experimented"></app-c-formv-list>
+              <app-c-formv-textarea [value]="description_experimented_platforms"></app-c-formv-textarea>
             </div>
           </div>
         </section>
-        <!--Languages experience section ends-->
+        <!--Commercial skils/Languages section ends-->
 
         <!--Work history section starts-->
         <section class = "border rounded mt-4 py-3 px-5 bg-white" >

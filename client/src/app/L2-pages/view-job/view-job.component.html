@@ -1,0 +1,107 @@
+<section class = "wob-bg-primary2 py-5">
+  <div class="container pt-2">
+    <div class="row">
+      <div class="col-md-12">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-8">
+              <h2>
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                {{jobName}}
+              </h2>
+            </div>
+            <div class="col-md-4 text-right">
+              <app-c-button-normal
+                level = "primary"
+                label="Edit job"
+                [routeUrl]="getLink(viewBy,jobDoc['_id'],jobDoc['company_id'])"
+              ></app-c-button-normal>
+            </div>
+          </div>
+          <div class="row mt-5" *ngIf="salary">
+            <div class="col-md-12">
+              <app-c-formv-text [value]="salary"></app-c-formv-text>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <app-c-formv-text
+                label="Number of people you are looking for this role:"
+                [value]="jobDoc['num_people_desired']">
+              </app-c-formv-text>
+            </div>
+          </div>
+        </section>
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-check" aria-hidden="true"></i>
+                Requirements
+              </h2>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Location:</label>
+              </div>
+            </div>
+            <p *ngFor="let loc of jobDoc['locations']" class="ml-2">
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['remote'] === true">
+                Remote
+              </span>
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['city']">
+                {{loc['city']}}
+              </span>
+              <span class="badge badge-pill badge-primary mr-1" *ngIf="loc['country']">
+                {{loc['country']}} (country)
+              </span>
+            </p>
+            <div class="col-md-12">
+              <small>A work visa can not be provided for these locations</small>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Role:</label>
+              </div>
+              <span class="badge badge-pill badge-primary mr-1" *ngFor="let position of mappedPositions">
+                {{position}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Commercial experience:</label>
+              </div>
+              <div *ngFor="let reqSkil of createBlockchainLogos(jobDoc['required_skills'])" [innerHTML] = " reqSkil | safeHtml " class="mb-3">
+                {{reqSkil}}
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-file" aria-hidden="true"></i>
+                Description
+              </h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <app-c-formv-html-area
+                class="p-2"
+                [value]="jobDoc['description']"
+              ></app-c-formv-html-area>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

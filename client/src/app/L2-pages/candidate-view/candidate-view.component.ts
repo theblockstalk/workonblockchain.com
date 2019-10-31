@@ -71,7 +71,6 @@ export class CandidateViewComponent implements OnInit {
   contractor:any = {};
   volunteer: any = {};
   interest_area;
-  languages;
   work_history;
   education_history;
   already_approached = 0;
@@ -82,14 +81,11 @@ export class CandidateViewComponent implements OnInit {
   job_offer_log_success;
   job_title_log;
   location_log;
-  salary_log;
-  max_salary_log;
   salary_currency_log;
   employment_log;
   job_desc_log;
   contractor_location_log;
   hourly_rate_log;
-  max_hourly_rate_log;
   contract_desc_log;
   volunteer_location_log;
   volunteer_desc_log;
@@ -362,84 +358,73 @@ export class CandidateViewComponent implements OnInit {
     }
 
     let blockchainMilestone = 1;
-    if(this.userDoc['candidate'] && this.userDoc['candidate'].blockchain) {
-      if (this.userDoc['candidate'].blockchain.commercial_skills) {
+    if(this.userDoc['candidate'].commercial_skills){
+      this.commercial = this.userDoc['candidate'].commercial_skills;
+      if(this.commercial && this.commercial.length>0){
         if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
-        this.commercial_skills = this.userDoc['candidate'].blockchain.commercial_skills;
-        this.commercial_skills.sort(function (a, b) {
-          if (a.skill < b.skill) {
-            return -1;
-          }
-          if (a.skill > b.skill) {
-            return 1;
-          }
+        this.commercial.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
           return 0;
         });
 
-        let newCommercialsSkills = [];
-        for (let commercialsSkills of this.commercial_skills) {
-          let skillName = getNameFromValue(constants.otherSkills,commercialsSkills.skill);
-          let img = skillName.name + ': ' + commercialsSkills.exp_year + ' years';
-          newCommercialsSkills.push(img);
-        }
-        this.commercial_skills = newCommercialsSkills;
-      }
-      if(this.userDoc['candidate'].blockchain.description_commercial_skills) {
-        this.description_commercial_skills = this.userDoc['candidate'].blockchain.description_commercial_skills;
-        if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          if(this.description_commercial_skills.length && this.description_commercial_skills.length < 100) blockchainMilestone = 0;
-        }
-      }
+        let newCommercials = [], newCommercialsSkills = [];
+        for(let commercials of this.commercial){
+          let img = '';
+          if(commercials.type === 'blockchain')
+            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/' + commercials.name + '.png" alt="' + commercials.name + ' Logo"> ' + commercials.name;
 
-      if(this.userDoc['candidate'].blockchain.commercial_platforms){
-        this.commercial = this.userDoc['candidate'].blockchain.commercial_platforms;
-        if(this.commercial && this.commercial.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
-          this.commercial.sort(function(a, b){
-            if(a.platform_name < b.platform_name) { return -1; }
-            if(a.platform_name > b.platform_name) { return 1; }
-            return 0;
-          });
-
-          let newCommercials = [];
-          for(let commercials of this.commercial){
-            let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+commercials.name+'.png" alt="'+commercials.name+' Logo"> ' + commercials.name+': ' +commercials.exp_year +' years';
-            newCommercials.push(img);
+          if(commercials.type === 'experience') {
+            let skillName = getNameFromValue(constants.otherSkills,commercials.name);
+            img = '<i class="fas fa-user-friends"></i> '+skillName.name;
           }
-          this.commercial = newCommercials;
-        }
-      }
-      if(this.userDoc['candidate'].blockchain.description_commercial_platforms) {
-        this.description_commercial_platforms = this.userDoc['candidate'].blockchain.description_commercial_platforms;
-        if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          if(this.description_commercial_platforms && this.description_commercial_platforms.length < 100) blockchainMilestone = 0;
-        }
-      }
+          if(commercials.type === 'language')
+            img = '<i class="fas fa-code"></i> ' + commercials.name;
 
-      if(this.userDoc['candidate'].blockchain.experimented_platforms){
-        this.experimented = this.userDoc['candidate'].blockchain.experimented_platforms;
-        if(this.experimented && this.experimented.length>0){
-          if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
-          this.experimented.sort(function(a, b){
-            if(a < b) { return -1; }
-            if(a > b) { return 1; }
-            return 0;
-          });
+          if(commercials.exp_year) img = img + ': ' + commercials.exp_year + ' years';
+          newCommercials.push(img);
+        }
+        this.commercial = newCommercials;
+      }
+    }
+    if(this.userDoc['candidate'].description_commercial_skills) {
+      this.description_commercial_platforms = this.userDoc['candidate'].description_commercial_skills;
+      if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
+        if(this.description_commercial_platforms && this.description_commercial_platforms.length < 40) blockchainMilestone = 0;
+      }
+    }
 
-          let newExperimented = [];
-          for(let experimented of this.experimented){
-            let img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented+'.png" alt="'+experimented+' Logo"> '+experimented;
-            newExperimented.push(img);
+    if(this.userDoc['candidate'].skills){
+      this.experimented = this.userDoc['candidate'].skills;
+      if(this.experimented && this.experimented.length>0){
+        if(this.viewBy === 'admin' || this.viewBy === 'candidate') blockchainMilestone = 1;
+        this.experimented.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+
+        let newExperimented = [];
+        for(let experimented of this.experimented){
+          let img = '';
+          if(experimented.type === 'blockchain')
+            img = '<img class="mb-1 ml-1" src = "/assets/images/all_icons/blockchain/'+experimented.name+'.png" alt="'+experimented.name+' Logo"> '+experimented.name;
+          if(experimented.type === 'experience') {
+            let skillName = getNameFromValue(constants.otherSkills,experimented.name);
+            img = '<i class="fas fa-user-friends"></i> '+skillName.name;
           }
-          this.experimented = newExperimented;
+          if(experimented.type === 'language')
+            img = '<i class="fas fa-code"></i> ' + experimented.name;
+          newExperimented.push(img);
         }
+        this.experimented = newExperimented;
       }
+    }
 
-      if(this.userDoc['candidate'].blockchain.description_experimented_platforms) {
-        this.description_experimented_platforms = this.userDoc['candidate'].blockchain.description_experimented_platforms;
-        if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
-          if(this.description_experimented_platforms && this.description_experimented_platforms.length < 100) blockchainMilestone = 0;
-        }
+    if(this.userDoc['candidate'].description_skills) {
+      this.description_experimented_platforms = this.userDoc['candidate'].description_skills;
+      if(this.viewBy === 'admin' || this.viewBy === 'candidate') {
+        if(this.description_experimented_platforms && this.description_experimented_platforms.length < 40) blockchainMilestone = 0;
       }
     }
 
@@ -468,22 +453,6 @@ export class CandidateViewComponent implements OnInit {
         this.progress_bar_value = 100;
         this.progress_bar_class = 'progress-bar bg-success';
       }
-    }
-
-    this.languages = this.userDoc['candidate'].programming_languages;
-    if(this.languages && this.languages.length>0){
-      this.languages.sort(function(a, b){
-        if(a.language < b.language) { return -1; }
-        if(a.language > b.language) { return 1; }
-        return 0;
-      });
-
-      let newLanguages = [];
-      for(let languages of this.languages){
-        let img = languages.language+': ' +languages.exp_year +' years';
-        newLanguages.push(img);
-      }
-      this.languages = newLanguages;
     }
 
     if(this.userDoc['candidate'].work_history) {

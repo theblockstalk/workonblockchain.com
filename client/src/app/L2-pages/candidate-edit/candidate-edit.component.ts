@@ -33,7 +33,8 @@ import {CandJobActivityComponent} from '../../L1-items/candidate/cand-job-activi
 import {constants} from '../../../constants/constants';
 import { HowHearAboutWobComponent } from '../../L1-items/users/how-hear-about-wob/how-hear-about-wob.component';
 import { HearAboutWobOtherInfoComponent } from '../../L1-items/users/hear-about-wob-other-info/hear-about-wob-other-info.component';
-import {getNameFromValue} from '../../../services/object';
+import {SkillsAutoSuggestComponent} from '../../L1-items/users/skills-auto-suggest/skills-auto-suggest.component';
+import {NotRequireSkillsComponent} from '../../L1-items/users/not-require-skills/not-require-skills.component';
 
 @Component({
   selector: 'app-p-candidate-edit',
@@ -73,6 +74,8 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   @ViewChild(CandJobActivityComponent) candJobActivity: CandJobActivityComponent;
   @ViewChild(HowHearAboutWobComponent) hearAboutWob: HowHearAboutWobComponent;
   @ViewChild(HearAboutWobOtherInfoComponent) otherInfo : HearAboutWobOtherInfoComponent;
+  @ViewChild(SkillsAutoSuggestComponent) skillsAutoSuggestComp: SkillsAutoSuggestComponent;
+  @ViewChild(NotRequireSkillsComponent) notRequiredSkills: NotRequireSkillsComponent;
 
   @Input() userDoc: object;
   @Input() viewBy: string; // "admin", "candidate"
@@ -103,13 +106,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   employee: any = {};
   why_work;
   interest_areas;
-  commercial_platforms: any = {};
-  description_commercial_platforms;
-  experimented_platforms = [];
-  description_experimented_platforms;
-  commercial_skills = [];
-  description_commercial_skills;
-  programming_languages = [];
   work_history = [];
   education_history = [];
   error_msg;
@@ -123,6 +119,9 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
   allData = 0;
   how_hear_about_wob;
   hear_about_wob_other_info;
+  //new for commercial skills component
+  commercialSkillsFromDB;selectedCommercialSkillsNew;description_commercial_skills
+  nonCommercialSkillsDB;selectedNonCommercialSkills;descriptionNonCommercialSkills;
 
   constructor(private authenticationService: UserService, private router: Router) {}
 
@@ -209,24 +208,17 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     }
     if(candidateSubDoc.why_work) this.why_work = candidateSubDoc.why_work;
     if(candidateSubDoc.interest_areas) this.interest_areas = candidateSubDoc.interest_areas;
-    if(candidateSubDoc && candidateSubDoc.blockchain) {
-      if(candidateSubDoc.blockchain.commercial_platforms) {
-        this.commercial_platforms = candidateSubDoc.blockchain.commercial_platforms;
-        this.description_commercial_platforms = candidateSubDoc.blockchain.description_commercial_platforms;
-      }
-      if(candidateSubDoc.blockchain.experimented_platforms) {
-        this.experimented_platforms = candidateSubDoc.blockchain.experimented_platforms;
-        this.description_experimented_platforms = candidateSubDoc.blockchain.description_experimented_platforms;
-      }
-      if(candidateSubDoc.blockchain.commercial_skills) {
-        this.commercial_skills = candidateSubDoc.blockchain.commercial_skills;
-        this.description_commercial_skills = candidateSubDoc.blockchain.description_commercial_skills;
-      }
 
+    if(candidateSubDoc.commercial_skills){
+      this.commercialSkillsFromDB = candidateSubDoc.commercial_skills;
+      console.log(this.commercialSkillsFromDB);
     }
-    if(candidateSubDoc.programming_languages) {
-      this.programming_languages = candidateSubDoc.programming_languages;
+    if(candidateSubDoc.description_commercial_skills){
+      this.description_commercial_skills = candidateSubDoc.description_commercial_skills;
     }
+    if(candidateSubDoc.skills) this.nonCommercialSkillsDB = candidateSubDoc.skills;
+    if(candidateSubDoc.description_skills) this.descriptionNonCommercialSkills = candidateSubDoc.description_skills;
+
     if(candidateSubDoc.work_history) this.work_history = candidateSubDoc.work_history;
     if(candidateSubDoc.education_history) this.education_history = candidateSubDoc.education_history;
   }
@@ -238,8 +230,44 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     this.errMsg = '';
     let queryBody : any = {};
     let candidateBody : any = {};
-    let blockchainBody : any = {};
     let job_activity_statuses:any ={};
+
+    let setDesc = 1;
+    if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0)
+      candidateBody.commercial_skills = this.mapSkills(this.selectedCommercialSkillsNew);
+    else if(this.skillsAutoSuggestComp.selectedSkillExpYear && this.skillsAutoSuggestComp.selectedSkillExpYear.length > 0)
+      candidateBody.commercial_skills = this.mapSkills(this.skillsAutoSuggestComp.selectedSkillExpYear);
+    else {
+      setDesc = 0;
+      queryBody.unset_commercial_skills = true;
+    }
+
+    if(!this.skillsAutoSuggestComp.desValidate()) errorCount++;
+    else {
+      if(setDesc && this.skillsAutoSuggestComp.description)
+        candidateBody.description_commercial_skills = this.skillsAutoSuggestComp.description;
+      else
+        queryBody.unset_description_commercial_skills = true;
+    }
+
+    //for non commercial skills
+    setDesc = 1;
+    if(this.selectedNonCommercialSkills && this.selectedNonCommercialSkills.length > 0)
+      candidateBody.skills = this.mapSkills(this.selectedNonCommercialSkills);
+    else if(this.notRequiredSkills.selectedSkillExpYear && this.notRequiredSkills.selectedSkillExpYear.length > 0)
+      candidateBody.skills = this.mapSkills(this.notRequiredSkills.selectedSkillExpYear);
+    else {
+      setDesc = 0;
+      queryBody.unset_skills = true;
+    }
+
+    if(!this.notRequiredSkills.desValidate()) errorCount++;
+    else {
+      if(setDesc && this.notRequiredSkills.description)
+        candidateBody.description_skills = this.notRequiredSkills.description;
+      else
+        queryBody.unset_description_skills = true;
+    }
 
     if(this.firstName.selfValidate()) queryBody.first_name = this.firstName.first_name;
     else errorCount++;
@@ -380,57 +408,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
     if(this.interestType.selfValidate()) candidateBody.interest_areas = this.interestType.interest_areas;
     else errorCount++;
 
-    if(this.commercialExp.commercial_platforms && this.commercialExp.commercial_platforms.length > 0) {
-      if(this.commercialExp.selfValidate()) {
-        blockchainBody.commercial_platforms = this.commercialExp.commercial_platforms;
-        if(this.commercialExp.description_commercial_platforms) blockchainBody.description_commercial_platforms = this.commercialExp.description_commercial_platforms;
-        else queryBody.unset_description_commercial_platforms = true;
-      }
-      else errorCount++;
-    }
-    else queryBody.unset_commercial_platforms = true;
-
-    if(this.experimentedWith.experimented_platforms && this.experimentedWith.experimented_platforms.length > 0) {
-      if(this.experimentedWith.selfValidate()) {
-        blockchainBody.experimented_platforms = this.experimentedWith.experimented_platforms;
-        if(this.experimentedWith.description_experimented_platforms)  blockchainBody.description_experimented_platforms = this.experimentedWith.description_experimented_platforms;
-        else queryBody.unset_description_experimented_platforms = true;
-      }
-      else errorCount++;
-    }
-    else queryBody.unset_experimented_platforms = true;
-
-    if(this.commercialSkills.commercial_skills && this.commercialSkills.commercial_skills.length >0){
-      if(this.commercialSkills.selfValidate()) {
-        blockchainBody.commercial_skills = this.commercialSkills.commercial_skills;
-        if(this.commercialSkills.description_commercial_skills) blockchainBody.description_commercial_skills = this.commercialSkills.description_commercial_skills;
-        else queryBody.unset_description_commercial_skills = true;
-      }
-      else errorCount++;
-    }
-    else queryBody.unset_commercial_skills = true;
-
-    if(this.languageExp.programming_languages && this.languageExp.programming_languages.length > 0){
-      if(this.languageExp.selfValidate()) {
-        let programmingLanguages = [];
-        let flag = false;
-        for (let programming_languages of this.languageExp.programming_languages) {
-          if(programming_languages['_id']) {
-            flag = true;
-            let programmingLanguagesInfo = {
-              language: programming_languages['language'],
-              exp_year: programming_languages['exp_year']
-            };
-            programmingLanguages.push(programmingLanguagesInfo);
-          }
-        }
-        if(flag) candidateBody.programming_languages = programmingLanguages;
-        else candidateBody.programming_languages = this.languageExp.programming_languages;
-      }
-      else errorCount++;
-    }
-    else queryBody.unset_language = true;
-
     if(this.workHistoryComp.ExperienceForm.value.ExpItems && this.workHistoryComp.ExperienceForm.value.ExpItems.length >0) {
       if(this.workHistoryComp.selfValidate()) {
         candidateBody.work_history = this.workHistoryComp.experiencearray;
@@ -505,7 +482,6 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       else queryBody.unset_counter_offer = true;
 
       candidateBody.job_activity_status = job_activity_statuses;
-      candidateBody.blockchain = blockchainBody;
       queryBody.candidate = candidateBody;
 
       if(this.viewBy === 'candidate') {
@@ -576,5 +552,19 @@ export class CandidateEditComponent implements OnInit, AfterViewInit {
       }
     }
     return validatedLocation;
+  }
+
+  mapSkills(skills){
+    let newCommercialSkills = [];
+    for (let skill of skills) {
+      let obj = {
+        skills_id: skill.skills_id,
+        name: skill.name,
+        type: skill.type
+      };
+      if(skill.exp_year) obj['exp_year'] = skill.exp_year;
+      newCommercialSkills.push(obj);
+    }
+    return newCommercialSkills;
   }
 }

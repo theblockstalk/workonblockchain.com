@@ -47,12 +47,7 @@ module.exports.endpoint = async function (req, res) {
                 roles: {}
             },
             interestAreas: {},
-            blockchain: {
-                commercial_platforms: {},
-                experimented_platforms: {},
-                commercial_skills: {}
-            },
-            programmingLanguages: {},
+            commercial_skills: {}
         };
 
         let locationList = enumerations.workLocations;
@@ -98,20 +93,10 @@ module.exports.endpoint = async function (req, res) {
                 aggregateArray(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
                 aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
                 if(candidate.interest_areas)aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
-                if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
-                    aggregateArray(aggregatedData.blockchain.experimented_platforms, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
-                }
-                if(candidate.programming_languages) {
-                    aggregateObjArray(programmingLanguagesCount, candidate.programming_languages, enumerations.programmingLanguages, "language");
-                    aggregateObjArrayAggregate(programmingLanguagesAggregate, candidate.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
-                }
-                if(candidate.blockchain && candidate.blockchain.commercial_platforms) {
-                    aggregateObjArray(blockchainCommercialCount, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
-                    aggregateObjArrayAggregate(blockchainCommercialAggregate, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
-                }
-                if(candidate.blockchain && candidate.blockchain.commercial_skills) {
-                    aggregateObjArray(blockchainSmartCount, candidate.blockchain.commercial_skills, enumerations.blockchainPlatforms, "name");
-                    aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.blockchain.commercial_skills, enumerations.blockchainPlatforms, "name", "exp_year");
+
+                if(candidate.commercial_skills) {
+                    aggregateObjArray(blockchainSmartCount, candidate.commercial_skills, enumerations.blockchainPlatforms,"name");
+                    aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.commercial_skills, enumerations.blockchainPlatforms,"name", "exp_year");
                 }
             }
             if (userDoc.terms) agreedTerms++;
@@ -119,14 +104,12 @@ module.exports.endpoint = async function (req, res) {
         });
 
         console.log("aggregatedData");
-        console.log(aggregatedData)
+        console.log(aggregatedData);
         if(employeeLocationsCount) countAndAggregate(aggregatedData.employee.location, employeeLocationsCount, employeeLocationAggregate);
         if(contractorLocationsCount) countAndAggregate(aggregatedData.contractor.location, contractorLocationsCount, contractorLocationAggregate);
         if(volunteerLocationsCount) countAndAggregate(aggregatedData.volunteer.location, volunteerLocationsCount, volunteerLocationAggregate);
 
-        countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
-        countAndAggregate(aggregatedData.blockchain.commercial_skills, blockchainCommercialCount, blockchainCommercialAggregate);
-        countAndAggregate(aggregatedData.blockchain.experimented_platforms, blockchainSmartCount, blockchainSmartAggregate);
+        countAndAggregate(aggregatedData.commercial_skills, blockchainSmartCount, blockchainSmartAggregate);
 
         aggregatedData.expectedSalaryUSD = {
             min: Math.min.apply(null, salaryArray),
@@ -160,17 +143,16 @@ module.exports.endpoint = async function (req, res) {
         users.count({
             type: 'candidate', "candidate.latest_status.status": 'approved',
             disable_account: false, is_verify: 1,
-            'candidate.blockchain.commercial_platforms': {$exists: true, $ne: []}
+            'candidate.commercial_skills': {$exists: true, $ne: []}
         });
+        console.log(blockchainExperienceCount);
 
         res.send({
             approvedEnabled: {
                 totalCandidates: totalCandidates,
                 count: approvedUserCount,
                 aggregated: {
-                    blockchain: {
-                        commercial: blockchainExperienceCount
-                    }
+                    commercial_skills: blockchainExperienceCount
                 }
             }
         })

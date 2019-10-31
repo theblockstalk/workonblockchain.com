@@ -1,9 +1,10 @@
 import { Component, OnInit,ViewChild ,AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import {UserService} from '../../user.service';
-import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import {NgForm, FormGroup, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
+import {makeImgCode, makeIconCode,isEmpty } from '../../../services/object';
 import {isPlatformBrowser} from "@angular/common";
 declare var $:any;
 
@@ -42,8 +43,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   no_of_employees;
   display_name;
   interview_location = '';
-  select_value = '';
-  selecteddd = '';
   disabled;
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -52,7 +51,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill_value = '';
   location;
   role_value;
-  blockchain_value;
   pager: any = {};
   pagedItems: any[];
   countries;
@@ -69,16 +67,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchName = [];
   savedSearches;
   model: any = {};
-  rolesItems;
-  expected_hourly_rate;
+    expected_hourly_rate;
   salary;
   currencyChange;
   information;
   not_found;
   visa_check;
-  blockchain_order;
-  residence_country;
-  residence_log;
   workTypes = constants.workTypes;
   hourly_rate;
   contractorCurrency;
@@ -88,11 +82,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   timestamp;
   pref_job_type;
   other_technologies;
-  successful_msg;
-  new_error_msg;
-  residence_country_log;
-  expected_hourly_rate_log;
-  search_name_log;
   response;
   count;
   candidate_data;
@@ -117,7 +106,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   newSearchLocation = [];
   selectedWorkType;
   searchData;
-  years_exp_value = '';
+  commercialSkillsFromDB;selectedCommercialSkillsNew;
+  newSkillsSelected = [];
+  //new
+  controllerOptions: any = {};yearsErrMsg;
+  autoSuggestController;
+  resultItemDisplay;object;selectedText;selectedSkillExpYear=[];
+  years_exp_min_new = constants.years_exp_min_new;
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
@@ -136,12 +131,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if (this.urlParameters.searchName) {
             this.saveSearchName = this.urlParameters.searchName;
           }
-          if (this.urlParameters.programming_languages) {
-            this.skill_value = this.urlParameters.programming_languages;
-          }
-          if(this.urlParameters.years_exp_min){
-            this.years_exp_value = this.urlParameters.years_exp_min;
-          }
+
           if (this.urlParameters.locations) {
             this.selectedValueArray = this.urlParameters.locations;
           }
@@ -151,12 +141,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if (this.urlParameters.roles) {
             this.role_value = this.urlParameters.roles;
           }
-          if (this.urlParameters.blockchains) {
-            this.blockchain_value = this.urlParameters.blockchains;
-          }
-          if (this.urlParameters.base_country) {
-            this.residence_country = this.urlParameters.base_country;
-          }
           if (this.urlParameters.current_salary && this.urlParameters.current_currency) {
             this.salary = this.urlParameters.current_salary;
             this.currencyChange = this.urlParameters.current_currency;
@@ -165,8 +149,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.hourly_rate = this.urlParameters.expected_hourly_rate;
             this.contractorCurrency = this.urlParameters.currency;
           }
-          if (this.urlParameters.blockchainOrder) {
-            this.blockchain_order = this.urlParameters.blockchainOrder;
+          if (this.urlParameters.required_skills && this.urlParameters.required_skills.length > 0) {
+            this.commercialSkillsFromDB = this.urlParameters.required_skills;
+            this.selectedCommercialSkillsNew = this.urlParameters.required_skills;
+            this.selectedSkillExpYear = this.urlParameters.required_skills;
           }
           this.searchdata("urlQuery", this.urlParameters);
         }
@@ -178,11 +164,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   currency = constants.currencies;
   job_type = constants.job_type;
-  skillsData = constants.programmingLanguages;
-  residenceCountries = constants.countries;
   rolesData = constants.workRoles;
-  blockchainData = constants.blockchainPlatforms;
-  years_exp = constants.years_exp_min;
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -203,27 +185,51 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    //new code
+    this.controllerOptions = true;
+    this.autoSuggestController = function (textValue, controllerOptions) {
+      this.selectedText = textValue;
+      return this.authenticationService.autoSuggestSkills(textValue);
+    };
 
-    this.preferncesForm = new FormGroup({
-      _id: new FormControl(),
-      work_type: new FormControl(),
-      name: new FormControl(),
-      location: new FormControl(),
-      visa_needed: new FormControl(),
-      job_type: new FormControl(),
-      position: new FormControl(),
-      current_currency: new FormControl(),
-      current_salary: new FormControl(),
-      currency: new FormControl(),
-      expected_hourly_rate: new FormControl(),
-      blockchain: new FormControl(),
-      skills: new FormControl(),
-      other_technologies: new FormControl(),
-      order_preferences: new FormControl(),
-      residence_country: new FormControl(),
-      timestamp: new FormControl(),
-      years_exp_value: new FormControl(),
-    });
+    this.resultItemDisplay = function (data) {
+      const skillsInput = data;
+      let skillsOptions = [];
+      for(let skill of skillsInput['skills']) {
+        let obj = {};
+        if(this.selectedText === 'C' || this.selectedText === 'c') {
+          console.log('in if');
+          if(skill['skill'].type === 'language') {
+            obj = {
+              _id: skill['skill']._id,
+              name: skill['skill'].name,
+              type: skill['skill'].type,
+              img: makeIconCode('fas fa-code')
+            };
+          }
+        }
+        else {
+          console.log('in else');
+          obj = {
+            _id: skill['skill']._id,
+            name: skill['skill'].name,
+            type: skill['skill'].type
+          };
+          if(skill['skill'].type === 'blockchain')
+            obj['img'] = makeImgCode(skill['skill']);
+          if(skill['skill'].type === 'language')
+            obj['img'] = makeIconCode('fas fa-code');
+          if(skill['skill'].type === 'experience')
+            obj['img'] = makeIconCode('fas fa-user-friends');
+        }
+        if(!isEmpty(obj))
+          skillsOptions.push(obj);
+      }
+      return skillsOptions;
+    }
+    //new code ends
+
+    this.newSkillsSelected = [];
 
     this.success_msg = '';
     this.ckeConfig = {
@@ -250,16 +256,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     else if (this.currentUser && this.currentUser.type == 'company') {
       if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
 
-      this.skillsData.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      })
-
       this.rolesData.sort(function (a, b) {
         if (a.name < b.name) {
           return -1;
@@ -268,18 +264,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           return 1;
         }
         return 0;
-      })
-
-      this.blockchainData.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      })
-
+      });
 
       this.authenticationService.getCurrentCompany(this.currentUser._id, false)
         .subscribe(
@@ -287,15 +272,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             if (data['terms'] === false) {
               this.router.navigate(['/company_wizard']);
             }
-
             else if (!data['company_founded'] && !data['no_of_employees'] && !data['company_funded'] && !data['company_description']) {
               this.router.navigate(['/about_comp']);
             }
-            else if (!data['saved_searches'] || ((new Date(data['_creator'].created_date) > new Date('2018/11/27')) && data['saved_searches'].length === 0)) {
+            else if (!data['job_ids'] || ((new Date(data['_creator'].created_date) > new Date('2018/11/27')) && data['job_ids'].length === 0)  || !data['when_receive_email_notitfications']) {
               this.router.navigate(['/preferences']);
 
             }
-            else if (new Date(data['_creator']['created_date']) < new Date('2018/11/28') && !data['saved_searches']) {
+            else if (new Date(data['_creator']['created_date']) < new Date('2018/11/28') && !data['job_ids']) {
               this.router.navigate(['/company_profile']);
             }
             else if(!data['pricing_plan']) this.router.navigate(['/pricing']);
@@ -306,11 +290,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               }
               else this.router.navigate(['/gdpr-compliance']);
             }
-
-            else {
-              this.mapData(data);
-            }
-
+            else this.mapData(data);
           },
           error => {
             if (error.message === 500) {
@@ -322,43 +302,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
             }
-
-            if (error.message === 403) {
+            if (error.message === 403)
               this.router.navigate(['/not_found']);
-            }
-
           });
-
-
     }
-    else {
-      this.router.navigate(['/not_found']);
-    }
-  }
-
-  populatePopupFields() {
-    this.preferncesForm = this._fb.group({
-      name: [],
-      work_type: [this.selectedWorkType],
-      location: [],
-      visa_needed: [this.visa_check],
-      job_type: [],
-      position: [this.role_value],
-      current_currency: [this.currencyChange],
-      current_salary: [this.salary],
-      expected_hourly_rate: [this.hourly_rate],
-      currency: [this.contractorCurrency],
-      blockchain: [this.blockchain_value],
-      skills: [this.skill_value],
-      other_technologies: [],
-      order_preferences: [this.blockchain_order],
-      residence_country: [this.residence_country],
-      years_exp_value: [this.years_exp_value],
-    });
+    else this.router.navigate(['/not_found']);
   }
 
   fillFields(searches, name) {
     this.selectedValueArray = [];
+    this.commercialSkillsFromDB = [];
+    this.selectedCommercialSkillsNew = [];
     for (let key of searches) {
       if (key['name'] === name) {
         this.saveSearchName = name;
@@ -372,65 +326,49 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }, 300);
         }
 
-        if (key['location']) {
-          this.prefillLocationFEFormat(key['location']);
+        if (key['locations']) {
+          this.prefillLocationFEFormat(key['locations']);
         }
-        if (key['skills']) this.skill_value = key['skills'];
-        else this.skill_value = '';
-
-        if (key['years_exp_min']) this.years_exp_value = key['years_exp_min'];
-        else this.years_exp_value = '';
 
         if (key['_id']) this._id = key['_id'];
         else this._id = '';
 
-        if (key['timestamp']) this.timestamp = key['timestamp'];
-        else this.timestamp = '';
-
-        if (key['job_type']) this.pref_job_type = key['job_type'];
-        else this.pref_job_type = [];
-
-        if (key['other_technologies']) this.other_technologies = key['other_technologies'];
-        else this.other_technologies = '';
-
         if (key['visa_needed']) this.visa_check = key['visa_needed'];
         else this.visa_check = false;
 
-        if (key['position']) this.role_value = key['position'];
+        if (key['positions']) this.role_value = key['positions'];
         else this.role_value = [];
 
-        if (key['blockchain'] && key['blockchain'].length > 0) {
-          this.blockchain_value = key['blockchain'];
-        }
-        else this.blockchain_value = [];
-
-        if (key['current_salary']) this.salary = key['current_salary'];
+        if (key['expected_salary_min']) this.salary = key['expected_salary_min'];
         else this.salary = '';
 
-        if (key['current_salary'] && key['current_currency']) this.currencyChange = key['current_currency'];
+        if (key['expected_salary_min'] && key['currency']) this.currencyChange = key['currency'];
         else this.currencyChange = '';
 
-        if (key['expected_hourly_rate']) this.hourly_rate = key['expected_hourly_rate'];
+        if (key['expected_hourly_rate_min']) this.hourly_rate = key['expected_hourly_rate_min'];
         else this.hourly_rate = '';
 
-        if (key['expected_hourly_rate'] && key['current_currency']) this.contractorCurrency = key['current_currency'];
+        if (key['expected_hourly_rate_min'] && key['currency']) this.contractorCurrency = key['currency'];
         else this.contractorCurrency = '';
-
-        if (key['order_preferences']) this.blockchain_order = key['order_preferences'];
-        else this.blockchain_order = [];
 
         if (key['work_type']) this.selectedWorkType = key['work_type'];
         else this.selectedWorkType = '';
 
-        if (key['residence_country'] && key['residence_country'].length > 0) this.residence_country = key['residence_country'];
-        else this.residence_country = '';
-        if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
+        if (key['required_skills'] && key['required_skills'].length > 0) {
+          this.commercialSkillsFromDB = key['required_skills'];
+          this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
 
+          this.selectedSkillExpYear = key['required_skills'];
+        }
+        if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
       }
     }
   }
 
   searchdata(key, value) {
+    console.log(key);
+    console.log(value);
+
     this.searchData = false;
     this.newSearchLocation = [];
     this.success_msg = '';
@@ -438,92 +376,104 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
+
     this.log = '';
     this.candidate_data = '';
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found = '';
     if (isPlatformBrowser(this.platformId)) {
+      $('.selectpicker').selectpicker('refresh');
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh');
       }, 500);
     }
 
+    console.log('before if');
     if (this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
     if (this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
+    //else {
+    console.log('in else');
+    this.not_found = '';
+    let queryBody: any = {};
 
-    this.populatePopupFields();
+    //if(this.commercialSkillsFromDB && this.commercialSkillsFromDB.length > 0)
+      //this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
 
-    //this.populatePopupFields();
+    console.log(this.selectedCommercialSkillsNew);
 
-    if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
+    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
+    if (this.searchWord) queryBody.why_work = this.searchWord;
+    if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
+    if (this.role_value && this.role_value.length > 0) queryBody.roles = this.role_value;
+    if (this.visa_check) queryBody.visa_needed = this.visa_check;
 
-    if (this.residence_country && this.residence_country.length > 50) {
-      this.residence_log = "Please select maximum 50 countries";
+    if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
+      queryBody.current_salary = this.salary;
+      queryBody.current_currency = this.currencyChange;
     }
 
-    else {
-      this.not_found = '';
-      let queryBody: any = {};
-      if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
-      if (this.searchWord) queryBody.why_work = this.searchWord;
-      if (this.skill_value && this.skill_value.length > 0) queryBody.programming_languages = this.skill_value;
-      if (this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
-      if (this.role_value && this.role_value.length > 0) queryBody.roles = this.role_value;
-      if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
-      if (this.visa_check) queryBody.visa_needed = this.visa_check;
-      if (this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
-      if (this.residence_country && this.residence_country.length > 0) queryBody.base_country = this.residence_country;
-      if (this.years_exp_value) queryBody.years_exp_min = parseInt(this.years_exp_value);
-
-      if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
-        queryBody.current_salary = this.salary;
-        queryBody.current_currency = this.currencyChange;
-      }
-
-      if (this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
-        queryBody.expected_hourly_rate = this.hourly_rate;
-        queryBody.current_currency = this.contractorCurrency;
-      }
-      let newQueryBody: any = {};
-      newQueryBody = queryBody;
-      if (this.saveSearchName) {
-        newQueryBody.searchName = this.saveSearchName;
-      }
-
-      this.router.navigate(['candidate-search'], {
-        queryParams: {queryBody: JSON.stringify(newQueryBody)}
-      });
-
-      this.authenticationService.filterSearch(queryBody)
-        .subscribe(
-          data => {
-            this.candidate_data = data;
-            this.alreadyApproachedCheck();
-            this.searchData = true;
-
-            this.setPage(1);
-            if(this.candidate_data && this.candidate_data.length > 0) {
-              this.not_found='';
-            }
-            this.responseMsg = "response";
-          },
-          error => {
-            this.not_found = '';
-            if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.responseMsg = "error";
-              this.not_found = error['error']['message'];
-            }
-            else if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.responseMsg = "error";
-              this.not_found = error['error']['message'];
-            }
-            else {
-              this.log = 'Something went wrong';
-            }
-
-          });
+    if (this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency && this.contractorCurrency !== 'Currency') {
+      queryBody.expected_hourly_rate = this.hourly_rate;
+      queryBody.current_currency = this.contractorCurrency;
     }
+    if(this.selectedSkillExpYear && this.selectedSkillExpYear.length > 0) {
+      let requiredSkills = [];
+      for (let skill of this.selectedSkillExpYear){
+        let obj = {
+          name: skill.name,
+          skills_id: skill.skills_id,
+          type: skill.type
+        };
+        if(skill.exp_year)
+          obj['exp_year'] = skill.exp_year;
+
+        requiredSkills.push(obj);
+      }
+      console.log(requiredSkills);
+      queryBody.required_skills = requiredSkills;
+    }
+    let newQueryBody: any = {};
+    newQueryBody = queryBody;
+    if (this.saveSearchName) {
+      newQueryBody.searchName = this.saveSearchName;
+    }
+
+    this.router.navigate(['candidate-search'], {
+      queryParams: {queryBody: JSON.stringify(newQueryBody)}
+    });
+
+    console.log(this.selectedCommercialSkillsNew);
+    console.log(queryBody);
+    this.authenticationService.filterSearch(queryBody)
+      .subscribe(
+        data => {
+          this.candidate_data = data;
+          this.alreadyApproachedCheck();
+          this.searchData = true;
+
+          this.setPage(1);
+          if(this.candidate_data && this.candidate_data.length > 0) {
+            this.not_found='';
+          }
+          this.responseMsg = "response";
+        },
+        error => {
+          this.not_found = '';
+          if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.responseMsg = "error";
+            this.not_found = error['error']['message'];
+          }
+          else if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.responseMsg = "error";
+            this.not_found = error['error']['message'];
+          }
+          else {
+            this.log = 'Something went wrong';
+          }
+
+        });
+    //}
   }
 
   reset() {
@@ -534,16 +484,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.selectedValueArray = [];
     this.newSearchLocation = [];
     this.role_value = '';
-    this.blockchain_value = '';
     this.currencyChange = '';
     this.visa_check = false;
-    this.residence_country = [];
-    this.blockchain_order = [];
     this.saveSearchName = '';
     this.selectedWorkType = '';
     this.hourly_rate = '';
     this.contractorCurrency = '';
-    this.years_exp_value = '';
+    this.commercialSkillsFromDB = [];
+    this.selectedCommercialSkillsNew = [];
+
+    this.selectedSkillExpYear = [];
+
     if (isPlatformBrowser(this.platformId)) {
       $('.selectpicker').val('default');
       $('.selectpicker').selectpicker('refresh');
@@ -553,126 +504,25 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   savedSearch() {
-    let queryBody: any = {};
-    let index = this.savedSearches.findIndex((obj => obj.name === this.saveSearchName));
-    if (this.visa_check) queryBody.visa_needed = this.visa_check;
-    else queryBody.visa_needed = false;
-    if (this.pref_job_type) queryBody.job_type = this.pref_job_type;
-    else queryBody.job_type = [];
-    if (this.role_value && this.role_value.length > 0) queryBody.position = this.role_value;
-    else queryBody.position = [];
-    if (this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
-    else queryBody.blockchain = [];
-    if (this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-    else queryBody.skills = [];
-    if (this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
-    else queryBody.residence_country = [];
-    if (this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
-    if (this._id) queryBody._id = this._id;
-    if (this.selectedValueArray && this.selectedValueArray.length > 0) {
-      let validatedLocation = [];
-      for (let location of this.selectedValueArray) {
-        if (location.name.includes(', ')) {
-          if (location._id) validatedLocation.push({_id: location._id, city: location.city});
-          else validatedLocation.push({city: location.city});
-        }
-        if (location.name === 'Remote') {
-          if (location._id) validatedLocation.push({_id: location._id, remote: true});
-          else validatedLocation.push({remote: true});
-        }
-      }
-      queryBody.location = this.filter_array(validatedLocation);
-    }
-    if (this.saveSearchName) queryBody.name = this.saveSearchName;
-    if (this.years_exp_value) queryBody.years_exp_min = this.years_exp_value;
-    if (this.selectedWorkType === 'employee' && this.salary && this.currencyChange) {
-      queryBody.current_currency = this.currencyChange;
-      queryBody.current_salary = this.salary;
-    }
-
-    if (this.selectedWorkType === 'contractor' && this.hourly_rate && this.contractorCurrency) {
-      queryBody.expected_hourly_rate = this.hourly_rate;
-      queryBody.current_currency = this.contractorCurrency;
-    }
-    if (this.selectedWorkType) queryBody.work_type = this.selectedWorkType;
-    if (this.other_technologies) queryBody.other_technologies = this.other_technologies;
-    if (this.timestamp) queryBody.timestamp = this.timestamp;
-    if (!queryBody.location) queryBody.location = [];
-    this.savedSearches[index] = queryBody;
     if (this.saveSearchName) {
-      for (let searches of this.savedSearches) {
-        if (searches['name'] !== this.saveSearchName) {
-          if (searches['location'] && searches['location'].length > 0) {
-            let cities = [];
-            let cityCheck = false;
-            for (let city of searches['location']) {
-              if (city['city'] && city['city']._id) {
-                cityCheck = true;
-                cities.push({_id: city['_id'], city: city['city']._id});
-              }
-              if (city['remote'] === true) {
-                cityCheck = true;
-                cities.push(city);
-              }
-
-            }
-            if (cityCheck === true) searches['location'] = cities;
-          }
-        }
-      }
-      this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
-        .subscribe(
-          data => {
-            if (data && this.currentUser) {
-              this.savedSearches = [];
-              this.success_msg = 'Successfully updated';
-              if (data['saved_searches'] && data['saved_searches'].length > 0) {
-                this.savedSearches = data['saved_searches'];
-                this.searchName = [];
-                for (let i = 0; i < data['saved_searches'].length; i++) {
-                  this.searchName.push(data['saved_searches'][i].name);
-                  if (data['saved_searches'][i].name === this.saveSearchName) this.timestamp = data['saved_searches'][i].timestamp;
-                  if (data['saved_searches'][i].location && data['saved_searches'][i].location.length > 0) {
-                    this.prefillLocationFEFormat(data['saved_searches'][i].location);
-                  }
-
-                }
-                if (isPlatformBrowser(this.platformId)) {
-                  setTimeout(() => {
-                    $('.selectpicker').selectpicker('refresh');
-                  }, 300);
-                }
-              }
-
-              setInterval(() => {
-                this.success_msg = "";
-              }, 5000);
-            }
-
-          },
-          error => {
-
-          });
+      const filtered = this.savedSearches.filter( (item) => item.name === this.saveSearchName);
+      this.router.navigate(['/users/company/jobs/'+filtered[0]['_id']+'/edit']);
     }
-    else {
-      $('#saveNewSearch').modal('show');
-      setInterval(() => {
-        this.error_msg = "";
-      }, 9000);
-    }
-
+    else this.router.navigate(['/users/company/jobs/new']);
   }
 
   prefillLocationFEFormat(location) {
-    this.selectedValueArray = [];
     for (let country1 of location) {
       if (country1['remote'] === true) {
         this.selectedValueArray.push({_id: country1['_id'], name: 'Remote'});
       }
-
       if (country1['city']) {
-        let city = country1['city'].city + ", " + country1['city'].country;
-        this.selectedValueArray.push({_id: country1['_id'], city: country1['city']._id, name: city});
+        let city = country1['city'];// + ", " + country1['city'].country;
+        this.selectedValueArray.push({_id: country1['_id'], city: country1['city_id'], name: city});
+      }
+      if (country1['country']) {
+        let country = country1['country'] + ' (country)';
+        this.selectedValueArray.push({_id: country1['_id'], name:  country});
       }
     }
 
@@ -682,174 +532,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.selectedValueArray.splice(0, 0, remoteValue);
       this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
-    }
-  }
-
-  current_currency_log;
-
-  savedNewSearch() {
-    let queryBody: any = {};
-
-    if (this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
-    if (this.newSearchLocation && this.newSearchLocation.length > 0) {
-      let validatedLocation = [];
-      for (let location of this.newSearchLocation) {
-        if (location.name.includes(', ')) {
-          validatedLocation.push({city: location.city});
-        }
-        if (location.name === 'Remote') {
-          validatedLocation.push({remote: true});
-        }
-      }
-      queryBody.location = this.filter_array(validatedLocation);
-    }
-    if (this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
-    if (this.preferncesForm.value.years_exp_value) queryBody.years_exp_min = this.preferncesForm.value.years_exp_value;
-    if (this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0) queryBody.position = this.preferncesForm.value.position;
-    if (this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0) queryBody.job_type = this.preferncesForm.value.job_type;
-    if (this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
-    if (this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
-    if (this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
-    if (this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
-    let errorCount = 0;
-    if (this.preferncesForm.value.work_type === 'employee' ) {
-      if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-        const checkNumber = this.checkNumber(this.preferncesForm.value.current_salary);
-        if (checkNumber === false) {
-          errorCount = 1;
-          this.current_currency_log = "Salary should be a number";
-        }
-        else {
-          queryBody.current_currency = this.preferncesForm.value.current_currency;
-          queryBody.current_salary = this.preferncesForm.value.current_salary;
-        }
-      }
-      if(!this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
-        errorCount = 1;
-        this.current_currency_log = "Please enter salary";
-      }
-      if(this.preferncesForm.value.current_salary && !this.preferncesForm.value.current_currency) {
-        errorCount = 1;
-        this.current_currency_log = "Please enter currency";
-      }
-
-      }
-
-    if (this.preferncesForm.value.work_type === 'contractor' ) {
-      if(this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-        const checkNumber = this.checkNumber(this.preferncesForm.value.expected_hourly_rate);
-        if (checkNumber === false) {
-          errorCount = 1;
-          this.expected_hourly_rate_log = "Hourly rate should be a number";
-        }
-        else {
-          queryBody.expected_hourly_rate = this.preferncesForm.value.expected_hourly_rate;
-          queryBody.current_currency = this.preferncesForm.value.currency;
-        }
-      }
-      if(!this.preferncesForm.value.expected_hourly_rate && this.preferncesForm.value.currency) {
-        errorCount = 1;
-        this.expected_hourly_rate_log = "Please enter hourly rate";
-      }
-      if(this.preferncesForm.value.expected_hourly_rate && !this.preferncesForm.value.currency) {
-        errorCount = 1;
-        this.expected_hourly_rate_log = "Please enter currency";
-      }
-
-    }
-    if (this.preferncesForm.value.work_type) queryBody.work_type = this.preferncesForm.value.work_type;
-
-    if (!this.preferncesForm.value.name) {
-      this.search_name_log = "Please enter saved search name";
-      errorCount = 1;
-    }
-    if (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
-      this.residence_country_log = "Please select maximum 50 countries";
-      errorCount = 1;
-    }
-
-    if (errorCount === 0) {
-
-      let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
-
-      if (index < 0 && this.preferncesForm.value.name) {
-        this.savedSearches.push(queryBody);
-        for (let searches of this.savedSearches) {
-          if (searches['name'] !== this.preferncesForm.value.name) {
-            if (searches['location'] && searches['location'].length > 0) {
-              let cities = [];
-              for (let city of searches['location']) {
-                if (city['city'] && city['city']._id) {
-                  cities.push({_id: city['_id'], city: city['city']._id});
-                }
-                if (city['remote'] === true) {
-                  cities.push(city);
-                }
-
-              }
-              searches['location'] = cities;
-            }
-          }
-        }
-        this.authenticationService.edit_company_profile(this.currentUser._id,{'saved_searches': this.savedSearches}, false)
-          .subscribe(
-            data => {
-              if (data && this.currentUser) {
-                this.savedSearches = [];
-                this.saveSearchName = this.preferncesForm.value.name;
-
-                let newQueryBody: any = {};
-                newQueryBody = queryBody;
-                if (this.saveSearchName) {
-                  newQueryBody.searchName = this.saveSearchName;
-                }
-                this.router.navigate(['candidate-search'], {
-                  queryParams: {queryBody: JSON.stringify(newQueryBody)}
-                });
-
-                if (isPlatformBrowser(this.platformId)) $('#saveNewSearch').modal('hide');
-
-                if (data['saved_searches'] && data['saved_searches'].length > 0) {
-                  this.savedSearches = data['saved_searches'];
-                  this.searchName = [];
-                  for (let i = 0; i < data['saved_searches'].length; i++) {
-                    this.searchName.push(data['saved_searches'][i].name);
-                    if (isPlatformBrowser(this.platformId)) {
-                      setTimeout(() => {
-                        $('.selectpicker').selectpicker('refresh');
-                      }, 300);
-                    }
-                  }
-
-                }
-                this.fillFields(data['saved_searches'], this.preferncesForm.value.name);
-                this.searchdata('new search', this.preferncesForm.value);
-
-                if (isPlatformBrowser(this.platformId)) {
-                  setTimeout(() => {
-                    $('.selectpicker').selectpicker('refresh');
-                  }, 300);
-                }
-
-                this.preferncesForm.reset();
-                this.newSearchLocation = [];
-                this.new_error_msg = '';
-                this.search_name_log = '';
-
-              }
-            },
-            error => {
-
-            });
-      }
-      else {
-        this.new_error_msg = "Search name already exists.";
-
-      }
-
-    }
-    else {
-      this.new_error_msg = "One or more fields need to be completed. Please scroll up to see which ones";
     }
   }
 
@@ -890,8 +572,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
 
         });
-
-
     this.authenticationService.getCurrentCompany(this.currentUser._id, false)
       .subscribe(
         data => {
@@ -907,8 +587,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
         }
       );
-
-
   }
 
   onSubmit(val) {
@@ -1203,10 +881,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   suggestedOptions() {
-    if((this.countriesModel && this.countriesModel !== '') || (this.preferncesForm.value.location && this.preferncesForm.value.location !== '')) {
+    if(this.countriesModel && this.countriesModel !== '') {
       let searchText;
       if(this.countriesModel) searchText = this.countriesModel;
-      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location;
       this.authenticationService.autoSuggestOptions(searchText, false)
         .subscribe(
           data => {
@@ -1221,16 +898,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   let cityString = cities['city'].city + ", " + cities['city'].country;
                   citiesOptions.push({_id:cities['_id'] ,city : cities['city']._id , name : cityString});
                 }
-
               }
               this.cities = this.filter_array(citiesOptions);
             }
-
           },
           error=>
           {
-            if(error['message'] === 500 || error['message'] === 401)
-            {
+            if(error['message'] === 500 || error['message'] === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -1239,12 +913,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
             }
-
             if(error.message === 403)
-            {
               this.router.navigate(['/not_found']);
-            }
-
           });
     }
   }
@@ -1350,6 +1020,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.newSearchLocation = this.filter_array(this.newSearchLocation);
           }
           this.selectedValueArray = this.newSearchLocation;
+          console.log(this.selectedValueArray);
           //this.searchdata('locations' , this.selectedValueArray);
         }
       }
@@ -1415,21 +1086,57 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     else {
       this.disabled = false;
-      if (data['saved_searches'] && data['saved_searches'].length > 0) {
-        this.savedSearches = data['saved_searches'];
-        for (let i = 0; i < data['saved_searches'].length; i++) {
-          this.searchName.push(data['saved_searches'][i].name);
+      if(data['job_ids'] && data['job_ids'].length > 0) {
+        this.savedSearches = data['job_ids'];
+        console.log(data['job_ids']);
+        for (let i = 0; i < data['job_ids'].length; i++) {
+          this.searchName.push(data['job_ids'][i].name);
         }
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
           }, 300);
         }
-
       }
       if (!this.no_value) {
         this.getVerrifiedCandidate();
       }
     }
   }
+
+  selectedSkill(skillObj){
+    let objectMap = {};
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+    }
+    if(this.selectedSkillExpYear.find(x => x['name'] === skillObj.name)) {
+      this.errorMsg = 'This skills has already been selected';
+      return false;
+    }
+    else {
+      objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
+      if(skillObj.type === 'blockchain')
+        objectMap['img'] = makeImgCode(skillObj);
+      if(skillObj.type === 'language')
+        objectMap['img'] = makeIconCode('fas fa-code');
+      if(skillObj.type === 'experience')
+        objectMap['img'] = makeIconCode('fas fa-user-friends');
+      this.selectedSkillExpYear.push(objectMap);
+    }
+    console.log(this.selectedSkillExpYear);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear);
+  }
+
+  skillsExpYearOptions(event, value, index){
+    this.selectedSkillExpYear[index].exp_year = parseInt(event.target.value);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear)
+  }
+
+  deleteSkill(index){
+    this.selectedSkillExpYear.splice(index, 1);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear)
+  }
+
 }

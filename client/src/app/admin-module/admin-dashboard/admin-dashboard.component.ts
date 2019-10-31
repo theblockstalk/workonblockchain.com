@@ -116,7 +116,7 @@ export class AdminDashboardComponent implements OnInit {
         },
         error =>
         {
-          console.log('error');
+          //console.log('error');
         }
       );
   }
@@ -148,7 +148,7 @@ export class AdminDashboardComponent implements OnInit {
         },
         error =>
         {
-          console.log('error');
+          //console.log('error');
         }
       );
   }

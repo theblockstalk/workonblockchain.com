@@ -130,7 +130,7 @@ api.company = function company() {
         last_name: "Safdar",
         email: random.email(),
         job_title: "Designer",
-        company_name: "My Company",
+        company_name: random.string(),
         company_website: "my-web.com",
         company_phone: "926546456",
         company_country: "Pakistan",
@@ -156,23 +156,7 @@ api.companyUpdateProfile = function companyUpdateProfile(){
         company_funded:"i have no idea",
         company_description:"Global blockchain agnostic hiring platform for developers.",
 
-        when_receive_email_notitfications : 'Daily',
-
-        saved_searches : [{
-            name: random.string(),
-            location: [
-                {remote:true },
-                {_id : '5c4aa17468cc293450c14c04'}
-            ],
-            job_type : ['Full time'],
-            position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : random.enum(enumerations.currencies),
-            current_salary : random.integer(10000, 100000),
-            blockchain : ['Ripple' , 'Stellar'],
-            skills : ['C#'],
-            residence_country : ['Pakistan']
-        }]
-
+        when_receive_email_notitfications : 'Daily'
     }
 }
 
@@ -212,41 +196,21 @@ api.candidateProfile = function candidateProfile(){
                 employment_availability: random.enum(enumerations.workAvailability),
             },
             interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
-            blockchain: {
-                experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
-                commercial_platforms : [
-                    {
-                        name : random.enum(enumerations.blockchainPlatforms),
-                        exp_year : "4-6"
-                    },
-                    {
-                        name : random.enum(enumerations.blockchainPlatforms),
-                        exp_year : "1-2"
-                    }
-                ],
-
-                commercial_skills : [
-                    {
-                        skill: random.enum(enumerations.otherSkills),
-                        exp_year: '0-1'
-                    },
-                    {
-                        skill: random.enum(enumerations.otherSkills),
-                        exp_year: '2-4'
-                    }
-                ],
-                description_commercial_platforms : random.string(10),
-                description_commercial_skills : random.string(10),
-                description_experimented_platforms : random.string(10),
-            },
-            programming_languages: [
+            commercial_skills : [
                 {
-                    language: 'Java', exp_year: '1-2'
+                    skills_id : "5d9b0ad8e70a001d20f21688",
+                    name : "Cardano",
+                    type : "blockchain",
+                    exp_year : 2
                 },
                 {
-                    language: 'C#', exp_year: '0-1'
-                }
+                    skills_id : "5d9b0ad8e70a001d20f21679",
+                    name : "Bitcoin",
+                    type : "blockchain",
+                    exp_year : 1
+                },
             ],
+            description_commercial_skills : random.string(10),
             education_history : [{
                 uniname: 'CUST',
                 degreename: 'BSCS',
@@ -293,43 +257,19 @@ api.candidateProfileUpdate = function candidateProfileUpdate(){
                 roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
             },
             interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
-            blockchain: {
-                experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
-                commercial_platforms : [
-                    {
-                        name : random.enum(enumerations.blockchainPlatforms),
-                        exp_year : "4-6"
-                    },
-                    {
-                        name : random.enum(enumerations.blockchainPlatforms),
-                        exp_year : "1-2"
-                    }
-                ],
-                commercial_skills : [
-                    {
-                        skill: random.enum(enumerations.otherSkills),
-                        exp_year: '0-1'
-                    },
-                    {
-                        skill: random.enum(enumerations.otherSkills),
-                        exp_year: '2-4'
-                    }
-                ],
-                description_commercial_platforms : random.string(10),
-                description_commercial_skills : random.string(10),
-                description_experimented_platforms : random.string(10)
-            },
-
-            programming_languages: [
+            commercial_skills : [
                 {
-                    language: 'Java',
-                    exp_year: '1-2'
+                    name : "Angularjs",
+                    type : "language",
+                    exp_year : 2
                 },
                 {
-                    language: 'C#',
-                    exp_year: '0-1'
-                }
+                    name : "Bitcoin",
+                    type : "blockchain",
+                    exp_year : 1
+                },
             ],
+            description_commercial_skills : random.string(10),
             education_history : [{
                 uniname: 'CUST',
                 degreename: 'BSCS',

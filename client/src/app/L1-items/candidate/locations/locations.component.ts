@@ -28,6 +28,7 @@ export class LocationsComponent implements OnInit {
     this.autoSuggestController = function (textValue, controllerOptions) {
       return this.authenticationService.autoSuggestOptions(textValue, controllerOptions);
     }
+    //console.log(this.autoSuggestController);
     this.resultItemDisplay = function (data) {
       const citiesInput = data;
       let citiesOptions = [];
@@ -63,7 +64,7 @@ export class LocationsComponent implements OnInit {
     return true;
   }
 
-  itemSelected(locationObj) {
+    itemSelected(locationObj) {
     this.object = locationObj;
     if(this.selectedLocation.length > 9) {
       this.errorMsg = 'You can select maximum 10 locations';

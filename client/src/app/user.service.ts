@@ -1318,4 +1318,120 @@ export class UserService {
     }));
   }
 
+  autoSuggestSkills(queryInput:any) {
+    return this.http.get(URL+'v2/skills?autosuggest='+queryInput, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
+  //for Jobs
+  postJob(queryBody : any, company_id : any, admin: boolean) {
+    let urlString = URL+'v2/jobs';
+    if(admin === true) urlString = URL+'v2/jobs?admin='+admin+'&company_id='+company_id;
+
+    return this.http.post(urlString, queryBody, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res) return res;
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
+  getAJob(job_id: string, company_id: any, admin: boolean) {
+    let urlString = URL+'v2/jobs?job_id='+job_id;
+    if(admin === true) urlString = URL+'v2/jobs?admin='+admin+'&job_id='+job_id+'&company_id='+company_id;
+    return this.http.get(urlString, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res) return res;
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(new Error(error.status));
+      }
+
+    }));
+  }
+
+  updateJob(queryBody : any, company_id : any, job_id: any,admin: boolean) {
+    let urlString = URL+'v2/jobs?company_id='+company_id+'&job_id='+job_id;
+    if(admin === true) urlString = URL+'v2/jobs?admin='+admin+'&company_id='+company_id+'&job_id='+job_id;
+
+    return this.http.patch(urlString, queryBody, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res) return res;
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
 }

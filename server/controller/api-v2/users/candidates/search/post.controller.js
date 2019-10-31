@@ -33,28 +33,22 @@ const bodySchema = new Schema({
     why_work: {
         type:String
     },
-    programming_languages: [{
-        type: String,
-        enum: enumerations.programmingLanguages
-    }],
-    years_exp_min: {
-        type: Number,
-        min: 1,
-        max: 20
-    },
     roles: [{
         type: String,
         enum: enumerations.workRoles
     }],
-    blockchains: [{
-        type: String,
-        enum: enumerations.blockchainPlatforms
+    required_skills : [{
+        name: String,
+        exp_year: Number,
+        type: {
+            type: String
+        },
+        skills_id: {
+            type : Schema.Types.ObjectId,
+            ref: 'Skills'
+        }
     }],
     visa_needed: Boolean,
-    blockchainOrder: [{
-        type: String,
-        enum: enumerations.blockchainPlatforms
-    }],
     locations: [{
         _id: {
             type: String
@@ -78,10 +72,6 @@ const bodySchema = new Schema({
         type : Number,
         min:0,
     },
-    base_country: [{
-            type: String,
-            enum: enumerations.countries
-    }],
     work_type: {
         type: String,
         enum: enumerations.workTypes
@@ -108,7 +98,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     if(req.query.admin) await auth.isAdmin(req);
-else await auth.isValidCompany(req);
+    else await auth.isValidCompany(req);
 }
 
 module.exports.endpoint = async function (req, res) {
@@ -150,46 +140,40 @@ module.exports.endpoint = async function (req, res) {
             else errors.throwError("No candidate exists", 404);
         }
     }
-    else{
+    else {
         let userId = req.auth.user._id;
         let queryBody = req.body;
-        let search = {}, order = {};
+        let search = {};
         if (queryBody.work_type) search.work_type = queryBody.work_type;
         if (queryBody.why_work) search.why_work = queryBody.why_work;
-        if (queryBody.programming_languages) search.programming_languages = queryBody.programming_languages;
-        if (queryBody.years_exp_min) search.years_exp_min = queryBody.years_exp_min;
+        if (queryBody.required_skills) search.required_skills = queryBody.required_skills;
         if (queryBody.locations) {
-            if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
-                const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
-                queryBody.locations[index] = {remote : true};
+            if (queryBody.locations.find((obj => obj.name === 'Remote'))) {
+                const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'))
+                queryBody.locations[index] = {remote: true};
             }
             search.locations = queryBody.locations;
         }
         if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
         if (queryBody.roles) search.roles = queryBody.roles;
-        if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
-        if (queryBody.current_currency && queryBody.current_salary) {
-            search.salary = {
-                current_currency: queryBody.current_currency,
-                current_salary: queryBody.current_salary
+
+        if (queryBody.current_currency) {
+            if (queryBody.current_salary) {
+                search.currency = queryBody.current_currency;
+                search.expected_salary_min = queryBody.current_salary;
+            }
+
+            if (queryBody.expected_hourly_rate) {
+                search.currency = queryBody.current_currency;
+                search.expected_hourly_rate_min = queryBody.expected_hourly_rate;
             }
         }
-
-        if (queryBody.expected_hourly_rate && queryBody.current_currency) {
-            search.hourly_rate = {
-                expected_hourly_rate: queryBody.expected_hourly_rate,
-                current_currency: queryBody.current_currency
-            }
-        }
-        if(queryBody.base_country) search.base_country = queryBody.base_country;
-
-        if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
 
         let candidateDocs = await candidateSearch.candidateSearch({
             is_verify: 1,
             status: 'approved',
             disable_account: false
-        }, search, order);
+        }, search);
 
         let filterArray = [];
         for(let candidateDetail of candidateDocs.candidates) {

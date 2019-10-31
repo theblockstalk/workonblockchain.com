@@ -28,7 +28,7 @@ export class ProfileResolver  {
                   this.router.navigate(['/work']);
                   return false;
                 }
-                else if (!data['candidate'].why_work && !data['candidate'].interest_areas) {
+                else if (!data['candidate'].why_work || !data['candidate'].interest_areas) {
                   this.router.navigate(['/resume']);
                   return false;
                 }

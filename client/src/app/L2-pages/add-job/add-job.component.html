@@ -1,0 +1,302 @@
+<section class="wob-bg-primary2 pb-5 pt-3">
+  <div class="container">
+    <form (ngSubmit)="addJob()">
+      <section class="border rounded bg-white py-3 px-5 mt-4 mb-2">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="pt-2 mb-3"><i class="fas fa-briefcase"></i> Job </h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Job name</label>
+              <input type="text" name="job_name" class="form-control" placeholder="Full stack Java in London" required [(ngModel)]="job_name">
+              <div class = "invalid-feedback d-inline" *ngIf="!job_name">
+                {{jobNameErrMsg}}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <app-c-forme-dropdown-single
+              label="Status"
+              [options]="job_status_options"
+              [value]="job_status"
+              [errorMsg]="jobStatusErrMsg"
+              (selectedValue)="job_status = $event"
+            ></app-c-forme-dropdown-single>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Work type</label>
+              <div class="row mt-4">
+                <div class="col-md-4 text-center">
+                  <i class="fas fa-user-tie fa-4x"></i><br/>
+                  <div class="form-check mt-2">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="employee" [checked]="employeeCheck === true" (change)="workTypeChange($event)">
+                      Employee (full/part time)
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-4 text-center">
+                  <i class="fas fa-address-card fa-4x"></i><br/>
+                  <div class="form-check mt-2">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="contractor" [checked]="contractorCheck === true" (change)="workTypeChange($event)">
+                      Contractor/Freelancer
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-4 text-center">
+                  <i class="fas fa-user-tie fa-4x"></i><br/>
+                  <div class="form-check mt-2">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="volunteer" [checked]="volunteerCheck === true" (change)="workTypeChange($event)">
+                      Temporary volunteer
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class = "invalid-feedback d-inline" *ngIf="employeeCheck === false && contractorCheck === false && volunteerCheck === false">
+                {{work_type_log}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="employeeCheck">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Employment type</label>
+              <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employment_type" >
+                <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
+              </select>
+              <div class = "invalid-feedback d-inline" *ngIf="!employment_type">
+                {{employment_type_log}}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-2">
+            <div class="form-group">
+              <label>Annual salary</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <input type="text" #min_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_annual_salary" placeholder=" Min" [(ngModel)]="min_annual_salary">
+              <div class = "invalid-feedback d-inline"  *ngIf="!min_annual_salary; else expected_validation">
+                {{min_salary_log}}
+              </div>
+              <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="min_salary.errors && min_annual_salary">
+                Minimum salary should be a number.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <input type="text" #max_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_annual_salary" placeholder=" Max" [(ngModel)]="max_annual_salary">
+              <div class = "invalid-feedback d-inline"  #max_salary_validation  *ngIf="max_salary.errors && max_annual_salary">
+                Maximum salary should be a number.
+              </div>
+              <div class = "invalid-feedback d-inline"  *ngIf="max_annual_salary && (convertNumber(min_annual_salary) > convertNumber(max_annual_salary))">
+                Maximum salary should be greater the minimum salary
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <select [(ngModel)]="annual_currency" class="selectpicker form-control" title="Currency" required name="annual_currency" >
+                <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === annual_currency  ? true : null" >{{baseCurrency}}</option>
+              </select>
+              <div class = "invalid-feedback d-inline"  *ngIf="!annual_currency || annual_currency === 'Currency'">
+                {{annual_salary_currency_log}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="contractorCheck">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Hourly rate</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <input type="text" #min_hourly_rate_valid="ngModel" pattern="^[0-9]*$" class="form-control" required name="min_hourly_rate" placeholder="Min" [(ngModel)]="min_hourly_rate">
+              <div class = "invalid-feedback d-inline"  *ngIf="!min_hourly_rate; else min_hourly_rate_validation">
+                {{min_hourly_log}}
+              </div>
+              <div class = "invalid-feedback d-inline"  #min_hourly_rate_validation  *ngIf="min_hourly_rate_valid.errors && min_hourly_rate">
+                Minimum hourly rate should be a number.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <input type="text" #max_hourly_rate_valid="ngModel" pattern="^[0-9]*$" class="form-control" required name="max_hourly_rate" placeholder="Max" [(ngModel)]="max_hourly_rate">
+              <div class = "invalid-feedback d-inline"  #max_hourly_rate_validation  *ngIf="max_hourly_rate_valid.errors && max_hourly_rate">
+                Maximum hourly rate should be a number.
+              </div>
+              <div class = "invalid-feedback d-inline"  *ngIf="max_hourly_rate && (convertNumber(min_hourly_rate) > convertNumber(max_hourly_rate))">
+                Maximum rate should be greater the minimum rate
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <select [(ngModel)]="hourly_rate_currency" class="selectpicker form-control" title="Currency" required name="houlry_currency" >
+                <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === hourly_rate_currency  ? true : null" >{{baseCurrency}}</option>
+              </select>
+              <div class = "invalid-feedback d-inline"  *ngIf="!hourly_rate_currency || hourly_rate_currency === 'Currency'">
+                {{hourly_currency_log}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+          <div class="col-md-6">
+            <app-c-forme-dropdown-single
+              label="Number of people you are looking for this role"
+              [options]="resources"
+              [value]="num_people_desired"
+              [errorMsg]="num_people_desired_log"
+              (selectedValue)="num_people_desired = $event"
+            ></app-c-forme-dropdown-single>
+          </div>
+        </div>
+      </section>
+
+      <section class="border rounded bg-white py-3 px-5 mt-4" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="pt-2 mb-3"><i class="fas fa-check"></i> Requirements </h3>
+            <small>Only add minimum requirements that all candidates must meet</small>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Location</label>
+              <div>
+                <mat-autocomplete #employeeAuto="matAutocomplete">
+                  <mat-option *ngFor="let loc of cities" [value]="loc.name">
+                    <span>{{ loc.name }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+
+                <mat-form-field floatLabel="always" class="w-100">
+                  <mat-label></mat-label>
+                  <input matInput [matAutocomplete]="employeeAuto" placeholder="Remote, Canada, London..." [(ngModel)]="country" name="country" (input)="suggestedOptions(country)" (ngModelChange)="employeeSelectedValueFunction($event)">
+                </mat-form-field>
+                <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                  {{error}}
+                </div>
+                <div class="invalid-feedback d-inline" #emptyInput *ngIf="!selectedValueArray || (selectedValueArray && selectedValueArray.length <= 0) ">
+                  {{location_log}}
+                </div>
+                <div *ngIf="selectedValueArray && selectedValueArray.length > 0">
+                  <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let loc_i = index">{{value.name}} <a (click)="employeeDeleteLocationRow(loc_i)"><i class="fas fa-times text-white"></i></a></span>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!selectedValueArray || selectedValueArray.length <= 0">
+                    {{location_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" >
+            <div class = "form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="" [(ngModel)]="visa_needed" name="visa_needed" id="check"  >
+                  Only show candidates that require a work visa
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Role</label>
+              <select multiple name="user_roles" [(ngModel)]="user_roles" title="(select multiple)" class="form-control selectpicker">
+                <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
+              </select>
+              <div class = "invalid-feedback d-inline" *ngIf="!user_roles || user_roles.length === 0">
+                {{roles_log}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Commercial experience</label>
+            </div>
+            <app-i-forme-skills-auto-suggest
+              [selectedSkill] = "commercialSkillsFromDB"
+              (selectedItems)="selectedCommercialSkillsNew = $event"
+              placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+            ></app-i-forme-skills-auto-suggest>
+          </div>
+        </div>
+      </section>
+
+      <section class="border rounded bg-white py-3 px-5 mt-4" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="pt-2 mb-3"><i class="fas fa-check"></i> Good to have (not required) </h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Skills</label>
+            </div>
+            <app-i-forme-skills-auto-suggest
+              [selectedSkill] = "optionalSkillsFromDB"
+              (selectedItems)="selectedOptionalSkillsNew = $event"
+              placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+              noExpYears="true"
+            ></app-i-forme-skills-auto-suggest>
+          </div>
+        </div>
+      </section>
+
+      <section class="border rounded bg-white py-3 px-5 mt-4 mb-2" *ngIf="employeeCheck || contractorCheck || volunteerCheck">
+        <div class="row">
+          <div class="col-md-12">
+            <h3> <i class="fas fa-file"></i> Description</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <app-i-forme-content [content]="description_content"></app-i-forme-content>
+          </div>
+        </div>
+      </section>
+
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <app-c-button-normal
+            level="primary"
+            buttonType="submit"
+            label="Save"
+          ></app-c-button-normal>
+        </div>
+      </div>
+      <div class="row" *ngIf="error_msg">
+        <div class="col-md-12">
+          <div class = "invalid-feedback float-right d-inline w-auto" >
+            {{error_msg}}
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

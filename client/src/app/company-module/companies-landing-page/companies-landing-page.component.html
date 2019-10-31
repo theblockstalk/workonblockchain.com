@@ -7,11 +7,15 @@
         <iframe class="embed-responsive-item" src = "../assets/circle-graph.html" allowfullscreen scrolling="no" border="none"></iframe>
       </div>
     </div>
-    <div class = "row text-center pb-5 pb-md-0">
-      <div class = "col-12">
+    <div class = "row text-center pb-5 pb-md-0 mt-1">
+      <div class = "col-6">
         <a (click)="internalRoute('signup','company')">
-
           <button class="btn btn-warning rounded text-light py-4 px-5 border-0 font-weight-bold hire_button" >Hire talent now</button>
+        </a>
+      </div>
+      <div class = "col-6">
+        <a (click)="internalRoute('/users/company/jobs/new','')">
+          <button class="btn btn-warning rounded text-light py-4 px-5 border-0 font-weight-bold hire_button" >Post a job</button>
         </a>
       </div>
     </div>

@@ -93,7 +93,7 @@ module.exports = new Schema({
             }
         }]
     },
-    saved_searches: {
+    saved_searches: { // DELETE ME
         type:[new Schema({
             name: {
                 type: String,
@@ -143,22 +143,16 @@ module.exports = new Schema({
                 type: String,
                 enum: enumerations.currencies
             },
-            blockchain: {
-                type: [{
+            required_skills: { //will containg blockchain & languages
+                type:[new Schema({
+                    skills_id: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Skills'
+                    },
                     type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
-            },
-            skills: {
-                type: [{
-                    type: String,
-                    enum: enumerations.programmingLanguages
-                }]
-            },
-            years_exp_min: {
-                type: Number,
-                min: 1,
-                max: 20
+                    name: String,
+                    exp_year: Number
+                })]
             },
             residence_country: {
                 type: [{
@@ -169,22 +163,16 @@ module.exports = new Schema({
             other_technologies : {
                 type : String
             },
-            when_receive_email_notitfications : { //DELETE ME
-                type : String ,
-                enum : enumerations.email_notificaiton
-            },
-            order_preferences : {
-                type: [{
-                    type: String,
-                    enum: enumerations.blockchainPlatforms
-                }]
-            },
             timestamp : {
                 type : Date,
                 required: true
             }
         })]
-    },
+    }, // DELETE ME
+    job_ids: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Jobs',
+    }],
     when_receive_email_notitfications : {
         type : String ,
         enum : enumerations.email_notificaiton
