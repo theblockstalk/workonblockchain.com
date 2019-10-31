@@ -186,7 +186,9 @@ export class AddJobComponent implements OnInit {
         if(this.employment_type)inputQuery.job_type = this.employment_type;
         if(this.min_annual_salary)inputQuery.expected_salary_min = parseInt(this.min_annual_salary);
         if(this.max_annual_salary)inputQuery.expected_salary_max = parseInt(this.max_annual_salary);
-        else inputQuery.unset_expected_salary_max = true;
+        else {
+          if(this.method === 'update') inputQuery.unset_expected_salary_max = true;
+        }
       }
       else {
         if(this.method === 'update') {
@@ -198,7 +200,9 @@ export class AddJobComponent implements OnInit {
       if(this.contractorCheck) {
         if(this.min_hourly_rate)inputQuery.expected_hourly_rate_min = parseInt(this.min_hourly_rate);
         if(this.max_hourly_rate)inputQuery.expected_hourly_rate_max = parseInt(this.max_hourly_rate);
-        else inputQuery.unset_expected_hourly_rate_max = true;
+        else {
+          if (this.method === 'update') inputQuery.unset_expected_hourly_rate_max = true;
+        }
       }
       else {
         if (this.method === 'update') {
@@ -257,8 +261,7 @@ export class AddJobComponent implements OnInit {
               if (data) {
                 if(admin)
                   this.router.navigate(['/admins/company/'+this.jobDoc['company_id']+'/jobs/'+this.jobDoc['_id']]);
-
-                else this.router.navigate(['/users/company']);
+                else this.router.navigate(['/users/company/jobs/'+this.jobDoc['_id']]);
               }
             },
             error => {
@@ -309,7 +312,7 @@ export class AddJobComponent implements OnInit {
   suggestedOptions(inputParam) {
     if(inputParam !== '') {
       this.error='';
-      this.authenticationService.autoSuggestOptions(inputParam , true)
+      this.authenticationService.autoSuggestOptions(inputParam , false)
         .subscribe(
           data => {
             if(data) {

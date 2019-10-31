@@ -1,3 +1,12 @@
+export const isEmpty = function (obj) {
+  for(let prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export const getClass = function (value) {
   if(value === 'open') return 'text-success';
   if(value === 'closed') return 'text-danger';

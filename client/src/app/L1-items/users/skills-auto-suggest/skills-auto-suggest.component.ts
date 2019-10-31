@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { UserService} from '../../../user.service';
-import { copyObject, makeImgCode, makeIconCode} from '../../../../services/object';
+import { copyObject, makeImgCode, makeIconCode, isEmpty} from '../../../../services/object';
 import {constants} from '../../../../constants/constants';
 import { isPlatformBrowser } from '@angular/common';
 declare var $: any;
@@ -29,7 +29,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
   desErrMsg;
   //classes for search display proper
   mainClass = 'col-md-8 p-1';nameClass = 'col-4';yearsClass='col-4';
-  deleteRowClass='col-4';
+  deleteRowClass='col-4';selectedText;
 
   constructor(private authenticationService: UserService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -61,6 +61,7 @@ export class SkillsAutoSuggestComponent implements OnInit {
 
     this.controllerOptions = true;
     this.autoSuggestController = function (textValue, controllerOptions) {
+      this.selectedText = textValue;
       return this.authenticationService.autoSuggestSkills(textValue);
     };
 
@@ -68,18 +69,34 @@ export class SkillsAutoSuggestComponent implements OnInit {
       const skillsInput = data;
       let skillsOptions = [];
       for(let skill of skillsInput['skills']) {
-        let obj = {
-          _id: skill['skill']._id,
-          name: skill['skill'].name,
-          type: skill['skill'].type
-        };
-        if(skill['skill'].type === 'blockchain')
-          obj['img'] = makeImgCode(skill['skill']);
-        if(skill['skill'].type === 'language')
-          obj['img'] = makeIconCode('fas fa-code');
-        if(skill['skill'].type === 'experience')
-          obj['img'] = makeIconCode('fas fa-user-friends');
-        skillsOptions.push(obj);
+        let obj = {};
+        if(this.selectedText === 'C' || this.selectedText === 'c') {
+          console.log('in if');
+          if(skill['skill'].type === 'language') {
+            obj = {
+              _id: skill['skill']._id,
+              name: skill['skill'].name,
+              type: skill['skill'].type,
+              img: makeIconCode('fas fa-code')
+            };
+          }
+        }
+        else {
+          console.log('in else');
+          obj = {
+            _id: skill['skill']._id,
+            name: skill['skill'].name,
+            type: skill['skill'].type
+          };
+          if(skill['skill'].type === 'blockchain')
+            obj['img'] = makeImgCode(skill['skill']);
+          if(skill['skill'].type === 'language')
+            obj['img'] = makeIconCode('fas fa-code');
+          if(skill['skill'].type === 'experience')
+            obj['img'] = makeIconCode('fas fa-user-friends');
+        }
+        if(!isEmpty(obj))
+          skillsOptions.push(obj);
       }
       return skillsOptions;
     }

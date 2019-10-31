@@ -4,6 +4,7 @@ import {NgForm, FormGroup, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {PagerService} from '../../pager.service';
 import {constants} from '../../../constants/constants';
+import {makeImgCode, makeIconCode,isEmpty } from '../../../services/object';
 import {isPlatformBrowser} from "@angular/common";
 declare var $:any;
 
@@ -107,6 +108,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   searchData;
   commercialSkillsFromDB;selectedCommercialSkillsNew;
   newSkillsSelected = [];
+  //new
+  controllerOptions: any = {};yearsErrMsg;
+  autoSuggestController;
+  resultItemDisplay;object;selectedText;selectedSkillExpYear=[];
+  years_exp_min_new = constants.years_exp_min_new;
 
   constructor(private _fb: FormBuilder, private pagerService: PagerService, private authenticationService: UserService, private route: ActivatedRoute, private router: Router,@Inject(PLATFORM_ID) private platformId: Object) {
     this.route.queryParams.subscribe(params => {
@@ -146,6 +152,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           if (this.urlParameters.required_skills && this.urlParameters.required_skills.length > 0) {
             this.commercialSkillsFromDB = this.urlParameters.required_skills;
             this.selectedCommercialSkillsNew = this.urlParameters.required_skills;
+            this.selectedSkillExpYear = this.urlParameters.required_skills;
           }
           this.searchdata("urlQuery", this.urlParameters);
         }
@@ -178,6 +185,50 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    //new code
+    this.controllerOptions = true;
+    this.autoSuggestController = function (textValue, controllerOptions) {
+      this.selectedText = textValue;
+      return this.authenticationService.autoSuggestSkills(textValue);
+    };
+
+    this.resultItemDisplay = function (data) {
+      const skillsInput = data;
+      let skillsOptions = [];
+      for(let skill of skillsInput['skills']) {
+        let obj = {};
+        if(this.selectedText === 'C' || this.selectedText === 'c') {
+          console.log('in if');
+          if(skill['skill'].type === 'language') {
+            obj = {
+              _id: skill['skill']._id,
+              name: skill['skill'].name,
+              type: skill['skill'].type,
+              img: makeIconCode('fas fa-code')
+            };
+          }
+        }
+        else {
+          console.log('in else');
+          obj = {
+            _id: skill['skill']._id,
+            name: skill['skill'].name,
+            type: skill['skill'].type
+          };
+          if(skill['skill'].type === 'blockchain')
+            obj['img'] = makeImgCode(skill['skill']);
+          if(skill['skill'].type === 'language')
+            obj['img'] = makeIconCode('fas fa-code');
+          if(skill['skill'].type === 'experience')
+            obj['img'] = makeIconCode('fas fa-user-friends');
+        }
+        if(!isEmpty(obj))
+          skillsOptions.push(obj);
+      }
+      return skillsOptions;
+    }
+    //new code ends
+
     this.newSkillsSelected = [];
 
     this.success_msg = '';
@@ -306,6 +357,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if (key['required_skills'] && key['required_skills'].length > 0) {
           this.commercialSkillsFromDB = key['required_skills'];
           this.selectedCommercialSkillsNew = this.commercialSkillsFromDB;
+
+          this.selectedSkillExpYear = key['required_skills'];
         }
         if (isPlatformBrowser(this.platformId)) $('.selectpicker').selectpicker('refresh');
       }
@@ -364,9 +417,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.expected_hourly_rate = this.hourly_rate;
       queryBody.current_currency = this.contractorCurrency;
     }
-    if(this.selectedCommercialSkillsNew && this.selectedCommercialSkillsNew.length > 0) {
+    if(this.selectedSkillExpYear && this.selectedSkillExpYear.length > 0) {
       let requiredSkills = [];
-      for (let skill of this.selectedCommercialSkillsNew){
+      for (let skill of this.selectedSkillExpYear){
         let obj = {
           name: skill.name,
           skills_id: skill.skills_id,
@@ -439,6 +492,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.contractorCurrency = '';
     this.commercialSkillsFromDB = [];
     this.selectedCommercialSkillsNew = [];
+
+    this.selectedSkillExpYear = [];
 
     if (isPlatformBrowser(this.platformId)) {
       $('.selectpicker').val('default');
@@ -1047,6 +1102,41 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.getVerrifiedCandidate();
       }
     }
+  }
+
+  selectedSkill(skillObj){
+    let objectMap = {};
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh');
+      }, 500);
+    }
+    if(this.selectedSkillExpYear.find(x => x['name'] === skillObj.name)) {
+      this.errorMsg = 'This skills has already been selected';
+      return false;
+    }
+    else {
+      objectMap = {skills_id:skillObj._id ,  name: skillObj.name, type: skillObj.type};
+      if(skillObj.type === 'blockchain')
+        objectMap['img'] = makeImgCode(skillObj);
+      if(skillObj.type === 'language')
+        objectMap['img'] = makeIconCode('fas fa-code');
+      if(skillObj.type === 'experience')
+        objectMap['img'] = makeIconCode('fas fa-user-friends');
+      this.selectedSkillExpYear.push(objectMap);
+    }
+    console.log(this.selectedSkillExpYear);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear);
+  }
+
+  skillsExpYearOptions(event, value, index){
+    this.selectedSkillExpYear[index].exp_year = parseInt(event.target.value);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear)
+  }
+
+  deleteSkill(index){
+    this.selectedSkillExpYear.splice(index, 1);
+    this.searchdata('requiredSkills',this.selectedSkillExpYear)
   }
 
 }

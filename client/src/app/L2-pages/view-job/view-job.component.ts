@@ -34,12 +34,19 @@ export class ViewJobComponent implements OnInit, AfterViewInit {
       const filteredArray = getNameFromValue(constants.workRoles,role);
       this.mappedPositions.push(filteredArray.name);
     }
+
+    if(this.jobDoc['name']) this.jobName = this.jobDoc['name'];
+
     if(this.jobDoc['work_type'] === 'volunteer')
-      this.jobName = this.jobDoc['name']+' temporary volunteer';
-    if(this.jobDoc['work_type'] === 'employee')
-      this.jobName = this.jobDoc['name']+' '+this.jobDoc['job_type'][0];
+      this.jobName = this.jobDoc['name']+' (temporary volunteer)';
+    if(this.jobDoc['work_type'] === 'employee') {
+      if(this.jobDoc['job_type'] && this.jobDoc['job_type'].length > 0)
+        this.jobName = this.jobDoc['name'] + ' (' + this.jobDoc['job_type'][0] + ')';
+      else
+        this.jobName = this.jobDoc['name'] + ' (employee)';
+    }
     if(this.jobDoc['work_type'] === 'contractor')
-      this.jobName = this.jobDoc['name']+' contractor';
+      this.jobName = this.jobDoc['name']+' (contractor)';
   }
 
   createBlockchainLogos(commercial){

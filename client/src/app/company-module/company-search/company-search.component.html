@@ -53,14 +53,41 @@
                 </div>
               </div>
 
-              <!--start here-->
-              <div class="form-group">
-                <app-i-forme-skills-auto-suggest
-                  [selectedSkill] = "commercialSkillsFromDB"
-                  (selectedItems)="searchdata('requiredSkills',selectedCommercialSkillsNew = $event)"
-                  placeHolder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
-                  compSearch="true"
-                ></app-i-forme-skills-auto-suggest>
+              <!--for skills-->
+              <app-c-forme-dropdown-autosuggest
+                placeholder="Bitcoin, Ethereum, Javascript, Nodejs, Cryptography"
+                [controllerOptions]="controllerOptions"
+                [controller]="autoSuggestController"
+                [displayItems]="resultItemDisplay"
+                (selectedItems)="selectedSkill($event)"
+                [errorMsg]="errorMsg"
+              ></app-c-forme-dropdown-autosuggest>
+              <div *ngIf="selectedSkillExpYear && selectedSkillExpYear.length > 0">
+                <div *ngFor="let value of selectedSkillExpYear; let i = index" class="'col-md-12 p-1">
+                  <div class="row">
+                    <div class = "col-12">
+                      <ng-container *ngIf="value.img;else noImg">
+                        <span [innerHTML] = " value.img | safeHtml ">{{value.img}}</span> <span>{{ value.name }}</span>
+                      </ng-container>
+                      <ng-template #noImg>
+                        <span>{{ value.name }}</span>
+                      </ng-template>
+                    </div>
+                    <div *ngIf="!noExpYears" class="col-9">
+                      <app-c-forme-dropdown-single
+                        label="auto suggest"
+                        [options]="years_exp_min_new"
+                        [value]="value.exp_year"
+                        [errorMsg]="yearsErrMsg"
+                        (selectedValue)="value.exp_year = $event"
+                        (change)="skillsExpYearOptions($event, value, i)"
+                      ></app-c-forme-dropdown-single>
+                    </div>
+                    <div class = "col-2">
+                      <a (click)="deleteSkill(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                    </div>
+                  </div>
+                </div>
               </div>
               <hr/>
 
