@@ -77,7 +77,8 @@ export class AddJobComponent implements OnInit {
       if(this.selected_work_type === 'volunteer') this.volunteerCheck = true;
 
       this.user_roles = this.jobDoc['positions'];
-      this.selectedCompanyLocation(this.jobDoc['locations']);
+      if(this.jobDoc['locations'] && this.jobDoc['locations'].length > 0)
+        this.selectedCompanyLocation(this.jobDoc['locations']);
 
       this.job_name = this.jobDoc['name'];
       this.job_status = this.jobDoc['status'];
