@@ -1,0 +1,41 @@
+.navbar-top .navbar ul li {
+  padding: 0px 10px ;
+}
+
+.navbar-top .navbar ul li a {
+  color:  #000 !important;
+}
+
+.navbar-top .navbar ul li a:hover {
+  color: #797878 !important;
+}
+
+.btn-signup {
+  background: #0070C0 0% 0% no-repeat padding-box !important;
+  border: 1px solid #0070C0;
+  color: #fff;
+  margin-right: 15px;
+}
+
+.btn-Login {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #E4E4E4;
+  color: #212529;
+}
+
+.btn-signup:hover, .btn-Login:hover {
+  color: #000;
+  background-color: transparent !Important;
+  border: 1px solid #000;
+}
+
+@media (max-width: 767px) {
+  .btn-signup{
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-dark .navbar-toggler-icon {
+    background-image: url('../../assets/images/navbar_imgs/logo/menu-icon.png') !important;
+  }
+}
