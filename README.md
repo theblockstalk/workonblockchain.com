@@ -2,6 +2,9 @@
 
 This MEAN stack application runs a candidate-based recruitment platform. Companies apply to candidates based on their profiles. (e.g. same model as [hired.com](https://hired.com)).
 
+Please see following article for more information:
+[https://medium.com/link](https://medium.com/link)
+
 This software contains:
 - Angular front-end application
 - Custom component library
