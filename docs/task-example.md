@@ -6,17 +6,17 @@ As a company
 ### Acceptance criteria
 When a company signs up to the platform they must complete an extra wizard step
 1. see questions here https://docs.google.com/document/d/1f03BtYLLE27m_6K2RTSEOmD6LXr4-8oetw2-eq0ksKE
-* Where are you looking for developers? (multiselect, required)
-* Are the positions full time, part time or freelance? (multiselect, required)
-* What positions are you looking for? (multiselect, required)
-* Available salary and currency? (select number, and currency dropdown, required)
-* When do they want to start employment? (single select dropdown, required)
-* What blockchain technology(ies) do you want them to have experience with? (multiselect, optional)
-* What programming languages do you want them to have experience with? (multiselect, optional)
-* Other stack: Ripple, MongoDB, AWS (text box, optional)
-* Do you consent to getting emails when new candidates that match your criteria sign up? (tick box, required)
-* Also ask question: When would you like to receive email notifications of users that match your search: Never, Daily, 3 days, Weekly (single select radio box required)
-* Daily is selected by default
+   - Where are you looking for developers? (multiselect, required)
+   - Are the positions full time, part time or freelance? (multiselect, required)
+   - What positions are you looking for? (multiselect, required)
+   - Available salary and currency? (select number, and currency dropdown, required)
+   - When do they want to start employment? (single select dropdown, required)
+   - What blockchain technology(ies) do you want them to have experience with? (multiselect, optional)
+   - What programming languages do you want them to have experience with? (multiselect, optional)
+   - Other stack: Ripple, MongoDB, AWS (text box, optional)
+   - Do you consent to getting emails when new candidates that match your criteria sign up? (tick box, required)
+   - Also ask question: When would you like to receive email notifications of users that match your search: Never, Daily, 3 days, Weekly (single select radio box required)
+   - Daily is selected by default
 2. According to their selection, a cron job will send the user an email according to their preference with a link to the candidates
 3. When a company clicks the link they go to the candidate page, if they are not signed in then the go to login and then are redirected to candidate page
 4. in the company page, they can see their preferences
