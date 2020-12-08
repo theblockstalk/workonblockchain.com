@@ -89,7 +89,7 @@ Front-end is running on localhost:8080
 
 ## Initialize
 
-1. Create a new user
+1. Sign up a new candidate or company user with email
 2. Run migration 
 
 ```
