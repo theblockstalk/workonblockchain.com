@@ -1,11 +1,11 @@
 # workonblockchain.com
 
-This MEAN stack application runs a candidate-based recruitment platform. Companies apply to candidates based on their profiles. (e.g. same model as [hired.com](https://hired.com)).
+This MEAN stack application runs a candidate-based recruitment platform. Companies apply to candidates based on their profiles (same model as [hired.com](https://hired.com)).
 
 Please see following article for more information, architecture diagram and dev processes:
 [https://medium.com/work-on-blockchain/recruitment-platform-workonblockchain-com-an-open-source-final-gift-da7594b45e8d](https://medium.com/work-on-blockchain/recruitment-platform-workonblockchain-com-an-open-source-final-gift-da7594b45e8d)
 
-Angularjs front-end client:
+**Angularjs front-end client:**
 - Angular application
 - Custom component library
 - Hotjar and Google Analytics
@@ -14,7 +14,7 @@ Angularjs front-end client:
 - Server Side Rendering of Angular application
 - Custom administration and CMR panel
 
-Nodejs back-end server:
+**Nodejs back-end server:**
 - RESTful Express API
 - Mongoose endpoint validations and Mongoose for database control
 - JSON web token authorization
@@ -27,25 +27,32 @@ Nodejs back-end server:
 - Email service using Sendgrid API
 - Cron service for email reminders and synchronization with Sendgrid and Zoho contacts
 
-Scripts:
+**Scripts:**
 - Multi-branch, multi-stage and parallelized CI/CD using Bitbucket pipelines
 - Continuous Integration running mocha unit tests
 - Continuous Deployment to to AWS Elastic Beanstalk and AWS Lambda
 
 ## Acknowledgements
-### WOB team
+**WOB team**
 
-- [Antonio Sabado](https://www.linkedin.com/in/antonio-sabado-97150511b) - Product vision
-- [Jack Tanner](https://www.linkedin.com/in/jack-tanner) - Product owner (hands on)
-### [Mwan Mobile](https://www.mwanmobile.com) development agency team
+- [Antonio Sabado](https://www.linkedin.com/in/antonio-sabado-97150511b) - Product vision and company director
+- [Jack Tanner](https://www.linkedin.com/in/jack-tanner) - Product owner/manager (hands on) and company director
+
+**[Mwan Mobile](https://www.mwanmobile.com) development agency team**
 
 - [Andreas Tsindos](https://www.linkedin.com/in/andreas-tsindos-1174421) - Company director
 - [Asad Mahmood](https://www.linkedin.com/in/asad117) - SCRUM master
 - [Sadia Abbas](https://www.linkedin.com/in/sadia-abbas-437a20124) - Full-stack tech lead
 - [Tayyab Hussain](https://www.linkedin.com/in/tayyab-hussain-6117bab6) - Full-stack developer
 
-# Run the workonblockchain.com app locally
-## Run the back end
+## Prerequisits
+- [Mongodb 4.x](https://www.mongodb.com/)
+- [Npm 6.x](https://www.npmjs.com/)
+- Node 14.x - Installed with npm
+
+Tested on Ubuntu 18.04
+
+## Run the back-end server
 
 First start MongoDB
 ```
@@ -59,13 +66,9 @@ npm install
 npm start
 ```
 
-Back end API is running on localhost:4000
+Back-end API is running on localhost:4000
 
-#### Run MongoDB from Windows
-1. Create the following folder C:\data\db
-2. Run command "C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe" --dbpath C:\data
-
-## Run the front end
+## Run the front-end client
 
 ```
 cd client
@@ -73,45 +76,24 @@ npm install
 npm start
 ```
 
-Front end is running on localhost:4200
+Front-end is running on localhost:4200
 
-# Deploy the application to AWS
-## Deploy the backend
-
-1. Finish all work and commit all changes. Merge all changes for deployment to the `staging` branch.
-2. Run the backend app once to check that it starts
-3. Ensure that all commits are pushed to bitbucket
-4. Place your access key in the `scipts/access` folder
-5. Deploy the backend
+## Run the front-end client with server side rendering
 
 ```
-npm install
-node scripts/server.js staging
+npm run-script build:ssr:local
 ```
 
-Or
+## Initialize
+
+1. Create a new user
+2. Verify their email (you can see the link in the nodejs log)
+3. Find user in Mongodb database
+4. Change property `is_admin` to 1
+5. Refresh screen, go to (admin) Dashboard in menu
+6. Run migration 
 
 ```
-node scripts/server.js production
-```
-
-You can check what version is currently deployed by going to the api url. eg
-https://staging-api.workonblockchain.com/
-
-## Deploy the frontend
-1. Finish all work and commit all changes. Merge all changes for deployment to the `staging` branch.
-2. Run the backend app once to check that it starts
-3. Ensure that all commits are pushed to bitbucket
-4. Place your access key in the `scipts/access` folder
-5. Deploy the backend
-
-```
-npm install
-node scripts/client.js staging
-```
-
-Or
-
-```
-node scripts/client.js production
+export MONGO_CONNECTION_STRING="mongodb://localhost:27017/wob"
+node migrations/migrate.js 2020-init.js up
 ```
