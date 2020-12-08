@@ -87,13 +87,10 @@ npm run-script build:ssr:local
 ## Initialize
 
 1. Create a new user
-2. Verify their email (you can see the link in the nodejs log)
-3. Find user in Mongodb database
-4. Change property `is_admin` to 1
-5. Refresh screen, go to (admin) Dashboard in menu
-6. Run migration 
+2. Run migration 
 
 ```
+cd server
 export MONGO_CONNECTION_STRING="mongodb://localhost:27017/wob"
-node migrations/migrate.js 2020-init.js up
+node migrations/migrate.js init.js up
 ```
