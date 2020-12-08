@@ -82,7 +82,10 @@ Front-end is running on localhost:4200
 
 ```
 npm run-script build:ssr:local
+npm run-script serve:ssr
 ```
+
+Front-end is running on localhost:8080
 
 ## Initialize
 
