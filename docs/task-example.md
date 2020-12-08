@@ -1,11 +1,12 @@
+## FE/BE company should get automatic notifications of candidates
+
 ### User story
 As a company
 <br/>I should receive emails about the new candidates that sign up that match what I am looking for
 <br/>So that I am more likely to go to the platform and talk to them (currently they are too lazy to do search manually)
 
 ### Acceptance criteria
-When a company signs up to the platform they must complete an extra wizard step
-1. see questions here https://docs.google.com/document/d/1f03BtYLLE27m_6K2RTSEOmD6LXr4-8oetw2-eq0ksKE
+1. When a company signs up to the platform they must complete an extra wizard step
    - Where are you looking for developers? (multiselect, required)
    - Are the positions full time, part time or freelance? (multiselect, required)
    - What positions are you looking for? (multiselect, required)

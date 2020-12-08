@@ -1,5 +1,5 @@
 # IMPACT ASSESSMENT: FE/BE company should get automatic notifications of candidates
-https://projects.zoho.com/portal/mwan#taskdetail/264358000001449005/264358000001717001/264358000001705221
+[https://github.com/theblockstalk/workonblockchain.com/blob/master/docs/task-example.md](https://github.com/theblockstalk/workonblockchain.com/blob/master/docs/task-example.md)
 
 ## DATABASE
 
