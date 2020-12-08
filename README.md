@@ -2,22 +2,35 @@
 
 This MEAN stack application runs a candidate-based recruitment platform. Companies apply to candidates based on their profiles. (e.g. same model as [hired.com](https://hired.com)).
 
-Please see following article for more information:
+Please see following article for more information, architecture diagram and dev processes:
 [https://medium.com/link](https://medium.com/link)
 
-This software contains:
-- Angular front-end application
+Angularjs front-end client:
+- Angular application
 - Custom component library
+- Hotjar and Google Analytics
+- Google and Linkedin oAuth 2.0
+- Linkedin pdf import and parse
 - Server Side Rendering of Angular application
-- RESTful nodejs-express API with Mongoose API validations and Mongoose for database control
+- Custom administration and CMR panel
+
+Nodejs back-end server:
+- RESTful Express API
+- Mongoose endpoint validations and Mongoose for database control
+- JSON web token authorization
 - Database migration examples
 - Database sanitization, CORS and other security features
 - Error handling, authorization and other middleware
-- Mocha unit test suite for API
-- Logger and file storage using AWS S3
+- Mocha unit test suite
+- Amplitude API analytics
+- Logger to AWS Cloudwatch and file storage using AWS S3
 - Email service using Sendgrid API
 - Cron service for email reminders and synchronization with Sendgrid and Zoho contacts
-- CI/CD script using Bitbucket pipelines to deploy to AWS Elastic Beanstalk and AWS Lambda for staging and master branch
+
+Scripts:
+- Multi-branch, multi-stage and parallelized CI/CD using Bitbucket pipelines
+- Continuous Integration running mocha unit tests
+- Continuous Deployment to to AWS Elastic Beanstalk and AWS Lambda
 
 ## Acknowledgements
 ### WOB team
