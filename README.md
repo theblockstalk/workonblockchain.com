@@ -3,7 +3,7 @@
 This MEAN stack application runs a candidate-based recruitment platform. Companies apply to candidates based on their profiles. (e.g. same model as [hired.com](https://hired.com)).
 
 Please see following article for more information, architecture diagram and dev processes:
-[https://medium.com/link](https://medium.com/link)
+[https://medium.com/work-on-blockchain/recruitment-platform-workonblockchain-com-an-open-source-final-gift-da7594b45e8d](https://medium.com/work-on-blockchain/recruitment-platform-workonblockchain-com-an-open-source-final-gift-da7594b45e8d)
 
 Angularjs front-end client:
 - Angular application
@@ -18,7 +18,7 @@ Nodejs back-end server:
 - RESTful Express API
 - Mongoose endpoint validations and Mongoose for database control
 - JSON web token authorization
-- Database migration examples
+- Mongodb database migration examples
 - Database sanitization, CORS and other security features
 - Error handling, authorization and other middleware
 - Mocha unit test suite
